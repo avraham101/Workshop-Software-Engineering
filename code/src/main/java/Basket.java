@@ -4,6 +4,11 @@ public class Basket {
     private Store store;
     private List<Product> products;
 
+    public Basket(Store store, List<Product> products) {
+        this.store = store;
+        this.products = products;
+    }
+
     public Store getStore() {
         return store;
     }
