@@ -6,6 +6,7 @@ public class HashSystem {
 
     /**
      * encrypt a given password
+     *
      * @param passwordToHash - the password that need to hash
      * @return - hash password
      * @throws NoSuchAlgorithmException - if the SecureRandom didn't find
@@ -26,6 +27,7 @@ public class HashSystem {
 
     /**
      * salting bytes
+     *
      * @return - salted bytes
      * @throws NoSuchAlgorithmException - if the SecureRandom didn't find
      */
