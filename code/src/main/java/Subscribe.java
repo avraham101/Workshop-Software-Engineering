@@ -19,6 +19,11 @@ public class Subscribe extends UserState{
         requests=new ArrayList<>();
     }
 
+    @Override
+    public boolean login(User user, Subscribe subscribe) {
+        return false;
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -66,4 +71,5 @@ public class Subscribe extends UserState{
     public void setRequests(List<Request> requests) {
         this.requests = requests;
     }
+
 }
