@@ -26,7 +26,11 @@ public class LogicManager {
         if(!users.containsKey(userName)){
             try {
                 password = hashSystem.encrypt(password);
-                Subscribe subscribe = new Subscribe(userName, password);
+                Subscribe subscribe =null;
+                if(users.isEmpty())
+                    subscribe = new Admin(userName, password);
+                else
+                    subscribe = new Subscribe(userName, password);
                 users.put(userName,subscribe);
                 return true;
             } catch (NoSuchAlgorithmException e) {
@@ -37,7 +41,7 @@ public class LogicManager {
     }
 
     public boolean login(String userName, String password) {
-        if (!users.containsKey(userName)) {
+        if (users.containsKey(userName)) {
             try {
                 password = hashSystem.encrypt(password);
                 Subscribe subscribe = users.get(userName);
