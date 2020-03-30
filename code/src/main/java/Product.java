@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.List;
 
 public class Product {
@@ -38,6 +39,7 @@ public class Product {
     }
 
     public Category getCategory() {
+
         return category;
     }
 
