@@ -1,14 +1,18 @@
+package Domain;
+
+import DataAPI.ProductData;
+
 import java.util.Date;
 
 public class Purchase {
     private String storeName;
-    private String productName;
+    private ProductData product;
     //TODO add more data off product
     private Date date;
 
-    public Purchase(String storeName, String productName, Date date) {
+    public Purchase(String storeName,ProductData product, Date date) {
         this.storeName = storeName;
-        this.productName = productName;
+        this.product = product;
         this.date = date;
     }
 
@@ -20,12 +24,12 @@ public class Purchase {
         this.storeName = storeName;
     }
 
-    public String getProductName() {
-        return productName;
+    public ProductData getProduct() {
+        return product;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProduct(ProductData product) {
+        this.product = product;
     }
 
     public Date getDate() {

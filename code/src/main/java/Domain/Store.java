@@ -1,3 +1,8 @@
+package Domain;
+
+import Systems.PaymentSystem;
+import Systems.SupplySystem;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -5,13 +10,24 @@ public class Store {
 
     private String name; //unique
     private PurchesPolicy purchesPolicy;
-    private DiscountPolicy discout;
+    private DiscountPolicy discount;
     private HashMap<String, Product> products;
     private HashMap<String, Category> categoryList;
     private List<Request> requests;
     private HashMap<String, Permission> permissions;
-    private SupplySytem supplySytem;
+    private SupplySystem supplySystem;
     private PaymentSystem paymentSystem;
+
+    public Store(String name, PurchesPolicy purchesPolicy, DiscountPolicy discount,
+                 HashMap<String, Permission> permissions, SupplySystem supplySystem,
+                 PaymentSystem paymentSystem) {
+        this.name = name;
+        this.purchesPolicy = purchesPolicy;
+        this.discount = discount;
+        this.permissions = permissions;
+        this.supplySystem = supplySystem;
+        this.paymentSystem = paymentSystem;
+    }
 
     public String getName() {
         return name;
@@ -30,11 +46,11 @@ public class Store {
     }
 
     public DiscountPolicy getDiscout() {
-        return discout;
+        return discount;
     }
 
-    public void setDiscout(DiscountPolicy discout) {
-        this.discout = discout;
+    public void setDiscout(DiscountPolicy discount) {
+        this.discount = discount;
     }
 
     public HashMap<String, Product> getProducts() {
@@ -69,12 +85,12 @@ public class Store {
         this.permissions = permissions;
     }
 
-    public SupplySytem getSupplySytem() {
-        return supplySytem;
+    public SupplySystem getSupplySystem() {
+        return supplySystem;
     }
 
-    public void setSupplySytem(SupplySytem supplySytem) {
-        this.supplySytem = supplySytem;
+    public void setSupplySystem(SupplySystem supplySystem) {
+        this.supplySystem = supplySystem;
     }
 
     public PaymentSystem getPaymentSystem() {

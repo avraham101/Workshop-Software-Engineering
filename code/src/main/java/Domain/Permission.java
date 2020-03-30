@@ -1,3 +1,5 @@
+package Domain;
+
 import java.util.HashSet;
 
 public class Permission {

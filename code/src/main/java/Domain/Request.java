@@ -1,13 +1,15 @@
+package Domain;
+
 public class Request {
 
     private Subscribe senderName;
-    private Store store;
+    private String storeName;
     private String content;
     private String comment;
 
-    public Request(Subscribe senderName, Store store, String content) {
+    public Request(Subscribe senderName, String storeName, String content) {
         this.senderName = senderName;
-        this.store = store;
+        this.storeName=storeName;
         this.content = content;
         comment=null;
     }
@@ -20,12 +22,12 @@ public class Request {
         this.senderName = senderName;
     }
 
-    public Store getStore() {
-        return store;
+    public String getStoreName() {
+        return storeName;
     }
 
-    public void setStore(Store store) {
-        this.store = store;
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
     }
 
     public String getContent() {

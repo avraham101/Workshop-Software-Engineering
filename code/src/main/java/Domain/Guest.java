@@ -1,3 +1,5 @@
+package Domain;
+
 public class Guest extends UserState {
 
     @Override

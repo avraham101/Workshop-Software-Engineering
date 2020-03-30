@@ -1,10 +1,16 @@
+package Domain;
+
+import Systems.*;
+
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
 public class LogicManager {
-    private HashMap<String,Subscribe> users;
-    private HashMap<String,Store> stores;
+    private HashMap<String, Subscribe> users;
+    private HashMap<String, Store> stores;
     private HashSystem hashSystem;
+    private PaymentSystem paymentSystem;
+    private SupplySystem supplySystem;
     private LoggerSystem loggerSystem;
     private User current;
 

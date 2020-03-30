@@ -1,4 +1,5 @@
-import java.io.IOException;
+package Domain;
+
 import java.util.List;
 
 public class Product {

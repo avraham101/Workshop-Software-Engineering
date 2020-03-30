@@ -1,3 +1,5 @@
+package Domain;
+
 import java.util.HashMap;
 
 public class Cart {

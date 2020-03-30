@@ -1,3 +1,5 @@
+package Domain;
+
 public class Admin extends Subscribe{
 
     public Admin(String userName, String password) {

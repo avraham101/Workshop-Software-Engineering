@@ -1,3 +1,5 @@
+package Domain;
+
 abstract class UserState {
     private Cart cart;
 
