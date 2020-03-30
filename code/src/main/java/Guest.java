@@ -6,4 +6,6 @@ public class Guest extends UserState {
         return true;
     }
 
+    //foo
+
 }
