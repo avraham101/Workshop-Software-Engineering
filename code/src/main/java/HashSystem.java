@@ -1,33 +1,41 @@
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 public class HashSystem {
 
-    public String encrypt(String password) throws NoSuchAlgorithmException {
-        //TODO change this to 1 line
-        // getInstance() method is called with algorithm SHA-512
+    /**
+     * encrypt a given password
+     *
+     * @param passwordToHash - the password that need to hash
+     * @return - hash password
+     * @throws NoSuchAlgorithmException - if the SecureRandom didn't find
+     */
+    private String encrypt(String passwordToHash) throws NoSuchAlgorithmException {
+        String generatedPassword = null;
+        byte[] salt = getSalt();
         MessageDigest md = MessageDigest.getInstance("SHA-512");
-
-        // digest() method is called
-        // to calculate message digest of the input string
-        // returned as array of byte
-        byte[] messageDigest = md.digest(password.getBytes());
-
-        // Convert byte array into signum representation
-        BigInteger no = new BigInteger(1, messageDigest);
-
-        // Convert message digest into hex value
-        String hashtext = no.toString(16);
-
-        // Add preceding 0s to make it 32 bit
-        while (hashtext.length() < 32) {
-            hashtext = "0" + hashtext;
+        md.update(salt);
+        byte[] bytes = md.digest(passwordToHash.getBytes());
+        StringBuilder sb = new StringBuilder();
+        for (byte aByte : bytes) {
+            sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
         }
+        generatedPassword = sb.toString();
+        return generatedPassword;
+    }
 
-        // return the HashText
-        return hashtext;
+    /**
+     * salting bytes
+     *
+     * @return - salted bytes
+     * @throws NoSuchAlgorithmException - if the SecureRandom didn't find
+     */
+    private byte[] getSalt() throws NoSuchAlgorithmException {
+        SecureRandom sr = SecureRandom.getInstance("SHA512PRNG");
+        byte[] salt = new byte[16];
+        sr.nextBytes(salt);
+        return salt;
     }
 
 }

@@ -1,4 +1,4 @@
-abstract class UserState {
+public class UserState {
     private Cart cart;
 
     public UserState() {
@@ -12,6 +12,4 @@ abstract class UserState {
     public void setCart(Cart cart) {
         this.cart = cart;
     }
-
-    public abstract boolean login(User user,Subscribe subscribe);
 }

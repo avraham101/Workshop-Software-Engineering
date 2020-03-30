@@ -2,7 +2,7 @@ public class User {
     private UserState state;
 
     public User() {
-        state=new Guest();
+        state=new UserState();
     }
 
     public UserState getState() {
@@ -11,9 +11,5 @@ public class User {
 
     public void setState(UserState state) {
         this.state = state;
-    }
-
-    public boolean login(Subscribe subscribe) {
-        return state.login(this, subscribe);
     }
 }
