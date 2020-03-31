@@ -1,8 +1,6 @@
 package Service;
 
-import DataAPI.CartData;
-import DataAPI.ProductData;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Domain.*;
 import jdk.nashorn.internal.ir.RuntimeNode;
 
@@ -16,12 +14,22 @@ public class ServiceAPI {
         logicManager=new LogicManager();
     }
 
-    //TODO use case 2.2
+    /**
+     * use case 2.2
+     * @param userName - the user Name
+     * @param password - the user password
+     * @return true if the register complete, otherwise false
+     */
     public boolean register(String userName, String password) {
         return logicManager.register(userName,password);
     }
 
-    //TODO use case 2.3
+    /***
+     * use case 2.3
+     * @param userName - the user Name
+     * @param password - the user password
+     * @return true if the user is logged to the system, otherwise false
+     */
     public boolean login(String userName, String password) {
         return logicManager.login(userName, password);
     }
@@ -63,7 +71,7 @@ public class ServiceAPI {
     }
 
     //TODO use case 2.8
-    public boolean purchaseCart(){
+    public boolean purchaseCart(PaymentData paymentData, DeliveryData deliveryData){
         return false;
     }
 
