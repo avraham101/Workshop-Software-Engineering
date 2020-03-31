@@ -1,5 +1,6 @@
 package Domain;
 
+import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
@@ -48,5 +49,10 @@ public class Guest extends UserState {
     @Override
     public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
         return null;
+    }
+
+    @Override
+    public boolean addProductToStore(ProductData productData) {
+        return false;
     }
 }

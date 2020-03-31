@@ -1,5 +1,6 @@
 package LogicManagerTests;
 
+import DataAPI.ProductData;
 import Domain.*;
 import Systems.HashSystem;
 import Systems.PaymentSystem.PaymentSystem;
@@ -20,6 +21,7 @@ public class LogicManagerAllStubsTest {
     protected User currUser;
     protected HashMap<String,Subscribe> users;
     protected HashMap<String,Store> stores;
+    protected TestData data;
 
     /**
      * Adding Stores must be in type StoreStub
@@ -39,6 +41,7 @@ public class LogicManagerAllStubsTest {
     }
 
     protected void init() {
+        data=new TestData();
         users=new HashMap<>();
         stores=new HashMap<>();
         logicManager = new LogicManager(users,stores,currUser);
@@ -108,6 +111,27 @@ public class LogicManagerAllStubsTest {
         testLoginSuccess();
     }
 
+    //TODO: Added
+    private void testAddProduct(){
+        testAddProductFail();
+        testProductSuccess();
+    }
+
+    private void testProductSuccess() {
+        assertTrue(logicManager.addProductToStore(data.getProduct("valid")));
+    }
+
+    private void testAddProductFail(){
+        assertFalse(logicManager.addProductToStore(data.getProduct("nullName")));
+        assertFalse(logicManager.addProductToStore(data.getProduct("wrongStore")));
+        assertFalse(logicManager.addProductToStore(data.getProduct("nullCategory")));
+        assertFalse(logicManager.addProductToStore(data.getProduct("nullDiscount")));
+        assertFalse(logicManager.addProductToStore(data.getProduct("negativeAmount")));
+        assertFalse(logicManager.addProductToStore(data.getProduct("negativePrice")));
+        assertFalse(logicManager.addProductToStore(data.getProduct("nullPurchase")));
+
+    }
+
     /**
      * part of use case 2.3 - Login
      */
@@ -154,6 +178,10 @@ public class LogicManagerAllStubsTest {
             super(userName, password);
         }
 
+        @Override
+        public boolean addProductToStore(ProductData productData) {
+            return true;
+        }
     }
 
     protected class StoreStub extends Store {
@@ -161,6 +189,8 @@ public class LogicManagerAllStubsTest {
         public StoreStub(String name, PurchesPolicy purchesPolicy, DiscountPolicy discount, Permission permissions, SupplySystem supplySystem, PaymentSystem paymentSystem) {
             super(name, purchesPolicy, discount, permissions, supplySystem, paymentSystem);
         }
+
     }
+
 
 }
