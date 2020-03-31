@@ -134,6 +134,7 @@ public class LogicManager {
         Store store = current.openStore(storeDetails,paymentSystem, supplySystem);
         if(store != null) {
             stores.put(store.getName(),store);
+            return true;
         }
         return false;
     }
@@ -144,7 +145,7 @@ public class LogicManager {
      * @return true the store data is ok, otherwise false
      */
     private boolean validStoreDetails(StoreData storeData) {
-        return storeData.getName() != null && storeData.getDiscountPolicy()!=null ||
+        return storeData.getName() != null && storeData.getDiscountPolicy()!=null &&
                 storeData.getPurchesPolicy()!=null;
     }
 
@@ -164,7 +165,7 @@ public class LogicManager {
     }
 
     private boolean validProduct(ProductData productData) {
-        return productData.getProductName()!=null&&productData.getCategory()!=null&&productData.getDiscount()!=null
+        return productData.getProductName()!=null &&productData.getCategory()!=null&&productData.getDiscount()!=null
                 &&productData.getPrice()>0&&productData.getAmount()>0&&productData.getPurchaseType()!=null;
     }
 }

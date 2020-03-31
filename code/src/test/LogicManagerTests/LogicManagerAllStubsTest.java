@@ -1,6 +1,7 @@
 package LogicManagerTests;
 
 import DataAPI.ProductData;
+import DataAPI.StoreData;
 import Domain.*;
 import Systems.HashSystem;
 import Systems.PaymentSystem.PaymentSystem;
@@ -135,16 +136,34 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * test use case 3.2
+     * test use case 3.2 - Open Store
      */
     protected void testOpenStore() {
-        //TODO
+        testOpenStoreFail();
+        testOpenStoreSucces();
+    }
+
+    /**
+     * part of test use case 3.2 - Open Store
+     */
+    private void testOpenStoreFail() {
+        assertFalse(logicManager.openStore(data.getStore(Data.NULL_NAME)));
+        assertFalse(logicManager.openStore(data.getStore(Data.NULL_PURCHASE)));
+        assertFalse(logicManager.openStore(data.getStore(Data.NULL_DISCOUNT)));
+    }
+
+    /**
+     * part of test use case 3.2 - Open Store
+     */
+    private void testOpenStoreSucces(){
+        assertTrue(logicManager.openStore(data.getStore(Data.VALID)));
     }
 
 
     /**
-     * use case 4.1.1- add product to store
+     * use case 4.1.1 -add product
      */
+
     //TODO: Added
     protected void testAddProduct(){
         testAddProductFail();
@@ -152,19 +171,19 @@ public class LogicManagerAllStubsTest {
     }
 
     protected void testProductSuccess() {
-        assertTrue(logicManager.addProductToStore(data.getProduct("valid")));
+        assertTrue(logicManager.addProductToStore(data.getProduct(Data.VALID)));
     }
 
     protected void testAddProductFail(){
-        assertFalse(logicManager.addProductToStore(data.getProduct("nullName")));
-        assertFalse(logicManager.addProductToStore(data.getProduct("wrongStore")));
-        assertFalse(logicManager.addProductToStore(data.getProduct("nullCategory")));
-        assertFalse(logicManager.addProductToStore(data.getProduct("nullDiscount")));
-        assertFalse(logicManager.addProductToStore(data.getProduct("negativeAmount")));
-        assertFalse(logicManager.addProductToStore(data.getProduct("negativePrice")));
-        assertFalse(logicManager.addProductToStore(data.getProduct("nullPurchase")));
-
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NULL_NAME)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.WRONG_STORE)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NULL_CATEGORY)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NULL_DISCOUNT)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_AMOUNT)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_PRICE)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NULL_PURCHASE)));
     }
+
     protected class UserStub extends User {
         @Override
         public boolean login(Subscribe subscribe) {
@@ -175,6 +194,19 @@ public class LogicManagerAllStubsTest {
         public boolean logout(){
             return true;
         }
+
+        @Override
+        public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
+            return new Store(storeDetails.getName(),new PurchesPolicy(),new DiscountPolicy(),
+                    new Permission(new Subscribe(this.getUserName(),this.getPassword())),
+                    supplySystem,paymentSystem);
+        }
+
+        @Override
+        public boolean addProductToStore(ProductData productData){
+            return true;
+        }
+
     }
 
     protected class SubscribeStub extends Subscribe {

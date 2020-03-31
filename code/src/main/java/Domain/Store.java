@@ -29,6 +29,8 @@ public class Store {
         this.permissions.put(permission.getOwner().getName(), permission);
         this.supplySystem = supplySystem;
         this.paymentSystem = paymentSystem;
+        this.products=new HashMap<>();
+        this.categoryList=new HashMap<>();
     }
 
     public String getName() {
@@ -101,6 +103,14 @@ public class Store {
 
     public void setPaymentSystem(PaymentSystem paymentSystem) {
         this.paymentSystem = paymentSystem;
+    }
+
+    public DiscountPolicy getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(DiscountPolicy discount) {
+        this.discount = discount;
     }
 
     public boolean addProduct(ProductData productData) {
