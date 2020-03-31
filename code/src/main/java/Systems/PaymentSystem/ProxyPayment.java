@@ -6,6 +6,14 @@ public class ProxyPayment extends PaymentSystem{
 
     private ExternalPayment realPayment;
 
+    public ProxyPayment() {
+
+    }
+
+    public void setRealPayment(ExternalPayment realPayment) {
+        this.realPayment = realPayment;
+    }
+
     @Override
     public boolean connect() {
         if(realPayment!=null)
@@ -16,14 +24,14 @@ public class ProxyPayment extends PaymentSystem{
     @Override
     public boolean pay(PaymentData paymentData) {
         if(realPayment!=null)
-            realPayment.connect();
+            realPayment.pay(paymentData);
         return true;
     }
 
     @Override
     public boolean cancel(PaymentData paymentData) {
         if(realPayment!=null)
-            realPayment.connect();
+            realPayment.cancel(paymentData);
         return true;
     }
 

@@ -4,12 +4,12 @@ public class PaymentData {
 
     private String name;
     private String address;
-    private double price;
+    private String creditCard;
 
-    public PaymentData(String name, String address, double price) {
+    public PaymentData(String name, String address, String creditCard) {
         this.name = name;
         this.address = address;
-        this.price = price;
+        this.creditCard = creditCard;
     }
 
     public String getName() {
@@ -28,11 +28,11 @@ public class PaymentData {
         this.address = address;
     }
 
-    public double getPrice() {
-        return price;
+    public String getCreditCard() {
+        return creditCard;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setCreditCard(String creditCard) {
+        this.creditCard = creditCard;
     }
 }
