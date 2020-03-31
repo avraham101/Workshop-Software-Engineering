@@ -1,6 +1,5 @@
 package Domain;
 
-import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
@@ -63,9 +62,5 @@ public class User {
      */
     public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
         return state.openStore(storeDetails,paymentSystem,supplySystem);
-    }
-
-    public boolean addProductToStore(ProductData productData) {
-        return state.addProductToStore(productData);
     }
 }

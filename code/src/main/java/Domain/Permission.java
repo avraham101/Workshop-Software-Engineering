@@ -54,10 +54,5 @@ public class Permission {
         this.permissionType.add(type);
         return true;
     }
-
-    public boolean canAddProduct() {
-        return permissionType.contains(PermissionType.OWNER)||
-                permissionType.contains(PermissionType.PRODUCTS_INVENTORY);
-    }
 }
 
