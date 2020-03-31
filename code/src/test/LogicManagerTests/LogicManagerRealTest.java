@@ -64,12 +64,14 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override
     protected void testOpenStore() {
         super.testOpenStore();
-        //Test stores permission
         testOpenStorePurchesAndDiscontPolicy();
         testOpenStoreUserPermissions();
         testOpenStoreStorePermissions();
     }
 
+    /**
+     * part of test use case 3.2 - Open Store
+     */
     private void testOpenStorePurchesAndDiscontPolicy() {
         StoreData storeData = data.getStore(Data.VALID);
         Store store = stores.get(storeData.getName());
@@ -77,6 +79,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(storeData.getDiscountPolicy(), store.getDiscout());
     }
 
+    /**
+     * part of test use case 3.2 - Open Store
+     */
     private void testOpenStoreUserPermissions() {
         StoreData storeData = data.getStore(Data.VALID);
         Subscribe subscribe = (Subscribe)currUser.getState();
@@ -84,6 +89,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertTrue(permission.getPermissionType().contains(PermissionType.OWNER));
     }
 
+    /**
+     * part of test use case 3.2 - Open Store
+     */
     private void testOpenStoreStorePermissions() {
         StoreData storeData = data.getStore(Data.VALID);
         Store store = stores.get(storeData.getName());

@@ -120,18 +120,17 @@ public class LogicManagerAllStubsTest {
     }
 
     private void testProductSuccess() {
-        assertTrue(logicManager.addProductToStore(data.getProduct("valid")));
+        assertTrue(logicManager.addProductToStore(data.getProduct(Data.VALID)));
     }
 
     private void testAddProductFail(){
-        assertFalse(logicManager.addProductToStore(data.getProduct("nullName")));
-        assertFalse(logicManager.addProductToStore(data.getProduct("wrongStore")));
-        assertFalse(logicManager.addProductToStore(data.getProduct("nullCategory")));
-        assertFalse(logicManager.addProductToStore(data.getProduct("nullDiscount")));
-        assertFalse(logicManager.addProductToStore(data.getProduct("negativeAmount")));
-        assertFalse(logicManager.addProductToStore(data.getProduct("negativePrice")));
-        assertFalse(logicManager.addProductToStore(data.getProduct("nullPurchase")));
-
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NULL_NAME)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.WRONG_STORE)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NULL_CATEGORY)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NULL_DISCOUNT)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_AMOUNT)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_PRICE)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NULL_PURCHASE)));
     }
 
     /**
@@ -156,13 +155,27 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * test use case 3.2
+     * test use case 3.2 - Open Store
      */
     protected void testOpenStore() {
+        testOpenStoreFail();
+        testOpenStoreSucces();
+    }
+
+    /**
+     * part of test use case 3.2 - Open Store
+     */
+    private void testOpenStoreFail() {
         assertFalse(logicManager.openStore(data.getStore(Data.NULL_NAME)));
         assertFalse(logicManager.openStore(data.getStore(Data.NULL_PURCHASE)));
         assertFalse(logicManager.openStore(data.getStore(Data.NULL_DISCOUNT)));
-        assertNotNull(logicManager.openStore(data.getStore(Data.VALID)));
+    }
+
+    /**
+     * part of test use case 3.2 - Open Store
+     */
+    private void testOpenStoreSucces(){
+        assertTrue(logicManager.openStore(data.getStore(Data.VALID)));
     }
 
     protected class UserStub extends User {
@@ -178,7 +191,7 @@ public class LogicManagerAllStubsTest {
 
         @Override
         public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
-            return new Store("Store",new PurchesPolicy(),new DiscountPolicy(),
+            return new Store(storeDetails.getName(),new PurchesPolicy(),new DiscountPolicy(),
                     new Permission(new Subscribe(this.getUserName(),this.getPassword())),
                     supplySystem,paymentSystem);
         }
