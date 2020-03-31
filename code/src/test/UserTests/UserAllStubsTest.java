@@ -6,6 +6,8 @@ import Domain.UserState;
 import org.junit.Before;
 import org.junit.Test;
 //class for Unit test all stubs
+import static org.junit.Assert.*;
+//class for Unit test all stubs
 
 
 public class UserAllStubsTest {
@@ -33,22 +35,36 @@ public class UserAllStubsTest {
 
     @Test
     public void testLogin() {
-        testLoginGuest();
+        testGuest();
+        testSubscribe();
+    }
+
+    private void testSubscribe() {
+        initSubscribe();
         testLoginSubscribe();
     }
 
+    /**
+     * login is last test of these sequence
+     */
+    protected void testGuest() {
+        //last guest test
+        testLoginGuest();
+    }
+
     protected void testLoginGuest() {
+        assertTrue(user.login(new Subscribe("niv","shirazi")));
     }
 
     protected void testLoginSubscribe() {
-        initSubscribe();
+        assertFalse(user.login(new Subscribe("niv","shirazi")));
     }
 
     protected class GuestStub extends Guest {
 
         @Override
         public boolean login(User user, Subscribe subscribe) {
-            return false;
+            return true;
         }
     }
 
@@ -56,6 +72,11 @@ public class UserAllStubsTest {
 
         public SubscribeStub(String userName, String password) {
             super(userName, password);
+        }
+
+        @Override
+        public boolean login(User user, Subscribe subscribe) {
+            return false;
         }
     }
 }
