@@ -126,6 +126,8 @@ public class LogicManager {
      */
     public boolean openStore(StoreData storeDetails) {
         //TODO add logger
+        if(!validStoreDetails(storeDetails))
+            return false;
         if(stores.containsKey(storeDetails.getName()))
             return false;
         Store store = current.openStore(storeDetails,paymentSystem, supplySystem);
@@ -133,5 +135,15 @@ public class LogicManager {
             stores.put(store.getName(),store);
         }
         return false;
+    }
+
+    /**
+     * The fucntion check if storeData is valid
+     * @param storeData - the store data to check
+     * @return true the store data is ok, otherwise false
+     */
+    private boolean validStoreDetails(StoreData storeData) {
+        return storeData.getName() != null && storeData.getDiscountPolicy()!=null ||
+                storeData.getPurchesPolicy()!=null;
     }
 }

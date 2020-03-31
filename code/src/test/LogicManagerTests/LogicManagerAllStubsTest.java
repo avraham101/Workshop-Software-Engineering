@@ -50,6 +50,7 @@ public class LogicManagerAllStubsTest {
         testExternalSystems();
         testRegister();
         testLogin();
+        testOpenStore();
         testLogout();
     }
 
@@ -126,6 +127,13 @@ public class LogicManagerAllStubsTest {
      */
     protected void testLoginSuccess() {
         assertTrue(logicManager.login("Yuval","Sabag"));
+    }
+
+    /**
+     * test use case 3.2
+     */
+    protected void testOpenStore() {
+        //TODO
     }
 
     protected class UserStub extends User {
