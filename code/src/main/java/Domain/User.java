@@ -41,6 +41,6 @@ public class User {
 
     //TODO use case 3.2
     public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
-        return state.openStore(storeDetails);
+        return state.openStore(storeDetails,paymentSystem,supplySystem);
     }
 }

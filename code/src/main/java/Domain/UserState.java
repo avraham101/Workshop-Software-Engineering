@@ -1,6 +1,8 @@
 package Domain;
 
 import DataAPI.StoreData;
+import Systems.PaymentSystem.PaymentSystem;
+import Systems.SupplySystem.SupplySystem;
 
 public abstract class UserState {
     private Cart cart;
@@ -26,5 +28,5 @@ public abstract class UserState {
     public abstract boolean logout(User user);
 
     //TODO use case 3.2
-    public abstract Store openStore(StoreData storeDetails);
+    public abstract Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem);
 }

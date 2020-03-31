@@ -19,12 +19,13 @@ public class Store {
     private PaymentSystem paymentSystem;
 
     public Store(String name, PurchesPolicy purchesPolicy, DiscountPolicy discount,
-                 HashMap<String, Permission> permissions, SupplySystem supplySystem,
+                 Permission permission, SupplySystem supplySystem,
                  PaymentSystem paymentSystem) {
         this.name = name;
         this.purchesPolicy = purchesPolicy;
         this.discount = discount;
-        this.permissions = permissions;
+        this.permissions = new HashMap<>();
+        this.permissions.put(permission.getOwner().getName(), permission);
         this.supplySystem = supplySystem;
         this.paymentSystem = paymentSystem;
     }

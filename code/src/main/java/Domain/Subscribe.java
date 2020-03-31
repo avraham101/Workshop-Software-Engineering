@@ -1,6 +1,9 @@
 package Domain;
 
 import DataAPI.StoreData;
+import Systems.HashSystem;
+import Systems.PaymentSystem.PaymentSystem;
+import Systems.SupplySystem.SupplySystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,11 +51,18 @@ public class Subscribe extends UserState{
     /**
      * use case 3.2
      * @param storeDetails - the details of the store
+     * @param paymentSystem - The external payment System
+     * @param supplySystem - The external supply System
      * @return open a store.
      */
     @Override
-    public Store openStore(StoreData storeDetails) {
-        return null;
+    public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
+        Permission permission = new Permission(this);
+        Store store = new Store(storeDetails.getName(),storeDetails.getPurchesPolicy(),
+                storeDetails.getDiscountPolicy(), permission, supplySystem, paymentSystem);
+        permission.setStore(store);
+        permission.addType(PermissionType.OWNER); //Always true, store just created.
+        return store;
     }
 
     public void setUserName(String userName) {
