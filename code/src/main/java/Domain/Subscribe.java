@@ -2,7 +2,6 @@ package Domain;
 
 import DataAPI.ProductData;
 import DataAPI.StoreData;
-import Systems.HashSystem;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 

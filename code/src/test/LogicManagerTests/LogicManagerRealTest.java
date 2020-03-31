@@ -4,8 +4,6 @@ import Domain.*;
 import Systems.HashSystem;
 import org.junit.Before;
 
-import java.util.HashMap;
-
 import static org.junit.Assert.*;
 
 //no stubs full integration
@@ -65,22 +63,46 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override
     protected void testAddProduct(){
         super.testAddProduct();
-        testAddProducttWithSameName();
+        testAddProductWithSameName();
     }
 
     @Override
     protected void testAddProductFail (){
         super.testAddProductFail();
-        //TODO check not manage store
-        //TODO check has no permissions
+        testAddProductNotManagerOfStore();
+        testAddProductDontHavePermission();
     }
 
     /**
      * test adding product with name that is not unique
      */
 
-    private void testAddProducttWithSameName(){
+    private void testAddProductWithSameName(){
         assertFalse(logicManager.addProductToStore(data.getProduct("sameName")));
     }
+
+    /**
+     * test try adding product without being owner or manager of the store
+     */
+    private void testAddProductNotManagerOfStore(){
+        Subscribe sub=((Subscribe) currUser.getState());
+        Permission permission=sub.getPermissions().get("store");
+        sub.getPermissions().clear();
+        assertFalse(logicManager.addProductToStore(data.getProduct("valid")));
+        sub.getPermissions().put("store",permission);
+    }
+
+    /**
+     * test that user that has no CRUD permission or owner permission cant add products to store
+     */
+    private void testAddProductDontHavePermission(){
+        Subscribe sub=((Subscribe) currUser.getState());
+        Permission permission=sub.getPermissions().get("store");
+        permission.removeType(PermissionType.OWNER);
+        assertFalse(logicManager.addProductToStore(data.getProduct("valid")));
+        permission.addType(PermissionType.OWNER);
+    }
+
+
 }
 
