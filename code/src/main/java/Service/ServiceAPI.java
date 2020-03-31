@@ -111,7 +111,7 @@ public class ServiceAPI {
 
     //TODO use case 4.1.1
     public boolean addProductToStore(ProductData productData){
-        return false;
+        return logicManager.addProductToStore(productData);
     }
 
     //TODO use case 4.1.2
