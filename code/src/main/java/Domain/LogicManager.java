@@ -103,9 +103,9 @@ public class LogicManager {
     }
 
     /**
-     * use case 3.2
+     * use case 3.2 - Open Store
      * @param storeDetails - the details of the the store
-     * @return true if store is open, otherwise false.
+     * @return true if can open store, otherwise false.
      */
     public boolean openStore(StoreData storeDetails) {
         if(stores.containsKey(storeDetails.getName()))
