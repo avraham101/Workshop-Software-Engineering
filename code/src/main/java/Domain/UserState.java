@@ -1,6 +1,6 @@
 package Domain;
 
-abstract class UserState {
+public abstract class UserState {
     private Cart cart;
 
     public UserState() {
@@ -16,4 +16,8 @@ abstract class UserState {
     }
 
     public abstract boolean login(User user,Subscribe subscribe);
+
+    public abstract String getName();
+
+    public abstract String getPassword();
 }

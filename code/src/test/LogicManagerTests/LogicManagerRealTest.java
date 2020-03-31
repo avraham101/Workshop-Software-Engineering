@@ -1,15 +1,15 @@
 package LogicManagerTests;
 
 import Domain.*;
+import Systems.HashSystem;
 import org.junit.Before;
 
 import java.util.HashMap;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 //no stubs full integration
-public class LogicManagerNoStubsTest extends LogicManagerAllStubsTest {
+public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
     @Before
     public void setUp() {
@@ -20,27 +20,27 @@ public class LogicManagerNoStubsTest extends LogicManagerAllStubsTest {
         logicManager.register("Admin","Admin");
     }
 
-
     @Override
-    public void testRegister() {
-        testAdmin();
-        super.testRegister();
-    }
-
     public void testLogin(){
         super.testLogin();
         testLoginFailAlreadyUserLogged();
-    }
-
-    //TODO MOVE THIS TO CLASS
-    public void testAdmin() {
-        assertTrue(users.get("Admin") instanceof Admin);
     }
 
     public void testLoginFailAlreadyUserLogged() {
         assertFalse(logicManager.login("Yuval","Sabag"));
     }
 
-
+    @Override
+    protected void testLoginSuccess() {
+        super.testLoginSuccess();
+        assertEquals(currUser.getUserName(),"Yuval");
+        try {
+            HashSystem hashSystem = new HashSystem();
+            String password = hashSystem.encrypt("Sabag");
+            assertEquals(password, currUser.getPassword());
+        } catch (Exception e) {
+            fail();
+        }
+    }
 }
 
