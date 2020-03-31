@@ -39,8 +39,14 @@ public class User {
         return state.logout(this);
     }
 
-    //TODO use case 3.2
+    /**
+     * use case 3.2 - Open Store
+     * @param storeDetails - the details of the the store
+     * @param paymentSystem - the external payment system.
+     * @param supplySystem - the external supply system.
+     * @return The Store that we open, otherwise null;
+     */
     public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
-        return state.openStore(storeDetails);
+        return state.openStore(storeDetails,paymentSystem,supplySystem);
     }
 }

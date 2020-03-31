@@ -103,9 +103,15 @@ public class LogicManager {
         return current.logout();
     }
 
-    //TODO use case 3.2
+    /**
+     * use case 3.2 - Open Store
+     * @param storeDetails - the details of the the store
+     * @return true if can open store, otherwise false.
+     */
     public boolean openStore(StoreData storeDetails) {
         //TODO add logger
+        if(stores.containsKey(storeDetails.getName()))
+            return false;
         Store store = current.openStore(storeDetails,paymentSystem, supplySystem);
         if(store != null) {
             stores.put(store.getName(),store);
