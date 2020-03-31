@@ -102,7 +102,7 @@ public class ServiceAPI {
     }
 
     //TODO use case 4.1.1
-    public boolean addProductToStore(String storeName,ProductData productData){
+    public boolean addProductToStore(ProductData productData){
         return false;
     }
 
@@ -112,7 +112,7 @@ public class ServiceAPI {
     }
 
     //TODO use case 4.1.3
-    public boolean EditProductFromoStore(String storeName,ProductData productData){
+    public boolean EditProductFromoStore(ProductData productData){
         return false;
     }
 

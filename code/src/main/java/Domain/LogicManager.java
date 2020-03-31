@@ -83,6 +83,7 @@ public class LogicManager {
     }
 
     public boolean login(String userName, String password) {
+        //TODO add logger
         if (users.containsKey(userName)) {
             try {
                 password = hashSystem.encrypt(password);
@@ -98,12 +99,13 @@ public class LogicManager {
     }
 
     public boolean logout() {
-        //TODO logger
+        //TODO add logger
         return current.logout();
     }
 
     //TODO use case 3.2
     public boolean openStore(StoreData storeDetails) {
+        //TODO add logger
         Store store = current.openStore(storeDetails,paymentSystem, supplySystem);
         if(store != null) {
             stores.put(store.getName(),store);
