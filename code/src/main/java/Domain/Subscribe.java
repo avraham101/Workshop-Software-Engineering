@@ -1,5 +1,6 @@
 package Domain;
 
+import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Systems.HashSystem;
 import Systems.PaymentSystem.PaymentSystem;
@@ -63,6 +64,17 @@ public class Subscribe extends UserState{
         permission.setStore(store);
         permission.addType(PermissionType.OWNER); //Always true, store just created.
         return store;
+    }
+
+
+    @Override
+    public boolean addProductToStore(ProductData productData) {
+        if(!permissions.containsKey(productData.getStoreName()))
+            return false;
+        Permission permission=permissions.get(productData.getStoreName());
+        if(!permission.canAddProduct())
+            return false;
+        return permission.getStore().addProduct(productData);
     }
 
     public void setUserName(String userName) {

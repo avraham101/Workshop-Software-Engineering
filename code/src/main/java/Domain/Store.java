@@ -1,5 +1,6 @@
 package Domain;
 
+import DataAPI.ProductData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
@@ -100,5 +101,17 @@ public class Store {
 
     public void setPaymentSystem(PaymentSystem paymentSystem) {
         this.paymentSystem = paymentSystem;
+    }
+
+    public boolean addProduct(ProductData productData) {
+        if(products.containsKey(productData.getProductName()))
+            return false;
+        String categoryName=productData.getCategory();
+        if(!categoryList.containsKey(categoryName)){
+            categoryList.put(categoryName,new Category(categoryName));
+        }
+        Product product=new Product(productData,categoryList.get(categoryName));
+        products.put(productData.getProductName(),product);
+        return true;
     }
 }

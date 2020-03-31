@@ -8,10 +8,9 @@ public class Category {
     private String name; //unique name
     private List<Product> products;
 
-    public Category(String name,Product product) {
+    public Category(String name) {
         this.name = name;
         products=new ArrayList<>();
-        products.add(product);
     }
 
     public String getName() {
@@ -26,7 +25,11 @@ public class Category {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public boolean addProduct (Product product){
+        return products.add(product);
+    }
+
+    public void removeProduct(Product product) {
+        products.remove(product);
     }
 }

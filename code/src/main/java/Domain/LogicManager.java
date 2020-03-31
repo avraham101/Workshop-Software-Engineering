@@ -1,5 +1,6 @@
 package Domain;
 
+import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Systems.*;
 import Systems.PaymentSystem.PaymentSystem;
@@ -117,5 +118,25 @@ public class LogicManager {
             stores.put(store.getName(),store);
         }
         return false;
+    }
+
+    /**
+     * use case 4.1.1 add product to store
+     * @param productData -the details of the product
+     * @return true if the product was added, false otherwise
+     */
+
+    public boolean addProductToStore(ProductData productData) {
+        //TODO logger
+        if(!stores.containsKey(productData.getStoreName()))
+            return false;
+        if(validProduct(productData))
+            return current.addProductToStore(productData);
+        return false;
+    }
+
+    private boolean validProduct(ProductData productData) {
+        return productData.getProductName()!=null&&productData.getCategory()!=null&&productData.getDiscount()!=null
+                &&productData.getPrice()>0&&productData.getAmount()>0&&productData.getPurchaseType()!=null;
     }
 }

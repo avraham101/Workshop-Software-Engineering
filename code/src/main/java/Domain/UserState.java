@@ -1,5 +1,6 @@
 package Domain;
 
+import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
@@ -29,4 +30,6 @@ public abstract class UserState {
 
     //TODO use case 3.2
     public abstract Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem);
+
+    public abstract boolean addProductToStore(ProductData productData);
 }
