@@ -14,10 +14,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Before
     public void setUp() {
         currUser=new User();
-        users=new HashMap<>();
-        stores=new HashMap<>();
-        logicManager = new LogicManager(users,stores,currUser);
-        logicManager.register("Admin","Admin");
+        init();
     }
 
     @Override
