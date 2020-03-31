@@ -14,6 +14,19 @@ public class LogicManager {
     private LoggerSystem loggerSystem;
     private User current;
 
+    public LogicManager(HashMap<String, Subscribe> users, HashMap<String, Store> stores, User current) {
+        this.users = users;
+        this.stores = stores;
+        this.current = current;
+        try {
+            //TODO add here all external systems
+            hashSystem = new HashSystem();
+            loggerSystem = new LoggerSystem();
+        } catch (Exception e) {
+            System.exit(1);
+        }
+    }
+
     public LogicManager() {
         users = new HashMap<>();
         stores = new HashMap<>();

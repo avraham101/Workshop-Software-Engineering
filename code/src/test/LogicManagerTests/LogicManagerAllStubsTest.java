@@ -1,16 +1,30 @@
+package LogicManagerTests;
+
+import Domain.LogicManager;
+import Domain.Store;
+import Domain.Subscribe;
+import Domain.User;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.Assert;
+
+import java.util.HashMap;
+
+//class for Unit test all stubs
 import static org.junit.Assert.*;
 
-public class LogicManagerTest {
+public class LogicManagerAllStubsTest {
 
-    private static LogicManager logicManager;
+    protected static LogicManager logicManager;
+    protected User currUser;
+    protected HashMap<String,Subscribe> users;
+    protected HashMap<String,Store> stores;
 
     @Before
     public void setUp() {
-        logicManager = new LogicManager();
+        currUser=new UserStub();
+        users=new HashMap<>();
+        stores=new HashMap<>();
+        logicManager = new LogicManager(users,stores,currUser);
         logicManager.register("Admin","Admin");
     }
 
@@ -21,15 +35,10 @@ public class LogicManagerTest {
     }
 
     public void testRegister() {
-        testAdmin();
         testRegisterSuccess();
         testRegisterFailWrongName();
     }
 
-    //TODO MOVE THIS TO CLASS
-    public void testAdmin() {
-        //TODO
-    }
 
     //TODO MOVE THIS TO CLASS
     public void testRegisterSuccess() {
@@ -45,7 +54,6 @@ public class LogicManagerTest {
         testLoginFailWrongName();
         testLoginFailWrongPassword();
         testLoginSuccess();
-        testLoginFailAlreadyUserLogged();
     }
 
     private void testLoginFailWrongName() {
@@ -60,8 +68,12 @@ public class LogicManagerTest {
         assertTrue(logicManager.login("Yuval","Sabag"));
     }
 
-    private void testLoginFailAlreadyUserLogged() {
-        assertFalse(logicManager.login("Yuval","Sabag"));
+
+    class UserStub extends User {
+        @Override
+        public boolean login(Subscribe subscribe) {
+            return true;
+        }
     }
 
 

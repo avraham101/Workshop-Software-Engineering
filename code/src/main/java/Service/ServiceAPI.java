@@ -2,7 +2,6 @@ package Service;
 
 import DataAPI.CartData;
 import DataAPI.ProductData;
-import DataAPI.PurchaseDate;
 import DataAPI.StoreData;
 import Domain.*;
 import jdk.nashorn.internal.ir.RuntimeNode;
@@ -90,7 +89,7 @@ public class ServiceAPI {
     }
 
     //TODO use case 3.7
-    public List<PurchaseDate> watchMyPurchaseHistory(){
+    public List<Purchase> watchMyPurchaseHistory(){
         return null;
     }
 
