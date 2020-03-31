@@ -27,11 +27,23 @@ public class Subscribe extends UserState{
         requests=new ArrayList<>();
     }
 
+    /**
+     * use case 2.3 - Login
+     * @param user - The user who using the system
+     * @param subscribe - The user state who need to be set
+     * @return always false. The user state cant be changed from subscribe -> subscribe.
+     *         the user already logged
+     */
     @Override
     public boolean login(User user, Subscribe subscribe) {
         return false;
     }
 
+    /**
+     * use case 3.1 - Logout
+     * @param user - the user who using the system
+     * @return return true. The user changed his state to guest from subscribe.
+     */
     @Override
     public boolean logout(User user) {
         user.setState(new Guest());

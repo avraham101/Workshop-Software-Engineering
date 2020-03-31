@@ -20,7 +20,8 @@ public class UserRealTest extends UserAllStubsTest{
     }
 
     /**
-     * test login to user niv shirazi
+     * test use case 2.3 - Login
+     * user: niv shirazi
      */
     protected void testLoginGuest(){
         super.testLoginGuest();

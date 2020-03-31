@@ -55,19 +55,30 @@ public class UserAllStubsTest {
         //last guest test
         testLoginGuest();
     }
-
+    /**
+     * test use case 2.3 - Login
+     */
     protected void testLoginGuest() {
         assertTrue(user.login(new Subscribe("niv","shirazi")));
     }
 
+    /**
+     * test use case 2.3 - Login
+     */
     protected void testLoginSubscribe() {
         assertFalse(user.login(new Subscribe("niv","shirazi")));
     }
 
+    /**
+     * test: use case 3.1 - Logout
+     */
     protected void testLogoutGuest(){
         assertFalse(user.logout());
     }
 
+    /**
+     * test: use case 3.1 - Logout
+     */
     protected void testLogoutSubscribe(){
         assertTrue(user.logout());
     }

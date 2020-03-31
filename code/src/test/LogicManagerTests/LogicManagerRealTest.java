@@ -17,6 +17,10 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         init();
     }
 
+
+    /**
+     * test use case 2.3 - Login
+     */
     @Override
     public void testLogin(){
         super.testLogin();
@@ -27,6 +31,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertFalse(logicManager.login("Yuval","Sabag"));
     }
 
+    /**
+     * test: use case 3.1 - Logout
+     */
     @Override
     public void testLogout(){
         super.testLogout();
@@ -34,6 +41,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertFalse(currUser.logout());
     }
 
+    /**
+     * part of test use case 2.3 - Login
+     */
     @Override
     protected void testLoginSuccess() {
         super.testLoginSuccess();
