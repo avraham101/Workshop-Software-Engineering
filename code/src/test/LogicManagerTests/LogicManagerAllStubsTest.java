@@ -54,7 +54,7 @@ public class LogicManagerAllStubsTest {
         testRegister();
         testLogin();
         testLogout();
-        
+
         testAddProduct();
     }
 
