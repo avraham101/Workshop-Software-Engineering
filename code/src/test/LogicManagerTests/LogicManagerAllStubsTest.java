@@ -1,9 +1,8 @@
 package LogicManagerTests;
 
-import Domain.LogicManager;
-import Domain.Store;
-import Domain.Subscribe;
-import Domain.User;
+import Domain.*;
+import Systems.PaymentSystem;
+import Systems.SupplySystem;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,14 +13,29 @@ import static org.junit.Assert.*;
 
 public class LogicManagerAllStubsTest {
 
-    protected static LogicManager logicManager;
+    protected LogicManager logicManager;
     protected User currUser;
     protected HashMap<String,Subscribe> users;
     protected HashMap<String,Store> stores;
 
+    /**
+     * Adding Stores must be in type StoreStub
+     * example: stores.put(Key,new StoreStub(...))
+     * Adding Users must be in type UserStub
+     * example: users.put(Key, new UserStub(...))
+     */
+
+
     @Before
     public void setUp() {
         currUser=new UserStub();
+        init();
+        //make sure we are using SubscribeStub
+        Subscribe subscribe = users.get("Admin");
+        users.put("Admin", new SubscribeStub(subscribe.getName(), subscribe.getPassword()));
+    }
+
+    protected void init() {
         users=new HashMap<>();
         stores=new HashMap<>();
         logicManager = new LogicManager(users,stores,currUser);
@@ -39,13 +53,10 @@ public class LogicManagerAllStubsTest {
         testRegisterFailWrongName();
     }
 
-
-    //TODO MOVE THIS TO CLASS
     public void testRegisterSuccess() {
         assertTrue(logicManager.register("Yuval","Sabag"));
     }
 
-    //TODO MOVE THIS TO CLASS
     public void testRegisterFailWrongName() {
         assertFalse(logicManager.register("Admin","Admin2"));
     }
@@ -64,17 +75,30 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.login("Yuval", "BAD TEACHER"));
     }
 
-    private void testLoginSuccess() {
+    protected void testLoginSuccess() {
         assertTrue(logicManager.login("Yuval","Sabag"));
     }
 
-
-    class UserStub extends User {
+    protected class UserStub extends User {
         @Override
         public boolean login(Subscribe subscribe) {
             return true;
         }
     }
 
+    protected class SubscribeStub extends Subscribe {
+
+        public SubscribeStub(String userName, String password) {
+            super(userName, password);
+        }
+
+    }
+
+    protected class StoreStub extends Store {
+
+        public StoreStub(String name, PurchesPolicy purchesPolicy, DiscountPolicy discount, HashMap<String, Permission> permissions, SupplySystem supplySystem, PaymentSystem paymentSystem) {
+            super(name, purchesPolicy, discount, permissions, supplySystem, paymentSystem);
+        }
+    }
 
 }

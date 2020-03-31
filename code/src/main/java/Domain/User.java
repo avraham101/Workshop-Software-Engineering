@@ -7,6 +7,10 @@ public class User {
         state=new Guest();
     }
 
+    public User(UserState userState) {
+        state = userState;
+    }
+
     public UserState getState() {
         return state;
     }
@@ -17,5 +21,13 @@ public class User {
 
     public boolean login(Subscribe subscribe) {
         return state.login(this, subscribe);
+    }
+
+    public String getUserName() {
+        return this.state.getName();
+    }
+
+    public String getPassword() {
+        return this.state.getPassword();
     }
 }

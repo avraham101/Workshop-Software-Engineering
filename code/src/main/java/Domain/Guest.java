@@ -8,6 +8,14 @@ public class Guest extends UserState {
         return true;
     }
 
-    //foo
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
+    }
 
 }

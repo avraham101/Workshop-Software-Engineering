@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Subscribe extends UserState{
+
     private String userName; //unique
     private String password;
     private HashMap<String, Permission> permissions; //map of <storeName, Domain.Permission>
@@ -26,16 +27,18 @@ public class Subscribe extends UserState{
         return false;
     }
 
-    public String getUserName() {
+    @Override
+    public String getName() {
         return userName;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) {
