@@ -28,6 +28,8 @@ public class TestData {
                 ,null,new ArrayList<Discount>(),1,-10, PurchaseTypeData.IMMEDDIATE));
         products.put("nullPurchase",new ProductData("peanuts","store","category"
                 ,null,new ArrayList<Discount>(),1,10, null));
+        products.put("sameName",new ProductData("peanuts","store","category1"
+                ,null,new ArrayList<Discount>(),12,101, PurchaseTypeData.IMMEDDIATE));
     }
 
     public ProductData getProduct(String productCase){

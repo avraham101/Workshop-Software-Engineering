@@ -32,16 +32,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
-     * test: use case 3.1 - Logout
-     */
-    @Override
-    public void testLogout(){
-        super.testLogout();
-        //test while in Guest Mode
-        assertFalse(currUser.logout());
-    }
-
-    /**
      * part of test use case 2.3 - Login
      */
     @Override
@@ -55,6 +45,42 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         } catch (Exception e) {
             fail();
         }
+    }
+
+    /**
+     * test: use case 3.1 - Logout
+     */
+    @Override
+    public void testLogout(){
+        super.testLogout();
+        //test while in Guest Mode
+        assertFalse(currUser.logout());
+    }
+
+
+    /**
+     * test use case 4.1.1 -add product to store
+     */
+
+    @Override
+    protected void testAddProduct(){
+        super.testAddProduct();
+        testAddProducttWithSameName();
+    }
+
+    @Override
+    protected void testAddProductFail (){
+        super.testAddProductFail();
+        //TODO check not manage store
+        //TODO check has no permissions
+    }
+
+    /**
+     * test adding product with name that is not unique
+     */
+
+    private void testAddProducttWithSameName(){
+        assertFalse(logicManager.addProductToStore(data.getProduct("sameName")));
     }
 }
 
