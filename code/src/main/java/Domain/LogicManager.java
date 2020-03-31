@@ -46,9 +46,17 @@ public class LogicManager {
         users = new HashMap<>();
         stores = new HashMap<>();
         try {
-            //TODO add here all external systems
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
+            /**
+             * use case 1.1
+             */
+            if(!paymentSystem.connect()) {
+                throw new Exception("Payment System Crashed");
+            }
+            if(!supplySystem.connect()) {
+                throw new Exception("Supply System Crashed");
+            }
         } catch (Exception e) {
             System.exit(1);
         }
