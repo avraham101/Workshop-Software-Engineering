@@ -1,6 +1,6 @@
 package Domain;
 
-import Systems.PaymentSystem;
+import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem;
 
 import java.util.HashMap;

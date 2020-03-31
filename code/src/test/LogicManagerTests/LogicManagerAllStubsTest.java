@@ -1,7 +1,7 @@
 package LogicManagerTests;
 
 import Domain.*;
-import Systems.PaymentSystem;
+import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem;
 import org.junit.Before;
 import org.junit.Test;
