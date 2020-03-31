@@ -20,10 +20,13 @@ public class GuestTest {
      */
     @Test
     public void test(){
+        logoutTest();
         loginTest();
     }
 
     private void loginTest() {
         assertTrue(guest.login(new User(),new Subscribe("yuval","sabag")));
     }
+
+    private void logoutTest(){assertFalse(guest.logout(new User()));}
 }

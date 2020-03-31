@@ -2,23 +2,23 @@ package Domain;
 
 public class Request {
 
-    private Subscribe senderName;
+    private String senderName;
     private String storeName;
     private String content;
     private String comment;
 
-    public Request(Subscribe senderName, String storeName, String content) {
+    public Request(String senderName, String storeName, String content) {
         this.senderName = senderName;
         this.storeName=storeName;
         this.content = content;
         comment=null;
     }
 
-    public Subscribe getSenderName() {
+    public String getSenderName() {
         return senderName;
     }
 
-    public void setSenderName(Subscribe senderName) {
+    public void setSenderName(String senderName) {
         this.senderName = senderName;
     }
 

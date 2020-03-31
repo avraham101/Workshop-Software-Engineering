@@ -129,7 +129,7 @@ public class ServiceAPI {
     }
 
     //TODO use case 4.9.1
-    public List<RuntimeNode.Request> watchRequestsOfStore(String storeName){
+    public List<Request> watchRequestsOfStore(String storeName){
         return null;
     }
 
