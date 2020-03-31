@@ -1,8 +1,10 @@
 package UserTests;
-import Domain.Guest;
-import Domain.Subscribe;
-import Domain.User;
-import Domain.UserState;
+import DataAPI.StoreData;
+import Domain.*;
+import Systems.PaymentSystem.PaymentSystem;
+import Systems.PaymentSystem.ProxyPayment;
+import Systems.SupplySystem.ProxySupply;
+import Systems.SupplySystem.SupplySystem;
 import org.junit.Before;
 import org.junit.Test;
 //class for Unit test all stubs
@@ -42,7 +44,7 @@ public class UserAllStubsTest {
     private void testSubscribe() {
         initSubscribe();
         testLoginSubscribe();
-
+        testOpenStoreSubscribe();
         //last test on list
         testLogoutSubscribe();
     }
@@ -52,6 +54,7 @@ public class UserAllStubsTest {
      */
     protected void testGuest() {
         testLogoutGuest();
+        testOpenStoreGuest();
         //last guest test
         testLoginGuest();
     }
@@ -83,6 +86,27 @@ public class UserAllStubsTest {
         assertTrue(user.logout());
     }
 
+    /**
+     * test: use case 3.2 - Open Store
+     */
+    protected void testOpenStoreGuest() {
+        StoreData storeData = new StoreData("Store", new PurchesPolicy(), new DiscountPolicy());
+        PaymentSystem paymentSystem = new ProxyPayment();
+        SupplySystem supplySystem = new ProxySupply();
+        assertNull(user.openStore(storeData,paymentSystem, supplySystem));
+    }
+
+    /**
+     * test: use case 3.2 - Open Store
+     */
+    protected void testOpenStoreSubscribe() {
+        StoreData storeData = new StoreData("Store", new PurchesPolicy(), new DiscountPolicy());
+        PaymentSystem paymentSystem = new ProxyPayment();
+        SupplySystem supplySystem = new ProxySupply();
+        Store store = user.openStore(storeData,paymentSystem, supplySystem);
+        assertEquals(storeData.getName(), store.getName());
+    }
+
     protected class GuestStub extends Guest {
 
         @Override
@@ -93,6 +117,11 @@ public class UserAllStubsTest {
         @Override
         public boolean logout(User user){
             return false;
+        }
+
+        @Override
+        public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
+            return null;
         }
     }
 
@@ -110,6 +139,12 @@ public class UserAllStubsTest {
         @Override
         public boolean logout(User user){
             return true;
+        }
+
+        @Override
+        public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
+            return new Store(storeDetails.getName(), new PurchesPolicy(), new DiscountPolicy(),
+                    new Permission(this), supplySystem, paymentSystem);
         }
     }
 }

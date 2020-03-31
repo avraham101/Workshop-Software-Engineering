@@ -74,6 +74,7 @@ public class Subscribe extends UserState{
                 storeDetails.getDiscountPolicy(), permission, supplySystem, paymentSystem);
         permission.setStore(store);
         permission.addType(PermissionType.OWNER); //Always true, store just created.
+        permissions.put(store.getName(),permission);
         return store;
     }
 
