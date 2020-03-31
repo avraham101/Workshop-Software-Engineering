@@ -34,7 +34,7 @@ public class UserAllStubsTest {
     }
 
     @Test
-    public void testLogin() {
+    public void test() {
         testGuest();
         testSubscribe();
     }
@@ -42,12 +42,16 @@ public class UserAllStubsTest {
     private void testSubscribe() {
         initSubscribe();
         testLoginSubscribe();
+
+        //last test on list
+        testLogoutSubscribe();
     }
 
     /**
      * login is last test of these sequence
      */
     protected void testGuest() {
+        testLogoutGuest();
         //last guest test
         testLoginGuest();
     }
@@ -60,11 +64,24 @@ public class UserAllStubsTest {
         assertFalse(user.login(new Subscribe("niv","shirazi")));
     }
 
+    protected void testLogoutGuest(){
+        assertFalse(user.logout());
+    }
+
+    protected void testLogoutSubscribe(){
+        assertTrue(user.logout());
+    }
+
     protected class GuestStub extends Guest {
 
         @Override
         public boolean login(User user, Subscribe subscribe) {
             return true;
+        }
+
+        @Override
+        public boolean logout(User user){
+            return false;
         }
     }
 
@@ -77,6 +94,11 @@ public class UserAllStubsTest {
         @Override
         public boolean login(User user, Subscribe subscribe) {
             return false;
+        }
+
+        @Override
+        public boolean logout(User user){
+            return true;
         }
     }
 }

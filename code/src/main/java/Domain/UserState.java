@@ -20,4 +20,6 @@ public abstract class UserState {
     public abstract String getName();
 
     public abstract String getPassword();
+
+    public abstract boolean logout(User user);
 }

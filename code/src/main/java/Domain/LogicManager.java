@@ -75,4 +75,9 @@ public class LogicManager {
         }
         return false;
     }
+
+    public boolean logout() {
+        //TODO logger
+        return current.logout();
+    }
 }

@@ -28,6 +28,13 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     @Override
+    public void testLogout(){
+        super.testLogout();
+        //test while in Guest Mode
+        assertFalse(currUser.logout());
+    }
+
+    @Override
     protected void testLoginSuccess() {
         super.testLoginSuccess();
         assertEquals(currUser.getUserName(),"Yuval");

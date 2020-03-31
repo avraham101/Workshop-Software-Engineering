@@ -46,6 +46,11 @@ public class LogicManagerAllStubsTest {
     public void test() {
         testRegister();
         testLogin();
+        testLogout();
+    }
+
+    protected void testLogout() {
+        assertTrue(currUser.logout());
     }
 
     public void testRegister() {
@@ -82,6 +87,11 @@ public class LogicManagerAllStubsTest {
     protected class UserStub extends User {
         @Override
         public boolean login(Subscribe subscribe) {
+            return true;
+        }
+
+        @Override
+        public boolean logout(){
             return true;
         }
     }
