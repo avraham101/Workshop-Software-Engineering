@@ -1,8 +1,11 @@
 package UserTests;
 
-import Domain.Guest;
-import Domain.Subscribe;
-import Domain.User;
+import DataAPI.StoreData;
+import Domain.*;
+import Systems.PaymentSystem.PaymentSystem;
+import Systems.PaymentSystem.ProxyPayment;
+import Systems.SupplySystem.ProxySupply;
+import Systems.SupplySystem.SupplySystem;
 import org.junit.Before;
 
 import static org.junit.Assert.*;
@@ -20,7 +23,8 @@ public class UserRealTest extends UserAllStubsTest{
     }
 
     /**
-     * test login to user niv shirazi
+     * test use case 2.3 - Login
+     * user: niv shirazi
      */
     protected void testLoginGuest(){
         super.testLoginGuest();
@@ -32,4 +36,5 @@ public class UserRealTest extends UserAllStubsTest{
     protected void testLoginSubscribe(){
         super.testLoginSubscribe();
     }
+
 }

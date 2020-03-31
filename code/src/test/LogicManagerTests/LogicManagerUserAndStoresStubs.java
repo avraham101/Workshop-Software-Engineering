@@ -22,16 +22,25 @@ public class LogicManagerUserAndStoresStubs extends LogicManagerAllStubsTest {
         init();
     }
 
+    /**
+     * test: use case 2.2 - Register
+     */
     @Override
     public void testRegister() {
         testAdmin();
         super.testRegister();
     }
 
+    /**
+     * part of test: use case 2.2 - Register
+     */
     public void testAdmin() {
         assertTrue(users.get("Admin") instanceof Admin);
     }
 
+    /**
+     * part of test: use case 2.2 - Register
+     */
     @Override
     public void testRegisterSuccess() {
         super.testRegisterSuccess();

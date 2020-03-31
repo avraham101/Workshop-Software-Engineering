@@ -15,7 +15,7 @@ public class ServiceAPI {
     }
 
     /**
-     * use case 2.2
+     * use case 2.2 - Register
      * @param userName - the user Name
      * @param password - the user password
      * @return true if the register complete, otherwise false
@@ -25,7 +25,7 @@ public class ServiceAPI {
     }
 
     /***
-     * use case 2.3
+     * use case 2.3 - Login
      * @param userName - the user Name
      * @param password - the user password
      * @return true if the user is logged to the system, otherwise false
@@ -76,16 +76,20 @@ public class ServiceAPI {
     }
 
     //TODO use case 3.1
+
+    /**
+     * use case 3.1 - Logout
+     * @return true if the user logout
+     */
     public boolean logout(){
         return logicManager.logout();
     }
 
     /***
-     * use case 3.2
+     * use case 3.2 - Open Store
      * @param storeDetails - the details of the store
      * @return true if store is created
      */
-    //store data same data as use case 2.4.1
     public boolean openStore(StoreData storeDetails){
         return logicManager.openStore(storeDetails);
     }

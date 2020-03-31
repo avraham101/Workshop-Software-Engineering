@@ -64,6 +64,12 @@ public class LogicManager {
         current = new User();
     }
 
+    /**
+     * use case 2.2 - Register
+     * @param userName - the user Name
+     * @param password - the user password
+     * @return true if the register complete, otherwise false
+     */
     public boolean register(String userName, String password) {
         //TODO add to logger
         if(!users.containsKey(userName)){
@@ -83,6 +89,12 @@ public class LogicManager {
         return false;
     }
 
+    /***
+     * use case 2.3 - Login
+     * @param userName - the user Name
+     * @param password - the user password
+     * @return true if the user is logged to the system, otherwise false
+     */
     public boolean login(String userName, String password) {
         //TODO add logger
         if (users.containsKey(userName)) {
@@ -99,6 +111,10 @@ public class LogicManager {
         return false;
     }
 
+    /**
+     * use case 3.1 - Logout
+     * @return true if the user logout
+     */
     public boolean logout() {
         //TODO add logger
         return current.logout();

@@ -20,15 +20,32 @@ public abstract class UserState {
         this.cart = cart;
     }
 
+    /**
+     * use case 2.3 - - Login
+     * @param user - The user who using the system
+     * @param subscribe - The user state who need to be set
+     * @return true if the user changed his state, otherwise false
+     */
     public abstract boolean login(User user,Subscribe subscribe);
 
     public abstract String getName();
 
     public abstract String getPassword();
 
+    /**
+     * use case 3.1 - Logout
+     * @param user - the user who using the system
+     * @return true if the user changed his state, otherwise false
+     */
     public abstract boolean logout(User user);
 
-    //TODO use case 3.2
+    /**
+     * use case 3.2 - Open Store
+     * @param storeDetails - the details of the the store
+     * @param paymentSystem - the external payment system.
+     * @param supplySystem - the external supply system.
+     * @return The Store that we open, otherwise null;
+     */
     public abstract Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem);
 
     public abstract boolean addProductToStore(ProductData productData);

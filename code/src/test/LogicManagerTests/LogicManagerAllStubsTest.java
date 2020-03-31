@@ -2,7 +2,10 @@ package LogicManagerTests;
 
 import DataAPI.ProductData;
 import Domain.*;
+import Systems.HashSystem;
 import Systems.PaymentSystem.PaymentSystem;
+import Systems.PaymentSystem.ProxyPayment;
+import Systems.SupplySystem.ProxySupply;
 import Systems.SupplySystem.SupplySystem;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +30,7 @@ public class LogicManagerAllStubsTest {
      * example: users.put(Key, new UserStub(...))
      */
 
+
     @Before
     public void setUp() {
         currUser=new UserStub();
@@ -46,28 +50,60 @@ public class LogicManagerAllStubsTest {
 
     @Test
     public void test() {
+        testExternalSystems();
         testRegister();
         testLogin();
         testLogout();
     }
 
+    /**
+     * test: use case 1.1 - Init System
+     */
+    private void testExternalSystems() {
+        ProxyPayment proxyPayment = new ProxyPayment();
+        assertTrue(proxyPayment.connect());
+        ProxySupply proxySupply = new ProxySupply();
+        assertTrue(proxySupply.connect());
+        try {
+            HashSystem hashSystem = new HashSystem();
+            hashSystem.encrypt("testExternalSystems");
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    /**
+     * test: use case 3.1 - Logout
+     */
     protected void testLogout() {
         assertTrue(currUser.logout());
     }
 
+    /**
+     * test: use case 2.2 - Register
+     */
     public void testRegister() {
         testRegisterSuccess();
         testRegisterFailWrongName();
     }
 
+    /**
+     * part of test use case 2.2 - Register
+     */
     public void testRegisterSuccess() {
         assertTrue(logicManager.register("Yuval","Sabag"));
     }
 
+    /**
+     * part of test use case 2.2 - Register
+     */
     public void testRegisterFailWrongName() {
         assertFalse(logicManager.register("Admin","Admin2"));
     }
 
+    /**
+     * test use case 2.3 - Login
+     */
     public void testLogin() {
         testLoginFailWrongName();
         testLoginFailWrongPassword();
@@ -94,14 +130,23 @@ public class LogicManagerAllStubsTest {
 
     }
 
+    /**
+     * part of use case 2.3 - Login
+     */
     private void testLoginFailWrongName() {
         assertFalse(logicManager.login("Shlomi", "BAD TEACHER"));
     }
 
+    /**
+     * part of use case 2.3 - Login
+     */
     private void testLoginFailWrongPassword() {
         assertFalse(logicManager.login("Yuval", "BAD TEACHER"));
     }
 
+    /**
+     * part of use case 2.3 - Login
+     */
     protected void testLoginSuccess() {
         assertTrue(logicManager.login("Yuval","Sabag"));
     }
@@ -132,7 +177,7 @@ public class LogicManagerAllStubsTest {
 
     protected class StoreStub extends Store {
 
-        public StoreStub(String name, PurchesPolicy purchesPolicy, DiscountPolicy discount, HashMap<String, Permission> permissions, SupplySystem supplySystem, PaymentSystem paymentSystem) {
+        public StoreStub(String name, PurchesPolicy purchesPolicy, DiscountPolicy discount, Permission permissions, SupplySystem supplySystem, PaymentSystem paymentSystem) {
             super(name, purchesPolicy, discount, permissions, supplySystem, paymentSystem);
         }
 
