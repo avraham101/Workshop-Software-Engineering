@@ -1,5 +1,7 @@
 package Domain;
 
+import DataAPI.StoreData;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +43,16 @@ public class Subscribe extends UserState{
     @Override
     public String getPassword() {
         return password;
+    }
+
+    /**
+     * use case 3.2
+     * @param storeDetails - the details of the store
+     * @return open a store.
+     */
+    @Override
+    public Store openStore(StoreData storeDetails) {
+        return null;
     }
 
     public void setUserName(String userName) {

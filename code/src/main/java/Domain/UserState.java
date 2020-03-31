@@ -1,5 +1,7 @@
 package Domain;
 
+import DataAPI.StoreData;
+
 public abstract class UserState {
     private Cart cart;
 
@@ -22,4 +24,7 @@ public abstract class UserState {
     public abstract String getPassword();
 
     public abstract boolean logout(User user);
+
+    //TODO use case 3.2
+    public abstract Store openStore(StoreData storeDetails);
 }

@@ -83,7 +83,7 @@ public class ServiceAPI {
     //TODO use case 3.2
     //store data same data as use case 2.4.1
     public boolean openStore(StoreData storeDetails){
-        return false;
+        return logicManager.openStore(storeDetails);
     }
 
     //TODO use case 3.3

@@ -1,5 +1,9 @@
 package Domain;
 
+import DataAPI.StoreData;
+import Systems.PaymentSystem.PaymentSystem;
+import Systems.SupplySystem.SupplySystem;
+
 public class User {
     private UserState state;
 
@@ -33,5 +37,10 @@ public class User {
 
     public boolean logout() {
         return state.logout(this);
+    }
+
+    //TODO use case 3.2
+    public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
+        return state.openStore(storeDetails);
     }
 }

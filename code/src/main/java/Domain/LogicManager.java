@@ -1,7 +1,10 @@
 package Domain;
 
+import DataAPI.StoreData;
 import Systems.*;
 import Systems.PaymentSystem.PaymentSystem;
+import Systems.PaymentSystem.ProxyPayment;
+import Systems.SupplySystem.ProxySupply;
 import Systems.SupplySystem.SupplySystem;
 
 import java.security.NoSuchAlgorithmException;
@@ -21,9 +24,19 @@ public class LogicManager {
         this.stores = stores;
         this.current = current;
         try {
-            //TODO add here all external systems
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
+            paymentSystem = new ProxyPayment();
+            supplySystem = new ProxySupply();
+            /**
+             * use case 1.1
+             */
+            if(!paymentSystem.connect()) {
+                throw new Exception("Payment System Crashed");
+            }
+            if(!supplySystem.connect()) {
+                throw new Exception("Supply System Crashed");
+            }
         } catch (Exception e) {
             System.exit(1);
         }
@@ -79,5 +92,14 @@ public class LogicManager {
     public boolean logout() {
         //TODO logger
         return current.logout();
+    }
+
+    //TODO use case 3.2
+    public boolean openStore(StoreData storeDetails) {
+        Store store = current.openStore(storeDetails,paymentSystem, supplySystem);
+        if(store != null) {
+            stores.put(store.getName(),store);
+        }
+        return false;
     }
 }
