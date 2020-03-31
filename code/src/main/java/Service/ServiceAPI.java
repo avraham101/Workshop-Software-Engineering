@@ -85,7 +85,6 @@ public class ServiceAPI {
      * @param storeDetails - the details of the store
      * @return true if store is created
      */
-    //store data same data as use case 2.4.1
     public boolean openStore(StoreData storeDetails){
         return logicManager.openStore(storeDetails);
     }

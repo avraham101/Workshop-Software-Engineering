@@ -53,7 +53,7 @@ public class Subscribe extends UserState{
      * @param storeDetails - the details of the store
      * @param paymentSystem - The external payment System
      * @param supplySystem - The external supply System
-     * @return open a store.
+     * @return The store that we opened.
      */
     @Override
     public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {

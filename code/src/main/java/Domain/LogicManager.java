@@ -63,6 +63,12 @@ public class LogicManager {
         current = new User();
     }
 
+    /**
+     * use case 2.2
+     * @param userName - the user Name
+     * @param password - the user password
+     * @return true if the register complete, otherwise false
+     */
     public boolean register(String userName, String password) {
         //TODO add to logger
         if(!users.containsKey(userName)){
@@ -83,6 +89,7 @@ public class LogicManager {
     }
 
     public boolean login(String userName, String password) {
+        //TODO add to logger
         if (users.containsKey(userName)) {
             try {
                 password = hashSystem.encrypt(password);
@@ -98,7 +105,7 @@ public class LogicManager {
     }
 
     public boolean logout() {
-        //TODO logger
+        //TODO add to logger
         return current.logout();
     }
 
@@ -108,11 +115,13 @@ public class LogicManager {
      * @return true if can open store, otherwise false.
      */
     public boolean openStore(StoreData storeDetails) {
+        //TODO add to logger
         if(stores.containsKey(storeDetails.getName()))
             return false;
         Store store = current.openStore(storeDetails,paymentSystem, supplySystem);
         if(store != null) {
             stores.put(store.getName(),store);
+            return true;
         }
         return false;
     }

@@ -27,6 +27,12 @@ public abstract class UserState {
 
     public abstract boolean logout(User user);
 
-    //TODO use case 3.2
+    /**
+     * use case 3.2 - Open Store
+     * @param storeDetails - the details of the the store
+     * @param paymentSystem - the external payment system.
+     * @param supplySystem - the external supply system.
+     * @return The Store that we open, otherwise null;
+     */
     public abstract Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem);
 }
