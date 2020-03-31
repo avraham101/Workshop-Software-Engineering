@@ -18,4 +18,8 @@ public class Guest extends UserState {
         return null;
     }
 
+    @Override
+    public boolean logout(User user) {
+        return false;
+    }
 }

@@ -30,4 +30,8 @@ public class User {
     public String getPassword() {
         return this.state.getPassword();
     }
+
+    public boolean logout() {
+        return state.logout(this);
+    }
 }

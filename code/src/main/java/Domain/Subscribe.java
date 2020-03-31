@@ -28,6 +28,12 @@ public class Subscribe extends UserState{
     }
 
     @Override
+    public boolean logout(User user) {
+        user.setState(new Guest());
+        return true;
+    }
+
+    @Override
     public String getName() {
         return userName;
     }

@@ -69,7 +69,7 @@ public class ServiceAPI {
 
     //TODO use case 3.1
     public boolean logout(){
-        return false;
+        return logicManager.logout();
     }
 
     //TODO use case 3.2
