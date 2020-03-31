@@ -1,9 +1,8 @@
 package LogicManagerTests;
 
-import Domain.LogicManager;
-import Domain.Store;
-import Domain.Subscribe;
-import Domain.User;
+import Domain.*;
+import Systems.PaymentSystem;
+import Systems.SupplySystem;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -73,6 +72,12 @@ public class LogicManagerAllStubsTest {
         @Override
         public boolean login(Subscribe subscribe) {
             return true;
+        }
+    }
+
+    class StoreStub extends Store{
+        public StoreStub(String name, PurchesPolicy purchesPolicy, DiscountPolicy discount, HashMap<String, Permission> permissions, SupplySystem supplySystem, PaymentSystem paymentSystem) {
+            super(name, purchesPolicy, discount, permissions, supplySystem, paymentSystem);
         }
     }
 
