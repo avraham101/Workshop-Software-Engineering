@@ -1,6 +1,7 @@
 package LogicManagerTests;
 
 import DataAPI.ProductData;
+import DataAPI.StoreData;
 import Domain.*;
 import Systems.HashSystem;
 import Systems.PaymentSystem.PaymentSystem;
@@ -54,6 +55,7 @@ public class LogicManagerAllStubsTest {
         testRegister();
         testLogin();
         testOpenStore();
+        //TODO Fix This testAddProduct();
         testLogout();
     }
 
@@ -157,7 +159,10 @@ public class LogicManagerAllStubsTest {
      * test use case 3.2
      */
     protected void testOpenStore() {
-        //TODO
+        assertFalse(logicManager.openStore(data.getStore(Data.NULL_NAME)));
+        assertFalse(logicManager.openStore(data.getStore(Data.NULL_PURCHASE)));
+        assertFalse(logicManager.openStore(data.getStore(Data.NULL_DISCOUNT)));
+        assertNotNull(logicManager.openStore(data.getStore(Data.VALID)));
     }
 
     protected class UserStub extends User {
@@ -170,6 +175,14 @@ public class LogicManagerAllStubsTest {
         public boolean logout(){
             return true;
         }
+
+        @Override
+        public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
+            return new Store("Store",new PurchesPolicy(),new DiscountPolicy(),
+                    new Permission(new Subscribe(this.getUserName(),this.getPassword())),
+                    supplySystem,paymentSystem);
+        }
+
     }
 
     protected class SubscribeStub extends Subscribe {
