@@ -28,7 +28,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     public void testLoginFailAlreadyUserLogged() {
-        assertFalse(logicManager.login("Yuval","Sabag"));
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        assertFalse(logicManager.login(subscribe.getName(),subscribe.getPassword()));
     }
 
     /**
@@ -37,10 +38,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override
     protected void testLoginSuccess() {
         super.testLoginSuccess();
-        assertEquals(currUser.getUserName(),"Yuval");
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        assertEquals(currUser.getUserName(),subscribe.getName());
         try {
             HashSystem hashSystem = new HashSystem();
-            String password = hashSystem.encrypt("Sabag");
+            String password = hashSystem.encrypt(subscribe.getPassword());
             assertEquals(password, currUser.getPassword());
         } catch (Exception e) {
             fail();
@@ -57,6 +59,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         testOpenStoreUserPermissions();
         testOpenStoreStorePermissions();
     }
+
+
 
     /**
      * part of test use case 3.2 - Open Store

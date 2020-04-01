@@ -7,20 +7,36 @@ import Domain.Discount;
 import Domain.DiscountPolicy;
 import Domain.PurchesPolicy;
 
+import Data.Data;
+import Domain.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class TestData {
+    private HashMap<Data, Subscribe> users;
     private HashMap<Data, ProductData> products;
     private HashMap<Data, StoreData> stores;
     private HashMap<Data, List<Discount>> discounts;
 
     public TestData() {
+        setUpUsers();
         setUpDiscountData();
         setUpProductData();
         setUpStoreData();
+
+    }
+
+    private void setUpUsers() {
+        users = new HashMap<>();
+        users.put(Data.NULL, new Subscribe(null, null));
+        users.put(Data.ADMIN,new Subscribe("Admin","Admin"));
+        users.put(Data.VALID,new Subscribe("Yuval","Sabag"));
+        users.put(Data.NULL_NAME, new Subscribe(null, "Admin"));
+        users.put(Data.NULL_PASSWORD, new Subscribe("Admin", null));
+        users.put(Data.WRONG_NAME, new Subscribe("","Changed_Password"));
+        users.put(Data.WRONG_PASSWORD, new Subscribe("Admin",""));
 
     }
 
@@ -67,11 +83,16 @@ public class TestData {
     private void setUpStoreData() {
         stores = new HashMap<>();
         stores.put(Data.VALID,new StoreData("Store",new PurchesPolicy(), new DiscountPolicy()));
+        stores.put(Data.NULL, null);
         stores.put(Data.NULL_NAME, new StoreData(null,new PurchesPolicy(), new DiscountPolicy()));
         stores.put(Data.NULL_PURCHASE, new StoreData("Store",null, new DiscountPolicy()));
         stores.put(Data.NULL_DISCOUNT, new StoreData("Store",new PurchesPolicy(), null));
         products.put(Data.SAME_NAME,new ProductData("peanuts","store","category1"
                 ,null,new ArrayList<Discount>(),12,101, PurchaseTypeData.IMMEDDIATE));
+    }
+
+    public Subscribe getSubscribe(Data data) {
+        return users.get(data);
     }
 
     public ProductData getProduct(Data productCase){
