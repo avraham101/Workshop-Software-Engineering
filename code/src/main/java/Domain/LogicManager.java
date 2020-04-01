@@ -10,6 +10,7 @@ import Systems.SupplySystem.SupplySystem;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.List;
 
 public class LogicManager {
     private HashMap<String, Subscribe> users;
@@ -157,6 +158,8 @@ public class LogicManager {
 
     public boolean addProductToStore(ProductData productData) {
         //TODO logger
+        if(productData==null)
+            return false;
         if(!stores.containsKey(productData.getStoreName()))
             return false;
         if(validProduct(productData))
@@ -164,8 +167,40 @@ public class LogicManager {
         return false;
     }
 
+    /**
+     * check if the data of the product has valid content
+     * @param productData data of the product to check
+     * @return true if the details of the product are valid
+     */
+
     private boolean validProduct(ProductData productData) {
-        return productData.getProductName()!=null &&productData.getCategory()!=null&&productData.getDiscount()!=null
+        return productData.getProductName()!=null &&productData.getCategory()!=null&& validDiscounts(productData.getDiscount())
                 &&productData.getPrice()>0&&productData.getAmount()>0&&productData.getPurchaseType()!=null;
+    }
+
+    /**
+     * check if dicounts of product are valid
+     * @param discounts of the product
+     * @return if the discounts are not null and between 0 to 100
+     */
+
+    private boolean validDiscounts(List<Discount> discounts) {
+        if(discounts==null)
+            return false;
+        for(Discount discount :discounts ){
+            if(!validDiscount(discount))
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * check if dicounts of product are valid
+     * @param discount of the product
+     * @return if the discount is not null and between 0 to 100
+     */
+
+    private boolean validDiscount(Discount discount) {
+        return discount!=null&&discount.getPercentage()>0&&discount.getPercentage()<100;
     }
 }

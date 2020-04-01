@@ -8,18 +8,39 @@ import Domain.DiscountPolicy;
 import Domain.PurchesPolicy;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class TestData {
     private HashMap<Data, ProductData> products;
     private HashMap<Data, StoreData> stores;
+    private HashMap<Data, List<Discount>> discounts;
 
     public TestData() {
+        setUpDiscountData();
+        setUpProductData();
+        setUpStoreData();
+
+    }
+
+    private void setUpDiscountData() {
+        discounts=new HashMap<>();
+        List<Discount> discountsListHasNull=new ArrayList<>();
+        discountsListHasNull.add(null);
+        List<Discount> discountListNegPercentage=new ArrayList<>();
+        discountListNegPercentage.add(new Discount(-1));
+        List<Discount> discountListOver100Percentage=new ArrayList<>();
+        discountListOver100Percentage.add(new Discount(101));
+        discounts.put(Data.NULL_DISCOUNT,discountsListHasNull);
+        discounts.put(Data.NEGATIVE_PERCENTAGE,discountListNegPercentage);
+        discounts.put(Data.OVER_100_PERCENTAGE,discountListOver100Percentage);
+    }
+
+    private void setUpProductData(){
         products = new HashMap<>();
         //change data type to enum
         products.put(Data.VALID,new ProductData("peanuts","Store","category"
-        ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
+                ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
         products.put(Data.NULL_NAME,new ProductData(null,"Store","category"
                 ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
         products.put(Data.WRONG_STORE,new ProductData("peanuts","$storeBBB$","category"
@@ -34,7 +55,12 @@ public class TestData {
                 ,null,new ArrayList<Discount>(),1,-10, PurchaseTypeData.IMMEDDIATE));
         products.put(Data.NULL_PURCHASE,new ProductData("peanuts","Store","category"
                 ,null,new ArrayList<Discount>(),1,10, null));
-        setUpStoreData();
+        products.put(Data.WRONG_DISCOUNT,new ProductData("peanuts","Store","category"
+                ,null,discounts.get(Data.NULL_DISCOUNT),1,10, PurchaseTypeData.IMMEDDIATE));
+        products.put(Data.NEGATIVE_PERCENTAGE,new ProductData("peanuts","Store","category"
+                ,null,discounts.get(Data.NEGATIVE_PERCENTAGE),1,10, PurchaseTypeData.IMMEDDIATE));
+        products.put(Data.OVER_100_PERCENTAGE,new ProductData("peanuts","Store","category"
+                ,null,discounts.get(Data.OVER_100_PERCENTAGE),1,10, PurchaseTypeData.IMMEDDIATE));
     }
 
     private void setUpStoreData() {
@@ -53,5 +79,9 @@ public class TestData {
 
     public StoreData getStore(Data data) {
         return stores.get(data);
+    }
+
+    public List<Discount> getDiscounts(Data data){
+        return  discounts.get(data);
     }
 }
