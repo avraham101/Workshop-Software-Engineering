@@ -78,6 +78,11 @@ public class Subscribe extends UserState{
         return store;
     }
 
+    /**
+     * use case 4.9.1
+     * @param productData product details to be added
+     * @return if the product was added
+     */
 
     @Override
     public boolean addProductToStore(ProductData productData) {
@@ -87,6 +92,21 @@ public class Subscribe extends UserState{
         if(!permission.canAddProduct())
             return false;
         return permission.getStore().addProduct(productData);
+    }
+
+    /**
+     * use case 4.9.2
+     * @param storeName name of store to remove the product from
+     * @param productName name of the product to be removed
+     * @return if the product was removed
+     */
+    @Override
+    public boolean removeProductFromStore(String storeName, String productName) {
+        if(!permissions.containsKey(storeName))
+            return false;
+        if(!permissions.get(storeName).canAddProduct())
+            return false;
+        return permissions.get(storeName).getStore().removeProduct(productName);
     }
 
     public void setUserName(String userName) {

@@ -2,11 +2,7 @@ package Subscribe;
 
 import Data.Data;
 import Data.TestData;
-import DataAPI.ProductData;
-import DataAPI.StoreData;
 import Domain.*;
-import LogicManagerTests.LogicManagerAllStubsTest;
-import Stubs.StoreStub;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
@@ -21,7 +17,6 @@ import static org.junit.Assert.*;
 public class SubscribeAllStubsTest {
 
     protected Subscribe sub;
-    protected StoreData storeData;
     protected PaymentSystem paymentSystem;
     protected SupplySystem supplySystem;
     protected TestData data;
@@ -34,7 +29,6 @@ public class SubscribeAllStubsTest {
     }
 
     private void initStore() {
-        storeData = new StoreData("Shirazi's", new PurchesPolicy(), new DiscountPolicy());
         paymentSystem = new ProxyPayment();
         supplySystem = new ProxySupply();
     }
@@ -65,19 +59,8 @@ public class SubscribeAllStubsTest {
      * store: Niv shiraze store added.
      */
     protected void openStoreTest() {
-        Permission permission = new Permission(data.getSubscribe(Data.VALID));
-        Store store = sub.openStore(storeData,paymentSystem,supplySystem);
-        store=new StoreStub(store.getName(),store.getPurchesPolicy(),
-                store.getDiscount(),permission,store.getSupplySystem(),
-                store.getPaymentSystem());
-        assertEquals(storeData.getName(), store.getName());
-        assertEquals(storeData.getDiscountPolicy(), store.getDiscout());
-        assertEquals(storeData.getPurchesPolicy(), store.getPurchesPolicy());
-        //test Owner permissions
-        HashMap<String, Permission> permissions = sub.getPermissions();
-        assertTrue(permissions.containsKey(store.getName()));
-        permission = permissions.get(store.getName());
-        assertTrue(permission.getPermissionType().contains(PermissionType.OWNER));
+        Store store = sub.openStore(data.getStore(Data.VALID),paymentSystem,supplySystem);
+        assertNotNull(store);
 
     }
 
@@ -92,29 +75,7 @@ public class SubscribeAllStubsTest {
      * test 4.9.1 use case 4.9.1 - add product
      */
     protected void addProductToStoreTest(){
-        addProductToStoreTestFail();
         addProductToStoreTestSuccess();
-    }
-
-    private void addProductToStoreTestFail() {
-        testAddProductNotManagerOfStore();
-        testAddProductDontHavePermission();
-    }
-
-    private void testAddProductDontHavePermission() {
-        String validStoreName=data.getProduct(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.addProductToStore(data.getProduct(Data.VALID)));
-        permission.addType(PermissionType.OWNER);
-    }
-
-    private void testAddProductNotManagerOfStore() {
-        String validStoreName=data.getProduct(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        sub.getPermissions().clear();
-        assertFalse(sub.addProductToStore(data.getProduct(Data.VALID)));
-        sub.getPermissions().put(validStoreName,permission);
     }
 
     private void addProductToStoreTestSuccess(){

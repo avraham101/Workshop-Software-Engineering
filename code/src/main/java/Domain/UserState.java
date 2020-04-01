@@ -49,4 +49,6 @@ public abstract class UserState {
     public abstract Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem);
 
     public abstract boolean addProductToStore(ProductData productData);
+
+    public abstract boolean removeProductFromStore(String storeName, String productName);
 }

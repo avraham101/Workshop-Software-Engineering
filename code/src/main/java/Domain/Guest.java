@@ -60,4 +60,9 @@ public class Guest extends UserState {
     public boolean addProductToStore(ProductData productData) {
         return false;
     }
+
+    @Override
+    public boolean removeProductFromStore(String storeName, String productName) {
+        return false;
+    }
 }

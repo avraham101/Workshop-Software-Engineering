@@ -226,4 +226,16 @@ public class LogicManager {
     private boolean validDiscount(Discount discount) {
         return discount!=null&&discount.getPercentage()>0&&discount.getPercentage()<100;
     }
+
+    /**
+     * remove a product from store if exist
+     * @param storeName name of the store to remove the product from
+     * @param productName name of product to be removed
+     * @return
+     */
+    public boolean removeProductFromStore(String storeName, String productName) {
+        if(!stores.containsKey(storeName))
+            return false;
+        return current.removeProductFromStore(storeName,productName);
+    }
 }

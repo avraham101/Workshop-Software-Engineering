@@ -68,4 +68,8 @@ public class User {
     public boolean addProductToStore(ProductData productData) {
         return state.addProductToStore(productData);
     }
+
+    public boolean removeProductFromStore(String storeName, String productName) {
+        return state.removeProductFromStore(storeName,productName);
+    }
 }
