@@ -33,4 +33,8 @@ public class SubscribeStub extends Subscribe{
         return true;
     }
 
+    @Override
+    public boolean removeProductFromStore(String storeName, String productName) {
+        return true;
+    }
 }

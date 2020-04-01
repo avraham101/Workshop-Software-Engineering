@@ -53,6 +53,7 @@ public class UserAllStubsTest {
         testLoginSubscribe();
         testOpenStoreSubscribe();
         testAddProductToStoreSubscribe();
+        testRemoveProductFromStoreSubscribe();
         //last test on list
         testLogoutSubscribe();
     }
@@ -64,6 +65,7 @@ public class UserAllStubsTest {
         testLogoutGuest();
         testOpenStoreGuest();
         testAddProductToStoreGuest();
+        testRemoveProductFromStoreGuest();
         //last guest test
         testLoginGuest();
     }
@@ -130,4 +132,23 @@ public class UserAllStubsTest {
     protected void testAddProductToStoreSubscribe(){
         assertTrue(user.addProductToStore(testData.getProduct(Data.VALID)));
     }
+
+    /**
+     * test : use case 4.9.2 -remove product to store
+     * guest can't do it
+     */
+    protected void testRemoveProductFromStoreGuest(){
+        ProductData product= testData.getProduct(Data.VALID);
+        assertFalse(user.removeProductFromStore(product.getStoreName(),product.getProductName()));
+    }
+
+    /**
+     * test : use case 4.9.2 -remove product to store
+     * guest can't do it
+     */
+    protected void testRemoveProductFromStoreSubscribe(){
+        ProductData product= testData.getProduct(Data.VALID);
+        assertTrue(user.removeProductFromStore(product.getStoreName(),product.getProductName()));
+    }
+
 }
