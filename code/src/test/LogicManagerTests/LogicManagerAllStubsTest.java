@@ -62,8 +62,6 @@ public class LogicManagerAllStubsTest {
         testLogin();
         testOpenStore();
         testAddProduct();
-        testEditProduct();
-        testRemoveProductFromStore();
         testLogout();
         testViewDataStores();
         testViewProductsInStore();

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
 public class LogicManager {
     private HashMap<String, Subscribe> users;
@@ -267,10 +268,17 @@ public class LogicManager {
      * @return if the product was removed
      */
     public boolean removeProductFromStore(String storeName, String productName) {
+        //TODO Logger
         if(!stores.containsKey(storeName))
             return false;
         return current.removeProductFromStore(storeName,productName);
     }
+
+    /**
+     * edit product in store if exist
+     * @param productData the product details to edit
+     * @return if the product was updated successfully
+     */
 
     /**
      * edit product in store if exist
