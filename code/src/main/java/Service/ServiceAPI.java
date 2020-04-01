@@ -120,8 +120,8 @@ public class ServiceAPI {
     }
 
     //TODO use case 4.1.3
-    public boolean EditProductFromoStore(ProductData productData){
-        return false;
+    public boolean editProductFromStore(ProductData productData){
+        return logicManager.editProductFromStore(productData);
     }
 
     //TODO use case 4.5

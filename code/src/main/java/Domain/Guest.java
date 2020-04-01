@@ -61,8 +61,19 @@ public class Guest extends UserState {
         return false;
     }
 
+    /**
+     * use case 4.9.2  - remove product
+     * @param storeName
+     * @param productName
+     * @return false always
+     */
     @Override
     public boolean removeProductFromStore(String storeName, String productName) {
+        return false;
+    }
+
+    @Override
+    public boolean editProductFromStore(ProductData productData) {
         return false;
     }
 }

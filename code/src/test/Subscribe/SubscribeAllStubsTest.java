@@ -42,6 +42,7 @@ public class SubscribeAllStubsTest {
         loginTest();
         openStoreTest();
         addProductToStoreTest();
+        removeProductFromStoreTest();
         logoutTest();
     }
 
@@ -81,6 +82,44 @@ public class SubscribeAllStubsTest {
     private void addProductToStoreTestSuccess(){
         assertTrue(sub.addProductToStore(data.getProduct(Data.VALID)));
     }
+
+    /**
+     * test 4.9.2 - remove product
+     */
+
+    protected  void removeProductFromStoreTest(){
+        checkRemoveProductFail();
+        checkRemoveProductSuccess();
+    }
+
+    private void checkRemoveProductSuccess() {
+        String storeName=data.getProduct(Data.VALID).getStoreName();
+        String productName=data.getProduct(Data.VALID).getProductName();
+        assertTrue(sub.removeProductFromStore(storeName, productName));
+        assertFalse(sub.getPermissions().get(storeName).getStore().getProducts().containsKey(productName));
+    }
+
+    private void checkRemoveProductFail() {
+        checkRemoveProductHasNoPermission();
+        checkRemoveProductNotManager();
+    }
+
+    private void checkRemoveProductNotManager() {
+        String validStoreName=data.getProduct(Data.VALID).getStoreName();
+        Permission permission=sub.getPermissions().get(validStoreName);
+        sub.getPermissions().clear();
+        assertFalse(sub.removeProductFromStore(data.getProduct(Data.VALID).getProductName(),validStoreName));
+        sub.getPermissions().put(validStoreName,permission);
+    }
+
+    private void checkRemoveProductHasNoPermission() {
+        String validStoreName=data.getProduct(Data.VALID).getStoreName();
+        Permission permission=sub.getPermissions().get(validStoreName);
+        permission.removeType(PermissionType.OWNER);
+        assertFalse(sub.removeProductFromStore(data.getProduct(Data.VALID).getProductName(),validStoreName));
+        permission.addType(PermissionType.OWNER);
+    }
+
 
 
 }

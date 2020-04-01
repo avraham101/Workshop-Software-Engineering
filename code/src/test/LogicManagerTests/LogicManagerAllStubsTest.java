@@ -234,6 +234,27 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_PERCENTAGE)));
     }
 
+    /**
+     * use case 4.1.2 -delete product
+     */
+    protected void removeProductFromStore(){
+        testRemoveProductSuccess();
+        testRemoveProductFail();
+    }
+
+    /**
+     * test remove with no exist store
+     */
+
+    private void testRemoveProductFail() {
+        assertFalse(logicManager.removeProductFromStore(data.getSubscribe(Data.VALID).getName()
+                ,data.getProduct(Data.VALID).getProductName()));
+    }
+
+    protected void testRemoveProductSuccess() {
+        ProductData p=data.getProduct(Data.VALID);
+        assertTrue(logicManager.removeProductFromStore(p.getStoreName(),p.getProductName()));
+    }
 
 
 }

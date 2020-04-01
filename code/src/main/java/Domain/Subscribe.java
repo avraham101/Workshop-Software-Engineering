@@ -109,6 +109,20 @@ public class Subscribe extends UserState{
         return permissions.get(storeName).getStore().removeProduct(productName);
     }
 
+    /**
+     *
+     * @param productData product to be added
+     * @return
+     */
+    @Override
+    public boolean editProductFromStore(ProductData productData) {
+        if(!permissions.containsKey(productData.getStoreName()))
+            return false;
+        if(!permissions.get(productData.getStoreName()).canAddProduct())
+            return false;
+        return permissions.get(productData.getStoreName()).getStore().editProduct(productData);
+    }
+
     public void setUserName(String userName) {
         this.userName = userName;
     }

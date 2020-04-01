@@ -154,6 +154,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         permission.addType(PermissionType.OWNER);
     }
 
-
+    @Override
+    protected void testRemoveProductSuccess() {
+        super.testRemoveProductSuccess();
+        Subscribe sub=(Subscribe)currUser.getState();
+        assertFalse(sub.getPermissions().containsKey(data.getProduct(Data.VALID).getProductName()));
+    }
 }
 

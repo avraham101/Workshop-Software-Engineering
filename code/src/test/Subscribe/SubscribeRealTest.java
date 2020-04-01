@@ -53,5 +53,4 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         sub.getPermissions().put(validStoreName,permission);
     }
 
-
 }

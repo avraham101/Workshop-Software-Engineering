@@ -143,4 +143,21 @@ public class Store {
         products.remove(productName);
         return true;
     }
+
+    /**
+     * edit product in the store
+     * @param productData
+     * @return if the product was edited successfully
+     */
+    public boolean editProduct(ProductData productData) {
+        if(!products.containsKey(productData.getProductName()))
+            return false;
+        Product old=products.get(productData.getProductName());
+        String categoryName=productData.getCategory();
+        if(!categoryList.containsKey(categoryName)){
+            categoryList.put(categoryName,new Category(categoryName));
+        }
+        old.edit(productData,categoryList.get(categoryName));
+        return true;
+    }
 }

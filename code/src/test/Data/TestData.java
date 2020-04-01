@@ -78,6 +78,8 @@ public class TestData {
                 ,null,discounts.get(Data.NEGATIVE_PERCENTAGE),1,10, PurchaseTypeData.IMMEDDIATE));
         products.put(Data.OVER_100_PERCENTAGE,new ProductData("peanuts","Store","category"
                 ,null,discounts.get(Data.OVER_100_PERCENTAGE),1,10, PurchaseTypeData.IMMEDDIATE));
+        products.put(Data.SAME_NAME,new ProductData("peanuts","store","category1"
+                ,null,new ArrayList<Discount>(),12,101, PurchaseTypeData.IMMEDDIATE));
     }
 
     private void setUpStoreData() {
@@ -87,8 +89,6 @@ public class TestData {
         stores.put(Data.NULL_NAME, new StoreData(null,new PurchesPolicy(), new DiscountPolicy()));
         stores.put(Data.NULL_PURCHASE, new StoreData("Store",null, new DiscountPolicy()));
         stores.put(Data.NULL_DISCOUNT, new StoreData("Store",new PurchesPolicy(), null));
-        products.put(Data.SAME_NAME,new ProductData("peanuts","store","category1"
-                ,null,new ArrayList<Discount>(),12,101, PurchaseTypeData.IMMEDDIATE));
     }
 
     public Subscribe getSubscribe(Data data) {
