@@ -73,7 +73,7 @@ public class LogicManager {
      */
     public boolean register(String userName, String password) {
         //TODO add to logger
-        if(userName == null || password == null) {
+        if(!validName(userName) || !validPassword(password)) {
             return false;
         }
         if(!users.containsKey(userName)){
@@ -101,7 +101,7 @@ public class LogicManager {
      */
     public boolean login(String userName, String password) {
         //TODO add logger
-        if(userName==null || password==null) {
+        if(!validName(userName) || !validPassword(password)) {
             return false;
         }
         if (users.containsKey(userName)) {
@@ -116,6 +116,24 @@ public class LogicManager {
             }
         }
         return false;
+    }
+
+    /**
+     * this function check valid name
+     * @param name - the name to check
+     * @return true valid name, otherwise false
+     */
+    private boolean validName(String name) {
+        return name!=null && !name.isEmpty();
+    }
+
+    /**
+     * this function check valid password
+     * @param password - the password to check
+     * @return true valid password, otherwise false
+     */
+    private boolean validPassword(String password) {
+        return password!=null && !password.isEmpty();
     }
 
     /**

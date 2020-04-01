@@ -2,7 +2,12 @@ package Data;
 
 public enum Data {
     VALID,
+    ADMIN,
+    NULL,
     NULL_NAME,
+    NULL_PASSWORD,
+    WRONG_NAME,
+    WRONG_PASSWORD,
     WRONG_STORE,
     NULL_CATEGORY,
     NULL_DISCOUNT,
