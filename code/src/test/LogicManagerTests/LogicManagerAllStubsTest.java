@@ -1,5 +1,6 @@
 package LogicManagerTests;
 
+import Data.Data;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
@@ -183,6 +184,9 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_AMOUNT)));
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_PRICE)));
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.NULL_PURCHASE)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.OVER_100_PERCENTAGE)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.WRONG_DISCOUNT)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_PERCENTAGE)));
     }
 
     protected class UserStub extends User {
