@@ -1,5 +1,6 @@
 package Domain;
 
+import DataAPI.CartData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Systems.*;
@@ -284,4 +285,79 @@ public class LogicManager {
             return current.editProductFromStore(productData);
         return false;
     }
+
+    /**
+     * use case 2.7.1 watch cart details
+     * return the details about a cart
+     * @return - the cart details
+     */
+    public CartData watchCartDetatils() {
+        List<ProductData> products = new LinkedList<>();
+        double priceAfterDiscount = 0;
+        double priceBeforeDiscount = 0;
+        Cart cart = current.getState().getCart();
+        for (Basket basket: cart.getBaskets().values()) {
+            for (Product product: basket.getProducts()) {
+                priceBeforeDiscount += product.getPrice();
+                priceAfterDiscount += product.getDiscountPrice();
+                ProductData productData = new ProductData(product, basket.getStore().getName());
+                products.add(productData);
+            }
+        }
+        return new CartData(priceBeforeDiscount,priceAfterDiscount,products);
+    }
+
+    /**
+     * delete product from the cart
+     * @param productName - the product to remove
+     * @param storeName - the store that sale this product
+     * @return - true if the delete work, false if not
+     */
+    public boolean deleteFromCart(String productName,String storeName){
+        boolean result = false;
+        Cart cart = current.getState().getCart();
+        Basket basket = cart.getBasket(storeName);
+        if (basket != null) {
+            result = basket.deleteProduct(productName);
+        }
+        return result;
+    }
+
+    /**
+     * use case 2.7.3 edit amount of product
+     * @param productName - the product to edit it's amount
+     * @param storeName - the store of the product
+     * @param newAmount - the new amount
+     * @return - true if succeeded, false if not
+     */
+    public boolean editProductInCart(String productName,String storeName,int newAmount) {
+        boolean result = false;
+        Cart cart = current.getState().getCart();
+        Basket basket = cart.getBasket(storeName);
+        if (basket != null) {
+            basket.editAmount(productName, newAmount);
+            result = true;
+        }
+        return result;
+    }
+
+    /**
+     * use case 2.7.4 - add product to the cart
+     * @param productName - the product to add
+     * @param storeName - the store of the product
+     * @param amount - the amount of the product that need to add to the cart
+     * @return - true if added, false if not
+     */
+    public boolean aaddProductToCart(String productName,String storeName,int amount) {
+        boolean result = false;
+        Cart cart = current.getState().getCart();
+        Basket basket = cart.getBasket(storeName);
+        if (basket != null) {
+            result = false;
+            //TODO - we need to add product, but we have productName only
+        }
+        return result;
+    }
 }
+
+

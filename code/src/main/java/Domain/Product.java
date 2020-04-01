@@ -120,4 +120,16 @@ public class Product {
                 category.getName().equals(product.getCategory());
     }
 
+    /**
+     * use case 2.4.1 - view all products from store
+     * @return the price of the product after discount
+     */
+    public double getDiscountPrice() {
+        double p = price;
+        for (Discount d: discount) {
+            p = p -  p* d.getPercentage();
+        }
+        return p;
+    }
+
 }
