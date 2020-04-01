@@ -9,6 +9,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 public class LogicManager {
     private HashMap<String, Subscribe> users;
@@ -200,6 +203,38 @@ public class LogicManager {
     }
 
     /**
+     * use 2.4.1 - show the details about every store
+     * @return - details of all the stores data
+     */
+    public List<StoreData> viewStores() {
+        List<StoreData> data = new LinkedList<>();
+        for (String storeName: stores.keySet()) {
+            Store store = stores.get(storeName);
+            StoreData storeData = new StoreData(store.getName(),store.getPurchesPolicy(),
+                                                store.getDiscout());
+            data.add(storeData);
+        }
+        return data;
+    }
+
+    /**
+     * use case 2.4.2 - show the products of a given store
+     * @param storeName - the store that owns the products
+     * @return - list of ProductData of the products in the store
+     */
+    public List<ProductData> viewProductsInStore(String storeName) {
+        List<ProductData> data = new LinkedList<>();
+        Store store = stores.get(storeName);
+        Set<String> keys = store.getProducts().keySet();
+        for (String key: keys) {
+            Product product = store.getProducts().get(key);
+            ProductData productData = new ProductData(product, storeName);
+            data.add(productData);
+        }
+        return data;
+    }
+
+    /**
      * check if dicounts of product are valid
      * @param discounts of the product
      * @return if the discounts are not null and between 0 to 100
@@ -220,8 +255,21 @@ public class LogicManager {
      * @param discount of the product
      * @return if the discount is not null and between 0 to 100
      */
+
     private boolean validDiscount(Discount discount) {
         return discount!=null&&discount.getPercentage()>0&&discount.getPercentage()<100;
+    }
+
+    /**
+     * remove a product from store if exist
+     * @param storeName name of the store to remove the product from
+     * @param productName name of product to be removed
+     * @return
+     */
+    public boolean removeProductFromStore(String storeName, String productName) {
+        if(!stores.containsKey(storeName))
+            return false;
+        return current.removeProductFromStore(storeName,productName);
     }
 
     /**

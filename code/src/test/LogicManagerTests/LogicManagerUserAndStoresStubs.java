@@ -4,6 +4,7 @@ import Data.Data;
 import Domain.Admin;
 import Domain.LogicManager;
 import Domain.Subscribe;
+import Stubs.UserStub;
 import Systems.HashSystem;
 import org.junit.Before;
 

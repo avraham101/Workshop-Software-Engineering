@@ -104,15 +104,16 @@ public class Store {
     public void setPaymentSystem(PaymentSystem paymentSystem) {
         this.paymentSystem = paymentSystem;
     }
-
-    public DiscountPolicy getDiscount() {
-        return discount;
-    }
-
+    
     public void setDiscount(DiscountPolicy discount) {
         this.discount = discount;
     }
 
+    /**
+     *
+     * @param productData details of product to add to store
+     * @return if the product was added successfully
+     */
     public boolean addProduct(ProductData productData) {
         if(products.containsKey(productData.getProductName()))
             return false;
@@ -122,6 +123,20 @@ public class Store {
         }
         Product product=new Product(productData,categoryList.get(categoryName));
         products.put(productData.getProductName(),product);
+        return true;
+    }
+
+    /**
+     * remove product from the store
+     * @param productName
+     * @return  if the product had been removed
+     */
+
+    public boolean removeProduct(String productName) {
+        if(!products.containsKey(productName))
+            return false;
+        products.get(productName).getCategory().removeProduct(productName);
+        products.remove(productName);
         return true;
     }
 }
