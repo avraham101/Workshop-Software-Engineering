@@ -30,6 +30,7 @@ public class UserAllStubsTest {
     protected void initGuest() {
         userState = new GuestStub();
         user = new User(userState);
+        testData=new TestData();
     }
 
     protected void initSubscribe() {

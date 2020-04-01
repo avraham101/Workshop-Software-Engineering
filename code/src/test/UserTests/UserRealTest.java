@@ -1,5 +1,6 @@
 package UserTests;
 
+import Data.*;
 import DataAPI.StoreData;
 import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
@@ -13,6 +14,7 @@ import static org.junit.Assert.*;
 public class UserRealTest extends UserAllStubsTest{
     @Before
     public void setUp(){
+        testData=new TestData();
         user=new User();
     }
 
@@ -33,8 +35,10 @@ public class UserRealTest extends UserAllStubsTest{
     }
 
     @Override
-    protected void testLoginSubscribe(){
-        super.testLoginSubscribe();
+    protected void testAddProductToStoreSubscribe() {
+        super.testAddProductToStoreSubscribe();
+        Product product=((Subscribe) user.getState()).getPermissions().get(testData.getStore(Data.VALID).getName()).
+                getStore().getProducts().get(testData.getProduct(Data.VALID).getProductName());
+        assertTrue(product.equal(testData.getProduct(Data.VALID)));
     }
-
 }

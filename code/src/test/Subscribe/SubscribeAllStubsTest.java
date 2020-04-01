@@ -1,5 +1,7 @@
 package Subscribe;
 
+import Data.Data;
+import Data.TestData;
 import DataAPI.StoreData;
 import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
@@ -19,10 +21,12 @@ public class SubscribeAllStubsTest {
     protected StoreData storeData;
     protected PaymentSystem paymentSystem;
     protected SupplySystem supplySystem;
+    protected TestData data;
 
     @Before
     public void setUp(){
         sub=new Subscribe("Yuval","Sabag");
+        data=new TestData();
         initStore();
     }
 
@@ -40,6 +44,7 @@ public class SubscribeAllStubsTest {
     public void test(){
         loginTest();
         openStoreTest();
+        addProductToStoreTest();
         logoutTest();
     }
 
@@ -66,7 +71,6 @@ public class SubscribeAllStubsTest {
         assertTrue(permissions.containsKey(store.getName()));
         Permission permission = permissions.get(store.getName());
         assertTrue(permission.getPermissionType().contains(PermissionType.OWNER));
-
     }
 
     /**
@@ -76,4 +80,47 @@ public class SubscribeAllStubsTest {
         assertTrue(sub.logout(new User()));
     }
 
+    /**
+     * test 4.9.1 use case 4.9.1 - add product
+     */
+    protected void addProductToStoreTest(){
+        addProductToStoreTestFail();
+        addProductToStoreTestSuccess();
+    }
+
+    private void addProductToStoreTestFail() {
+        testAddProductNotManagerOfStore();
+        testAddProductDontHavePermission();
+    }
+
+    private void testAddProductDontHavePermission() {
+        String validStoreName=data.getProduct(Data.VALID).getStoreName();
+        Permission permission=sub.getPermissions().get(validStoreName);
+        permission.removeType(PermissionType.OWNER);
+        assertFalse(sub.addProductToStore(data.getProduct(Data.VALID)));
+        permission.addType(PermissionType.OWNER);
+    }
+
+    private void testAddProductNotManagerOfStore() {
+        String validStoreName=data.getProduct(Data.VALID).getStoreName();
+        Permission permission=sub.getPermissions().get(validStoreName);
+        sub.getPermissions().clear();
+        assertFalse(sub.addProductToStore(data.getProduct(Data.VALID)));
+        sub.getPermissions().put("Store",permission);
+    }
+
+    private void addProductToStoreTestSuccess(){
+        assertTrue(sub.addProductToStore(data.getProduct(Data.VALID)));
+    }
+
+
+
+    private class PermissionStub extends Permission{
+
+        public PermissionStub(Subscribe owner, Store store) {
+            super(owner, store);
+        }
+
+
+    }
 }
