@@ -9,4 +9,5 @@ public enum Data {
     NEGATIVE_AMOUNT,
     NEGATIVE_PRICE,
     NULL_PURCHASE,
+    SAME_NAME,
 }

@@ -55,9 +55,20 @@ public class Permission {
         return true;
     }
 
+    /**
+     * check if user has permission to CRUD products of store
+     * @return true if user has permission to CRUD products of store
+     */
     public boolean canAddProduct() {
         return permissionType.contains(PermissionType.OWNER)||
                 permissionType.contains(PermissionType.PRODUCTS_INVENTORY);
+    }
+
+    public boolean removeType(PermissionType type){
+        if(!this.permissionType.contains(type))
+            return false;
+        this.permissionType.remove(type);
+        return true;
     }
 }
 
