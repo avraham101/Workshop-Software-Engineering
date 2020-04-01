@@ -220,7 +220,6 @@ public class LogicManager {
      * @param discount of the product
      * @return if the discount is not null and between 0 to 100
      */
-
     private boolean validDiscount(Discount discount) {
         return discount!=null&&discount.getPercentage()>0&&discount.getPercentage()<100;
     }
@@ -233,9 +232,9 @@ public class LogicManager {
     public List<ProductData> viewSpasificProducts(Filter filter) {
         if(!validFilter(filter))
             return null;
-        //TODO use here niv's function
-        List<ProductData> productsData = new LinkedList<>();
-        searchProducts(productsData,filter.getSearch(),filter.getValue());
+        List<ProductData> productsData = viewStores(); //use case 2.4.1
+        productsData = searchProducts(productsData,filter.getSearch(),filter.getValue());
+        productsData = filterProducts(productsData,filter);
         return productsData;
     }
 
@@ -252,7 +251,7 @@ public class LogicManager {
     /**
      * use case 2.5 - Search product in store
      * pre-conditions: the products, search, value is Valid
-     * @param search - the filter chosen
+     * @param search - the search chosen
      * @return - list of products after filer and sorter.
      */
     private List<ProductData> searchProducts(List<ProductData> products, Search search, String value) {
@@ -281,8 +280,30 @@ public class LogicManager {
         return output;
     }
 
-    //TODO
-    private List<ProductData> filterProducts(List<ProductData> products, Filter filter,) {
+    /**
+     * use case 2.5 - Search product in store
+     * pre-conditions: the products, search, value is Valid
+     * @param filter - the filter chosen
+     * @return - list of products after filer and sorter.
+     */
+    private List<ProductData> filterProducts(List<ProductData> products, Filter filter) {
+        List<ProductData> productData = new LinkedList<>();
+        for(ProductData p: products) {
+            //filter by min price
+            if(filter.getMinPrice()<= p.getPrice()) {
+                //filter by max price
+                if(filter.getMaxPrice()>= p.getPrice()) {
+                    //filter by category
+                    if(filter.getCategory().isEmpty()) { //empty means dont filter by categroy
+                        productData.add(p);
+                    }
+                    else if(filter.getCategory().compareTo(p.getCategory())==0) {
+                        productData.add(p);
+                    }
 
+                }
+            }
+        }
+        return productData;
     }
 }

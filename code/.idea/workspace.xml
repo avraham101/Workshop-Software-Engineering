@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="523a2119-3ead-4241-ba03-867b35de6906" name="Default Changelist" comment="Meet 4 Yuval Niv Avraham Peleg&#10;finished fixing test for &#10;1.1 admin&#10;2.1 register&#10;2.2 login&#10;3.2 open store&#10;Added more Data.Enums&#10;Added more private function of validation in LogicManger">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Domain/Utils.java" afterDir="false" />
+    <list default="true" id="523a2119-3ead-4241-ba03-867b35de6906" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Filter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Filter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -23,7 +22,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
+            <state relative-caret-position="513">
               <caret line="45" selection-start-line="45" selection-end-line="49" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -47,11 +46,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Domain/LogicManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="283" column="10" selection-start-line="283" selection-start-column="10" selection-end-line="283" selection-end-column="10" />
+            <state relative-caret-position="-2552">
+              <caret line="91" selection-start-line="91" selection-end-line="91" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#searchProducts#0;class#LogicManager#0" />
+                <element signature="method#filterProducts#0;class#LogicManager#0" />
               </folding>
             </state>
           </provider>
@@ -65,20 +65,6 @@
               <folding>
                 <element signature="method#min#0;class#Utils#0" />
                 <element signature="method#editDistDP#0;class#Utils#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="183">
-              <caret line="201" column="39" lean-forward="true" selection-start-line="201" selection-start-column="39" selection-end-line="201" selection-end-column="39" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#6394#6395#0" expanded="true" />
-                <element signature="e#6481#6482#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -110,11 +96,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Filter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="18" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
+            <state relative-caret-position="301">
+              <caret line="21" column="27" lean-forward="true" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
               <folding>
-                <element signature="e#478#479#0" expanded="true" />
-                <element signature="e#507#508#0" expanded="true" />
+                <element signature="e#674#675#0" expanded="true" />
+                <element signature="e#703#704#0" expanded="true" />
+                <element signature="e#747#748#0" expanded="true" />
+                <element signature="e#783#784#0" expanded="true" />
+                <element signature="e#815#816#0" expanded="true" />
+                <element signature="e#843#844#0" expanded="true" />
+                <element signature="e#885#886#0" expanded="true" />
+                <element signature="e#919#920#0" expanded="true" />
+                <element signature="e#954#955#0" expanded="true" />
+                <element signature="e#985#986#0" expanded="true" />
+                <element signature="e#1033#1034#0" expanded="true" />
+                <element signature="e#1073#1074#0" expanded="true" />
+                <element signature="e#1108#1109#0" expanded="true" />
+                <element signature="e#1139#1140#0" expanded="true" />
+                <element signature="e#1187#1188#0" expanded="true" />
+                <element signature="e#1227#1228#0" expanded="true" />
+                <element signature="e#1262#1263#0" expanded="true" />
+                <element signature="e#1293#1294#0" expanded="true" />
+                <element signature="e#1341#1342#0" expanded="true" />
+                <element signature="e#1381#1382#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -168,7 +172,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/SupplySytem.java" />
         <option value="$PROJECT_DIR$/src/main/java/Store.java" />
         <option value="$PROJECT_DIR$/src/main/java/PaymentSystem.java" />
         <option value="$PROJECT_DIR$/src/main/java/PermissionType.java" />
@@ -218,6 +221,7 @@
         <option value="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerUserStubTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java" />
         <option value="$PROJECT_DIR$/src/main/java/Utils.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Domain/Filter.java" />
         <option value="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" />
       </list>
     </option>
@@ -340,7 +344,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1585746621921" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1585755027488" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
     <property name="create.test.in.the.same.root" value="true" />
@@ -638,7 +642,14 @@
       <option name="project" value="LOCAL" />
       <updated>1585742095498</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="start working on use case 2.5">
+      <created>1585746646462</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1585746646462</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -674,7 +685,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54694000" />
+    <option name="totallyTimeSpent" value="57395000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -778,7 +789,8 @@
     <MESSAGE value="finished use case 3.2 tests :D" />
     <MESSAGE value="Added enum data for use case add product" />
     <MESSAGE value="Meet 4 Yuval Niv Avraham Peleg&#10;finished fixing test for &#10;1.1 admin&#10;2.1 register&#10;2.2 login&#10;3.2 open store&#10;Added more Data.Enums&#10;Added more private function of validation in LogicManger" />
-    <option name="LAST_COMMIT_MESSAGE" value="Meet 4 Yuval Niv Avraham Peleg&#10;finished fixing test for &#10;1.1 admin&#10;2.1 register&#10;2.2 login&#10;3.2 open store&#10;Added more Data.Enums&#10;Added more private function of validation in LogicManger" />
+    <MESSAGE value="start working on use case 2.5" />
+    <option name="LAST_COMMIT_MESSAGE" value="start working on use case 2.5" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1143,28 +1155,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="45" selection-start-line="45" selection-end-line="49" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1466#1467#0" expanded="true" />
-            <element signature="e#1493#1494#0" expanded="true" />
-            <element signature="e#1592#1593#0" expanded="true" />
-            <element signature="e#1620#1621#0" expanded="true" />
-            <element signature="e#1736#1737#0" expanded="true" />
-            <element signature="e#1764#1765#0" expanded="true" />
-            <element signature="e#1876#1877#0" expanded="true" />
-            <element signature="e#1904#1905#0" expanded="true" />
-            <element signature="e#2014#2015#0" expanded="true" />
-            <element signature="e#2042#2043#0" expanded="true" />
-            <element signature="e#2762#2763#0" expanded="true" />
-            <element signature="e#2789#2790#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="183">
@@ -1196,13 +1186,64 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Utils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding>
+            <element signature="method#min#0;class#Utils#0" />
+            <element signature="method#editDistDP#0;class#Utils#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="513">
+          <caret line="45" selection-start-line="45" selection-end-line="49" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1466#1467#0" expanded="true" />
+            <element signature="e#1493#1494#0" expanded="true" />
+            <element signature="e#1592#1593#0" expanded="true" />
+            <element signature="e#1620#1621#0" expanded="true" />
+            <element signature="e#1736#1737#0" expanded="true" />
+            <element signature="e#1764#1765#0" expanded="true" />
+            <element signature="e#1876#1877#0" expanded="true" />
+            <element signature="e#1904#1905#0" expanded="true" />
+            <element signature="e#2014#2015#0" expanded="true" />
+            <element signature="e#2042#2043#0" expanded="true" />
+            <element signature="e#2762#2763#0" expanded="true" />
+            <element signature="e#2789#2790#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Filter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="18" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
+        <state relative-caret-position="301">
+          <caret line="21" column="27" lean-forward="true" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
           <folding>
-            <element signature="e#478#479#0" expanded="true" />
-            <element signature="e#507#508#0" expanded="true" />
+            <element signature="e#674#675#0" expanded="true" />
+            <element signature="e#703#704#0" expanded="true" />
+            <element signature="e#747#748#0" expanded="true" />
+            <element signature="e#783#784#0" expanded="true" />
+            <element signature="e#815#816#0" expanded="true" />
+            <element signature="e#843#844#0" expanded="true" />
+            <element signature="e#885#886#0" expanded="true" />
+            <element signature="e#919#920#0" expanded="true" />
+            <element signature="e#954#955#0" expanded="true" />
+            <element signature="e#985#986#0" expanded="true" />
+            <element signature="e#1033#1034#0" expanded="true" />
+            <element signature="e#1073#1074#0" expanded="true" />
+            <element signature="e#1108#1109#0" expanded="true" />
+            <element signature="e#1139#1140#0" expanded="true" />
+            <element signature="e#1187#1188#0" expanded="true" />
+            <element signature="e#1227#1228#0" expanded="true" />
+            <element signature="e#1262#1263#0" expanded="true" />
+            <element signature="e#1293#1294#0" expanded="true" />
+            <element signature="e#1341#1342#0" expanded="true" />
+            <element signature="e#1381#1382#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1223,24 +1264,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Utils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding>
-            <element signature="method#min#0;class#Utils#0" />
-            <element signature="method#editDistDP#0;class#Utils#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Domain/LogicManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="283" column="10" selection-start-line="283" selection-start-column="10" selection-end-line="283" selection-end-column="10" />
+        <state relative-caret-position="-2552">
+          <caret line="91" selection-start-line="91" selection-end-line="91" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#searchProducts#0;class#LogicManager#0" />
+            <element signature="method#filterProducts#0;class#LogicManager#0" />
           </folding>
         </state>
       </provider>
