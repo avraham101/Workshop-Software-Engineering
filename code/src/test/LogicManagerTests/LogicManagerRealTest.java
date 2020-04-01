@@ -1,9 +1,13 @@
 package LogicManagerTests;
 
+import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
 import Systems.HashSystem;
 import org.junit.Before;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -12,7 +16,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
     @Before
     public void setUp() {
-        currUser=new User();
+        currUser = new User();
         init();
     }
 
@@ -21,13 +25,13 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * test use case 2.3 - Login
      */
     @Override
-    public void testLogin(){
+    public void testLogin() {
         super.testLogin();
         testLoginFailAlreadyUserLogged();
     }
 
     public void testLoginFailAlreadyUserLogged() {
-        assertFalse(logicManager.login("Yuval","Sabag"));
+        assertFalse(logicManager.login("Yuval", "Sabag"));
     }
 
     /**
@@ -36,7 +40,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override
     protected void testLoginSuccess() {
         super.testLoginSuccess();
-        assertEquals(currUser.getUserName(),"Yuval");
+        assertEquals(currUser.getUserName(), "Yuval");
         try {
             HashSystem hashSystem = new HashSystem();
             String password = hashSystem.encrypt("Sabag");
@@ -72,7 +76,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     private void testOpenStoreUserPermissions() {
         StoreData storeData = data.getStore(Data.VALID);
-        Subscribe subscribe = (Subscribe)currUser.getState();
+        Subscribe subscribe = (Subscribe) currUser.getState();
         Permission permission = subscribe.getPermissions().get(storeData.getName());
         assertTrue(permission.getPermissionType().contains(PermissionType.OWNER));
     }
@@ -93,7 +97,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * test: use case 3.1 - Logout
      */
     @Override
-    public void testLogout(){
+    public void testLogout() {
         super.testLogout();
         //test while in Guest Mode
         assertFalse(currUser.logout());
@@ -105,13 +109,13 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
 
     @Override
-    protected void testAddProduct(){
+    protected void testAddProduct() {
         super.testAddProduct();
         testAddProductWithSameName();
     }
 
     @Override
-    protected void testAddProductFail (){
+    protected void testAddProductFail() {
         super.testAddProductFail();
         testAddProductNotManagerOfStore();
         testAddProductDontHavePermission();
@@ -121,32 +125,53 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * test adding product with name that is not unique
      */
 
-    private void testAddProductWithSameName(){
+    private void testAddProductWithSameName() {
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.SAME_NAME)));
     }
 
     /**
      * test try adding product without being owner or manager of the store
      */
-    private void testAddProductNotManagerOfStore(){
-        String validStoreName=data.getProduct(Data.VALID).getStoreName();
-        Subscribe sub=((Subscribe) currUser.getState());
-        Permission permission=sub.getPermissions().get(validStoreName);
+    private void testAddProductNotManagerOfStore() {
+        String validStoreName = data.getProduct(Data.VALID).getStoreName();
+        Subscribe sub = ((Subscribe) currUser.getState());
+        Permission permission = sub.getPermissions().get(validStoreName);
         sub.getPermissions().clear();
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.VALID)));
-        sub.getPermissions().put("Store",permission);
+        sub.getPermissions().put("Store", permission);
     }
 
     /**
      * test that user that has no CRUD permission or owner permission cant add products to store
      */
-    private void testAddProductDontHavePermission(){
-        String validStoreName=data.getProduct(Data.VALID).getStoreName();
-        Subscribe sub=((Subscribe) currUser.getState());
-        Permission permission=sub.getPermissions().get(validStoreName);
+    private void testAddProductDontHavePermission() {
+        String validStoreName = data.getProduct(Data.VALID).getStoreName();
+        Subscribe sub = ((Subscribe) currUser.getState());
+        Permission permission = sub.getPermissions().get(validStoreName);
         permission.removeType(PermissionType.OWNER);
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.VALID)));
         permission.addType(PermissionType.OWNER);
+    }
+
+    /**
+     * use case 2.4.1 - view all stores details
+     */
+    @Override
+    protected void testViewDataStores() {
+        for (StoreData storeData : logicManager.viewStores()) {
+            assertTrue(stores.containsKey(storeData.getName()));
+        }
+    }
+
+    /**
+     * use case 2.4.2 - view the products in some store test
+     */
+    @Override
+    protected void testViewProductsInStore() {
+        String storeName = data.getStore(Data.VALID).getName();
+        for (ProductData productData: logicManager.viewProductsInStore(storeName)) {
+            assertTrue(stores.get(storeName).getProducts().containsKey(productData.getProductName()));
+        }
     }
 
 

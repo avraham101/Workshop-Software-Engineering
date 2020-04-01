@@ -12,6 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 //class for Unit test all stubs
 import static org.junit.Assert.*;
@@ -57,6 +59,8 @@ public class LogicManagerAllStubsTest {
         testOpenStore();
         testAddProduct();
         testLogout();
+        testViewDataStores();
+        testViewProductsInStore();
     }
 
     /**
@@ -183,6 +187,44 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_PRICE)));
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.NULL_PURCHASE)));
     }
+
+    /**
+     * use case 2.4.1 - view all stores details
+     */
+    protected void testViewDataStores() {
+        List<StoreData> expected = new LinkedList<>();
+        expected.add(data.getStore(Data.VALID));
+        assertEquals(expected, logicManager.viewStores());
+        assertNotEquals(null, logicManager.viewStores());
+    }
+
+    /**
+     * use case 2.4.2 - view the products in some store test
+     */
+    protected void testViewProductsInStore() {
+        List<ProductData> expected = new LinkedList<>();
+        String storeName = data.getStore(Data.VALID).getName();
+        assertEquals(expected, logicManager.viewProductsInStore(storeName));
+
+        expected.add(data.getProduct(Data.NULL_CATEGORY));
+        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
+        expected.remove(data.getProduct(Data.NULL_CATEGORY));
+
+        expected.add(data.getProduct((Data.NULL_NAME)));
+        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
+        expected.add(data.getProduct((Data.NULL_NAME)));
+
+        expected.add(data.getProduct((Data.NULL_DISCOUNT)));
+        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
+        expected.add(data.getProduct((Data.NULL_DISCOUNT)));
+
+        expected.add(data.getProduct((Data.NULL_PURCHASE)));
+        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
+        expected.add(data.getProduct((Data.NULL_PURCHASE)));
+    }
+
+
+
 
     protected class UserStub extends User {
         @Override

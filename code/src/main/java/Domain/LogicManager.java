@@ -10,6 +10,9 @@ import Systems.SupplySystem.SupplySystem;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 public class LogicManager {
     private HashMap<String, Subscribe> users;
@@ -167,5 +170,37 @@ public class LogicManager {
     private boolean validProduct(ProductData productData) {
         return productData.getProductName()!=null &&productData.getCategory()!=null&&productData.getDiscount()!=null
                 &&productData.getPrice()>0&&productData.getAmount()>0&&productData.getPurchaseType()!=null;
+    }
+
+    /**
+     * use 2.4.1 - show the details about every store
+     * @return - details of all the stores data
+     */
+    public List<StoreData> viewStores() {
+        List<StoreData> data = new LinkedList<>();
+        for (String storeName: stores.keySet()) {
+            Store store = stores.get(storeName);
+            StoreData storeData = new StoreData(store.getName(),store.getPurchesPolicy(),
+                                                store.getDiscout());
+            data.add(storeData);
+        }
+        return data;
+    }
+
+    /**
+     * use case 2.4.2 - show the products of a given store
+     * @param storeName - the store that owns the products
+     * @return - list of ProductData of the products in the store
+     */
+    public List<ProductData> viewProductsInStore(String storeName) {
+        List<ProductData> data = new LinkedList<>();
+        Store store = stores.get(storeName);
+        Set<String> keys = store.getProducts().keySet();
+        for (String key: keys) {
+            Product product = store.getProducts().get(key);
+            ProductData productData = new ProductData(product, storeName);
+            data.add(productData);
+        }
+        return data;
     }
 }

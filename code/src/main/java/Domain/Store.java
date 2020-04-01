@@ -104,11 +104,7 @@ public class Store {
     public void setPaymentSystem(PaymentSystem paymentSystem) {
         this.paymentSystem = paymentSystem;
     }
-
-    public DiscountPolicy getDiscount() {
-        return discount;
-    }
-
+    
     public void setDiscount(DiscountPolicy discount) {
         this.discount = discount;
     }
