@@ -3,7 +3,6 @@ package AcceptanceTests.AcceptanceTests;
 import org.junit.After;
 import org.junit.Test;
 
-
 public class RegisterTest extends AcceptanceTests {
     @Test
     public void testRegisterSuccess(){
