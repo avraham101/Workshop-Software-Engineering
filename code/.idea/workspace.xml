@@ -3,15 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="eb3eeea8-e429-4028-833a-560b812ca3ff" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Guest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Guest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Store.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Subscribe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Subscribe.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/UserState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/UserState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/Data/TestData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Data/TestData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -322,7 +313,14 @@
       <option name="project" value="LOCAL" />
       <updated>1585742024930</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Meet 4 Yuval Niv Avraham Peleg&#10;finished fixing test for &#10;1.1 admin&#10;2.1 register&#10;2.2 login&#10;3.2 open store&#10;Added more Data.Enums&#10;Added more private function of validation in LogicManger">
+      <created>1585751402105</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1585751402106</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TodoView">
@@ -358,10 +356,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="Meet 4 Yuval Niv Avraham Peleg&#10;finished fixing test for &#10;1.1 admin&#10;2.1 register&#10;2.2 login&#10;3.2 open store&#10;Added more Data.Enums&#10;Added more private function of validation in LogicManger" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="333" y="0" key="CommitChangelistDialog2" timestamp="1585743293310">
+    <state x="333" y="0" key="CommitChangelistDialog2" timestamp="1585751401011">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="333" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1585743293310" />
+    <state x="333" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1585751401011" />
     <state width="1493" height="96" key="GridCell.Tab.0.bottom" timestamp="1585751059551">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -398,6 +396,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="481" y="128" key="MultipleFileMergeDialog/0.0.1536.824@0.0.1536.824" timestamp="1585743372223" />
+    <state x="361" y="133" key="Vcs.Push.Dialog.v2" timestamp="1585751404688">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="133" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1585751404688" />
     <state x="578" y="329" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1585743368374">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
