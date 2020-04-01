@@ -205,7 +205,7 @@ public class LogicManagerAllStubsTest {
         Store store = stores.get(storeData.getName());
         Permission permission = new Permission(data.getSubscribe(Data.VALID));
         StoreStub storeStub = new StoreStub(store.getName(),store.getPurchesPolicy(),
-                store.getDiscout(),permission,store.getSupplySystem(),
+                store.getDiscount(),permission,store.getSupplySystem(),
                 store.getPaymentSystem());
         permission.setStore(storeStub);
         stores.put(storeData.getName(),storeStub);
@@ -321,6 +321,14 @@ public class LogicManagerAllStubsTest {
         //TODO SUCCESS
     }
 
+    private void testViewSpecificProductFillterMax() {
+        //TODO SUCCESS
+    }
+
+    private void testViewSpecificProductFillterCategory() {
+        //TODO SUCCESS
+    }
+
     /**
      * use case 4.1.2 -delete product
      */
@@ -342,12 +350,6 @@ public class LogicManagerAllStubsTest {
         ProductData p=data.getProduct(Data.VALID);
         assertTrue(logicManager.removeProductFromStore(p.getStoreName(),p.getProductName()));
     }
-    private void testViewSpecificProductFillterMax() {
-        //TODO SUCCESS
-    }
 
-    private void testViewSpecificProductFillterCategory() {
-        //TODO SUCCESS
-    }
 
 }
