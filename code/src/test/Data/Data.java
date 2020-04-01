@@ -1,8 +1,13 @@
-package LogicManagerTests;
+package Data;
 
 public enum Data {
     VALID,
+    ADMIN,
+    NULL,
     NULL_NAME,
+    NULL_PASSWORD,
+    WRONG_NAME,
+    WRONG_PASSWORD,
     WRONG_STORE,
     NULL_CATEGORY,
     NULL_DISCOUNT,
@@ -10,4 +15,7 @@ public enum Data {
     NEGATIVE_PRICE,
     NULL_PURCHASE,
     SAME_NAME,
+    WRONG_DISCOUNT,
+    OVER_100_PERCENTAGE,
+    NEGATIVE_PERCENTAGE,
 }

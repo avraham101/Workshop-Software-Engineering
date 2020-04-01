@@ -1,5 +1,7 @@
 package Guest;
 
+import Data.Data;
+import Data.TestData;
 import Domain.Guest;
 import Domain.Subscribe;
 import Domain.User;
@@ -10,8 +12,10 @@ import static org.junit.Assert.*;
 
 public class GuestTest {
     protected Guest guest;
+    protected TestData data;
     @Before
     public void setUp(){
+        data=new TestData();
         guest=new Guest();
     }
 
@@ -42,5 +46,13 @@ public class GuestTest {
      */
     private void openStoreTest() {
         assertNull(guest.openStore(null, null, null));
+    }
+
+    /**
+     * test use case 4.9.1 -add product
+     */
+
+    private  void addProductTest(){
+        assertFalse(guest.addProductToStore(data.getProduct(Data.VALID)));
     }
 }

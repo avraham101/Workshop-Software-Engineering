@@ -1,6 +1,7 @@
 package Subscribe;
 
-import DataAPI.StoreData;
+import Data.Data;
+import Data.TestData;
 import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -16,18 +17,18 @@ import static org.junit.Assert.*;
 public class SubscribeAllStubsTest {
 
     protected Subscribe sub;
-    protected StoreData storeData;
     protected PaymentSystem paymentSystem;
     protected SupplySystem supplySystem;
+    protected TestData data;
 
     @Before
     public void setUp(){
         sub=new Subscribe("Yuval","Sabag");
+        data=new TestData();
         initStore();
     }
 
     private void initStore() {
-        storeData = new StoreData("Shirazi's", new PurchesPolicy(), new DiscountPolicy());
         paymentSystem = new ProxyPayment();
         supplySystem = new ProxySupply();
     }
@@ -40,6 +41,7 @@ public class SubscribeAllStubsTest {
     public void test(){
         loginTest();
         openStoreTest();
+        addProductToStoreTest();
         logoutTest();
     }
 
@@ -56,16 +58,9 @@ public class SubscribeAllStubsTest {
      * test use case 3.2 - Open Store
      * store: Niv shiraze store added.
      */
-    private void openStoreTest() {
-        Store store = sub.openStore(storeData,paymentSystem,supplySystem);
-        assertEquals(storeData.getName(), store.getName());
-        assertEquals(storeData.getDiscountPolicy(), store.getDiscout());
-        assertEquals(storeData.getPurchesPolicy(), store.getPurchesPolicy());
-        //test Owner permissions
-        HashMap<String, Permission> permissions = sub.getPermissions();
-        assertTrue(permissions.containsKey(store.getName()));
-        Permission permission = permissions.get(store.getName());
-        assertTrue(permission.getPermissionType().contains(PermissionType.OWNER));
+    protected void openStoreTest() {
+        Store store = sub.openStore(data.getStore(Data.VALID),paymentSystem,supplySystem);
+        assertNotNull(store);
 
     }
 
@@ -75,5 +70,17 @@ public class SubscribeAllStubsTest {
     protected  void logoutTest(){
         assertTrue(sub.logout(new User()));
     }
+
+    /**
+     * test 4.9.1 use case 4.9.1 - add product
+     */
+    protected void addProductToStoreTest(){
+        addProductToStoreTestSuccess();
+    }
+
+    private void addProductToStoreTestSuccess(){
+        assertTrue(sub.addProductToStore(data.getProduct(Data.VALID)));
+    }
+
 
 }

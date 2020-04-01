@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.List;
 
 public class LogicManager {
     private HashMap<String, Subscribe> users;
@@ -75,6 +76,9 @@ public class LogicManager {
      */
     public boolean register(String userName, String password) {
         //TODO add to logger
+        if(!validName(userName) || !validPassword(password)) {
+            return false;
+        }
         if(!users.containsKey(userName)){
             try {
                 password = hashSystem.encrypt(password);
@@ -100,6 +104,9 @@ public class LogicManager {
      */
     public boolean login(String userName, String password) {
         //TODO add logger
+        if(!validName(userName) || !validPassword(password)) {
+            return false;
+        }
         if (users.containsKey(userName)) {
             try {
                 password = hashSystem.encrypt(password);
@@ -112,6 +119,24 @@ public class LogicManager {
             }
         }
         return false;
+    }
+
+    /**
+     * this function check valid name
+     * @param name - the name to check
+     * @return true valid name, otherwise false
+     */
+    private boolean validName(String name) {
+        return name!=null && !name.isEmpty();
+    }
+
+    /**
+     * this function check valid password
+     * @param password - the password to check
+     * @return true valid password, otherwise false
+     */
+    private boolean validPassword(String password) {
+        return password!=null && !password.isEmpty();
     }
 
     /**
@@ -148,7 +173,7 @@ public class LogicManager {
      * @return true the store data is ok, otherwise false
      */
     private boolean validStoreDetails(StoreData storeData) {
-        return storeData.getName() != null && storeData.getDiscountPolicy()!=null &&
+        return storeData!=null && storeData.getName() != null && storeData.getDiscountPolicy()!=null &&
                 storeData.getPurchesPolicy()!=null;
     }
 
@@ -157,9 +182,10 @@ public class LogicManager {
      * @param productData -the details of the product
      * @return true if the product was added, false otherwise
      */
-
     public boolean addProductToStore(ProductData productData) {
         //TODO logger
+        if(productData==null)
+            return false;
         if(!stores.containsKey(productData.getStoreName()))
             return false;
         if(validProduct(productData))
@@ -167,8 +193,14 @@ public class LogicManager {
         return false;
     }
 
+    /**
+     * check if the data of the product has valid content
+     * @param productData data of the product to check
+     * @return true if the details of the product are valid
+     */
+
     private boolean validProduct(ProductData productData) {
-        return productData.getProductName()!=null &&productData.getCategory()!=null&&productData.getDiscount()!=null
+        return productData.getProductName()!=null &&productData.getCategory()!=null&& validDiscounts(productData.getDiscount())
                 &&productData.getPrice()>0&&productData.getAmount()>0&&productData.getPurchaseType()!=null;
     }
 
@@ -202,5 +234,43 @@ public class LogicManager {
             data.add(productData);
         }
         return data;
+    }
+
+    /**
+     * check if dicounts of product are valid
+     * @param discounts of the product
+     * @return if the discounts are not null and between 0 to 100
+     */
+
+    private boolean validDiscounts(List<Discount> discounts) {
+        if(discounts==null)
+            return false;
+        for(Discount discount :discounts ){
+            if(!validDiscount(discount))
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * check if dicounts of product are valid
+     * @param discount of the product
+     * @return if the discount is not null and between 0 to 100
+     */
+
+    private boolean validDiscount(Discount discount) {
+        return discount!=null&&discount.getPercentage()>0&&discount.getPercentage()<100;
+    }
+
+    /**
+     * remove a product from store if exist
+     * @param storeName name of the store to remove the product from
+     * @param productName name of product to be removed
+     * @return
+     */
+    public boolean removeProductFromStore(String storeName, String productName) {
+        if(!stores.containsKey(storeName))
+            return false;
+        return current.removeProductFromStore(storeName,productName);
     }
 }

@@ -1,6 +1,7 @@
 package LogicManagerTests;
 
 import DataAPI.ProductData;
+import Data.Data;
 import DataAPI.StoreData;
 import Domain.*;
 import Systems.HashSystem;
@@ -31,7 +32,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     public void testLoginFailAlreadyUserLogged() {
-        assertFalse(logicManager.login("Yuval", "Sabag"));
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        assertFalse(logicManager.login(subscribe.getName(),subscribe.getPassword()));
     }
 
     /**
@@ -40,10 +42,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override
     protected void testLoginSuccess() {
         super.testLoginSuccess();
-        assertEquals(currUser.getUserName(), "Yuval");
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        assertEquals(currUser.getUserName(),subscribe.getName());
         try {
             HashSystem hashSystem = new HashSystem();
-            String password = hashSystem.encrypt("Sabag");
+            String password = hashSystem.encrypt(subscribe.getPassword());
             assertEquals(password, currUser.getPassword());
         } catch (Exception e) {
             fail();
@@ -61,6 +64,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         testOpenStoreStorePermissions();
     }
 
+
+
     /**
      * part of test use case 3.2 - Open Store
      */
@@ -76,7 +81,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     private void testOpenStoreUserPermissions() {
         StoreData storeData = data.getStore(Data.VALID);
-        Subscribe subscribe = (Subscribe) currUser.getState();
+        Subscribe subscribe = (Subscribe)currUser.getState();
         Permission permission = subscribe.getPermissions().get(storeData.getName());
         assertTrue(permission.getPermissionType().contains(PermissionType.OWNER));
     }
@@ -138,7 +143,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Permission permission = sub.getPermissions().get(validStoreName);
         sub.getPermissions().clear();
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.VALID)));
-        sub.getPermissions().put("Store", permission);
+        sub.getPermissions().put(validStoreName,permission);
     }
 
     /**

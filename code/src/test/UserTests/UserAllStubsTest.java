@@ -1,6 +1,11 @@
 package UserTests;
+import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
+import Data.TestData;
+import Data.Data;
+import Stubs.GuestStub;
+import Stubs.SubscribeStub;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
@@ -16,6 +21,7 @@ public class UserAllStubsTest {
 
     protected User user;
     protected UserState userState;
+    protected TestData testData;
 
 
     @Before
@@ -26,6 +32,7 @@ public class UserAllStubsTest {
     protected void initGuest() {
         userState = new GuestStub();
         user = new User(userState);
+        testData=new TestData();
     }
 
     protected void initSubscribe() {
@@ -45,6 +52,7 @@ public class UserAllStubsTest {
         initSubscribe();
         testLoginSubscribe();
         testOpenStoreSubscribe();
+        testAddProductToStoreSubscribe();
         //last test on list
         testLogoutSubscribe();
     }
@@ -55,6 +63,7 @@ public class UserAllStubsTest {
     protected void testGuest() {
         testLogoutGuest();
         testOpenStoreGuest();
+        testAddProductToStoreGuest();
         //last guest test
         testLoginGuest();
     }
@@ -107,44 +116,18 @@ public class UserAllStubsTest {
         assertEquals(storeData.getName(), store.getName());
     }
 
-    protected class GuestStub extends Guest {
-
-        @Override
-        public boolean login(User user, Subscribe subscribe) {
-            return true;
-        }
-
-        @Override
-        public boolean logout(User user){
-            return false;
-        }
-
-        @Override
-        public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
-            return null;
-        }
+    /**
+     * test: use case 4.9.1 -add product to store
+     * guest can't add product
+     */
+    protected void testAddProductToStoreGuest(){
+        assertFalse(user.addProductToStore(testData.getProduct(Data.VALID)));
     }
 
-    protected class SubscribeStub extends Subscribe {
-
-        public SubscribeStub(String userName, String password) {
-            super(userName, password);
-        }
-
-        @Override
-        public boolean login(User user, Subscribe subscribe) {
-            return false;
-        }
-
-        @Override
-        public boolean logout(User user){
-            return true;
-        }
-
-        @Override
-        public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
-            return new Store(storeDetails.getName(), new PurchesPolicy(), new DiscountPolicy(),
-                    new Permission(this), supplySystem, paymentSystem);
-        }
+    /**
+     *test: use case 4.9.1 - add product to store in subscribe state
+     */
+    protected void testAddProductToStoreSubscribe(){
+        assertTrue(user.addProductToStore(testData.getProduct(Data.VALID)));
     }
 }

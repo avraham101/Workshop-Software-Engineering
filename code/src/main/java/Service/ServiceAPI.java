@@ -122,8 +122,8 @@ public class ServiceAPI {
     }
 
     //TODO use case 4.1.2
-    public boolean removeProductFromStore(String storeName,String ProductName){
-        return false;
+    public boolean removeProductFromStore(String storeName,String productName){
+        return logicManager.removeProductFromStore(storeName,productName);
     }
 
     //TODO use case 4.1.3

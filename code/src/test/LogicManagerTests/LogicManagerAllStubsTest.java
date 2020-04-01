@@ -1,8 +1,12 @@
 package LogicManagerTests;
 
+import Data.*;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
+import Stubs.StoreStub;
+import Stubs.SubscribeStub;
+import Stubs.UserStub;
 import Systems.HashSystem;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -10,6 +14,7 @@ import Systems.SupplySystem.ProxySupply;
 import Systems.SupplySystem.SupplySystem;
 import org.junit.Before;
 import org.junit.Test;
+import org.omg.CORBA.DATA_CONVERSION;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -39,8 +44,9 @@ public class LogicManagerAllStubsTest {
         currUser=new UserStub();
         init();
         //make sure we are using SubscribeStub
-        Subscribe subscribe = users.get("Admin");
-        users.put("Admin", new SubscribeStub(subscribe.getName(), subscribe.getPassword()));
+        Subscribe dataSubscribe = data.getSubscribe(Data.ADMIN);
+        Subscribe subscribe = users.get(dataSubscribe.getName());
+        users.put(subscribe.getName(), new SubscribeStub(subscribe.getName(), subscribe.getPassword()));
     }
 
     protected void init() {
@@ -48,7 +54,8 @@ public class LogicManagerAllStubsTest {
         users=new HashMap<>();
         stores=new HashMap<>();
         logicManager = new LogicManager(users,stores,currUser);
-        logicManager.register("Admin","Admin");
+        Subscribe subscribe = data.getSubscribe(Data.ADMIN);
+        logicManager.register(subscribe.getName(),subscribe.getPassword());
     }
 
     @Test
@@ -92,51 +99,82 @@ public class LogicManagerAllStubsTest {
     public void testRegister() {
         testRegisterSuccess();
         testRegisterFailWrongName();
+        testRegisterFailWrongPassword();
+        testRegisterFailNull();
     }
 
     /**
      * part of test use case 2.2 - Register
      */
     public void testRegisterSuccess() {
-        assertTrue(logicManager.register("Yuval","Sabag"));
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        assertTrue(logicManager.register(subscribe.getName(),subscribe.getPassword()));
     }
 
     /**
      * part of test use case 2.2 - Register
      */
     public void testRegisterFailWrongName() {
-        assertFalse(logicManager.register("Admin","Admin2"));
+        Subscribe subscribe = data.getSubscribe(Data.WRONG_NAME);
+        assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()));
+    }
+
+    /**
+     * part of test use case 2.2 - Register
+     */
+    public void testRegisterFailWrongPassword() {
+        Subscribe subscribe = data.getSubscribe(Data.WRONG_PASSWORD);
+        assertFalse(logicManager.register(subscribe.getName(), subscribe.getName()));
+    }
+
+    /**
+     * part of test use case 2.2 - Register
+     */
+    public void testRegisterFailNull() {
+        Subscribe subscribe = data.getSubscribe(Data.NULL);
+        assertFalse(logicManager.register(subscribe.getName(), subscribe.getName()));
     }
 
     /**
      * test use case 2.3 - Login
      */
     public void testLogin() {
+        testLoginFailNull();
         testLoginFailWrongName();
         testLoginFailWrongPassword();
         testLoginSuccess();
     }
 
+    /**
+     * part of use case 2.3 - Login
+     */
+    private void testLoginFailNull() {
+        Subscribe subscribe = data.getSubscribe(Data.NULL);
+        assertFalse(logicManager.login(subscribe.getName(), subscribe.getPassword()));
+    }
 
     /**
      * part of use case 2.3 - Login
      */
     private void testLoginFailWrongName() {
-        assertFalse(logicManager.login("Shlomi", "BAD TEACHER"));
+        Subscribe subscribe = data.getSubscribe(Data.WRONG_NAME);
+        assertFalse(logicManager.login(subscribe.getName(), subscribe.getPassword()));
     }
 
     /**
      * part of use case 2.3 - Login
      */
     private void testLoginFailWrongPassword() {
-        assertFalse(logicManager.login("Yuval", "BAD TEACHER"));
+        Subscribe subscribe = data.getSubscribe(Data.WRONG_PASSWORD);
+        assertFalse(logicManager.login(subscribe.getName(), subscribe.getPassword()));
     }
 
     /**
      * part of use case 2.3 - Login
      */
     protected void testLoginSuccess() {
-        assertTrue(logicManager.login("Yuval","Sabag"));
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        assertTrue(logicManager.login(subscribe.getName(),subscribe.getPassword()));
     }
 
     /**
@@ -151,6 +189,7 @@ public class LogicManagerAllStubsTest {
      * part of test use case 3.2 - Open Store
      */
     private void testOpenStoreFail() {
+        assertFalse(logicManager.openStore(data.getStore(Data.NULL)));
         assertFalse(logicManager.openStore(data.getStore(Data.NULL_NAME)));
         assertFalse(logicManager.openStore(data.getStore(Data.NULL_PURCHASE)));
         assertFalse(logicManager.openStore(data.getStore(Data.NULL_DISCOUNT)));
@@ -159,8 +198,16 @@ public class LogicManagerAllStubsTest {
     /**
      * part of test use case 3.2 - Open Store
      */
-    private void testOpenStoreSucces(){
-        assertTrue(logicManager.openStore(data.getStore(Data.VALID)));
+    protected void testOpenStoreSucces(){
+        StoreData storeData = data.getStore(Data.VALID);
+        assertTrue(logicManager.openStore(storeData));
+        Store store = stores.get(storeData.getName());
+        Permission permission = new Permission(data.getSubscribe(Data.VALID));
+        StoreStub storeStub = new StoreStub(store.getName(),store.getPurchesPolicy(),
+                store.getDiscount(),permission,store.getSupplySystem(),
+                store.getPaymentSystem());
+        permission.setStore(storeStub);
+        stores.put(storeData.getName(),storeStub);
     }
 
 
@@ -186,6 +233,9 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_AMOUNT)));
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_PRICE)));
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.NULL_PURCHASE)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.OVER_100_PERCENTAGE)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.WRONG_DISCOUNT)));
+        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_PERCENTAGE)));
     }
 
     /**
@@ -263,13 +313,6 @@ public class LogicManagerAllStubsTest {
         }
     }
 
-    protected class StoreStub extends Store {
-
-        public StoreStub(String name, PurchesPolicy purchesPolicy, DiscountPolicy discount, Permission permissions, SupplySystem supplySystem, PaymentSystem paymentSystem) {
-            super(name, purchesPolicy, discount, permissions, supplySystem, paymentSystem);
-        }
-
-    }
 
 
 }
