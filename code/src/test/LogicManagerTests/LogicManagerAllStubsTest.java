@@ -229,5 +229,6 @@ public class LogicManagerAllStubsTest {
 
     }
 
+    {"peleg"}
 
 }
