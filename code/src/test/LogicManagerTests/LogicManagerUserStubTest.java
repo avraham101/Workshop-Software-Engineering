@@ -29,4 +29,13 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
         assertFalse(logicManager.openStore(data.getStore(Data.VALID)));
     }
 
+    /**
+     * part of test use case 3.2 - Open Store
+     */
+    @Override
+    protected void testOpenStoreSucces(){
+        StoreData storeData = data.getStore(Data.VALID);
+        assertTrue(logicManager.openStore(storeData));
+    }
+
 }

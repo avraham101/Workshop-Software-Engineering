@@ -60,14 +60,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         testOpenStoreStorePermissions();
     }
 
-    /**
-     * part of test use case 3.2 - Open Store
-     */
-    @Override
-    protected void testOpenStoreSucces(){
-        StoreData storeData = data.getStore(Data.VALID);
-        assertTrue(logicManager.openStore(storeData));
-    }
+
 
     /**
      * part of test use case 3.2 - Open Store
