@@ -2,7 +2,6 @@ package Service;
 
 import DataAPI.*;
 import Domain.*;
-import jdk.nashorn.internal.ir.RuntimeNode;
 
 import java.util.List;
 
@@ -57,7 +56,7 @@ public class ServiceAPI {
      */
     public List<ProductData> viewSpasificProducts(Filter filter) {
         //filters -> price range, category ,*product rating, *store rating,
-        return logicManager.viewSpasificProducts(filter);
+        return logicManager.viewSpecificProducts(filter);
     }
 
     //TODO use case 2.7.1

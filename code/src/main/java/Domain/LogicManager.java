@@ -198,8 +198,9 @@ public class LogicManager {
      */
 
     private boolean validProduct(ProductData productData) {
-        return productData.getProductName()!=null &&productData.getCategory()!=null&& validDiscounts(productData.getDiscount())
-                &&productData.getPrice()>0&&productData.getAmount()>0&&productData.getPurchaseType()!=null;
+        return productData.getProductName()!=null &&productData.getCategory()!=null
+                && validDiscounts(productData.getDiscount()) && productData.getPrice()>0
+                && productData.getAmount()>0 && productData.getPurchaseType()!=null;
     }
 
     /**
@@ -277,10 +278,13 @@ public class LogicManager {
      * @param filter - the filter chosen
      * @return - list of products after filer and sorter.
      */
-    public List<ProductData> viewSpasificProducts(Filter filter) {
+    public List<ProductData> viewSpecificProducts(Filter filter) {
         if(!validFilter(filter))
             return null;
-        List<ProductData> productsData = viewStores(); //use case 2.4.1
+        List<ProductData> productsData = new LinkedList<>();
+        for(String storeName: stores.keySet()) {
+            productsData.addAll(viewProductsInStore(storeName)); //use case 2.4.2
+        }
         productsData = searchProducts(productsData,filter.getSearch(),filter.getValue());
         productsData = filterProducts(productsData,filter);
         return productsData;
@@ -348,7 +352,6 @@ public class LogicManager {
                     else if(filter.getCategory().compareTo(p.getCategory())==0) {
                         productData.add(p);
                     }
-
                 }
             }
         }
