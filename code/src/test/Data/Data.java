@@ -27,4 +27,6 @@ public enum Data {
     FILTER_MIN,
     FILTER_MAX,
     FILTER_ALL_CATEGORYIES,
+    NEGATIVE_PERCENTAGE,
+    EDIT,
 }

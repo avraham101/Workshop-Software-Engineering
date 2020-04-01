@@ -2,6 +2,7 @@ package Subscribe;
 
 import Data.Data;
 import Data.TestData;
+import DataAPI.ProductData;
 import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -42,6 +43,7 @@ public class SubscribeAllStubsTest {
         loginTest();
         openStoreTest();
         addProductToStoreTest();
+        testEditProduct();
         removeProductFromStoreTest();
         logoutTest();
     }
@@ -118,6 +120,43 @@ public class SubscribeAllStubsTest {
         permission.removeType(PermissionType.OWNER);
         assertFalse(sub.removeProductFromStore(data.getProduct(Data.VALID).getProductName(),validStoreName));
         permission.addType(PermissionType.OWNER);
+    }
+
+    /**
+     * test use case 4.1.3 - edit product
+     */
+    protected void testEditProduct(){
+        testFailEditProduct();
+        testSuccessEditProduct();
+    }
+
+    protected void testFailEditProduct() {
+        checkEditProductHasNoPermission();
+        checkEditProductNotManager();
+    }
+
+    private void checkEditProductNotManager() {
+        String validStoreName=data.getProduct(Data.VALID).getStoreName();
+        Permission permission=sub.getPermissions().get(validStoreName);
+        sub.getPermissions().clear();
+        assertFalse(sub.editProductFromStore(data.getProduct(Data.VALID)));
+        sub.getPermissions().put(validStoreName,permission);
+    }
+
+    private void checkEditProductHasNoPermission() {
+        String validStoreName=data.getProduct(Data.VALID).getStoreName();
+        Permission permission=sub.getPermissions().get(validStoreName);
+        permission.removeType(PermissionType.OWNER);
+        assertFalse(sub.editProductFromStore(data.getProduct(Data.VALID)));
+        permission.addType(PermissionType.OWNER);
+    }
+
+    /**
+     * success case
+     */
+
+    protected void testSuccessEditProduct(){
+        assertTrue(sub.editProductFromStore(data.getProduct(Data.EDIT)));
     }
 
 

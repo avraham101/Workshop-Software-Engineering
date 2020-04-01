@@ -21,7 +21,7 @@ public class UserAllStubsTest {
 
     protected User user;
     protected UserState userState;
-    protected TestData testData;
+    protected TestData data;
 
 
     @Before
@@ -32,7 +32,7 @@ public class UserAllStubsTest {
     protected void initGuest() {
         userState = new GuestStub();
         user = new User(userState);
-        testData=new TestData();
+        data =new TestData();
     }
 
     protected void initSubscribe() {
@@ -53,6 +53,7 @@ public class UserAllStubsTest {
         testLoginSubscribe();
         testOpenStoreSubscribe();
         testAddProductToStoreSubscribe();
+        testEditProductFromStoreSubscribe();
         testRemoveProductFromStoreSubscribe();
         //last test on list
         testLogoutSubscribe();
@@ -66,6 +67,7 @@ public class UserAllStubsTest {
         testOpenStoreGuest();
         testAddProductToStoreGuest();
         testRemoveProductFromStoreGuest();
+        testEditProductFromStoreGuest();
         //last guest test
         testLoginGuest();
     }
@@ -73,7 +75,7 @@ public class UserAllStubsTest {
      * test use case 2.3 - Login
      */
     protected void testLoginGuest() {
-        assertTrue(user.login(new Subscribe("niv","shirazi")));
+        assertTrue(user.login(data.getSubscribe(Data.VALID)));
     }
 
     /**
@@ -119,36 +121,49 @@ public class UserAllStubsTest {
     }
 
     /**
-     * test: use case 4.9.1 -add product to store
+     * test: use case 4.1.1 -add product to store
      * guest can't add product
      */
     protected void testAddProductToStoreGuest(){
-        assertFalse(user.addProductToStore(testData.getProduct(Data.VALID)));
+        assertFalse(user.addProductToStore(data.getProduct(Data.VALID)));
     }
 
     /**
-     *test: use case 4.9.1 - add product to store in subscribe state
+     *test: use case 4.1.1 - add product to store in subscribe state
      */
     protected void testAddProductToStoreSubscribe(){
-        assertTrue(user.addProductToStore(testData.getProduct(Data.VALID)));
+        assertTrue(user.addProductToStore(data.getProduct(Data.VALID)));
     }
 
     /**
-     * test : use case 4.9.2 -remove product to store
+     * test : use case 4.1.2 -remove product to store
      * guest can't do it
      */
     protected void testRemoveProductFromStoreGuest(){
-        ProductData product= testData.getProduct(Data.VALID);
+        ProductData product= data.getProduct(Data.VALID);
         assertFalse(user.removeProductFromStore(product.getStoreName(),product.getProductName()));
     }
 
     /**
-     * test : use case 4.9.2 -remove product to store
+     * test : use case 4.1.2 -remove product to store
      * guest can't do it
      */
     protected void testRemoveProductFromStoreSubscribe(){
-        ProductData product= testData.getProduct(Data.VALID);
+        ProductData product= data.getProduct(Data.VALID);
         assertTrue(user.removeProductFromStore(product.getStoreName(),product.getProductName()));
     }
+
+    /**
+     * test use case 4.1.3 - edit product from store
+     */
+    protected void testEditProductFromStoreGuest(){
+        assertFalse(user.editProductFromStore(data.getProduct(Data.EDIT)));
+    }
+
+    protected void testEditProductFromStoreSubscribe(){
+        assertTrue(user.editProductFromStore(data.getProduct(Data.EDIT)));
+    }
+
+
 
 }

@@ -27,6 +27,7 @@ public class StoreTestsAllStubs {
     @Test
     public void test(){
         testAddProduct();
+        testEditProduct();
         testRemoveProduct();
     }
 
@@ -89,5 +90,25 @@ public class StoreTestsAllStubs {
 
     private void testFailRemoveProduct() {
         assertFalse(store.removeProduct(data.getProduct(Data.VALID).getProductName()));
+    }
+
+    /**
+     * test use case 4.1.3 edit product
+     */
+    protected void testEditProduct(){
+        testFailEditProduct();
+        testSuccessEditProduct();
+    }
+
+    /**
+     * test product that not in the store
+     */
+    protected void testFailEditProduct() {
+        ProductData p=data.getProduct(Data.WRONG_NAME);
+        assertFalse(store.editProduct(p));
+    }
+
+    protected void testSuccessEditProduct(){
+        assertTrue(store.editProduct(data.getProduct(Data.EDIT)));
     }
 }

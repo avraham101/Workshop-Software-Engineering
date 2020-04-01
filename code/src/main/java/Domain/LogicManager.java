@@ -71,7 +71,8 @@ public class LogicManager {
      * @return true if the register complete, otherwise false
      */
     public boolean register(String userName, String password) {
-        //TODO add to logger
+        loggerSystem.getEventLogger().logp(Level.INFO, "Logic Manager", "register", "register: {0} {1}",
+                new Object[] { userName, password });
         if(!validName(userName) || !validPassword(password)) {
             return false;
         }
@@ -270,6 +271,12 @@ public class LogicManager {
             return false;
         return current.removeProductFromStore(storeName,productName);
     }
+
+    /**
+     * edit product in store if exist
+     * @param productData the product details to edit
+     * @return if the product was updated successfully
+     */
 
     /**
      * use case 2.5 - Search product in store
