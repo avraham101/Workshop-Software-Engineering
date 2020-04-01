@@ -48,5 +48,15 @@ public abstract class UserState {
      */
     public abstract Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem);
 
+    /**
+     * use case 3.5
+     * @param user - the user who send the request
+     * @param storeName - The id of the store
+     * @param content - The content of the request
+     * @return request if success, null else
+     */
+    public abstract Request addRequest(User user, String storeName, String content);
+
     public abstract boolean addProductToStore(ProductData productData);
+
 }

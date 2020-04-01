@@ -3,13 +3,11 @@ package Data;
 import DataAPI.ProductData;
 import DataAPI.PurchaseTypeData;
 import DataAPI.StoreData;
-import Domain.Discount;
-import Domain.DiscountPolicy;
-import Domain.PurchesPolicy;
+import Domain.*;
 import Data.Data;
-import Domain.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,7 +22,6 @@ public class TestData {
         setUpDiscountData();
         setUpProductData();
         setUpStoreData();
-
     }
 
     private void setUpUsers() {
@@ -105,4 +102,5 @@ public class TestData {
     public List<Discount> getDiscounts(Data data){
         return  discounts.get(data);
     }
+
 }

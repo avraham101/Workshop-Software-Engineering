@@ -11,7 +11,6 @@ import Systems.SupplySystem.ProxySupply;
 import Systems.SupplySystem.SupplySystem;
 import org.junit.Before;
 import org.junit.Test;
-import org.omg.CORBA.DATA_CONVERSION;
 
 import java.util.HashMap;
 
@@ -59,6 +58,7 @@ public class LogicManagerAllStubsTest {
         testRegister();
         testLogin();
         testOpenStore();
+        testAddRequest();
         testAddProduct();
         testLogout();
     }
@@ -203,6 +203,23 @@ public class LogicManagerAllStubsTest {
         stores.put(storeData.getName(),storeStub);
     }
 
+    /**
+     * use case 3.5 -add product
+     */
+    public void testAddRequest(){
+        testAddRequestSuccess();
+        testAddRequestFail();
+    }
+
+    private void testAddRequestSuccess() {
+        assertTrue(logicManager.addRequest(data.getStore(Data.VALID).getName(), "The store has not milk"));
+    }
+
+    private void testAddRequestFail() {
+        assertFalse(logicManager.addRequest(data.getStore(Data.WRONG_NAME).getName(), "The store has not milk"));
+        assertFalse(logicManager.addRequest(data.getStore(Data.VALID).getName(), null));
+    }
+
 
     /**
      * use case 4.1.1 -add product
@@ -275,7 +292,4 @@ public class LogicManagerAllStubsTest {
         }
 
     }
-
-    {"peleg"}
-
 }

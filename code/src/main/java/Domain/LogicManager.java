@@ -226,4 +226,15 @@ public class LogicManager {
     private boolean validDiscount(Discount discount) {
         return discount!=null&&discount.getPercentage()>0&&discount.getPercentage()<100;
     }
+
+    public boolean addRequest(String storeName, String content) {
+        boolean isStoreExist = false;
+        Store dest = null;
+        for(Store store : stores.values())
+            if(store.getName()==storeName) {
+                isStoreExist = true;
+                dest = store;
+            }
+        return (content != null && dest !=null && isStoreExist && dest.addRequest(current.addRequest(storeName, content)));
+    }
 }

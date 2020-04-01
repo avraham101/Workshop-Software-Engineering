@@ -52,6 +52,18 @@ public class Guest extends UserState {
     }
 
     /**
+     * use case 3.5
+     * @param user - the user who send the request
+     * @param storeName - The id of the store
+     * @param content - The content of the request
+     * @return true if success, false else
+     */
+    @Override
+    public Request addRequest(User user, String storeName, String content){
+        return null;
+    }
+
+    /**
      * use case 4.9.1 -add product
      * @param productData
      * @return false for guest
@@ -60,4 +72,5 @@ public class Guest extends UserState {
     public boolean addProductToStore(ProductData productData) {
         return false;
     }
+
 }

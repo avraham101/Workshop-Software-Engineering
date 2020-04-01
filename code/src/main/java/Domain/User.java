@@ -68,4 +68,6 @@ public class User {
     public boolean addProductToStore(ProductData productData) {
         return state.addProductToStore(productData);
     }
+
+    public Request addRequest(String storeName, String content) { return state.addRequest(this, storeName, content); }
 }

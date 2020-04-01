@@ -124,4 +124,11 @@ public class Store {
         products.put(productData.getProductName(),product);
         return true;
     }
+
+    public boolean addRequest(Request addRequest) {
+        if(addRequest==null)
+            return false;
+        requests.add(addRequest);
+        return true;
+    }
 }
