@@ -3,13 +3,11 @@ package Domain;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Systems.*;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.PaymentSystem.ProxyPayment;
-import Systems.SupplySystem.ProxySupply;
-import Systems.SupplySystem.SupplySystem;
-
+import Systems.PaymentSystem.*;
+import Systems.SupplySystem.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class LogicManager {
@@ -225,5 +223,66 @@ public class LogicManager {
 
     private boolean validDiscount(Discount discount) {
         return discount!=null&&discount.getPercentage()>0&&discount.getPercentage()<100;
+    }
+
+    /**
+     * use case 2.5 - Search product in store
+     * @param filter - the filter chosen
+     * @return - list of products after filer and sorter.
+     */
+    public List<ProductData> viewSpasificProducts(Filter filter) {
+        if(!validFilter(filter))
+            return null;
+        //TODO use here niv's function
+        List<ProductData> productsData = new LinkedList<>();
+        searchProducts(productsData,filter.getSearch(),filter.getValue());
+        return productsData;
+    }
+
+    /**
+     * use case 2.5 - Search product
+     * @param filter - the filter to check
+     * @return true if filter is valid, otherwise false
+     */
+    private boolean validFilter(Filter filter) {
+        return filter!=null && filter.getSearch()!=null && filter.getValue()!=null
+                && filter.getMinPrice() >= 0  && filter.getMaxPrice()>=0 && filter.getCategory()!=null;
+    }
+
+    /**
+     * use case 2.5 - Search product in store
+     * pre-conditions: the products, search, value is Valid
+     * @param search - the filter chosen
+     * @return - list of products after filer and sorter.
+     */
+    private List<ProductData> searchProducts(List<ProductData> products, Search search, String value) {
+        if(search == Search.NONE) {
+            return products;
+        }
+        List<ProductData> output = new LinkedList<>();
+        int distance = 2;
+        for(ProductData product:products) {
+            switch (search) {
+                case CATEGORY:
+                    if(product.getCategory().compareTo(value)==0)
+                        output.add(product);
+                    break;
+                case PRODUCT_NAME:
+                    if(product.getProductName().compareTo(value)==0)
+                        output.add(product);
+                    break;
+                case KEY_WORD:
+                    String productName = product.getProductName();
+                    if(Utils.editDistDP(productName,value,productName.length(),value.length())>= distance)
+                        output.add(product);
+                    break;
+            }
+        }
+        return output;
+    }
+
+    //TODO
+    private List<ProductData> filterProducts(List<ProductData> products, Filter filter,) {
+
     }
 }
