@@ -58,6 +58,8 @@ public class TestData {
         //change data type to enum
         products.put(Data.VALID,new ProductData("peanuts","Store","category"
                 ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
+        products.put(Data.EDIT,new ProductData("peanuts","Store","categoryYuval"
+                ,null,new ArrayList<Discount>(),3,11, PurchaseTypeData.IMMEDDIATE));
         products.put(Data.NULL_NAME,new ProductData(null,"Store","category"
                 ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
         products.put(Data.WRONG_STORE,new ProductData("peanuts","$storeBBB$","category"
@@ -80,6 +82,8 @@ public class TestData {
                 ,null,discounts.get(Data.OVER_100_PERCENTAGE),1,10, PurchaseTypeData.IMMEDDIATE));
         products.put(Data.SAME_NAME,new ProductData("peanuts","store","category1"
                 ,null,new ArrayList<Discount>(),12,101, PurchaseTypeData.IMMEDDIATE));
+        products.put(Data.WRONG_NAME,new ProductData("peanuts1","Store","category"
+                ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
     }
 
     private void setUpStoreData() {

@@ -51,6 +51,39 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * use case 2.4.1 - view all stores details
+     */
+    @Override
+    protected void testViewDataStores() {
+        for (StoreData storeData : logicManager.viewStores()) {
+            assertTrue(stores.containsKey(storeData.getName()));
+        }
+    }
+
+    /**
+     * use case 2.4.2 - view the products in some store test
+     */
+    @Override
+    protected void testViewProductsInStore() {
+        String storeName = data.getStore(Data.VALID).getName();
+        for (ProductData productData: logicManager.viewProductsInStore(storeName)) {
+            assertTrue(stores.get(storeName).getProducts().containsKey(productData.getProductName()));
+        }
+    }
+
+
+
+    /**
+     * test: use case 3.1 - Logout
+     */
+    @Override
+    public void testLogout() {
+        super.testLogout();
+        //test while in Guest Mode
+        assertFalse(currUser.logout());
+    }
+
+    /**
      * test use case 3.2 - Open Store
      */
     @Override
@@ -94,16 +127,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertTrue(p.getPermissionType().contains(PermissionType.OWNER));
     }
 
-
-    /**
-     * test: use case 3.1 - Logout
-     */
-    @Override
-    public void testLogout() {
-        super.testLogout();
-        //test while in Guest Mode
-        assertFalse(currUser.logout());
-    }
 
 
     /**
@@ -155,33 +178,28 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         permission.addType(PermissionType.OWNER);
     }
 
+    /**
+     * use case 4.1.2 test
+     */
     @Override
     protected void testRemoveProductSuccess() {
         super.testRemoveProductSuccess();
         Subscribe sub=(Subscribe)currUser.getState();
         assertFalse(sub.getPermissions().containsKey(data.getProduct(Data.VALID).getProductName()));
     }
-    /**
-     * use case 2.4.1 - view all stores details
-     */
-    @Override
-    protected void testViewDataStores() {
-        for (StoreData storeData : logicManager.viewStores()) {
-            assertTrue(stores.containsKey(storeData.getName()));
-        }
-    }
+
 
     /**
-     * use case 2.4.2 - view the products in some store test
+     * use case 4.1.3 edit product
      */
+
     @Override
-    protected void testViewProductsInStore() {
-        String storeName = data.getStore(Data.VALID).getName();
-        for (ProductData productData: logicManager.viewProductsInStore(storeName)) {
-            assertTrue(stores.get(storeName).getProducts().containsKey(productData.getProductName()));
-        }
+    protected void testEditProductSuccess() {
+        super.testEditProductSuccess();
+        ProductData product=data.getProduct(Data.EDIT);
+        Subscribe sub=(Subscribe) currUser.getState();
+        assertTrue(sub.getPermissions().get(product.getStoreName()).getStore()
+                .getProducts().get(product.getProductName()).equal(product));
     }
-
-
 }
 

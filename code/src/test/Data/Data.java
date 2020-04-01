@@ -18,4 +18,5 @@ public enum Data {
     WRONG_DISCOUNT,
     OVER_100_PERCENTAGE,
     NEGATIVE_PERCENTAGE,
+    EDIT,
 }

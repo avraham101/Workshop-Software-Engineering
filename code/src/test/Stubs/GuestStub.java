@@ -26,7 +26,17 @@ public class GuestStub extends Guest {
     }
 
     @Override
+    public boolean removeProductFromStore(String storeName, String productName) {
+        return super.removeProductFromStore(storeName, productName);
+    }
+
+    @Override
     public boolean addProductToStore(ProductData productData){
         return false;
+    }
+
+    @Override
+    public boolean editProductFromStore(ProductData productData) {
+        return super.editProductFromStore(productData);
     }
 }
