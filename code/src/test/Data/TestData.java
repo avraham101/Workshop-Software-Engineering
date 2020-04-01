@@ -3,29 +3,28 @@ package Data;
 import DataAPI.ProductData;
 import DataAPI.PurchaseTypeData;
 import DataAPI.StoreData;
-import Domain.Discount;
-import Domain.DiscountPolicy;
-import Domain.PurchesPolicy;
+import Domain.*;
 
 import Data.Data;
-import Domain.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class TestData {
+
     private HashMap<Data, Subscribe> users;
     private HashMap<Data, ProductData> products;
     private HashMap<Data, StoreData> stores;
     private HashMap<Data, List<Discount>> discounts;
+    private HashMap<Data, Filter> filters;
 
     public TestData() {
         setUpUsers();
         setUpDiscountData();
         setUpProductData();
         setUpStoreData();
-
+        setUpFilters();
     }
 
     private void setUpUsers() {
@@ -37,7 +36,6 @@ public class TestData {
         users.put(Data.NULL_PASSWORD, new Subscribe("Admin", null));
         users.put(Data.WRONG_NAME, new Subscribe("","Changed_Password"));
         users.put(Data.WRONG_PASSWORD, new Subscribe("Admin",""));
-
     }
 
     private void setUpDiscountData() {
@@ -91,6 +89,33 @@ public class TestData {
         stores.put(Data.NULL_DISCOUNT, new StoreData("Store",new PurchesPolicy(), null));
     }
 
+    private void setUpFilters() {
+        filters = new HashMap<>();
+        ProductData p = getProduct(Data.VALID);
+        filters.put(Data.NULL, null);
+        filters.put(Data.VALID, new Filter(Search.NONE, p.getProductName(),p.getPrice(),
+                p.getPrice(),p.getCategory()));
+        filters.put(Data.WRONG_NAME, new Filter(Search.PRODUCT_NAME, "Not Product Name",p.getPrice(),
+                p.getPrice(),p.getCategory()));
+        filters.put(Data.WRONG_CATEGORY, new Filter(Search.CATEGORY, p.getProductName(),p.getPrice(),
+                p.getPrice(),"Not Category !!"));
+        filters.put(Data.WRONG_KEY_WORD, new Filter(Search.KEY_WORD, "Not Key Word!!",p.getPrice(),
+                p.getPrice(),p.getCategory()));
+        filters.put(Data.NULL_SEARCH, new Filter(null,p.getProductName(),0,0,""));
+        filters.put(Data.NULL_VALUE, new Filter(Search.PRODUCT_NAME,null, 0, 0, ""));
+        filters.put(Data.NEGATIVE_MIN, new Filter(Search.PRODUCT_NAME, p.getProductName(),-1,
+                0,""));
+        filters.put(Data.NEGATIVE_MAX, new Filter(Search.PRODUCT_NAME, p.getProductName(),0,
+                -1,""));
+        filters.put(Data.NULL_CATEGORY, new Filter(Search.PRODUCT_NAME, p.getProductName(),0,
+                -1,null));
+        filters.put(Data.FILTER_MIN, new Filter(Search.NONE,"",0,Double.MAX_VALUE,""));
+        filters.put(Data.FILTER_MAX, new Filter(Search.NONE,"",0,Double.MAX_VALUE,""));
+        filters.put(Data.FILTER_ALL_CATEGORYIES, new Filter(Search.NONE,"",0,
+                Double.MAX_VALUE,""));
+
+    }
+
     public Subscribe getSubscribe(Data data) {
         return users.get(data);
     }
@@ -105,5 +130,23 @@ public class TestData {
 
     public List<Discount> getDiscounts(Data data){
         return  discounts.get(data);
+    }
+
+    public Filter getFilter(Data data) {
+        return filters.get(data);
+    }
+
+    /**
+     * use case 2.5 - search Products
+     * The function compare 2 products data
+     * @param that - that product data
+     * @param other - other prodoct data
+     * @return true if 2 product are equal, otherwise false
+     */
+    public boolean compareProductData(ProductData that, ProductData other) {
+        return  that.getProductName().compareTo(other.getProductName()) == 0 &&
+                that.getStoreName().compareTo(other.getStoreName()) == 0 &&
+                that.getCategory().compareTo(other.getCategory()) == 0;
+        //&& purchaseType == that.purchaseType;
     }
 }

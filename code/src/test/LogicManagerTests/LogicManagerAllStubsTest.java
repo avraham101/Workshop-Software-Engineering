@@ -8,13 +8,10 @@ import Stubs.StoreStub;
 import Stubs.SubscribeStub;
 import Stubs.UserStub;
 import Systems.HashSystem;
-import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
-import Systems.SupplySystem.SupplySystem;
 import org.junit.Before;
 import org.junit.Test;
-import org.omg.CORBA.DATA_CONVERSION;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -274,59 +271,73 @@ public class LogicManagerAllStubsTest {
         expected.add(data.getProduct((Data.NULL_PURCHASE)));
     }
 
-
     /**
      * use case 2.5 - view specific product
      */
     protected void testViewSpecificProduct() {
         testViewSpecificProductWrongSearch();
-        testViewSpecificProductWrongSearch();
-        testViewSpecificProductSearchNone();
-        testViewSpecificProductSearchByName();
-        testViewSpecificProductSearchByCategory();
-        testViewSpecificProductSearchByKeyWord();
-        testViewSpecificProductFillterMin();
-        testViewSpecificProductFillterMax();
-        testViewSpecificProductFillterCategory();
+        testViewSpecificProductWrongFilter();
+        testViewSpecificProductSearchAndFilter();
     }
 
     /**
-     * part of use case 2.5 - view specific product
+     * part of use case 2.5 - view spesific products
      */
-    private void testViewSpecificProductWrongSearch() {
-        //TODO FAIL
+    protected void testViewSpecificProductWrongSearch() {
+        Filter filter = data.getFilter(Data.NULL_SEARCH);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        assertTrue(products.isEmpty());
     }
 
-    private void testViewSpecificProductWrongFillter() {
-        //TODO FAIL
+    /**
+     * part of use case 2.5 - view spesific products
+     */
+    protected void testViewSpecificProductWrongFilter() {
+        Filter filter = data.getFilter(Data.NULL);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        assertTrue(products.isEmpty());
+
+        filter = data.getFilter(Data.NULL_VALUE);
+        products = logicManager.viewSpecificProducts(filter);
+        assertTrue(products.isEmpty());
+
+        filter = data.getFilter(Data.NEGATIVE_MIN);
+        products = logicManager.viewSpecificProducts(filter);
+        assertTrue(products.isEmpty());
+
+        filter = data.getFilter(Data.NEGATIVE_MAX);
+        products = logicManager.viewSpecificProducts(filter);
+        assertTrue(products.isEmpty());
+
+        filter = data.getFilter(Data.NULL_CATEGORY);
+        products = logicManager.viewSpecificProducts(filter);
+        assertTrue(products.isEmpty());
     }
 
-    private void testViewSpecificProductSearchNone() {
-        //TODO SUCCESS
-    }
+    /**
+     * part of use case 2.5 - view spesific products
+     */
+    protected void testViewSpecificProductSearchAndFilter() {
+        Filter filter = data.getFilter(Data.VALID);
+        filter.setSearch(Search.NONE);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        assertNotNull(products);
+        assertTrue(products.isEmpty());
 
-    private void testViewSpecificProductSearchByName() {
-        //TODO SUCCESS
-    }
+        filter.setSearch(Search.PRODUCT_NAME);
+        products = logicManager.viewSpecificProducts(filter);
+        assertNotNull(products);
+        assertTrue(products.isEmpty());
 
-    private void testViewSpecificProductSearchByCategory() {
-        //TODO SUCCESS
-    }
+        filter.setSearch(Search.KEY_WORD);
+        products = logicManager.viewSpecificProducts(filter);
+        assertNotNull(products);
+        assertTrue(products.isEmpty());
 
-    private void testViewSpecificProductSearchByKeyWord() {
-        //TODO SUCCESS
-    }
-
-    private void testViewSpecificProductFillterMin() {
-        //TODO SUCCESS
-    }
-
-    private void testViewSpecificProductFillterMax() {
-        //TODO SUCCESS
-    }
-
-    private void testViewSpecificProductFillterCategory() {
-        //TODO SUCCESS
+        filter.setSearch(Search.CATEGORY);
+        products = logicManager.viewSpecificProducts(filter);
+        assertNotNull(products);
+        assertTrue(products.isEmpty());
     }
 
     /**

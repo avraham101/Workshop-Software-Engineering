@@ -7,6 +7,8 @@ import Domain.*;
 import Systems.HashSystem;
 import org.junit.Before;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 //no stubs full integration
@@ -187,15 +189,140 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override
     protected void testViewSpecificProduct() {
-        super.testViewSpecificProduct();
-        testViewSpecificProductDiscount();
+        testViewSpecificProductWrongSearch();
+        testViewSpecificProductWrongFilter();
+        testViewSpecificProductWrongSearch();
+        testViewSpecificProductWrongFilter();
+        testViewSpecificProductSearchNone();
+        testViewSpecificProductSearchByName();
+        testViewSpecificProductSearchByCategory();
+        testViewSpecificProductSearchByKeyWord();
+        testViewSpecificProductFillterMin();
+        testViewSpecificProductFillterMax();
+        testViewSpecificProductFillterCategory();
     }
 
     /**
      * part of use case 2.5 - view specific product
      */
-    private void testViewSpecificProductDiscount() {
-        //TODO
+    @Override
+    protected void testViewSpecificProductWrongSearch() {
+        super.testViewSpecificProductWrongSearch();
+        //TODO FAIL
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    @Override
+    protected void testViewSpecificProductWrongFilter() {
+        super.testViewSpecificProductWrongFilter();
+        //TODO FAIL
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductSearch(Filter correct, int listSize, Filter wrong) {
+        //SUCCESS
+        List<ProductData> products = logicManager.viewSpecificProducts(correct);
+        assertFalse(products.isEmpty()); //sepose to be 1 product valid
+        assertEquals(listSize, products.size());
+        ProductData result = products.get(0);
+        ProductData expected = data.getProduct(Data.VALID);
+        assertTrue(data.compareProductData(expected, result));
+        //FAIL
+        products = logicManager.viewSpecificProducts(wrong);
+        assertTrue(products.isEmpty());
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductSearchNone() {
+        //SUCCESS ALWAYS
+        Filter filter = data.getFilter(Data.VALID);
+        filter.setSearch(Search.NONE);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        assertFalse(products.isEmpty()); //sepose to be 1 product valid
+        assertEquals(1, products.size());
+        ProductData result = products.get(0);
+        ProductData expected = data.getProduct(Data.VALID);
+        assertTrue(data.compareProductData(expected, result));
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    protected void testViewSpecificProductSearchByName() {
+        Filter correct = data.getFilter(Data.VALID);
+        correct.setSearch(Search.PRODUCT_NAME);
+        Filter wrong = data.getFilter(Data.WRONG_NAME);
+        testViewSpecificProductSearch(correct, 1,wrong);
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductSearchByCategory() {
+        Filter correct = data.getFilter(Data.VALID);
+        correct.setSearch(Search.CATEGORY);
+        Filter wrong = data.getFilter(Data.WRONG_CATEGORY);
+        testViewSpecificProductSearch(correct, 1,wrong);
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductSearchByKeyWord() {
+        Filter correct = data.getFilter(Data.VALID);
+        correct.setSearch(Search.KEY_WORD);
+        Filter wrong = data.getFilter(Data.WRONG_KEY_WORD);
+        testViewSpecificProductSearch(correct, 1,wrong);
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductFillter(Filter correct, Filter wrong) {
+        //SUCCESS
+        List<ProductData> products = logicManager.viewSpecificProducts(correct);
+        assertFalse(products.isEmpty());
+        int size = 0;
+        for(Store s: stores.values()) {
+            size+=s.getProducts().size();
+        }
+        assertEquals(size, products.size());
+        //FAIL
+        products = logicManager.viewSpecificProducts(wrong);
+        assertTrue(products.isEmpty());
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductFillterMin() {
+        Filter correct = data.getFilter(Data.FILTER_MIN);
+        Filter wrong = data.getFilter(Data.NEGATIVE_MIN);
+        testViewSpecificProductFillter(correct, wrong);
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductFillterMax() {
+        Filter correct = data.getFilter(Data.FILTER_MAX);
+        Filter wrong = data.getFilter(Data.NEGATIVE_MAX);
+        testViewSpecificProductFillter(correct, wrong);
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductFillterCategory() {
+        Filter correct = data.getFilter(Data.FILTER_ALL_CATEGORYIES);
+        Filter wrong = data.getFilter(Data.WRONG_CATEGORY);
+        testViewSpecificProductFillter(correct, wrong);
     }
 
 }

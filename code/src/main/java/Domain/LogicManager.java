@@ -278,7 +278,7 @@ public class LogicManager {
      */
     public List<ProductData> viewSpecificProducts(Filter filter) {
         if(!validFilter(filter))
-            return null;
+            return new LinkedList<>();
         List<ProductData> productsData = new LinkedList<>();
         for(String storeName: stores.keySet()) {
             productsData.addAll(viewProductsInStore(storeName)); //use case 2.4.2
@@ -340,9 +340,9 @@ public class LogicManager {
         List<ProductData> productData = new LinkedList<>();
         for(ProductData p: products) {
             //filter by min price
-            if(filter.getMinPrice()<= p.getPrice()) {
+            if(filter.getMinPrice() <= p.getPrice()) {
                 //filter by max price
-                if(filter.getMaxPrice()>= p.getPrice()) {
+                if(filter.getMaxPrice() >= p.getPrice()) {
                     //filter by category
                     if(filter.getCategory().isEmpty()) { //empty means dont filter by categroy
                         productData.add(p);
