@@ -157,6 +157,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testOpenStoreSucces(){
         assertTrue(logicManager.openStore(data.getStore(Data.VALID)));
+        
     }
 
 

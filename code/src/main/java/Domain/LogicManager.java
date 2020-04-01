@@ -72,6 +72,9 @@ public class LogicManager {
      */
     public boolean register(String userName, String password) {
         //TODO add to logger
+        if(userName == null || password == null) {
+            return false;
+        }
         if(!users.containsKey(userName)){
             try {
                 password = hashSystem.encrypt(password);
@@ -97,6 +100,9 @@ public class LogicManager {
      */
     public boolean login(String userName, String password) {
         //TODO add logger
+        if(userName==null || password==null) {
+            return false;
+        }
         if (users.containsKey(userName)) {
             try {
                 password = hashSystem.encrypt(password);
@@ -145,7 +151,7 @@ public class LogicManager {
      * @return true the store data is ok, otherwise false
      */
     private boolean validStoreDetails(StoreData storeData) {
-        return storeData.getName() != null && storeData.getDiscountPolicy()!=null &&
+        return storeData!=null && storeData.getName() != null && storeData.getDiscountPolicy()!=null &&
                 storeData.getPurchesPolicy()!=null;
     }
 
@@ -154,7 +160,6 @@ public class LogicManager {
      * @param productData -the details of the product
      * @return true if the product was added, false otherwise
      */
-
     public boolean addProductToStore(ProductData productData) {
         //TODO logger
         if(!stores.containsKey(productData.getStoreName()))
