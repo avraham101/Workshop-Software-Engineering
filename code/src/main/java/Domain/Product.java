@@ -5,6 +5,7 @@ import DataAPI.PurchaseTypeData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Product {
     private String name; //unique
@@ -92,4 +93,12 @@ public class Product {
     public void setPurchaseType(PurchaseType purchaseType) {
         this.purchaseType = purchaseType;
     }
+
+    public boolean equal(ProductData product) {
+        return amount == product.getAmount() &&
+                product.getPrice()==price &&
+                name.equals(product.getProductName()) &&
+                category.getName().equals(product.getCategory());
+    }
+
 }

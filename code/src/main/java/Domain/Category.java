@@ -29,7 +29,11 @@ public class Category {
         return products.add(product);
     }
 
-    public void removeProduct(Product product) {
-        products.remove(product);
+    public void removeProduct(String productName) {
+        Product toRemove=null;
+        for(Product p: products)
+            if(p.getName().equals(productName))
+                toRemove=p;
+            products.remove(toRemove);
     }
 }

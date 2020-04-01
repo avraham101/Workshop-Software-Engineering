@@ -1,6 +1,7 @@
 package DataAPI;
 
 import Domain.Discount;
+import Domain.Product;
 import Domain.Review;
 
 import java.util.List;
@@ -24,6 +25,17 @@ public class ProductData {
         this.price=price;
         this.amount=amount;
         this.purchaseType=purchaseType;
+    }
+
+    public ProductData(Product product, String storeName) {
+        this.productName = product.getName();
+        this.storeName = storeName;
+        this.category = product.getCategory().getName();
+        this.reviews = product.getReviews();
+        this.discount = product.getDiscount();
+        this.price = product.getPrice();
+        this.amount = product.getAmount();
+        this.purchaseType = product.getPurchaseType().getPurchaseTypeData();
     }
 
     public String getProductName() {

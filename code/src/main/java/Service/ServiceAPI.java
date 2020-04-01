@@ -34,14 +34,21 @@ public class ServiceAPI {
         return logicManager.login(userName, password);
     }
 
-    //TODO use case 2.4.1
+    /**
+     * use 2.4.1 - show the details about every store
+     * @return - details of all the stores data
+     */
     public List<StoreData> viewStores() {
-        return null;
+        return logicManager.viewStores();
     }
 
-    //TODO use case 2.4.2
-    public List<ProductData> viewProducts(String storeName) {
-        return null;
+    /**
+     * use case 2.4.2 - show the products of a given store
+     * @param storeName - the store that owns the products
+     * @return - list of ProductData of the products in the store
+     */
+    public List<ProductData> viewProductsInStore(String storeName) {
+        return logicManager.viewProductsInStore(storeName);
     }
 
     //TODO use case 2.5
@@ -115,8 +122,8 @@ public class ServiceAPI {
     }
 
     //TODO use case 4.1.2
-    public boolean removeProductFromStore(String storeName,String ProductName){
-        return false;
+    public boolean removeProductFromStore(String storeName,String productName){
+        return logicManager.removeProductFromStore(storeName,productName);
     }
 
     //TODO use case 4.1.3
