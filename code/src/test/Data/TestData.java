@@ -1,4 +1,4 @@
-package LogicManagerTests;
+package Data;
 
 import DataAPI.ProductData;
 import DataAPI.PurchaseTypeData;
@@ -6,6 +6,7 @@ import DataAPI.StoreData;
 import Domain.Discount;
 import Domain.DiscountPolicy;
 import Domain.PurchesPolicy;
+import Data;
 
 import java.util.ArrayList;
 import java.util.HashMap;

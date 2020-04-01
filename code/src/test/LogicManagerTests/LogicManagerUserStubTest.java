@@ -1,12 +1,9 @@
 package LogicManagerTests;
 
+import Data.Data;
 import DataAPI.StoreData;
-import Domain.Admin;
-import Domain.LogicManager;
 import Domain.Store;
 import org.junit.Before;
-
-import java.util.HashMap;
 
 import static org.junit.Assert.*;
 

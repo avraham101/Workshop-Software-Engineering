@@ -1,4 +1,4 @@
-package LogicManagerTests;
+package Data;
 
 public enum Data {
     VALID,

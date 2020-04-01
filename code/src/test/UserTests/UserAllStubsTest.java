@@ -1,6 +1,9 @@
 package UserTests;
+import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
+import Data.TestData;
+import Data.Data;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
@@ -16,6 +19,7 @@ public class UserAllStubsTest {
 
     protected User user;
     protected UserState userState;
+    protected TestData testData;
 
 
     @Before
@@ -45,6 +49,7 @@ public class UserAllStubsTest {
         initSubscribe();
         testLoginSubscribe();
         testOpenStoreSubscribe();
+        testAddProductToStoreSubscribe();
         //last test on list
         testLogoutSubscribe();
     }
@@ -55,6 +60,7 @@ public class UserAllStubsTest {
     protected void testGuest() {
         testLogoutGuest();
         testOpenStoreGuest();
+        testAddProductToStoreGuest();
         //last guest test
         testLoginGuest();
     }
@@ -107,6 +113,21 @@ public class UserAllStubsTest {
         assertEquals(storeData.getName(), store.getName());
     }
 
+    /**
+     * test: use case 4.9.1 -add product to store
+     * guest can't add product
+     */
+    protected void testAddProductToStoreGuest(){
+        assertFalse(user.addProductToStore(testData.getProduct(Data.VALID)));
+    }
+
+    /**
+     *test: use case 4.9.1 - add product to store in subscribe state
+     */
+    protected void testAddProductToStoreSubscribe(){
+        assertTrue(user.addProductToStore(testData.getProduct(Data.VALID)));
+    }
+
     protected class GuestStub extends Guest {
 
         @Override
@@ -122,6 +143,11 @@ public class UserAllStubsTest {
         @Override
         public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
             return null;
+        }
+
+        @Override
+        public boolean addProductToStore(ProductData productData){
+            return false;
         }
     }
 
@@ -145,6 +171,11 @@ public class UserAllStubsTest {
         public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
             return new Store(storeDetails.getName(), new PurchesPolicy(), new DiscountPolicy(),
                     new Permission(this), supplySystem, paymentSystem);
+        }
+
+        @Override
+        public boolean addProductToStore(ProductData productData){
+            return true;
         }
     }
 }

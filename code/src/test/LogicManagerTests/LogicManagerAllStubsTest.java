@@ -1,5 +1,6 @@
 package LogicManagerTests;
 
+import Data.Data;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
