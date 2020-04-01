@@ -49,12 +49,8 @@ public class Store {
         this.purchesPolicy = purchesPolicy;
     }
 
-    public DiscountPolicy getDiscout() {
+    public DiscountPolicy getDiscount() {
         return discount;
-    }
-
-    public void setDiscout(DiscountPolicy discount) {
-        this.discount = discount;
     }
 
     public HashMap<String, Product> getProducts() {

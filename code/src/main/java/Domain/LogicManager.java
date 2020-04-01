@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.List;
 
 public class LogicManager {
     private HashMap<String, Subscribe> users;
@@ -213,7 +212,7 @@ public class LogicManager {
         for (String storeName: stores.keySet()) {
             Store store = stores.get(storeName);
             StoreData storeData = new StoreData(store.getName(),store.getPurchesPolicy(),
-                                                store.getDiscout());
+                                                store.getDiscount());
             data.add(storeData);
         }
         return data;
