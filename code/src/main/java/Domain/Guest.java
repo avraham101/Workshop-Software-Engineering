@@ -51,6 +51,11 @@ public class Guest extends UserState {
         return null;
     }
 
+    /**
+     * use case 4.9.1 -add product
+     * @param productData
+     * @return false for guest
+     */
     @Override
     public boolean addProductToStore(ProductData productData) {
         return false;
