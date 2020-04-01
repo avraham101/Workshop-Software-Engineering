@@ -2,12 +2,12 @@ package AcceptanceTests.AcceptanceTestDataObjects;
 
 import java.util.List;
 
-public class StoreData {
+public class StoreTestData {
     private String storeName;
-    private UserData storeManager;
-    private List<ProductData> products;
+    private UserTestData storeManager;
+    private List<ProductTestData> products;
 
-    public StoreData(String storeName, UserData storeManager, List<ProductData> products) {
+    public StoreTestData(String storeName, UserTestData storeManager, List<ProductTestData> products) {
         this.storeName = storeName;
         this.storeManager = storeManager;
         this.products = products;
@@ -21,19 +21,19 @@ public class StoreData {
         this.storeName = storeName;
     }
 
-    public UserData getStoreManager() {
+    public UserTestData getStoreManager() {
         return storeManager;
     }
 
-    public void setStoreManager(UserData storeManager) {
+    public void setStoreManager(UserTestData storeManager) {
         this.storeManager = storeManager;
     }
 
-    public List<ProductData> getProducts() {
+    public List<ProductTestData> getProducts() {
         return products;
     }
 
-    public void setProducts(List<ProductData> products) {
+    public void setProducts(List<ProductTestData> products) {
         this.products = products;
     }
 }

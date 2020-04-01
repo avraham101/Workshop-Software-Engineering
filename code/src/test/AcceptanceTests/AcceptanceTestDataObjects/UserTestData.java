@@ -1,10 +1,10 @@
 package AcceptanceTests.AcceptanceTestDataObjects;
 
-public class UserData {
+public class UserTestData {
     private String username;
     private String password;
 
-    public UserData(String username, String password) {
+    public UserTestData(String username, String password) {
         this.username = username;
         this.password = password;
     }

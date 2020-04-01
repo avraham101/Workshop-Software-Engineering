@@ -1,15 +1,15 @@
 package AcceptanceTests.AcceptanceTestDataObjects;
 
-public class ReviewData {
-    private UserData writer;
+public class ReviewTestData {
+    private UserTestData writer;
     private String content;
 
-    public ReviewData(UserData writer, String content) {
+    public ReviewTestData(UserTestData writer, String content) {
         this.writer = writer;
         this.content = content;
     }
 
-    public UserData getWriter() {
+    public UserTestData getWriter() {
         return writer;
     }
 
