@@ -179,6 +179,21 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         }
     }
 
+    /**
+     * use case 2.5 - view specific product
+     */
+    @Override
+    protected void testViewSpecificProduct() {
+        super.testViewSpecificProduct();
+        testViewSpecificProductDiscount();
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductDiscount() {
+        //TODO
+    }
 
 }
 

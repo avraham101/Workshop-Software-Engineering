@@ -68,6 +68,7 @@ public class LogicManagerAllStubsTest {
         testLogout();
         testViewDataStores();
         testViewProductsInStore();
+        testViewSpecificProduct();
     }
 
     /**
@@ -274,45 +275,58 @@ public class LogicManagerAllStubsTest {
     }
 
 
-
-
-    protected class UserStub extends User {
-        @Override
-        public boolean login(Subscribe subscribe) {
-            return true;
-        }
-
-        @Override
-        public boolean logout(){
-            return true;
-        }
-
-        @Override
-        public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
-            return new Store(storeDetails.getName(),new PurchesPolicy(),new DiscountPolicy(),
-                    new Permission(new Subscribe(this.getUserName(),this.getPassword())),
-                    supplySystem,paymentSystem);
-        }
-
-        @Override
-        public boolean addProductToStore(ProductData productData){
-            return true;
-        }
-
+    /**
+     * use case 2.5 - view specific product
+     */
+    protected void testViewSpecificProduct() {
+        testViewSpecificProductWrongSearch();
+        testViewSpecificProductWrongSearch();
+        testViewSpecificProductSearchNone();
+        testViewSpecificProductSearchByName();
+        testViewSpecificProductSearchByCategory();
+        testViewSpecificProductSearchByKeyWord();
+        testViewSpecificProductFillterMin();
+        testViewSpecificProductFillterMax();
+        testViewSpecificProductFillterCategory();
     }
 
-    protected class SubscribeStub extends Subscribe {
-
-        public SubscribeStub(String userName, String password) {
-            super(userName, password);
-        }
-
-        @Override
-        public boolean addProductToStore(ProductData productData) {
-            return true;
-        }
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductWrongSearch() {
+        //TODO FAIL
     }
 
+    private void testViewSpecificProductWrongFillter() {
+        //TODO FAIL
+    }
 
+    private void testViewSpecificProductSearchNone() {
+        //TODO SUCCESS
+    }
+
+    private void testViewSpecificProductSearchByName() {
+        //TODO SUCCESS
+    }
+
+    private void testViewSpecificProductSearchByCategory() {
+        //TODO SUCCESS
+    }
+
+    private void testViewSpecificProductSearchByKeyWord() {
+        //TODO SUCCESS
+    }
+
+    private void testViewSpecificProductFillterMin() {
+        //TODO SUCCESS
+    }
+
+    private void testViewSpecificProductFillterMax() {
+        //TODO SUCCESS
+    }
+
+    private void testViewSpecificProductFillterCategory() {
+        //TODO SUCCESS
+    }
 
 }
