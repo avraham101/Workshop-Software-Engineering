@@ -27,6 +27,25 @@ public class Product {
         this.reviews=new ArrayList<>();
     }
 
+    /**
+     * clone function for edit product
+     * @param productData
+     * @param category
+     * parameters to get data from
+     */
+
+    public void edit(ProductData productData, Category category) {
+        this.purchaseType = createPurchaseType(productData.getPurchaseType());
+        category.removeProduct(name);
+        this.category = category;
+        category.addProduct(this);
+        this.amount=productData.getAmount();
+        this.price=productData.getPrice();
+        this.discount=productData.getDiscount();
+    }
+
+
+
     private PurchaseType createPurchaseType(PurchaseTypeData purchaseType) {
         if(purchaseType==PurchaseTypeData.IMMEDDIATE)
             return new PurchaseType();//immediate purchase type we have only one type

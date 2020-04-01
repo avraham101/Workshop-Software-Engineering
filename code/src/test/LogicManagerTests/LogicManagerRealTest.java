@@ -7,9 +7,6 @@ import Domain.*;
 import Systems.HashSystem;
 import org.junit.Before;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import static org.junit.Assert.*;
 
 //no stubs full integration
@@ -73,7 +70,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         StoreData storeData = data.getStore(Data.VALID);
         Store store = stores.get(storeData.getName());
         assertEquals(storeData.getPurchesPolicy(), store.getPurchesPolicy());
-        assertEquals(storeData.getDiscountPolicy(), store.getDiscout());
+        assertEquals(storeData.getDiscountPolicy(), store.getDiscount());
     }
 
     /**
@@ -158,6 +155,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         permission.addType(PermissionType.OWNER);
     }
 
+    @Override
+    protected void testRemoveProductSuccess() {
+        super.testRemoveProductSuccess();
+        Subscribe sub=(Subscribe)currUser.getState();
+        assertFalse(sub.getPermissions().containsKey(data.getProduct(Data.VALID).getProductName()));
+    }
     /**
      * use case 2.4.1 - view all stores details
      */

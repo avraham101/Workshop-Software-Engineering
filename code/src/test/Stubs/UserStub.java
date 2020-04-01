@@ -30,4 +30,8 @@ public class UserStub extends User {
         return true;
     }
 
+    @Override
+    public boolean removeProductFromStore(String storeName, String productName) {
+        return true;
+    }
 }
