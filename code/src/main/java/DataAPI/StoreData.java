@@ -38,4 +38,20 @@ public class StoreData {
     public void setDiscountPolicy(DiscountPolicy discountPolicy) {
         this.discountPolicy = discountPolicy;
     }
+
+    // Overriding equals() to compare two StoreData objects
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof StoreData)) {
+            return false;
+        }
+        StoreData storeData = (StoreData) obj;
+        return (storeData.getName().equals(this.getName()));
+        /**
+         * TODO - need to add equals for the policy.
+         */
+    }
 }
