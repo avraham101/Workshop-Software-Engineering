@@ -1,5 +1,6 @@
 package AcceptanceTests.AcceptanceTests;
 
+import org.junit.After;
 import org.junit.Test;
 
 public class InitialStartTest extends AcceptanceTests {
@@ -26,7 +27,7 @@ public class InitialStartTest extends AcceptanceTests {
         assertFalse(initialStart1);
         assertFalse(bridge.getAdminUsername().equals(username1));
     }
-
+    @After
     public void tearDown(){
         bridge.resetSystem();
     }

@@ -3,6 +3,7 @@ package AcceptanceTests.AcceptanceTests;
 import AcceptanceTests.AcceptanceTestDataObjects.UserData;
 import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsBridge;
 import junit.framework.TestCase;
+
 import java.util.ArrayList;
 import java.util.List;
 

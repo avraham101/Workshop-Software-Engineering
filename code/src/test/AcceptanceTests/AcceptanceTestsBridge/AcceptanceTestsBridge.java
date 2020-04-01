@@ -6,4 +6,7 @@ public interface AcceptanceTestsBridge {
     void resetSystem();
     boolean register(String username, String password);
     void deleteUser(String username);
+    String getCurrentLoggedInUser();
+    void logout(String currUsername);
+    boolean login(String username, String password);
 }

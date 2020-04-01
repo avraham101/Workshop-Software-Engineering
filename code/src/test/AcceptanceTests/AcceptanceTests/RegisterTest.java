@@ -1,6 +1,8 @@
 package AcceptanceTests.AcceptanceTests;
 
+import org.junit.After;
 import org.junit.Test;
+
 
 public class RegisterTest extends AcceptanceTests {
     @Test
@@ -21,7 +23,7 @@ public class RegisterTest extends AcceptanceTests {
         boolean isRegistered = bridge.register(username, password);
         assertFalse(isRegistered);
     }
-
+    @After
     public void tearDown(){
         bridge.deleteUser(users.get(0).getUsername());
     }
