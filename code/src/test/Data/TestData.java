@@ -8,7 +8,7 @@ import Domain.DiscountPolicy;
 import Domain.PurchesPolicy;
 import Data.Data;
 import Domain.Subscribe;
-
+//
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
