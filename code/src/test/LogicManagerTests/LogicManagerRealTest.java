@@ -139,7 +139,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Permission permission=sub.getPermissions().get(validStoreName);
         sub.getPermissions().clear();
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.VALID)));
-        sub.getPermissions().put("Store",permission);
+        sub.getPermissions().put(validStoreName,permission);
     }
 
     /**

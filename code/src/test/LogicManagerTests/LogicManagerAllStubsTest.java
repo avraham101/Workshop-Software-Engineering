@@ -4,6 +4,9 @@ import Data.*;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
+import Stubs.StoreStub;
+import Stubs.SubscribeStub;
+import Stubs.UserStub;
 import Systems.HashSystem;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -231,50 +234,6 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_PERCENTAGE)));
     }
 
-    protected class UserStub extends User {
-        @Override
-        public boolean login(Subscribe subscribe) {
-            return true;
-        }
-
-        @Override
-        public boolean logout(){
-            return true;
-        }
-
-        @Override
-        public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
-            return new Store(storeDetails.getName(),new PurchesPolicy(),new DiscountPolicy(),
-                    new Permission(new Subscribe(this.getUserName(),this.getPassword())),
-                    supplySystem,paymentSystem);
-        }
-
-        @Override
-        public boolean addProductToStore(ProductData productData){
-            return true;
-        }
-
-    }
-
-    protected class SubscribeStub extends Subscribe {
-
-        public SubscribeStub(String userName, String password) {
-            super(userName, password);
-        }
-
-        @Override
-        public boolean addProductToStore(ProductData productData) {
-            return true;
-        }
-    }
-
-    protected class StoreStub extends Store {
-
-        public StoreStub(String name, PurchesPolicy purchesPolicy, DiscountPolicy discount, Permission permissions, SupplySystem supplySystem, PaymentSystem paymentSystem) {
-            super(name, purchesPolicy, discount, permissions, supplySystem, paymentSystem);
-        }
-
-    }
 
 
 }

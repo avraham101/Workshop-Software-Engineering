@@ -2,8 +2,11 @@ package Subscribe;
 
 import Data.Data;
 import Data.TestData;
+import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
+import LogicManagerTests.LogicManagerAllStubsTest;
+import Stubs.StoreStub;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
@@ -61,16 +64,21 @@ public class SubscribeAllStubsTest {
      * test use case 3.2 - Open Store
      * store: Niv shiraze store added.
      */
-    private void openStoreTest() {
+    protected void openStoreTest() {
+        Permission permission = new Permission(data.getSubscribe(Data.VALID));
         Store store = sub.openStore(storeData,paymentSystem,supplySystem);
+        store=new StoreStub(store.getName(),store.getPurchesPolicy(),
+                store.getDiscount(),permission,store.getSupplySystem(),
+                store.getPaymentSystem());
         assertEquals(storeData.getName(), store.getName());
         assertEquals(storeData.getDiscountPolicy(), store.getDiscout());
         assertEquals(storeData.getPurchesPolicy(), store.getPurchesPolicy());
         //test Owner permissions
         HashMap<String, Permission> permissions = sub.getPermissions();
         assertTrue(permissions.containsKey(store.getName()));
-        Permission permission = permissions.get(store.getName());
+        permission = permissions.get(store.getName());
         assertTrue(permission.getPermissionType().contains(PermissionType.OWNER));
+
     }
 
     /**
@@ -106,7 +114,7 @@ public class SubscribeAllStubsTest {
         Permission permission=sub.getPermissions().get(validStoreName);
         sub.getPermissions().clear();
         assertFalse(sub.addProductToStore(data.getProduct(Data.VALID)));
-        sub.getPermissions().put("Store",permission);
+        sub.getPermissions().put(validStoreName,permission);
     }
 
     private void addProductToStoreTestSuccess(){
@@ -114,13 +122,4 @@ public class SubscribeAllStubsTest {
     }
 
 
-
-    private class PermissionStub extends Permission{
-
-        public PermissionStub(Subscribe owner, Store store) {
-            super(owner, store);
-        }
-
-
-    }
 }

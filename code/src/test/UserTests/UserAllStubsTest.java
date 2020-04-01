@@ -4,6 +4,8 @@ import DataAPI.StoreData;
 import Domain.*;
 import Data.TestData;
 import Data.Data;
+import Stubs.GuestStub;
+import Stubs.SubscribeStub;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
@@ -127,56 +129,5 @@ public class UserAllStubsTest {
      */
     protected void testAddProductToStoreSubscribe(){
         assertTrue(user.addProductToStore(testData.getProduct(Data.VALID)));
-    }
-
-    protected class GuestStub extends Guest {
-
-        @Override
-        public boolean login(User user, Subscribe subscribe) {
-            return true;
-        }
-
-        @Override
-        public boolean logout(User user){
-            return false;
-        }
-
-        @Override
-        public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
-            return null;
-        }
-
-        @Override
-        public boolean addProductToStore(ProductData productData){
-            return false;
-        }
-    }
-
-    protected class SubscribeStub extends Subscribe {
-
-        public SubscribeStub(String userName, String password) {
-            super(userName, password);
-        }
-
-        @Override
-        public boolean login(User user, Subscribe subscribe) {
-            return false;
-        }
-
-        @Override
-        public boolean logout(User user){
-            return true;
-        }
-
-        @Override
-        public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
-            return new Store(storeDetails.getName(), new PurchesPolicy(), new DiscountPolicy(),
-                    new Permission(this), supplySystem, paymentSystem);
-        }
-
-        @Override
-        public boolean addProductToStore(ProductData productData){
-            return true;
-        }
     }
 }
