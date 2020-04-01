@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.List;
 import java.util.logging.Level;
 
 public class LogicManager {
@@ -276,6 +275,12 @@ public class LogicManager {
             return false;
         return current.removeProductFromStore(storeName,productName);
     }
+
+    /**
+     * edit product in store if exist
+     * @param productData the product details to edit
+     * @return if the product was updated successfully
+     */
 
     public boolean editProductFromStore(ProductData productData) {
         //TODO logger

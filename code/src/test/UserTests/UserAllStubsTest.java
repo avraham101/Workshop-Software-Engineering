@@ -75,7 +75,7 @@ public class UserAllStubsTest {
      * test use case 2.3 - Login
      */
     protected void testLoginGuest() {
-        assertTrue(user.login(new Subscribe("niv","shirazi")));
+        assertTrue(user.login(data.getSubscribe(Data.VALID)));
     }
 
     /**

@@ -22,12 +22,12 @@ public class UserRealTest extends UserAllStubsTest{
 
     /**
      * test use case 2.3 - Login
-     * user: niv shirazi
+     * user: Yuval Sabag
      */
     protected void testLoginGuest(){
         super.testLoginGuest();
-        assertEquals(user.getPassword(),"shirazi");
-        assertEquals(user.getUserName(),"niv");
+        assertEquals(user.getPassword(),data.getSubscribe(Data.VALID).getPassword());
+        assertEquals(user.getUserName(),data.getSubscribe(Data.VALID).getName());
     }
 
 
@@ -48,7 +48,7 @@ public class UserRealTest extends UserAllStubsTest{
     @Override
     protected void testRemoveProductFromStoreSubscribe() {
         super.testRemoveProductFromStoreSubscribe();
-        Subscribe sub=(Subscribe)userState;
+        Subscribe sub=(Subscribe)user.getState();
         assertFalse(sub.getPermissions().containsKey(data.getProduct(Data.VALID).getProductName()));
     }
 
@@ -59,7 +59,7 @@ public class UserRealTest extends UserAllStubsTest{
     protected void testEditProductFromStoreSubscribe() {
         super.testEditProductFromStoreSubscribe();
         ProductData product=data.getProduct(Data.EDIT);
-        Subscribe sub=(Subscribe) userState;
+        Subscribe sub=(Subscribe) user.getState();
         assertTrue(sub.getPermissions().get(product.getStoreName()).getStore()
                 .getProducts().get(product.getProductName()).equal(product));
     }

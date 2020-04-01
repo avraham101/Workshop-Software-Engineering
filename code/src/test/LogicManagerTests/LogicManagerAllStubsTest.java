@@ -239,7 +239,7 @@ public class LogicManagerAllStubsTest {
         Store store = stores.get(storeData.getName());
         Permission permission = new Permission(data.getSubscribe(Data.VALID));
         StoreStub storeStub = new StoreStub(store.getName(),store.getPurchesPolicy(),
-                store.getDiscout(),permission,store.getSupplySystem(),
+                store.getDiscount(),permission,store.getSupplySystem(),
                 store.getPaymentSystem());
         permission.setStore(storeStub);
         stores.put(storeData.getName(),storeStub);
