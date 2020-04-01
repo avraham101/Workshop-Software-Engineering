@@ -1,8 +1,6 @@
 package Service;
 
-import DataAPI.CartData;
-import DataAPI.ProductData;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Domain.*;
 import jdk.nashorn.internal.ir.RuntimeNode;
 
@@ -16,12 +14,22 @@ public class ServiceAPI {
         logicManager=new LogicManager();
     }
 
-    //TODO use case 2.2
+    /**
+     * use case 2.2 - Register
+     * @param userName - the user Name
+     * @param password - the user password
+     * @return true if the register complete, otherwise false
+     */
     public boolean register(String userName, String password) {
         return logicManager.register(userName,password);
     }
 
-    //TODO use case 2.3
+    /***
+     * use case 2.3 - Login
+     * @param userName - the user Name
+     * @param password - the user password
+     * @return true if the user is logged to the system, otherwise false
+     */
     public boolean login(String userName, String password) {
         return logicManager.login(userName, password);
     }
@@ -63,19 +71,27 @@ public class ServiceAPI {
     }
 
     //TODO use case 2.8
-    public boolean purchaseCart(){
+    public boolean purchaseCart(PaymentData paymentData, DeliveryData deliveryData){
         return false;
     }
 
     //TODO use case 3.1
+
+    /**
+     * use case 3.1 - Logout
+     * @return true if the user logout
+     */
     public boolean logout(){
-        return false;
+        return logicManager.logout();
     }
 
-    //TODO use case 3.2
-    //store data same data as use case 2.4.1
+    /***
+     * use case 3.2 - Open Store
+     * @param storeDetails - the details of the store
+     * @return true if store is created
+     */
     public boolean openStore(StoreData storeDetails){
-        return false;
+        return logicManager.openStore(storeDetails);
     }
 
     //TODO use case 3.3
@@ -94,8 +110,8 @@ public class ServiceAPI {
     }
 
     //TODO use case 4.1.1
-    public boolean addProductToStore(String storeName,ProductData productData){
-        return false;
+    public boolean addProductToStore(ProductData productData){
+        return logicManager.addProductToStore(productData);
     }
 
     //TODO use case 4.1.2
@@ -104,7 +120,7 @@ public class ServiceAPI {
     }
 
     //TODO use case 4.1.3
-    public boolean EditProductFromoStore(String storeName,ProductData productData){
+    public boolean EditProductFromoStore(ProductData productData){
         return false;
     }
 
@@ -129,7 +145,7 @@ public class ServiceAPI {
     }
 
     //TODO use case 4.9.1
-    public List<RuntimeNode.Request> watchRequestsOfStore(String storeName){
+    public List<Request> watchRequestsOfStore(String storeName){
         return null;
     }
 

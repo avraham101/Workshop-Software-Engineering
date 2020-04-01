@@ -1,18 +1,36 @@
 package Domain;
 
+import DataAPI.ProductData;
+import DataAPI.PurchaseTypeData;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Product {
     private String name; //unique
+    private int amount;
+    private double price;
     private List<Discount> discount;
-    private PurchesType purches;
+    private PurchaseType purchaseType;
     private Category category;
     private List<Review> reviews;
 
-    public Product(String name, PurchesType purches, Category category) {
-        this.name = name;
-        this.purches = purches;
+    public Product(ProductData productData, Category category) {
+        this.name = productData.getProductName();
+        this.purchaseType = createPurchaseType(productData.getPurchaseType());
         this.category = category;
+        category.addProduct(this);
+        this.amount=productData.getAmount();
+        this.price=productData.getPrice();
+        this.discount=productData.getDiscount();
+        this.reviews=new ArrayList<>();
+    }
+
+    private PurchaseType createPurchaseType(PurchaseTypeData purchaseType) {
+        if(purchaseType==PurchaseTypeData.IMMEDDIATE)
+            return new PurchaseType();//immediate purchase type we have only one type
+        return null;
     }
 
     public String getName() {
@@ -31,12 +49,12 @@ public class Product {
         this.discount = discount;
     }
 
-    public PurchesType getPurches() {
-        return purches;
+    public PurchaseType getPurchaseType() {
+        return purchaseType;
     }
 
-    public void setPurches(PurchesType purches) {
-        this.purches = purches;
+    public void setPurches(PurchaseType purchases) {
+        this.purchaseType = purchases;
     }
 
     public Category getCategory() {
@@ -55,4 +73,32 @@ public class Product {
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setPurchaseType(PurchaseType purchaseType) {
+        this.purchaseType = purchaseType;
+    }
+
+    public boolean equal(ProductData product) {
+        return amount == product.getAmount() &&
+                product.getPrice()==price &&
+                name.equals(product.getProductName()) &&
+                category.getName().equals(product.getCategory());
+    }
+
 }

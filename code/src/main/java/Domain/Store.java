@@ -1,7 +1,8 @@
 package Domain;
 
+import DataAPI.ProductData;
 import Systems.PaymentSystem.PaymentSystem;
-import Systems.SupplySystem;
+import Systems.SupplySystem.SupplySystem;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,14 +20,17 @@ public class Store {
     private PaymentSystem paymentSystem;
 
     public Store(String name, PurchesPolicy purchesPolicy, DiscountPolicy discount,
-                 HashMap<String, Permission> permissions, SupplySystem supplySystem,
+                 Permission permission, SupplySystem supplySystem,
                  PaymentSystem paymentSystem) {
         this.name = name;
         this.purchesPolicy = purchesPolicy;
         this.discount = discount;
-        this.permissions = permissions;
+        this.permissions = new HashMap<>();
+        this.permissions.put(permission.getOwner().getName(), permission);
         this.supplySystem = supplySystem;
         this.paymentSystem = paymentSystem;
+        this.products=new HashMap<>();
+        this.categoryList=new HashMap<>();
     }
 
     public String getName() {
@@ -99,5 +103,25 @@ public class Store {
 
     public void setPaymentSystem(PaymentSystem paymentSystem) {
         this.paymentSystem = paymentSystem;
+    }
+
+    public DiscountPolicy getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(DiscountPolicy discount) {
+        this.discount = discount;
+    }
+
+    public boolean addProduct(ProductData productData) {
+        if(products.containsKey(productData.getProductName()))
+            return false;
+        String categoryName=productData.getCategory();
+        if(!categoryList.containsKey(categoryName)){
+            categoryList.put(categoryName,new Category(categoryName));
+        }
+        Product product=new Product(productData,categoryList.get(categoryName));
+        products.put(productData.getProductName(),product);
+        return true;
     }
 }

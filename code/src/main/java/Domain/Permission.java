@@ -8,6 +8,11 @@ public class Permission {
     private Store store;
     private HashSet<PermissionType> permissionType;
 
+    public Permission(Subscribe owner) {
+        this.owner = owner;
+        permissionType=new HashSet<>();
+    }
+
     public Permission(Subscribe owner, Store store) {
         this.owner = owner;
         this.store = store;
@@ -36,6 +41,34 @@ public class Permission {
 
     public void setPermissionType(HashSet<PermissionType> permissionType) {
         this.permissionType = permissionType;
+    }
+
+    /**
+     * Use case 3.2
+     * @param type - the permission type
+     * @return true if the permission doesnt exits
+     */
+    public boolean addType(PermissionType type) {
+        if(this.permissionType.contains(type))
+            return false;
+        this.permissionType.add(type);
+        return true;
+    }
+
+    /**
+     * check if user has permission to CRUD products of store
+     * @return true if user has permission to CRUD products of store
+     */
+    public boolean canAddProduct() {
+        return permissionType.contains(PermissionType.OWNER)||
+                permissionType.contains(PermissionType.PRODUCTS_INVENTORY);
+    }
+
+    public boolean removeType(PermissionType type){
+        if(!this.permissionType.contains(type))
+            return false;
+        this.permissionType.remove(type);
+        return true;
     }
 }
 
