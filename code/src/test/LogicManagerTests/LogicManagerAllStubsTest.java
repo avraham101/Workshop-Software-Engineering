@@ -62,6 +62,7 @@ public class LogicManagerAllStubsTest {
         testLogin();
         testOpenStore();
         testAddProduct();
+        testViewSpecificProduct();
         testLogout();
         testViewDataStores();
         testViewProductsInStore();
@@ -170,31 +171,6 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * use case 2.4.2 - view the products in some store test
-     */
-    protected void testViewProductsInStore() {
-        List<ProductData> expected = new LinkedList<>();
-        String storeName = data.getStore(Data.VALID).getName();
-        assertEquals(expected, logicManager.viewProductsInStore(storeName));
-
-        expected.add(data.getProduct(Data.NULL_CATEGORY));
-        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.remove(data.getProduct(Data.NULL_CATEGORY));
-
-        expected.add(data.getProduct((Data.NULL_NAME)));
-        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.add(data.getProduct((Data.NULL_NAME)));
-
-        expected.add(data.getProduct((Data.NULL_DISCOUNT)));
-        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.add(data.getProduct((Data.NULL_DISCOUNT)));
-
-        expected.add(data.getProduct((Data.NULL_PURCHASE)));
-        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.add(data.getProduct((Data.NULL_PURCHASE)));
-    }
-
-    /**
      * part of use case 2.3 - Login
      */
     protected void testLoginSuccess() {
@@ -270,16 +246,6 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.OVER_100_PERCENTAGE)));
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.WRONG_DISCOUNT)));
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_PERCENTAGE)));
-    }
-
-    /**
-     * use case 2.4.1 - view all stores details
-     */
-    protected void testViewDataStores() {
-        List<StoreData> expected = new LinkedList<>();
-        expected.add(data.getStore(Data.VALID));
-        assertEquals(expected, logicManager.viewStores());
-        assertNotEquals(null, logicManager.viewStores());
     }
 
     /**

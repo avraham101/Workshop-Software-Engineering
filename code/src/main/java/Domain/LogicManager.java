@@ -337,7 +337,7 @@ public class LogicManager {
                     break;
                 case KEY_WORD:
                     String productName = product.getProductName();
-                    if(Utils.editDistDP(productName,value,productName.length(),value.length())>= distance)
+                    if(Utils.editDistDP(productName,value,productName.length(),value.length())<= distance)
                         output.add(product);
                     break;
             }

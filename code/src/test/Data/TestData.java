@@ -5,8 +5,6 @@ import DataAPI.PurchaseTypeData;
 import DataAPI.StoreData;
 import Domain.*;
 
-import Data.Data;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -115,7 +113,7 @@ public class TestData {
                 -1,null));
         filters.put(Data.FILTER_MIN, new Filter(Search.NONE,"",0,Double.MAX_VALUE,""));
         filters.put(Data.FILTER_MAX, new Filter(Search.NONE,"",0,Double.MAX_VALUE,""));
-        filters.put(Data.FILTER_ALL_CATEGORYIES, new Filter(Search.NONE,"",0,
+        filters.put(Data.FILTER_ALL_CATEGORIES, new Filter(Search.NONE,"",0,
                 Double.MAX_VALUE,""));
 
     }
