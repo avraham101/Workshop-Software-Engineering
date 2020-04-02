@@ -1,7 +1,6 @@
 import Data.Data;
 import Data.TestData;
 import DataAPI.ProductData;
-import DataAPI.PurchaseTypeData;
 import Domain.*;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
