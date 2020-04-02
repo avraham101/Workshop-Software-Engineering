@@ -3,12 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="c10b92c6-f0e8-420a-a9b7-6d8013fc24c9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/PermissionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/PermissionType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/Data/TestData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Data/TestData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerRealTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerRealTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Domain/LogicManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Domain/LogicManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Domain/PermissionType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Domain/PermissionType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/Data/TestData.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/Data/TestData.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/test-classes/LogicManagerTests/LogicManagerAllStubsTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/LogicManagerTests/LogicManagerAllStubsTest.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/test-classes/LogicManagerTests/LogicManagerRealTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/LogicManagerTests/LogicManagerRealTest.class" afterDir="false" />
     </list>
@@ -101,40 +99,48 @@
       <option name="project" value="LOCAL" />
       <updated>1585839769217</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="4.9.1&#10;test real and stub LogicManager">
+      <created>1585847158488</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1585847158488</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="." />
     <MESSAGE value="Merge branch 'newBranch'&#10;&#10;# Conflicts:&#10;#&#9;code/.idea/workspace.xml&#10;#&#9;code/src/main/java/Domain/Guest.java&#10;#&#9;code/src/main/java/Domain/LogicManager.java&#10;#&#9;code/src/main/java/Domain/Store.java&#10;#&#9;code/src/main/java/Domain/Subscribe.java&#10;#&#9;code/src/main/java/Domain/User.java&#10;#&#9;code/src/main/java/Domain/UserState.java&#10;#&#9;code/src/test/Data/TestData.java&#10;#&#9;code/src/test/Guest/GuestTest.java&#10;#&#9;code/src/test/LogicManagerTests/LogicManagerAllStubsTest.java&#10;#&#9;code/src/test/LogicManagerTests/LogicManagerRealTest.java&#10;#&#9;code/src/test/Subscribe/SubscribeAllStubsTest.java&#10;#&#9;code/src/test/UserTests/UserAllStubsTest.java" />
     <MESSAGE value="add request" />
-    <option name="LAST_COMMIT_MESSAGE" value="add request" />
+    <MESSAGE value="4.9.1&#10;test real and stub LogicManager" />
+    <option name="LAST_COMMIT_MESSAGE" value="4.9.1&#10;test real and stub LogicManager" />
   </component>
   <component name="WindowStateProjectService">
     <state x="618" y="301" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1585837257339">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="618" y="301" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1536.824@0.0.1536.824" timestamp="1585837257339" />
-    <state x="387" y="0" key="CommitChangelistDialog2" timestamp="1585839768578">
+    <state x="387" y="0" key="CommitChangelistDialog2" timestamp="1585847157424">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="387" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1585839768578" />
-    <state width="746" height="243" key="GridCell.Tab.0.bottom" timestamp="1585847072496">
+    <state x="387" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1585847157424" />
+    <state width="1200" height="247" key="GridCell.Tab.0.bottom" timestamp="1585856171493">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="746" height="243" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1585847072496" />
-    <state width="746" height="243" key="GridCell.Tab.0.center" timestamp="1585847072496">
+    <state width="1200" height="247" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1585856171493" />
+    <state width="1200" height="247" key="GridCell.Tab.0.center" timestamp="1585856171493">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="746" height="243" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1585847072496" />
-    <state width="746" height="243" key="GridCell.Tab.0.left" timestamp="1585847072496">
+    <state width="1200" height="247" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1585856171493" />
+    <state width="1200" height="247" key="GridCell.Tab.0.left" timestamp="1585856171493">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="746" height="243" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1585847072496" />
-    <state width="746" height="243" key="GridCell.Tab.0.right" timestamp="1585847072496">
+    <state width="1200" height="247" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1585856171493" />
+    <state width="1200" height="247" key="GridCell.Tab.0.right" timestamp="1585856171493">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="746" height="243" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1585847072496" />
+    <state width="1200" height="247" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1585856171493" />
     <state width="746" height="243" key="GridCell.Tab.1.bottom" timestamp="1585847072496">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -163,10 +169,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="249" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1585837235931" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1585839838649">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1585847162823">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1585839838649" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1585847162823" />
     <state x="578" y="329" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1585838595751">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

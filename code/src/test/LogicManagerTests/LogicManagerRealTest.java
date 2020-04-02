@@ -184,6 +184,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     private void testStoreViewRequestFail() {
+        assertTrue(logicManager.viewStoreRequest(data.getStore(Data.NULL_NAME).getName()).isEmpty());
     }
 
     /**

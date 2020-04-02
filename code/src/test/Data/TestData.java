@@ -31,6 +31,7 @@ public class TestData {
         users.put(Data.NULL, new Subscribe(null, null));
         users.put(Data.ADMIN,new Subscribe("Admin","Admin"));
         users.put(Data.VALID,new Subscribe("Yuval","Sabag"));
+        users.put(Data.VALID,new Subscribe("Peleg","Avraham"));
         users.put(Data.NULL_NAME, new Subscribe(null, "Admin"));
         users.put(Data.NULL_PASSWORD, new Subscribe("Admin", null));
         users.put(Data.WRONG_NAME, new Subscribe("","Changed_Password"));
@@ -88,6 +89,7 @@ public class TestData {
         stores.put(Data.VALID,new StoreData("Store",new PurchesPolicy(), new DiscountPolicy()));
         stores.put(Data.NULL, null);
         stores.put(Data.NULL_NAME, new StoreData(null,new PurchesPolicy(), new DiscountPolicy()));
+        stores.put(Data.WRONG_STORE, new StoreData(null,new PurchesPolicy(), new DiscountPolicy()));
         stores.put(Data.NULL_PURCHASE, new StoreData("Store",null, new DiscountPolicy()));
         stores.put(Data.NULL_DISCOUNT, new StoreData("Store",new PurchesPolicy(), null));
     }

@@ -238,7 +238,7 @@ public class LogicManagerAllStubsTest {
 
     public void testStoreViewRequest(){
         assertTrue(logicManager.viewStoreRequest(data.getStore(Data.NULL_NAME).getName()).isEmpty());
-        assertTrue(logicManager.viewStoreRequest("That name will never be the name of the store!").isEmpty());
+        assertTrue(logicManager.viewStoreRequest(data.getStore(Data.WRONG_STORE).getName()).isEmpty());
     }
 
     /**
