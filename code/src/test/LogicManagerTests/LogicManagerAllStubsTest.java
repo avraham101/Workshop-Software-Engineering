@@ -8,13 +8,10 @@ import Stubs.StoreStub;
 import Stubs.SubscribeStub;
 import Stubs.UserStub;
 import Systems.HashSystem;
-import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
-import Systems.SupplySystem.SupplySystem;
 import org.junit.Before;
 import org.junit.Test;
-import org.omg.CORBA.DATA_CONVERSION;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -65,10 +62,12 @@ public class LogicManagerAllStubsTest {
         testLogin();
         testOpenStore();
         testAddProduct();
+        testAddProductToCart();
         testLogout();
         testViewDataStores();
         testViewProductsInStore();
     }
+
 
     /**
      * test: use case 1.1 - Init System
@@ -222,20 +221,20 @@ public class LogicManagerAllStubsTest {
     }
 
     protected void testProductSuccess() {
-        assertTrue(logicManager.addProductToStore(data.getProduct(Data.VALID)));
+        assertTrue(logicManager.addProductToStore(data.getProductData(Data.VALID)));
     }
 
     protected void testAddProductFail(){
-        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NULL_NAME)));
-        assertFalse(logicManager.addProductToStore(data.getProduct(Data.WRONG_STORE)));
-        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NULL_CATEGORY)));
-        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NULL_DISCOUNT)));
-        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_AMOUNT)));
-        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_PRICE)));
-        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NULL_PURCHASE)));
-        assertFalse(logicManager.addProductToStore(data.getProduct(Data.OVER_100_PERCENTAGE)));
-        assertFalse(logicManager.addProductToStore(data.getProduct(Data.WRONG_DISCOUNT)));
-        assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_PERCENTAGE)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NULL_NAME)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.WRONG_STORE)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NULL_CATEGORY)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NULL_DISCOUNT)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NEGATIVE_AMOUNT)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NEGATIVE_PRICE)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NULL_PURCHASE)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.OVER_100_PERCENTAGE)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.WRONG_DISCOUNT)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NEGATIVE_PERCENTAGE)));
     }
 
     /**
@@ -256,62 +255,23 @@ public class LogicManagerAllStubsTest {
         String storeName = data.getStore(Data.VALID).getName();
         assertEquals(expected, logicManager.viewProductsInStore(storeName));
 
-        expected.add(data.getProduct(Data.NULL_CATEGORY));
+        expected.add(data.getProductData(Data.NULL_CATEGORY));
         assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.remove(data.getProduct(Data.NULL_CATEGORY));
+        expected.remove(data.getProductData(Data.NULL_CATEGORY));
 
-        expected.add(data.getProduct((Data.NULL_NAME)));
+        expected.add(data.getProductData((Data.NULL_NAME)));
         assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.add(data.getProduct((Data.NULL_NAME)));
+        expected.add(data.getProductData((Data.NULL_NAME)));
 
-        expected.add(data.getProduct((Data.NULL_DISCOUNT)));
+        expected.add(data.getProductData((Data.NULL_DISCOUNT)));
         assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.add(data.getProduct((Data.NULL_DISCOUNT)));
+        expected.add(data.getProductData((Data.NULL_DISCOUNT)));
 
-        expected.add(data.getProduct((Data.NULL_PURCHASE)));
+        expected.add(data.getProductData((Data.NULL_PURCHASE)));
         assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.add(data.getProduct((Data.NULL_PURCHASE)));
+        expected.add(data.getProductData((Data.NULL_PURCHASE)));
     }
 
-
-
-
-    protected class UserStub extends User {
-        @Override
-        public boolean login(Subscribe subscribe) {
-            return true;
-        }
-
-        @Override
-        public boolean logout(){
-            return true;
-        }
-
-        @Override
-        public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
-            return new Store(storeDetails.getName(),new PurchesPolicy(),new DiscountPolicy(),
-                    new Permission(new Subscribe(this.getUserName(),this.getPassword())),
-                    supplySystem,paymentSystem);
-        }
-
-        @Override
-        public boolean addProductToStore(ProductData productData){
-            return true;
-        }
-
-    }
-
-    protected class SubscribeStub extends Subscribe {
-
-        public SubscribeStub(String userName, String password) {
-            super(userName, password);
-        }
-
-        @Override
-        public boolean addProductToStore(ProductData productData) {
-            return true;
-        }
-    }
 
     /**
      * use case 4.1.2 -delete product
@@ -327,13 +287,29 @@ public class LogicManagerAllStubsTest {
 
     private void testRemoveProductFail() {
         assertFalse(logicManager.removeProductFromStore(data.getSubscribe(Data.VALID).getName()
-                ,data.getProduct(Data.VALID).getProductName()));
+                ,data.getProductData(Data.VALID).getProductName()));
     }
 
     protected void testRemoveProductSuccess() {
-        ProductData p=data.getProduct(Data.VALID);
+        ProductData p=data.getProductData(Data.VALID);
         assertTrue(logicManager.removeProductFromStore(p.getStoreName(),p.getProductName()));
     }
 
+    /**
+     *  use case 2.7.4 - add product to cart
+     */
+    protected void testAddProductToCart() {
+        testAddProductToCartInvalidStore();
+    }
 
+    /**
+     * part of use case 2.7.4 - add product to cart
+     */
+    private void testAddProductToCartInvalidStore() {
+        ProductData product = data.getProductData(Data.NULL_STORE);
+        assertFalse(logicManager.aadProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
+    }
+
+
+    
 }

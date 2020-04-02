@@ -53,4 +53,25 @@ public abstract class UserState {
     public abstract boolean removeProductFromStore(String storeName, String productName);
 
     public abstract boolean editProductFromStore(ProductData productData);
+
+    /**
+     * use case 2.7.4
+     * user add a product to his cart
+     * @param store - the store of the product
+     * @param product - the product to add
+     * @param amount - the amount of the product
+     * @return - true if add, false if not
+     */
+    public boolean addProductToCart(Store store, Product product, int amount) {
+        Basket basket = this.cart.getBasket(store.getName());
+        boolean result = false;
+        if (basket != null) {
+            result = basket.addProduct(product, amount);
+        }
+        else {
+            Basket basket1 = new Basket(store);
+            result = basket1.addProduct(product, amount);
+        }
+        return result;
+    }
 }

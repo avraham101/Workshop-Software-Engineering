@@ -2,9 +2,9 @@ package Data;
 
 public enum Data {
     VALID,
-    VALID1,
     ADMIN,
     NULL,
+    NULL_PRODUCT,
     NULL_NAME,
     NULL_PASSWORD,
     WRONG_NAME,
@@ -12,6 +12,8 @@ public enum Data {
     WRONG_STORE,
     NULL_CATEGORY,
     NULL_DISCOUNT,
+    NULL_STORE,
+    ZERO,
     NEGATIVE_AMOUNT,
     NEGATIVE_PRICE,
     NULL_PURCHASE,

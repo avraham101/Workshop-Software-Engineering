@@ -308,6 +308,7 @@ public class LogicManager {
     }
 
     /**
+     * use case 2.7.2
      * delete product from the cart
      * @param productName - the product to remove
      * @param storeName - the store that sale this product
@@ -352,16 +353,8 @@ public class LogicManager {
         Store store = stores.get(storeName);
         if (store != null) {
             Product product = store.getProduct(productName);
-            if (product != null && amount > 0 && amount < product.getAmount()) {
-                Cart cart = current.getState().getCart();
-                Basket basket = cart.getBasket(storeName);
-                if (basket != null) {
-                    result = basket.addProduct(product, amount);
-                }
-                else {
-                    Basket basket1 = new Basket(store);
-                    basket1.addProduct(product, amount);
-                }
+            if (product != null && amount > 0 && amount <= product.getAmount()) {
+                result = current.addProductToCart(store, product, amount);
             }
         }
         return result;
