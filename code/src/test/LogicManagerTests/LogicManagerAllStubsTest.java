@@ -1,6 +1,7 @@
 package LogicManagerTests;
 
 import Data.*;
+import DataAPI.CartData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
@@ -62,8 +63,11 @@ public class LogicManagerAllStubsTest {
         testLogin();
         testOpenStore();
         testAddProduct();
-        testAddProductToCart();
         testLogout();
+        testAddProductToCart();
+        testWatchCartDetails();
+        testEditProductsInCart();
+        testDeleteProductFromCart();
         testViewDataStores();
         testViewProductsInStore();
     }
@@ -272,7 +276,6 @@ public class LogicManagerAllStubsTest {
         expected.add(data.getProductData((Data.NULL_PURCHASE)));
     }
 
-
     /**
      * use case 4.1.2 -delete product
      */
@@ -294,6 +297,94 @@ public class LogicManagerAllStubsTest {
         ProductData p=data.getProductData(Data.VALID);
         assertTrue(logicManager.removeProductFromStore(p.getStoreName(),p.getProductName()));
     }
+
+    /**
+     * use case 2.7.1 fails tests
+     */
+    protected void testWatchCartDetails() {
+        testWatchCartDetailsNull();
+        testWatchCartDetailsNullStore();
+    }
+
+    /**
+     * use case 2.7.1 fail when the product is null
+     */
+    private void testWatchCartDetailsNull() {
+        ProductData productData = data.getProductData(Data.NULL_PRODUCT);
+        CartData cartData = logicManager.watchCartDetatils();
+        assertFalse(cartData.getProducts().contains(productData));
+    }
+
+    /**
+     * use case 2.7.1 fail when the basket is null
+     */
+    private void testWatchCartDetailsNullStore() {
+        ProductData productData = data.getProductData(Data.NULL_STORE);
+        CartData cartData = logicManager.watchCartDetatils();
+        assertFalse(cartData.getProducts().contains(productData));
+    }
+
+
+    /**
+     * use case 2.7.2 delete product from cart
+     * fails tests
+     */
+    protected void testDeleteProductFromCart() {
+        testDeleteProductFromCartBasketIsNull();
+        testDeleteProductFromCartProductIsNull();
+    }
+
+    /**
+     * use case 2.7.2 delete product from cart
+     * fails test - product is null
+     */
+    private void testDeleteProductFromCartProductIsNull() {
+        ProductData productData = data.getProductData(Data.NULL_PRODUCT);
+        assertFalse(logicManager.deleteFromCart(productData.getProductName(),productData.getStoreName()));
+    }
+
+    /**
+     * use case 2.7.2 delete product from cart
+     * fails test - basket is null
+     */
+    private void testDeleteProductFromCartBasketIsNull() {
+        ProductData productData = data.getProductData(Data.NULL_STORE);
+        assertFalse(logicManager.deleteFromCart(productData.getProductName(),productData.getStoreName()));
+    }
+
+    /**
+     * use case 2.7.3 fail tests
+     */
+    protected void testEditProductsInCart() {
+        testEditProductsInCartBasketIsNull();
+        testEditProductsInCartNegativeAmount();
+        testEditProductsInCartProductIsNull();
+    }
+
+    /**
+     * use case 2.7.3 fail test when the product is null
+     */
+    private void testEditProductsInCartProductIsNull() {
+        ProductData productData = data.getProductData(Data.NULL_PRODUCT);
+        assertFalse(logicManager.editProductInCart(productData.getProductName(),productData.getStoreName(),productData.getAmount()));
+    }
+
+    /**
+     * use case 2.7.3 fail test when the amount is negative
+     */
+    private void testEditProductsInCartNegativeAmount() {
+        ProductData productData = data.getProductData(Data.NULL_STORE);
+        assertFalse(logicManager.editProductInCart(productData.getProductName(),productData.getStoreName(),productData.getAmount()));
+    }
+
+    /**
+     * use case 2.7.3 fail test when the basket is null
+     */
+    private void testEditProductsInCartBasketIsNull() {
+        ProductData productData = data.getProductData(Data.NULL_STORE);
+        assertFalse(logicManager.editProductInCart(productData.getProductName(),productData.getStoreName(),productData.getAmount() + 1));
+    }
+
 
     /**
      *  use case 2.7.4 - add product to cart

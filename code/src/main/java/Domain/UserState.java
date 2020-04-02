@@ -104,7 +104,7 @@ public abstract class UserState {
     public boolean editProductInCart(String productName, String storeName, int newAmount) {
         boolean result = false;
         Basket basket = cart.getBasket(storeName);
-        if (basket != null) {
+        if (basket != null && newAmount > 0) {
             result = basket.editAmount(productName, newAmount);
         }
         return result;
@@ -126,6 +126,7 @@ public abstract class UserState {
         }
         else {
             Basket basket1 = new Basket(store);
+            cart.getBaskets().put(store.getName(),basket1);
             result = basket1.addProduct(product, amount);
         }
         return result;

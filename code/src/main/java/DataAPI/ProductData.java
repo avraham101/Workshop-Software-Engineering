@@ -5,6 +5,7 @@ import Domain.Product;
 import Domain.Review;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ProductData {
     private String productName;
@@ -100,5 +101,25 @@ public class ProductData {
 
     public void setPurchaseType(PurchaseTypeData purchaseType) {
         this.purchaseType = purchaseType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductData that = (ProductData) o;
+        return amount == that.amount &&
+                Double.compare(that.price, price) == 0 &&
+                Objects.equals(productName, that.productName) &&
+                purchaseType == that.purchaseType &&
+                Objects.equals(storeName, that.storeName) &&
+                Objects.equals(category, that.category) &&
+                Objects.equals(reviews, that.reviews) &&
+                Objects.equals(discount, that.discount);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productName, amount, price, purchaseType, storeName, category, reviews, discount);
     }
 }

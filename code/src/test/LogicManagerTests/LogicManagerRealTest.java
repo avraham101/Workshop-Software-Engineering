@@ -1,11 +1,14 @@
 package LogicManagerTests;
 
+import DataAPI.CartData;
 import DataAPI.ProductData;
 import Data.Data;
 import DataAPI.StoreData;
 import Domain.*;
 import Systems.HashSystem;
 import org.junit.Before;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -184,7 +187,44 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * use case 2.7.1 - watch cart details
+     * success test
+     */
+    @Override
+    protected void testWatchCartDetails() {
+        ProductData productData = data.getProductData(Data.VALID);
+        CartData cartData = logicManager.watchCartDetatils();
+        List<ProductData> list = cartData.getProducts();
+        assertEquals(1, list.size());
+        assertEquals(list.get(0).getProductName(), productData.getProductName());
+    }
+
+    /**
+     * use case 2.7.2 - delete product from cart
+     * success test
+     */
+    @Override
+    protected void testDeleteProductFromCart() {
+        ProductData productData = data.getProductData(Data.VALID);
+        assertTrue(logicManager.deleteFromCart(productData.getProductName(),productData.getStoreName()));
+
+    }
+
+    /**
+     * use case 2.7.3 - edit amount of product in cart
+     * success test
+     */
+    @Override
+    protected void testEditProductsInCart() {
+        ProductData productData = data.getProductData(Data.VALID);
+        assertTrue(logicManager.editProductInCart(productData.getProductName(),productData.getStoreName(),1));
+    }
+
+
+
+    /**
      *  use case 2.7.4 - add product to cart
+     *  success test
      */
     @Override
     protected void testAddProductToCart() {
@@ -212,6 +252,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertFalse(logicManager.aadProductToCart(product.getProductName(),
                 product.getStoreName(), product.getAmount()));
     }
+
 
 }
 
