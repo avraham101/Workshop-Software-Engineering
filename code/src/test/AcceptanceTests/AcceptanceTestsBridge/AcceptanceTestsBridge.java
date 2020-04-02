@@ -24,5 +24,6 @@ public interface AcceptanceTestsBridge {
     void addProducts(List<ProductTestData> products);
     void addCartToUser(String username, CartTestData cart0);
     CartTestData getCurrentUsersCart();
-    void deleteFromCurrentUserCart(BasketTestData basketToDeleteFrom, ProductTestData productToDelete);
+    boolean deleteFromCurrentUserCart(BasketTestData basketToDeleteFrom, ProductTestData productToDelete);
+    boolean changeCurrentUserAmountOfProductInCart(BasketTestData basketToChangeAmountIn, ProductTestData productToChangeAmount, int newAmount);
 }

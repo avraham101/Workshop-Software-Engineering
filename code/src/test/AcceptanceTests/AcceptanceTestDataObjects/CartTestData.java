@@ -35,4 +35,11 @@ public class CartTestData {
 
         return baskets != null ? baskets.equals(that.baskets) : that.baskets == null;
     }
+
+    public BasketTestData getBasket(String storeName) {
+        for (BasketTestData basket : baskets)
+            if(basket.getStoreName().equals(storeName))
+                return basket;
+        return null;
+    }
 }
