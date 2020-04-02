@@ -5,6 +5,8 @@ import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.PriceRangeFilterTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.ProductNameFilterTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +14,13 @@ import java.util.HashSet;
 import java.util.List;
 
 public class FilterProductsInStoresTest extends AcceptanceTests {
+
+    @Before
+    public void setUp(){
+        super.setUp();
+        bridge.addStores(stores);
+        bridge.addProducts(products);
+    }
 
     @Test
     public void filterProductsInStoresTestSuccess(){
@@ -64,5 +73,11 @@ public class FilterProductsInStoresTest extends AcceptanceTests {
 
         List<ProductTestData> filteredProducts = bridge.filterProducts(products,filters);
         assertEquals(filteredProducts.size(),0);
+    }
+
+    @After
+    public void tearDown(){
+        bridge.deleteProducts(products);
+        bridge.deleteStores(stores);
     }
 }

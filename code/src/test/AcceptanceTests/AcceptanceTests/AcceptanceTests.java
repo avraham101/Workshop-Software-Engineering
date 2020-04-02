@@ -1,14 +1,13 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.ReviewTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsBridge;
 import junit.framework.TestCase;
+import org.junit.Before;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class AcceptanceTests extends TestCase{
@@ -26,7 +25,9 @@ public abstract class AcceptanceTests extends TestCase{
         setUpUsers();
         setUpProducts();
         setUpStores();
+        setUpCarts();
     }
+
 
     private void setUpUsers() {
         UserTestData user0 = new UserTestData("testUser0","testUser0Pass");
@@ -129,4 +130,33 @@ public abstract class AcceptanceTests extends TestCase{
         for (ProductTestData product : storeProducts)
             product.setStoreName(storeName);
     }
+
+    private void setUpCarts() {
+        List<ProductTestData> basket0Products = products.subList(0,2);
+        List<ProductTestData> basket1Products = Arrays.asList(products.get(4));
+        List<ProductTestData> basket2Products = Arrays.asList(products.get(9));
+
+        BasketTestData basket0 = new BasketTestData(stores.get(0).getStoreName());
+        BasketTestData basket1 = new BasketTestData(stores.get(1).getStoreName());
+        BasketTestData basket2 = new BasketTestData(stores.get(2).getStoreName());
+
+        int[] amounts0 = {12,3,6};
+        int[] amounts1 = {7};
+        int[] amounts2 = {42};
+
+        setUpBasketProductsAndAmounts(basket0,basket0Products, amounts0);
+        setUpBasketProductsAndAmounts(basket1,basket1Products, amounts1);
+        setUpBasketProductsAndAmounts(basket2,basket2Products, amounts2);
+
+        List<BasketTestData> baskets0 = Arrays.asList(basket0,basket1,basket2);
+        users.get(0).getCart().addBasketsToCart(baskets0);
+
+    }
+
+    private void setUpBasketProductsAndAmounts(BasketTestData basket, List<ProductTestData> basketProducts, int[] amounts) {
+        for (int i=0;i<amounts.length;i++)
+            basket.addProductToBasket(basketProducts.get(i),amounts[i]);
+    }
+
+
 }
