@@ -14,7 +14,7 @@ public class UserRealTest extends UserAllStubsTest{
         user=new User();
     }
 
-    //don't need init cause the state is changing in login method
+    //don't need init cause the state is changing in the login method
     @Override
     protected void initSubscribe(){
         return;
