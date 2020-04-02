@@ -53,6 +53,6 @@ public class GuestTest {
      */
 
     private  void addProductTest(){
-        assertFalse(guest.addProductToStore(data.getProduct(Data.VALID)));
+        assertFalse(guest.addProductToStore(data.getProductData(Data.VALID)));
     }
 }

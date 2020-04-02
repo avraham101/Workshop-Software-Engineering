@@ -308,6 +308,7 @@ public class LogicManager {
     }
 
     /**
+     * use case 2.7.2
      * delete product from the cart
      * @param productName - the product to remove
      * @param storeName - the store that sale this product

@@ -123,14 +123,14 @@ public class UserAllStubsTest {
      * guest can't add product
      */
     protected void testAddProductToStoreGuest(){
-        assertFalse(user.addProductToStore(testData.getProduct(Data.VALID)));
+        assertFalse(user.addProductToStore(testData.getProductData(Data.VALID)));
     }
 
     /**
      *test: use case 4.9.1 - add product to store in subscribe state
      */
     protected void testAddProductToStoreSubscribe(){
-        assertTrue(user.addProductToStore(testData.getProduct(Data.VALID)));
+        assertTrue(user.addProductToStore(testData.getProductData(Data.VALID)));
     }
 
     /**
@@ -138,7 +138,7 @@ public class UserAllStubsTest {
      * guest can't do it
      */
     protected void testRemoveProductFromStoreGuest(){
-        ProductData product= testData.getProduct(Data.VALID);
+        ProductData product= testData.getProductData(Data.VALID);
         assertFalse(user.removeProductFromStore(product.getStoreName(),product.getProductName()));
     }
 
@@ -147,7 +147,7 @@ public class UserAllStubsTest {
      * guest can't do it
      */
     protected void testRemoveProductFromStoreSubscribe(){
-        ProductData product= testData.getProduct(Data.VALID);
+        ProductData product= testData.getProductData(Data.VALID);
         assertTrue(user.removeProductFromStore(product.getStoreName(),product.getProductName()));
     }
 

@@ -12,6 +12,8 @@ public enum Data {
     WRONG_STORE,
     NULL_CATEGORY,
     NULL_DISCOUNT,
+    NULL_STORE,
+    ZERO,
     NEGATIVE_AMOUNT,
     NEGATIVE_PRICE,
     NULL_PURCHASE,
