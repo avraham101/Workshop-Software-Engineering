@@ -64,4 +64,18 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         assertTrue(sub.getPermissions().get(product.getStoreName()).getStore()
                 .getProducts().get(product.getProductName()).equal(product));
     }
+
+    /**
+     * use case 4.5 - add manager
+     * check also if the permission was added
+     */
+
+    @Override
+    protected void testAddManagerStoreSuccess() {
+        super.testAddManagerStoreSuccess();
+        assertTrue(sub.getGivenByMePermissions().get(0).getStore().getPermissions()
+                .containsKey(data.getSubscribe(Data.ADMIN).getName()));
+    }
+
+
 }

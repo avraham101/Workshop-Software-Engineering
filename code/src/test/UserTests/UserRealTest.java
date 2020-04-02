@@ -14,7 +14,7 @@ public class UserRealTest extends UserAllStubsTest{
         user=new User();
     }
 
-    //don't need init cause the state is changing in login method
+    //don't need init cause the state is changing in the login method
     @Override
     protected void initSubscribe(){
         return;
@@ -64,7 +64,14 @@ public class UserRealTest extends UserAllStubsTest{
                 .getProducts().get(product.getProductName()).equal(product));
     }
 
-
-
-
+    /**
+     * use case 4.5 - add manager
+     */
+    @Override
+    protected void testAddManagerSubscribe() {
+        super.testAddManagerSubscribe();
+        Subscribe sub=(Subscribe) user.getState();
+        assertTrue(sub.getGivenByMePermissions().get(0).getStore().getPermissions()
+                .containsKey(data.getSubscribe(Data.ADMIN).getName()));
+    }
 }

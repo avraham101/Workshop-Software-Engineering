@@ -78,4 +78,8 @@ public class User {
     }
 
     public Request addRequest(String storeName, String content) { return state.addRequest(storeName, content); }
+
+    public boolean addManager(Subscribe subscribe, String storeName) {
+        return state.addManager(subscribe,storeName);
+    }
 }

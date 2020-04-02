@@ -52,6 +52,7 @@ public class UserAllStubsTest {
         initSubscribe();
         testLoginSubscribe();
         testOpenStoreSubscribe();
+        testAddManagerSubscribe();
         testAddProductToStoreSubscribe();
         testEditProductFromStoreSubscribe();
         testRemoveProductFromStoreSubscribe();
@@ -65,6 +66,7 @@ public class UserAllStubsTest {
     protected void testGuest() {
         testLogoutGuest();
         testOpenStoreGuest();
+        testAddManagerGuest();
         testAddProductToStoreGuest();
         testRemoveProductFromStoreGuest();
         testEditProductFromStoreGuest();
@@ -163,4 +165,17 @@ public class UserAllStubsTest {
     protected void testEditProductFromStoreSubscribe() {
         assertTrue(user.editProductFromStore(data.getProduct(Data.EDIT)));
     }
+
+    /**
+     * test use case 4.5 -addManager
+     */
+
+    protected void testAddManagerGuest(){
+        assertFalse(user.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()));
+    }
+
+    protected void testAddManagerSubscribe(){
+        assertTrue(user.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()));
+    }
+
 }

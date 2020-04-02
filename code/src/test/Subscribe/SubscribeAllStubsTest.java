@@ -44,6 +44,7 @@ public class SubscribeAllStubsTest {
     public void test(){
         loginTest();
         openStoreTest();
+        testAddManagerToStore();
         addProductToStoreTest();
         testEditProduct();
         removeProductFromStoreTest();
@@ -161,6 +162,56 @@ public class SubscribeAllStubsTest {
         assertTrue(sub.editProductFromStore(data.getProduct(Data.EDIT)));
     }
 
+
+    /**
+     * use case 4.5 add manager
+     */
+    protected void testAddManagerToStore(){
+        testAddManagerToStoreFail();
+        testAddManagerStoreSuccess();
+        testAlreadyManager();
+    }
+
+    /**
+     * test we cant add manager twice
+     */
+    private void testAlreadyManager() {
+        assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()));
+    }
+
+    protected void testAddManagerStoreSuccess() {
+        assertTrue(sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()));
+    }
+
+
+    private void testAddManagerToStoreFail() {
+        checkAddManagerHasNoPermission();
+        checkAddManagerNotOwner();
+    }
+
+    /**
+     * check cant add manager without being owner
+     */
+
+    private void checkAddManagerNotOwner() {
+        String validStoreName=data.getProduct(Data.VALID).getStoreName();
+        Permission permission=sub.getPermissions().get(validStoreName);
+        sub.getPermissions().clear();
+        assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),validStoreName));
+        sub.getPermissions().put(validStoreName,permission);
+    }
+
+    /**
+     * check cant add manager without permission
+     */
+
+    private void checkAddManagerHasNoPermission() {
+        String validStoreName = data.getProduct(Data.VALID).getStoreName();
+        Permission permission = sub.getPermissions().get(validStoreName);
+        permission.removeType(PermissionType.OWNER);
+        assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),validStoreName));
+        permission.addType(PermissionType.OWNER);
+    }
 
 
 }

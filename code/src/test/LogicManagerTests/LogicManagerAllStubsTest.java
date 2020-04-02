@@ -61,8 +61,11 @@ public class LogicManagerAllStubsTest {
         testRegister();
         testLogin();
         testOpenStore();
+        testAddManagerToStore();
         testAddProduct();
         testViewSpecificProduct();
+        testEditProduct();
+        testRemoveProductFromStore();
         testLogout();
         testViewDataStores();
         testViewProductsInStore();
@@ -400,6 +403,33 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.editProductFromStore(data.getProduct(Data.OVER_100_PERCENTAGE)));
         assertFalse(logicManager.editProductFromStore(data.getProduct(Data.WRONG_DISCOUNT)));
         assertFalse(logicManager.editProductFromStore(data.getProduct(Data.NEGATIVE_PERCENTAGE)));
+    }
+
+    /**
+     * test : use case 4.5
+     */
+    /**
+     * use case 4.5 add manager
+     */
+    protected void testAddManagerToStore(){
+        testAddManagerToStoreFail();
+        testAddManagerStoreSuccess();
+    }
+
+    protected void testAddManagerStoreSuccess() {
+        assertTrue(logicManager.addManager(data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()));
+    }
+
+    /**
+     * test not existing store or not existing user
+     */
+    protected void testAddManagerToStoreFail() {
+        String storeName=data.getStore(Data.VALID).getName();
+        String userName=data.getSubscribe(Data.ADMIN).getName();
+        //invalid username
+        assertFalse(logicManager.addManager(storeName,storeName));
+        //invalid storeName
+        assertFalse(logicManager.addManager(userName,userName));
     }
 
 }

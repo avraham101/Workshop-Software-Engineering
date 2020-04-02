@@ -118,24 +118,31 @@ public class ServiceAPI {
         return null;
     }
 
-    //TODO use case 4.1.1
+    //use case 4.1.1
     public boolean addProductToStore(ProductData productData){
         return logicManager.addProductToStore(productData);
     }
 
-    //TODO use case 4.1.2
+    //use case 4.1.2
     public boolean removeProductFromStore(String storeName,String productName){
         return logicManager.removeProductFromStore(storeName,productName);
     }
 
-    //TODO use case 4.1.3
+    // use case 4.1.3
     public boolean editProductFromStore(ProductData productData){
         return logicManager.editProductFromStore(productData);
     }
 
+    //TODO use case 4.3
+    public boolean manageOwner(String storeName,String userName){
+        return false;
+    }
+
+
+
     //TODO use case 4.5
     public boolean addManagerToStore(String storeName,String userName){
-        return false;
+        return logicManager.addManager(storeName,userName);
     }
 
     //TODO use case 4.6.1 //talk to yuval before implement

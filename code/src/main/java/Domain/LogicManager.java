@@ -371,6 +371,12 @@ public class LogicManager {
         return productData;
     }
 
+    /**
+     * use case 4.1.3 - edit product
+     * @param productData the product to be edited to
+     * @return if the product was edited successfully
+     */
+
     public boolean editProductFromStore(ProductData productData) {
         //TODO logger
         if(productData==null)
@@ -398,5 +404,28 @@ public class LogicManager {
             }
         }
         return false;
+    }
+
+    /**
+     * use case 4.3
+     * @param storeName the name of the store to be manager of
+     * @param userName the user to be manager of the store
+     * @return
+     */
+    public boolean manageOwner(String storeName, String userName) {
+        return addManager(storeName,userName);
+        //TODO
+    }
+
+    /**
+     * use case 4.5 -add manager
+     * @param storeName name of store to be manager of
+     * @param userName
+     * @return if the manager was added successfully
+     */
+    public boolean addManager(String userName, String storeName) {
+        if(!users.containsKey(userName)||!stores.containsKey(storeName))
+            return false;
+        return current.addManager(users.get(userName),storeName);
     }
 }
