@@ -2,6 +2,7 @@ package Data;
 
 public enum Data {
     VALID,
+    VALID1,
     ADMIN,
     NULL,
     NULL_NAME,

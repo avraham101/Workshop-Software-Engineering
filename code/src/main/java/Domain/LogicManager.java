@@ -358,6 +358,10 @@ public class LogicManager {
                 if (basket != null) {
                     result = basket.addProduct(product, amount);
                 }
+                else {
+                    Basket basket1 = new Basket(store);
+                    basket1.addProduct(product, amount);
+                }
             }
         }
         return result;

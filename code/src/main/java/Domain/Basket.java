@@ -1,9 +1,11 @@
 package Domain;
 
 import java.util.HashMap;
+import java.util.Objects;
+
 
 public class Basket {
-    private Store store;
+    private Store store; // the store of the basket
     private HashMap<Product, Integer> products; // key is the product and the value is the amount of the product in thr basket
 
     /**
@@ -13,25 +15,6 @@ public class Basket {
     public Basket(Store store) {
         this.store = store;
         this.products = new HashMap<>();
-    }
-
-    /**
-     * getters and setters
-     */
-    public Store getStore() {
-        return store;
-    }
-
-    public void setStore(Store store) {
-        this.store = store;
-    }
-
-    public HashMap<Product, Integer> getProducts() {
-        return products;
-    }
-
-    public void setProducts(HashMap<Product, Integer> products) {
-        this.products = products;
     }
 
     /**
@@ -72,12 +55,7 @@ public class Basket {
      * @return - true if added, false if not
      */
     public boolean addProduct(Product product, int amount) {
-        if (products.containsKey(product)) {
-            products.put(product, product.getAmount() + amount);
-        }
-        else {
-            products.put(product,amount);
-        }
+        products.put(product,amount);
         return true; // TODO - need to check policy in the the next version
     }
 
@@ -95,4 +73,36 @@ public class Basket {
         }
         return productToReturn;
     }
+
+    /**
+     * getters and setters
+     */
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+    public HashMap<Product, Integer> getProducts() {
+        return products;
+    }
+
+    public void setProducts(HashMap<Product, Integer> products) {
+        this.products = products;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Basket basket = (Basket) o;
+        return Objects.equals(store, basket.store) &&
+                Objects.equals(products, basket.products);
+    }
+
 }
+
+
+

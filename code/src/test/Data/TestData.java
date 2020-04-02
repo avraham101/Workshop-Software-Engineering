@@ -3,12 +3,9 @@ package Data;
 import DataAPI.ProductData;
 import DataAPI.PurchaseTypeData;
 import DataAPI.StoreData;
-import Domain.Discount;
-import Domain.DiscountPolicy;
-import Domain.PurchesPolicy;
+import Domain.*;
 
 import Data.Data;
-import Domain.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,12 +16,14 @@ public class TestData {
     private HashMap<Data, ProductData> products;
     private HashMap<Data, StoreData> stores;
     private HashMap<Data, List<Discount>> discounts;
+    private HashMap<Data, HashMap<ProductData, Integer>> basket;
 
     public TestData() {
         setUpUsers();
         setUpDiscountData();
         setUpProductData();
         setUpStoreData();
+        setUpBasketData();
 
     }
 
@@ -58,6 +57,8 @@ public class TestData {
         //change data type to enum
         products.put(Data.VALID,new ProductData("peanuts","Store","category"
                 ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
+        products.put(Data.VALID,new ProductData("peanuts","Store","category"
+                ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
         products.put(Data.NULL_NAME,new ProductData(null,"Store","category"
                 ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
         products.put(Data.WRONG_STORE,new ProductData("peanuts","$storeBBB$","category"
@@ -89,6 +90,17 @@ public class TestData {
         stores.put(Data.NULL_NAME, new StoreData(null,new PurchesPolicy(), new DiscountPolicy()));
         stores.put(Data.NULL_PURCHASE, new StoreData("Store",null, new DiscountPolicy()));
         stores.put(Data.NULL_DISCOUNT, new StoreData("Store",new PurchesPolicy(), null));
+    }
+
+    private void setUpBasketData() {
+        basket = new HashMap<Data, HashMap<ProductData, Integer>>();
+        HashMap <ProductData, Integer> productsInBasket = new HashMap<>();
+        productsInBasket.put(products.get(Data.VALID), 100);
+        basket.put(Data.VALID, productsInBasket);
+    }
+
+    public HashMap<ProductData, Integer> getProductsInBasket(Data data) {
+        return basket.get(data);
     }
 
     public Subscribe getSubscribe(Data data) {
