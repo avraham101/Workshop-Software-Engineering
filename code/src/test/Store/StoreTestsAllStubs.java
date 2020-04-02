@@ -5,6 +5,7 @@ import Data.TestData;
 import DataAPI.ProductData;
 import Domain.Category;
 import Domain.Permission;
+import Domain.Review;
 import Domain.Store;
 import Stubs.ProductStub;
 import Systems.PaymentSystem.ProxyPayment;
@@ -14,8 +15,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class StoreTestsAllStubs {
-    Store store;
-    TestData data;
+    protected Store store;
+    protected TestData data;
 
     @Before
     public void setUp(){
@@ -40,6 +41,7 @@ public class StoreTestsAllStubs {
         //add product stub
         testAddProductSameName();
         testAddProductHasCategory();
+        testAddReview();
     }
 
     /**
@@ -63,7 +65,6 @@ public class StoreTestsAllStubs {
     /**
      * test product with duplicate name
      */
-
     private void testAddProductSameName() {
         assertFalse(store.addProduct(data.getProduct(Data.VALID)));
     }
@@ -110,5 +111,24 @@ public class StoreTestsAllStubs {
 
     protected void testSuccessEditProduct(){
         assertTrue(store.editProduct(data.getProduct(Data.EDIT)));
+    }
+
+    /**
+     * use case 3.3 - add re
+     */
+    private void testAddReview() {
+        testAddReviewFail();
+        Review review = data.getReview(Data.VALID);
+        assertTrue(store.addReview(review));
+
+    }
+
+    private void testAddReviewFail() {
+        Review review = data.getReview(Data.NULL);
+        assertFalse(store.addReview(review));
+
+        review = data.getReview(Data.NULL_PRODUCT);
+        assertFalse(store.addReview(review));
+
     }
 }

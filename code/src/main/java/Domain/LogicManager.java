@@ -393,7 +393,7 @@ public class LogicManager {
         if(!validReview(storeName,productName,content))
             return false;
         Store store = stores.get(storeName);
-         if(store!=null) //Store Exists
+         if(store==null) //Store doesn't Exists
             return false;
         if(store.getProduct(productName)==null) //Store as the product
             return false;

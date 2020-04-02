@@ -15,6 +15,7 @@ public class TestData {
     private HashMap<Data, StoreData> stores;
     private HashMap<Data, List<Discount>> discounts;
     private HashMap<Data, Filter> filters;
+    private HashMap<Data, Review> reviwes;
 
     public TestData() {
         setUpUsers();
@@ -22,6 +23,7 @@ public class TestData {
         setUpProductData();
         setUpStoreData();
         setUpFilters();
+        setUpReviews();
     }
 
     private void setUpUsers() {
@@ -117,6 +119,30 @@ public class TestData {
 
     }
 
+    private void setUpReviews() {
+        reviwes = new HashMap<>();
+        Subscribe subscribe = getSubscribe(Data.VALID);
+        ProductData productData = getProduct(Data.VALID);
+        reviwes.put(Data.NULL, null);
+        reviwes.put(Data.VALID,new Review(subscribe.getName(), productData.getStoreName(),
+                productData.getProductName(),"Review"));
+        reviwes.put(Data.NULL_STORE, new Review(subscribe.getName(),null, productData.getProductName(),
+                "Review"));
+        reviwes.put(Data.NULL_PRODUCT, new Review(subscribe.getName(), productData.getStoreName(),
+                null,"Review"));
+        reviwes.put(Data.NULL_CONTENT, new Review(subscribe.getName(), productData.getStoreName(),
+                productData.getProductName(),null));
+        reviwes.put(Data.EMPTY_CONTENT,new Review(subscribe.getName(), productData.getStoreName(),
+                productData.getProductName(),""));
+        productData = getProduct(Data.WRONG_STORE);
+        reviwes.put(Data.WRONG_STORE,new Review(subscribe.getName(), productData.getStoreName(),
+                productData.getProductName(),"Review"));
+        productData = getProduct(Data.WRONG_NAME);
+        reviwes.put(Data.WRONG_PRODUCT,new Review(subscribe.getName(), productData.getStoreName(),
+                productData.getProductName(),"Review"));
+
+    }
+
     public Subscribe getSubscribe(Data data) {
         return users.get(data);
     }
@@ -135,6 +161,10 @@ public class TestData {
 
     public Filter getFilter(Data data) {
         return filters.get(data);
+    }
+
+    public Review getReview(Data data) {
+        return reviwes.get(data);
     }
 
     /**

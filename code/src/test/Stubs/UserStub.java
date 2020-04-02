@@ -8,6 +8,7 @@ import Systems.SupplySystem.SupplySystem;
 import UserTests.UserAllStubsTest;
 
 public class UserStub extends User {
+
     @Override
     public boolean login(Subscribe subscribe) {
         return true;
@@ -37,6 +38,18 @@ public class UserStub extends User {
 
     @Override
     public boolean editProductFromStore(ProductData productData) {
+        return true;
+    }
+
+    /**
+     * use case 3.3 - write review
+     * the function check if a product is perchesed
+     * @param storeName - the store name
+     * @param productName
+     * @return
+     */
+    @Override
+    public boolean isItPurchased(String storeName, String productName) {
         return true;
     }
 }

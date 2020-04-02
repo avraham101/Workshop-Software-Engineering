@@ -330,5 +330,32 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         testViewSpecificProductFillter(correct, wrong);
     }
 
+    /**
+     * use case 3.3 - write review
+     */
+    @Override
+    protected void testWriteReview() {
+        super.testWriteReview();
+        testWriteReviewProductDidntPurchased();
+    }
+
+    /**
+     * part of use case 3.3 - write review
+     */
+    @Override
+    protected void testWriteReviewValid() {
+        super.testWriteReviewValid();
+        Review review = data.getReview(Data.VALID);
+        //TODO add here test for check if user current have this review
+    }
+
+    /**
+     * part of use case 3.3 - write review
+     */
+    private void testWriteReviewProductDidntPurchased() {
+        Review review = data.getReview(Data.WRONG_PRODUCT);
+        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+    }
+
 }
 

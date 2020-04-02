@@ -35,7 +35,6 @@ public class LogicManagerAllStubsTest {
      * example: users.put(Key, new UserStub(...))
      */
 
-
     @Before
     public void setUp() {
         currUser=new UserStub();
@@ -62,11 +61,13 @@ public class LogicManagerAllStubsTest {
         testLogin();
         testOpenStore();
         testAddProduct();
-        testViewSpecificProduct();
+        //TODO add here add product to corrent
+        testWriteReview();
         testLogout();
         testViewDataStores();
         testViewProductsInStore();
     }
+
 
     /**
      * test: use case 1.1 - Init System
@@ -219,9 +220,49 @@ public class LogicManagerAllStubsTest {
         stores.put(storeData.getName(),storeStub);
     }
 
+    /**
+     * use case 3.3 - write review
+     */
+    protected void testWriteReview() {
+        testWriteReviewInvalid();
+        testWriteReviewValid();
+    }
 
     /**
-     * use case 4.1.1 -add product
+     * part of use case 3.3 - write review
+     */
+    private void testWriteReviewInvalid() {
+        Review review = data.getReview(Data.NULL_STORE);
+        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+
+        review = data.getReview(Data.NULL_PRODUCT);
+        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+
+        review = data.getReview(Data.NULL_CONTENT);
+        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+
+        review = data.getReview(Data.EMPTY_CONTENT);
+        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+
+        review = data.getReview(Data.WRONG_STORE);
+        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+
+        review = data.getReview(Data.NULL_PRODUCT);
+        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+
+    }
+
+    /**
+     * part of use case 3.3 - write review
+     */
+    protected void testWriteReviewValid() {
+        Review review = data.getReview(Data.VALID);
+        assertTrue(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+    }
+
+
+    /**
+     * use case 4.1.1 - add product
      */
 
     //TODO: Added
