@@ -53,13 +53,12 @@ public class Guest extends UserState {
 
     /**
      * use case 3.5
-     * @param user - the user who send the request
      * @param storeName - The id of the store
      * @param content - The content of the request
      * @return true if success, false else
      */
     @Override
-    public Request addRequest(User user, String storeName, String content){
+    public Request addRequest(String storeName, String content){
         return null;
     }
 

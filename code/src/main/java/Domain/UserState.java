@@ -50,12 +50,11 @@ public abstract class UserState {
 
     /**
      * use case 3.5
-     * @param user - the user who send the request
      * @param storeName - The id of the store
      * @param content - The content of the request
      * @return request if success, null else
      */
-    public abstract Request addRequest(User user, String storeName, String content);
+    public abstract Request addRequest(String storeName, String content);
 
     public abstract boolean addProductToStore(ProductData productData);
 

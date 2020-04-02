@@ -90,14 +90,13 @@ public class Subscribe extends UserState{
 
     /**
      * use case 3.5
-     * @param user - the user who send the request
      * @param storeName - The id of the store
      * @param content - The content of the request
      * @return true if success, false else
      */
     @Override
-    public Request addRequest(User user, String storeName, String content){
-        Request request = new Request(user.getUserName(), storeName, content);
+    public Request addRequest(String storeName, String content){
+        Request request = new Request(userName, storeName, content);
         requests.add(request);
         return request;
     }

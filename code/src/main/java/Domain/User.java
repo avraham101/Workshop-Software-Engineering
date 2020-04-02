@@ -69,5 +69,5 @@ public class User {
         return state.addProductToStore(productData);
     }
 
-    public Request addRequest(String storeName, String content) { return state.addRequest(this, storeName, content); }
+    public Request addRequest(String storeName, String content) { return state.addRequest(storeName, content); }
 }

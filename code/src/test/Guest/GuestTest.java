@@ -45,6 +45,6 @@ public class GuestTest {
         assertNull(guest.openStore(null, null, null));
     }
 
-    private void addRequest() {assertNull(guest.addRequest(new User(), "Store", "good store"));}
+    private void addRequest() {assertNull(guest.addRequest("Store", "good store"));}
     
 }

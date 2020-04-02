@@ -151,7 +151,7 @@ public class UserAllStubsTest {
         }
 
         @Override
-        public Request addRequest(User user, String store, String content) { return null; }
+        public Request addRequest(String store, String content) { return null; }
     }
 
     protected class SubscribeStub extends Subscribe {
