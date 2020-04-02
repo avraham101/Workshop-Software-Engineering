@@ -14,6 +14,7 @@ public class TestData {
     private HashMap<Data, ProductData> products;
     private HashMap<Data, StoreData> stores;
     private HashMap<Data, List<Discount>> discounts;
+    private HashMap<Data, Filter> filters;
 
     public TestData() {
         setUpUsers();
