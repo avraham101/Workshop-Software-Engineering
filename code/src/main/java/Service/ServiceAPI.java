@@ -166,7 +166,7 @@ public class ServiceAPI {
     }
 
     //TODO use case 4.9.2
-    public boolean answerRequest(Request request, String StoreName, String content){
+    public boolean answerRequest(Request request, String StoreName){
         return false;
     }
 

@@ -63,6 +63,7 @@ public class LogicManagerAllStubsTest {
         testOpenStore();
         testAddManagerToStore();
         testAddProduct();
+        testAddRequest();
         testViewSpecificProduct();
         testEditProduct();
         testRemoveProductFromStore();
