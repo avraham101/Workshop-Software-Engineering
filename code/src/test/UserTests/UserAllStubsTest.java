@@ -149,6 +149,9 @@ public class UserAllStubsTest {
         public boolean addProductToStore(ProductData productData){
             return false;
         }
+
+        @Override
+        public Request addRequest(User user, String store, String content) { return null; }
     }
 
     protected class SubscribeStub extends Subscribe {
