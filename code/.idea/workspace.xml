@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="523a2119-3ead-4241-ba03-867b35de6906" name="Default Changelist" comment="use case 2.7.1&#10;use case 2.7.2 SuccessTests">
+    <list default="true" id="523a2119-3ead-4241-ba03-867b35de6906" name="Default Changelist" comment="use case 2.7.2 - 2.7.3">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/CartTestData.java" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/CartTestData.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditCartTest.java" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditCartTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" />
     </list>
@@ -61,10 +60,12 @@
       <file leaf-file-name="EditCartTest.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditCartTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1002">
-              <caret line="142" column="51" lean-forward="true" selection-start-line="142" selection-start-column="51" selection-end-line="142" selection-end-column="51" />
+            <state relative-caret-position="351">
+              <caret line="13" column="31" lean-forward="true" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#8434#8435#0" expanded="true" />
+                <element signature="e#8494#8495#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -110,8 +111,8 @@
       <file leaf-file-name="AcceptanceTestsBridge.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="567">
-              <caret line="27" column="12" lean-forward="false" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
+            <state relative-caret-position="621">
+              <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -198,9 +199,9 @@
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/UserTestData.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/BasketTestData.java" />
-        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/CartTestData.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditCartTest.java" />
+        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" />
       </list>
     </option>
   </component>
@@ -451,7 +452,7 @@
       <workItem from="1585560642959" duration="6890000" />
       <workItem from="1585652451689" duration="7964000" />
       <workItem from="1585664101943" duration="11921000" />
-      <workItem from="1585748385776" duration="21919000" />
+      <workItem from="1585748385776" duration="27272000" />
     </task>
     <task id="LOCAL-00001" summary="Added Code">
       <created>1585493126984</created>
@@ -579,7 +580,14 @@
       <option name="project" value="LOCAL" />
       <updated>1585807009876</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="use case 2.7.2 - 2.7.3">
+      <created>1585811956360</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1585811956360</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -615,7 +623,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="62567000" />
+    <option name="totallyTimeSpent" value="67920000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -672,7 +680,8 @@
     <MESSAGE value="use case 2.5 - successTest" />
     <MESSAGE value="use case 2.5" />
     <MESSAGE value="use case 2.7.1&#10;use case 2.7.2 SuccessTests" />
-    <option name="LAST_COMMIT_MESSAGE" value="use case 2.7.1&#10;use case 2.7.2 SuccessTests" />
+    <MESSAGE value="use case 2.7.2 - 2.7.3" />
+    <option name="LAST_COMMIT_MESSAGE" value="use case 2.7.2 - 2.7.3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1147,14 +1156,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="567">
-          <caret line="27" column="12" lean-forward="false" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/CartTestData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="642">
@@ -1175,12 +1176,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="621">
+          <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditCartTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1002">
-          <caret line="142" column="51" lean-forward="true" selection-start-line="142" selection-start-column="51" selection-end-line="142" selection-end-column="51" />
+        <state relative-caret-position="351">
+          <caret line="13" column="31" lean-forward="true" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#8434#8435#0" expanded="true" />
+            <element signature="e#8494#8495#0" expanded="true" />
           </folding>
         </state>
       </provider>

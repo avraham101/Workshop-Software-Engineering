@@ -1,13 +1,13 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.BasketTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.CartTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.*;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class EditCartTest extends AcceptanceTests {
 
@@ -120,26 +120,87 @@ public class EditCartTest extends AcceptanceTests {
 
     @Test
     public void changeAmountOfProductInCartFailNonPositiveAmount(){
-        BasketTestData basketToDeleteFrom = cart0.getBaskets().get(0);
-        ProductTestData productToDelete = products.get(1);
+        BasketTestData basketToChangedAmountFrom = cart0.getBaskets().get(0);
+        ProductTestData productToChangedAmount = products.get(1);
         int newAmount0 = Integer.MIN_VALUE;
         int newAmount1 = 0;
-        int expectedAmount = basketToDeleteFrom.getProductsAndAmountInBasket().get(productToDelete);
+        int expectedAmount = basketToChangedAmountFrom.getProductsAndAmountInBasket().get(productToChangedAmount);
 
         boolean isChanged0 = bridge.changeCurrentUserAmountOfProductInCart
-                            (basketToDeleteFrom,productToDelete,newAmount0);
+                            (basketToChangedAmountFrom,productToChangedAmount,newAmount0);
         int actualAmount0 = bridge.getCurrentUsersCart().getBaskets().get(0).
-                            getProductsAndAmountInBasket().get(productToDelete);
+                            getProductsAndAmountInBasket().get(productToChangedAmount);
 
         assertFalse(isChanged0);
         assertEquals(expectedAmount,actualAmount0);
 
         boolean isChanged1 = bridge.changeCurrentUserAmountOfProductInCart
-                            (basketToDeleteFrom,productToDelete,newAmount1);
+                            (basketToChangedAmountFrom,productToChangedAmount,newAmount1);
         int actualAmount1 = bridge.getCurrentUsersCart().getBaskets().get(0).
-                getProductsAndAmountInBasket().get(productToDelete);
+                getProductsAndAmountInBasket().get(productToChangedAmount);
 
         assertFalse(isChanged1);
         assertEquals(expectedAmount,actualAmount1);
+    }
+
+    @Test
+    public void addToCartTestSuccessExistingBasket(){
+        ProductTestData productToAdd = products.get(8);
+        int amount = 10;
+        String storeName = productToAdd.getStoreName();
+
+        boolean isAdded = bridge.addToCurrentUserCart(storeName,productToAdd,amount);
+        assertTrue(isAdded);
+
+        CartTestData currentCart = bridge.getCurrentUsersCart();
+        HashMap<ProductTestData,Integer> productsAndAmount = currentCart.getBasket(storeName)
+                                        .getProductsAndAmountInBasket();
+        assertTrue(productsAndAmount.containsKey(productToAdd));
+        int actualAmount = productsAndAmount.get(productToAdd);
+        assertEquals(amount,actualAmount);
+    }
+
+    @Test
+    public void addToCartTestFailNotExistingStore(){
+        List<ProductTestData> notExistingStoreProducts = products.subList(0,4);
+        ProductTestData productToAdd = products.get(8);
+        StoreTestData notExistingStore = new StoreTestData("notExistingStore",
+                                                            new UserTestData("testUser","testUserPassword"),
+                                                            notExistingStoreProducts);
+        int amount = 10;
+        String storeName = notExistingStore.getStoreName();
+
+        boolean isAdded = bridge.addToCurrentUserCart(storeName,productToAdd,amount);
+        assertFalse(isAdded);
+    }
+
+    @Test
+    public void addToCartTestFailProductNotInStore(){
+        ProductTestData productToAdd = products.get(8);
+        String storeName = stores.get(0).getStoreName();
+        int amount = 10;
+
+        boolean isAdded = bridge.addToCurrentUserCart(storeName,productToAdd,amount);
+        assertFalse(isAdded);
+    }
+
+    @Test
+    public void addToCartFailNonPositiveAmount(){
+        ProductTestData productToAdd = products.get(8);
+        int amount = Integer.MIN_VALUE;
+        String storeName = productToAdd.getStoreName();
+
+        boolean isAdded = bridge.addToCurrentUserCart(storeName,productToAdd,amount);
+        assertFalse(isAdded);
+
+        amount = 0;
+        isAdded = bridge.addToCurrentUserCart(storeName,productToAdd,amount);
+        assertFalse(isAdded);
+
+    }
+
+    @After
+    public void tearDown(){
+        bridge.deleteCartOfUser(user0.getUsername());
     }
 }
