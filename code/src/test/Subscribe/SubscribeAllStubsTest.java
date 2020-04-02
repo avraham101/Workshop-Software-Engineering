@@ -45,7 +45,7 @@ public class SubscribeAllStubsTest {
     }
 
     /**
-     * part of test use case 2.3 - Login
+     * part of test use case 2.3 - Login.
      * test login where all fields are stubs
      */
     protected void loginTest() {
