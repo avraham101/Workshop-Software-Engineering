@@ -2,10 +2,8 @@ package Service;
 
 import DataAPI.*;
 import Domain.*;
-import jdk.nashorn.internal.ir.RuntimeNode;
 
 import java.util.List;
-import java.util.logging.Filter;
 
 public class ServiceAPI {
     private LogicManager logicManager;
@@ -51,10 +49,14 @@ public class ServiceAPI {
         return logicManager.viewProductsInStore(storeName);
     }
 
-    //TODO use case 2.5
-    //filters -> price range, category ,*product rating, *store rating,
+    /**
+     * use case 2.5 - Search product in store
+     * @param filter - the filter chosen
+     * @return - list of products after filer and sorter.
+     */
     public List<ProductData> viewSpasificProducts(Filter filter) {
-        return null;
+        //filters -> price range, category ,*product rating, *store rating,
+        return logicManager.viewSpecificProducts(filter);
     }
 
     //TODO use case 2.7.1

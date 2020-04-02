@@ -3,11 +3,8 @@ package Domain;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Systems.*;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.PaymentSystem.ProxyPayment;
-import Systems.SupplySystem.ProxySupply;
-import Systems.SupplySystem.SupplySystem;
-
+import Systems.PaymentSystem.*;
+import Systems.SupplySystem.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -201,8 +198,9 @@ public class LogicManager {
      */
 
     private boolean validProduct(ProductData productData) {
-        return productData.getProductName()!=null &&productData.getCategory()!=null&& validDiscounts(productData.getDiscount())
-                &&productData.getPrice()>0&&productData.getAmount()>0&&productData.getPurchaseType()!=null;
+        return productData.getProductName()!=null &&productData.getCategory()!=null
+                && validDiscounts(productData.getDiscount()) && productData.getPrice()>0
+                && productData.getAmount()>0 && productData.getPurchaseType()!=null;
     }
 
     /**
@@ -281,6 +279,97 @@ public class LogicManager {
      * @param productData the product details to edit
      * @return if the product was updated successfully
      */
+
+    /**
+     * edit product in store if exist
+     * @param productData the product details to edit
+     * @return if the product was updated successfully
+     */
+
+    /**
+     * use case 2.5 - Search product in store
+     * @param filter - the filter chosen
+     * @return - list of products after filer and sorter.
+     */
+    public List<ProductData> viewSpecificProducts(Filter filter) {
+        if(!validFilter(filter))
+            return new LinkedList<>();
+        List<ProductData> productsData = new LinkedList<>();
+        for(String storeName: stores.keySet()) {
+            productsData.addAll(viewProductsInStore(storeName)); //use case 2.4.2
+        }
+        productsData = searchProducts(productsData,filter.getSearch(),filter.getValue());
+        productsData = filterProducts(productsData,filter);
+        return productsData;
+    }
+
+    /**
+     * use case 2.5 - Search product
+     * @param filter - the filter to check
+     * @return true if filter is valid, otherwise false
+     */
+    private boolean validFilter(Filter filter) {
+        return filter!=null && filter.getSearch()!=null && filter.getValue()!=null
+                && filter.getMinPrice() >= 0  && filter.getMaxPrice()>=0 && filter.getCategory()!=null;
+    }
+
+    /**
+     * use case 2.5 - Search product in store
+     * pre-conditions: the products, search, value is Valid
+     * @param search - the search chosen
+     * @return - list of products after filer and sorter.
+     */
+    private List<ProductData> searchProducts(List<ProductData> products, Search search, String value) {
+        if(search == Search.NONE) {
+            return products;
+        }
+        List<ProductData> output = new LinkedList<>();
+        int distance = 2;
+        for(ProductData product:products) {
+            switch (search) {
+                case CATEGORY:
+                    if(product.getCategory().compareTo(value)==0)
+                        output.add(product);
+                    break;
+                case PRODUCT_NAME:
+                    if(product.getProductName().compareTo(value)==0)
+                        output.add(product);
+                    break;
+                case KEY_WORD:
+                    String productName = product.getProductName();
+                    if(Utils.editDistDP(productName,value,productName.length(),value.length())<= distance)
+                        output.add(product);
+                    break;
+            }
+        }
+        return output;
+    }
+
+    /**
+     * use case 2.5 - Search product in store
+     * pre-conditions: the products, search, value is Valid
+     * @param filter - the filter chosen
+     * @return - list of products after filer and sorter.
+     */
+    private List<ProductData> filterProducts(List<ProductData> products, Filter filter) {
+        List<ProductData> productData = new LinkedList<>();
+        for(ProductData p: products) {
+            //filter by min price
+            if(filter.getMinPrice() <= p.getPrice()) {
+                //filter by max price
+                if(filter.getMaxPrice() >= p.getPrice()) {
+                    //filter by category
+                    if(filter.getCategory().isEmpty()) { //empty means dont filter by categroy
+                        productData.add(p);
+                    }
+                    else if(filter.getCategory().compareTo(p.getCategory())==0) {
+                        productData.add(p);
+                    }
+                }
+            }
+        }
+        return productData;
+    }
 
     public boolean editProductFromStore(ProductData productData) {
         //TODO logger

@@ -62,8 +62,7 @@ public class LogicManagerAllStubsTest {
         testLogin();
         testOpenStore();
         testAddProduct();
-        testEditProduct();
-        testRemoveProductFromStore();
+        testViewSpecificProduct();
         testLogout();
         testViewDataStores();
         testViewProductsInStore();
@@ -172,31 +171,6 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * use case 2.4.2 - view the products in some store test
-     */
-    protected void testViewProductsInStore() {
-        List<ProductData> expected = new LinkedList<>();
-        String storeName = data.getStore(Data.VALID).getName();
-        assertEquals(expected, logicManager.viewProductsInStore(storeName));
-
-        expected.add(data.getProduct(Data.NULL_CATEGORY));
-        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.remove(data.getProduct(Data.NULL_CATEGORY));
-
-        expected.add(data.getProduct((Data.NULL_NAME)));
-        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.add(data.getProduct((Data.NULL_NAME)));
-
-        expected.add(data.getProduct((Data.NULL_DISCOUNT)));
-        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.add(data.getProduct((Data.NULL_DISCOUNT)));
-
-        expected.add(data.getProduct((Data.NULL_PURCHASE)));
-        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.add(data.getProduct((Data.NULL_PURCHASE)));
-    }
-
-    /**
      * part of use case 2.3 - Login
      */
     protected void testLoginSuccess() {
@@ -274,6 +248,99 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.NEGATIVE_PERCENTAGE)));
     }
 
+    /**
+     * use case 2.4.2 - view the products in some store test
+     */
+    protected void testViewProductsInStore() {
+        List<ProductData> expected = new LinkedList<>();
+        String storeName = data.getStore(Data.VALID).getName();
+        assertEquals(expected, logicManager.viewProductsInStore(storeName));
+
+        expected.add(data.getProduct(Data.NULL_CATEGORY));
+        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
+        expected.remove(data.getProduct(Data.NULL_CATEGORY));
+
+        expected.add(data.getProduct((Data.NULL_NAME)));
+        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
+        expected.add(data.getProduct((Data.NULL_NAME)));
+
+        expected.add(data.getProduct((Data.NULL_DISCOUNT)));
+        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
+        expected.add(data.getProduct((Data.NULL_DISCOUNT)));
+
+        expected.add(data.getProduct((Data.NULL_PURCHASE)));
+        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
+        expected.add(data.getProduct((Data.NULL_PURCHASE)));
+    }
+
+    /**
+     * use case 2.5 - view specific product
+     */
+    protected void testViewSpecificProduct() {
+        testViewSpecificProductWrongSearch();
+        testViewSpecificProductWrongFilter();
+        testViewSpecificProductSearchAndFilter();
+    }
+
+    /**
+     * part of use case 2.5 - view spesific products
+     */
+    protected void testViewSpecificProductWrongSearch() {
+        Filter filter = data.getFilter(Data.NULL_SEARCH);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        assertTrue(products.isEmpty());
+    }
+
+    /**
+     * part of use case 2.5 - view spesific products
+     */
+    protected void testViewSpecificProductWrongFilter() {
+        Filter filter = data.getFilter(Data.NULL);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        assertTrue(products.isEmpty());
+
+        filter = data.getFilter(Data.NULL_VALUE);
+        products = logicManager.viewSpecificProducts(filter);
+        assertTrue(products.isEmpty());
+
+        filter = data.getFilter(Data.NEGATIVE_MIN);
+        products = logicManager.viewSpecificProducts(filter);
+        assertTrue(products.isEmpty());
+
+        filter = data.getFilter(Data.NEGATIVE_MAX);
+        products = logicManager.viewSpecificProducts(filter);
+        assertTrue(products.isEmpty());
+
+        filter = data.getFilter(Data.NULL_CATEGORY);
+        products = logicManager.viewSpecificProducts(filter);
+        assertTrue(products.isEmpty());
+    }
+
+    /**
+     * part of use case 2.5 - view spesific products
+     */
+    protected void testViewSpecificProductSearchAndFilter() {
+        Filter filter = data.getFilter(Data.VALID);
+        filter.setSearch(Search.NONE);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        assertNotNull(products);
+        assertTrue(products.isEmpty());
+
+        filter.setSearch(Search.PRODUCT_NAME);
+        products = logicManager.viewSpecificProducts(filter);
+        assertNotNull(products);
+        assertTrue(products.isEmpty());
+
+        filter.setSearch(Search.KEY_WORD);
+        products = logicManager.viewSpecificProducts(filter);
+        assertNotNull(products);
+        assertTrue(products.isEmpty());
+
+        filter.setSearch(Search.CATEGORY);
+        products = logicManager.viewSpecificProducts(filter);
+        assertNotNull(products);
+        assertTrue(products.isEmpty());
+    }
 
     /**
      * use case 4.1.2 -delete product
