@@ -1,12 +1,8 @@
 package UserTests;
 
 import Data.*;
-import DataAPI.StoreData;
+import DataAPI.ProductData;
 import Domain.*;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.PaymentSystem.ProxyPayment;
-import Systems.SupplySystem.ProxySupply;
-import Systems.SupplySystem.SupplySystem;
 import org.junit.Before;
 
 import static org.junit.Assert.*;
@@ -14,7 +10,7 @@ import static org.junit.Assert.*;
 public class UserRealTest extends UserAllStubsTest{
     @Before
     public void setUp(){
-        testData=new TestData();
+        data =new TestData();
         user=new User();
     }
 
@@ -26,19 +22,49 @@ public class UserRealTest extends UserAllStubsTest{
 
     /**
      * test use case 2.3 - Login
-     * user: niv shirazi
+     * user: Yuval Sabag
      */
     protected void testLoginGuest(){
         super.testLoginGuest();
-        assertEquals(user.getPassword(),"shirazi");
-        assertEquals(user.getUserName(),"niv");
+        assertEquals(user.getPassword(),data.getSubscribe(Data.VALID).getPassword());
+        assertEquals(user.getUserName(),data.getSubscribe(Data.VALID).getName());
     }
 
+
+    /**
+     * test 4.1.1 use case -add product
+     */
     @Override
     protected void testAddProductToStoreSubscribe() {
         super.testAddProductToStoreSubscribe();
-        Product product=((Subscribe) user.getState()).getPermissions().get(testData.getStore(Data.VALID).getName()).
-                getStore().getProducts().get(testData.getProduct(Data.VALID).getProductName());
-        assertTrue(product.equal(testData.getProduct(Data.VALID)));
+        Product product=((Subscribe) user.getState()).getPermissions().get(data.getStore(Data.VALID).getName()).
+                getStore().getProducts().get(data.getProduct(Data.VALID).getProductName());
+        assertTrue(product.equal(data.getProduct(Data.VALID)));
     }
+
+    /**
+     * test 4.1.2 use case -
+     */
+    @Override
+    protected void testRemoveProductFromStoreSubscribe() {
+        super.testRemoveProductFromStoreSubscribe();
+        Subscribe sub=(Subscribe)user.getState();
+        assertFalse(sub.getPermissions().containsKey(data.getProduct(Data.VALID).getProductName()));
+    }
+
+    /**
+     * use case 4.1.3 -edit product
+     */
+    @Override
+    protected void testEditProductFromStoreSubscribe() {
+        super.testEditProductFromStoreSubscribe();
+        ProductData product=data.getProduct(Data.EDIT);
+        Subscribe sub=(Subscribe) user.getState();
+        assertTrue(sub.getPermissions().get(product.getStoreName()).getStore()
+                .getProducts().get(product.getProductName()).equal(product));
+    }
+
+
+
+
 }

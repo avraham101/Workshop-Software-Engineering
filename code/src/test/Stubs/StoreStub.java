@@ -18,4 +18,14 @@ public class StoreStub extends Store {
     public boolean addProduct(ProductData productData) {
         return true;
     }
+
+    @Override
+    public boolean removeProduct(String productName) {
+        return true;
+    }
+
+    @Override
+    public boolean editProduct(ProductData productData) {
+        return true;
+    }
 }

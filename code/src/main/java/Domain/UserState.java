@@ -51,4 +51,6 @@ public abstract class UserState {
     public abstract boolean addProductToStore(ProductData productData);
 
     public abstract boolean removeProductFromStore(String storeName, String productName);
+
+    public abstract boolean editProductFromStore(ProductData productData);
 }

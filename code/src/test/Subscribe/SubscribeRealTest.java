@@ -1,6 +1,7 @@
 package Subscribe;
 
 import Data.Data;
+import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.Permission;
 import Domain.PermissionType;
@@ -17,7 +18,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         StoreData storeData=data.getStore(Data.VALID);
         Store store = sub.openStore(storeData,paymentSystem,supplySystem);
         assertEquals(storeData.getName(), store.getName());
-        assertEquals(storeData.getDiscountPolicy(), store.getDiscout());
+        assertEquals(storeData.getDiscountPolicy(), store.getDiscount());
         assertEquals(storeData.getPurchesPolicy(), store.getPurchesPolicy());
         //test Owner permissions
         HashMap<String, Permission> permissions = sub.getPermissions();
@@ -53,5 +54,14 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         sub.getPermissions().put(validStoreName,permission);
     }
 
-
+    /**
+     * use case 4.1.3
+     */
+    @Override
+    protected void testSuccessEditProduct() {
+        super.testSuccessEditProduct();
+        ProductData product=data.getProduct(Data.EDIT);
+        assertTrue(sub.getPermissions().get(product.getStoreName()).getStore()
+                .getProducts().get(product.getProductName()).equal(product));
+    }
 }

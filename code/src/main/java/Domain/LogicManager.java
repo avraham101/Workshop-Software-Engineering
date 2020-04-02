@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.List;
+import java.util.logging.Level;
 
 public class LogicManager {
     private HashMap<String, Subscribe> users;
@@ -75,7 +75,8 @@ public class LogicManager {
      * @return true if the register complete, otherwise false
      */
     public boolean register(String userName, String password) {
-        //TODO add to logger
+        loggerSystem.getEventLogger().logp(Level.INFO, "Logic Manager", "register", "register: {0} {1}",
+                new Object[] { userName, password });
         if(!validName(userName) || !validPassword(password)) {
             return false;
         }
@@ -213,7 +214,7 @@ public class LogicManager {
         for (String storeName: stores.keySet()) {
             Store store = stores.get(storeName);
             StoreData storeData = new StoreData(store.getName(),store.getPurchesPolicy(),
-                                                store.getDiscout());
+                                                store.getDiscount());
             data.add(storeData);
         }
         return data;
@@ -266,11 +267,29 @@ public class LogicManager {
      * remove a product from store if exist
      * @param storeName name of the store to remove the product from
      * @param productName name of product to be removed
-     * @return
+     * @return if the product was removed
      */
     public boolean removeProductFromStore(String storeName, String productName) {
+        //TODO Logger
         if(!stores.containsKey(storeName))
             return false;
         return current.removeProductFromStore(storeName,productName);
+    }
+
+    /**
+     * edit product in store if exist
+     * @param productData the product details to edit
+     * @return if the product was updated successfully
+     */
+
+    public boolean editProductFromStore(ProductData productData) {
+        //TODO logger
+        if(productData==null)
+            return false;
+        if(!stores.containsKey(productData.getStoreName()))
+            return false;
+        if(validProduct(productData))
+            return current.editProductFromStore(productData);
+        return false;
     }
 }
