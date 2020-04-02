@@ -152,4 +152,30 @@ public class Store {
         old.edit(productData,categoryList.get(categoryName));
         return true;
     }
+
+    /**
+     * use case 2.7.4 - add product to cart
+     * use case 3.3 - write review
+     * return a product of the store
+     * @param productName - the name of the product
+     * @return - thr product if exist, null if not
+     */
+    public Product getProduct(String productName) {
+        return products.get(productName);
+    }
+
+    /**
+     * use case 3.3 write review
+     * @param review - the review
+     * @return ture if the review add to store, otherwise false;
+     */
+    public boolean addReview(Review review) {
+        if(review==null)
+            return false;
+        Product p = products.get(review.getProductName());
+        if(p==null)
+            return false;
+        p.addReview(review);
+        return true;
+    }
 }

@@ -84,8 +84,6 @@ public class ServiceAPI {
         return false;
     }
 
-    //TODO use case 3.1
-
     /**
      * use case 3.1 - Logout
      * @return true if the user logout
@@ -104,8 +102,16 @@ public class ServiceAPI {
     }
 
     //TODO use case 3.3
-    public boolean writeReview(String productName,String StoreName,String content){
-        return false;
+
+    /***
+     * use case 3.3 - write review
+     * @param productName - the name of the product name
+     * @param storeName - the store name
+     * @param content - the content name
+     * @return true if the review added, otherwise false
+     */
+    public boolean writeReview(String storeName,String productName, String content){
+        return logicManager.addReview(storeName,productName, content);
     }
 
     //TODO use case 3.5

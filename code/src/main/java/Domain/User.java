@@ -65,15 +65,29 @@ public class User {
         return state.openStore(storeDetails,paymentSystem,supplySystem);
     }
 
+    //TODO write documentation
     public boolean addProductToStore(ProductData productData) {
         return state.addProductToStore(productData);
     }
 
+    //TODO write documentation
     public boolean removeProductFromStore(String storeName, String productName) {
         return state.removeProductFromStore(storeName,productName);
     }
 
+    //TODO write documentation
     public boolean editProductFromStore(ProductData productData) {
         return state.editProductFromStore(productData);
+    }
+
+    /**
+     * use case 3.3 - write review
+     * the function check if a product is perchesed
+     * @param storeName - the store name
+     * @param productName
+     * @return
+     */
+    public boolean isItPurchased(String storeName, String productName) {
+        return state.isItPurchased(storeName, productName);
     }
 }

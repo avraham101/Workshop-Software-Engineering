@@ -381,4 +381,38 @@ public class LogicManager {
             return current.editProductFromStore(productData);
         return false;
     }
+
+    /**
+     * use case 3.3 - write review
+     * @param productName - the product name
+     * @param storeName - the store name
+     * @param content - the content name
+     * @return true if the review added, otherwise false.
+     */
+    public boolean addReview(String storeName,String productName, String content) {
+        if(!validReview(storeName,productName,content))
+            return false;
+        Store store = stores.get(storeName);
+         if(store!=null) //Store Exists
+            return false;
+        if(store.getProduct(productName)==null) //Store as the product
+            return false;
+        if(!current.isItPurchased(storeName,productName)) //Product purchased
+            return false;
+        Review review = new Review(current.getUserName(),storeName,productName,content);
+        return store.addReview(review);
+    }
+
+    /**
+     * use case 3.3 - write review
+     * the function return if a valid correct
+     * @param productName - the product name
+     * @param storeName - the store name
+     * @param content - the content name
+     * @return true if the review is valid, otherwise false.
+     */
+    private boolean validReview(String storeName,String productName, String content) {
+        return storeName!=null && productName!=null && content!=null &&
+                content.isEmpty()==false;
+    }
 }

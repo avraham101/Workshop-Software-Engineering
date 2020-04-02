@@ -48,9 +48,21 @@ public abstract class UserState {
      */
     public abstract Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem);
 
+    //TODO write documentation
     public abstract boolean addProductToStore(ProductData productData);
 
+    //TODO write documentation
     public abstract boolean removeProductFromStore(String storeName, String productName);
 
+    //TODO write documentation
     public abstract boolean editProductFromStore(ProductData productData);
+
+    /**
+     * use case 3.3 - write review
+     * the function check if the product is purchased
+     * @param storeName - the store name
+     * @param productName - the product name
+     * @return true if the product is purchased
+     */
+    public abstract boolean isItPurchased(String storeName, String productName);
 }

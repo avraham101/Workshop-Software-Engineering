@@ -123,6 +123,23 @@ public class Subscribe extends UserState{
         return permissions.get(productData.getStoreName()).getStore().editProduct(productData);
     }
 
+    /**
+     * use case 3.3 - write review
+     * the function check if the product is purchased
+     * @param storeName - the store name
+     * @param productName - the product name
+     * @return true if the product is purchased
+     */
+    @Override
+    public boolean isItPurchased(String storeName, String productName) {
+        for(Purchase p: purchases) {
+            if(p.getStoreName().compareTo(storeName)==0
+                    && p.getStoreName().compareTo(storeName)==0)
+                return true;
+        }
+        return false;
+    }
+
     public void setUserName(String userName) {
         this.userName = userName;
     }

@@ -72,8 +72,21 @@ public class Guest extends UserState {
         return false;
     }
 
+    //TODO write documentation
     @Override
     public boolean editProductFromStore(ProductData productData) {
+        return false;
+    }
+
+    /**
+     * use case 3.3 - write review
+     * the function check if the product is purchased
+     * @param storeName - the store name
+     * @param productName - the product name
+     * @return always false, dosent have purchase history
+     */
+    @Override
+    public boolean isItPurchased(String storeName, String productName) {
         return false;
     }
 }
