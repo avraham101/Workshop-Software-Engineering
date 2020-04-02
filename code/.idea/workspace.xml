@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="eb3eeea8-e429-4028-833a-560b812ca3ff" name="Default Changelist" comment="Meet 4 Yuval Niv Avraham Peleg&#10;finished fixing test for &#10;1.1 admin&#10;2.1 register&#10;2.2 login&#10;3.2 open store&#10;Added more Data.Enums&#10;Added more private function of validation in LogicManger">
+    <list default="true" id="eb3eeea8-e429-4028-833a-560b812ca3ff" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerRealTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerRealTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -330,7 +330,14 @@
       <option name="project" value="LOCAL" />
       <updated>1585818359000</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="use case 3.5">
+      <created>1585819026901</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1585819026901</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -354,57 +361,58 @@
     <MESSAGE value="finished use case 3.2 tests :D" />
     <MESSAGE value="Added enum data for use case add product" />
     <MESSAGE value="Meet 4 Yuval Niv Avraham Peleg&#10;finished fixing test for &#10;1.1 admin&#10;2.1 register&#10;2.2 login&#10;3.2 open store&#10;Added more Data.Enums&#10;Added more private function of validation in LogicManger" />
-    <option name="LAST_COMMIT_MESSAGE" value="Meet 4 Yuval Niv Avraham Peleg&#10;finished fixing test for &#10;1.1 admin&#10;2.1 register&#10;2.2 login&#10;3.2 open store&#10;Added more Data.Enums&#10;Added more private function of validation in LogicManger" />
+    <MESSAGE value="use case 3.5" />
+    <option name="LAST_COMMIT_MESSAGE" value="use case 3.5" />
   </component>
   <component name="WindowStateProjectService">
     <state x="574" y="121" key="#com.intellij.ide.util.MemberChooser" timestamp="1585755964662">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="574" y="121" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1585755964662" />
-    <state x="333" y="0" key="CommitChangelistDialog2" timestamp="1585818994661">
+    <state x="333" y="0" key="CommitChangelistDialog2" timestamp="1585819026108">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="333" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1585818994661" />
-    <state width="1493" height="251" key="GridCell.Tab.0.bottom" timestamp="1585818861111">
+    <state x="333" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1585819026108" />
+    <state width="1493" height="256" key="GridCell.Tab.0.bottom" timestamp="1585822610841">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="251" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1585818861111" />
-    <state width="1493" height="251" key="GridCell.Tab.0.center" timestamp="1585818861111">
+    <state width="1493" height="256" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1585822610841" />
+    <state width="1493" height="256" key="GridCell.Tab.0.center" timestamp="1585822610840">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="251" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1585818861111" />
-    <state width="1493" height="251" key="GridCell.Tab.0.left" timestamp="1585818861111">
+    <state width="1493" height="256" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1585822610840" />
+    <state width="1493" height="256" key="GridCell.Tab.0.left" timestamp="1585822610840">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="251" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1585818861111" />
-    <state width="1493" height="251" key="GridCell.Tab.0.right" timestamp="1585818861111">
+    <state width="1493" height="256" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1585822610840" />
+    <state width="1493" height="256" key="GridCell.Tab.0.right" timestamp="1585822610841">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="251" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1585818861111" />
-    <state width="1493" height="256" key="GridCell.Tab.1.bottom" timestamp="1585815776321">
+    <state width="1493" height="256" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1585822610841" />
+    <state width="1493" height="256" key="GridCell.Tab.1.bottom" timestamp="1585822610841">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="256" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1585815776321" />
-    <state width="1493" height="256" key="GridCell.Tab.1.center" timestamp="1585815776321">
+    <state width="1493" height="256" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1585822610841" />
+    <state width="1493" height="256" key="GridCell.Tab.1.center" timestamp="1585822610841">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="256" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1585815776321" />
-    <state width="1493" height="256" key="GridCell.Tab.1.left" timestamp="1585815776321">
+    <state width="1493" height="256" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1585822610841" />
+    <state width="1493" height="256" key="GridCell.Tab.1.left" timestamp="1585822610841">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="256" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1585815776321" />
-    <state width="1493" height="256" key="GridCell.Tab.1.right" timestamp="1585815776321">
+    <state width="1493" height="256" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1585822610841" />
+    <state width="1493" height="256" key="GridCell.Tab.1.right" timestamp="1585822610841">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="256" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1585815776321" />
+    <state width="1493" height="256" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1585822610841" />
     <state x="481" y="128" key="MultipleFileMergeDialog" timestamp="1585743372223">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="481" y="128" key="MultipleFileMergeDialog/0.0.1536.824@0.0.1536.824" timestamp="1585743372223" />
-    <state x="361" y="133" key="Vcs.Push.Dialog.v2" timestamp="1585818366668">
+    <state x="361" y="133" key="Vcs.Push.Dialog.v2" timestamp="1585819029711">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="133" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1585818366668" />
+    <state x="361" y="133" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1585819029711" />
     <state x="578" y="329" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1585752646668">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

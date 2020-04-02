@@ -60,8 +60,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         testOpenStoreStorePermissions();
     }
 
-
-
     /**
      * part of test use case 3.2 - Open Store
      */
@@ -115,7 +113,15 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     private void testSubscribeAddRequestSuccess() {
-        assertTrue(logicManager.addRequest(data.getStore(Data.VALID).getName(), "The store has not milk"));
+        StoreData storeData = data.getStore(Data.VALID);
+        assertTrue(logicManager.addRequest(storeData.getName(), "good store"));
+
+        Store store = stores.get(storeData.getName());
+        Request request = new Request(currUser.getUserName(), storeData.getName(),"good store");
+        assertEquals(store.getRequests().get(0).getSenderName(), request.getSenderName());
+        assertEquals(store.getRequests().get(0).getStoreName(), request.getStoreName());
+        assertEquals(store.getRequests().get(0).getContent(), request.getContent());
+        assertEquals(store.getRequests().get(0).getComment(), request.getComment());
     }
 
     private void testSubscribeAddRequestFail() {
