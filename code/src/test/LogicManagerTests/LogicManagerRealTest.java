@@ -103,7 +103,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
-     * use case 3.5 -add product
+     * use case 3.5 -add request
      */
     @Override
     public void testAddRequest(){
@@ -116,12 +116,20 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         StoreData storeData = data.getStore(Data.VALID);
         assertTrue(logicManager.addRequest(storeData.getName(), "good store"));
 
-        Store store = stores.get(storeData.getName());
+        // check request saved in the store and user.
         Request request = new Request(currUser.getUserName(), storeData.getName(),"good store");
+
+        Store store = stores.get(storeData.getName());
         assertEquals(store.getRequests().get(0).getSenderName(), request.getSenderName());
         assertEquals(store.getRequests().get(0).getStoreName(), request.getStoreName());
         assertEquals(store.getRequests().get(0).getContent(), request.getContent());
         assertEquals(store.getRequests().get(0).getComment(), request.getComment());
+
+        Subscribe subscribe = users.get(currUser.getUserName());
+        assertEquals(subscribe.getRequests().get(0).getSenderName(), request.getSenderName());
+        assertEquals(subscribe.getRequests().get(0).getStoreName(), request.getStoreName());
+        assertEquals(subscribe.getRequests().get(0).getContent(), request.getContent());
+        assertEquals(subscribe.getRequests().get(0).getComment(), request.getComment());
     }
 
     private void testSubscribeAddRequestFail() {
