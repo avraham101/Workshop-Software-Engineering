@@ -42,4 +42,9 @@ public class SubscribeStub extends Subscribe{
     public boolean editProductFromStore(ProductData productData) {
         return true;
     }
+
+    @Override
+    public boolean addManager(Subscribe youngOwner, String storeName) {
+        return true;
+    }
 }

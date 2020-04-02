@@ -39,4 +39,9 @@ public class UserStub extends User {
     public boolean editProductFromStore(ProductData productData) {
         return true;
     }
+
+    @Override
+    public boolean addManager(Subscribe subscribe, String storeName) {
+        return true;
+    }
 }

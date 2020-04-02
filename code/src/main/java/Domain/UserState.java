@@ -48,9 +48,33 @@ public abstract class UserState {
      */
     public abstract Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem);
 
+    /**
+     * use case 4.1.1
+     * @param productData
+     * @return
+     */
     public abstract boolean addProductToStore(ProductData productData);
 
+    /**
+     * use case 4.1.2
+     * @param storeName
+     * @param productName
+     * @return
+     */
     public abstract boolean removeProductFromStore(String storeName, String productName);
 
+    /**
+     * use case 4.1.3
+     * @param productData
+     * @return
+     */
     public abstract boolean editProductFromStore(ProductData productData);
+
+    /**
+     * use case 4.3
+     * @param subscribe
+     * @param storeName
+     * @return
+     */
+    public abstract boolean addManager(Subscribe subscribe, String storeName);
 }

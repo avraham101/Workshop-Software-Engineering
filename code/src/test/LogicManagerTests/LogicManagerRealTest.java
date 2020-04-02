@@ -204,12 +204,22 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * use case 4.5 - add manager
+     */
+
+    @Override
+    protected void testAddManagerStoreSuccess() {
+        super.testAddManagerStoreSuccess();
+        Subscribe sub=(Subscribe) currUser.getState();
+        assertTrue(sub.getGivenByMePermissions().get(0).getStore().getPermissions()
+                .containsKey(data.getSubscribe(Data.ADMIN).getName()));
+    }
+
+    /**
      * use case 2.5 - view specific product
      */
     @Override
     protected void testViewSpecificProduct() {
-        testViewSpecificProductWrongSearch();
-        testViewSpecificProductWrongFilter();
         testViewSpecificProductWrongSearch();
         testViewSpecificProductWrongFilter();
         testViewSpecificProductSearchNone();

@@ -70,5 +70,10 @@ public class Permission {
         this.permissionType.remove(type);
         return true;
     }
+
+    public boolean canAddOwner() {
+        return permissionType.contains(PermissionType.ADD_OWNER)||
+                permissionType.contains(PermissionType.OWNER);
+    }
 }
 

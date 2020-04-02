@@ -76,4 +76,8 @@ public class User {
     public boolean editProductFromStore(ProductData productData) {
         return state.editProductFromStore(productData);
     }
+
+    public boolean addManager(Subscribe subscribe, String storeName) {
+        return state.addManager(subscribe,storeName);
+    }
 }

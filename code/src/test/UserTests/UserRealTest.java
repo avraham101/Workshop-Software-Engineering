@@ -64,7 +64,14 @@ public class UserRealTest extends UserAllStubsTest{
                 .getProducts().get(product.getProductName()).equal(product));
     }
 
-
-
-
+    /**
+     * use case 4.5 - add manager
+     */
+    @Override
+    protected void testAddManagerSubscribe() {
+        super.testAddManagerSubscribe();
+        Subscribe sub=(Subscribe) user.getState();
+        assertTrue(sub.getGivenByMePermissions().get(0).getStore().getPermissions()
+                .containsKey(data.getSubscribe(Data.ADMIN).getName()));
+    }
 }
