@@ -5,27 +5,48 @@ import Domain.Product;
 import Domain.Review;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ProductData {
+
     private String productName;
-    private int amount;
-    private double price;
-    private PurchaseTypeData purchaseType;
     private String storeName;
     private String category;
     private List<Review> reviews;
     private List<Discount> discount;
+    private int amount;
+    private double price;
+    private double priceAfterDiscount;
+    private PurchaseTypeData purchaseType;
 
-    public ProductData(String productName, String storeName, String category, List<Review> reviews, List<Discount> discount,int amount,double price,PurchaseTypeData purchaseType) {
+    public ProductData(String productName, String storeName, String category, List<Review> reviews,
+                       List<Discount> discount, int amount, double price, double priceAfterDiscount,
+                       PurchaseTypeData purchaseType) {
+        this.productName = productName;
+        this.storeName = storeName;
+        this.category = category;
+        this.reviews = reviews;
+        this.discount = discount;
+        this.amount = amount;
+        this.price = price;
+        this.priceAfterDiscount = priceAfterDiscount;
+        this.purchaseType = purchaseType;
+    }
+
+    public ProductData(String productName, String storeName, String category, List<Review> reviews,
+                       List<Discount> discount, int amount, double price, PurchaseTypeData purchaseType) {
         this.productName = productName;
         this.storeName = storeName;
         this.category = category;
         this.reviews = reviews;
         this.discount = discount;
         this.price=price;
+        this.priceAfterDiscount = this.price;
         this.amount=amount;
         this.purchaseType=purchaseType;
     }
+
+
 
     public ProductData(Product product, String storeName) {
         this.productName = product.getName();
@@ -36,6 +57,7 @@ public class ProductData {
         this.price = product.getPrice();
         this.amount = product.getAmount();
         this.purchaseType = product.getPurchaseType().getPurchaseTypeData();
+        this.priceAfterDiscount = product.getDiscountPrice();
     }
 
     public String getProductName() {
@@ -101,4 +123,13 @@ public class ProductData {
     public void setPurchaseType(PurchaseTypeData purchaseType) {
         this.purchaseType = purchaseType;
     }
+
+    public double getPriceAfterDiscount() {
+        return priceAfterDiscount;
+    }
+
+    public void setPriceAfterDiscount(double priceAfterDiscount) {
+        this.priceAfterDiscount = priceAfterDiscount;
+    }
+
 }
