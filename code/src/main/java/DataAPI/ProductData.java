@@ -5,7 +5,6 @@ import Domain.Product;
 import Domain.Review;
 
 import java.util.List;
-import java.util.Objects;
 
 public class ProductData {
 
