@@ -1,10 +1,7 @@
 package AcceptanceTests.AcceptanceTestsBridge;
 
-import AcceptanceTests.AcceptanceTestDataObjects.BasketTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.CartTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
 
 import java.util.List;
 
@@ -22,10 +19,13 @@ public interface AcceptanceTestsBridge {
     void deleteStores(List<StoreTestData> stores);
     void addStores(List<StoreTestData> stores);
     void addProducts(List<ProductTestData> products);
-    void addCartToUser(String username, CartTestData cart0);
+    void addCartToUser(String username, CartTestData cart);
     CartTestData getCurrentUsersCart();
     boolean deleteFromCurrentUserCart(BasketTestData basketToDeleteFrom, ProductTestData productToDelete);
     boolean changeCurrentUserAmountOfProductInCart(BasketTestData basketToChangeAmountIn, ProductTestData productToChangeAmount, int newAmount);
     boolean addToCurrentUserCart(String storeName, ProductTestData productToAdd, int amount);
     void deleteCartOfUser(String username);
+    void purchaseProducts(PurchaseTestData purchase);
+    boolean writeReviewOnProduct(String storeName, ProductTestData product, ReviewTestData review);
+    ReviewTestData getReviewByProductAndDate(String purchaseDate, ProductTestData product);
 }

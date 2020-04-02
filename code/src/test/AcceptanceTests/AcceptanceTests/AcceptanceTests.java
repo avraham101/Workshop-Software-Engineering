@@ -5,10 +5,7 @@ import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsBridge;
 import junit.framework.TestCase;
 import org.junit.Before;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public abstract class AcceptanceTests extends TestCase{
     protected AcceptanceTestsBridge bridge;
@@ -26,6 +23,7 @@ public abstract class AcceptanceTests extends TestCase{
         setUpProducts();
         setUpStores();
         setUpCarts();
+        setUpPurchases();
     }
 
 
@@ -156,6 +154,20 @@ public abstract class AcceptanceTests extends TestCase{
     private void setUpBasketProductsAndAmounts(BasketTestData basket, List<ProductTestData> basketProducts, int[] amounts) {
         for (int i=0;i<amounts.length;i++)
             basket.addProductToBasket(basketProducts.get(i),amounts[i]);
+    }
+
+    private void setUpPurchases(){
+        HashMap<ProductTestData,Integer> productsToBuy = new HashMap<>();
+        List<BasketTestData> baskets0 = users.get(0).getCart().getBaskets();
+        HashMap<ProductTestData,Integer> store0ProductsToBuy = baskets0.get(0).getProductsAndAmountInBasket();
+        HashMap<ProductTestData,Integer> store1ProductsToBuy = baskets0.get(1).getProductsAndAmountInBasket();
+
+        productsToBuy.putAll(store0ProductsToBuy);
+        productsToBuy.putAll(store1ProductsToBuy);
+
+        PurchaseTestData purchase = new PurchaseTestData(productsToBuy);
+
+        users.get(0).getPurchases().add(purchase);
     }
 
 
