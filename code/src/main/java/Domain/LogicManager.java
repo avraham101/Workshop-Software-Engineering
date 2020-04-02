@@ -388,6 +388,13 @@ public class LogicManager {
         return false;
     }
 
+    /**
+     * use case 3.5 - write request on store
+     * @param storeName name of store to write request to
+     * @param content the content of the request
+     * @return
+     */
+
     public boolean addRequest(String storeName, String content) {
 
         Store dest = null;

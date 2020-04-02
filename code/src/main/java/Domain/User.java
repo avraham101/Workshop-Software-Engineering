@@ -77,8 +77,21 @@ public class User {
         return state.editProductFromStore(productData);
     }
 
+    /**
+     * use case 3.5
+     * @param storeName
+     * @param content
+     * @return
+     */
+
     public Request addRequest(String storeName, String content) { return state.addRequest(storeName, content); }
 
+    /**
+     * use case 4.5
+     * @param subscribe
+     * @param storeName
+     * @return
+     */
     public boolean addManager(Subscribe subscribe, String storeName) {
         return state.addManager(subscribe,storeName);
     }

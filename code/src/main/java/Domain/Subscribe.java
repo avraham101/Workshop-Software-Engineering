@@ -150,7 +150,7 @@ public class Subscribe extends UserState{
      */
     @Override
     public Request addRequest(String storeName, String content){
-        Request request = new Request(userName, storeName, content);
+        Request request = new Request(userName, storeName, content,requests.size()+1);
         requests.add(request);
         return request;
     }
