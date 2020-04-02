@@ -64,6 +64,7 @@ public class LogicManagerAllStubsTest {
         testAddManagerToStore();
         testAddProduct();
         testAddRequest();
+        testStoreViewRequest();
         testViewSpecificProduct();
         testEditProduct();
         testRemoveProductFromStore();
@@ -235,6 +236,10 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.addRequest(null, "good store"));
     }
 
+    public void testStoreViewRequest(){
+        assertTrue(logicManager.viewStoreRequest(data.getStore(Data.NULL_NAME).getName()).isEmpty());
+        assertTrue(logicManager.viewStoreRequest("That name will never be the name of the store!").isEmpty());
+    }
 
     /**
      * use case 4.1.1 -add product

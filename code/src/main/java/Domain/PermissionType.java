@@ -6,5 +6,6 @@ public enum PermissionType {
     REMOVE_MANAGER,
     ADD_MANAGER,
     ADD_OWNER,
+    MANAGER,
     OWNER,
 }

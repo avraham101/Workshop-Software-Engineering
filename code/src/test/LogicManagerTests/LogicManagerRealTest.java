@@ -7,6 +7,7 @@ import Domain.*;
 import Systems.HashSystem;
 import org.junit.Before;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -139,7 +140,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         testSubscribeAddRequestFail();
     }
 
-    private void testSubscribeAddRequestSuccess() {
+    public void testSubscribeAddRequestSuccess() {
         StoreData storeData = data.getStore(Data.VALID);
         assertTrue(logicManager.addRequest(storeData.getName(), "good store"));
 
@@ -159,9 +160,30 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(subscribe.getRequests().get(0).getComment(), request.getComment());
     }
 
-    private void testSubscribeAddRequestFail() {
+    public void testSubscribeAddRequestFail() {
         assertFalse(logicManager.addRequest(null, "The store has not milk"));
         assertFalse(logicManager.addRequest(data.getStore(Data.VALID).getName(), null));
+    }
+
+    /**
+     * use case 4.9.1 - view request
+     */
+    @Override
+    public void testStoreViewRequest(){
+        super.testStoreViewRequest();
+        testStoreViewRequestSuccess();
+        testStoreViewRequestFail();
+    }
+
+    private void testStoreViewRequestSuccess() {
+        testAddRequest();
+        StoreData storeData = data.getStore(Data.VALID);
+        List<Request> excepted = stores.get(storeData.getName()).getRequests();
+        List<Request> actual = logicManager.viewStoreRequest(storeData.getName());
+        assertTrue(excepted.containsAll(actual));
+    }
+
+    private void testStoreViewRequestFail() {
     }
 
     /**

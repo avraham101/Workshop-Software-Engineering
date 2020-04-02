@@ -428,4 +428,21 @@ public class LogicManager {
             return false;
         return current.addManager(users.get(userName),storeName);
     }
+
+    /**
+     * use case 4.9.1 -view Store Request
+     * @param storeName name of store to view request.
+     * @return if the current user is manager or owner of the store the list , else empty list.
+     */
+    public List<Request> viewStoreRequest(String storeName) {
+        List<Request> requests = new LinkedList<>();
+        if(stores.containsKey(storeName)) {
+            Store store = stores.get(storeName);
+            Permission permission = store.getPermissions().get(current.getUserName());
+            if(permission.getPermissionType().contains(PermissionType.MANAGER) |
+                    permission.getPermissionType().contains(PermissionType.OWNER))
+                requests = store.getRequests();
+        }
+        return requests;
+    }
 }
