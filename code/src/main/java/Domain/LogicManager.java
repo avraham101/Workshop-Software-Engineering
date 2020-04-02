@@ -297,7 +297,7 @@ public class LogicManager {
         double priceBeforeDiscount = 0;
         Cart cart = current.getState().getCart();
         for (Basket basket: cart.getBaskets().values()) {
-            for (Product product: basket.getProducts()) {
+            for (Product product: basket.getProducts().keySet()) {
                 priceBeforeDiscount += product.getPrice();
                 priceAfterDiscount += product.getDiscountPrice();
                 ProductData productData = new ProductData(product, basket.getStore().getName());
@@ -335,8 +335,7 @@ public class LogicManager {
         Cart cart = current.getState().getCart();
         Basket basket = cart.getBasket(storeName);
         if (basket != null) {
-            basket.editAmount(productName, newAmount);
-            result = true;
+            result = basket.editAmount(productName, newAmount);
         }
         return result;
     }
@@ -348,13 +347,18 @@ public class LogicManager {
      * @param amount - the amount of the product that need to add to the cart
      * @return - true if added, false if not
      */
-    public boolean aaddProductToCart(String productName,String storeName,int amount) {
+    public boolean aadProductToCart(String productName,String storeName,int amount) {
         boolean result = false;
-        Cart cart = current.getState().getCart();
-        Basket basket = cart.getBasket(storeName);
-        if (basket != null) {
-            result = false;
-            //TODO - we need to add product, but we have productName only
+        Store store = stores.get(storeName);
+        if (store != null) {
+            Product product = store.getProduct(productName);
+            if (product != null && amount > 0 && amount < product.getAmount()) {
+                Cart cart = current.getState().getCart();
+                Basket basket = cart.getBasket(storeName);
+                if (basket != null) {
+                    result = basket.addProduct(product, amount);
+                }
+            }
         }
         return result;
     }

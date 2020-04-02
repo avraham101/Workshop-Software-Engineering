@@ -3,7 +3,7 @@ package Domain;
 import java.util.HashMap;
 
 public class Cart {
-    private HashMap<String,Basket> baskets;
+    private HashMap<String,Basket> baskets; // key is the store name and the value is the basket of the store
 
     public Cart() {
         baskets=new HashMap<>();

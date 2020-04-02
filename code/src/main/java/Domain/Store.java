@@ -152,4 +152,13 @@ public class Store {
         old.edit(productData,categoryList.get(categoryName));
         return true;
     }
+
+    /**
+     * return a product of the store
+     * @param productName - the name of the product
+     * @return - thr product if exist, null if not
+     */
+    public Product getProduct(String productName) {
+        return products.get(productName);
+    }
 }

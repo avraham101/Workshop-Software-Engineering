@@ -96,7 +96,7 @@ public class ServiceAPI {
      * @return - true if added, false if not
      */
     public boolean addProductToCart(String productName,String storeName,int amount){
-        return logicManager.aaddProductToCart(productName, storeName, amount);
+        return logicManager.aadProductToCart(productName, storeName, amount);
     }
 
     //TODO use case 2.8
