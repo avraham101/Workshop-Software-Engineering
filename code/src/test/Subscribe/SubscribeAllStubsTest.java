@@ -54,7 +54,7 @@ public class SubscribeAllStubsTest {
 
 
     /**
-     * test use case 3.2 - Open Store
+     * test use case 3.2 - Open Store.
      * store: Niv shiraze store added.
      */
     private void openStoreTest() {
