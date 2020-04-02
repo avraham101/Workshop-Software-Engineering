@@ -41,8 +41,8 @@ public class UserAllStubsTest {
 
     @Test
     public void test() {
-        testGuest();
-        testSubscribe();
+        //testGuest();
+        //testSubscribe();
     }
 
     private void testSubscribe() {

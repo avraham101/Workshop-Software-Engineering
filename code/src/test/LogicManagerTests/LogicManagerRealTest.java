@@ -104,6 +104,24 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertFalse(currUser.logout());
     }
 
+    /**
+     * use case 3.5 -add product
+     */
+    @Override
+    public void testAddRequest(){
+        super.testAddRequest();
+        testSubscribeAddRequestSuccess();
+        testSubscribeAddRequestFail();
+    }
+
+    private void testSubscribeAddRequestSuccess() {
+        assertTrue(logicManager.addRequest(data.getStore(Data.VALID).getName(), "The store has not milk"));
+    }
+
+    private void testSubscribeAddRequestFail() {
+        assertFalse(logicManager.addRequest(null, "The store has not milk"));
+        assertFalse(logicManager.addRequest(data.getStore(Data.VALID).getName(), null));
+    }
 
     /**
      * test use case 4.1.1 -add product to store
@@ -153,7 +171,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertFalse(logicManager.addProductToStore(data.getProduct(Data.VALID)));
         permission.addType(PermissionType.OWNER);
     }
-
 
 }
 

@@ -5,6 +5,7 @@ import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Store {
@@ -31,6 +32,7 @@ public class Store {
         this.paymentSystem = paymentSystem;
         this.products=new HashMap<>();
         this.categoryList=new HashMap<>();
+        this.requests= new LinkedList<>();
     }
 
     public String getName() {
@@ -128,7 +130,6 @@ public class Store {
     public boolean addRequest(Request addRequest) {
         if(addRequest==null)
             return false;
-        requests.add(addRequest);
-        return true;
+        return requests.add(addRequest);
     }
 }

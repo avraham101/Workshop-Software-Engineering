@@ -228,13 +228,24 @@ public class LogicManager {
     }
 
     public boolean addRequest(String storeName, String content) {
+        if (storeName == null || content == null) return false;
         boolean isStoreExist = false;
         Store dest = null;
-        for(Store store : stores.values())
-            if(store.getName()==storeName) {
+        for (Store store : stores.values())
+            if (store.getName() == storeName) {
                 isStoreExist = true;
                 dest = store;
             }
-        return (content != null && dest !=null && isStoreExist && dest.addRequest(current.addRequest(storeName, content)));
+
+        if (isStoreExist & dest != null) {
+            Request request = current.addRequest(storeName, content);
+            if (request == null)
+                return false;
+            else {
+                dest.addRequest(request);
+                return true;
+            }
+        }
+        return false;
     }
 }

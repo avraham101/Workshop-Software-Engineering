@@ -1,5 +1,6 @@
 package Subscribe;
 
+import Data.Data;
 import DataAPI.StoreData;
 import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
@@ -72,8 +73,7 @@ public class SubscribeAllStubsTest {
     /**
      * test: use case 3.1 - Logout
      */
-    protected  void logoutTest(){
+    protected void logoutTest(){
         assertTrue(sub.logout(new User()));
     }
-
 }
