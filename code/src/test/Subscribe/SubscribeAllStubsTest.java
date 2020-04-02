@@ -3,6 +3,8 @@ package Subscribe;
 import Data.Data;
 import Data.TestData;
 import DataAPI.ProductData;
+import Data.Data;
+import DataAPI.StoreData;
 import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -49,7 +51,7 @@ public class SubscribeAllStubsTest {
     }
 
     /**
-     * part of test use case 2.3 - Login
+     * part of test use case 2.3 - Login.
      * test login where all fields are stubs
      */
     protected void loginTest() {
@@ -58,7 +60,7 @@ public class SubscribeAllStubsTest {
 
 
     /**
-     * test use case 3.2 - Open Store
+     * test use case 3.2 - Open Store.
      * store: Niv shiraze store added.
      */
     protected void openStoreTest() {
@@ -70,7 +72,7 @@ public class SubscribeAllStubsTest {
     /**
      * test: use case 3.1 - Logout
      */
-    protected  void logoutTest(){
+    protected void logoutTest(){
         assertTrue(sub.logout(new User()));
     }
 

@@ -76,4 +76,6 @@ public class User {
     public boolean editProductFromStore(ProductData productData) {
         return state.editProductFromStore(productData);
     }
+
+    public Request addRequest(String storeName, String content) { return state.addRequest(storeName, content); }
 }

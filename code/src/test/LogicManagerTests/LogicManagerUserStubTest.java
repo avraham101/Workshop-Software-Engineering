@@ -7,7 +7,8 @@ import org.junit.Before;
 
 import static org.junit.Assert.*;
 
-public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
+public class
+LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
 
     @Before
     public void setUp() {

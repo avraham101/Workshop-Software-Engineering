@@ -160,10 +160,7 @@ public class UserAllStubsTest {
         assertFalse(user.editProductFromStore(data.getProduct(Data.EDIT)));
     }
 
-    protected void testEditProductFromStoreSubscribe(){
+    protected void testEditProductFromStoreSubscribe() {
         assertTrue(user.editProductFromStore(data.getProduct(Data.EDIT)));
     }
-
-
-
 }

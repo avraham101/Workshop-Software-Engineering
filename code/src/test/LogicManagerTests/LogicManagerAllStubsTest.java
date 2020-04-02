@@ -219,6 +219,18 @@ public class LogicManagerAllStubsTest {
         stores.put(storeData.getName(),storeStub);
     }
 
+    /**
+     * use case 3.5 -add request
+     * ------
+     * in this level we test the:
+     * 1. enter null content
+     * 2. enter request to invalid store
+     */
+    public void testAddRequest(){
+        assertFalse(logicManager.addRequest(data.getStore(Data.VALID).getName(), null));
+        assertFalse(logicManager.addRequest(null, "good store"));
+    }
+
 
     /**
      * use case 4.1.1 -add product

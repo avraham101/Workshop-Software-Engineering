@@ -27,6 +27,7 @@ public class GuestTest {
         logoutTest();
         loginTest();
         openStoreTest();
+        addRequest();
     }
 
     /**
@@ -47,6 +48,9 @@ public class GuestTest {
     private void openStoreTest() {
         assertNull(guest.openStore(null, null, null));
     }
+
+    private void addRequest() {assertNull(guest.addRequest("Store", "good store"));}
+
 
     /**
      * test use case 4.9.1 -add product

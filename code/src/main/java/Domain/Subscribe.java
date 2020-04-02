@@ -123,6 +123,19 @@ public class Subscribe extends UserState{
         return permissions.get(productData.getStoreName()).getStore().editProduct(productData);
     }
 
+    /**
+     * use case 3.5
+     * @param storeName - The id of the store
+     * @param content - The content of the request
+     * @return true if success, false else
+     */
+    @Override
+    public Request addRequest(String storeName, String content){
+        Request request = new Request(userName, storeName, content);
+        requests.add(request);
+        return request;
+    }
+
     public void setUserName(String userName) {
         this.userName = userName;
     }

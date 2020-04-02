@@ -4,8 +4,10 @@ import DataAPI.ProductData;
 import DataAPI.PurchaseTypeData;
 import DataAPI.StoreData;
 import Domain.*;
+import Data.Data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -150,4 +152,5 @@ public class TestData {
                 that.getCategory().compareTo(other.getCategory()) == 0;
         //&& purchaseType == that.purchaseType;
     }
+
 }

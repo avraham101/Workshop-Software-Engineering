@@ -5,6 +5,7 @@ import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Store {
@@ -31,6 +32,7 @@ public class Store {
         this.paymentSystem = paymentSystem;
         this.products=new HashMap<>();
         this.categoryList=new HashMap<>();
+        this.requests= new LinkedList<>();
     }
 
     public String getName() {
@@ -100,7 +102,7 @@ public class Store {
     public void setPaymentSystem(PaymentSystem paymentSystem) {
         this.paymentSystem = paymentSystem;
     }
-    
+
     public void setDiscount(DiscountPolicy discount) {
         this.discount = discount;
     }
@@ -151,5 +153,11 @@ public class Store {
         }
         old.edit(productData,categoryList.get(categoryName));
         return true;
+    }
+
+    public boolean addRequest(Request addRequest) {
+        if(addRequest==null)
+            return false;
+        return requests.add(addRequest);
     }
 }
