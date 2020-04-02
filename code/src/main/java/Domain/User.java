@@ -1,5 +1,6 @@
 package Domain;
 
+import DataAPI.CartData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
@@ -76,6 +77,38 @@ public class User {
     public boolean editProductFromStore(ProductData productData) {
         return state.editProductFromStore(productData);
     }
+
+    /**
+     * use case 2.7.1 watch cart details
+     * return the details about a cart
+     * @return - the cart details
+     */
+    public CartData watchCartDetatils() {
+        return state.watchCartDetatils();
+    }
+
+    /**
+     * use case 2.7.2
+     * delete product from the cart
+     * @param productName - the product to remove
+     * @param storeName - the store that sale this product
+     * @return - true if the delete work, false if not
+     */
+    public boolean deleteFromCart(String productName,String storeName) {
+        return state.deleteFromCart(productName, storeName);
+    }
+
+    /**
+     * use case 2.7.3 edit amount of product
+     * @param productName - the product to edit it's amount
+     * @param storeName - the store of the product
+     * @param newAmount - the new amount
+     * @return - true if succeeded, false if not
+     */
+    public boolean editProductInCart(String productName,String storeName,int newAmount) {
+        return state.editProductInCart(productName, storeName, newAmount);
+    }
+
 
     /**
      * use case 2.7.4

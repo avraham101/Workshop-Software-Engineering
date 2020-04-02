@@ -292,19 +292,7 @@ public class LogicManager {
      * @return - the cart details
      */
     public CartData watchCartDetatils() {
-        List<ProductData> products = new LinkedList<>();
-        double priceAfterDiscount = 0;
-        double priceBeforeDiscount = 0;
-        Cart cart = current.getState().getCart();
-        for (Basket basket: cart.getBaskets().values()) {
-            for (Product product: basket.getProducts().keySet()) {
-                priceBeforeDiscount += product.getPrice();
-                priceAfterDiscount += product.getDiscountPrice();
-                ProductData productData = new ProductData(product, basket.getStore().getName());
-                products.add(productData);
-            }
-        }
-        return new CartData(priceBeforeDiscount,priceAfterDiscount,products);
+        return current.watchCartDetatils();
     }
 
     /**
@@ -315,13 +303,7 @@ public class LogicManager {
      * @return - true if the delete work, false if not
      */
     public boolean deleteFromCart(String productName,String storeName){
-        boolean result = false;
-        Cart cart = current.getState().getCart();
-        Basket basket = cart.getBasket(storeName);
-        if (basket != null) {
-            result = basket.deleteProduct(productName);
-        }
-        return result;
+        return current.deleteFromCart(productName,storeName);
     }
 
     /**
@@ -332,13 +314,7 @@ public class LogicManager {
      * @return - true if succeeded, false if not
      */
     public boolean editProductInCart(String productName,String storeName,int newAmount) {
-        boolean result = false;
-        Cart cart = current.getState().getCart();
-        Basket basket = cart.getBasket(storeName);
-        if (basket != null) {
-            result = basket.editAmount(productName, newAmount);
-        }
-        return result;
+        return current.editProductInCart(productName,storeName, newAmount);
     }
 
     /**
