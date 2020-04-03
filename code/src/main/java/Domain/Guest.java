@@ -5,6 +5,9 @@ import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Guest extends UserState {
 
     /**
@@ -103,5 +106,15 @@ public class Guest extends UserState {
     @Override
     public boolean addManager(Subscribe youngOwner, String storeName) {
         return false;
+    }
+
+    /**
+     *
+     * @param storeName
+     * @return
+     */
+    @Override
+    public List<Request> viewRequest(String storeName) {
+        return new LinkedList<>();
     }
 }

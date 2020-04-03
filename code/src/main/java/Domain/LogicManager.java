@@ -443,13 +443,8 @@ public class LogicManager {
      */
     public List<Request> viewStoreRequest(String storeName) {
         List<Request> requests = new LinkedList<>();
-        if(stores.containsKey(storeName)) {
-            Store store = stores.get(storeName);
-            Permission permission = store.getPermissions().get(current.getUserName());
-            if(permission.getPermissionType().contains(PermissionType.MANAGER) |
-                    permission.getPermissionType().contains(PermissionType.OWNER))
-                requests = store.getRequests();
-        }
+        if(stores.containsKey(storeName))
+            requests = current.viewRequest(storeName);
         return requests;
     }
 }

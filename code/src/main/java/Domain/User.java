@@ -5,6 +5,8 @@ import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.List;
+
 public class User {
     private UserState state;
 
@@ -94,5 +96,13 @@ public class User {
      */
     public boolean addManager(Subscribe subscribe, String storeName) {
         return state.addManager(subscribe,storeName);
+    }
+
+    /**
+     * use case 4.9.1
+     * @param storeName
+     */
+    public List<Request> viewRequest(String storeName) {
+        return state.viewRequest(storeName);
     }
 }

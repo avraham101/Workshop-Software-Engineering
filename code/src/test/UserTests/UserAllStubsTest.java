@@ -70,9 +70,11 @@ public class UserAllStubsTest {
         testAddProductToStoreGuest();
         testRemoveProductFromStoreGuest();
         testEditProductFromStoreGuest();
+        testViewRequestGuest();
         //last guest test
         testLoginGuest();
     }
+
     /**
      * test use case 2.3 - Login
      */
@@ -176,6 +178,10 @@ public class UserAllStubsTest {
 
     protected void testAddManagerSubscribe(){
         assertTrue(user.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()));
+    }
+
+    private void testViewRequestGuest() {
+        assertTrue(user.viewRequest(data.getStore(Data.VALID).getName()).isEmpty());
     }
 
 }

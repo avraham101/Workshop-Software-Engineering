@@ -145,7 +145,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertTrue(logicManager.addRequest(storeData.getName(), "good store"));
 
         // check request saved in the store and user.
-        Request request = new Request(currUser.getUserName(), storeData.getName(),"good store");
+        Request request = new Request(currUser.getUserName(), storeData.getName(),"good store", 1);
 
         Store store = stores.get(storeData.getName());
         assertEquals(store.getRequests().get(0).getSenderName(), request.getSenderName());

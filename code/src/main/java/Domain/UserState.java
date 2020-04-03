@@ -5,6 +5,8 @@ import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.List;
+
 public abstract class UserState {
     private Cart cart;
 
@@ -85,4 +87,10 @@ public abstract class UserState {
      * @return
      */
     public abstract boolean addManager(Subscribe subscribe, String storeName);
+
+    /**
+     * use case 4.9.1
+     * @param storeName
+     */
+    public abstract List<Request> viewRequest(String storeName);
 }

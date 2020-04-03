@@ -7,6 +7,7 @@ import Systems.SupplySystem.SupplySystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Subscribe extends UserState{
@@ -140,6 +141,24 @@ public class Subscribe extends UserState{
         store.getPermissions().put(youngOwner.getName(),newPermission);
         givenByMePermissions.add(newPermission);
         return true;
+    }
+
+    /**
+     * use case 4.9.1
+     * @param storeName
+     * @return
+     */
+    @Override
+    public List<Request> viewRequest(String storeName) {
+        List<Request> output = new LinkedList<>();
+        if(! permissions.containsKey(storeName)) return output;
+        Permission permission = permissions.get(storeName);
+        if(permission.getPermissionType().contains(PermissionType.OWNER) |
+                permission.getPermissionType().contains(PermissionType.MANAGER)){
+            Store store = permission.getStore();
+            output = store.getRequests();
+        }
+        return output;
     }
 
     /**
