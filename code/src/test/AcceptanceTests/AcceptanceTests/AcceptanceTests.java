@@ -2,6 +2,7 @@ package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsBridge;
+import Domain.Product;
 import junit.framework.TestCase;
 import org.junit.Before;
 
@@ -17,6 +18,7 @@ public abstract class AcceptanceTests extends TestCase{
     protected  DeliveryDetailsTestData invalidDelivery;
     protected PaymentTestData validPayment;
     protected PaymentTestData invalidPayment;
+    protected UserTestData superUser;
 
     public void setUp(){
         this.bridge = AcceptanceTestsDriver.getBridge();
@@ -50,7 +52,7 @@ public abstract class AcceptanceTests extends TestCase{
         UserTestData user0 = new UserTestData("testUser0","testUser0Pass");
         UserTestData user1 = new UserTestData("testUser1","testUser1Pass");
         UserTestData user2 = new UserTestData("testUser2","testUser2Pass");
-
+        superUser=user0;
         users.addAll(Arrays.asList(user0, user1,user2));
 
     }
@@ -133,12 +135,12 @@ public abstract class AcceptanceTests extends TestCase{
         setUpStoreNameToProducts(store0Products,stores.get(2).getStoreName());
 
         UserTestData store0Manager = users.get(0);
-        UserTestData store1Manager = users.get(1);
-        UserTestData store2Manager = users.get(2);
+        //UserTestData store1Manager = users.get(1);
+       // UserTestData store2Manager = users.get(2);
 
         StoreTestData store0 = new StoreTestData("store0Test",store0Manager,store0Products);
-        StoreTestData store1 = new StoreTestData("store1Test",store1Manager,store1Products);
-        StoreTestData store2 = new StoreTestData("store2Test",store2Manager,store2Products);
+        StoreTestData store1 = new StoreTestData("store1Test",store0Manager,store1Products);
+        StoreTestData store2 = new StoreTestData("store2Test",store0Manager,store2Products);
 
         stores.addAll(Arrays.asList(store0,store1,store2));
 
@@ -180,6 +182,70 @@ public abstract class AcceptanceTests extends TestCase{
     private void setUpBasketProductsAndAmounts(BasketTestData basket, List<ProductTestData> basketProducts, int[] amounts) {
         for (int i=0;i<amounts.length;i++)
             basket.addProductToBasket(basketProducts.get(i),amounts[i]);
+    }
+
+    private String getPasswordByUser(String userName){
+        for (UserTestData ud:users) {
+            if(ud.getUsername().equals(userName))
+                return ud.getPassword();
+
+        }
+        return null;
+    }
+
+    protected  void deleteStores (List<StoreTestData> stores){
+        String userName = bridge.getCurrentLoggedInUser();
+        if(userName!=null){
+            bridge.logout(userName);
+        }
+        bridge.login(superUser.getUsername(),superUser.getPassword());
+        bridge.deleteStores(stores);
+        bridge.logout(superUser.getUsername());
+        if(userName!=null){
+            bridge.login(userName,getPasswordByUser(userName));
+        }
+
+    }
+
+    protected  void addStores(List<StoreTestData> stores){
+        String userName = bridge.getCurrentLoggedInUser();
+        if(userName!=null){
+            bridge.logout(userName);
+        }
+        bridge.login(superUser.getUsername(),superUser.getPassword());
+        bridge.addStores(stores);
+        bridge.logout(superUser.getUsername());
+        if(userName!=null){
+            bridge.login(userName,getPasswordByUser(userName));
+        }
+
+    }
+
+    protected void deleteProducts( List<ProductTestData> products){
+        String userName = bridge.getCurrentLoggedInUser();
+        if(userName!=null){
+            bridge.logout(userName);
+        }
+        bridge.login(superUser.getUsername(),superUser.getPassword());
+        bridge.deleteProducts(products);
+        bridge.logout(superUser.getUsername());
+        if(userName!=null){
+            bridge.login(userName,getPasswordByUser(userName));
+        }
+
+    }
+    protected  void addProducts(List<ProductTestData> products){
+        String userName = bridge.getCurrentLoggedInUser();
+        if(userName!=null){
+            bridge.logout(userName);
+        }
+        bridge.login(superUser.getUsername(),superUser.getPassword());
+        bridge.addProducts(products);
+        bridge.logout(superUser.getUsername());
+        if(userName!=null){
+            bridge.login(userName,getPasswordByUser(userName));
+        }
+
     }
 
 

@@ -56,7 +56,7 @@ public class buyCart extends AcceptanceTests {
         StoreTestData store = stores.get(0);
         ProductTestData product = store.getProducts().get(0);
         bridge.addToCurrentUserCart(store.getStoreName(),product,1);
-       // bridge.deleteProducts(product);
+        //deleteProducts(product);
         assertNull(bridge.buyCart(validPayment,validDelivery));
     }
 
