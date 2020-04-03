@@ -1,6 +1,7 @@
 package AcceptanceTests.AcceptanceTestDataObjects;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class BasketTestData {
     private String storeName;
@@ -36,5 +37,16 @@ public class BasketTestData {
 
         if (storeName != null ? !storeName.equals(that.storeName) : that.storeName != null) return false;
         return productsAndAmountInBasket != null ? productsAndAmountInBasket.equals(that.productsAndAmountInBasket) : that.productsAndAmountInBasket == null;
+    }
+
+    public double getTotalAmount (){
+        double amount=0;
+        for (Map.Entry<ProductTestData,Integer> entry: productsAndAmountInBasket.entrySet()) {
+            amount += entry.getKey().getPrice()*entry.getValue();
+        }
+        return amount;
+    }
+    public boolean isEmpty(){
+        return productsAndAmountInBasket.isEmpty();
     }
 }
