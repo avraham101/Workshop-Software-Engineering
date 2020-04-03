@@ -162,11 +162,7 @@ public class EditCartTest extends AcceptanceTests {
 
     @Test
     public void addToCartTestFailNotExistingStore(){
-        List<ProductTestData> notExistingStoreProducts = products.subList(0,4);
         ProductTestData productToAdd = products.get(8);
-        StoreTestData notExistingStore = new StoreTestData("notExistingStore",
-                                                            new UserTestData("testUser","testUserPassword"),
-                                                            notExistingStoreProducts);
         int amount = 10;
         String storeName = notExistingStore.getStoreName();
 
