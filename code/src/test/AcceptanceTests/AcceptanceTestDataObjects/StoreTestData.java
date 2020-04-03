@@ -36,4 +36,8 @@ public class StoreTestData {
     public void setProducts(List<ProductTestData> products) {
         this.products = products;
     }
+
+    public boolean equals (StoreTestData otherStore){
+        return (this.storeName.equals(otherStore.storeName));
+    }
 }

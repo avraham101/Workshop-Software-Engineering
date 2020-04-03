@@ -28,4 +28,5 @@ public interface AcceptanceTestsBridge {
     void purchaseProducts(PurchaseTestData purchase);
     boolean writeReviewOnProduct(String storeName, ProductTestData product, ReviewTestData review);
     ReviewTestData getReviewByProductAndDate(String purchaseDate, ProductTestData product);
+    List<StoreTestData> getStoresInfo();
 }
