@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.List;
+import java.util.logging.Level;
 
 public class LogicManager {
     private HashMap<String, Subscribe> users;
@@ -75,7 +77,8 @@ public class LogicManager {
      * @return true if the register complete, otherwise false
      */
     public boolean register(String userName, String password) {
-        //TODO add to logger
+        loggerSystem.getEventLogger().logp(Level.INFO, "Logic Manager", "register", "register: {0} {1}",
+                new Object[] { userName, password });
         if(!validName(userName) || !validPassword(password)) {
             return false;
         }
