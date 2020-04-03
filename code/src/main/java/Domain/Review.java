@@ -1,5 +1,7 @@
 package Domain;
 
+import java.util.Objects;
+
 public class Review {
 
     private String writer;
@@ -45,5 +47,19 @@ public class Review {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Review review = (Review) o;
+        return Objects.equals(writer, review.writer) &&
+                Objects.equals(content, review.content);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(writer, content);
     }
 }

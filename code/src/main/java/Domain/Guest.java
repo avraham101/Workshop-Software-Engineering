@@ -52,7 +52,18 @@ public class Guest extends UserState {
     }
 
     /**
-     * use case 4.9.1 -add product
+     * use case 3.5
+     * @param storeName - The id of the store
+     * @param content - The content of the request
+     * @return true if success, false else
+     */
+    @Override
+    public Request addRequest(String storeName, String content){
+        return null;
+    }
+
+    /**
+     * use case 4.1.1 -add product
      * @param productData
      * @return false for guest
      */
@@ -61,8 +72,9 @@ public class Guest extends UserState {
         return false;
     }
 
+
     /**
-     * use case 4.9.2  - remove product
+     * use case 4.1.2  - remove product
      * @param storeName
      * @param productName
      * @return false always
@@ -72,7 +84,11 @@ public class Guest extends UserState {
         return false;
     }
 
-    //TODO write documentation
+    /**
+     * use case 4.1.3
+     * @param productData
+     * @return
+     */
     @Override
     public boolean editProductFromStore(ProductData productData) {
         return false;
@@ -87,6 +103,17 @@ public class Guest extends UserState {
      */
     @Override
     public boolean isItPurchased(String storeName, String productName) {
+        return false;
+    }
+
+    /**
+     * use case 4.1.3
+     * @param youngOwner user to be owner
+     * @param storeName
+     * @return
+     */
+    @Override
+    public boolean addManager(Subscribe youngOwner, String storeName) {
         return false;
     }
 }

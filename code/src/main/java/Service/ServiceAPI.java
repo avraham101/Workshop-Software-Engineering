@@ -59,24 +59,46 @@ public class ServiceAPI {
         return logicManager.viewSpecificProducts(filter);
     }
 
-    //TODO use case 2.7.1
+    /**
+     * use case 2.7.1 - watch cart details
+     * return the details about a cart
+     * @return - the cart details
+     */
     public CartData watchCartDetatils(){
-        return null;
+        return logicManager.watchCartDetatils();
     }
 
-    //TODO use case 2.7.2
-    public boolean deleteFromCart(String productName,String StoreName){
-        return false;
+    /**
+     * use case 2.7.2 - delete producr from cart
+     * delete product from the cart
+     * @param productName - the product to remove
+     * @param storeName - the store that sale this product
+     * @return - true if the delete work, false if not
+     */
+    public boolean deleteFromCart(String productName,String storeName){
+        return logicManager.deleteFromCart(productName, storeName);
     }
 
-    //TODO use case 2.7.3
-    public boolean editProductInCart(String productName,String StoreName,int newAmount){
-        return false;
+    /**
+     * use case 2.7.3 edit amount of product
+     * @param productName - the product to edit it's amount
+     * @param storeName - the store of the product
+     * @param newAmount - the new amount
+     * @return - true if succeeded, false if not
+     */
+    public boolean editProductInCart(String productName,String storeName,int newAmount){
+        return logicManager.editProductInCart(productName, storeName, newAmount);
     }
 
-    //TODO use case 2.7.4
-    public boolean addProductTOCart(String productName,String StoreName,int amount){
-        return false;
+    /**
+     * use case 2.7.4 - add product to the cart
+     * @param productName - the product to add
+     * @param storeName - the store of the product
+     * @param amount - the amount of the product that need to add to the cart
+     * @return - true if added, false if not
+     */
+    public boolean addProductToCart(String productName,String storeName,int amount){
+        return logicManager.aadProductToCart(productName, storeName, amount);
     }
 
     //TODO use case 2.8
@@ -124,24 +146,31 @@ public class ServiceAPI {
         return null;
     }
 
-    //TODO use case 4.1.1
+    //use case 4.1.1
     public boolean addProductToStore(ProductData productData){
         return logicManager.addProductToStore(productData);
     }
 
-    //TODO use case 4.1.2
+    //use case 4.1.2
     public boolean removeProductFromStore(String storeName,String productName){
         return logicManager.removeProductFromStore(storeName,productName);
     }
 
-    //TODO use case 4.1.3
+    // use case 4.1.3
     public boolean editProductFromStore(ProductData productData){
         return logicManager.editProductFromStore(productData);
     }
 
+    //TODO use case 4.3
+    public boolean manageOwner(String storeName,String userName){
+        return false;
+    }
+
+
+
     //TODO use case 4.5
     public boolean addManagerToStore(String storeName,String userName){
-        return false;
+        return logicManager.addManager(storeName,userName);
     }
 
     //TODO use case 4.6.1 //talk to yuval before implement
@@ -165,7 +194,7 @@ public class ServiceAPI {
     }
 
     //TODO use case 4.9.2
-    public boolean answerRequest(Request request, String StoreName, String content){
+    public boolean answerRequest(Request request, String StoreName){
         return false;
     }
 

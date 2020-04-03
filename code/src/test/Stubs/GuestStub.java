@@ -39,4 +39,9 @@ public class GuestStub extends Guest {
     public boolean editProductFromStore(ProductData productData) {
         return super.editProductFromStore(productData);
     }
+
+    @Override
+    public boolean addManager(Subscribe youngOwner, String storeName) {
+        return false;
+    }
 }

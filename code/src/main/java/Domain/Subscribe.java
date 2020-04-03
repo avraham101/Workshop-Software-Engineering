@@ -14,7 +14,7 @@ public class Subscribe extends UserState{
     private String userName; //unique
     private String password;
     private HashMap<String, Permission> permissions; //map of <storeName, Domain.Permission>
-    private HashMap<String,Permission> givenByMePermissions; //map of <storeName, Domain.Permission>
+    private List<Permission> givenByMePermissions; //map of <storeName, Domain.Permission>
     private List<Purchase> purchases;
     private List<Request> requests;
 
@@ -22,7 +22,7 @@ public class Subscribe extends UserState{
         this.userName = userName;
         this.password = password;
         permissions=new HashMap<>();
-        givenByMePermissions=new HashMap<>();
+        givenByMePermissions=new ArrayList<>();
         purchases=new ArrayList<>();
         requests=new ArrayList<>();
     }
@@ -110,7 +110,7 @@ public class Subscribe extends UserState{
     }
 
     /**
-     *
+     *use case 4.1.3
      * @param productData product to be added
      * @return
      */
@@ -121,6 +121,38 @@ public class Subscribe extends UserState{
         if(!permissions.get(productData.getStoreName()).canAddProduct())
             return false;
         return permissions.get(productData.getStoreName()).getStore().editProduct(productData);
+    }
+
+
+    @Override
+    public boolean addManager(Subscribe youngOwner, String storeName) {
+        if(!permissions.containsKey(storeName))
+            return false;
+        Permission permission=permissions.get(storeName);
+        if(!permission.canAddOwner())
+            return false;
+        Store store=permission.getStore();
+        //if he is already manager
+        if(store.getPermissions().containsKey(youngOwner.getName()))
+            return false;
+        Permission newPermission=new Permission(youngOwner,store);
+        youngOwner.getPermissions().put(storeName,newPermission);
+        store.getPermissions().put(youngOwner.getName(),newPermission);
+        givenByMePermissions.add(newPermission);
+        return true;
+    }
+
+    /**
+     * use case 3.5
+     * @param storeName - The id of the store
+     * @param content - The content of the request
+     * @return true if success, false else
+     */
+    @Override
+    public Request addRequest(String storeName, String content){
+        Request request = new Request(userName, storeName, content,requests.size()+1);
+        requests.add(request);
+        return request;
     }
 
     /**
@@ -156,11 +188,11 @@ public class Subscribe extends UserState{
         this.permissions = permissions;
     }
 
-    public HashMap<String, Permission> getGivenByMePermissions() {
+    public List<Permission> getGivenByMePermissions() {
         return givenByMePermissions;
     }
 
-    public void setGivenByMePermissions(HashMap<String, Permission> givenByMePermissions) {
+    public void setGivenByMePermissions(List<Permission> givenByMePermissions) {
         this.givenByMePermissions = givenByMePermissions;
     }
 

@@ -4,16 +4,19 @@ import DataAPI.ProductData;
 import DataAPI.PurchaseTypeData;
 import DataAPI.StoreData;
 import Domain.*;
-
+import Data.Data;
+import Domain.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 public class TestData {
     private HashMap<Data, Subscribe> users;
-    private HashMap<Data, ProductData> products;
+    private HashMap<Data, ProductData> productsData;
     private HashMap<Data, StoreData> stores;
     private HashMap<Data, List<Discount>> discounts;
+    private HashMap<Data, HashMap<ProductData, Integer>> basket;
     private HashMap<Data, Filter> filters;
     private HashMap<Data, Review> reviwes;
 
@@ -22,6 +25,7 @@ public class TestData {
         setUpDiscountData();
         setUpProductData();
         setUpStoreData();
+        setUpBasketData();
         setUpFilters();
         setUpReviews();
     }
@@ -51,36 +55,44 @@ public class TestData {
     }
 
     private void setUpProductData(){
-        products = new HashMap<>();
+        productsData = new HashMap<>();
         //change data type to enum
-        products.put(Data.VALID,new ProductData("peanuts","Store","category"
+        productsData.put(Data.VALID,new ProductData("peanuts","Store","category"
                 ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
-        products.put(Data.EDIT,new ProductData("peanuts","Store","categoryYuval"
-                ,null,new ArrayList<Discount>(),3,11, PurchaseTypeData.IMMEDDIATE));
-        products.put(Data.NULL_NAME,new ProductData(null,"Store","category"
+        productsData.put(Data.NULL, null);
+        productsData.put(Data.NULL_STORE,new ProductData("peanuts",null,"category"
                 ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
-        products.put(Data.WRONG_STORE,new ProductData("peanuts","$storeBBB$","category"
+        productsData.put(Data.NULL_NAME,new ProductData(null,"Store","category"
                 ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
-        products.put(Data.NULL_CATEGORY,new ProductData("peanuts","Store",null
+        productsData.put(Data.WRONG_STORE,new ProductData("peanuts","$storeBBB$","category"
                 ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
-        products.put(Data.NULL_DISCOUNT, new ProductData("peanuts","Store","category"
+        productsData.put(Data.NULL_CATEGORY,new ProductData("peanuts","Store",null
+                ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
+        productsData.put(Data.NULL_DISCOUNT, new ProductData("peanuts","Store","category"
                 ,null,null,1,10, PurchaseTypeData.IMMEDDIATE));
-        products.put(Data.NEGATIVE_AMOUNT,new ProductData("peanuts","Store","category"
+        productsData.put(Data.ZERO,new ProductData("peanuts","Store","category"
+                ,null,new ArrayList<Discount>(),0,10, PurchaseTypeData.IMMEDDIATE));
+        productsData.put(Data.NEGATIVE_AMOUNT,new ProductData("peanuts","Store","category"
                 ,null,new ArrayList<Discount>(),-1,10, PurchaseTypeData.IMMEDDIATE));
-        products.put(Data.NEGATIVE_PRICE,new ProductData("peanuts","Store","category"
+        productsData.put(Data.NEGATIVE_PRICE,new ProductData("peanuts","Store","category"
                 ,null,new ArrayList<Discount>(),1,-10, PurchaseTypeData.IMMEDDIATE));
-        products.put(Data.NULL_PURCHASE,new ProductData("peanuts","Store","category"
+        productsData.put(Data.NULL_PURCHASE,new ProductData("peanuts","Store","category"
                 ,null,new ArrayList<Discount>(),1,10, null));
-        products.put(Data.WRONG_DISCOUNT,new ProductData("peanuts","Store","category"
+        productsData.put(Data.WRONG_DISCOUNT,new ProductData("peanuts","Store","category"
                 ,null,discounts.get(Data.NULL_DISCOUNT),1,10, PurchaseTypeData.IMMEDDIATE));
-        products.put(Data.NEGATIVE_PERCENTAGE,new ProductData("peanuts","Store","category"
+        productsData.put(Data.NEGATIVE_PERCENTAGE,new ProductData("peanuts","Store","category"
                 ,null,discounts.get(Data.NEGATIVE_PERCENTAGE),1,10, PurchaseTypeData.IMMEDDIATE));
-        products.put(Data.OVER_100_PERCENTAGE,new ProductData("peanuts","Store","category"
+        productsData.put(Data.OVER_100_PERCENTAGE,new ProductData("peanuts","Store","category"
                 ,null,discounts.get(Data.OVER_100_PERCENTAGE),1,10, PurchaseTypeData.IMMEDDIATE));
-        products.put(Data.SAME_NAME,new ProductData("peanuts","store","category1"
+        productsData.put(Data.SAME_NAME,new ProductData("peanuts","store","category1"
                 ,null,new ArrayList<Discount>(),12,101, PurchaseTypeData.IMMEDDIATE));
-        products.put(Data.WRONG_NAME,new ProductData("peanuts1","Store","category"
+        productsData.put(Data.NULL_PRODUCT,new ProductData(null,null,null
+                ,null,null,1,10, null));
+        productsData.put(Data.EDIT,new ProductData("peanuts","Store","categoryYuval"
+                ,null,new ArrayList<Discount>(),3,11, PurchaseTypeData.IMMEDDIATE));
+        productsData.put(Data.WRONG_NAME,new ProductData("peanuts1","Store","category"
                 ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
+
     }
 
     private void setUpStoreData() {
@@ -92,9 +104,20 @@ public class TestData {
         stores.put(Data.NULL_DISCOUNT, new StoreData("Store",new PurchesPolicy(), null));
     }
 
+    private void setUpBasketData() {
+        basket = new HashMap<Data, HashMap<ProductData, Integer>>();
+        HashMap <ProductData, Integer> productsInBasket = new HashMap<>();
+        productsInBasket.put(productsData.get(Data.VALID), 100);
+        basket.put(Data.VALID, productsInBasket);
+    }
+
+    public HashMap<ProductData, Integer> getProductsInBasket(Data data) {
+        return basket.get(data);
+    }
+
     private void setUpFilters() {
         filters = new HashMap<>();
-        ProductData p = getProduct(Data.VALID);
+        ProductData p = getProductData(Data.VALID);
         filters.put(Data.NULL, null);
         filters.put(Data.VALID, new Filter(Search.NONE, p.getProductName(),p.getPrice(),
                 p.getPrice(),p.getCategory()));
@@ -147,8 +170,14 @@ public class TestData {
         return users.get(data);
     }
 
-    public ProductData getProduct(Data productCase){
-        return products.get(productCase);
+    public ProductData getProductData(Data productCase){
+        return productsData.get(productCase);
+    }
+
+    public Product makeProduct(ProductData productData) {
+        if(productData == null)
+            return null;
+        return new Product(productData,new Category(productData.getCategory()));
     }
 
     public StoreData getStore(Data data) {
@@ -180,4 +209,5 @@ public class TestData {
                 that.getCategory().compareTo(other.getCategory()) == 0;
         //&& purchaseType == that.purchaseType;
     }
+
 }

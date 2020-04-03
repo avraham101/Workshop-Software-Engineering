@@ -13,7 +13,7 @@ public class StoreTestReal extends StoreTestsAllStubs {
     @Override
     protected void testAddProductSuccess() {
         super.testAddProductSuccess();
-        ProductData p=data.getProduct(Data.VALID);
+        ProductData p=data.getProductData(Data.VALID);
         assertTrue(store.getProducts().get(p.getProductName()).equal(p));
     }
 
@@ -23,7 +23,7 @@ public class StoreTestReal extends StoreTestsAllStubs {
     @Override
     protected void testSuccessEditProduct() {
         super.testSuccessEditProduct();
-        ProductData product=data.getProduct(Data.EDIT);
+        ProductData product=data.getProductData(Data.EDIT);
         assertTrue(store.getProducts().get(product.getProductName()).equal(product));
     }
 }

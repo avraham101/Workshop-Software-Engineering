@@ -5,7 +5,9 @@ import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class Store {
 
@@ -31,6 +33,7 @@ public class Store {
         this.paymentSystem = paymentSystem;
         this.products=new HashMap<>();
         this.categoryList=new HashMap<>();
+        this.requests= new LinkedList<>();
     }
 
     public String getName() {
@@ -100,12 +103,10 @@ public class Store {
     public void setPaymentSystem(PaymentSystem paymentSystem) {
         this.paymentSystem = paymentSystem;
     }
-    
+
     public void setDiscount(DiscountPolicy discount) {
         this.discount = discount;
     }
-
-
 
     /**
      *
@@ -155,6 +156,12 @@ public class Store {
         return true;
     }
 
+    public boolean addRequest(Request addRequest) {
+        if(addRequest==null)
+            return false;
+        return requests.add(addRequest);
+    }
+
     /**
      * use case 2.7.4 - add product to cart
      * use case 3.3 - write review
@@ -164,6 +171,27 @@ public class Store {
      */
     public Product getProduct(String productName) {
         return products.get(productName);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Store store = (Store) o;
+        return Objects.equals(name, store.name) &&
+                Objects.equals(purchesPolicy, store.purchesPolicy) &&
+                Objects.equals(discount, store.discount) &&
+                Objects.equals(products, store.products) &&
+                Objects.equals(categoryList, store.categoryList) &&
+                Objects.equals(requests, store.requests) &&
+                Objects.equals(permissions, store.permissions) &&
+                Objects.equals(supplySystem, store.supplySystem) &&
+                Objects.equals(paymentSystem, store.paymentSystem);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, purchesPolicy, discount, products, categoryList, requests, permissions, supplySystem, paymentSystem);
     }
 
     /**

@@ -41,6 +41,14 @@ public class UserStub extends User {
         return true;
     }
 
+    @Override
+    public boolean addManager(Subscribe subscribe, String storeName) {
+        return true;
+    }
+
+    @Override
+    public boolean addProductToCart(Store store, Product product, int amount) { return true; }
+
     /**
      * use case 3.3 - write review
      * the function check if a product is perchesed
