@@ -169,6 +169,27 @@ public class Subscribe extends UserState{
     }
 
     /**
+     * use case 4.6.2 - remove permissions
+     * @param permissions types to be removed
+     * @param storeName store to be removed from
+     * @param userName user to remove permissions from
+     * @return
+     */
+
+    @Override
+    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        for(Permission p: givenByMePermissions){
+            if(p.getStore().getName().equals(storeName)&&p.getOwner().getName().equals(userName)){
+                boolean removed=false;
+                for(PermissionType type: permissions)
+                    removed=removed|p.removeType(type);
+                return removed;
+            }
+        }
+        return false;
+    }
+
+    /**
      * use case 3.5
      * @param storeName - The id of the store
      * @param content - The content of the request

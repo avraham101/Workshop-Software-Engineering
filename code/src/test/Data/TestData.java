@@ -32,7 +32,7 @@ public class TestData {
 
     private void setUpPermmisionTypes() {
         permissionTypeList=new ArrayList<>();
-        permissionTypeList.add(PermissionType.REMOVE_MANAGER);
+        permissionTypeList.add(PermissionType.ADD_MANAGER);
         permissionTypeList.add(PermissionType.ADD_OWNER);
     }
 

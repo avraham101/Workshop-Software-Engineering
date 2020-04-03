@@ -74,4 +74,16 @@ public class UserStub extends User {
     public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
         return true;
     }
+
+    /**
+     * use case 4.6.2
+     * @param permissions
+     * @param storeName
+     * @param userName
+     * @return
+     */
+    @Override
+    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return true;
+    }
 }

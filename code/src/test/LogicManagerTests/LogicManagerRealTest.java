@@ -288,6 +288,17 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * use case 4.6.2 - remove permission
+     */
+    @Override
+    protected void testRemovePermissionSuccess() {
+        super.testRemovePermissionSuccess();
+        Subscribe sub=(Subscribe) currUser.getState();
+        assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType().
+                isEmpty());
+    }
+
+    /**
      * use case 2.5 - view specific product
      */
     @Override

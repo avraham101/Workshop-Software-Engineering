@@ -550,6 +550,11 @@ public class LogicManager {
     }
 
     public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return false;
+        //TODO add logger
+        if(!validList(permissions))
+            return false;
+        if (!users.containsKey(userName) || !stores.containsKey(storeName))
+            return false;
+        return current.removePermissions(permissions, storeName, userName);
     }
 }

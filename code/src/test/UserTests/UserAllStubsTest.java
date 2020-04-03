@@ -54,6 +54,7 @@ public class UserAllStubsTest {
         testOpenStoreSubscribe();
         testAddManagerSubscribe();
         testAddPermissionsSubscribe();
+        testRemovePermissionsSubscibe();
         testAddProductToStoreSubscribe();
         testEditProductFromStoreSubscribe();
         testRemoveProductFromStoreSubscribe();
@@ -72,6 +73,7 @@ public class UserAllStubsTest {
         testEditProductFromStoreGuest();
         testRemoveProductFromStoreGuest();
         testAddPermissionsGuest();
+        testRemovePermissionsGuest();
         //last guest test
         testLoginGuest();
     }
@@ -190,6 +192,19 @@ public class UserAllStubsTest {
 
     protected void testAddPermissionsSubscribe(){
         assertTrue(user.addPermissions(data.getPermissionTypeList(),
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
+    }
+
+    /**
+     * test use case 4.6.2 - remove permissions
+     */
+    private void testRemovePermissionsGuest(){
+        assertFalse(user.removePermissions(data.getPermissionTypeList(),
+                data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()));
+    }
+
+    protected void testRemovePermissionsSubscibe(){
+        assertTrue(user.removePermissions(data.getPermissionTypeList(),
                 data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
     }
 

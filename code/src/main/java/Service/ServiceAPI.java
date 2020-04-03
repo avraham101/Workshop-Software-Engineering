@@ -176,7 +176,7 @@ public class ServiceAPI {
         return logicManager.addPermissions(permissions,storeName,userName);
     }
 
-    //TODO use case 4.6.2 //talk to yuval before implement
+    //use case 4.6.2
     public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName){
         return logicManager.removePermissions(permissions,storeName,userName);
     }

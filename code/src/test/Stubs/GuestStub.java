@@ -48,4 +48,9 @@ public class GuestStub extends Guest {
     public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
         return false;
     }
+
+    @Override
+    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return false;
+    }
 }

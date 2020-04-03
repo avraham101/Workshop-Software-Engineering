@@ -93,4 +93,15 @@ public class UserRealTest extends UserAllStubsTest{
         assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType()
                 .containsAll(data.getPermissionTypeList()));
     }
+
+    /**
+     * check use case 4.6.2 - remove permissions
+     */
+    @Override
+    protected void testRemovePermissionsSubscibe() {
+        super.testRemovePermissionsSubscibe();
+        Subscribe sub=(Subscribe) user.getState();
+        assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType().
+                isEmpty());
+    }
 }

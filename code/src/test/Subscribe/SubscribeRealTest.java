@@ -86,6 +86,9 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         assertTrue(newManager.getPermissions().containsKey(store.getName()));
     }
 
+    /**
+     * check use case 4.6.1 - add permission
+     */
 
     @Override
     protected void testAddPermissions() {
@@ -104,5 +107,15 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         super.testAddPermissionSuccess();
         assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType().
                 containsAll(data.getPermissionTypeList()));
+    }
+
+    /**
+     * check use case 4.6.2 - remove permissions
+     */
+    @Override
+    protected void testRemovePermissionSuccess() {
+        super.testRemovePermissionSuccess();
+        assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType().
+                isEmpty());
     }
 }

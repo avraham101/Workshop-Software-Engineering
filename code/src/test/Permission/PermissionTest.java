@@ -53,7 +53,7 @@ public class PermissionTest {
     }
 
     private void testAddTypeWhenOwnerFail(){
-        assertFalse(permission.addType(PermissionType.REMOVE_MANAGER));
+        assertFalse(permission.addType(PermissionType.ADD_MANAGER));
     }
 
     private void testAddTypeSuccess() {

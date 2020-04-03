@@ -43,6 +43,8 @@ public class SubscribeAllStubsTest {
         addProductToStoreTest();
         testEditProduct();
         removeProductFromStoreTest();
+        testAddPermissions();
+        testRemovePermission();
         logoutTest();
     }
 
@@ -68,7 +70,7 @@ public class SubscribeAllStubsTest {
     /**
      * test: use case 3.1 - Logout
      */
-    protected void logoutTest(){
+    private void logoutTest(){
         assertTrue(sub.logout(new User()));
     }
 
@@ -123,12 +125,12 @@ public class SubscribeAllStubsTest {
     /**
      * test use case 4.1.3 - edit product
      */
-    protected void testEditProduct(){
+    private void testEditProduct(){
         testFailEditProduct();
         testSuccessEditProduct();
     }
 
-    protected void testFailEditProduct() {
+    private void testFailEditProduct() {
         checkEditProductHasNoPermission();
         checkEditProductNotManager();
     }
@@ -237,7 +239,39 @@ public class SubscribeAllStubsTest {
 
     protected void testAddPermissionSuccess() {
         assertTrue(sub.addPermissions(data.getPermissionTypeList(),
-                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.VALID).getName()));
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
+    }
+
+    /**
+     * test use case 4.6.2 - remove permission
+     */
+    private void testRemovePermission(){
+        testRemovePermissionNotManager();
+        testRemovePermissionDontHavePermission();
+        testRemovePermissionSuccess();
+    }
+
+    private void testRemovePermissionNotManager() {
+        String validStoreName=data.getProductData(Data.VALID).getStoreName();
+        Permission permission=sub.getPermissions().get(validStoreName);
+        sub.getPermissions().clear();
+        assertFalse(sub.removePermissions(data.getPermissionTypeList(),
+                data.getSubscribe(Data.ADMIN).getName(),validStoreName));
+        sub.getPermissions().put(validStoreName,permission);
+    }
+
+    private void testRemovePermissionDontHavePermission() {
+        String validStoreName = data.getProductData(Data.VALID).getStoreName();
+        Permission permission = sub.getPermissions().get(validStoreName);
+        permission.removeType(PermissionType.OWNER);
+        assertFalse(sub.addPermissions(data.getPermissionTypeList(),
+                data.getSubscribe(Data.ADMIN).getName(),validStoreName));
+        permission.addType(PermissionType.OWNER);
+    }
+
+    protected void testRemovePermissionSuccess() {
+        assertTrue(sub.removePermissions(data.getPermissionTypeList(),
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
     }
 
 

@@ -79,6 +79,7 @@ public class LogicManagerAllStubsTest {
         testDeleteProductFromCart();
         testRemoveProductFromStore();
         testManageOwner();
+        testRemovePermission();
         testLogout();
     }
 
@@ -386,7 +387,7 @@ public class LogicManagerAllStubsTest {
     /**
      * part of use case 2.5 - view spesific products
      */
-    protected void testViewSpecificProductSearchAndFilter() {
+    private void testViewSpecificProductSearchAndFilter() {
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.NONE);
         List<ProductData> products = logicManager.viewSpecificProducts(filter);
@@ -412,7 +413,7 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 4.1.2 -delete product
      */
-    protected void testRemoveProductFromStore(){
+    private void testRemoveProductFromStore(){
         testRemoveProductSuccess();
         testRemoveProductFail();
     }
@@ -500,7 +501,7 @@ public class LogicManagerAllStubsTest {
     /**
      * test not existing store or not existing user
      */
-    protected void testAddManagerToStoreFail() {
+    private void testAddManagerToStoreFail() {
         String storeName=data.getStore(Data.VALID).getName();
         String userName=data.getSubscribe(Data.ADMIN).getName();
         //invalid username
@@ -538,6 +539,38 @@ public class LogicManagerAllStubsTest {
 
     protected void testAddPermissionSuccess() {
         assertTrue(currUser.addPermissions(data.getPermissionTypeList(),
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
+    }
+
+    /**
+     * test use case 4.6.2 - remove permissions
+     */
+    public void testRemovePermission(){
+        testRemovePermissionFail();
+        testRemovePermissionSuccess();
+    }
+
+    /**
+     * test:
+     * 1. wrong user name
+     * 2. wrong store name
+     * 3. null list
+     * 4. list with null
+     */
+    private void testRemovePermissionFail() {
+        String user=data.getSubscribe(Data.ADMIN).getName();
+        String store=data.getStore(Data.VALID).getName();
+        List<PermissionType> types=data.getPermissionTypeList();
+        assertFalse(logicManager.removePermissions(types,store,store));
+        assertFalse(logicManager.removePermissions(types,user,user));
+        assertFalse(logicManager.removePermissions(null,store,user));
+        types.add(null);
+        assertFalse(logicManager.removePermissions(types,store,user));
+        types.remove(null);
+    }
+
+    protected void testRemovePermissionSuccess() {
+        assertTrue(currUser.removePermissions(data.getPermissionTypeList(),
                 data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
     }
 

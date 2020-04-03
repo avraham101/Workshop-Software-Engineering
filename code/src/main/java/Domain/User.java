@@ -68,17 +68,17 @@ public class User {
         return state.openStore(storeDetails,paymentSystem,supplySystem);
     }
 
-    //TODO write documentation
+    //use case 4.1.1
     public boolean addProductToStore(ProductData productData) {
         return state.addProductToStore(productData);
     }
 
-    //TODO write documentation
+    //use case 4.1.2
     public boolean removeProductFromStore(String storeName, String productName) {
         return state.removeProductFromStore(storeName,productName);
     }
 
-    //TODO write documentation
+    //use case 4.1.3
     public boolean editProductFromStore(ProductData productData) {
         return state.editProductFromStore(productData);
     }
@@ -167,5 +167,9 @@ public class User {
      */
     public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
         return state.addPermissions(permissions,storeName,userName);
+    }
+
+    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return state.removePermissions(permissions,storeName,userName);
     }
 }
