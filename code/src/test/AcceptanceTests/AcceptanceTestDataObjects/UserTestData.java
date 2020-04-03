@@ -9,12 +9,15 @@ public class UserTestData {
     private CartTestData cart;
     private List<PurchaseTestData> purchases;
 
+
     public UserTestData(String username, String password) {
         this.username = username;
         this.password = password;
         this.cart = new CartTestData();
         this.purchases = new ArrayList<>();
+
     }
+
 
     public String getUsername() {
         return username;

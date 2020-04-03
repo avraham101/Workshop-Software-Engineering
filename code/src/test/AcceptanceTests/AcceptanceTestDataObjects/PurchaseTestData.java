@@ -9,12 +9,17 @@ import java.util.List;
 public class PurchaseTestData {
     private HashMap<ProductTestData,Integer> productsAndAmountInPurchase;
     private String purchaseDate;
+    private double totalAmount;
 
-    public PurchaseTestData(HashMap<ProductTestData,Integer> productsAndAmountInPurchase){
+    public PurchaseTestData(HashMap<ProductTestData,Integer> productsAndAmountInPurchase,Date date,Double totalAmount){
         this.productsAndAmountInPurchase = productsAndAmountInPurchase;
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date date = new Date();
         this.purchaseDate = dateFormat.format(date);
+        this.totalAmount=totalAmount;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
     }
 
     public HashMap<ProductTestData, Integer> getProductsAndAmountInPurchase() {
@@ -24,4 +29,5 @@ public class PurchaseTestData {
     public String getPurchaseDate() {
         return purchaseDate;
     }
+
 }

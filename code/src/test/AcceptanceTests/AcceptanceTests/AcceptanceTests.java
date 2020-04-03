@@ -12,6 +12,11 @@ public abstract class AcceptanceTests extends TestCase{
     protected List<UserTestData> users;
     protected List<StoreTestData> stores;
     protected List<ProductTestData> products;
+    protected StoreTestData notExistingStore;
+    protected DeliveryDetailsTestData validDelivery;
+    protected  DeliveryDetailsTestData invalidDelivery;
+    protected PaymentTestData validPayment;
+    protected PaymentTestData invalidPayment;
 
     public void setUp(){
         this.bridge = AcceptanceTestsDriver.getBridge();
@@ -20,10 +25,24 @@ public abstract class AcceptanceTests extends TestCase{
         this.products = new ArrayList<>();
 
         setUpUsers();
+        setUpDelivery();
+        setUpPayments();
         setUpProducts();
         setUpStores();
         setUpCarts();
-        setUpPurchases();
+      //  setUpPurchases();
+    }
+
+    private void setUpPayments() {
+        Date validDate = new Date();
+        Date invalidDate = new Date(0);
+        validPayment = new PaymentTestData("1111","343",validDate);
+        invalidPayment = new PaymentTestData("1111","343",invalidDate);
+    }
+
+    private void setUpDelivery() {
+        validDelivery = new DeliveryDetailsTestData("israel","ashdod","valid",7);
+        invalidDelivery = new DeliveryDetailsTestData("israel","ashdod","invalid",-15);
     }
 
 
@@ -33,6 +52,7 @@ public abstract class AcceptanceTests extends TestCase{
         UserTestData user2 = new UserTestData("testUser2","testUser2Pass");
 
         users.addAll(Arrays.asList(user0, user1,user2));
+
     }
 
     private void setUpProducts(){
@@ -122,6 +142,12 @@ public abstract class AcceptanceTests extends TestCase{
 
         stores.addAll(Arrays.asList(store0,store1,store2));
 
+        List<ProductTestData> notExistingStoreProducts = products.subList(0,4);
+        UserTestData notExistingStoreManager = users.get(1);
+        notExistingStore = new StoreTestData("notExistingStore",
+                                            notExistingStoreManager,
+                                            notExistingStoreProducts);
+
     }
 
     private void setUpStoreNameToProducts(List<ProductTestData> storeProducts, String storeName) {
@@ -156,19 +182,7 @@ public abstract class AcceptanceTests extends TestCase{
             basket.addProductToBasket(basketProducts.get(i),amounts[i]);
     }
 
-    private void setUpPurchases(){
-        HashMap<ProductTestData,Integer> productsToBuy = new HashMap<>();
-        List<BasketTestData> baskets0 = users.get(0).getCart().getBaskets();
-        HashMap<ProductTestData,Integer> store0ProductsToBuy = baskets0.get(0).getProductsAndAmountInBasket();
-        HashMap<ProductTestData,Integer> store1ProductsToBuy = baskets0.get(1).getProductsAndAmountInBasket();
 
-        productsToBuy.putAll(store0ProductsToBuy);
-        productsToBuy.putAll(store1ProductsToBuy);
-
-        PurchaseTestData purchase = new PurchaseTestData(productsToBuy);
-
-        users.get(0).getPurchases().add(purchase);
-    }
 
 
 }
