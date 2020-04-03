@@ -245,26 +245,33 @@ public class LogicManagerAllStubsTest {
      * use case 4.9.1 -view request
      */
     public void testStoreViewRequest(){
+        testStoreViewRequestSuccess();
+        testStoreViewRequestFail();
+    }
+
+    private void testStoreViewRequestSuccess() {
+        Request request = data.getRequest(Data.VALID);
+        assertFalse(currUser.viewRequest(request.getStoreName()).isEmpty());
+    }
+
+    private void testStoreViewRequestFail() {
         Request request1 = data.getRequest(Data.NULL_NAME);
         Request request2 = data.getRequest(Data.WRONG_STORE);
-        Request request3 = data.getRequest(Data.VALID);
         assertTrue(logicManager.viewStoreRequest(request1.getStoreName()).isEmpty());
         assertTrue(logicManager.viewStoreRequest(request2.getStoreName()).isEmpty());
-        assertFalse(currUser.viewRequest(request3.getStoreName()).isEmpty());
     }
 
     /**
      * use case 4.9.2 -replay request
      */
     public void testReplayRequest(){
-        Request request1 = data.getRequest(Data.WRONG_ID);
-        Request request2 = data.getRequest(Data.WRONG_STORE);
-        Request request3 = data.getRequest(Data.NULL);
-        //Request request4 = data.getRequest(Data.VALID);
+        Request request1 = data.getRequest(Data.WRONG_STORE);
+        Request request2 = data.getRequest(Data.NULL);
+        Request request3 = data.getRequest(Data.VALID);
+
         assertNull(logicManager.replayRequest(request1.getStoreName(), request1.getId(), request1.getContent()));
         assertNull(logicManager.replayRequest(request2.getStoreName(), request2.getId(), request2.getContent()));
-        assertNull(logicManager.replayRequest(request3.getStoreName(), request3.getId(), request3.getContent()));
-        //assertNotNull(currUser.replayToRequest(request4.getStoreName(),request4.getId(),request4.getContent()));
+        assertNotNull(currUser.replayToRequest(request3.getStoreName(),request3.getId(), request3.getContent()));
     }
 
     /**

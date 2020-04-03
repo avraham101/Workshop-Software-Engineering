@@ -456,9 +456,8 @@ public class LogicManager {
      * @return true if replay, false else
      */
     public Request replayRequest(String storeName, int requestID, String content) {
-        if (content!=null && stores.containsKey(storeName)) {
-            return current.replayToRequest(storeName, requestID, content);
-        }
+        if (content!=null && stores.containsKey(storeName))
+            return (current.replayToRequest(storeName, requestID, content)) ;
         return null;
     }
 }

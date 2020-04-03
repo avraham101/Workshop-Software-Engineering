@@ -49,7 +49,19 @@ public class UserStub extends User {
     }
 
     @Override
+    public Request addRequest(String storeName, String content) {
+        return new Request(getUserName(), storeName, "temp", 10);
+    }
+
+    @Override
     public List<Request> viewRequest(String storeName) {
-        return new LinkedList<>();
+        List<Request> requests = new LinkedList<>();
+        requests.add(new Request(getUserName(), storeName, "temp", 10));
+        return requests;
+    }
+
+    //@Override
+    public Request replayToRequest(String storeName, int requestID, String content) {
+        return new Request(getUserName(), storeName, "temp", 10);
     }
 }

@@ -136,7 +136,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override
     public void testAddRequest(){
-        super.testAddRequest();
         testSubscribeAddRequestSuccess();
         testSubscribeAddRequestFail();
     }
@@ -195,7 +194,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override
     public void testReplayRequest() {
-        super.testReplayRequest();
+        testReplayRequestSuccess();
+        testReplayRequestFail();
+
+    }
+
+    private void testReplayRequestSuccess() {
         testAddRequest();
         Request request = data.getRequest(Data.VALID);
         //check the comment save
@@ -204,6 +208,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Request excepted = stores.get(storeData.getName()).getRequests().get(request.getId());
         assertEquals(excepted.getId(),actual.getId());
         assertEquals(excepted.getComment(),actual.getComment());
+    }
+
+    private void testReplayRequestFail() {
+        Request request = data.getRequest(Data.WRONG_ID);
+        assertNull(logicManager.replayRequest(request.getStoreName(), request.getId(), request.getContent()));
     }
 
     /**
