@@ -27,7 +27,7 @@ public class GetStoresInfo extends AcceptanceTests {
 
     @Test
     public void getProductsOfStoreSuccess(){
-        
+
     }
 
     @Test
