@@ -69,8 +69,8 @@ public class LogicManagerAllStubsTest {
         testAddProductToCart();
         testWatchCartDetails();
         testEditProductsInCart();
-        //TODO add here add product to corrent
-        testWriteReview();
+        //TODO add here add product to correct
+        //TODO add this after we have purchase testWriteReview();
         testViewDataStores();
         testViewProductsInStore();
         testDeleteProductFromCart();

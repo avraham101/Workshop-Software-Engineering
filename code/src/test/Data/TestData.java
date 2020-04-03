@@ -145,7 +145,7 @@ public class TestData {
     private void setUpReviews() {
         reviwes = new HashMap<>();
         Subscribe subscribe = getSubscribe(Data.VALID);
-        ProductData productData = getProduct(Data.VALID);
+        ProductData productData = getProductData(Data.VALID);
         reviwes.put(Data.NULL, null);
         reviwes.put(Data.VALID,new Review(subscribe.getName(), productData.getStoreName(),
                 productData.getProductName(),"Review"));
@@ -157,10 +157,10 @@ public class TestData {
                 productData.getProductName(),null));
         reviwes.put(Data.EMPTY_CONTENT,new Review(subscribe.getName(), productData.getStoreName(),
                 productData.getProductName(),""));
-        productData = getProduct(Data.WRONG_STORE);
+        productData = getProductData(Data.WRONG_STORE);
         reviwes.put(Data.WRONG_STORE,new Review(subscribe.getName(), productData.getStoreName(),
                 productData.getProductName(),"Review"));
-        productData = getProduct(Data.WRONG_NAME);
+        productData = getProductData(Data.WRONG_NAME);
         reviwes.put(Data.WRONG_PRODUCT,new Review(subscribe.getName(), productData.getStoreName(),
                 productData.getProductName(),"Review"));
 
