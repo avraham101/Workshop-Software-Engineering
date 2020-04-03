@@ -1,6 +1,7 @@
 package Domain;
 
 import DataAPI.CartData;
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
@@ -165,17 +166,6 @@ public abstract class UserState {
         return result;
     }
 
-    /**
-     * use case 2.8 - purchase cart
-     * the function check if a product is in the caat
-     * @param productData - the name of the product
-     * @return true if the product in cart, otherwise false.
-     */
-    public boolean checkProductInCart(ProductData productData) {
-        //TODO
-        return false;
-    }
-
 
     /**
      * use case 4.3
@@ -184,4 +174,14 @@ public abstract class UserState {
      * @return
      */
     public abstract boolean addManager(Subscribe subscribe, String storeName);
+
+    /**
+     * use case - 2.8 buy cart
+     * @param paymentData - the payment info
+     * @param addresToDeliver  - the address to shift
+     * @return ture if the cart bought, otherwise false
+     */
+    public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
+        return cart.buy(paymentData, addresToDeliver);
+    }
 }

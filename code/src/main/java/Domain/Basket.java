@@ -1,13 +1,21 @@
 package Domain;
 
+import DataAPI.DeliveryData;
+import DataAPI.PaymentData;
+import DataAPI.ProductData;
+
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 
 public class Basket {
+
     private Store store; // the store of the basket
     private HashMap<Product, Integer> products; // key is the product and the value is the amount of the product in thr basket
-
+    private PaymentData paymentData;
+    private DeliveryData deliveryData;
     /**
      * constructor
      * @param store - the store of the basket
@@ -100,6 +108,55 @@ public class Basket {
         Basket basket = (Basket) o;
         return Objects.equals(store, basket.store) &&
                 Objects.equals(products, basket.products);
+    }
+
+
+    public boolean available(PaymentData paymentData, String addresToDeliver) {
+        if(!store.isAvailableProducts(products))
+            return false;
+        if(!isAvailablePaymnet(paymentData))
+            return false;
+        return isAvailableDelivery(addresToDeliver);
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     * the function check if the payment is available.
+     * think of this like a receive for each purchase to store.
+     * @param general - the general Payment Data
+     * @return ture if the payment is available.
+     */
+    private boolean isAvailablePaymnet(PaymentData general) {
+        double price = store.getPriceForBasket(products);
+        paymentData = new PaymentData(general.getName(),general.getAddress(),general.getCreditCard());
+        paymentData.setTotalPrise(price);
+        return store.isAvailablePurchese(paymentData);
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     * the function check if delivery is available.
+     * think of this like a receive for each purchase to store.
+     * @param genral - the general address
+     * @return true if the delivery is available.
+     */
+    private boolean isAvailableDelivery(String genral) {
+        List<ProductData> list = new LinkedList<>();
+        for(Product p: products.keySet()) {
+            ProductData productData = new ProductData(p,store.getName());
+            productData.setAmount(products.get(p));
+            list.add(productData);
+        }
+        deliveryData = new DeliveryData(addresToDeliver,list);
+        return store.isAvailableDelivery(deliveryData);
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     * the function buy the basket
+     */
+    public void buy() {
+        store.purches(paymentData,deliveryData);
     }
 
 }

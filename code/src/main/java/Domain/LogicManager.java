@@ -522,16 +522,15 @@ public class LogicManager {
     /**
      * use case 2.8 - purchase cart
      * @param paymentData - the payment data of this purchase
-     * @param deliveryData - the delivery data of this purchase
+     * @param addresToDeliver - the address do Deliver the purchase
      * @return true is the purchase succeeded, otherwise false
      */
-    public boolean purchaseCart(PaymentData paymentData, DeliveryData deliveryData) {
-        if(!validPaymentData(paymentData))
+    public boolean purchaseCart(PaymentData paymentData, String addresToDeliver) {
+        if (!validPaymentData(paymentData))
             return false;
-        if(!validDeliveryData(deliveryData))
+        if (addresToDeliver == null || addresToDeliver.isEmpty())
             return false;
-
-        return true;
+        return current.buyCart(paymentData, addresToDeliver);
     }
 
     /**
@@ -546,19 +545,5 @@ public class LogicManager {
         String address = paymentData.getAddress();
         String card = paymentData.getCreditCard();
         return paymentData.getName()!=null && address!=null && !address.isEmpty() && card!=null && card.isEmpty();
-    }
-
-    /**
-     * use case - 2.8
-     * the function check if delivery data is valid
-     * @param deliveryData - the delivery data
-     * @return true if the delivery is valid, otherwise false
-     */
-    private boolean validDeliveryData(DeliveryData deliveryData) {
-        if(deliveryData==null)
-            return false;
-        String address = deliveryData.getAddress();
-        List<ProductData> productData = deliveryData.getProducts();
-        return address!=null && !address.isEmpty() && productData!=null && !productData.isEmpty();
     }
 }

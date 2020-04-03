@@ -1,5 +1,7 @@
 package Domain;
 
+import DataAPI.PaymentData;
+
 import java.util.HashMap;
 
 public class Cart {
@@ -30,4 +32,34 @@ public class Cart {
     public void setBaskets(HashMap<String, Basket> baskets) {
         this.baskets = baskets;
     }
+
+    /**
+     * use case - 2.8 buy cart
+     * the function buy this cart
+     * @param paymentData - the payment info
+     * @param addresToDeliver  - the address to shift
+     * @return ture if the cart bought, otherwise false
+     */
+    public boolean buy(PaymentData paymentData, String addresToDeliver) {
+        if(!availableCart(paymentData,addresToDeliver))
+            return false;
+        for(Basket basket: baskets.values()) {
+            basket.buy();
+        }
+        return true;
+    }
+
+    /**
+     * use case 2.8 - but cart
+     * the function check that all products is available
+     * @return true is available, otherwise false
+     */
+    private boolean availableCart(PaymentData paymentData, String addresToDeliver) {
+        for(Basket basket: baskets.values()) {
+            if(!basket.available(paymentData, addresToDeliver))
+                return false;
+        }
+        return true;
+    }
+
 }

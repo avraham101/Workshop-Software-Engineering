@@ -106,11 +106,11 @@ public class ServiceAPI {
     /**
      * use case 2.8 - purchase cart
      * @param paymentData - the payment data of this purchase
-     * @param deliveryData - the delivery data of this purchase
+     * @param addressToDeliver - the addressToDiliver
      * @return true is the purchase succeeded, otherwise false
      */
-    public boolean purchaseCart(PaymentData paymentData, DeliveryData deliveryData){
-        return logicManager.purchaseCart(paymentData,deliveryData);
+    public boolean purchaseCart(PaymentData paymentData, String addressToDeliver){
+        return logicManager.purchaseCart(paymentData,addressToDeliver);
     }
 
     /**

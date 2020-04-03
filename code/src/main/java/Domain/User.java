@@ -4,6 +4,8 @@ import DataAPI.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.HashMap;
+
 public class User {
     private UserState state;
 
@@ -142,16 +144,6 @@ public class User {
     }
 
     /**
-     * use case 2.8 - purchase cart
-     * the function check if a product is in the caat
-     * @param productData - the name of the product
-     * @return true if the product in cart, otherwise false.
-     */
-    public boolean checkProductInCart(ProductData productData) {
-        return state.checkProductInCart(productData);
-    }
-
-    /**
      * use case 3.3 - write review
      * the function check if a product is perchesed
      * @param storeName - the store name
@@ -162,4 +154,13 @@ public class User {
         return state.isItPurchased(storeName, productName);
     }
 
+    /**
+     * use case 2.8 - purchase cart
+     * @param paymentData - the payment details
+     * @param addresToDeliver - the address to shift
+     * @return true if the cart bought, otherwise false
+     */
+    public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
+        return state.buyCart(paymentData, addresToDeliver);
+    }
 }
