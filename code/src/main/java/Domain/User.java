@@ -1,8 +1,6 @@
 package Domain;
 
-import DataAPI.CartData;
-import DataAPI.ProductData;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
@@ -87,7 +85,6 @@ public class User {
      * @param content
      * @return
      */
-
     public Request addRequest(String storeName, String content) { return state.addRequest(storeName, content); }
 
     /**
@@ -144,6 +141,15 @@ public class User {
         return state.addProductToCart(store, product, amount);
     }
 
+    /**
+     * use case 2.8 - purchase cart
+     * the function check if a product is in the caat
+     * @param productData - the name of the product
+     * @return true if the product in cart, otherwise false.
+     */
+    public boolean checkProductInCart(ProductData productData) {
+        return state.checkProductInCart(productData);
+    }
 
     /**
      * use case 3.3 - write review
@@ -155,4 +161,5 @@ public class User {
     public boolean isItPurchased(String storeName, String productName) {
         return state.isItPurchased(storeName, productName);
     }
+
 }

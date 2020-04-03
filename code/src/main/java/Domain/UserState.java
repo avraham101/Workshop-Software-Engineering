@@ -165,6 +165,17 @@ public abstract class UserState {
         return result;
     }
 
+    /**
+     * use case 2.8 - purchase cart
+     * the function check if a product is in the caat
+     * @param productData - the name of the product
+     * @return true if the product in cart, otherwise false.
+     */
+    public boolean checkProductInCart(ProductData productData) {
+        //TODO
+        return false;
+    }
+
 
     /**
      * use case 4.3
