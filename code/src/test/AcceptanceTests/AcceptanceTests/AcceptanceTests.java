@@ -12,6 +12,7 @@ public abstract class AcceptanceTests extends TestCase{
     protected List<UserTestData> users;
     protected List<StoreTestData> stores;
     protected List<ProductTestData> products;
+    protected StoreTestData notExistingStore;
 
     public void setUp(){
         this.bridge = AcceptanceTestsDriver.getBridge();
@@ -121,6 +122,12 @@ public abstract class AcceptanceTests extends TestCase{
         StoreTestData store2 = new StoreTestData("store2Test",store2Manager,store2Products);
 
         stores.addAll(Arrays.asList(store0,store1,store2));
+
+        List<ProductTestData> notExistingStoreProducts = products.subList(0,4);
+        UserTestData notExistingStoreManager = users.get(1);
+        notExistingStore = new StoreTestData("notExistingStore",
+                                            notExistingStoreManager,
+                                            notExistingStoreProducts);
 
     }
 

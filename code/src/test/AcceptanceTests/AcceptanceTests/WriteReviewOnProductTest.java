@@ -18,6 +18,7 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
     public void setUp(){
         super.setUp();
         user0 = users.get(0);
+        purchase0 = user0.getPurchases().get(0);
         bridge.register(user0.getUsername(),user0.getPassword());
         bridge.login(user0.getUsername(),user0.getPassword());
         bridge.purchaseProducts(purchase0);
