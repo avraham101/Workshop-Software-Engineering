@@ -146,8 +146,8 @@ public class ServiceAPI {
     }
 
     //TODO use case 4.6.1 //talk to yuval before implement
-    public boolean addPerMissions(List<PermissionType> permissions, String storeName, String userName){
-        return false;
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName){
+        return logicManager.addPermissions(permissions,storeName,userName);
     }
 
     //TODO use case 4.6.2 //talk to yuval before implement

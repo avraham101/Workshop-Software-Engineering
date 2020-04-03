@@ -435,4 +435,17 @@ public class LogicManager {
             return false;
         return current.addManager(users.get(userName),storeName);
     }
+
+    /**
+     * use case 4.6.1 - add permissions
+     * @param permissions permmisions to add
+     * @param storeName -the store to add permissions to
+     * @param userName user to add permmisions to
+     * @return
+     */
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        if(!users.containsKey(userName)||!stores.containsKey(storeName))
+            return false;
+        return current.addPermissions(permissions,storeName,userName);
+    }
 }

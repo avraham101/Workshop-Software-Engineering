@@ -123,7 +123,12 @@ public class Subscribe extends UserState{
         return permissions.get(productData.getStoreName()).getStore().editProduct(productData);
     }
 
-
+    /**
+     * use case 4.5
+     * @param youngOwner the new manager
+     * @param storeName the store to add manager to
+     * @return
+     */
     @Override
     public boolean addManager(Subscribe youngOwner, String storeName) {
         if(!permissions.containsKey(storeName))
@@ -140,6 +145,26 @@ public class Subscribe extends UserState{
         store.getPermissions().put(youngOwner.getName(),newPermission);
         givenByMePermissions.add(newPermission);
         return true;
+    }
+
+    /**
+     * use case 4.6.1 - add permissions
+     * @param permissions types to be added
+     * @param storeName store to be added
+     * @param userName user to add permissions to
+     * @return if the permissions were added
+     */
+    @Override
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        for(Permission p: givenByMePermissions){
+            if(p.getStore().getName().equals(storeName)&&p.getOwner().getName().equals(userName)){
+                boolean added=false;
+                for(PermissionType type: permissions)
+                    added=added||p.addType(type);
+                return added;
+            }
+        }
+        return false;
     }
 
     /**

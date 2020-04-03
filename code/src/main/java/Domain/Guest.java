@@ -5,6 +5,8 @@ import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.List;
+
 public class Guest extends UserState {
 
     /**
@@ -95,13 +97,25 @@ public class Guest extends UserState {
     }
 
     /**
-     * use case 4.1.3
+     * use case 4.5
      * @param youngOwner user to be owner
      * @param storeName
      * @return
      */
     @Override
     public boolean addManager(Subscribe youngOwner, String storeName) {
+        return false;
+    }
+
+    /**
+     * use case 4.6.1
+     * @param permissions
+     * @param storeName
+     * @param userName
+     * @return
+     */
+    @Override
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
         return false;
     }
 }

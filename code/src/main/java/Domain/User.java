@@ -5,6 +5,8 @@ import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.List;
+
 public class User {
     private UserState state;
 
@@ -94,5 +96,16 @@ public class User {
      */
     public boolean addManager(Subscribe subscribe, String storeName) {
         return state.addManager(subscribe,storeName);
+    }
+
+    /**
+     * use case 4.6.1 - add permissions
+     * @param permissions
+     * @param storeName
+     * @param userName
+     * @return
+     */
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return state.addPermissions(permissions,storeName,userName);
     }
 }
