@@ -1,5 +1,6 @@
 package LogicManagerTests;
 
+import DataAPI.CartData;
 import DataAPI.ProductData;
 import Data.Data;
 import DataAPI.StoreData;
@@ -144,7 +145,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertTrue(logicManager.addRequest(storeData.getName(), "good store"));
 
         // check request saved in the store and user.
-        Request request = new Request(currUser.getUserName(), storeData.getName(),"good store");
+        Request request = new Request(currUser.getUserName(), storeData.getName(),"good store",1);
 
         Store store = stores.get(storeData.getName());
         assertEquals(store.getRequests().get(0).getSenderName(), request.getSenderName());
@@ -186,18 +187,18 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
 
     private void testAddProductWithSameName() {
-        assertFalse(logicManager.addProductToStore(data.getProduct(Data.SAME_NAME)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.SAME_NAME)));
     }
 
     /**
      * test try adding product without being owner or manager of the store
      */
     private void testAddProductNotManagerOfStore() {
-        String validStoreName = data.getProduct(Data.VALID).getStoreName();
+        String validStoreName = data.getProductData(Data.VALID).getStoreName();
         Subscribe sub = ((Subscribe) currUser.getState());
         Permission permission = sub.getPermissions().get(validStoreName);
         sub.getPermissions().clear();
-        assertFalse(logicManager.addProductToStore(data.getProduct(Data.VALID)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.VALID)));
         sub.getPermissions().put(validStoreName,permission);
     }
 
@@ -205,11 +206,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * test that user that has no CRUD permission or owner permission cant add products to store
      */
     private void testAddProductDontHavePermission() {
-        String validStoreName = data.getProduct(Data.VALID).getStoreName();
+        String validStoreName = data.getProductData(Data.VALID).getStoreName();
         Subscribe sub = ((Subscribe) currUser.getState());
         Permission permission = sub.getPermissions().get(validStoreName);
         permission.removeType(PermissionType.OWNER);
-        assertFalse(logicManager.addProductToStore(data.getProduct(Data.VALID)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.VALID)));
         permission.addType(PermissionType.OWNER);
     }
 
@@ -220,8 +221,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     protected void testRemoveProductSuccess() {
         super.testRemoveProductSuccess();
         Subscribe sub=(Subscribe)currUser.getState();
-        assertFalse(sub.getPermissions().containsKey(data.getProduct(Data.VALID).getProductName()));
+        assertFalse(sub.getPermissions().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
+
 
 
     /**
@@ -231,12 +233,38 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override
     protected void testEditProductSuccess() {
         super.testEditProductSuccess();
-        ProductData product=data.getProduct(Data.EDIT);
+        ProductData product=data.getProductData(Data.EDIT);
         Subscribe sub=(Subscribe) currUser.getState();
         assertTrue(sub.getPermissions().get(product.getStoreName()).getStore()
                 .getProducts().get(product.getProductName()).equal(product));
     }
 
+    /**
+     * use case 4.3 - manage owner
+     */
+    @Override
+    protected void testManageOwnerSuccess() {
+        currUser.setState(users.get(data.getSubscribe(Data.ADMIN).getName()));
+        super.testManageOwnerSuccess();
+        checkPermissions(Data.VALID2);
+        currUser.setState(users.get(data.getSubscribe(Data.VALID).getName()));
+    }
+
+    /**
+     * generic function for check when adding new permission that it was added to store and user correctly
+     * @param d - the data of the user to check the permission of
+     */
+    private void checkPermissions(Data d){
+        Subscribe sub=(Subscribe) currUser.getState();
+        Store store=sub.getGivenByMePermissions().get(0).getStore();
+        Subscribe newManager=data.getSubscribe(d);
+        Permission p=store.getPermissions().get(newManager.getName());
+        assertNotNull(p);
+        assertEquals(p.getStore().getName(),store.getName());
+        newManager=p.getOwner();
+        assertNotNull(newManager);
+        assertTrue(newManager.getPermissions().containsKey(store.getName()));
+    }
     /**
      * use case 4.5 - add manager
      */
@@ -244,9 +272,19 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override
     protected void testAddManagerStoreSuccess() {
         super.testAddManagerStoreSuccess();
+        checkPermissions(Data.ADMIN);
+    }
+
+    /**
+     * use case 4.6.1 -add permission
+     */
+
+    @Override
+    protected void testAddPermissionSuccess() {
+        super.testAddPermissionSuccess();
         Subscribe sub=(Subscribe) currUser.getState();
-        assertTrue(sub.getGivenByMePermissions().get(0).getStore().getPermissions()
-                .containsKey(data.getSubscribe(Data.ADMIN).getName()));
+        assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType()
+                .containsAll(data.getPermissionTypeList()));
     }
 
     /**
@@ -274,11 +312,78 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertFalse(products.isEmpty()); //sepose to be 1 product valid
         assertEquals(listSize, products.size());
         ProductData result = products.get(0);
-        ProductData expected = data.getProduct(Data.VALID);
+        ProductData expected = data.getProductData(Data.VALID);
         assertTrue(data.compareProductData(expected, result));
         //FAIL
         products = logicManager.viewSpecificProducts(wrong);
         assertTrue(products.isEmpty());
+    }
+
+    /**
+     * use case 2.7.1 - watch cart details
+     * success test
+     */
+    @Override
+    protected void testWatchCartDetails() {
+        ProductData productData = data.getProductData(Data.VALID);
+        CartData cartData = logicManager.watchCartDetatils();
+        List<ProductData> list = cartData.getProducts();
+        assertEquals(1, list.size());
+        assertEquals(list.get(0).getProductName(), productData.getProductName());
+    }
+
+    /**
+     * use case 2.7.2 - delete product from cart
+     * success test
+     */
+    @Override
+    protected void testDeleteProductFromCart() {
+        ProductData productData = data.getProductData(Data.VALID);
+        assertTrue(logicManager.deleteFromCart(productData.getProductName(),productData.getStoreName()));
+
+    }
+
+    /**
+     * use case 2.7.3 - edit amount of product in cart
+     * success test
+     */
+    @Override
+    protected void testEditProductsInCart() {
+        ProductData productData = data.getProductData(Data.VALID);
+        assertTrue(logicManager.editProductInCart(productData.getProductName(),productData.getStoreName(),1));
+    }
+
+
+
+    /**
+     *  use case 2.7.4 - add product to cart
+     *  success test
+     */
+    @Override
+    protected void testAddProductToCart() {
+        super.testAddProductToCart();
+        testAddProductToCartBasketNull();
+        testAddProductToCartValid();
+    }
+
+    /**
+     * use case 2.7.4
+     * test add product when every thing right
+     */
+    private void testAddProductToCartValid() {
+        ProductData product = data.getProductData(Data.VALID);
+        assertTrue(logicManager.aadProductToCart(product.getProductName(),
+                product.getStoreName(), product.getAmount()));
+    }
+
+    /**
+     * use case 2.7.4
+     * test add product when the basket is null
+     */
+    private void testAddProductToCartBasketNull() {
+        ProductData product = data.getProductData(Data.WRONG_STORE);
+        assertFalse(logicManager.aadProductToCart(product.getProductName(),
+                product.getStoreName(), product.getAmount()));
     }
 
     /**
@@ -292,7 +397,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertFalse(products.isEmpty()); //sepose to be 1 product valid
         assertEquals(1, products.size());
         ProductData result = products.get(0);
-        ProductData expected = data.getProduct(Data.VALID);
+        ProductData expected = data.getProductData(Data.VALID);
         assertTrue(data.compareProductData(expected, result));
     }
 
@@ -310,7 +415,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * part of use case 2.5 - view specific product
      */
     private void testViewSpecificProductSearchByCategory() {
-        ProductData productData = data.getProduct(Data.VALID);
+        ProductData productData = data.getProductData(Data.VALID);
         Filter correct = data.getFilter(Data.VALID);
         correct.setSearch(Search.CATEGORY);
         correct.setValue(productData.getCategory());
@@ -322,7 +427,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * part of use case 2.5 - view specific product
      */
     private void testViewSpecificProductSearchByKeyWord() {
-        ProductData productData = data.getProduct(Data.VALID);
+        ProductData productData = data.getProductData(Data.VALID);
         Filter correct = data.getFilter(Data.VALID);
         correct.setSearch(Search.KEY_WORD);
         correct.setValue(productData.getProductName());
@@ -372,6 +477,33 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Filter correct = data.getFilter(Data.FILTER_ALL_CATEGORIES);
         Filter wrong = data.getFilter(Data.WRONG_CATEGORY);
         testViewSpecificProductFillter(correct, wrong);
+    }
+
+    /**
+     * use case 3.3 - write review
+     */
+    @Override
+    protected void testWriteReview() {
+        super.testWriteReview();
+        testWriteReviewProductDidntPurchased();
+    }
+
+    /**
+     * part of use case 3.3 - write review
+     */
+    @Override
+    protected void testWriteReviewValid() {
+        super.testWriteReviewValid();
+        Review review = data.getReview(Data.VALID);
+        //TODO add here test for check if user current have this review
+    }
+
+    /**
+     * part of use case 3.3 - write review
+     */
+    private void testWriteReviewProductDidntPurchased() {
+        Review review = data.getReview(Data.WRONG_PRODUCT);
+        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
     }
 
 }

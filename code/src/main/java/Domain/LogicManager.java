@@ -1,5 +1,6 @@
 package Domain;
 
+import DataAPI.CartData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Systems.*;
@@ -72,7 +73,7 @@ public class LogicManager {
      * @return true if the register complete, otherwise false
      */
     public boolean register(String userName, String password) {
-        loggerSystem.getEventLogger().logp(Level.INFO, "Logic Manager", "register", "register: {0} {1}",
+        loggerSystem.getEventLogger().logp(Level.FINE, "Logic Manager", "register", "register: {0} {1}",
                 new Object[] { userName, password });
         if(!validName(userName) || !validPassword(password)) {
             return false;
@@ -389,6 +390,56 @@ public class LogicManager {
     }
 
     /**
+     * use case 2.7.1 watch cart details
+     * return the details about a cart
+     * @return - the cart details
+     */
+    public CartData watchCartDetatils() {
+        return current.watchCartDetatils();
+    }
+
+    /**
+     * use case 2.7.2
+     * delete product from the cart
+     * @param productName - the product to remove
+     * @param storeName - the store that sale this product
+     * @return - true if the delete work, false if not
+     */
+    public boolean deleteFromCart(String productName,String storeName){
+        return current.deleteFromCart(productName,storeName);
+    }
+
+    /**
+     * use case 2.7.3 edit amount of product
+     * @param productName - the product to edit it's amount
+     * @param storeName - the store of the product
+     * @param newAmount - the new amount
+     * @return - true if succeeded, false if not
+     */
+    public boolean editProductInCart(String productName,String storeName,int newAmount) {
+        return current.editProductInCart(productName,storeName, newAmount);
+    }
+
+    /**
+     * use case 2.7.4 - add product to the cart
+     * @param productName - the product to add
+     * @param storeName - the store of the product
+     * @param amount - the amount of the product that need to add to the cart
+     * @return - true if added, false if not
+     */
+    public boolean aadProductToCart(String productName,String storeName,int amount) {
+        boolean result = false;
+        Store store = stores.get(storeName);
+        if (store != null) {
+            Product product = store.getProduct(productName);
+            if (product != null && amount > 0 && amount <= product.getAmount()) {
+                result = current.addProductToCart(store, product, amount);
+            }
+        }
+        return result;
+    }
+
+    /**
      * use case 3.5 - write request on store
      * @param storeName name of store to write request to
      * @param content the content of the request
@@ -434,6 +485,40 @@ public class LogicManager {
         if(!users.containsKey(userName)||!stores.containsKey(storeName))
             return false;
         return current.addManager(users.get(userName),storeName);
+    }
+
+    /**
+     * use case 3.3 - write review
+     * @param productName - the product name
+     * @param storeName - the store name
+     * @param content - the content name
+     * @return true if the review added, otherwise false.
+     */
+    public boolean addReview(String storeName,String productName, String content) {
+        if(!validReview(storeName,productName,content))
+            return false;
+        Store store = stores.get(storeName);
+         if(store==null) //Store doesn't Exists
+            return false;
+        if(store.getProduct(productName)==null) //Store as the product
+            return false;
+        if(!current.isItPurchased(storeName,productName)) //Product purchased
+            return false;
+        Review review = new Review(current.getUserName(),storeName,productName,content);
+        return store.addReview(review);
+    }
+
+    /**
+     * use case 3.3 - write review
+     * the function return if a valid correct
+     * @param productName - the product name
+     * @param storeName - the store name
+     * @param content - the content name
+     * @return true if the review is valid, otherwise false.
+     */
+    private boolean validReview(String storeName,String productName, String content) {
+        return storeName!=null && productName!=null && content!=null &&
+                content.isEmpty()==false;
     }
 
     /**

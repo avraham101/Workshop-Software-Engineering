@@ -7,6 +7,7 @@ import Systems.SupplySystem.SupplySystem;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class Store {
 
@@ -159,5 +160,52 @@ public class Store {
         if(addRequest==null)
             return false;
         return requests.add(addRequest);
+    }
+
+    /**
+     * use case 2.7.4 - add product to cart
+     * use case 3.3 - write review
+     * return a product of the store
+     * @param productName - the name of the product
+     * @return - thr product if exist, null if not
+     */
+    public Product getProduct(String productName) {
+        return products.get(productName);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Store store = (Store) o;
+        return Objects.equals(name, store.name) &&
+                Objects.equals(purchesPolicy, store.purchesPolicy) &&
+                Objects.equals(discount, store.discount) &&
+                Objects.equals(products, store.products) &&
+                Objects.equals(categoryList, store.categoryList) &&
+                Objects.equals(requests, store.requests) &&
+                Objects.equals(permissions, store.permissions) &&
+                Objects.equals(supplySystem, store.supplySystem) &&
+                Objects.equals(paymentSystem, store.paymentSystem);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, purchesPolicy, discount, products, categoryList, requests, permissions, supplySystem, paymentSystem);
+    }
+
+    /**
+     * use case 3.3 write review
+     * @param review - the review
+     * @return ture if the review add to store, otherwise false;
+     */
+    public boolean addReview(Review review) {
+        if(review==null)
+            return false;
+        Product p = products.get(review.getProductName());
+        if(p==null)
+            return false;
+        p.addReview(review);
+        return true;
     }
 }

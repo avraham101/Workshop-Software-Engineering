@@ -140,6 +140,7 @@ public class Subscribe extends UserState{
         //if he is already manager
         if(store.getPermissions().containsKey(youngOwner.getName()))
             return false;
+        //create new permission process
         Permission newPermission=new Permission(youngOwner,store);
         youngOwner.getPermissions().put(storeName,newPermission);
         store.getPermissions().put(youngOwner.getName(),newPermission);
@@ -160,7 +161,7 @@ public class Subscribe extends UserState{
             if(p.getStore().getName().equals(storeName)&&p.getOwner().getName().equals(userName)){
                 boolean added=false;
                 for(PermissionType type: permissions)
-                    added=added||p.addType(type);
+                    added=added|p.addType(type);
                 return added;
             }
         }
@@ -178,6 +179,23 @@ public class Subscribe extends UserState{
         Request request = new Request(userName, storeName, content,requests.size()+1);
         requests.add(request);
         return request;
+    }
+
+    /**
+     * use case 3.3 - write review
+     * the function check if the product is purchased
+     * @param storeName - the store name
+     * @param productName - the product name
+     * @return true if the product is purchased
+     */
+    @Override
+    public boolean isItPurchased(String storeName, String productName) {
+        for(Purchase p: purchases) {
+            if(p.getStoreName().compareTo(storeName)==0
+                    && p.getStoreName().compareTo(storeName)==0)
+                return true;
+        }
+        return false;
     }
 
     public void setUserName(String userName) {

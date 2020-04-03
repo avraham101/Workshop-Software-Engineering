@@ -2,12 +2,11 @@ package Stubs;
 
 import DataAPI.ProductData;
 import DataAPI.StoreData;
-import Domain.Guest;
-import Domain.Store;
-import Domain.Subscribe;
-import Domain.User;
+import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
+
+import java.util.List;
 
 public class GuestStub extends Guest {
     @Override
@@ -27,7 +26,7 @@ public class GuestStub extends Guest {
 
     @Override
     public boolean removeProductFromStore(String storeName, String productName) {
-        return super.removeProductFromStore(storeName, productName);
+        return false;
     }
 
     @Override
@@ -42,6 +41,11 @@ public class GuestStub extends Guest {
 
     @Override
     public boolean addManager(Subscribe youngOwner, String storeName) {
+        return false;
+    }
+
+    @Override
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
         return false;
     }
 }

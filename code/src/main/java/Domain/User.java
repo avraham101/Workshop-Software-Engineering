@@ -1,5 +1,6 @@
 package Domain;
 
+import DataAPI.CartData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
@@ -67,14 +68,17 @@ public class User {
         return state.openStore(storeDetails,paymentSystem,supplySystem);
     }
 
+    //TODO write documentation
     public boolean addProductToStore(ProductData productData) {
         return state.addProductToStore(productData);
     }
 
+    //TODO write documentation
     public boolean removeProductFromStore(String storeName, String productName) {
         return state.removeProductFromStore(storeName,productName);
     }
 
+    //TODO write documentation
     public boolean editProductFromStore(ProductData productData) {
         return state.editProductFromStore(productData);
     }
@@ -96,6 +100,62 @@ public class User {
      */
     public boolean addManager(Subscribe subscribe, String storeName) {
         return state.addManager(subscribe,storeName);
+    }
+
+    /**
+     * use case 2.7.1 watch cart details
+     * return the details about a cart
+     * @return - the cart details
+     */
+    public CartData watchCartDetatils() {
+        return state.watchCartDetatils();
+    }
+
+    /**
+     * use case 2.7.2
+     * delete product from the cart
+     * @param productName - the product to remove
+     * @param storeName - the store that sale this product
+     * @return - true if the delete work, false if not
+     */
+    public boolean deleteFromCart(String productName,String storeName) {
+        return state.deleteFromCart(productName, storeName);
+    }
+
+    /**
+     * use case 2.7.3 edit amount of product
+     * @param productName - the product to edit it's amount
+     * @param storeName - the store of the product
+     * @param newAmount - the new amount
+     * @return - true if succeeded, false if not
+     */
+    public boolean editProductInCart(String productName,String storeName,int newAmount) {
+        return state.editProductInCart(productName, storeName, newAmount);
+    }
+
+
+    /**
+     * use case 2.7.4
+     * user add a product to his cart
+     * @param store - the store of the product
+     * @param product - the product to add
+     * @param amount - the amount of the product
+     * @return - true if add, false if not
+     */
+    public boolean addProductToCart(Store store, Product product, int amount) {
+        return state.addProductToCart(store, product, amount);
+    }
+
+
+    /**
+     * use case 3.3 - write review
+     * the function check if a product is perchesed
+     * @param storeName - the store name
+     * @param productName
+     * @return
+     */
+    public boolean isItPurchased(String storeName, String productName) {
+        return state.isItPurchased(storeName, productName);
     }
 
     /**

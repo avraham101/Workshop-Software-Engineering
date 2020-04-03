@@ -53,6 +53,7 @@ public class UserAllStubsTest {
         testLoginSubscribe();
         testOpenStoreSubscribe();
         testAddManagerSubscribe();
+        testAddPermissionsSubscribe();
         testAddProductToStoreSubscribe();
         testEditProductFromStoreSubscribe();
         testRemoveProductFromStoreSubscribe();
@@ -68,8 +69,9 @@ public class UserAllStubsTest {
         testOpenStoreGuest();
         testAddManagerGuest();
         testAddProductToStoreGuest();
-        testRemoveProductFromStoreGuest();
         testEditProductFromStoreGuest();
+        testRemoveProductFromStoreGuest();
+        testAddPermissionsGuest();
         //last guest test
         testLoginGuest();
     }
@@ -127,14 +129,14 @@ public class UserAllStubsTest {
      * guest can't add product
      */
     protected void testAddProductToStoreGuest(){
-        assertFalse(user.addProductToStore(data.getProduct(Data.VALID)));
+        assertFalse(user.addProductToStore(data.getProductData(Data.VALID)));
     }
 
     /**
      *test: use case 4.1.1 - add product to store in subscribe state
      */
     protected void testAddProductToStoreSubscribe(){
-        assertTrue(user.addProductToStore(data.getProduct(Data.VALID)));
+        assertTrue(user.addProductToStore(data.getProductData(Data.VALID)));
     }
 
     /**
@@ -142,7 +144,7 @@ public class UserAllStubsTest {
      * guest can't do it
      */
     protected void testRemoveProductFromStoreGuest(){
-        ProductData product= data.getProduct(Data.VALID);
+        ProductData product= data.getProductData(Data.VALID);
         assertFalse(user.removeProductFromStore(product.getStoreName(),product.getProductName()));
     }
 
@@ -151,7 +153,7 @@ public class UserAllStubsTest {
      * guest can't do it
      */
     protected void testRemoveProductFromStoreSubscribe(){
-        ProductData product= data.getProduct(Data.VALID);
+        ProductData product= data.getProductData(Data.VALID);
         assertTrue(user.removeProductFromStore(product.getStoreName(),product.getProductName()));
     }
 
@@ -159,11 +161,11 @@ public class UserAllStubsTest {
      * test use case 4.1.3 - edit product from store
      */
     protected void testEditProductFromStoreGuest(){
-        assertFalse(user.editProductFromStore(data.getProduct(Data.EDIT)));
+        assertFalse(user.editProductFromStore(data.getProductData(Data.EDIT)));
     }
 
     protected void testEditProductFromStoreSubscribe() {
-        assertTrue(user.editProductFromStore(data.getProduct(Data.EDIT)));
+        assertTrue(user.editProductFromStore(data.getProductData(Data.EDIT)));
     }
 
     /**
@@ -171,11 +173,24 @@ public class UserAllStubsTest {
      */
 
     protected void testAddManagerGuest(){
-        assertFalse(user.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()));
+        assertFalse(user.addManager(data.getSubscribe(Data.ADMIN), data.getStore(Data.VALID).getName()));
     }
 
     protected void testAddManagerSubscribe(){
-        assertTrue(user.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()));
+        assertTrue(user.addManager(data.getSubscribe(Data.ADMIN), data.getStore(Data.VALID).getName()));
+    }
+
+    /**
+     * test se case 4.6.1 - add permissions
+     */
+    private void testAddPermissionsGuest(){
+        assertFalse(user.addPermissions(data.getPermissionTypeList(),
+                data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()));
+    }
+
+    protected void testAddPermissionsSubscribe(){
+        assertTrue(user.addPermissions(data.getPermissionTypeList(),
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
     }
 
 }

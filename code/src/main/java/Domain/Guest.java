@@ -97,6 +97,18 @@ public class Guest extends UserState {
     }
 
     /**
+     * use case 3.3 - write review
+     * the function check if the product is purchased
+     * @param storeName - the store name
+     * @param productName - the product name
+     * @return always false, dosent have purchase history
+     */
+    @Override
+    public boolean isItPurchased(String storeName, String productName) {
+        return false;
+    }
+
+    /**
      * use case 4.5
      * @param youngOwner user to be owner
      * @param storeName
