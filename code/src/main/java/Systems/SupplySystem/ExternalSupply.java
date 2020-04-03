@@ -10,7 +10,7 @@ public class ExternalSupply extends SupplySystem {
     }
 
     @Override
-    public boolean delivry(DeliveryData deliveryData) {
+    public boolean deliver(DeliveryData deliveryData) {
         return false;
     }
 }

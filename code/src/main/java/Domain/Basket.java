@@ -130,15 +130,15 @@ public class Basket {
         double price = store.getPriceForBasket(products);
         paymentData = new PaymentData(general.getName(),general.getAddress(),general.getCreditCard());
         paymentData.setTotalPrise(price);
-        return store.isAvailablePurchese(paymentData);
+        return store.isAvailablePurchese();
     }
 
     /**
      * use case 2.8 - purchase cart
-     * the function check if delivery is available.
+     * the function check if deliver is available.
      * think of this like a receive for each purchase to store.
      * @param genral - the general address
-     * @return true if the delivery is available.
+     * @return true if the deliver is available.
      */
     private boolean isAvailableDelivery(String genral) {
         List<ProductData> list = new LinkedList<>();
@@ -147,8 +147,8 @@ public class Basket {
             productData.setAmount(products.get(p));
             list.add(productData);
         }
-        deliveryData = new DeliveryData(addresToDeliver,list);
-        return store.isAvailableDelivery(deliveryData);
+        deliveryData = new DeliveryData(genral,list);
+        return store.isAvailableDelivery();
     }
 
     /**

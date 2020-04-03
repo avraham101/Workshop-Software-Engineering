@@ -1,5 +1,7 @@
 package Domain;
 
+import DataAPI.DeliveryData;
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
@@ -226,6 +228,54 @@ public class Store {
         }
         if(!purchesPolicy.stands(list))
             return false;
+        return true;
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     * the function calc the price of the products after discount
+     * pre-condition: all products in list are available.
+     * @param list - the list of products to buy and there amount
+     * @return
+     */
+    public double getPriceForBasket(HashMap<Product, Integer> list) {
+        return discount.stands(list);
+    }
+
+    /**
+     * use case 7 - payment system
+     * use case 2.8 - purchase cart
+     * the function check if the external system is connected
+     * @return true if the external system is connected, otherwise false.
+     */
+    public boolean isAvailablePurchese() {
+        return paymentSystem.isConnected();
+    }
+
+    /**
+     * use case 8 - deliver system
+     * use case 2.8 - purchase cart
+     * the function check if the external system is connected
+     * @return true if the external system is connected, otherwise false.
+     */
+    public boolean isAvailableDelivery() {
+        return this.supplySystem.isConncted();
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     * the function check if the external system is connected
+     * @return true if the external system is connected, otherwise false.
+     */
+    public boolean purches(PaymentData paymentData, DeliveryData deliveryData) {
+        if(!paymentSystem.pay(paymentData)) {
+            return false;
+        }
+        if(!supplySystem.deliver(deliveryData)){
+            paymentSystem.cancel(paymentData);
+            return false;
+        }
+        //TODO remove products from store
         return true;
     }
 }
