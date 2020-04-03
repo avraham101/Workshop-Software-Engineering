@@ -8,6 +8,7 @@ import Systems.HashSystem;
 import org.junit.Before;
 
 import javax.sql.DataSource;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -141,17 +142,17 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     public void testSubscribeAddRequestSuccess() {
-        StoreData storeData = data.getStore(Data.VALID);
-        assertTrue(logicManager.addRequest(storeData.getName(), "good store"));
+        Request request = data.getRequest(Data.VALID);
+        assertTrue(logicManager.addRequest(request.getStoreName(), request.getContent()));
 
         // check request saved in the store and user.
-        Request request = new Request(currUser.getUserName(), storeData.getName(),"good store", 1);
+        StoreData storeData = data.getStore(Data.VALID);
 
         Store store = stores.get(storeData.getName());
-        assertEquals(store.getRequests().get(0).getSenderName(), request.getSenderName());
-        assertEquals(store.getRequests().get(0).getStoreName(), request.getStoreName());
-        assertEquals(store.getRequests().get(0).getContent(), request.getContent());
-        assertEquals(store.getRequests().get(0).getComment(), request.getComment());
+        assertEquals(store.getRequests().get(request.getId()).getSenderName(), request.getSenderName());
+        assertEquals(store.getRequests().get(request.getId()).getStoreName(), request.getStoreName());
+        assertEquals(store.getRequests().get(request.getId()).getContent(), request.getContent());
+        assertEquals(store.getRequests().get(request.getId()).getComment(), request.getComment());
 
         Subscribe subscribe = users.get(currUser.getUserName());
         assertEquals(subscribe.getRequests().get(0).getSenderName(), request.getSenderName());
@@ -161,8 +162,10 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     public void testSubscribeAddRequestFail() {
-        assertFalse(logicManager.addRequest(null, "The store has not milk"));
-        assertFalse(logicManager.addRequest(data.getStore(Data.VALID).getName(), null));
+        Request request1 = data.getRequest(Data.NULL_NAME);
+        Request request2 = data.getRequest(Data.NULL);
+        assertFalse(logicManager.addRequest(request1.getStoreName(), request1.getContent()));
+        assertFalse(logicManager.addRequest(request2.getStoreName(), request2.getContent()));
     }
 
     /**
@@ -178,7 +181,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     private void testStoreViewRequestSuccess() {
         testAddRequest();
         StoreData storeData = data.getStore(Data.VALID);
-        List<Request> excepted = stores.get(storeData.getName()).getRequests();
+        List<Request> excepted = new LinkedList<>(stores.get(storeData.getName()).getRequests().values());
         List<Request> actual = logicManager.viewStoreRequest(storeData.getName());
         assertTrue(excepted.containsAll(actual));
     }

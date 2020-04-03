@@ -17,6 +17,7 @@ public class TestData {
     private HashMap<Data, StoreData> stores;
     private HashMap<Data, List<Discount>> discounts;
     private HashMap<Data, Filter> filters;
+    private HashMap<Data, Request> requests;
 
     public TestData() {
         setUpUsers();
@@ -24,6 +25,7 @@ public class TestData {
         setUpProductData();
         setUpStoreData();
         setUpFilters();
+        setUpRequests();
     }
 
     private void setUpUsers() {
@@ -31,7 +33,6 @@ public class TestData {
         users.put(Data.NULL, new Subscribe(null, null));
         users.put(Data.ADMIN,new Subscribe("Admin","Admin"));
         users.put(Data.VALID,new Subscribe("Yuval","Sabag"));
-        users.put(Data.VALID,new Subscribe("Peleg","Avraham"));
         users.put(Data.NULL_NAME, new Subscribe(null, "Admin"));
         users.put(Data.NULL_PASSWORD, new Subscribe("Admin", null));
         users.put(Data.WRONG_NAME, new Subscribe("","Changed_Password"));
@@ -121,6 +122,16 @@ public class TestData {
 
     }
 
+    private void setUpRequests(){
+        requests = new HashMap<>();
+        requests.put(Data.VALID, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), "where is the milk in this store?", 1));
+        requests.put(Data.WRONG_NAME, new Request(users.get(Data.WRONG_NAME).getName(), stores.get(Data.VALID).getName(), "where is the milk in this store?", 1));
+        requests.put(Data.WRONG_STORE, new Request(users.get(Data.VALID).getName(), stores.get(Data.WRONG_STORE).getName(), "where is the milk in this store?", 1));
+        requests.put(Data.NULL_NAME, new Request(users.get(Data.VALID).getName(), stores.get(Data.NULL_NAME).getName(), "where is the milk in this store?", 1));
+        requests.put(Data.NULL, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), null, 1));
+        requests.put(Data.WRONG_ID, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), "where is the milk in this store?", -1));
+    }
+
     public Subscribe getSubscribe(Data data) {
         return users.get(data);
     }
@@ -140,6 +151,8 @@ public class TestData {
     public Filter getFilter(Data data) {
         return filters.get(data);
     }
+
+    public Request getRequest(Data data) { return requests.get(data); }
 
     /**
      * use case 2.5 - search Products

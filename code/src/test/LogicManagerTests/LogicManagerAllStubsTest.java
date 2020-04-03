@@ -65,6 +65,7 @@ public class LogicManagerAllStubsTest {
         testAddProduct();
         testAddRequest();
         testStoreViewRequest();
+        testReplayRequest();
         testViewSpecificProduct();
         testEditProduct();
         testRemoveProductFromStore();
@@ -232,13 +233,32 @@ public class LogicManagerAllStubsTest {
      * 2. enter request to invalid store
      */
     public void testAddRequest(){
-        assertFalse(logicManager.addRequest(data.getStore(Data.VALID).getName(), null));
-        assertFalse(logicManager.addRequest(null, "good store"));
+        Request request1 = data.getRequest(Data.NULL_NAME);
+        Request request2 = data.getRequest(Data.NULL);
+        assertFalse(logicManager.addRequest(request1.getStoreName(), request1.getContent()));
+        assertFalse(logicManager.addRequest(request2.getStoreName(), request2.getContent()));
     }
 
+    /**
+     * use case 4.9.1 -view request
+     */
     public void testStoreViewRequest(){
-        assertTrue(logicManager.viewStoreRequest(data.getStore(Data.NULL_NAME).getName()).isEmpty());
-        assertTrue(logicManager.viewStoreRequest(data.getStore(Data.WRONG_STORE).getName()).isEmpty());
+        Request request1 = data.getRequest(Data.NULL_NAME);
+        Request request2 = data.getRequest(Data.WRONG_STORE);
+        assertTrue(logicManager.viewStoreRequest(request1.getStoreName()).isEmpty());
+        assertTrue(logicManager.viewStoreRequest(request2.getStoreName()).isEmpty());
+    }
+
+    /**
+     * use case 4.9.2 -replay request
+     */
+    public void testReplayRequest(){
+        Request request1 = data.getRequest(Data.WRONG_ID);
+        Request request2 = data.getRequest(Data.WRONG_STORE);
+        Request request3 = data.getRequest(Data.NULL);
+        assertFalse(logicManager.replayRequest(request1.getStoreName(), request1.getId(), request1.getContent()));
+        assertFalse(logicManager.replayRequest(request2.getStoreName(), request2.getId(), request2.getContent()));
+        assertFalse(logicManager.replayRequest(request3.getStoreName(), request3.getId(), request3.getContent()));
     }
 
     /**

@@ -17,6 +17,7 @@ public enum Data {
     WRONG_DISCOUNT,
     WRONG_CATEGORY,
     WRONG_KEY_WORD,
+    WRONG_ID,
     SAME_NAME,
     NEGATIVE_AMOUNT,
     NEGATIVE_PRICE,

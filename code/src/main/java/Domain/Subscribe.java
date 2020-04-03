@@ -144,6 +144,19 @@ public class Subscribe extends UserState{
     }
 
     /**
+     * use case 3.5
+     * @param storeName - The id of the store
+     * @param content - The content of the request
+     * @return true if success, false else
+     */
+    @Override
+    public Request addRequest(String storeName, String content){
+        Request request = new Request(userName, storeName, content,requests.size()+1);
+        requests.add(request);
+        return request;
+    }
+
+    /**
      * use case 4.9.1
      * @param storeName
      * @return
@@ -156,22 +169,31 @@ public class Subscribe extends UserState{
         if(permission.getPermissionType().contains(PermissionType.OWNER) |
                 permission.getPermissionType().contains(PermissionType.MANAGER)){
             Store store = permission.getStore();
-            output = store.getRequests();
+            output = new LinkedList<>(store.getRequests().values());
         }
         return output;
     }
 
     /**
-     * use case 3.5
-     * @param storeName - The id of the store
-     * @param content - The content of the request
-     * @return true if success, false else
+     * use case 4.9.2
+     * @param storeName
+     * @param requestID
+     * @param content
+     * @return
      */
     @Override
-    public Request addRequest(String storeName, String content){
-        Request request = new Request(userName, storeName, content,requests.size()+1);
-        requests.add(request);
-        return request;
+    public Request replayToRequest(String storeName, int requestID, String content) {
+        if(! permissions.containsKey(storeName) | content==null) return null;
+        Permission permission = permissions.get(storeName);
+        if(permission.getPermissionType().contains(PermissionType.OWNER) |
+                permission.getPermissionType().contains(PermissionType.MANAGER)) {
+            Store store = permission.getStore();
+            HashMap<Integer, Request> storeRequests = store.getRequests();
+            Request request = storeRequests.get(requestID);
+            request.setComment(content);
+            return request;
+        }
+        return null;
     }
 
     public void setUserName(String userName) {

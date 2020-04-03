@@ -447,4 +447,24 @@ public class LogicManager {
             requests = current.viewRequest(storeName);
         return requests;
     }
+
+    /**
+     * use case 4.9.2 -replay to Request
+     * @param storeName
+     * @param requestID
+     * @param content
+     * @return true if replay, false else
+     */
+    public boolean replayRequest(String storeName, int requestID, String content) {
+        if (content!=null && stores.containsKey(storeName) && stores.get(storeName).getRequests().containsKey(requestID)) {
+            Request request = current.replayToRequest(storeName, requestID, content);
+            Store store = stores.get(storeName);
+            HashMap<Integer, Request> storeRequests = store.getRequests();
+            storeRequests.put(requestID, request);
+            store.setRequests(storeRequests);
+            stores.put(storeName, store);
+            return true;
+        }
+        return false;
+    }
 }
