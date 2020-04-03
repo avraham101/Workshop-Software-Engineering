@@ -161,26 +161,24 @@ public class ServiceAPI {
         return logicManager.editProductFromStore(productData);
     }
 
-
+    //use case 4.3
     public boolean manageOwner(String storeName,String userName){
         return logicManager.manageOwner(storeName,userName);
     }
 
-
-
-
+    //use case 4.5
     public boolean addManagerToStore(String storeName,String userName){
         return logicManager.addManager(storeName,userName);
     }
 
-
+    //use case 4.6.1
     public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName){
         return logicManager.addPermissions(permissions,storeName,userName);
     }
 
     //TODO use case 4.6.2 //talk to yuval before implement
     public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName){
-        return false;
+        return logicManager.removePermissions(permissions,storeName,userName);
     }
 
     //TODO use case 4.7

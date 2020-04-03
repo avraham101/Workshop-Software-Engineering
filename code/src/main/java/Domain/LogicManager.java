@@ -7,10 +7,7 @@ import Systems.*;
 import Systems.PaymentSystem.*;
 import Systems.SupplySystem.*;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 
 public class LogicManager {
@@ -471,8 +468,12 @@ public class LogicManager {
      * @return
      */
     public boolean manageOwner(String storeName, String userName) {
-        return addManager(storeName,userName);
-        //TODO
+        if(!users.containsKey(userName)||!stores.containsKey(storeName))
+            return false;
+        addManager(userName,storeName);
+        List<PermissionType> types=new ArrayList<>();
+        types.add(PermissionType.OWNER);
+        return current.addPermissions(types,storeName,userName);
     }
 
     /**
@@ -529,8 +530,26 @@ public class LogicManager {
      * @return
      */
     public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
-        if(!users.containsKey(userName)||!stores.containsKey(storeName))
+        //TODO add logger
+        if(!validList(permissions))
             return false;
-        return current.addPermissions(permissions,storeName,userName);
+        if (!users.containsKey(userName) || !stores.containsKey(storeName))
+            return false;
+        return current.addPermissions(permissions, storeName, userName);
+    }
+
+    //check if list is valid and contains no nulls
+
+    private boolean validList(List<? extends Object> checkList) {
+        if(checkList==null)
+            return false;
+        for(Object o : checkList)
+            if(o==null)
+                return false;
+        return true;
+    }
+
+    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return false;
     }
 }
