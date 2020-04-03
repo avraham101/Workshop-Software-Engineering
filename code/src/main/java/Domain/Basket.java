@@ -111,6 +111,12 @@ public class Basket {
     }
 
 
+    /**
+     * check if the basket is available for buying
+     * @param paymentData - the payment data
+     * @param addresToDeliver - the address to deliver to
+     * @return - true if available, false if not
+     */
     public boolean available(PaymentData paymentData, String addresToDeliver) {
         if(!store.isAvailableProducts(products))
             return false;
@@ -156,7 +162,7 @@ public class Basket {
      * the function buy the basket
      */
     public void buy() {
-        store.purches(paymentData,deliveryData);
+        store.purches(paymentData,deliveryData, products);
     }
 
 }

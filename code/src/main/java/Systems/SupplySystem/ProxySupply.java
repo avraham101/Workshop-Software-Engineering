@@ -29,4 +29,9 @@ public class ProxySupply extends SupplySystem{
         }
         return false;
     }
+
+    @Override
+    public boolean isConncted() {
+        return true;
+    }
 }

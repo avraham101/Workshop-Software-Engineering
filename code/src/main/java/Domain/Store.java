@@ -267,7 +267,7 @@ public class Store {
      * the function check if the external system is connected
      * @return true if the external system is connected, otherwise false.
      */
-    public boolean purches(PaymentData paymentData, DeliveryData deliveryData) {
+    public boolean purches(PaymentData paymentData, DeliveryData deliveryData, HashMap<Product, Integer> productsToRemove) {
         if(!paymentSystem.pay(paymentData)) {
             return false;
         }
@@ -275,7 +275,20 @@ public class Store {
             paymentSystem.cancel(paymentData);
             return false;
         }
-        //TODO remove products from store
+        // reduce the amount of the products in the store
+        reduceAmount(productsToRemove);
         return true;
+    }
+
+    /**
+     * reduce the amount of products that someone buy
+     * @param productsToRemove - the products that someone buy
+     */
+    private void reduceAmount(HashMap<Product, Integer> productsToRemove) {
+        for (Product product: productsToRemove.keySet()) {
+            Product productInStore = this.products.get(product.getName());
+            productInStore.setAmount(productInStore.getAmount() - productsToRemove.get(product));
+            this.products.replace(product.getName(), productInStore);
+        }
     }
 }

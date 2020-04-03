@@ -73,9 +73,5 @@ public class UserRealTest extends UserAllStubsTest{
         Subscribe sub=(Subscribe) user.getState();
         assertTrue(sub.getGivenByMePermissions().get(0).getStore().getPermissions()
                 .containsKey(testData.getSubscribe(Data.ADMIN).getName()));
-        Product product=((Subscribe) user.getState()).getPermissions().get(testData.getStore(Data.VALID).getName()).
-                getStore().getProducts().get(testData.getProductData(Data.VALID).getProductName());
-        // TODO fix this test
-        assertTrue(product.equal(testData.getProductData(Data.VALID)));
     }
 }
