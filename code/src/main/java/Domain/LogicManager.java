@@ -1,5 +1,6 @@
 package Domain;
 
+import DataAPI.CartData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Systems.*;
@@ -72,7 +73,7 @@ public class LogicManager {
      * @return true if the register complete, otherwise false
      */
     public boolean register(String userName, String password) {
-        loggerSystem.getEventLogger().logp(Level.INFO, "Logic Manager", "register", "register: {0} {1}",
+        loggerSystem.getEventLogger().logp(Level.FINE, "Logic Manager", "register", "register: {0} {1}",
                 new Object[] { userName, password });
         if(!validName(userName) || !validPassword(password)) {
             return false;
@@ -386,6 +387,56 @@ public class LogicManager {
         if(validProduct(productData))
             return current.editProductFromStore(productData);
         return false;
+    }
+
+    /**
+     * use case 2.7.1 watch cart details
+     * return the details about a cart
+     * @return - the cart details
+     */
+    public CartData watchCartDetatils() {
+        return current.watchCartDetatils();
+    }
+
+    /**
+     * use case 2.7.2
+     * delete product from the cart
+     * @param productName - the product to remove
+     * @param storeName - the store that sale this product
+     * @return - true if the delete work, false if not
+     */
+    public boolean deleteFromCart(String productName,String storeName){
+        return current.deleteFromCart(productName,storeName);
+    }
+
+    /**
+     * use case 2.7.3 edit amount of product
+     * @param productName - the product to edit it's amount
+     * @param storeName - the store of the product
+     * @param newAmount - the new amount
+     * @return - true if succeeded, false if not
+     */
+    public boolean editProductInCart(String productName,String storeName,int newAmount) {
+        return current.editProductInCart(productName,storeName, newAmount);
+    }
+
+    /**
+     * use case 2.7.4 - add product to the cart
+     * @param productName - the product to add
+     * @param storeName - the store of the product
+     * @param amount - the amount of the product that need to add to the cart
+     * @return - true if added, false if not
+     */
+    public boolean aadProductToCart(String productName,String storeName,int amount) {
+        boolean result = false;
+        Store store = stores.get(storeName);
+        if (store != null) {
+            Product product = store.getProduct(productName);
+            if (product != null && amount > 0 && amount <= product.getAmount()) {
+                result = current.addProductToCart(store, product, amount);
+            }
+        }
+        return result;
     }
 
     /**

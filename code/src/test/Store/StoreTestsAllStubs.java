@@ -46,9 +46,9 @@ public class StoreTestsAllStubs {
      * test case that not need to add new category
      */
     private void testAddProductHasCategory() {
-        ProductData p=data.getProduct(Data.VALID);
+        ProductData p=data.getProductData(Data.VALID);
         store.getProducts().remove(p.getProductName());
-        assertTrue(store.addProduct(data.getProduct(Data.VALID)));
+        assertTrue(store.addProduct(data.getProductData(Data.VALID)));
         makeProductStub();
     }
 
@@ -56,7 +56,7 @@ public class StoreTestsAllStubs {
      * insert stub product to the products map
      */
     protected void makeProductStub() {
-        ProductData p=data.getProduct(Data.VALID);
+        ProductData p=data.getProductData(Data.VALID);
         store.getProducts().put(p.getProductName(),new ProductStub(p,new Category(p.getCategory())));
     }
 
@@ -65,7 +65,7 @@ public class StoreTestsAllStubs {
      */
 
     private void testAddProductSameName() {
-        assertFalse(store.addProduct(data.getProduct(Data.VALID)));
+        assertFalse(store.addProduct(data.getProductData(Data.VALID)));
     }
 
     /**
@@ -73,7 +73,7 @@ public class StoreTestsAllStubs {
      */
 
     protected void testAddProductSuccess() {
-        assertTrue(store.addProduct(data.getProduct(Data.VALID)));
+        assertTrue(store.addProduct(data.getProductData(Data.VALID)));
     }
 
     /**
@@ -85,11 +85,11 @@ public class StoreTestsAllStubs {
     }
 
     private void testSuccessRemoveProduct() {
-        assertTrue(store.removeProduct(data.getProduct(Data.VALID).getProductName()));
+        assertTrue(store.removeProduct(data.getProductData(Data.VALID).getProductName()));
     }
 
     private void testFailRemoveProduct() {
-        assertFalse(store.removeProduct(data.getProduct(Data.VALID).getProductName()));
+        assertFalse(store.removeProduct(data.getProductData(Data.VALID).getProductName()));
     }
 
     /**
@@ -104,11 +104,11 @@ public class StoreTestsAllStubs {
      * test product that not in the store
      */
     protected void testFailEditProduct() {
-        ProductData p=data.getProduct(Data.WRONG_NAME);
+        ProductData p=data.getProductData(Data.WRONG_NAME);
         assertFalse(store.editProduct(p));
     }
 
     protected void testSuccessEditProduct(){
-        assertTrue(store.editProduct(data.getProduct(Data.EDIT)));
+        assertTrue(store.editProduct(data.getProductData(Data.EDIT)));
     }
 }

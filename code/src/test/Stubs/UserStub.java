@@ -44,4 +44,7 @@ public class UserStub extends User {
     public boolean addManager(Subscribe subscribe, String storeName) {
         return true;
     }
+
+    @Override
+    public boolean addProductToCart(Store store, Product product, int amount) { return true; }
 }

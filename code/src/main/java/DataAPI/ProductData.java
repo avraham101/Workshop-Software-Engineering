@@ -5,9 +5,9 @@ import Domain.Product;
 import Domain.Review;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ProductData {
-
     private String productName;
     private String storeName;
     private String category;
@@ -44,8 +44,6 @@ public class ProductData {
         this.amount=amount;
         this.purchaseType=purchaseType;
     }
-
-
 
     public ProductData(Product product, String storeName) {
         this.productName = product.getName();
@@ -131,4 +129,24 @@ public class ProductData {
         this.priceAfterDiscount = priceAfterDiscount;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductData that = (ProductData) o;
+        return amount == that.amount &&
+                Double.compare(that.price, price) == 0 &&
+                Objects.equals(productName, that.productName) &&
+                purchaseType == that.purchaseType &&
+                Objects.equals(storeName, that.storeName) &&
+                Objects.equals(category, that.category) &&
+                Objects.equals(reviews, that.reviews) &&
+                Objects.equals(discount, that.discount);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productName, amount, price, purchaseType, storeName, category, reviews, discount);
+    }
 }
