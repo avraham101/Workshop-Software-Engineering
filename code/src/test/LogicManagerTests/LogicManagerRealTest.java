@@ -191,6 +191,22 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * test use case 4.9.2
+     */
+    @Override
+    public void testReplayRequest() {
+        super.testReplayRequest();
+        testAddRequest();
+        Request request = data.getRequest(Data.VALID);
+        //check the comment save
+        StoreData storeData = data.getStore(Data.VALID);
+        Request actual = currUser.replayToRequest(request.getStoreName(), request.getId(), "The milk is there, open your eyes!");
+        Request excepted = stores.get(storeData.getName()).getRequests().get(request.getId());
+        assertEquals(excepted.getId(),actual.getId());
+        assertEquals(excepted.getComment(),actual.getComment());
+    }
+
+    /**
      * test use case 4.1.1 -add product to store
      */
 

@@ -70,7 +70,9 @@ public class UserAllStubsTest {
         testAddProductToStoreGuest();
         testRemoveProductFromStoreGuest();
         testEditProductFromStoreGuest();
+        testAddRequestGuest();
         testViewRequestGuest();
+        testReplayRequestGuest();
         //last guest test
         testLoginGuest();
     }
@@ -180,8 +182,12 @@ public class UserAllStubsTest {
         assertTrue(user.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()));
     }
 
+    private void testAddRequestGuest() { assertNull(user.addRequest(data.getRequest(Data.VALID).getStoreName(), data.getRequest(Data.VALID).getComment())); }
+
     private void testViewRequestGuest() {
         assertTrue(user.viewRequest(data.getStore(Data.VALID).getName()).isEmpty());
     }
+
+    private void testReplayRequestGuest(){ assertNull(user.replayToRequest(data.getRequest(Data.VALID).getStoreName(), data.getRequest(Data.VALID).getId(), "I want replay but can't"));}
 
 }
