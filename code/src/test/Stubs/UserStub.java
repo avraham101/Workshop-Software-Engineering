@@ -7,6 +7,9 @@ import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 import UserTests.UserAllStubsTest;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class UserStub extends User {
     @Override
     public boolean login(Subscribe subscribe) {
@@ -43,5 +46,10 @@ public class UserStub extends User {
     @Override
     public boolean addManager(Subscribe subscribe, String storeName) {
         return true;
+    }
+
+    @Override
+    public List<Request> viewRequest(String storeName) {
+        return new LinkedList<>();
     }
 }

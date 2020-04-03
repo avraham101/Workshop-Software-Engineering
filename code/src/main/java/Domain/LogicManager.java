@@ -455,16 +455,10 @@ public class LogicManager {
      * @param content
      * @return true if replay, false else
      */
-    public boolean replayRequest(String storeName, int requestID, String content) {
-        if (content!=null && stores.containsKey(storeName) && stores.get(storeName).getRequests().containsKey(requestID)) {
-            Request request = current.replayToRequest(storeName, requestID, content);
-            Store store = stores.get(storeName);
-            HashMap<Integer, Request> storeRequests = store.getRequests();
-            storeRequests.put(requestID, request);
-            store.setRequests(storeRequests);
-            stores.put(storeName, store);
-            return true;
+    public Request replayRequest(String storeName, int requestID, String content) {
+        if (content!=null && stores.containsKey(storeName)) {
+            return current.replayToRequest(storeName, requestID, content);
         }
-        return false;
+        return null;
     }
 }

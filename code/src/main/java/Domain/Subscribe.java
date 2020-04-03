@@ -185,13 +185,12 @@ public class Subscribe extends UserState{
     public Request replayToRequest(String storeName, int requestID, String content) {
         if(! permissions.containsKey(storeName) | content==null) return null;
         Permission permission = permissions.get(storeName);
-        if(permission.getPermissionType().contains(PermissionType.OWNER) |
+        Store store = permission.getStore();
+        if(store.getRequests().containsKey(requestID) &&
+                permission.getPermissionType().contains(PermissionType.OWNER) |
                 permission.getPermissionType().contains(PermissionType.MANAGER)) {
-            Store store = permission.getStore();
-            HashMap<Integer, Request> storeRequests = store.getRequests();
-            Request request = storeRequests.get(requestID);
-            request.setComment(content);
-            return request;
+            store.getRequests().get(requestID).setComment(content);
+            return store.getRequests().get(requestID);
         }
         return null;
     }

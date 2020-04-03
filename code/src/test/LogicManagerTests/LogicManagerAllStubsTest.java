@@ -235,8 +235,10 @@ public class LogicManagerAllStubsTest {
     public void testAddRequest(){
         Request request1 = data.getRequest(Data.NULL_NAME);
         Request request2 = data.getRequest(Data.NULL);
+        //Request request3 = data.getRequest(Data.VALID);
         assertFalse(logicManager.addRequest(request1.getStoreName(), request1.getContent()));
         assertFalse(logicManager.addRequest(request2.getStoreName(), request2.getContent()));
+        //assertNotNull(currUser.addRequest(request3.getStoreName(),request3.getContent()));
     }
 
     /**
@@ -245,8 +247,10 @@ public class LogicManagerAllStubsTest {
     public void testStoreViewRequest(){
         Request request1 = data.getRequest(Data.NULL_NAME);
         Request request2 = data.getRequest(Data.WRONG_STORE);
+        Request request3 = data.getRequest(Data.VALID);
         assertTrue(logicManager.viewStoreRequest(request1.getStoreName()).isEmpty());
         assertTrue(logicManager.viewStoreRequest(request2.getStoreName()).isEmpty());
+        assertFalse(currUser.viewRequest(request3.getStoreName()).isEmpty());
     }
 
     /**
@@ -256,9 +260,11 @@ public class LogicManagerAllStubsTest {
         Request request1 = data.getRequest(Data.WRONG_ID);
         Request request2 = data.getRequest(Data.WRONG_STORE);
         Request request3 = data.getRequest(Data.NULL);
-        assertFalse(logicManager.replayRequest(request1.getStoreName(), request1.getId(), request1.getContent()));
-        assertFalse(logicManager.replayRequest(request2.getStoreName(), request2.getId(), request2.getContent()));
-        assertFalse(logicManager.replayRequest(request3.getStoreName(), request3.getId(), request3.getContent()));
+        //Request request4 = data.getRequest(Data.VALID);
+        assertNull(logicManager.replayRequest(request1.getStoreName(), request1.getId(), request1.getContent()));
+        assertNull(logicManager.replayRequest(request2.getStoreName(), request2.getId(), request2.getContent()));
+        assertNull(logicManager.replayRequest(request3.getStoreName(), request3.getId(), request3.getContent()));
+        //assertNotNull(currUser.replayToRequest(request4.getStoreName(),request4.getId(),request4.getContent()));
     }
 
     /**
