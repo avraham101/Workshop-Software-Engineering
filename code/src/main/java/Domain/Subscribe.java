@@ -166,8 +166,7 @@ public class Subscribe extends UserState{
         List<Request> output = new LinkedList<>();
         if(! permissions.containsKey(storeName)) return output;
         Permission permission = permissions.get(storeName);
-        if(permission.getPermissionType().contains(PermissionType.OWNER) |
-                permission.getPermissionType().contains(PermissionType.MANAGER)){
+        if(permission != null){
             Store store = permission.getStore();
             output = new LinkedList<>(store.getRequests().values());
         }
@@ -185,10 +184,9 @@ public class Subscribe extends UserState{
     public Request replayToRequest(String storeName, int requestID, String content) {
         if(! permissions.containsKey(storeName) | content==null) return null;
         Permission permission = permissions.get(storeName);
+        if(permission == null) return null;
         Store store = permission.getStore();
-        if(store.getRequests().containsKey(requestID) &&
-                permission.getPermissionType().contains(PermissionType.OWNER) |
-                permission.getPermissionType().contains(PermissionType.MANAGER)) {
+        if(store.getRequests().containsKey(requestID)) {
             store.getRequests().get(requestID).setComment(content);
             return store.getRequests().get(requestID);
         }
