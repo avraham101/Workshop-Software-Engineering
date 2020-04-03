@@ -248,6 +248,19 @@ public abstract class AcceptanceTests extends TestCase{
 
     }
 
+    protected void changeAmountOfProductInStore(ProductTestData product,int amount){
+        String userName = bridge.getCurrentLoggedInUser();
+        if(userName!=null){
+            bridge.logout(userName);
+        }
+        bridge.login(superUser.getUsername(),superUser.getPassword());
+        bridge.changeAmountOfProductInStore(product,amount);
+        bridge.logout(superUser.getUsername());
+        if(userName!=null){
+            bridge.login(userName,getPasswordByUser(userName));
+        }
+    }
+
 
 
 
