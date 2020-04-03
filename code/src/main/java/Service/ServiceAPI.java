@@ -102,8 +102,15 @@ public class ServiceAPI {
     }
 
     //TODO use case 2.8
+
+    /**
+     * use case 2.8 - purchase cart
+     * @param paymentData - the payment data of this purchase
+     * @param deliveryData - the delivery data of this purchase
+     * @return true is the purchase succeeded, otherwise false
+     */
     public boolean purchaseCart(PaymentData paymentData, DeliveryData deliveryData){
-        return false;
+        return logicManager.purchaseCart(paymentData,deliveryData);
     }
 
     /**

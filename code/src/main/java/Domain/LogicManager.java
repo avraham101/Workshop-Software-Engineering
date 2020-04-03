@@ -1,8 +1,6 @@
 package Domain;
 
-import DataAPI.CartData;
-import DataAPI.ProductData;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Systems.*;
 import Systems.PaymentSystem.*;
 import Systems.SupplySystem.*;
@@ -518,6 +516,49 @@ public class LogicManager {
      */
     private boolean validReview(String storeName,String productName, String content) {
         return storeName!=null && productName!=null && content!=null &&
-                content.isEmpty()==false;
+                !content.isEmpty();
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     * @param paymentData - the payment data of this purchase
+     * @param deliveryData - the delivery data of this purchase
+     * @return true is the purchase succeeded, otherwise false
+     */
+    public boolean purchaseCart(PaymentData paymentData, DeliveryData deliveryData) {
+        if(!validPaymentData(paymentData))
+            return false;
+        if(!validDeliveryData(deliveryData))
+            return false;
+
+        return true;
+    }
+
+    /**
+     * use case - 2.8
+     * the function check if payment data is valid
+     * @param paymentData - the payment data
+     * @return true if the payment is valid, otherwise false
+     */
+    private boolean validPaymentData(PaymentData paymentData) {
+        if(paymentData==null)
+            return false;
+        String address = paymentData.getAddress();
+        String card = paymentData.getCreditCard();
+        return paymentData.getName()!=null && address!=null && !address.isEmpty() && card!=null && card.isEmpty();
+    }
+
+    /**
+     * use case - 2.8
+     * the function check if delivery data is valid
+     * @param deliveryData - the delivery data
+     * @return true if the delivery is valid, otherwise false
+     */
+    private boolean validDeliveryData(DeliveryData deliveryData) {
+        if(deliveryData==null)
+            return false;
+        String address = deliveryData.getAddress();
+        List<ProductData> productData = deliveryData.getProducts();
+        return address!=null && !address.isEmpty() && productData!=null && !productData.isEmpty();
     }
 }
