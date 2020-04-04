@@ -38,5 +38,6 @@ public enum Data {
     EMPTY_CONTENT,
     EMPTY_ADDRESS,
     EMPTY_PAYMENT,
-    EMPTY_NAME
+    EMPTY_NAME,
+    VALID2,
 }

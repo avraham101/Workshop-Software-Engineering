@@ -168,31 +168,29 @@ public class ServiceAPI {
         return logicManager.editProductFromStore(productData);
     }
 
-    //TODO use case 4.3
+    //use case 4.3
     public boolean manageOwner(String storeName,String userName){
-        return false;
+        return logicManager.manageOwner(storeName,userName);
     }
 
-
-
-    //TODO use case 4.5
+    //use case 4.5
     public boolean addManagerToStore(String storeName,String userName){
         return logicManager.addManager(storeName,userName);
     }
 
-    //TODO use case 4.6.1 //talk to yuval before implement
-    public boolean addPerMissions(List<PermissionType> permissions, String storeName, String userName){
-        return false;
+    //use case 4.6.1
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName){
+        return logicManager.addPermissions(permissions,storeName,userName);
     }
 
-    //TODO use case 4.6.2 //talk to yuval before implement
+    //use case 4.6.2
     public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName){
-        return false;
+        return logicManager.removePermissions(permissions,storeName,userName);
     }
 
-    //TODO use case 4.7
-    public boolean removeOwner(String userName,String storeName){
-        return false;
+    //use case 4.7
+    public boolean removeManager(String userName,String storeName){
+        return logicManager.removeManager(userName,storeName);
     }
 
     //TODO use case 4.9.1
@@ -231,4 +229,6 @@ public class ServiceAPI {
     public List<Purchase> AdminWatchStoreHistory(String storeName){
         return logicManager.AdminWatchStoreHistory(storeName);
     }
+
+
 }

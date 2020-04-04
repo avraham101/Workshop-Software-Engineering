@@ -109,13 +109,42 @@ public class Guest extends UserState {
     }
 
     /**
-     * use case 4.1.3
+     * use case 4.5
      * @param youngOwner user to be owner
      * @param storeName
      * @return
      */
     @Override
     public boolean addManager(Subscribe youngOwner, String storeName) {
+        return false;
+    }
+
+    /**
+     * use case 4.6.1
+     * @param permissions
+     * @param storeName
+     * @param userName
+     * @return
+     */
+    @Override
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return false;
+    }
+
+    /**
+     * use case 4.6.2 - remove permissions
+     * @param permissions
+     * @param storeName
+     * @param userName
+     * @return
+     */
+    @Override
+    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return false;
+    }
+
+    @Override
+    public boolean removeManager(String userName, String storeName) {
         return false;
     }
 

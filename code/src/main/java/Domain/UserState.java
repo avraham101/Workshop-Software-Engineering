@@ -7,6 +7,8 @@ import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.List;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -175,6 +177,12 @@ public abstract class UserState {
      */
     public abstract boolean addManager(Subscribe subscribe, String storeName);
 
+    public abstract boolean addPermissions(List<PermissionType> permissions, String storeName, String userName);
+
+    public abstract boolean removePermissions(List<PermissionType> permissions, String storeName, String userName);
+
+    public abstract boolean removeManager(String userName, String storeName);
+
     /**
      * use case - 2.8 buy cart
      * @param paymentData - the payment info
@@ -243,5 +251,12 @@ public abstract class UserState {
      */
     public boolean isAdmin() {
         return false;
+    }
+
+    /**
+     * use case 3.3 remove review
+     * @param review - the review to remove
+     */
+    public void removeReview(Review review) {
     }
 }

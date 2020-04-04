@@ -126,7 +126,12 @@ public class Subscribe extends UserState{
         return permissions.get(productData.getStoreName()).getStore().editProduct(productData);
     }
 
-
+    /**
+     * use case 4.5
+     * @param youngOwner the new manager
+     * @param storeName the store to add manager to
+     * @return
+     */
     @Override
     public boolean addManager(Subscribe youngOwner, String storeName) {
         if(!permissions.containsKey(storeName))
@@ -138,6 +143,7 @@ public class Subscribe extends UserState{
         //if he is already manager
         if(store.getPermissions().containsKey(youngOwner.getName()))
             return false;
+        //create new permission process
         Permission newPermission=new Permission(youngOwner,store);
         youngOwner.getPermissions().put(storeName,newPermission);
         store.getPermissions().put(youngOwner.getName(),newPermission);
@@ -157,6 +163,92 @@ public class Subscribe extends UserState{
     @Override
     public void addReview(Review review) {
         reviews.add(review);
+    }
+
+    /**
+     * use case 3.3 remove review
+     * @param review - the review to remove
+     */
+    public void removeReview(Review review) {
+        reviews.remove(review);
+    }
+
+    /**
+     * use case 4.6.1 - add permissions
+     * @param permissions types to be added
+     * @param storeName store to be added
+     * @param userName user to add permissions to
+     * @return if the permissions were added
+     */
+    @Override
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        for(Permission p: givenByMePermissions){
+            if(p.getStore().getName().equals(storeName)&&p.getOwner().getName().equals(userName)){
+                boolean added=false;
+                for(PermissionType type: permissions)
+                    added=added|p.addType(type);
+                return added;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * use case 4.6.2 - remove permissions
+     * @param permissions types to be removed
+     * @param storeName store to be removed from
+     * @param userName user to remove permissions from
+     * @return
+     */
+
+    @Override
+    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        for(Permission p: givenByMePermissions){
+            if(p.getStore().getName().equals(storeName)&&p.getOwner().getName().equals(userName)){
+                boolean removed=false;
+                for(PermissionType type: permissions)
+                    removed=removed|p.removeType(type);
+                return removed;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * use case 4.7 - remove manager
+     * @param userName
+     * @param storeName
+     * @return
+     */
+    @Override
+    public boolean removeManager(String userName, String storeName) {
+        if(!permissions.containsKey(storeName))
+            return false;
+        for(Permission p: givenByMePermissions) {
+            if (p.getStore().getName().equals(storeName) && p.getOwner().getName().equals(userName)) {
+                p.getOwner().removeManagerFromStore(storeName);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * remove manager form store and the managers he managed
+     * @param storeName the store to remove to be manager from and the mangers
+     * managed by me
+     */
+    private void removeManagerFromStore(String storeName) {
+        for(Permission p: givenByMePermissions) {
+            if (p.getStore().getName().equals(storeName)) {
+                p.getOwner().removeManagerFromStore(storeName);
+            }
+        }
+        //remove the permission from the store
+        permissions.get(storeName).getStore().getPermissions().remove(userName);
+        //remove the permission from the user
+        permissions.remove(storeName);
+
     }
 
     /**

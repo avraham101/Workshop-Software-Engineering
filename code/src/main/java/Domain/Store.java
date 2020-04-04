@@ -208,10 +208,26 @@ public class Store {
      * use case 3.3 write review
      * pre-condition: product is in store, review is ok.
      * @param review - the review
+     * @return if the review added or not,
      */
-    public void addReview(Review review) {
+    public boolean addReview(Review review) {
         Product p = products.get(review.getProductName());
+        if(p==null) //Store as the product
+            return false;
         p.addReview(review);
+        return true;
+    }
+
+    /**
+     * use case 3.3 wire review
+     * the function remove review
+     * @param review - the review to remove
+     */
+    public void removeReview(Review review) {
+        Product p = products.get(review.getProductName());
+        if(p!=null) {
+            p.addReview(review);
+        }
     }
 
     /**

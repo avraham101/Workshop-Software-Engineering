@@ -32,7 +32,7 @@ public class StoreStub extends Store {
      * @return ture if the review add to store, otherwise false;
      */
     @Override
-    public void addReview(Review review) {
-
+    public boolean addReview(Review review) {
+        return true;
     }
 }

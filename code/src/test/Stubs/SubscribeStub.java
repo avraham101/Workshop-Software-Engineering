@@ -6,6 +6,8 @@ import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.List;
+
 public class SubscribeStub extends Subscribe{
 
     public SubscribeStub(String userName, String password) {
@@ -45,6 +47,21 @@ public class SubscribeStub extends Subscribe{
 
     @Override
     public boolean addManager(Subscribe youngOwner, String storeName) {
+        return true;
+    }
+
+    @Override
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return true;
+    }
+
+    @Override
+    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return true;
+    }
+
+    @Override
+    public boolean removeManager(String userName, String storeName) {
         return true;
     }
 }

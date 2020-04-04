@@ -54,33 +54,37 @@ public class LogicManagerAllStubsTest {
         logicManager = new LogicManager(users,stores,currUser);
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         logicManager.register(subscribe.getName(),subscribe.getPassword());
+        Subscribe other=data.getSubscribe(Data.VALID2);
+        logicManager.register(other.getName(),other.getPassword());
     }
 
     @Test
     public void test() {
         testExternalSystems();
-        //
         testRegister();
         testLogin();
-        //
         testOpenStore();
         testAddManagerToStore();
+        testAddPermission();
         testAddProduct();
         testAddRequest();
         testViewSpecificProduct();
         testEditProduct();
         testAddProductToCart();
-        //
         testWatchCartDetails();
         testEditProductsInCart();
         //TODO add here add product to correct
-        //TODO add this after we have purchase testWriteReview();
+        //TODO add this after we have purchase
         testBuyProducts();
+        testWriteReview();
         testViewDataStores();
         testViewProductsInStore();
-        testDeleteProductFromCart();
         testAddProductToCart();
+        testDeleteProductFromCart();
         testRemoveProductFromStore();
+        testManageOwner();
+        testRemovePermission();
+        testRemoveManager();
         testLogout();
     }
 
@@ -388,7 +392,7 @@ public class LogicManagerAllStubsTest {
     /**
      * part of use case 2.5 - view spesific products
      */
-    protected void testViewSpecificProductSearchAndFilter() {
+    private void testViewSpecificProductSearchAndFilter() {
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.NONE);
         List<ProductData> products = logicManager.viewSpecificProducts(filter);
@@ -414,7 +418,7 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 4.1.2 -delete product
      */
-    protected void testRemoveProductFromStore(){
+    private void testRemoveProductFromStore(){
         testRemoveProductSuccess();
         testRemoveProductFail();
     }
@@ -467,6 +471,27 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.editProductFromStore(data.getProductData(Data.NEGATIVE_PERCENTAGE)));
     }
 
+
+    /**
+     * test : use case 4.3 add owner
+     */
+    private void testManageOwner(){
+        testManageOwnerFail();
+        testManageOwnerSuccess();
+    }
+
+    protected void testManageOwnerSuccess() {
+        assertTrue(logicManager.manageOwner(data.getStore(Data.VALID).getName(),
+                data.getSubscribe(Data.VALID2).getName()));
+    }
+
+    private void testManageOwnerFail() {
+        assertFalse(logicManager.manageOwner(data.getStore(Data.VALID).getName()
+                ,data.getStore(Data.VALID).getName()));
+        assertFalse(logicManager.manageOwner(data.getSubscribe(Data.VALID).getName(),
+                data.getSubscribe(Data.VALID2).getName()));
+    }
+
     /**
      * use case 4.5 add manager
      */
@@ -482,13 +507,101 @@ public class LogicManagerAllStubsTest {
     /**
      * test not existing store or not existing user
      */
-    protected void testAddManagerToStoreFail() {
+    private void testAddManagerToStoreFail() {
         String storeName=data.getStore(Data.VALID).getName();
         String userName=data.getSubscribe(Data.ADMIN).getName();
         //invalid username
         assertFalse(logicManager.addManager(storeName,storeName));
         //invalid storeName
         assertFalse(logicManager.addManager(userName,userName));
+    }
+
+    /**
+     * test use case 4.6.1- add permission
+     */
+    private void testAddPermission(){
+        testAddPermissionFail();
+        testAddPermissionSuccess();
+    }
+
+    /**
+     * test:
+     * 1. wrong user name
+     * 2. wrong store name
+     * 3. null list
+     * 4. list with null
+     */
+    private void testAddPermissionFail() {
+        String user=data.getSubscribe(Data.ADMIN).getName();
+        String store=data.getStore(Data.VALID).getName();
+        List<PermissionType> types=data.getPermissionTypeList();
+        assertFalse(logicManager.addPermissions(types,store,store));
+        assertFalse(logicManager.addPermissions(types,user,user));
+        assertFalse(logicManager.addPermissions(null,store,user));
+        types.add(null);
+        assertFalse(logicManager.addPermissions(types,store,user));
+        types.remove(null);
+    }
+
+    protected void testAddPermissionSuccess() {
+        assertTrue(currUser.addPermissions(data.getPermissionTypeList(),
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
+    }
+
+    /**
+     * test use case 4.6.2 - remove permissions
+     */
+    public void testRemovePermission(){
+        testRemovePermissionFail();
+        testRemovePermissionSuccess();
+    }
+
+    /**
+     * test use case 4.7 - remove manager
+     */
+    private void testRemoveManager(){
+        testRemoveManagerFail();
+        testRemoveManagerSuccess();
+    }
+
+    protected void testRemoveManagerSuccess() {
+        assertTrue(logicManager.removeManager(data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()));
+    }
+
+    /**
+     * test not existing store or not existing user
+     */
+    private void testRemoveManagerFail() {
+        String storeName=data.getStore(Data.VALID).getName();
+        String userName=data.getSubscribe(Data.ADMIN).getName();
+        //invalid username
+        assertFalse(logicManager.removeManager(storeName,storeName));
+        //invalid storeName
+        assertFalse(logicManager.removeManager(userName,userName));
+    }
+
+    /**
+     * test:
+     * 1. wrong user name
+     * 2. wrong store name
+     * 3. null list
+     * 4. list with null
+     */
+    private void testRemovePermissionFail() {
+        String user=data.getSubscribe(Data.ADMIN).getName();
+        String store=data.getStore(Data.VALID).getName();
+        List<PermissionType> types=data.getPermissionTypeList();
+        assertFalse(logicManager.removePermissions(types,store,store));
+        assertFalse(logicManager.removePermissions(types,user,user));
+        assertFalse(logicManager.removePermissions(null,store,user));
+        types.add(null);
+        assertFalse(logicManager.removePermissions(types,store,user));
+        types.remove(null);
+    }
+
+    protected void testRemovePermissionSuccess() {
+        assertTrue(currUser.removePermissions(data.getPermissionTypeList(),
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
     }
 
     /**
@@ -645,5 +758,11 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.purchaseCart(paymentData, address));
     }
 
+    /**
+     * use case 3.7 - watch purchase history
+     */
+    public void testWatchPurchaseHistory() {
+
+    }
 
 }
