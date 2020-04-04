@@ -1,18 +1,25 @@
 package Subscribe;
 
-import Data.Data;
+import Data.*;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
-import Domain.Permission;
-import Domain.PermissionType;
-import Domain.Store;
-import Domain.Subscribe;
+import Domain.*;
+import org.junit.Before;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 import static org.junit.Assert.*;
 
 public class SubscribeRealTest extends SubscribeAllStubsTest {
+
+    @Before
+    public void setUp(){
+        data = new TestData();
+        cart = new Cart();
+        sub = new Subscribe("Yuval","Sabag", cart);
+        super.initStore();
+    }
 
     @Override
     protected void openStoreTest() {
@@ -87,9 +94,23 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     }
 
     /**
+     * use case 2.7 add to cart
+     */
+    @Override
+    public void testAddProductToCart() {
+        super.testAddProductToCart();
+        Store store = data.getRealStore(Data.VALID);
+        Product product = data.makeProduct(data.getProductData(Data.VALID));
+        HashMap<Product,Integer> products = cart.getBasket(store.getName()).getProducts();
+        assertEquals(1,products.size());
+        Iterator<Product> iterator =  products.keySet().iterator();
+        Product real = iterator.next();
+        assertEquals(real.getName(),product.getName());
+    }
+
+    /**
      * check use case 4.6.1 - add permission
      */
-
     @Override
     protected void testAddPermissions() {
         super.testAddPermissions();

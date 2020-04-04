@@ -45,7 +45,6 @@ public class GuestTest {
         assertTrue(guest.login(new User(),new Subscribe("yuval","sabag")));
     }
 
-
     /**
      * use case 2.7 add to cart
      */

@@ -21,6 +21,15 @@ public class Subscribe extends UserState{
     private List<Review> reviews;
 
     public Subscribe(String userName, String password) {
+        initSubscribe(userName,password);
+    }
+
+    public Subscribe(String userName, String password, Cart cart) {
+        this.cart = cart;
+        initSubscribe(userName,password);
+    }
+
+    private void initSubscribe(String userName, String password) {
         this.userName = userName;
         this.password = password;
         permissions=new HashMap<>();
