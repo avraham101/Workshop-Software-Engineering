@@ -574,6 +574,7 @@ public class LogicManager {
      * @return if the manager was removed
      */
     public boolean removeManager(String userName, String storeName) {
+        //TODO add logger
         if (!users.containsKey(userName) || !stores.containsKey(storeName))
             return false;
         return current.removeManager(userName,storeName);
