@@ -58,8 +58,10 @@ public class LogicManagerAllStubsTest {
     @Test
     public void test() {
         testExternalSystems();
+        //
         testRegister();
         testLogin();
+        //
         testOpenStore();
         testAddManagerToStore();
         testAddProduct();
@@ -67,6 +69,7 @@ public class LogicManagerAllStubsTest {
         testViewSpecificProduct();
         testEditProduct();
         testAddProductToCart();
+        //
         testWatchCartDetails();
         testEditProductsInCart();
         //TODO add here add product to correct

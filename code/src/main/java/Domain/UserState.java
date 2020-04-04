@@ -219,4 +219,11 @@ public abstract class UserState {
      * @return the purchase list
      */
     public abstract List<Purchase> watchMyPurchaseHistory();
+
+    /**
+     * use case 4.10 - watch Store History by store owner
+     * @param storeName - the store name to watch history
+     * @return the purchase list
+     */
+    public abstract List<Purchase> watchStoreHistory(String storeName);
 }

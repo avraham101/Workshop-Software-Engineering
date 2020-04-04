@@ -156,7 +156,7 @@ public class Subscribe extends UserState{
      */
     @Override
     public void addReview(Review review) {
-
+        reviews.add(review);
     }
 
     /**
@@ -197,6 +197,17 @@ public class Subscribe extends UserState{
     @Override
     public List<Purchase> watchMyPurchaseHistory() {
         return purchases;
+    }
+
+    /**
+     * use case 4.10 - watch Store History by store owner
+     * @param storeName - the store name to watch history
+     * @return the purchase list
+     */
+    @Override
+    public List<Purchase> watchStoreHistory(String storeName) {
+
+        return null;
     }
 
     public void setUserName(String userName) {

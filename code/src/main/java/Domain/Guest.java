@@ -138,4 +138,13 @@ public class Guest extends UserState {
     public List<Purchase> watchMyPurchaseHistory() {
         return null;
     }
+
+    /**
+     * use case 4.10 - watch Store History by store owner
+     * @param storeName - the store name to watch history
+     * @return the purchase list
+     */
+    public List<Purchase> watchStoreHistory(String storeName) {
+        return null;
+    }
 }

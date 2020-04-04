@@ -128,8 +128,6 @@ public class ServiceAPI {
         return logicManager.openStore(storeDetails);
     }
 
-    //TODO use case 3.3
-
     /***
      * use case 3.3 - write review
      * @param productName - the name of the product name
@@ -207,9 +205,13 @@ public class ServiceAPI {
         return false;
     }
 
-    //TODO use case 4.10
+    /**
+     * use case 4.10 - watch Store History by store owner
+     * @param storeName - the store name to watch history
+     * @return the purchase list
+     */
     public List<Purchase> watchStoreHistory(String storeName){
-        return null;
+        return logicManager.watchStoreHistory(storeName);
     }
 
     //TODO use case 6.4.1
