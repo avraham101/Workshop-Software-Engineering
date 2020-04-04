@@ -14,6 +14,8 @@ public enum Data {
     NULL_VALUE,
     NULL_CONTENT,
     NULL_STORE,
+    NULL_ADDRESS,
+    NULL_PAYMENT,
     WRONG_NAME,
     WRONG_PASSWORD,
     WRONG_STORE,
@@ -34,5 +36,8 @@ public enum Data {
     FILTER_ALL_CATEGORIES,
     EDIT,
     EMPTY_CONTENT,
+    EMPTY_ADDRESS,
+    EMPTY_PAYMENT,
+    EMPTY_NAME,
     VALID2,
 }

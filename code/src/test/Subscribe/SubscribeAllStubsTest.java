@@ -22,6 +22,7 @@ public class SubscribeAllStubsTest {
     @Before
     public void setUp(){
         sub=new Subscribe("Yuval","Sabag");
+
         data=new TestData();
         initStore();
     }
@@ -46,6 +47,8 @@ public class SubscribeAllStubsTest {
         testAddPermissions();
         testRemovePermission();
         testRemoveManagerFromStore();
+        testCanWatchUserHistory();
+        testCanWatchStoreHistory();
         logoutTest();
     }
 
@@ -306,6 +309,36 @@ public class SubscribeAllStubsTest {
         sub.getPermissions().clear();
         assertFalse(sub.removeManager(data.getSubscribe(Data.ADMIN).getName(),validStoreName));
         sub.getPermissions().put(validStoreName,permission);
+    }
+
+    /**
+     * test use case 6.4.1 - watch user history
+     */
+    private void testCanWatchUserHistory(){
+        assertFalse(sub.canWatchUserHistory());
+    }
+
+    /**
+     * test use case 6.4.2 and 4.10 - watch store history
+     */
+    private void testCanWatchStoreHistory(){
+        testWatchStoreHistorySuccess();
+        testWatchStoreHistoryNotManger();
+    }
+
+    /**
+     * test that cannot watch store history when not manager
+     */
+    private void testWatchStoreHistoryNotManger() {
+        String validStoreName=data.getProductData(Data.VALID).getStoreName();
+        Permission permission=sub.getPermissions().get(validStoreName);
+        sub.getPermissions().clear();
+        assertFalse(sub.canWatchStoreHistory(validStoreName));
+        sub.getPermissions().put(validStoreName,permission);
+    }
+
+    private void testWatchStoreHistorySuccess() {
+        assertTrue(sub.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
     }
 
 

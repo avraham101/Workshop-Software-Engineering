@@ -1,6 +1,7 @@
 package Domain;
 
 import DataAPI.CartData;
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
@@ -181,4 +182,76 @@ public abstract class UserState {
     public abstract boolean removePermissions(List<PermissionType> permissions, String storeName, String userName);
 
     public abstract boolean removeManager(String userName, String storeName);
+
+    /**
+     * use case - 2.8 buy cart
+     * @param paymentData - the payment info
+     * @param addresToDeliver  - the address to shift
+     * @return ture if the cart bought, otherwise false
+     */
+    public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
+        List<Purchase> recives = cart.buy(paymentData, addresToDeliver);
+        if(recives!=null) {
+            savePurchase(recives);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * use case 2.8 buy cart
+     * the function save the receives form the buy
+     * @param receives - the recives
+     */
+    protected abstract void savePurchase(List<Purchase> receives);
+
+    /**
+     * use case 3.3 add review
+     * the function add a review
+     * @param review - the review to add
+     */
+    public abstract void addReview(Review review);
+
+    /**
+     * use case 3.3 add review
+     * the function return all the reviews
+     * @return
+     */
+    public List<Review> getReviews() {
+        return null;
+    }
+
+    /**
+     * use case 3.7 - watch purchase history
+     * the function return the purchase list
+     * @return the purchase list
+     */
+    public abstract List<Purchase> watchMyPurchaseHistory();
+
+    /**
+     * use case 4.10 - watch Store History by store owner
+     * @param storeName - the store name to watch history
+     * @return the purchase list
+     */
+    public abstract boolean canWatchStoreHistory(String storeName);
+
+    /**
+     * use case 6.4.1 - admin watch history purchases of some user
+     * @param user - the user that own the purchases
+     * @return - list of purchases that of the user
+     */
+    public List<Purchase> AdminWatchUserPurchasesHistory(Subscribe user) {
+        return null;
+    }
+
+
+    /**
+     * get if the user ia an admin
+     * @return - if the user is admin
+     */
+    public boolean isAdmin() {
+        return false;
+    }
+
+    public abstract boolean canWatchUserHistory();
 }

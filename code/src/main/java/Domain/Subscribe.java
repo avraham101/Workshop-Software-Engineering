@@ -7,6 +7,7 @@ import Systems.SupplySystem.SupplySystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Subscribe extends UserState{
@@ -17,6 +18,7 @@ public class Subscribe extends UserState{
     private List<Permission> givenByMePermissions; //map of <storeName, Domain.Permission>
     private List<Purchase> purchases;
     private List<Request> requests;
+    private List<Review> reviews;
 
     public Subscribe(String userName, String password) {
         this.userName = userName;
@@ -25,6 +27,7 @@ public class Subscribe extends UserState{
         givenByMePermissions=new ArrayList<>();
         purchases=new ArrayList<>();
         requests=new ArrayList<>();
+        reviews = new LinkedList<>();
     }
 
     /**
@@ -148,6 +151,20 @@ public class Subscribe extends UserState{
         return true;
     }
 
+    @Override
+    protected void savePurchase(List<Purchase> receives) {
+        purchases.addAll(receives);
+    }
+
+    /**
+     * use case 3.3 - add review
+     * @param review - the review to add
+     */
+    @Override
+    public void addReview(Review review) {
+        reviews.add(review);
+    }
+
     /**
      * use case 4.6.1 - add permissions
      * @param permissions types to be added
@@ -256,6 +273,35 @@ public class Subscribe extends UserState{
         return false;
     }
 
+    /**
+     * use case 3.7 - watch purchase history
+     * the function return the purchase list
+     * @return the purchase list
+     */
+    @Override
+    public List<Purchase> watchMyPurchaseHistory() {
+        return purchases;
+    }
+
+    /**
+     * use case 4.10 , 6.4.2 - watch Store History by store owner or admin
+     * @param storeName - the store name to watch history
+     * @return if can watch the purchase list
+     */
+    @Override
+    public boolean canWatchStoreHistory(String storeName) {
+        return permissions.containsKey(storeName);
+    }
+
+    /**
+     * use case 6.4.1 - watch user history check
+     * @return if can watch another user purchase list
+     */
+    @Override
+    public boolean canWatchUserHistory() {
+        return false;
+    }
+
     public void setUserName(String userName) {
         this.userName = userName;
     }
@@ -296,4 +342,20 @@ public class Subscribe extends UserState{
         this.requests = requests;
     }
 
+    public List<Purchase> getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(List<Purchase> purchases) {
+        this.purchases = purchases;
+    }
+
+    @Override
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 }

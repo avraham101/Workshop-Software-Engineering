@@ -4,6 +4,7 @@ import Data.Data;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.Product;
+import Domain.Purchase;
 import Domain.Review;
 import Domain.Store;
 import org.junit.Before;
@@ -85,5 +86,6 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
         assertEquals(review.getWriter(), result.getWriter());
 
     }
+
 
 }

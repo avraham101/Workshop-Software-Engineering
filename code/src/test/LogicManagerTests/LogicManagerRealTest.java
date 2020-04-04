@@ -1,9 +1,7 @@
 package LogicManagerTests;
 
-import DataAPI.CartData;
-import DataAPI.ProductData;
+import DataAPI.*;
 import Data.Data;
-import DataAPI.StoreData;
 import Domain.*;
 import Systems.HashSystem;
 import org.junit.Before;
@@ -317,6 +315,55 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * test use case 4.10 and 6.4.2 -watch store history
+     */
+    @Override
+    protected void testWatchStoreHistorySuccess() {
+        //add product to cart for seeing the purchases
+        testAddProductToCartValid();
+        testWatchStoreHistorySuccessNotAdmin();
+        testWatchStoreHistorySuccessWhenAdmin();
+    }
+
+    /**
+     * test use case 4.10 - watch store history from the owner of the store
+     */
+    protected void testWatchStoreHistorySuccessNotAdmin(){
+        checkValidPurchase(logicManager.watchStorePurchasesHistory(data.getStore(Data.VALID).getName()));
+    }
+
+    /**
+     * test use case 6.4.1 - watch user history
+     */
+    @Override
+    protected void testWatchUserHistorySuccess() {
+        checkValidPurchase(logicManager.watchUserPurchasesHistory(data.getSubscribe(Data.VALID).getName()));
+        currUser.setState(users.get(data.getSubscribe(Data.VALID).getName()));
+    }
+
+    /**
+     * test use case 6.4.2 user watch history when admin
+     */
+    protected void testWatchStoreHistorySuccessWhenAdmin() {
+        //put admin to watch the store off
+        String adminName=data.getSubscribe(Data.ADMIN).getName();
+        currUser.setState(users.get(adminName));
+        checkValidPurchase(logicManager.watchStorePurchasesHistory(data.getStore(Data.VALID).getName()));
+    }
+
+    /**
+     * check the purchase is with the details from buying the product
+     * @param purchaseList the list with the products
+     */
+    private void checkValidPurchase(List<Purchase> purchaseList) {
+        Purchase purchase=purchaseList.get(0);
+        assertEquals(purchase.getStoreName(),data.getStore(Data.VALID).getName());
+        assertEquals(purchase.getBuyer(),data.getSubscribe(Data.VALID).getName());
+        assertEquals(purchase.getProduct().get(0).getProductName(),
+                data.getProductData(Data.VALID).getProductName());
+    }
+
+    /**
      * use case 2.5 - view specific product
      */
     @Override
@@ -524,7 +571,10 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     protected void testWriteReviewValid() {
         super.testWriteReviewValid();
         Review review = data.getReview(Data.VALID);
-        //TODO add here test for check if user current have this review
+        List<Review> reviews = currUser.getState().getReviews();
+        assertNotNull(reviews);
+        assertEquals(1, reviews.size());
+        assertEquals(review.getContent(), reviews.get(0).getContent());
     }
 
     /**
@@ -533,6 +583,20 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     private void testWriteReviewProductDidntPurchased() {
         Review review = data.getReview(Data.WRONG_PRODUCT);
         assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+    }
+
+    /**
+     * use case 2.8 - test buy Products
+     */
+    @Override
+    protected void testBuyProducts() {
+        super.testBuyProducts();
+        List<Purchase> purchaseList = this.currUser.getState().watchMyPurchaseHistory();
+        for (Purchase purchase: purchaseList) {
+            String storeName = purchase.getStoreName();
+            Store store = this.stores.get(storeName);
+            assertTrue(store.getPurchases().contains(purchase));
+        }
     }
 
 }

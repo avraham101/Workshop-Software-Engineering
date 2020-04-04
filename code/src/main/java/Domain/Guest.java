@@ -147,4 +147,38 @@ public class Guest extends UserState {
     public boolean removeManager(String userName, String storeName) {
         return false;
     }
+
+    @Override
+    protected void savePurchase(List<Purchase> receives) {
+
+    }
+
+    @Override
+    public void addReview(Review review) {
+
+    }
+
+    /**
+     * use case 3.7 - watch purchase history
+     * the function return the purchase list
+     * @return the purchase list
+     */
+    @Override
+    public List<Purchase> watchMyPurchaseHistory() {
+        return null;
+    }
+
+    /**
+     * use case 4.10 - watch Store History by store owner
+     * @param storeName - the store name to watch history
+     * @return the purchase list
+     */
+    public boolean canWatchStoreHistory(String storeName) {
+        return false;
+    }
+
+    @Override
+    public boolean canWatchUserHistory() {
+        return false;
+    }
 }

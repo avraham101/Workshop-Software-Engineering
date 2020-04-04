@@ -552,47 +552,13 @@ public class LogicManager {
 
     /**
      * use case 3.7 - watch purchase history
-     * the fucntion return the purchase list
+     * the function return the purchase list
      * @return the purchase list
      */
     public List<Purchase> watchMyPurchaseHistory() {
         return current.watchMyPurchaseHistory();
     }
 
-    /**
-     * use case 4.10 - watch Store History by store owner
-     * @param storeName - the store name to watch history
-     * @return the purchase list
-     */
-    public List<Purchase> watchStoreHistory(String storeName) {
-        return current.watchStoreHistory(storeName);
-    }
-
-    /**
-     * use case 6.4.1 - admin watch history purchases of some user
-     * @param userName - the user that own the purchases
-     * @return - list of purchases that of the user
-     */
-    public List<Purchase> AdminWatchUserPurchasesHistory(String userName) {
-        if (current.getState().isAdmin()) {
-            Subscribe user = this.users.get(userName);
-            return user.getPurchases();
-        }
-        return null;
-    }
-
-    /**
-     * use case 6.4.2 - admin watch history purchases of some user
-     * @param storeName - the name of the store that own the purchases
-     * @return - list of purchases that of the store
-     */
-    public List<Purchase> AdminWatchStoreHistory(String storeName) {
-        if (current.getState().isAdmin()) {
-            Store store = this.stores.get(storeName);
-            return store.getPurchases();
-        }
-        return null;
-    }
 
     /**
      * use case 4.6.1 - add permissions
@@ -650,6 +616,38 @@ public class LogicManager {
         if (!users.containsKey(userName) || !stores.containsKey(storeName))
             return false;
         return current.removeManager(userName,storeName);
+    }
+
+
+    /**
+     * use case 6.4.1 - admin watch history purchases of some user
+     * @param userName - the user that own the purchases
+     * @return - list of purchases that of the user
+     */
+    public List<Purchase> watchUserPurchasesHistory(String userName) {
+        if(!users.containsKey(userName))
+            return null;
+        if (current.canWatchUserHistory()) {
+            Subscribe user = this.users.get(userName);
+            return user.getPurchases();
+        }
+        return null;
+    }
+
+    /**
+     * use case 6.4.2 - admin watch history purchases of some user
+     * use case 4.10 - watch Store History by store owner
+     * @param storeName - the name of the store that own the purchases
+     * @return - list of purchases that of the store
+     */
+    public List<Purchase> watchStorePurchasesHistory(String storeName) {
+        if(!stores.containsKey(storeName))
+            return null;
+        if (current.canWatchStoreHistory(storeName)) {
+            Store store = this.stores.get(storeName);
+            return store.getPurchases();
+        }
+        return null;
     }
 
 
