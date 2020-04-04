@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b6c1a88a-612d-4ac6-a184-1ede157d9c06" name="Default Changelist" comment="added permissions">
+    <list default="true" id="b6c1a88a-612d-4ac6-a184-1ede157d9c06" name="Default Changelist" comment="added add permissions">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/StoreTestData.java" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/StoreTestData.java" />
     </list>
@@ -48,8 +48,8 @@
       <file leaf-file-name="StoreTestData.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/StoreTestData.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="237">
-              <caret line="24" column="4" lean-forward="false" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="4" />
+            <state relative-caret-position="183">
+              <caret line="22" column="20" lean-forward="true" selection-start-line="22" selection-start-column="20" selection-end-line="22" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -417,7 +417,7 @@
       <option name="presentableId" value="Default" />
       <updated>1585911256709</updated>
       <workItem from="1585926866421" duration="4197000" />
-      <workItem from="1585970177401" duration="9280000" />
+      <workItem from="1585970177401" duration="9309000" />
     </task>
     <task id="LOCAL-00007" summary="4.3 finish">
       <created>1585925508422</created>
@@ -454,11 +454,18 @@
       <option name="project" value="LOCAL" />
       <updated>1585984565794</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="added add permissions">
+      <created>1585986354259</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1585986354259</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33771000" />
+    <option name="totallyTimeSpent" value="33800000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -508,7 +515,8 @@
     <MESSAGE value="test" />
     <MESSAGE value="fixed some tests" />
     <MESSAGE value="added permissions" />
-    <option name="LAST_COMMIT_MESSAGE" value="added permissions" />
+    <MESSAGE value="added add permissions" />
+    <option name="LAST_COMMIT_MESSAGE" value="added add permissions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -936,8 +944,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/StoreTestData.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="24" column="4" lean-forward="false" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="4" />
+        <state relative-caret-position="183">
+          <caret line="22" column="20" lean-forward="true" selection-start-line="22" selection-start-column="20" selection-end-line="22" selection-end-column="20" />
           <folding />
         </state>
       </provider>

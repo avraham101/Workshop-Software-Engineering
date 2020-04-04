@@ -22,7 +22,7 @@ public class StoreTestData {
         initialPermissions.add(PermissionsTypeTestData.OWNER);
         permissions.put(username, new PermissionTestData(username, initialPermissions));
     }
-    
+
     public void addPermission(String username, PermissionsTypeTestData permissionToAdd){
         PermissionTestData permissionsOfUser = permissions.get(username);
         HashSet<PermissionsTypeTestData> permissionSet = new HashSet<>();
