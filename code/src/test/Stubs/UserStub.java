@@ -108,6 +108,42 @@ public class UserStub extends User {
         return true;
     }
 
+    /**
+     * use case 4.10, 6.4.2 watch store history
+     * @param storeName - the store name to watch history
+     * @return
+     */
+    @Override
+    public boolean canWatchStoreHistory(String storeName) {
+        return true;
+    }
+
+    /**
+     * use case 6.4.1 - watch user history
+     * @return
+     */
+    @Override
+    public boolean canWatchUserHistory() {
+        return true;
+    }
+
+    @Override
+    public Request addRequest(String storeName, String content) {
+        return new Request(getUserName(), storeName, "temp", 10);
+    }
+
+    @Override
+    public List<Request> viewRequest(String storeName) {
+        List<Request> requests = new LinkedList<>();
+        requests.add(new Request(getUserName(), storeName, "temp", 10));
+        return requests;
+    }
+
+    //@Override
+    public Request replayToRequest(String storeName, int requestID, String content) {
+        return new Request(getUserName(), storeName, "temp", 10);
+    }
+
     @Override
     public List<Purchase> watchMyPurchaseHistory() {
         return new LinkedList<>();

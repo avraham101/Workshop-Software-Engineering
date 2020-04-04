@@ -4,7 +4,6 @@ import DataAPI.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class User {
@@ -232,8 +231,8 @@ public class User {
      * @param storeName - the store name to watch history
      * @return the purchase list
      */
-    public List<Purchase> watchStoreHistory(String storeName) {
-        return state.watchStoreHistory(storeName);
+    public boolean canWatchStoreHistory(String storeName) {
+        return state.canWatchStoreHistory(storeName);
     }
 
 
@@ -252,5 +251,28 @@ public class User {
      */
     public List<Purchase> AdminWatchStoreHistory(Store store) {
         return null;
+    }
+
+    public boolean canWatchUserHistory() {
+        return state.canWatchUserHistory();
+    }
+
+    /**
+     * use case 4.9.1
+     * @param storeName
+     */
+    public List<Request> viewRequest(String storeName) {
+        return state.viewRequest(storeName);
+    }
+
+    /**
+     * use case 4.9.2 -replay to Request
+     * @param storeName
+     * @param requestID
+     * @param content
+     * @return true if replay, false else
+     */
+    public Request replayToRequest(String storeName, int requestID, String content) {
+        return state.replayToRequest(storeName, requestID, content);
     }
 }

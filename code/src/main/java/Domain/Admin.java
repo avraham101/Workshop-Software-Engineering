@@ -11,9 +11,13 @@ public class Admin extends Subscribe {
      * @return - if the user is admin
      */
     @Override
-    public boolean isAdmin() {
+    public boolean canWatchUserHistory() {
         return true;
     }
 
+    @Override
+    public boolean canWatchStoreHistory(String storeName) {
+        return true;
+    }
 }
 

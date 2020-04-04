@@ -209,7 +209,7 @@ public class ServiceAPI {
      * @return the purchase list
      */
     public List<Purchase> watchStoreHistory(String storeName){
-        return logicManager.watchStoreHistory(storeName);
+        return logicManager.watchStorePurchasesHistory(storeName);
     }
 
     /**
@@ -218,7 +218,7 @@ public class ServiceAPI {
      * @return - list of purchases that of the user
      */
     public List<Purchase> AdminWatchUserPurchasesHistory(String userName){
-        return logicManager.AdminWatchUserPurchasesHistory(userName);
+        return logicManager.watchUserPurchasesHistory(userName);
     }
 
     /**
@@ -227,7 +227,7 @@ public class ServiceAPI {
      * @return - list of purchases that of the store
      */
     public List<Purchase> AdminWatchStoreHistory(String storeName){
-        return logicManager.AdminWatchStoreHistory(storeName);
+        return logicManager.watchStorePurchasesHistory(storeName);
     }
 
 

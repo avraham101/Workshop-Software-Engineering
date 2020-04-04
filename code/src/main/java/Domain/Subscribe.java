@@ -304,15 +304,57 @@ public class Subscribe extends UserState{
     }
 
     /**
-     * use case 4.10 - watch Store History by store owner
+     * use case 4.10 , 6.4.2 - watch Store History by store owner or admin
      * @param storeName - the store name to watch history
-     * @return the purchase list
+     * @return if can watch the purchase list
      */
     @Override
-    public List<Purchase> watchStoreHistory(String storeName) {
+    public boolean canWatchStoreHistory(String storeName) {
+        return permissions.containsKey(storeName);
+    }
+
+    /**
+     * use case 6.4.1 - watch user history check
+     * @return if can watch another user purchase list
+     */
+    @Override
+    public boolean canWatchUserHistory() {
+        return false;
+    }
+
+    /**
+     * use case 4.9.1
+     * @param storeName
+     * @return
+     */
+    @Override
+    public List<Request> viewRequest(String storeName) {
+        List<Request> output = new LinkedList<>();
+        if(! permissions.containsKey(storeName)) return output;
         Permission permission = permissions.get(storeName);
-        if(permission!=null && permission.getPermissionType().contains(PermissionType.OWNER)) {
-            return permission.getStore().getPurchases();
+        if(permission != null){
+            Store store = permission.getStore();
+            output = new LinkedList<>(store.getRequests().values());
+        }
+        return output;
+    }
+
+    /**
+     * use case 4.9.2
+     * @param storeName
+     * @param requestID
+     * @param content
+     * @return
+     */
+    @Override
+    public Request replayToRequest(String storeName, int requestID, String content) {
+        if(! permissions.containsKey(storeName) | content==null) return null;
+        Permission permission = permissions.get(storeName);
+        if(permission == null) return null;
+        Store store = permission.getStore();
+        if(store.getRequests().containsKey(requestID)) {
+            store.getRequests().get(requestID).setComment(content);
+            return store.getRequests().get(requestID);
         }
         return null;
     }

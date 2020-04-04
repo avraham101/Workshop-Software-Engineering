@@ -223,7 +223,7 @@ public abstract class UserState {
      * @param storeName - the store name to watch history
      * @return the purchase list
      */
-    public abstract List<Purchase> watchStoreHistory(String storeName);
+    public abstract boolean canWatchStoreHistory(String storeName);
 
     /**
      * use case 6.4.1 - admin watch history purchases of some user
@@ -242,6 +242,23 @@ public abstract class UserState {
     public boolean isAdmin() {
         return false;
     }
+
+    public abstract boolean canWatchUserHistory();
+
+    /**
+     * use case 4.9.1
+     * @param storeName
+     */
+    public abstract List<Request> viewRequest(String storeName);
+
+    /**
+     * use case 4.9.2 -replay to Request
+     * @param storeName
+     * @param requestID
+     * @param content
+     * @return true if replay, false else
+     */
+    public abstract Request replayToRequest(String storeName, int requestID, String content);
 
     /**
      * use case 3.3 remove review

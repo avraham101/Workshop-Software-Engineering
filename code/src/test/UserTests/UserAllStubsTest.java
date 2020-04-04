@@ -6,6 +6,7 @@ import DataAPI.StoreData;
 import Domain.*;
 import Data.TestData;
 import Data.Data;
+import Stubs.AdminStub;
 import Stubs.GuestStub;
 import Stubs.SubscribeStub;
 import Systems.PaymentSystem.PaymentSystem;
@@ -44,10 +45,23 @@ public class UserAllStubsTest {
         user = new User(userState);
     }
 
+    protected void initAdmin(){
+        Subscribe s=data.getSubscribe(Data.ADMIN);
+        userState = new AdminStub(s.getName(), s.getPassword());
+        user = new User(userState);
+    }
+
     @Test
     public void test() {
         testGuest();
         testSubscribe();
+        testAdmin();
+    }
+
+    private void testAdmin() {
+        initAdmin();
+        testCanWatchUserHistoryAdmin();
+        testCanWatchStoreHistoryAdmin();
     }
 
     private void testSubscribe() {
@@ -55,6 +69,8 @@ public class UserAllStubsTest {
         testLoginSubscribe();
         testOpenStoreSubscribe();
         testAddManagerSubscribe();
+        testCanWatchStoreHistorySubscribe();
+        testCanWatchUserHistorySubscribe();
         testAddPermissionsSubscribe();
         testRemovePermissionsSubscibe();
         testAddProductToStoreSubscribe();
@@ -74,6 +90,8 @@ public class UserAllStubsTest {
     protected void testGuest() {
         testLogoutGuest();
         testOpenStoreGuest();
+        testCanWatchUserHistoryGuest();
+        testCanWatchStoreHistoryGuest();
         testAddManagerGuest();
         testRemoveManagerGuest();
         testAddProductToStoreGuest();
@@ -84,6 +102,9 @@ public class UserAllStubsTest {
         testRemoveProductFromStoreGuest();
         testAddPermissionsGuest();
         testRemovePermissionsGuest();
+        testAddRequestGuest();
+        testViewRequestGuest();
+        testReplayRequestGuest();
         //last guest test
         testLoginGuest();
     }
@@ -230,6 +251,56 @@ public class UserAllStubsTest {
     protected void testRemoveManagerSubscribe(){
         assertTrue(user.removeManager(data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()));
     }
+
+
+    /**
+     * use case 6.4.1 - watch user store
+     */
+    public void testCanWatchUserHistoryGuest(){
+        assertFalse(user.canWatchUserHistory());
+    }
+
+    /**
+     * use case 6.4.1 - admin watch user store
+     */
+    public void testCanWatchUserHistorySubscribe(){
+        assertFalse(user.canWatchUserHistory());
+    }
+
+    /**
+     * use case 6.4.1 - admin watch user store
+     */
+    public void testCanWatchUserHistoryAdmin(){
+        assertTrue(user.canWatchUserHistory());
+    }
+
+    /**
+     * use case 6.4.2 ,4.10- watch store
+     */
+    public void testCanWatchStoreHistoryGuest(){
+        assertFalse(user.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
+    }
+
+    /**
+     * use case 6.4.2 - watch store
+     */
+    public void testCanWatchStoreHistorySubscribe(){
+        assertTrue(user.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
+    }
+
+    /**
+     * use case 6.4.2 - admin watch store
+     */
+    public void testCanWatchStoreHistoryAdmin(){
+        assertTrue(user.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
+    }
+    private void testAddRequestGuest() { assertNull(user.addRequest(data.getRequest(Data.VALID).getStoreName(), data.getRequest(Data.VALID).getComment())); }
+
+    private void testViewRequestGuest() {
+        assertTrue(user.viewRequest(data.getStore(Data.VALID).getName()).isEmpty());
+    }
+
+    private void testReplayRequestGuest(){ assertNull(user.replayToRequest(data.getRequest(Data.VALID).getStoreName(), data.getRequest(Data.VALID).getId(), "I want replay but can't"));}
 
 
     /**

@@ -56,6 +56,8 @@ public class SubscribeAllStubsTest {
         testWriteReviewSubscribe();
         testAddProductToCart();
         testbuyCart();
+        testCanWatchUserHistory();
+        testCanWatchStoreHistory();
         logoutTest();
     }
 
@@ -104,7 +106,7 @@ public class SubscribeAllStubsTest {
     }
 
     /**
-     * test 4.9.1 use case 4.9.1 - add product
+     * test use case 4.1.1 - add product
      */
     protected void addProductToStoreTest(){
         addProductToStoreTestSuccess();
@@ -115,7 +117,7 @@ public class SubscribeAllStubsTest {
     }
 
     /**
-     * test 4.9.2 - remove product
+     * test 4.1.2 - remove product
      */
 
     protected  void removeProductFromStoreTest(){
@@ -334,6 +336,36 @@ public class SubscribeAllStubsTest {
         sub.getPermissions().clear();
         assertFalse(sub.removeManager(data.getSubscribe(Data.ADMIN).getName(),validStoreName));
         sub.getPermissions().put(validStoreName,permission);
+    }
+
+    /**
+     * test use case 6.4.1 - watch user history
+     */
+    private void testCanWatchUserHistory(){
+        assertFalse(sub.canWatchUserHistory());
+    }
+
+    /**
+     * test use case 6.4.2 and 4.10 - watch store history
+     */
+    private void testCanWatchStoreHistory(){
+        testWatchStoreHistorySuccess();
+        testWatchStoreHistoryNotManger();
+    }
+
+    /**
+     * test that cannot watch store history when not manager
+     */
+    private void testWatchStoreHistoryNotManger() {
+        String validStoreName=data.getProductData(Data.VALID).getStoreName();
+        Permission permission=sub.getPermissions().get(validStoreName);
+        sub.getPermissions().clear();
+        assertFalse(sub.canWatchStoreHistory(validStoreName));
+        sub.getPermissions().put(validStoreName,permission);
+    }
+
+    private void testWatchStoreHistorySuccess() {
+        assertTrue(sub.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
     }
 
     /**

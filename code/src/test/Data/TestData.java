@@ -20,6 +20,7 @@ public class TestData {
     private HashMap<Data, List<Discount>> discounts;
     private HashMap<Data, HashMap<ProductData, Integer>> basket;
     private HashMap<Data, Filter> filters;
+    private HashMap<Data, Request> requests;
     private HashMap<Data, Review> reviwes;
     private List<PermissionType> permissionTypeList;
     private HashMap<Data, PaymentData> paymentData;
@@ -32,6 +33,7 @@ public class TestData {
         setUpStoreData();
         setUpBasketData();
         setUpFilters();
+        setUpRequests();
         setUpReviews();
         setUpPaymentData();
         setUpDeliveryData();
@@ -115,6 +117,7 @@ public class TestData {
         stores.put(Data.VALID,new StoreData("Store",new PurchesPolicy(), new DiscountPolicy()));
         stores.put(Data.NULL, null);
         stores.put(Data.NULL_NAME, new StoreData(null,new PurchesPolicy(), new DiscountPolicy()));
+        stores.put(Data.WRONG_STORE, new StoreData(null,new PurchesPolicy(), new DiscountPolicy()));
         stores.put(Data.NULL_PURCHASE, new StoreData("Store",null, new DiscountPolicy()));
         stores.put(Data.NULL_DISCOUNT, new StoreData("Store",new PurchesPolicy(), null));
     }
@@ -209,6 +212,16 @@ public class TestData {
         deliveryData.put(Data.NULL_ADDRESS, new DeliveryData(null, product));
     }
 
+    private void setUpRequests(){
+        requests = new HashMap<>();
+        requests.put(Data.VALID, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), "where is the milk in this store?", 1));
+        requests.put(Data.WRONG_NAME, new Request(users.get(Data.WRONG_NAME).getName(), stores.get(Data.VALID).getName(), "where is the milk in this store?", 1));
+        requests.put(Data.WRONG_STORE, new Request(users.get(Data.VALID).getName(), stores.get(Data.WRONG_STORE).getName(), "where is the milk in this store?", 1));
+        requests.put(Data.NULL_NAME, new Request(users.get(Data.VALID).getName(), stores.get(Data.NULL_NAME).getName(), "where is the milk in this store?", 1));
+        requests.put(Data.NULL, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), null, 1));
+        requests.put(Data.WRONG_ID, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), "where is the milk in this store?", -1));
+    }
+
     public Subscribe getSubscribe(Data data) {
         return users.get(data);
     }
@@ -271,6 +284,8 @@ public class TestData {
     }
 
 
+
+    public Request getRequest(Data data) { return requests.get(data); }
 
     /**
      * use case 2.5 - search Products
