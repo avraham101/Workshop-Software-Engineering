@@ -83,6 +83,7 @@ public class LogicManagerAllStubsTest {
         testLogout();
     }
 
+
     /**
      * test: use case 1.1 - Init System
      */

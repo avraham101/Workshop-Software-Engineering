@@ -549,6 +549,14 @@ public class LogicManager {
         return true;
     }
 
+    /**
+     * use case 4.6.2 - remove permission
+     * @param permissions to be removed
+     * @param storeName of the store to remove the permissions from
+     * @param userName of the user to remove his permissions
+     * @return if the permission were removed
+     */
+
     public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
         //TODO add logger
         if(!validList(permissions))
