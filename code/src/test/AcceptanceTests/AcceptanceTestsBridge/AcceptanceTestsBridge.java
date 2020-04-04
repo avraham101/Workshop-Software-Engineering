@@ -3,6 +3,7 @@ package AcceptanceTests.AcceptanceTestsBridge;
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
 
+import java.util.HashSet;
 import java.util.List;
 
 public interface AcceptanceTestsBridge {
@@ -14,7 +15,7 @@ public interface AcceptanceTestsBridge {
     String getCurrentLoggedInUser();
     boolean logout(String currUsername);
     boolean login(String username, String password);
-    List<ProductTestData> filterProducts(List<ProductTestData> products, List<FilterTestData> filters);
+    HashSet<ProductTestData> filterProducts(List<ProductTestData> products, List<FilterTestData> filters);
     void deleteProducts(List<ProductTestData> products);
     void deleteStores(List<StoreTestData> stores);
     void addStores(List<StoreTestData> stores);

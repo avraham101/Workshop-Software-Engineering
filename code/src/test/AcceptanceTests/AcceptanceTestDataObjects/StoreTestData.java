@@ -7,6 +7,9 @@ public class StoreTestData {
     private UserTestData storeManager;
     private List<ProductTestData> products;
 
+    //TODO: change storeManager to storeOwner
+    //TODO: add a list of store managers
+
     public StoreTestData(String storeName, UserTestData storeManager, List<ProductTestData> products) {
         this.storeName = storeName;
         this.storeManager = storeManager;
@@ -37,15 +40,20 @@ public class StoreTestData {
         this.products = products;
     }
 
-    public boolean equals (StoreTestData otherStore){
-        return (this.storeName.equals(otherStore.storeName));
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StoreTestData that = (StoreTestData) o;
+
+        return storeName != null ? storeName.equals(that.storeName) : that.storeName == null;
     }
 
     public ProductTestData getProductByName(String productName){
-        for (ProductTestData pd:products) {
-            if(pd.getProductName().equals(productName));
+        for (ProductTestData pd : products) {
+            if(pd.getProductName().equals(productName))
                 return pd;
-
         }
         return null;
     }

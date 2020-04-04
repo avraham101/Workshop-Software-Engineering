@@ -1,29 +1,37 @@
 package AcceptanceTests.AcceptanceTests;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class RegisterTest extends AcceptanceTests {
-    @Test
-    public void testRegisterSuccess(){
-       String username = users.get(0).getUsername();
-       String password = users.get(0).getPassword();
 
-       boolean isRegistered = bridge.register(username, password);
-       assertTrue(isRegistered);
+    private String username;
+    private String password;
+
+    @Before
+    public void setUp(){
+        super.setUp();
+        username = superUser.getUsername();
+        password = superUser.getPassword();
     }
 
     @Test
-    public void testRegisterFail(){
-        String username = users.get(0).getUsername();
-        String password = users.get(0).getPassword();
+    public void testRegisterSuccess(){
+       boolean isRegistered = bridge.register(username, password);
+       assertTrue(isRegistered);
+       boolean isAdmin = bridge.getAdminUsername().equals(username);
+       assertTrue(isAdmin);
+    }
 
+    @Test
+    public void testRegisterFailAlreadyRegistered(){
         bridge.register(username, password);
         boolean isRegistered = bridge.register(username, password);
         assertFalse(isRegistered);
     }
     @After
     public void tearDown(){
-        bridge.deleteUser(users.get(0).getUsername());
+        bridge.deleteUser(username);
     }
 }

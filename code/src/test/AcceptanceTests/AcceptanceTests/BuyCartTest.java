@@ -11,7 +11,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class buyCart extends AcceptanceTests {
+public class BuyCartTest extends AcceptanceTests {
     @Before
     public void setUp(){
         super.setUp();

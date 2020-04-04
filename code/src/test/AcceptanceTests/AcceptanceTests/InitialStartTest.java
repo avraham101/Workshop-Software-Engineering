@@ -41,6 +41,7 @@ public class InitialStartTest extends AcceptanceTests {
     }
     @After
     public void tearDown(){
+        // allowed because current user is admin
         bridge.resetSystem();
     }
 }
