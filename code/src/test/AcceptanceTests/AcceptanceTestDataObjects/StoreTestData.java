@@ -40,4 +40,13 @@ public class StoreTestData {
     public boolean equals (StoreTestData otherStore){
         return (this.storeName.equals(otherStore.storeName));
     }
+
+    public ProductTestData getProductByName(String productName){
+        for (ProductTestData pd:products) {
+            if(pd.getProductName().equals(productName));
+                return pd;
+
+        }
+        return null;
+    }
 }
