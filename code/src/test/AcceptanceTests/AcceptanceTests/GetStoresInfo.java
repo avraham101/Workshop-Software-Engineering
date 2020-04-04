@@ -39,10 +39,8 @@ public class GetStoresInfo extends AcceptanceTests {
 
     @Test
     public void getProductOfStoreFail(){
-        Set<ProductTestData> productsInStoreSystem = new HashSet<ProductTestData>(bridge.getStoreProducts(notExistingStore.getStoreName()));
+        Set<ProductTestData> productsInStoreSystem = new HashSet<>(bridge.getStoreProducts(notExistingStore.getStoreName()));
         assertNull(productsInStoreSystem);
-
-
     }
 
 

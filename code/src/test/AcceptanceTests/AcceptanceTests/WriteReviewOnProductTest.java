@@ -4,6 +4,7 @@ import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.PurchaseTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ReviewTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import org.junit.After;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -18,14 +19,17 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
     @Test
     public void setUp(){
         super.setUp();
-        user0 = users.get(0);
-        purchase0 = user0.getPurchases().get(0);
-        notExistingProductInPurchase = products.get(7);
-
+        user0 = superUser;
         bridge.register(user0.getUsername(),user0.getPassword());
         bridge.login(user0.getUsername(),user0.getPassword());
-        bridge.purchaseProducts(purchase0);
 
+        addStores(stores);
+        addProducts(products);
+        bridge.addCartToUser(superUser.getUsername(),superUser.getCart());
+        purchase0 = bridge.buyCart(validPayment,validDelivery);
+        superUser.getPurchases().add(purchase0);
+
+        notExistingProductInPurchase = products.get(7);
         productsAndReviews = new HashMap<>();
         ReviewTestData review0 = new ReviewTestData(user0.getUsername(),"review0test");
         ReviewTestData review4 = new ReviewTestData(user0.getUsername(),"review4test");
@@ -75,5 +79,12 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
 
         boolean isWritten = bridge.writeReviewOnProduct(storeName, productToReview, review);
         assertFalse(isWritten);
+    }
+
+    @After
+    public void tearDown(){
+        deleteProducts(products);
+        deleteStores(stores);
+        deleteUser(superUser.getUsername());
     }
 }

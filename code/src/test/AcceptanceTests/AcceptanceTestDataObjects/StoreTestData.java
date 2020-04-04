@@ -7,15 +7,17 @@ public class StoreTestData {
     private UserTestData storeManager;
     private List<ProductTestData> products;
     private HashMap<String, PermissionTestData> permissions;
+    private List<PurchaseTestData> purchasesHistory;
 
     //TODO: change storeManager to storeOwner
     //TODO: add a list of store managers
 
-    public StoreTestData(String storeName, UserTestData storeManager, List<ProductTestData> products) {
+    public StoreTestData(String storeName, UserTestData storeManager) {
         this.storeName = storeName;
         this.storeManager = storeManager;
-        this.products = products;
+        this.products = new ArrayList<>();
         this.permissions = new HashMap<>();
+        this.purchasesHistory = new ArrayList<>();
 
         String username = storeManager.getUsername();
         HashSet<PermissionsTypeTestData> initialPermissions = new HashSet<>();
@@ -31,6 +33,14 @@ public class StoreTestData {
             permissions.put(username,new PermissionTestData(username,permissionSet));
         else
             permissionsOfUser.getPermissions().addAll(permissionSet);
+    }
+
+    public HashMap<String, PermissionTestData> getPermissions() {
+        return permissions;
+    }
+
+    public List<PurchaseTestData> getPurchasesHistory() {
+        return purchasesHistory;
     }
 
     public String getStoreName() {
