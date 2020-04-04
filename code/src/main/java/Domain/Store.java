@@ -16,7 +16,7 @@ public class Store {
     private DiscountPolicy discount;
     private HashMap<String, Product> products;
     private HashMap<String, Category> categoryList;
-    private List<Request> requests;
+    private HashMap<Integer, Request> requests;
     private HashMap<String, Permission> permissions;
     private SupplySystem supplySystem;
     private PaymentSystem paymentSystem;
@@ -34,7 +34,7 @@ public class Store {
         this.paymentSystem = paymentSystem;
         this.products=new HashMap<>();
         this.categoryList=new HashMap<>();
-        this.requests= new LinkedList<>();
+        this.requests= new HashMap<>();
         this.purchases = new LinkedList<>();
     }
 
@@ -74,11 +74,11 @@ public class Store {
         this.categoryList = categoryList;
     }
 
-    public List<Request> getRequests() {
+    public HashMap<Integer, Request> getRequests() {
         return requests;
     }
 
-    public void setRequests(List<Request> requests) {
+    public void setRequests(HashMap<Integer, Request> requests) {
         this.requests = requests;
     }
 
@@ -169,7 +169,8 @@ public class Store {
     public boolean addRequest(Request addRequest) {
         if(addRequest==null)
             return false;
-        return requests.add(addRequest);
+        requests.put(addRequest.getId(), addRequest);
+        return true;
     }
 
     /**

@@ -245,4 +245,23 @@ public class User {
     public boolean canWatchUserHistory() {
         return state.canWatchUserHistory();
     }
+
+    /**
+     * use case 4.9.1
+     * @param storeName
+     */
+    public List<Request> viewRequest(String storeName) {
+        return state.viewRequest(storeName);
+    }
+
+    /**
+     * use case 4.9.2 -replay to Request
+     * @param storeName
+     * @param requestID
+     * @param content
+     * @return true if replay, false else
+     */
+    public Request replayToRequest(String storeName, int requestID, String content) {
+        return state.replayToRequest(storeName, requestID, content);
+    }
 }

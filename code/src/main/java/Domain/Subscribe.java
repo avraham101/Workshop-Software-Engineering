@@ -302,6 +302,43 @@ public class Subscribe extends UserState{
         return false;
     }
 
+    /**
+     * use case 4.9.1
+     * @param storeName
+     * @return
+     */
+    @Override
+    public List<Request> viewRequest(String storeName) {
+        List<Request> output = new LinkedList<>();
+        if(! permissions.containsKey(storeName)) return output;
+        Permission permission = permissions.get(storeName);
+        if(permission != null){
+            Store store = permission.getStore();
+            output = new LinkedList<>(store.getRequests().values());
+        }
+        return output;
+    }
+
+    /**
+     * use case 4.9.2
+     * @param storeName
+     * @param requestID
+     * @param content
+     * @return
+     */
+    @Override
+    public Request replayToRequest(String storeName, int requestID, String content) {
+        if(! permissions.containsKey(storeName) | content==null) return null;
+        Permission permission = permissions.get(storeName);
+        if(permission == null) return null;
+        Store store = permission.getStore();
+        if(store.getRequests().containsKey(requestID)) {
+            store.getRequests().get(requestID).setComment(content);
+            return store.getRequests().get(requestID);
+        }
+        return null;
+    }
+
     public void setUserName(String userName) {
         this.userName = userName;
     }

@@ -254,4 +254,19 @@ public abstract class UserState {
     }
 
     public abstract boolean canWatchUserHistory();
+
+    /**
+     * use case 4.9.1
+     * @param storeName
+     */
+    public abstract List<Request> viewRequest(String storeName);
+
+    /**
+     * use case 4.9.2 -replay to Request
+     * @param storeName
+     * @param requestID
+     * @param content
+     * @return true if replay, false else
+     */
+    public abstract Request replayToRequest(String storeName, int requestID, String content);
 }
