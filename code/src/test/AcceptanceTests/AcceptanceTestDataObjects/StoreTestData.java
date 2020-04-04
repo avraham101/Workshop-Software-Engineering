@@ -22,7 +22,7 @@ public class StoreTestData {
         String username = storeManager.getUsername();
         HashSet<PermissionsTypeTestData> initialPermissions = new HashSet<>();
         initialPermissions.add(PermissionsTypeTestData.OWNER);
-        permissions.put(username, new PermissionTestData(username, initialPermissions));
+        permissions.put(username, new PermissionTestData(username, initialPermissions,username));
     }
 
     public void addPermission(String username, PermissionsTypeTestData permissionToAdd){
@@ -88,4 +88,5 @@ public class StoreTestData {
     public boolean isManager(String username) {
         return permissions.containsKey(username);
     }
+
 }

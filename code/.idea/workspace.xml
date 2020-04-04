@@ -470,11 +470,18 @@
       <option name="project" value="LOCAL" />
       <updated>1586022995459</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="use case 3.7 fixed equals">
+      <created>1586023044966</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1586023044966</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="44942000" />
+    <option name="totallyTimeSpent" value="44971000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -559,9 +566,9 @@
     <MESSAGE value="3.2,3.5,4.1.1,4.1.2" />
     <MESSAGE value="add managers" />
     <MESSAGE value="use case 3.7" />
-    <MESSAGE value="use case 3.7 fixed equals" />
     <MESSAGE value="4.3" />
-    <option name="LAST_COMMIT_MESSAGE" value="4.3" />
+    <MESSAGE value="use case 3.7 fixed equals" />
+    <option name="LAST_COMMIT_MESSAGE" value="use case 3.7 fixed equals" />
   </component>
   <component name="WindowStateProjectService">
     <state x="618" y="301" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" />
