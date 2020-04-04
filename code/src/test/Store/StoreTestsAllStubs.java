@@ -2,6 +2,8 @@ package Store;
 
 import Data.Data;
 import Data.TestData;
+import DataAPI.DeliveryData;
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import Domain.*;
 import Stubs.ProductStub;
@@ -28,6 +30,8 @@ public class StoreTestsAllStubs {
     public void test(){
         testAddProduct();
         testEditProduct();
+        testPurchase();
+        testCheckReduceAmount();
         testRemoveProduct();
     }
 
@@ -71,7 +75,6 @@ public class StoreTestsAllStubs {
     /**
      * test success add product
      */
-
     protected void testAddProductSuccess() {
         assertTrue(store.addProduct(data.getProductData(Data.VALID)));
     }
@@ -124,5 +127,24 @@ public class StoreTestsAllStubs {
         review = data.getReview(Data.WRONG_PRODUCT);
         assertFalse(store.addReview(review));
 
+    }
+
+    /**
+     * test if the amount of product has been change
+     */
+    private void testCheckReduceAmount() {
+        ProductData product = data.getProductData(Data.VALID);
+        int amount = store.getProduct(product.getProductName()).getAmount();
+        assertEquals(amount - 1, product.getAmount());
+    }
+
+    /**
+     * test if it is available to purchase from the store
+     */
+    private void testPurchase() {
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        Purchase purchase = store.purches(paymentData,deliveryData);
+        assertNotNull(purchase);
     }
 }

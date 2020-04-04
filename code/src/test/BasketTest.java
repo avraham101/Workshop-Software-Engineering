@@ -1,5 +1,6 @@
 import Data.Data;
 import Data.TestData;
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import Domain.*;
 import Systems.PaymentSystem.ProxyPayment;
@@ -30,6 +31,8 @@ public class BasketTest {
         teatAddToBasket();
         testEditAmountFromBasket();
         testDeleteFromBasket();
+        teatAddToBasket();
+        testIfBasketAvailableToBuy();
     }
 
     /**
@@ -64,6 +67,59 @@ public class BasketTest {
             Product product = new Product(productData,new Category(""));
             assertTrue(basket.deleteProduct(product.getName()));
         }
+    }
+
+    /**
+     * test if the basket is available for buying
+     */
+    private void testIfBasketAvailableToBuy() {
+        testIfBasketAvailableToBuySuccess();
+        testIfBasketAvailableToBuyFails();
+    }
+
+    /**
+     * test if the basket is available for buying
+     * fail test
+     */
+    private void testIfBasketAvailableToBuyFails() {
+        // null data payment
+        assertFalse(basket.available(null, null));
+        // null address in payment
+        PaymentData paymentData = data.getPaymentData(Data.NULL_ADDRESS);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(basket.available(paymentData, address));
+        // empty address in payment
+        paymentData = data.getPaymentData(Data.EMPTY_ADDRESS);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(basket.available(paymentData, address));
+        // null payment
+        paymentData = data.getPaymentData(Data.NULL_PAYMENT);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(basket.available(paymentData, address));
+        // empty payment
+        paymentData = data.getPaymentData(Data.EMPTY_PAYMENT);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(basket.available(paymentData, address));
+        // null name in payment
+        paymentData = data.getPaymentData(Data.NULL_NAME);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(basket.available(paymentData, address));
+        // empty name in payment
+        paymentData = data.getPaymentData(Data.EMPTY_NAME);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(basket.available(paymentData, address));
+        // null address
+        paymentData = data.getPaymentData(Data.VALID);
+        address = data.getDeliveryData(Data.NULL_ADDRESS).getAddress();
+        assertFalse(basket.available(paymentData, address));
+        // empty address
+        paymentData = data.getPaymentData(Data.VALID);
+        address = data.getDeliveryData(Data.EMPTY_ADDRESS).getAddress();
+        assertFalse(basket.available(paymentData, address));
+    }
+
+    private void testIfBasketAvailableToBuySuccess() {
+
     }
 
 }
