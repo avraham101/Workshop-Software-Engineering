@@ -2,6 +2,7 @@ package LogicManagerTests;
 
 import Data.*;
 import DataAPI.CartData;
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
@@ -68,22 +69,25 @@ public class LogicManagerAllStubsTest {
         testAddProduct();
         testAddRequest();
         testViewSpecificProduct();
-        testEditProduct();
         testAddProductToCart();
         testWatchCartDetails();
         testEditProductsInCart();
         //TODO add here add product to correct
         //TODO add this after we have purchase testWriteReview();
+        testBuyProducts();
+        testEditProduct();
+        testWatchStoreHistory();
+        testWatchUserHistory();
         testViewDataStores();
         testViewProductsInStore();
         testDeleteProductFromCart();
+        testAddProductToCart();
         testRemoveProductFromStore();
         testManageOwner();
         testRemovePermission();
         testRemoveManager();
         testLogout();
     }
-
 
     /**
      * test: use case 1.1 - Init System
@@ -441,6 +445,7 @@ public class LogicManagerAllStubsTest {
         testWatchCartDetailsNull();
         testWatchCartDetailsNullStore();
     }
+
     /**
      * test use case 4.1.3 - edit product in store
      */
@@ -601,6 +606,50 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
+     * use case 6.4.1 - watch User History
+     */
+    private void testWatchUserHistory(){
+        testWatchUserHistoryUserNotExist();
+        testWatchUserHistorySuccess();
+    }
+
+    /**
+     * test user that not exist on users map
+     */
+    private void testWatchUserHistoryUserNotExist() {
+        assertNull(logicManager.watchUserPurchasesHistory(data.getStore(Data.VALID).getName()));
+    }
+
+    /**
+     * test success
+     */
+    protected void testWatchUserHistorySuccess() {
+        assertNotNull(logicManager.watchUserPurchasesHistory(data.getSubscribe(Data.VALID).getName()));
+    }
+
+    /**
+     * use case 6.4.2 , 4.10 - watch store history
+     */
+    private void testWatchStoreHistory(){
+        testWatchStoreHistoryStoreNotExist();
+        testWatchStoreHistorySuccess();
+    }
+
+    /**
+     * test store that not exist on users map
+     */
+    private void testWatchStoreHistoryStoreNotExist() {
+        assertNull(logicManager.watchStorePurchasesHistory(data.getSubscribe(Data.VALID).getName()));
+    }
+
+    /**
+     * test success
+     */
+    protected void testWatchStoreHistorySuccess() {
+        assertNotNull(logicManager.watchStorePurchasesHistory(data.getStore(Data.VALID).getName()));
+    }
+
+    /**
      * use case 2.7.1 fail when the product is null
      */
     private void testWatchCartDetailsNull() {
@@ -695,6 +744,64 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.aadProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
     }
 
+    /**
+     * use case 2.8 - test buy Products
+     */
+    protected void testBuyProducts() {
+        testFailBuyProducts();
+        testSuccessBuyProducts();
+    }
+
+    /**
+     * use case 2.8 - test buy Products
+     * success tests
+     */
+     private void testSuccessBuyProducts() {
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertTrue(logicManager.purchaseCart(paymentData, address));
+    }
+
+    /**
+     * use case 2.8 - test buy Products
+     * fails tests
+     */
+    private void testFailBuyProducts() {
+        // null data payment
+        assertFalse(logicManager.purchaseCart(null, null));
+        // null address in payment
+        PaymentData paymentData = data.getPaymentData(Data.NULL_ADDRESS);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // empty address in payment
+        paymentData = data.getPaymentData(Data.EMPTY_ADDRESS);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // null payment
+        paymentData = data.getPaymentData(Data.NULL_PAYMENT);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // empty payment
+        paymentData = data.getPaymentData(Data.EMPTY_PAYMENT);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // null name in payment
+        paymentData = data.getPaymentData(Data.NULL_NAME);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // empty name in payment
+        paymentData = data.getPaymentData(Data.EMPTY_NAME);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // null address
+        paymentData = data.getPaymentData(Data.VALID);
+        address = data.getDeliveryData(Data.NULL_ADDRESS).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // empty address
+        paymentData = data.getPaymentData(Data.VALID);
+        address = data.getDeliveryData(Data.EMPTY_ADDRESS).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+    }
 
 
 }

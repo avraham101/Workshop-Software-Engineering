@@ -23,10 +23,15 @@ public class ProxySupply extends SupplySystem{
     }
 
     @Override
-    public boolean delivry(DeliveryData deliveryData) {
+    public boolean deliver(DeliveryData deliveryData) {
         if(real!=null) {
-            return real.delivry(deliveryData);
+            return real.deliver(deliveryData);
         }
-        return false;
+        return true;
+    }
+
+    @Override
+    public boolean isConnected() {
+        return true;
     }
 }

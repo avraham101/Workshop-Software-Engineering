@@ -1,8 +1,6 @@
 package Domain;
 
-import DataAPI.CartData;
-import DataAPI.ProductData;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
@@ -68,17 +66,17 @@ public class User {
         return state.openStore(storeDetails,paymentSystem,supplySystem);
     }
 
-    //use case 4.1.1
+    //TODO write documentation
     public boolean addProductToStore(ProductData productData) {
         return state.addProductToStore(productData);
     }
 
-    //use case 4.1.2
+    //TODO write documentation
     public boolean removeProductFromStore(String storeName, String productName) {
         return state.removeProductFromStore(storeName,productName);
     }
 
-    //use case 4.1.3
+    //TODO write documentation
     public boolean editProductFromStore(ProductData productData) {
         return state.editProductFromStore(productData);
     }
@@ -89,7 +87,6 @@ public class User {
      * @param content
      * @return
      */
-
     public Request addRequest(String storeName, String content) { return state.addRequest(storeName, content); }
 
     /**
@@ -146,7 +143,6 @@ public class User {
         return state.addProductToCart(store, product, amount);
     }
 
-
     /**
      * use case 3.3 - write review
      * the function check if a product is perchesed
@@ -189,5 +185,64 @@ public class User {
 
     public boolean removeManager(String userName, String storeName) {
         return state.removeManager(userName,storeName);
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     * @param paymentData - the payment details
+     * @param addresToDeliver - the address to shift
+     * @return true if the cart bought, otherwise false
+     */
+    public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
+        return state.buyCart(paymentData, addresToDeliver);
+    }
+
+    /**
+     * use case 3.3 - add review
+     * the function add the review to the user
+     * @param review - the review to add
+     */
+    public void addReview(Review review) {
+        state.addReview(review);
+    }
+
+    /**
+     * use case 3.7 - watch purchase history
+     * the function return the purchase list
+     * @return the purchase list
+     */
+    public List<Purchase> watchMyPurchaseHistory() {
+        return state.watchMyPurchaseHistory();
+    }
+
+    /**
+     * use case 4.10 - watch Store History by store owner
+     * @param storeName - the store name to watch history
+     * @return the purchase list
+     */
+    public boolean canWatchStoreHistory(String storeName) {
+        return state.canWatchStoreHistory(storeName);
+    }
+
+
+    /**
+     * get if the user ia an admin
+     * @return - if the user is admin
+     */
+    public boolean isAdmin() {
+        return state.isAdmin();
+    }
+
+    /**
+     * use case 6.4.2 - admin watch history purchases of some user
+     * @param store -  the store that own the purchases
+     * @return - list of purchases that of the store
+     */
+    public List<Purchase> AdminWatchStoreHistory(Store store) {
+        return null;
+    }
+
+    public boolean canWatchUserHistory() {
+        return state.canWatchUserHistory();
     }
 }

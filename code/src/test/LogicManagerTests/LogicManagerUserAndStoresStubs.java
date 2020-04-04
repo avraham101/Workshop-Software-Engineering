@@ -3,12 +3,14 @@ package LogicManagerTests;
 import Data.Data;
 import Domain.Admin;
 import Domain.LogicManager;
+import Domain.Purchase;
 import Domain.Subscribe;
 import Stubs.UserStub;
 import Systems.HashSystem;
 import org.junit.Before;
 
 import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -58,4 +60,5 @@ public class LogicManagerUserAndStoresStubs extends LogicManagerAllStubsTest {
             fail();
         }
     }
+
 }
