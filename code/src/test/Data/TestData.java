@@ -217,9 +217,8 @@ public class TestData {
         return productsData.get(productCase);
     }
 
-    public Product makeProduct(ProductData productData) {
-        if(productData == null)
-            return null;
+    public Product getRealProduct(Data data) {
+        ProductData productData = getProductData(data);
         return new Product(productData,new Category(productData.getCategory()));
     }
 

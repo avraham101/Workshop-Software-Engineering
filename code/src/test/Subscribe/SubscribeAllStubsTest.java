@@ -83,7 +83,7 @@ public class SubscribeAllStubsTest {
      */
     public void testAddProductToCart() {
         Store store = data.getRealStore(Data.VALID);
-        Product product = data.makeProduct(data.getProductData(Data.VALID));
+        Product product = data.getRealProduct(Data.VALID);
         assertTrue(sub.addProductToCart(store,product,product.getAmount()));
     }
 

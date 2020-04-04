@@ -50,7 +50,7 @@ public class GuestTest {
      */
     public void testAddProductToCart() {
         Store store = data.getRealStore(Data.VALID);
-        Product product = data.makeProduct(data.getProductData(Data.VALID));
+        Product product = data.getRealProduct(Data.VALID);
         assertTrue(guest.addProductToCart(store,product,product.getAmount()));
     }
 

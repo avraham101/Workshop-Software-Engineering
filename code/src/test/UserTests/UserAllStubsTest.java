@@ -276,7 +276,7 @@ public class UserAllStubsTest {
      */
     private void testAddProductToCart() {
         Store store = data.getRealStore(Data.VALID);
-        Product p = data.makeProduct(data.getProductData(Data.VALID));
+        Product p = data.getRealProduct(Data.VALID);
         assertTrue(user.addProductToCart(store,p,p.getAmount()));
     }
 

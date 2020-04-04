@@ -5,7 +5,6 @@ import Data.TestData;
 import Domain.Cart;
 import Domain.Product;
 import Domain.Store;
-import Stubs.CartStub;
 import org.junit.Before;
 
 import java.util.HashMap;
@@ -30,7 +29,7 @@ public class GuestTestReal extends GuestTest{
     public void testAddProductToCart() {
         super.testAddProductToCart();
         Store store = data.getRealStore(Data.VALID);
-        Product product = data.makeProduct(data.getProductData(Data.VALID));
+        Product product = data.getRealProduct(Data.VALID);
         HashMap<Product,Integer> products = cart.getBasket(store.getName()).getProducts();
         assertEquals(1,products.size());
         Iterator<Product> iterator =  products.keySet().iterator();

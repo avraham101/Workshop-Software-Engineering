@@ -100,7 +100,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     public void testAddProductToCart() {
         super.testAddProductToCart();
         Store store = data.getRealStore(Data.VALID);
-        Product product = data.makeProduct(data.getProductData(Data.VALID));
+        Product product = data.getRealProduct(Data.VALID);
         HashMap<Product,Integer> products = cart.getBasket(store.getName()).getProducts();
         assertEquals(1,products.size());
         Iterator<Product> iterator =  products.keySet().iterator();
