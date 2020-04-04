@@ -6,6 +6,11 @@ public abstract class PaymentSystem {
 
     public abstract boolean connect();
 
+    /**
+     * use case 2.8 - purchase cart
+     * the function check if the system is on
+     * @return true if the system is connected, otherwise false
+     */
     public abstract boolean isConnected();
 
     public abstract boolean pay(PaymentData paymentData);

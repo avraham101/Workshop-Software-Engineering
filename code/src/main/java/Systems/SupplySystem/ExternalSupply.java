@@ -15,7 +15,7 @@ public class ExternalSupply extends SupplySystem {
     }
 
     @Override
-    public boolean isConncted() {
+    public boolean isConnected() {
         return false;
     }
 }

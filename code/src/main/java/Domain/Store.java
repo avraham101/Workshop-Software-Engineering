@@ -259,7 +259,7 @@ public class Store {
      * @return true if the external system is connected, otherwise false.
      */
     public boolean isAvailableDelivery() {
-        return this.supplySystem.isConncted();
+        return this.supplySystem.isConnected();
     }
 
     /**
@@ -267,7 +267,7 @@ public class Store {
      * the function check if the external system is connected
      * @return true if the external system is connected, otherwise false.
      */
-    public boolean purches(PaymentData paymentData, DeliveryData deliveryData, HashMap<Product, Integer> productsToRemove) {
+    public boolean purches(PaymentData paymentData, DeliveryData deliveryData) {
         if(!paymentSystem.pay(paymentData)) {
             return false;
         }
@@ -275,20 +275,20 @@ public class Store {
             paymentSystem.cancel(paymentData);
             return false;
         }
-        // reduce the amount of the products in the store
-        reduceAmount(productsToRemove);
+        reduceAmount(deliveryData.getProducts());
         return true;
     }
 
     /**
+     * use case 2.8 - purechase cart
+     * the function reduce products bought from store
      * reduce the amount of products that someone buy
      * @param productsToRemove - the products that someone buy
      */
-    private void reduceAmount(HashMap<Product, Integer> productsToRemove) {
-        for (Product product: productsToRemove.keySet()) {
-            Product productInStore = this.products.get(product.getName());
-            productInStore.setAmount(productInStore.getAmount() - productsToRemove.get(product));
-            this.products.replace(product.getName(), productInStore);
+    private void reduceAmount(List<ProductData> productsToRemove) {
+        for (ProductData product: productsToRemove) {
+            Product productInStore = this.products.get(product.getProductName());
+            productInStore.setAmount(productInStore.getAmount() - product.getAmount());
         }
     }
 }

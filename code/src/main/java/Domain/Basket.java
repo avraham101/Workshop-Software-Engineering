@@ -162,7 +162,7 @@ public class Basket {
      * the function buy the basket
      */
     public void buy() {
-        store.purches(paymentData,deliveryData, products);
+        store.purches(paymentData,deliveryData);
     }
 
 }

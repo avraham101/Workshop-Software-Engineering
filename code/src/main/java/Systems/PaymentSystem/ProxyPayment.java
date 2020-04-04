@@ -23,6 +23,8 @@ public class ProxyPayment extends PaymentSystem{
 
     @Override
     public boolean isConnected() {
+        if(realPayment!=null)
+            return realPayment.isConnected();
         return true;
     }
 

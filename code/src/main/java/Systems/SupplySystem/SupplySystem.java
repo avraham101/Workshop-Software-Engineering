@@ -22,8 +22,8 @@ public abstract class SupplySystem {
     /**
      * use case 2.8 - purchase cart
      * the function check if the system is on
-     * @return true if the system is connceted, otherwise false
+     * @return true if the system is connected, otherwise false
      */
-    public abstract boolean isConncted();
+    public abstract boolean isConnected();
 
 }
