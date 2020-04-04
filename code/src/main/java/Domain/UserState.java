@@ -229,9 +229,19 @@ public abstract class UserState {
 
     /**
      * use case 6.4.1 - admin watch history purchases of some user
-     * @param userName - the user that own the purchases
+     * @param user - the user that own the purchases
      * @return - list of purchases that of the user
      */
-    public abstract List<Purchase> AdminatchUserPurchasesHistory(String userName);
+    public List<Purchase> AdminWatchUserPurchasesHistory(Subscribe user) {
+        return null;
+    }
 
+
+    /**
+     * get if the user ia an admin
+     * @return - if the user is admin
+     */
+    public boolean isAdmin() {
+        return false;
+    }
 }

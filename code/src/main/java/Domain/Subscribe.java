@@ -213,11 +213,6 @@ public class Subscribe extends UserState{
         return null;
     }
 
-    @Override
-    public List<Purchase> AdminatchUserPurchasesHistory(String userName) {
-        return null;
-    }
-
     public void setUserName(String userName) {
         this.userName = userName;
     }

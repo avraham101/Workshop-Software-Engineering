@@ -1,14 +1,19 @@
 package Domain;
 
-import java.util.List;
-
-public class Admin extends Subscribe{
+public class Admin extends Subscribe {
 
     public Admin(String userName, String password) {
         super(userName, password);
     }
 
+    /**
+     * get if the user ia an admin
+     * @return - if the user is admin
+     */
     @Override
-    public List<Purchase> AdminatchUserPurchasesHistory(String userName) {
-        return this.
+    public boolean isAdmin() {
+        return true;
     }
+
+}
+

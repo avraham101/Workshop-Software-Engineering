@@ -192,12 +192,21 @@ public class User {
         return state.watchStoreHistory(storeName);
     }
 
+
     /**
-     * use case 6.4.1 - admin watch history purchases of some user
-     * @param userName - the user that own the purchases
-     * @return - list of purchases that of the user
+     * get if the user ia an admin
+     * @return - if the user is admin
      */
-    public List<Purchase> AdminatchUserPurchasesHistory(String userName) {
-        return state.AdminatchUserPurchasesHistory(userName);
+    public boolean isAdmin() {
+        return state.isAdmin();
+    }
+
+    /**
+     * use case 6.4.2 - admin watch history purchases of some user
+     * @param store -  the store that own the purchases
+     * @return - list of purchases that of the store
+     */
+    public List<Purchase> AdminWatchStoreHistory(Store store) {
+        return null;
     }
 }

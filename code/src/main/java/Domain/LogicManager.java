@@ -572,8 +572,12 @@ public class LogicManager {
      * @param userName - the user that own the purchases
      * @return - list of purchases that of the user
      */
-    public List<Purchase> AdminatchUserPurchasesHistory(String userName) {
-        return current.AdminatchUserPurchasesHistory(userName);
+    public List<Purchase> AdminWatchUserPurchasesHistory(String userName) {
+        if (current.getState().isAdmin()) {
+            Subscribe user = this.users.get(userName);
+            return user.getPurchases();
+        }
+        return null;
     }
 
     /**
@@ -582,6 +586,10 @@ public class LogicManager {
      * @return - list of purchases that of the store
      */
     public List<Purchase> AdminWatchStoreHistory(String storeName) {
+        if (current.getState().isAdmin()) {
+            Store store = this.stores.get(storeName);
+            return store.getPurchases();
+        }
         return null;
     }
 }

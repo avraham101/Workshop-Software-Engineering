@@ -219,8 +219,8 @@ public class ServiceAPI {
      * @param userName - the user that own the purchases
      * @return - list of purchases that of the user
      */
-    public List<Purchase> AdminatchUserPurchasesHistory(String userName){
-        return logicManager.AdminatchUserPurchasesHistory(userName);
+    public List<Purchase> AdminWatchUserPurchasesHistory(String userName){
+        return logicManager.AdminWatchUserPurchasesHistory(userName);
     }
 
     /**
