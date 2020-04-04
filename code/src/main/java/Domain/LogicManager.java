@@ -1,8 +1,6 @@
 package Domain;
 
-import DataAPI.CartData;
-import DataAPI.ProductData;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Systems.*;
 import Systems.PaymentSystem.*;
 import Systems.SupplySystem.*;
@@ -67,7 +65,7 @@ public class LogicManager {
      * use case 2.2 - Register
      * @param userName - the user Name
      * @param password - the user password
-     * @return true if the register complete, otherwise false
+     * @return true if the register complete,otherwise false
      */
     public boolean register(String userName, String password) {
         loggerSystem.getEventLogger().logp(Level.FINE, "Logic Manager", "register", "register: {0} {1}",
@@ -506,7 +504,9 @@ public class LogicManager {
         if(!current.isItPurchased(storeName,productName)) //Product purchased
             return false;
         Review review = new Review(current.getUserName(),storeName,productName,content);
-        return store.addReview(review);
+        store.addReview(review);
+        current.addReview(review);
+        return true;
     }
 
     /**
@@ -519,7 +519,79 @@ public class LogicManager {
      */
     private boolean validReview(String storeName,String productName, String content) {
         return storeName!=null && productName!=null && content!=null &&
-                content.isEmpty()==false;
+                !content.isEmpty();
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     * @param paymentData - the payment data of this purchase
+     * @param addresToDeliver - the address do Deliver the purchase
+     * @return true is the purchase succeeded, otherwise false
+     */
+    public boolean purchaseCart(PaymentData paymentData, String addresToDeliver) {
+        if (!validPaymentData(paymentData))
+            return false;
+        if (addresToDeliver == null || addresToDeliver.isEmpty())
+            return false;
+        return current.buyCart(paymentData, addresToDeliver);
+    }
+
+    /**
+     * use case - 2.8
+     * the function check if payment data is valid
+     * @param paymentData - the payment data
+     * @return true if the payment is valid, otherwise false
+     */
+    private boolean validPaymentData(PaymentData paymentData) {
+        if(paymentData==null)
+            return false;
+        String address = paymentData.getAddress();
+        String card = paymentData.getCreditCard();
+        return paymentData.getName()!=null && !paymentData.getName().isEmpty() && address!=null && !address.isEmpty() && card!=null && !card.isEmpty();
+    }
+
+    /**
+     * use case 3.7 - watch purchase history
+     * the fucntion return the purchase list
+     * @return the purchase list
+     */
+    public List<Purchase> watchMyPurchaseHistory() {
+        return current.watchMyPurchaseHistory();
+    }
+
+    /**
+     * use case 4.10 - watch Store History by store owner
+     * @param storeName - the store name to watch history
+     * @return the purchase list
+     */
+    public List<Purchase> watchStoreHistory(String storeName) {
+        return current.watchStoreHistory(storeName);
+    }
+
+    /**
+     * use case 6.4.1 - admin watch history purchases of some user
+     * @param userName - the user that own the purchases
+     * @return - list of purchases that of the user
+     */
+    public List<Purchase> AdminWatchUserPurchasesHistory(String userName) {
+        if (current.getState().isAdmin()) {
+            Subscribe user = this.users.get(userName);
+            return user.getPurchases();
+        }
+        return null;
+    }
+
+    /**
+     * use case 6.4.2 - admin watch history purchases of some user
+     * @param storeName - the name of the store that own the purchases
+     * @return - list of purchases that of the store
+     */
+    public List<Purchase> AdminWatchStoreHistory(String storeName) {
+        if (current.getState().isAdmin()) {
+            Store store = this.stores.get(storeName);
+            return store.getPurchases();
+        }
+        return null;
     }
 
     /**
