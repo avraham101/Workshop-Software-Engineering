@@ -19,6 +19,7 @@ public abstract class AcceptanceTests extends TestCase{
     protected PaymentTestData validPayment;
     protected PaymentTestData invalidPayment;
     protected UserTestData superUser;
+    protected UserTestData admin;
 
     public void setUp(){
         this.bridge = AcceptanceTestsDriver.getBridge();
@@ -50,11 +51,14 @@ public abstract class AcceptanceTests extends TestCase{
 
 
     private void setUpUsers() {
+        admin = new UserTestData("admin","admin");
         UserTestData user0 = new UserTestData("testUser0","testUser0Pass");
         UserTestData user1 = new UserTestData("testUser1","testUser1Pass");
         UserTestData user2 = new UserTestData("testUser2","testUser2Pass");
+        UserTestData user3 = new UserTestData("testUser3","testUser3Pass");
         superUser=user0;
-        users.addAll(Arrays.asList(user0, user1,user2));
+        users.addAll(Arrays.asList(user0, user1,user2,user3));
+        //TODO register Part Of Them???
 
     }
 
