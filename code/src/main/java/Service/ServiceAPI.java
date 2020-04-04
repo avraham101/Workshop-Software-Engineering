@@ -101,8 +101,6 @@ public class ServiceAPI {
         return logicManager.aadProductToCart(productName, storeName, amount);
     }
 
-    //TODO use case 2.8
-
     /**
      * use case 2.8 - purchase cart
      * @param paymentData - the payment data of this purchase
