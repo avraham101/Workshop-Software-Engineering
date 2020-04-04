@@ -38,4 +38,8 @@ public interface AcceptanceTestsBridge {
     boolean addProduct(ProductTestData product);
     boolean deleteProduct(ProductTestData product);
     StoreTestData getStoreInfoByName(String storeName);
+
+    boolean editProductInStore(ProductTestData product);
+
+    boolean appointManager(String storeName, String username);
 }

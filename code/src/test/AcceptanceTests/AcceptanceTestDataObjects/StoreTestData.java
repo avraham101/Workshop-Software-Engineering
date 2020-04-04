@@ -84,4 +84,8 @@ public class StoreTestData {
         }
         return null;
     }
+
+    public boolean isManager(String username) {
+        return permissions.containsKey(username);
+    }
 }
