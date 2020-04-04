@@ -274,9 +274,12 @@ public class Subscribe extends UserState{
     @Override
     public boolean isItPurchased(String storeName, String productName) {
         for(Purchase p: purchases) {
-            if(p.getStoreName().compareTo(storeName)==0
-                    && p.getStoreName().compareTo(storeName)==0)
-                return true;
+            if(p.getStoreName().compareTo(storeName)==0) {
+                for(ProductData productData: p.getProduct()) {
+                    if(productData.getProductName().compareTo(productName)==0)
+                        return true;
+                }
+            }
         }
         return false;
     }

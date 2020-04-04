@@ -20,8 +20,8 @@ public class StoreTestsAllStubs {
     @Before
     public void setUp(){
         data=new TestData();
-        store=new Store(data.getStore(Data.VALID).getName(), null, null
-                , new Permission(data.getSubscribe(Data.VALID)), new ProxySupply(),new ProxyPayment());
+        store=new Store(data.getStore(Data.VALID).getName(), null, null,
+                new Permission(data.getSubscribe(Data.VALID)), new ProxySupply(),new ProxyPayment());
     }
 
     @Test
@@ -117,8 +117,12 @@ public class StoreTestsAllStubs {
      */
     private void testAddReview() {
         Review review = data.getReview(Data.VALID);
-        store.addReview(review);
+        assertTrue(store.addReview(review));
         Product product= store.getProducts().get(review.getProductName());
         assertTrue(product.getReviews().contains(review));
+
+        review = data.getReview(Data.WRONG_PRODUCT);
+        assertFalse(store.addReview(review));
+
     }
 }

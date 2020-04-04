@@ -206,7 +206,6 @@ public class Store {
 
     /**
      * use case 3.3 write review
-     * pre-condition: product is in store, review is ok.
      * @param review - the review
      * @return if the review added or not,
      */

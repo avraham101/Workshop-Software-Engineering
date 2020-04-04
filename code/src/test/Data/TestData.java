@@ -4,6 +4,8 @@ import DataAPI.*;
 import Domain.*;
 import Data.Data;
 import Domain.*;
+import Systems.PaymentSystem.ProxyPayment;
+import Systems.SupplySystem.ProxySupply;
 
 import java.util.*;
 
@@ -223,6 +225,16 @@ public class TestData {
 
     public StoreData getStore(Data data) {
         return stores.get(data);
+    }
+
+    public Store getRealStore(Data data) {
+        StoreData storeData = getStore(data);
+        Permission permission = new Permission(getSubscribe(Data.VALID));
+        Store store = new Store(storeData.getName(),storeData.getPurchesPolicy(),
+                storeData.getDiscountPolicy(), permission, new ProxySupply(), new ProxyPayment());
+        permission.setStore(store);
+        store.addProduct(getProductData(Data.VALID));
+        return store;
     }
 
     public List<Discount> getDiscounts(Data data){
