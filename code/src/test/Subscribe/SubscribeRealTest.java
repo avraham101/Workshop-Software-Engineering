@@ -118,4 +118,23 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType().
                 isEmpty());
     }
+
+    /**
+     * use case 4.7 - remove manager
+     * make user admin manage user niv(VALID2)
+     * remove Admin from being manager and check that niv was removed from being a manager recursively
+     */
+
+    @Override
+    protected void testRemoveManagerStoreSuccess() {
+        Permission p=sub.getGivenByMePermissions().get(0);
+        Subscribe niv=data.getSubscribe(Data.VALID2);
+        String storeName=p.getStore().getName();
+        //add another manager
+        p.getOwner().addManager(niv,storeName);
+        super.testRemoveManagerStoreSuccess();
+        assertFalse(niv.getPermissions().containsKey(storeName));
+        assertFalse(p.getOwner().getPermissions().containsKey(storeName));
+
+    }
 }

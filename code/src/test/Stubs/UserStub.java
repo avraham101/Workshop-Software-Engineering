@@ -86,4 +86,15 @@ public class UserStub extends User {
     public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
         return true;
     }
+
+    /**
+     * use case 4.7 - remove manager
+     * @param userName
+     * @param storeName
+     * @return
+     */
+    @Override
+    public boolean removeManager(String userName, String storeName) {
+        return true;
+    }
 }

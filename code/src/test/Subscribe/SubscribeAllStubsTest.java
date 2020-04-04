@@ -45,6 +45,7 @@ public class SubscribeAllStubsTest {
         removeProductFromStoreTest();
         testAddPermissions();
         testRemovePermission();
+        testRemoveManagerFromStore();
         logoutTest();
     }
 
@@ -272,6 +273,39 @@ public class SubscribeAllStubsTest {
     protected void testRemovePermissionSuccess() {
         assertTrue(sub.removePermissions(data.getPermissionTypeList(),
                 data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
+    }
+
+    /**
+     * test use case 4.7 - remove manager
+     */
+    /**
+     * use case 4.5 add manager
+     */
+    private void testRemoveManagerFromStore(){
+        testRemoveManagerFromStoreFail();
+        testRemoveManagerStoreSuccess();
+    }
+
+
+    protected void testRemoveManagerStoreSuccess() {
+        assertTrue(sub.removeManager(data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()));
+    }
+
+
+    private void testRemoveManagerFromStoreFail() {
+        checkRemoveManagerNotManager();
+    }
+
+    /**
+     * check cant add manager without being owner
+     */
+
+    private void checkRemoveManagerNotManager() {
+        String validStoreName=data.getProductData(Data.VALID).getStoreName();
+        Permission permission=sub.getPermissions().get(validStoreName);
+        sub.getPermissions().clear();
+        assertFalse(sub.removeManager(data.getSubscribe(Data.ADMIN).getName(),validStoreName));
+        sub.getPermissions().put(validStoreName,permission);
     }
 
 

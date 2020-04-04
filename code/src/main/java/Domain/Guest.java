@@ -131,8 +131,20 @@ public class Guest extends UserState {
         return false;
     }
 
+    /**
+     * use case 4.6.2 - remove permissions
+     * @param permissions
+     * @param storeName
+     * @param userName
+     * @return
+     */
     @Override
     public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return false;
+    }
+
+    @Override
+    public boolean removeManager(String userName, String storeName) {
         return false;
     }
 }

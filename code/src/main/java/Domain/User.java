@@ -169,7 +169,25 @@ public class User {
         return state.addPermissions(permissions,storeName,userName);
     }
 
+    /**
+     * use case 4.6.1 -remove permissions
+     * @param permissions
+     * @param storeName
+     * @param userName
+     * @return
+     */
     public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
         return state.removePermissions(permissions,storeName,userName);
+    }
+
+    /**
+     * user case 4.7 - remove manager
+     * @param userName
+     * @param storeName
+     * @return
+     */
+
+    public boolean removeManager(String userName, String storeName) {
+        return state.removeManager(userName,storeName);
     }
 }

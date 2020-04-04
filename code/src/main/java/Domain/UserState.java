@@ -179,4 +179,6 @@ public abstract class UserState {
     public abstract boolean addPermissions(List<PermissionType> permissions, String storeName, String userName);
 
     public abstract boolean removePermissions(List<PermissionType> permissions, String storeName, String userName);
+
+    public abstract boolean removeManager(String userName, String storeName);
 }

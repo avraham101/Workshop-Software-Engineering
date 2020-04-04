@@ -190,6 +190,43 @@ public class Subscribe extends UserState{
     }
 
     /**
+     * use case 4.7 - remove manager
+     * @param userName
+     * @param storeName
+     * @return
+     */
+    @Override
+    public boolean removeManager(String userName, String storeName) {
+        if(!permissions.containsKey(storeName))
+            return false;
+        for(Permission p: givenByMePermissions) {
+            if (p.getStore().getName().equals(storeName) && p.getOwner().getName().equals(userName)) {
+                p.getOwner().removeManagerFromStore(storeName);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * remove manager form store and the managers he managed
+     * @param storeName the store to remove to be manager from and the mangers
+     * managed by me
+     */
+    private void removeManagerFromStore(String storeName) {
+        for(Permission p: givenByMePermissions) {
+            if (p.getStore().getName().equals(storeName)) {
+                p.getOwner().removeManagerFromStore(storeName);
+            }
+        }
+        //remove the permission from the store
+        permissions.get(storeName).getStore().getPermissions().remove(userName);
+        //remove the permission from the user
+        permissions.remove(storeName);
+
+    }
+
+    /**
      * use case 3.5
      * @param storeName - The id of the store
      * @param content - The content of the request

@@ -80,6 +80,7 @@ public class LogicManagerAllStubsTest {
         testRemoveProductFromStore();
         testManageOwner();
         testRemovePermission();
+        testRemoveManager();
         testLogout();
     }
 
@@ -549,6 +550,30 @@ public class LogicManagerAllStubsTest {
     public void testRemovePermission(){
         testRemovePermissionFail();
         testRemovePermissionSuccess();
+    }
+
+    /**
+     * test use case 4.7 - remove manager
+     */
+    private void testRemoveManager(){
+        testRemoveManagerFail();
+        testRemoveManagerSuccess();
+    }
+
+    protected void testRemoveManagerSuccess() {
+        assertTrue(logicManager.removeManager(data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()));
+    }
+
+    /**
+     * test not existing store or not existing user
+     */
+    private void testRemoveManagerFail() {
+        String storeName=data.getStore(Data.VALID).getName();
+        String userName=data.getSubscribe(Data.ADMIN).getName();
+        //invalid username
+        assertFalse(logicManager.removeManager(storeName,storeName));
+        //invalid storeName
+        assertFalse(logicManager.removeManager(userName,userName));
     }
 
     /**

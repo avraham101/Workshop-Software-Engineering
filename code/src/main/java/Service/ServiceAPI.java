@@ -181,9 +181,9 @@ public class ServiceAPI {
         return logicManager.removePermissions(permissions,storeName,userName);
     }
 
-    //TODO use case 4.7
-    public boolean removeOwner(String userName,String storeName){
-        return false;
+    //use case 4.7
+    public boolean removeManager(String userName,String storeName){
+        return logicManager.removeManager(userName,storeName);
     }
 
     //TODO use case 4.9.1

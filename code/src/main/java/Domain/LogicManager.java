@@ -565,4 +565,19 @@ public class LogicManager {
             return false;
         return current.removePermissions(permissions, storeName, userName);
     }
+
+    /**
+     * use case 4.7 - remove manager
+     * remove the manager and the managers he removed
+     * @param userName of the user to be removed
+     * @param storeName of the store to remove the manager from
+     * @return if the manager was removed
+     */
+    public boolean removeManager(String userName, String storeName) {
+        if (!users.containsKey(userName) || !stores.containsKey(storeName))
+            return false;
+        return current.removeManager(userName,storeName);
+    }
+
+
 }

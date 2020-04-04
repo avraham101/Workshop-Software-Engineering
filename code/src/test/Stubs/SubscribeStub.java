@@ -59,4 +59,9 @@ public class SubscribeStub extends Subscribe{
     public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
         return true;
     }
+
+    @Override
+    public boolean removeManager(String userName, String storeName) {
+        return true;
+    }
 }
