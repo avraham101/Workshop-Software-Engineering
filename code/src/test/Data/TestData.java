@@ -1,15 +1,11 @@
 package Data;
 
-import DataAPI.ProductData;
-import DataAPI.PurchaseTypeData;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Domain.*;
 import Data.Data;
 import Domain.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+
+import java.util.*;
 
 public class TestData {
     private HashMap<Data, Subscribe> users;
@@ -19,6 +15,8 @@ public class TestData {
     private HashMap<Data, HashMap<ProductData, Integer>> basket;
     private HashMap<Data, Filter> filters;
     private HashMap<Data, Review> reviwes;
+    private HashMap<Data, PaymentData> paymentData;
+    private HashMap<Data, DeliveryData> deliveryData;
 
     public TestData() {
         setUpUsers();
@@ -28,6 +26,8 @@ public class TestData {
         setUpBasketData();
         setUpFilters();
         setUpReviews();
+        setUpPaymentData();
+        setUpDeliveryData();
     }
 
     private void setUpUsers() {
@@ -166,6 +166,34 @@ public class TestData {
 
     }
 
+    /**
+     * set up data of paymentData
+     */
+    private void setUpPaymentData() {
+        paymentData = new HashMap<Data, PaymentData>();
+        String userName = users.get(Data.VALID).getName();
+        paymentData.put(Data.VALID, new PaymentData(userName, "Tapoz 3, Nevatim", "4580"));
+        paymentData.put(Data.NULL , null);
+        paymentData.put(Data.NULL_ADDRESS ,new PaymentData(userName,null,"4580"));
+        paymentData.put(Data.EMPTY_ADDRESS ,new PaymentData(userName,"","4580"));
+        paymentData.put(Data.NULL_PAYMENT ,new PaymentData(userName,"Tapoz 3, Nevatim",null));
+        paymentData.put(Data.EMPTY_PAYMENT ,new PaymentData(userName,"Tapoz 3, Nevatim",""));
+        paymentData.put(Data.NULL_NAME ,new PaymentData(null,"Tapoz 3, Nevatim","4580"));
+        paymentData.put(Data.EMPTY_NAME,new PaymentData("","Tapoz 3, Nevatim","4580"));
+    }
+
+    /**
+     * set up data of deliveryData
+     */
+    private void setUpDeliveryData() {
+        deliveryData = new HashMap<Data, DeliveryData>();
+        List<ProductData> product = new LinkedList<>();
+        product.add(this.productsData.get(Data.VALID));
+        deliveryData.put(Data.VALID, new DeliveryData("Tapoz 3, Nevatim", product));
+        deliveryData.put(Data.EMPTY_ADDRESS, new DeliveryData("", product));
+        deliveryData.put(Data.NULL_ADDRESS, new DeliveryData(null, product));
+    }
+
     public Subscribe getSubscribe(Data data) {
         return users.get(data);
     }
@@ -197,6 +225,26 @@ public class TestData {
     }
 
     /**
+     * get payment data
+     * @param data - the type of the payment data
+     * @return - the payment data
+     */
+    public PaymentData getPaymentData(Data data) {
+        return this.paymentData.get(data);
+    }
+
+    /**
+     * get delivery data
+     * @param data - the type of the delivery data
+     * @return - the delivery data
+     */
+    public DeliveryData getDeliveryData(Data data) {
+        return this.deliveryData.get(data);
+    }
+
+
+
+    /**
      * use case 2.5 - search Products
      * The function compare 2 products data
      * @param that - that product data
@@ -209,5 +257,7 @@ public class TestData {
                 that.getCategory().compareTo(other.getCategory()) == 0;
         //&& purchaseType == that.purchaseType;
     }
+
+
 
 }

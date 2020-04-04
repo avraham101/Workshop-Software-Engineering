@@ -2,6 +2,7 @@ package LogicManagerTests;
 
 import Data.*;
 import DataAPI.CartData;
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
@@ -74,9 +75,11 @@ public class LogicManagerAllStubsTest {
         testEditProductsInCart();
         //TODO add here add product to correct
         //TODO add this after we have purchase testWriteReview();
+        testBuyProducts();
         testViewDataStores();
         testViewProductsInStore();
         testDeleteProductFromCart();
+        testAddProductToCart();
         testRemoveProductFromStore();
         testLogout();
     }
@@ -437,6 +440,7 @@ public class LogicManagerAllStubsTest {
         testWatchCartDetailsNull();
         testWatchCartDetailsNullStore();
     }
+
     /**
      * test use case 4.1.3 - edit product in store
      */
@@ -463,9 +467,6 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.editProductFromStore(data.getProductData(Data.NEGATIVE_PERCENTAGE)));
     }
 
-    /**
-     * test : use case 4.5
-     */
     /**
      * use case 4.5 add manager
      */
@@ -585,6 +586,64 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.aadProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
     }
 
+    /**
+     * use case 2.8 - test buy Products
+     */
+    protected void testBuyProducts() {
+        testFailBuyProducts();
+        testSuccessBuyProducts();
+    }
+
+    /**
+     * use case 2.8 - test buy Products
+     * success tests
+     */
+     private void testSuccessBuyProducts() {
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertTrue(logicManager.purchaseCart(paymentData, address));
+    }
+
+    /**
+     * use case 2.8 - test buy Products
+     * fails tests
+     */
+    private void testFailBuyProducts() {
+        // null data payment
+        assertFalse(logicManager.purchaseCart(null, null));
+        // null address in payment
+        PaymentData paymentData = data.getPaymentData(Data.NULL_ADDRESS);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // empty address in payment
+        paymentData = data.getPaymentData(Data.EMPTY_ADDRESS);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // null payment
+        paymentData = data.getPaymentData(Data.NULL_PAYMENT);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // empty payment
+        paymentData = data.getPaymentData(Data.EMPTY_PAYMENT);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // null name in payment
+        paymentData = data.getPaymentData(Data.NULL_NAME);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // empty name in payment
+        paymentData = data.getPaymentData(Data.EMPTY_NAME);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // null address
+        paymentData = data.getPaymentData(Data.VALID);
+        address = data.getDeliveryData(Data.NULL_ADDRESS).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // empty address
+        paymentData = data.getPaymentData(Data.VALID);
+        address = data.getDeliveryData(Data.EMPTY_ADDRESS).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+    }
 
 
 }
