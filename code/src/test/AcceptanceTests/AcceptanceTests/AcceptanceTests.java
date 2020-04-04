@@ -158,6 +158,7 @@ public abstract class AcceptanceTests extends TestCase{
     }
 
     private void setUpCarts() {
+        //TODO: check amounts are enough in stores
         List<ProductTestData> basket0Products = products.subList(0,2);
         List<ProductTestData> basket1Products = Arrays.asList(products.get(4));
         List<ProductTestData> basket2Products = Arrays.asList(products.get(9));

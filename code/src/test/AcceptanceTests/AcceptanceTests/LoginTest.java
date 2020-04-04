@@ -47,6 +47,5 @@ public class LoginTest extends AcceptanceTests {
     @After
     public void tearDown(){
         bridge.logout(username);
-        bridge.deleteUser(username);
     }
 }

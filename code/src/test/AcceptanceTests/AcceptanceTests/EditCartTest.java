@@ -1,6 +1,9 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.*;
+import AcceptanceTests.AcceptanceTestDataObjects.BasketTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.CartTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +11,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EditCartTest extends AcceptanceTests {
 
@@ -145,19 +149,20 @@ public class EditCartTest extends AcceptanceTests {
 
     @Test
     public void addToCartTestSuccessExistingBasket(){
-        ProductTestData productToAdd = products.get(8);
-        int amount = 10;
-        String storeName = productToAdd.getStoreName();
+        List<BasketTestData> baskets = cart0.getBaskets();
 
-        boolean isAdded = bridge.addToCurrentUserCart(storeName,productToAdd,amount);
-        assertTrue(isAdded);
-
-        CartTestData currentCart = bridge.getCurrentUsersCart();
-        HashMap<ProductTestData,Integer> productsAndAmount = currentCart.getBasket(storeName)
-                                        .getProductsAndAmountInBasket();
-        assertTrue(productsAndAmount.containsKey(productToAdd));
-        int actualAmount = productsAndAmount.get(productToAdd);
-        assertEquals(amount,actualAmount);
+        for(BasketTestData basket : baskets){
+            String storeName = basket.getStoreName();
+            for(Map.Entry<ProductTestData,Integer> entry : basket.getProductsAndAmountInBasket().entrySet()){
+                ProductTestData productToAdd = entry.getKey();
+                Integer amount = entry.getValue();
+                boolean isAdded = bridge.addToCurrentUserCart(storeName,productToAdd,amount);
+                assertTrue(isAdded);
+            }
+        }
+        //TODO: implement equals for CartTestData
+        CartTestData actualCart = bridge.getCurrentUsersCart();
+        assertEquals(cart0,actualCart);
     }
 
     @Test
