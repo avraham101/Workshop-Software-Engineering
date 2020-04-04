@@ -206,7 +206,10 @@ public class Subscribe extends UserState{
      */
     @Override
     public List<Purchase> watchStoreHistory(String storeName) {
-
+        Permission permission = permissions.get(storeName);
+        if(permission!=null && permission.getPermissionType().contains(PermissionType.OWNER)) {
+            return permission.getStore().getPurchases();
+        }
         return null;
     }
 
