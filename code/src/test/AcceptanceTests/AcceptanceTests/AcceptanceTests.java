@@ -138,7 +138,7 @@ public abstract class AcceptanceTests extends TestCase{
         StoreTestData store0 = new StoreTestData("store0Test",store0Manager);
         StoreTestData store1 = new StoreTestData("store1Test",store0Manager);
         StoreTestData store2 = new StoreTestData("store2Test",store1Manager);
-        store0.addPermission(store1Manager.getUsername(),PermissionsTypeTestData.PRODUCTS_INVENTORY);
+        store0.addPermission(store1Manager.getUsername(),PermissionsTypeTestData.PRODUCTS_INVENTORY, store0Manager.getUsername());
         stores.addAll(Arrays.asList(store0,store1,store2));
 
         List<ProductTestData> notExistingStoreProducts = products.subList(0,4);

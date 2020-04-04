@@ -46,6 +46,4 @@ public class WatchUserPurchaseHistoryTest extends AcceptanceTests {
         deleteStores(stores);
         deleteUser(user0.getUsername());
     }
-
-
 }

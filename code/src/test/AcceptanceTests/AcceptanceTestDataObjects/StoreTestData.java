@@ -25,12 +25,12 @@ public class StoreTestData {
         permissions.put(username, new PermissionTestData(username, initialPermissions,username));
     }
 
-    public void addPermission(String username, PermissionsTypeTestData permissionToAdd){
+    public void addPermission(String username, PermissionsTypeTestData permissionToAdd, String givenBy){
         PermissionTestData permissionsOfUser = permissions.get(username);
         HashSet<PermissionsTypeTestData> permissionSet = new HashSet<>();
         permissionSet.add(permissionToAdd);
         if(permissionsOfUser == null)
-            permissions.put(username,new PermissionTestData(username,permissionSet));
+            permissions.put(username,new PermissionTestData(username,permissionSet,givenBy));
         else
             permissionsOfUser.getPermissions().addAll(permissionSet);
     }
@@ -88,4 +88,5 @@ public class StoreTestData {
     public boolean isManager(String username) {
         return permissions.containsKey(username);
     }
+
 }
