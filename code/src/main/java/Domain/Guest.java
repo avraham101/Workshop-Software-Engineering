@@ -98,13 +98,89 @@ public class Guest extends UserState {
     }
 
     /**
-     * use case 4.1.3
+     * use case 3.3 - write review
+     * the function check if the product is purchased
+     * @param storeName - the store name
+     * @param productName - the product name
+     * @return always false, dosent have purchase history
+     */
+    @Override
+    public boolean isItPurchased(String storeName, String productName) {
+        return false;
+    }
+
+
+    /**
+     * use case 4.5
      * @param youngOwner user to be owner
      * @param storeName
      * @return
      */
     @Override
     public boolean addManager(Subscribe youngOwner, String storeName) {
+        return false;
+    }
+
+    /**
+     * use case 4.6.1
+     * @param permissions
+     * @param storeName
+     * @param userName
+     * @return
+     */
+    @Override
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return false;
+    }
+
+    /**
+     * use case 4.6.2 - remove permissions
+     * @param permissions
+     * @param storeName
+     * @param userName
+     * @return
+     */
+    @Override
+    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return false;
+    }
+
+    @Override
+    public boolean removeManager(String userName, String storeName) {
+        return false;
+    }
+
+    @Override
+    protected void savePurchase(List<Purchase> receives) {
+
+    }
+
+    @Override
+    public void addReview(Review review) {
+
+    }
+
+    /**
+     * use case 3.7 - watch purchase history
+     * the function return the purchase list
+     * @return the purchase list
+     */
+    @Override
+    public List<Purchase> watchMyPurchaseHistory() {
+        return null;
+    }
+
+    /**
+     * use case 4.10 - watch Store History by store owner
+     * @param storeName - the store name to watch history
+     * @return the purchase list
+     */
+    public boolean canWatchStoreHistory(String storeName) {
+        return false;
+    }
+
+    @Override
+    public boolean canWatchUserHistory() {
         return false;
     }
 

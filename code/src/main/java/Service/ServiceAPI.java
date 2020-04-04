@@ -59,32 +59,57 @@ public class ServiceAPI {
         return logicManager.viewSpecificProducts(filter);
     }
 
-    //TODO use case 2.7.1
+    /**
+     * use case 2.7.1 - watch cart details
+     * return the details about a cart
+     * @return - the cart details
+     */
     public CartData watchCartDetatils(){
-        return null;
+        return logicManager.watchCartDetatils();
     }
 
-    //TODO use case 2.7.2
-    public boolean deleteFromCart(String productName,String StoreName){
-        return false;
+    /**
+     * use case 2.7.2 - delete producr from cart
+     * delete product from the cart
+     * @param productName - the product to remove
+     * @param storeName - the store that sale this product
+     * @return - true if the delete work, false if not
+     */
+    public boolean deleteFromCart(String productName,String storeName){
+        return logicManager.deleteFromCart(productName, storeName);
     }
 
-    //TODO use case 2.7.3
-    public boolean editProductInCart(String productName,String StoreName,int newAmount){
-        return false;
+    /**
+     * use case 2.7.3 edit amount of product
+     * @param productName - the product to edit it's amount
+     * @param storeName - the store of the product
+     * @param newAmount - the new amount
+     * @return - true if succeeded, false if not
+     */
+    public boolean editProductInCart(String productName,String storeName,int newAmount){
+        return logicManager.editProductInCart(productName, storeName, newAmount);
     }
 
-    //TODO use case 2.7.4
-    public boolean addProductTOCart(String productName,String StoreName,int amount){
-        return false;
+    /**
+     * use case 2.7.4 - add product to the cart
+     * @param productName - the product to add
+     * @param storeName - the store of the product
+     * @param amount - the amount of the product that need to add to the cart
+     * @return - true if added, false if not
+     */
+    public boolean addProductToCart(String productName,String storeName,int amount){
+        return logicManager.aadProductToCart(productName, storeName, amount);
     }
 
-    //TODO use case 2.8
-    public boolean purchaseCart(PaymentData paymentData, DeliveryData deliveryData){
-        return false;
+    /**
+     * use case 2.8 - purchase cart
+     * @param paymentData - the payment data of this purchase
+     * @param addressToDeliver - the addressToDiliver
+     * @return true is the purchase succeeded, otherwise false
+     */
+    public boolean purchaseCart(PaymentData paymentData, String addressToDeliver){
+        return logicManager.purchaseCart(paymentData,addressToDeliver);
     }
-
-    //TODO use case 3.1
 
     /**
      * use case 3.1 - Logout
@@ -103,9 +128,15 @@ public class ServiceAPI {
         return logicManager.openStore(storeDetails);
     }
 
-    //TODO use case 3.3
-    public boolean writeReview(String productName,String StoreName,String content){
-        return false;
+    /***
+     * use case 3.3 - write review
+     * @param productName - the name of the product name
+     * @param storeName - the store name
+     * @param content - the content name
+     * @return true if the review added, otherwise false
+     */
+    public boolean writeReview(String storeName,String productName, String content){
+        return logicManager.addReview(storeName,productName, content);
     }
 
     //TODO use case 3.5
@@ -113,9 +144,13 @@ public class ServiceAPI {
         return false;
     }
 
-    //TODO use case 3.7
+    /**
+     * use case 3.7 - watch purchase history
+     * the fucntion return the purchase list
+     * @return the purchase list
+     */
     public List<Purchase> watchMyPurchaseHistory(){
-        return null;
+        return logicManager.watchMyPurchaseHistory();
     }
 
     //use case 4.1.1
@@ -133,31 +168,29 @@ public class ServiceAPI {
         return logicManager.editProductFromStore(productData);
     }
 
-    //TODO use case 4.3
+    //use case 4.3
     public boolean manageOwner(String storeName,String userName){
-        return false;
+        return logicManager.manageOwner(storeName,userName);
     }
 
-
-
-    //TODO use case 4.5
+    //use case 4.5
     public boolean addManagerToStore(String storeName,String userName){
         return logicManager.addManager(storeName,userName);
     }
 
-    //TODO use case 4.6.1 //talk to yuval before implement
-    public boolean addPerMissions(List<PermissionType> permissions, String storeName, String userName){
-        return false;
+    //use case 4.6.1
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName){
+        return logicManager.addPermissions(permissions,storeName,userName);
     }
 
-    //TODO use case 4.6.2 //talk to yuval before implement
+    //use case 4.6.2
     public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName){
-        return false;
+        return logicManager.removePermissions(permissions,storeName,userName);
     }
 
-    //TODO use case 4.7
-    public boolean removeOwner(String userName,String storeName){
-        return false;
+    //use case 4.7
+    public boolean removeManager(String userName,String storeName){
+        return logicManager.removeManager(userName,storeName);
     }
 
     //TODO use case 4.9.1
@@ -170,18 +203,30 @@ public class ServiceAPI {
         return false;
     }
 
-    //TODO use case 4.10
+    /**
+     * use case 4.10 - watch Store History by store owner
+     * @param storeName - the store name to watch history
+     * @return the purchase list
+     */
     public List<Purchase> watchStoreHistory(String storeName){
-        return null;
+        return logicManager.watchStorePurchasesHistory(storeName);
     }
 
-    //TODO use case 6.4.1
-    public List<Purchase> watchUserPurchasesHistory(String userName){
-        return null;
+    /**
+     * use case 6.4.1 - admin watch history purchases of some user
+     * @param userName - the user that own the purchases
+     * @return - list of purchases that of the user
+     */
+    public List<Purchase> AdminWatchUserPurchasesHistory(String userName){
+        return logicManager.watchUserPurchasesHistory(userName);
     }
 
-    //TODO use case 6.4.2
-    public List<Purchase> watchUserhistory(String username){
-        return null;
+    /**
+     * use case 6.4.2 - admin watch history purchases of some user
+     * @param storeName - the name of the store that own the purchases
+     * @return - list of purchases that of the store
+     */
+    public List<Purchase> AdminWatchStoreHistory(String storeName){
+        return logicManager.watchStorePurchasesHistory(storeName);
     }
 }

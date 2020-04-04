@@ -1,10 +1,15 @@
 package Domain;
 
+import DataAPI.CartData;
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.List;
+
+import java.util.LinkedList;
 import java.util.List;
 
 public abstract class UserState {
@@ -81,12 +86,174 @@ public abstract class UserState {
     public abstract boolean editProductFromStore(ProductData productData);
 
     /**
+     * use case 3.3 - write review
+     * the function check if the product is purchased
+     * @param storeName - the store name
+     * @param productName - the product name
+     * @return true if the product is purchased
+     */
+    public abstract boolean isItPurchased(String storeName, String productName);
+
+    /**
+     * use case 2.7.1 watch cart details
+     * return the details about a cart
+     * @return - the cart details
+     */
+    public CartData watchCartDetatils() {
+        List<ProductData> products = new LinkedList<>();
+        double priceAfterDiscount = 0;
+        double priceBeforeDiscount = 0;
+        for (Basket basket: cart.getBaskets().values()) {
+            for (Product product: basket.getProducts().keySet()) {
+                priceBeforeDiscount += product.getPrice();
+                priceAfterDiscount += product.getDiscountPrice();
+                ProductData productData = new ProductData(product, basket.getStore().getName());
+                products.add(productData);
+            }
+        }
+        return new CartData(priceBeforeDiscount,priceAfterDiscount,products);
+    }
+
+    /**
+     * use case 2.7.2
+     * delete product from the cart
+     * @param productName - the product to remove
+     * @param storeName - the store that sale this product
+     * @return - true if the delete work, false if not
+     */
+    public boolean deleteFromCart(String productName,String storeName) {
+        boolean result = false;
+        Basket basket = cart.getBasket(storeName);
+        if (basket != null) {
+            result = basket.deleteProduct(productName);
+        }
+        return result;
+    }
+
+    /**
+     * use case 2.7.3 edit amount of product
+     * @param productName - the product to edit it's amount
+     * @param storeName - the store of the product
+     * @param newAmount - the new amount
+     * @return - true if succeeded, false if not
+     */
+    public boolean editProductInCart(String productName, String storeName, int newAmount) {
+        boolean result = false;
+        Basket basket = cart.getBasket(storeName);
+        if (basket != null && newAmount > 0) {
+            result = basket.editAmount(productName, newAmount);
+        }
+        return result;
+    }
+
+    /**
+     * use case 2.7.4
+     * user add a product to his cart
+     * @param store - the store of the product
+     * @param product - the product to add
+     * @param amount - the amount of the product
+     * @return - true if add, false if not
+     */
+    public boolean addProductToCart(Store store, Product product, int amount) {
+        Basket basket = this.cart.getBasket(store.getName());
+        boolean result;
+        if (basket != null) {
+            result = basket.addProduct(product, amount);
+        }
+        else {
+            Basket basket1 = new Basket(store);
+            cart.getBaskets().put(store.getName(),basket1);
+            result = basket1.addProduct(product, amount);
+        }
+        return result;
+    }
+
+
+    /**
      * use case 4.3
      * @param subscribe
      * @param storeName
      * @return
      */
     public abstract boolean addManager(Subscribe subscribe, String storeName);
+
+    public abstract boolean addPermissions(List<PermissionType> permissions, String storeName, String userName);
+
+    public abstract boolean removePermissions(List<PermissionType> permissions, String storeName, String userName);
+
+    public abstract boolean removeManager(String userName, String storeName);
+
+    /**
+     * use case - 2.8 buy cart
+     * @param paymentData - the payment info
+     * @param addresToDeliver  - the address to shift
+     * @return ture if the cart bought, otherwise false
+     */
+    public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
+        List<Purchase> recives = cart.buy(paymentData, addresToDeliver);
+        if(recives!=null) {
+            savePurchase(recives);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * use case 2.8 buy cart
+     * the function save the receives form the buy
+     * @param receives - the recives
+     */
+    protected abstract void savePurchase(List<Purchase> receives);
+
+    /**
+     * use case 3.3 add review
+     * the function add a review
+     * @param review - the review to add
+     */
+    public abstract void addReview(Review review);
+
+    /**
+     * use case 3.3 add review
+     * the function return all the reviews
+     * @return
+     */
+    public List<Review> getReviews() {
+        return null;
+    }
+
+    /**
+     * use case 3.7 - watch purchase history
+     * the function return the purchase list
+     * @return the purchase list
+     */
+    public abstract List<Purchase> watchMyPurchaseHistory();
+
+    /**
+     * use case 4.10 - watch Store History by store owner
+     * @param storeName - the store name to watch history
+     * @return the purchase list
+     */
+    public abstract boolean canWatchStoreHistory(String storeName);
+
+    /**
+     * use case 6.4.1 - admin watch history purchases of some user
+     * @param user - the user that own the purchases
+     * @return - list of purchases that of the user
+     */
+    public List<Purchase> AdminWatchUserPurchasesHistory(Subscribe user) {
+        return null;
+    }
+
+
+    /**
+     * get if the user ia an admin
+     * @return - if the user is admin
+     */
+    public boolean isAdmin() {
+        return false;
+    }
+
+    public abstract boolean canWatchUserHistory();
 
     /**
      * use case 4.9.1

@@ -18,6 +18,7 @@ public class Subscribe extends UserState{
     private List<Permission> givenByMePermissions; //map of <storeName, Domain.Permission>
     private List<Purchase> purchases;
     private List<Request> requests;
+    private List<Review> reviews;
 
     public Subscribe(String userName, String password) {
         this.userName = userName;
@@ -26,6 +27,7 @@ public class Subscribe extends UserState{
         givenByMePermissions=new ArrayList<>();
         purchases=new ArrayList<>();
         requests=new ArrayList<>();
+        reviews = new LinkedList<>();
     }
 
     /**
@@ -124,7 +126,12 @@ public class Subscribe extends UserState{
         return permissions.get(productData.getStoreName()).getStore().editProduct(productData);
     }
 
-
+    /**
+     * use case 4.5
+     * @param youngOwner the new manager
+     * @param storeName the store to add manager to
+     * @return
+     */
     @Override
     public boolean addManager(Subscribe youngOwner, String storeName) {
         if(!permissions.containsKey(storeName))
@@ -136,11 +143,104 @@ public class Subscribe extends UserState{
         //if he is already manager
         if(store.getPermissions().containsKey(youngOwner.getName()))
             return false;
+        //create new permission process
         Permission newPermission=new Permission(youngOwner,store);
         youngOwner.getPermissions().put(storeName,newPermission);
         store.getPermissions().put(youngOwner.getName(),newPermission);
         givenByMePermissions.add(newPermission);
         return true;
+    }
+
+    @Override
+    protected void savePurchase(List<Purchase> receives) {
+        purchases.addAll(receives);
+    }
+
+    /**
+     * use case 3.3 - add review
+     * @param review - the review to add
+     */
+    @Override
+    public void addReview(Review review) {
+        reviews.add(review);
+    }
+
+    /**
+     * use case 4.6.1 - add permissions
+     * @param permissions types to be added
+     * @param storeName store to be added
+     * @param userName user to add permissions to
+     * @return if the permissions were added
+     */
+    @Override
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        for(Permission p: givenByMePermissions){
+            if(p.getStore().getName().equals(storeName)&&p.getOwner().getName().equals(userName)){
+                boolean added=false;
+                for(PermissionType type: permissions)
+                    added=added|p.addType(type);
+                return added;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * use case 4.6.2 - remove permissions
+     * @param permissions types to be removed
+     * @param storeName store to be removed from
+     * @param userName user to remove permissions from
+     * @return
+     */
+
+    @Override
+    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        for(Permission p: givenByMePermissions){
+            if(p.getStore().getName().equals(storeName)&&p.getOwner().getName().equals(userName)){
+                boolean removed=false;
+                for(PermissionType type: permissions)
+                    removed=removed|p.removeType(type);
+                return removed;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * use case 4.7 - remove manager
+     * @param userName
+     * @param storeName
+     * @return
+     */
+    @Override
+    public boolean removeManager(String userName, String storeName) {
+        if(!permissions.containsKey(storeName))
+            return false;
+        for(Permission p: givenByMePermissions) {
+            if (p.getStore().getName().equals(storeName) && p.getOwner().getName().equals(userName)) {
+                p.getOwner().removeManagerFromStore(storeName);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * remove manager form store and the managers he managed
+     * @param storeName the store to remove to be manager from and the mangers
+     * managed by me
+     */
+    private void removeManagerFromStore(String storeName) {
+        for(Permission p: givenByMePermissions) {
+            if (p.getStore().getName().equals(storeName)) {
+                p.getOwner().removeManagerFromStore(storeName);
+            }
+        }
+        //remove the permission from the store
+        permissions.get(storeName).getStore().getPermissions().remove(userName);
+        //remove the permission from the user
+        permissions.remove(storeName);
+
     }
 
     /**
@@ -154,6 +254,52 @@ public class Subscribe extends UserState{
         Request request = new Request(userName, storeName, content,requests.size()+1);
         requests.add(request);
         return request;
+    }
+
+    /**
+     * use case 3.3 - write review
+     * the function check if the product is purchased
+     * @param storeName - the store name
+     * @param productName - the product name
+     * @return true if the product is purchased
+     */
+    @Override
+    public boolean isItPurchased(String storeName, String productName) {
+        for(Purchase p: purchases) {
+            if(p.getStoreName().compareTo(storeName)==0
+                    && p.getStoreName().compareTo(storeName)==0)
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * use case 3.7 - watch purchase history
+     * the function return the purchase list
+     * @return the purchase list
+     */
+    @Override
+    public List<Purchase> watchMyPurchaseHistory() {
+        return purchases;
+    }
+
+    /**
+     * use case 4.10 , 6.4.2 - watch Store History by store owner or admin
+     * @param storeName - the store name to watch history
+     * @return if can watch the purchase list
+     */
+    @Override
+    public boolean canWatchStoreHistory(String storeName) {
+        return permissions.containsKey(storeName);
+    }
+
+    /**
+     * use case 6.4.1 - watch user history check
+     * @return if can watch another user purchase list
+     */
+    @Override
+    public boolean canWatchUserHistory() {
+        return false;
     }
 
     /**
@@ -233,4 +379,20 @@ public class Subscribe extends UserState{
         this.requests = requests;
     }
 
+    public List<Purchase> getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(List<Purchase> purchases) {
+        this.purchases = purchases;
+    }
+
+    @Override
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 }

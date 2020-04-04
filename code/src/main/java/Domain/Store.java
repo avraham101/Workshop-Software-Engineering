@@ -1,12 +1,13 @@
 package Domain;
 
+import DataAPI.DeliveryData;
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class Store {
 
@@ -19,6 +20,7 @@ public class Store {
     private HashMap<String, Permission> permissions;
     private SupplySystem supplySystem;
     private PaymentSystem paymentSystem;
+    private List<Purchase> purchases;
 
     public Store(String name, PurchesPolicy purchesPolicy, DiscountPolicy discount,
                  Permission permission, SupplySystem supplySystem,
@@ -33,6 +35,7 @@ public class Store {
         this.products=new HashMap<>();
         this.categoryList=new HashMap<>();
         this.requests= new HashMap<>();
+        this.purchases = new LinkedList<>();
     }
 
     public String getName() {
@@ -107,6 +110,14 @@ public class Store {
         this.discount = discount;
     }
 
+    public List<Purchase> getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(List<Purchase> purchases) {
+        this.purchases = purchases;
+    }
+
     /**
      *
      * @param productData details of product to add to store
@@ -161,4 +172,141 @@ public class Store {
         requests.put(addRequest.getId(), addRequest);
         return true;
     }
+
+    /**
+     * use case 2.7.4 - add product to cart
+     * use case 3.3 - write review
+     * return a product of the store
+     * @param productName - the name of the product
+     * @return - thr product if exist, null if not
+     */
+    public Product getProduct(String productName) {
+        return products.get(productName);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Store store = (Store) o;
+        return Objects.equals(name, store.name) &&
+                Objects.equals(purchesPolicy, store.purchesPolicy) &&
+                Objects.equals(discount, store.discount) &&
+                Objects.equals(products, store.products) &&
+                Objects.equals(categoryList, store.categoryList) &&
+                Objects.equals(requests, store.requests) &&
+                Objects.equals(permissions, store.permissions) &&
+                Objects.equals(supplySystem, store.supplySystem) &&
+                Objects.equals(paymentSystem, store.paymentSystem);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, purchesPolicy, discount, products, categoryList, requests, permissions, supplySystem, paymentSystem);
+    }
+
+    /**
+     * use case 3.3 write review
+     * pre-condition: product is in store, review is ok.
+     * @param review - the review
+     */
+    public void addReview(Review review) {
+        Product p = products.get(review.getProductName());
+        p.addReview(review);
+    }
+
+    /**
+     * use case 2.8 - but cart
+     * the function check if product available in the store
+     * @param list - the products
+     * @return true if the products is available, otherwise
+     */
+    public boolean isAvailableProducts(HashMap<Product, Integer> list) {
+        for(Product product: list.keySet()) {
+            int amount = list.get(product);
+            Product real = products.get(product.getName());
+            if(real==null)
+                return false;
+            if(real.getAmount()<amount)
+                return false;
+        }
+        if(!purchesPolicy.stands(list))
+            return false;
+        return true;
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     * the function calc the price of the products after discount
+     * pre-condition: all products in list are available.
+     * @param list - the list of products to buy and there amount
+     * @return
+     */
+    public double getPriceForBasket(HashMap<Product, Integer> list) {
+        return discount.stands(list);
+    }
+
+    /**
+     * use case 7 - payment system
+     * use case 2.8 - purchase cart
+     * the function check if the external system is connected
+     * @return true if the external system is connected, otherwise false.
+     */
+    public boolean isAvailablePurchese() {
+        return paymentSystem.isConnected();
+    }
+
+    /**
+     * use case 8 - deliver system
+     * use case 2.8 - purchase cart
+     * the function check if the external system is connected
+     * @return true if the external system is connected, otherwise false.
+     */
+    public boolean isAvailableDelivery() {
+        return this.supplySystem.isConnected();
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     * the function check if the external system is connected
+     * @return true if the external system is connected, otherwise false.
+     */
+    public Purchase purches(PaymentData paymentData, DeliveryData deliveryData) {
+        if(!paymentSystem.pay(paymentData)) {
+            return null;
+        }
+        if(!supplySystem.deliver(deliveryData)){
+            paymentSystem.cancel(paymentData);
+            return null;
+        }
+        reduceAmount(deliveryData.getProducts());
+        return savePurchase(paymentData.getName(),deliveryData.getProducts());
+    }
+    /**
+     * use case 2.8 - purchase cart
+     * the function reduce products bought from store
+     * reduce the amount of products that someone buy
+     * @param productsToRemove - the products that someone buy
+     */
+    private void reduceAmount(List<ProductData> productsToRemove) {
+        for (ProductData product: productsToRemove) {
+            Product productInStore = this.products.get(product.getProductName());
+            productInStore.setAmount(productInStore.getAmount() - product.getAmount());
+        }
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     * the function save the
+     * @param buyer - the name of the buyyer
+     * @param products - the products
+     * @return the Purchase that added
+     */
+    private Purchase savePurchase(String buyer, List<ProductData> products) {
+        LocalDateTime date = LocalDateTime.now();
+        Purchase purchase = new Purchase(name,buyer,products,date);
+        this.purchases.add(purchase);
+        return purchase;
+    }
+
 }

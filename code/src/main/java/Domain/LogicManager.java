@@ -1,15 +1,11 @@
 package Domain;
 
-import DataAPI.ProductData;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Systems.*;
 import Systems.PaymentSystem.*;
 import Systems.SupplySystem.*;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 
 public class LogicManager {
@@ -69,10 +65,10 @@ public class LogicManager {
      * use case 2.2 - Register
      * @param userName - the user Name
      * @param password - the user password
-     * @return true if the register complete, otherwise false
+     * @return true if the register complete,otherwise false
      */
     public boolean register(String userName, String password) {
-        loggerSystem.getEventLogger().logp(Level.INFO, "Logic Manager", "register", "register: {0} {1}",
+        loggerSystem.getEventLogger().logp(Level.FINE, "Logic Manager", "register", "register: {0} {1}",
                 new Object[] { userName, password });
         if(!validName(userName) || !validPassword(password)) {
             return false;
@@ -389,6 +385,56 @@ public class LogicManager {
     }
 
     /**
+     * use case 2.7.1 watch cart details
+     * return the details about a cart
+     * @return - the cart details
+     */
+    public CartData watchCartDetatils() {
+        return current.watchCartDetatils();
+    }
+
+    /**
+     * use case 2.7.2
+     * delete product from the cart
+     * @param productName - the product to remove
+     * @param storeName - the store that sale this product
+     * @return - true if the delete work, false if not
+     */
+    public boolean deleteFromCart(String productName,String storeName){
+        return current.deleteFromCart(productName,storeName);
+    }
+
+    /**
+     * use case 2.7.3 edit amount of product
+     * @param productName - the product to edit it's amount
+     * @param storeName - the store of the product
+     * @param newAmount - the new amount
+     * @return - true if succeeded, false if not
+     */
+    public boolean editProductInCart(String productName,String storeName,int newAmount) {
+        return current.editProductInCart(productName,storeName, newAmount);
+    }
+
+    /**
+     * use case 2.7.4 - add product to the cart
+     * @param productName - the product to add
+     * @param storeName - the store of the product
+     * @param amount - the amount of the product that need to add to the cart
+     * @return - true if added, false if not
+     */
+    public boolean aadProductToCart(String productName,String storeName,int amount) {
+        boolean result = false;
+        Store store = stores.get(storeName);
+        if (store != null) {
+            Product product = store.getProduct(productName);
+            if (product != null && amount > 0 && amount <= product.getAmount()) {
+                result = current.addProductToCart(store, product, amount);
+            }
+        }
+        return result;
+    }
+
+    /**
      * use case 3.5 - write request on store
      * @param storeName name of store to write request to
      * @param content the content of the request
@@ -420,8 +466,12 @@ public class LogicManager {
      * @return
      */
     public boolean manageOwner(String storeName, String userName) {
-        return addManager(storeName,userName);
-        //TODO
+        if(!users.containsKey(userName)||!stores.containsKey(storeName))
+            return false;
+        addManager(userName,storeName);
+        List<PermissionType> types=new ArrayList<>();
+        types.add(PermissionType.OWNER);
+        return current.addPermissions(types,storeName,userName);
     }
 
     /**
@@ -435,6 +485,172 @@ public class LogicManager {
             return false;
         return current.addManager(users.get(userName),storeName);
     }
+
+    /**
+     * use case 3.3 - write review
+     * @param productName - the product name
+     * @param storeName - the store name
+     * @param content - the content name
+     * @return true if the review added, otherwise false.
+     */
+    public boolean addReview(String storeName,String productName, String content) {
+        if(!validReview(storeName,productName,content))
+            return false;
+        Store store = stores.get(storeName);
+         if(store==null) //Store doesn't Exists
+            return false;
+        if(store.getProduct(productName)==null) //Store as the product
+            return false;
+        if(!current.isItPurchased(storeName,productName)) //Product purchased
+            return false;
+        Review review = new Review(current.getUserName(),storeName,productName,content);
+        store.addReview(review);
+        current.addReview(review);
+        return true;
+    }
+
+    /**
+     * use case 3.3 - write review
+     * the function return if a valid correct
+     * @param productName - the product name
+     * @param storeName - the store name
+     * @param content - the content name
+     * @return true if the review is valid, otherwise false.
+     */
+    private boolean validReview(String storeName,String productName, String content) {
+        return storeName!=null && productName!=null && content!=null &&
+                !content.isEmpty();
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     * @param paymentData - the payment data of this purchase
+     * @param addresToDeliver - the address do Deliver the purchase
+     * @return true is the purchase succeeded, otherwise false
+     */
+    public boolean purchaseCart(PaymentData paymentData, String addresToDeliver) {
+        if (!validPaymentData(paymentData))
+            return false;
+        if (addresToDeliver == null || addresToDeliver.isEmpty())
+            return false;
+        return current.buyCart(paymentData, addresToDeliver);
+    }
+
+    /**
+     * use case - 2.8
+     * the function check if payment data is valid
+     * @param paymentData - the payment data
+     * @return true if the payment is valid, otherwise false
+     */
+    private boolean validPaymentData(PaymentData paymentData) {
+        if(paymentData==null)
+            return false;
+        String address = paymentData.getAddress();
+        String card = paymentData.getCreditCard();
+        return paymentData.getName()!=null && !paymentData.getName().isEmpty() && address!=null && !address.isEmpty() && card!=null && !card.isEmpty();
+    }
+
+    /**
+     * use case 3.7 - watch purchase history
+     * the function return the purchase list
+     * @return the purchase list
+     */
+    public List<Purchase> watchMyPurchaseHistory() {
+        return current.watchMyPurchaseHistory();
+    }
+
+
+    /**
+     * use case 4.6.1 - add permissions
+     * @param permissions permmisions to add
+     * @param storeName -the store to add permissions to
+     * @param userName user to add permmisions to
+     * @return
+     */
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        //TODO add logger
+        if(!validList(permissions))
+            return false;
+        if (!users.containsKey(userName) || !stores.containsKey(storeName))
+            return false;
+        return current.addPermissions(permissions, storeName, userName);
+    }
+
+    //check if list is valid and contains no nulls
+
+    private boolean validList(List<? extends Object> checkList) {
+        if(checkList==null)
+            return false;
+        for(Object o : checkList)
+            if(o==null)
+                return false;
+        return true;
+    }
+
+    /**
+     * use case 4.6.2 - remove permission
+     * @param permissions to be removed
+     * @param storeName of the store to remove the permissions from
+     * @param userName of the user to remove his permissions
+     * @return if the permission were removed
+     */
+
+    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        //TODO add logger
+        if(!validList(permissions))
+            return false;
+        if (!users.containsKey(userName) || !stores.containsKey(storeName))
+            return false;
+        return current.removePermissions(permissions, storeName, userName);
+    }
+
+    /**
+     * use case 4.7 - remove manager
+     * remove the manager and the managers he removed
+     * @param userName of the user to be removed
+     * @param storeName of the store to remove the manager from
+     * @return if the manager was removed
+     */
+    public boolean removeManager(String userName, String storeName) {
+        //TODO add logger
+        if (!users.containsKey(userName) || !stores.containsKey(storeName))
+            return false;
+        return current.removeManager(userName,storeName);
+    }
+
+
+    /**
+     * use case 6.4.1 - admin watch history purchases of some user
+     * @param userName - the user that own the purchases
+     * @return - list of purchases that of the user
+     */
+    public List<Purchase> watchUserPurchasesHistory(String userName) {
+        if(!users.containsKey(userName))
+            return null;
+        if (current.canWatchUserHistory()) {
+            Subscribe user = this.users.get(userName);
+            return user.getPurchases();
+        }
+        return null;
+    }
+
+    /**
+     * use case 6.4.2 - admin watch history purchases of some user
+     * use case 4.10 - watch Store History by store owner
+     * @param storeName - the name of the store that own the purchases
+     * @return - list of purchases that of the store
+     */
+    public List<Purchase> watchStorePurchasesHistory(String storeName) {
+        if(!stores.containsKey(storeName))
+            return null;
+        if (current.canWatchStoreHistory(storeName)) {
+            Store store = this.stores.get(storeName);
+            return store.getPurchases();
+        }
+        return null;
+    }
+
+
 
     /**
      * use case 4.9.1 -view Store Request
