@@ -1,4 +1,6 @@
 package UserTests;
+import DataAPI.DeliveryData;
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
@@ -73,6 +75,9 @@ public class UserAllStubsTest {
         testRemovePermissionsSubscibe();
         testAddProductToStoreSubscribe();
         testEditProductFromStoreSubscribe();
+        testAddProductToCart();
+        testPurchaseSubscribe();
+        testWriteReviewSubscribe();
         testRemoveProductFromStoreSubscribe();
         testRemoveManagerSubscribe();
         //last test on list
@@ -91,6 +96,9 @@ public class UserAllStubsTest {
         testRemoveManagerGuest();
         testAddProductToStoreGuest();
         testEditProductFromStoreGuest();
+        testAddProductToCart();
+        testPurchaseGuest();
+        testWriteReviewGuest();
         testRemoveProductFromStoreGuest();
         testAddPermissionsGuest();
         testRemovePermissionsGuest();
@@ -112,7 +120,7 @@ public class UserAllStubsTest {
      * test use case 2.3 - Login
      */
     protected void testLoginSubscribe() {
-        assertFalse(user.login(new Subscribe("niv","shirazi")));
+        assertFalse(user.login(data.getSubscribe(Data.VALID)));
     }
 
     /**
@@ -293,5 +301,54 @@ public class UserAllStubsTest {
     }
 
     private void testReplayRequestGuest(){ assertNull(user.replayToRequest(data.getRequest(Data.VALID).getStoreName(), data.getRequest(Data.VALID).getId(), "I want replay but can't"));}
+
+
+    /**
+     * use case 3.3 - write review
+     */
+    protected void testWriteReviewGuest() {
+        Review review = data.getReview(Data.VALID);
+        assertFalse(user.addReview(review));
+    }
+
+    /**
+     * use case 3.3 - write review
+     */
+    protected void testWriteReviewSubscribe() {
+        Review review = data.getReview(Data.VALID);
+        assertTrue(user.addReview(review));
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     */
+    private void testPurchase() {
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        assertTrue(user.buyCart(paymentData,deliveryData.getAddress()));
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     */
+    protected void testPurchaseSubscribe() {
+        testPurchase();
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     */
+    private void testPurchaseGuest() {
+        testPurchase();
+    }
+
+    /**
+     * use case 2.7 - add product to cart
+     */
+    private void testAddProductToCart() {
+        Store store = data.getRealStore(Data.VALID);
+        Product p = data.getRealProduct(Data.VALID);
+        assertTrue(user.addProductToCart(store,p,p.getAmount()));
+    }
 
 }

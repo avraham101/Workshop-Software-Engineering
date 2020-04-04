@@ -1,5 +1,6 @@
 package Stubs;
 
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
@@ -85,4 +86,14 @@ public class SubscribeStub extends Subscribe{
     }
 
 
+
+    @Override
+    public boolean isItPurchased(String storeName, String productName){
+        return true;
+    }
+
+    @Override
+    public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
+        return true;
+    }
 }

@@ -2,21 +2,26 @@ package Guest;
 
 import Data.Data;
 import Data.TestData;
-import Domain.Guest;
-import Domain.Subscribe;
-import Domain.User;
+import DataAPI.DeliveryData;
+import DataAPI.PaymentData;
+import Domain.*;
+import Stubs.CartStub;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class GuestTest {
+
     protected Guest guest;
     protected TestData data;
+    protected Cart cart;
+
     @Before
     public void setUp(){
         data=new TestData();
-        guest=new Guest();
+        cart = new CartStub();
+        guest=new Guest(cart);
     }
 
     /**
@@ -27,6 +32,10 @@ public class GuestTest {
         logoutTest();
         loginTest();
         openStoreTest();
+        addProductTest();
+        testAddProductToCart();
+        testbuyCart();
+        addRequest();
     }
 
     /**
@@ -34,6 +43,24 @@ public class GuestTest {
      */
     private void loginTest() {
         assertTrue(guest.login(new User(),new Subscribe("yuval","sabag")));
+    }
+
+    /**
+     * use case 2.7 add to cart
+     */
+    public void testAddProductToCart() {
+        Store store = data.getRealStore(Data.VALID);
+        Product product = data.getRealProduct(Data.VALID);
+        assertTrue(guest.addProductToCart(store,product,product.getAmount()));
+    }
+
+    /**
+     * use case - 2.8 buy cart
+     */
+    public void testbuyCart() {
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        assertTrue(guest.buyCart(paymentData,deliveryData.getAddress()));
     }
 
     /**
@@ -47,6 +74,8 @@ public class GuestTest {
     private void openStoreTest() {
         assertNull(guest.openStore(null, null, null));
     }
+
+    private void addRequest() {assertNull(guest.addRequest("Store", "good store"));}
 
 
     /**

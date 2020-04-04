@@ -24,7 +24,7 @@ public class Cart {
      */
     public Basket getBasket(String storeName) {
         for (Basket basket: this.getBaskets().values()) {
-            if (basket.getStore().getName().equals(storeName)) {
+            if (basket.getStore().getName().compareTo(storeName)==0) {
                 return basket;
             }
         }
@@ -69,4 +69,19 @@ public class Cart {
         return true;
     }
 
+    /**
+     * use case 2.7
+     * @param store - the store to add to cart
+     * @param product - the product to add
+     * @param amount - the amount of the prduct
+     * @return true is succeed
+     */
+    public boolean addProduct(Store store, Product product, int amount) {
+        Basket basket = baskets.get(store.getName());
+        if (basket == null) {
+            basket = new Basket(store);
+            baskets.put(store.getName(),basket);
+        }
+        return basket.addProduct(product, amount);
+    }
 }

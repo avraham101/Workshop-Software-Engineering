@@ -1,5 +1,6 @@
 package Stubs;
 
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
@@ -57,5 +58,10 @@ public class GuestStub extends Guest {
     @Override
     public boolean removeManager(String userName, String storeName) {
         return false;
+    }
+
+    @Override
+    public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
+        return true;
     }
 }

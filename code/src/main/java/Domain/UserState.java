@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class UserState {
-    private Cart cart;
+    protected Cart cart;
 
     public UserState() {
         this.cart = new Cart();
@@ -155,17 +155,7 @@ public abstract class UserState {
      * @return - true if add, false if not
      */
     public boolean addProductToCart(Store store, Product product, int amount) {
-        Basket basket = this.cart.getBasket(store.getName());
-        boolean result;
-        if (basket != null) {
-            result = basket.addProduct(product, amount);
-        }
-        else {
-            Basket basket1 = new Basket(store);
-            cart.getBaskets().put(store.getName(),basket1);
-            result = basket1.addProduct(product, amount);
-        }
-        return result;
+        return cart.addProduct(store, product,amount);
     }
 
 
@@ -269,4 +259,11 @@ public abstract class UserState {
      * @return true if replay, false else
      */
     public abstract Request replayToRequest(String storeName, int requestID, String content);
+
+    /**
+     * use case 3.3 remove review
+     * @param review - the review to remove
+     */
+    public void removeReview(Review review) {
+    }
 }

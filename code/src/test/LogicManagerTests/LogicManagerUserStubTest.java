@@ -73,17 +73,6 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
      */
     @Override
     protected void testWriteReviewValid() {
-        super.testWriteReviewValid();
-        Review review = data.getReview(Data.VALID);
-        //check if the review is in store
-        Store store = stores.get(review.getStore());
-        Product p = store.getProduct(review.getProductName());
-        //check if the review is in the product
-        List<Review> reviewList = p.getReviews();
-        assertEquals(1,reviewList.size());
-        Review result = reviewList.get(0);
-        assertEquals(review.getContent(), result.getContent());
-        assertEquals(review.getWriter(), result.getWriter());
 
     }
 

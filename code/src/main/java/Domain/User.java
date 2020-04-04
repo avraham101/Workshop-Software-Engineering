@@ -202,8 +202,19 @@ public class User {
      * the function add the review to the user
      * @param review - the review to add
      */
-    public void addReview(Review review) {
+    public boolean addReview(Review review) {
+        if(!isItPurchased(review.getStore(),review.getProductName())) //Product purchased
+            return false;
         state.addReview(review);
+        return true;
+    }
+
+    /**
+     * use case 3.3 - remove review
+     * @param review - the review to remove
+     */
+    public void removeReview(Review review) {
+        state.removeReview(review);
     }
 
     /**
