@@ -233,12 +233,20 @@ public class LogicManagerAllStubsTest {
      * 2. enter request to invalid store
      */
     public void testAddRequest(){
+        testAddRequestSuccess();
+        testAddRequestFail();
+    }
+
+    private void testAddRequestSuccess() {
+        Request request = data.getRequest(Data.VALID);
+        assertNotNull(currUser.addRequest(request.getStoreName(),request.getContent()));
+    }
+
+    private void testAddRequestFail() {
         Request request1 = data.getRequest(Data.NULL_NAME);
         Request request2 = data.getRequest(Data.NULL);
-        //Request request3 = data.getRequest(Data.VALID);
         assertFalse(logicManager.addRequest(request1.getStoreName(), request1.getContent()));
         assertFalse(logicManager.addRequest(request2.getStoreName(), request2.getContent()));
-        //assertNotNull(currUser.addRequest(request3.getStoreName(),request3.getContent()));
     }
 
     /**
@@ -265,13 +273,20 @@ public class LogicManagerAllStubsTest {
      * use case 4.9.2 -replay request
      */
     public void testReplayRequest(){
+        testReplayRequestSuccess();
+        testReplayRequestFail();
+    }
+
+    private void testReplayRequestSuccess() {
+        Request request = data.getRequest(Data.VALID);
+        assertNotNull(currUser.replayToRequest(request.getStoreName(),request.getId(), request.getContent()));
+    }
+
+    private void testReplayRequestFail() {
         Request request1 = data.getRequest(Data.WRONG_STORE);
         Request request2 = data.getRequest(Data.NULL);
-        Request request3 = data.getRequest(Data.VALID);
-
         assertNull(logicManager.replayRequest(request1.getStoreName(), request1.getId(), request1.getContent()));
         assertNull(logicManager.replayRequest(request2.getStoreName(), request2.getId(), request2.getContent()));
-        assertNotNull(currUser.replayToRequest(request3.getStoreName(),request3.getId(), request3.getContent()));
     }
 
     /**
