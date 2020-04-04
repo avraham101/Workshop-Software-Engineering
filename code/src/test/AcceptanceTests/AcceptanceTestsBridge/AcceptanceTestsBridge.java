@@ -41,4 +41,5 @@ public interface AcceptanceTestsBridge {
     boolean editProductInStore(ProductTestData product);
     boolean appointManager(String storeName, String username);
     List<PurchaseTestData> getUserPurchases(String username);
+    boolean appointOwnerToStore(String storeName, String username);
 }
