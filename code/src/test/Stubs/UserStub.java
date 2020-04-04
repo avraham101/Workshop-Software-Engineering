@@ -8,6 +8,8 @@ import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 import UserTests.UserAllStubsTest;
 
+import java.util.List;
+
 public class UserStub extends User {
 
     @Override
@@ -67,6 +69,41 @@ public class UserStub extends User {
 
     @Override
     public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
+        return true;
+    }
+
+    /**
+     * use case 4.6.1
+     * @param permissions
+     * @param storeName
+     * @param userName
+     * @return
+     */
+    @Override
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return true;
+    }
+
+    /**
+     * use case 4.6.2
+     * @param permissions
+     * @param storeName
+     * @param userName
+     * @return
+     */
+    @Override
+    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return true;
+    }
+
+    /**
+     * use case 4.7 - remove manager
+     * @param userName
+     * @param storeName
+     * @return
+     */
+    @Override
+    public boolean removeManager(String userName, String storeName) {
         return true;
     }
 }

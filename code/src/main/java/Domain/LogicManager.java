@@ -5,10 +5,7 @@ import Systems.*;
 import Systems.PaymentSystem.*;
 import Systems.SupplySystem.*;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 
 public class LogicManager {
@@ -469,8 +466,12 @@ public class LogicManager {
      * @return
      */
     public boolean manageOwner(String storeName, String userName) {
-        return addManager(storeName,userName);
-        //TODO
+        if(!users.containsKey(userName)||!stores.containsKey(storeName))
+            return false;
+        addManager(userName,storeName);
+        List<PermissionType> types=new ArrayList<>();
+        types.add(PermissionType.OWNER);
+        return current.addPermissions(types,storeName,userName);
     }
 
     /**
@@ -592,4 +593,64 @@ public class LogicManager {
         }
         return null;
     }
+
+    /**
+     * use case 4.6.1 - add permissions
+     * @param permissions permmisions to add
+     * @param storeName -the store to add permissions to
+     * @param userName user to add permmisions to
+     * @return
+     */
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        //TODO add logger
+        if(!validList(permissions))
+            return false;
+        if (!users.containsKey(userName) || !stores.containsKey(storeName))
+            return false;
+        return current.addPermissions(permissions, storeName, userName);
+    }
+
+    //check if list is valid and contains no nulls
+
+    private boolean validList(List<? extends Object> checkList) {
+        if(checkList==null)
+            return false;
+        for(Object o : checkList)
+            if(o==null)
+                return false;
+        return true;
+    }
+
+    /**
+     * use case 4.6.2 - remove permission
+     * @param permissions to be removed
+     * @param storeName of the store to remove the permissions from
+     * @param userName of the user to remove his permissions
+     * @return if the permission were removed
+     */
+
+    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        //TODO add logger
+        if(!validList(permissions))
+            return false;
+        if (!users.containsKey(userName) || !stores.containsKey(storeName))
+            return false;
+        return current.removePermissions(permissions, storeName, userName);
+    }
+
+    /**
+     * use case 4.7 - remove manager
+     * remove the manager and the managers he removed
+     * @param userName of the user to be removed
+     * @param storeName of the store to remove the manager from
+     * @return if the manager was removed
+     */
+    public boolean removeManager(String userName, String storeName) {
+        //TODO add logger
+        if (!users.containsKey(userName) || !stores.containsKey(storeName))
+            return false;
+        return current.removeManager(userName,storeName);
+    }
+
+
 }

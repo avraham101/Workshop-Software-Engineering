@@ -7,6 +7,10 @@ import Domain.*;
 
 import java.util.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class TestData {
     private HashMap<Data, Subscribe> users;
     private HashMap<Data, ProductData> productsData;
@@ -15,6 +19,7 @@ public class TestData {
     private HashMap<Data, HashMap<ProductData, Integer>> basket;
     private HashMap<Data, Filter> filters;
     private HashMap<Data, Review> reviwes;
+    private List<PermissionType> permissionTypeList;
     private HashMap<Data, PaymentData> paymentData;
     private HashMap<Data, DeliveryData> deliveryData;
 
@@ -28,6 +33,13 @@ public class TestData {
         setUpReviews();
         setUpPaymentData();
         setUpDeliveryData();
+        setUpPermmisionTypes();
+    }
+
+    private void setUpPermmisionTypes() {
+        permissionTypeList=new ArrayList<>();
+        permissionTypeList.add(PermissionType.ADD_MANAGER);
+        permissionTypeList.add(PermissionType.ADD_OWNER);
     }
 
     private void setUpUsers() {
@@ -39,6 +51,7 @@ public class TestData {
         users.put(Data.NULL_PASSWORD, new Subscribe("Admin", null));
         users.put(Data.WRONG_NAME, new Subscribe("","Changed_Password"));
         users.put(Data.WRONG_PASSWORD, new Subscribe("Admin",""));
+        users.put(Data.VALID2,new Subscribe("Niv","Shirazi"));
     }
 
     private void setUpDiscountData() {
@@ -224,6 +237,10 @@ public class TestData {
         return reviwes.get(data);
     }
 
+    public List<PermissionType> getPermissionTypeList() {
+        return permissionTypeList;
+    }
+
     /**
      * get payment data
      * @param data - the type of the payment data
@@ -257,7 +274,5 @@ public class TestData {
                 that.getCategory().compareTo(other.getCategory()) == 0;
         //&& purchaseType == that.purchaseType;
     }
-
-
 
 }

@@ -238,15 +238,80 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * use case 4.3 - manage owner
+     */
+    @Override
+    protected void testManageOwnerSuccess() {
+        currUser.setState(users.get(data.getSubscribe(Data.ADMIN).getName()));
+        super.testManageOwnerSuccess();
+        checkPermissions(Data.VALID2);
+        currUser.setState(users.get(data.getSubscribe(Data.VALID).getName()));
+    }
+
+    /**
+     * generic function for check when adding new permission that it was added to store and user correctly
+     * @param d - the data of the user to check the permission of
+     */
+    private void checkPermissions(Data d){
+        Subscribe sub=(Subscribe) currUser.getState();
+        Store store=sub.getGivenByMePermissions().get(0).getStore();
+        Subscribe newManager=data.getSubscribe(d);
+        Permission p=store.getPermissions().get(newManager.getName());
+        assertNotNull(p);
+        assertEquals(p.getStore().getName(),store.getName());
+        newManager=p.getOwner();
+        assertNotNull(newManager);
+        assertTrue(newManager.getPermissions().containsKey(store.getName()));
+    }
+    /**
      * use case 4.5 - add manager
      */
 
     @Override
     protected void testAddManagerStoreSuccess() {
         super.testAddManagerStoreSuccess();
+        checkPermissions(Data.ADMIN);
+    }
+
+    /**
+     * use case 4.6.1 -add permission
+     */
+
+    @Override
+    protected void testAddPermissionSuccess() {
+        super.testAddPermissionSuccess();
         Subscribe sub=(Subscribe) currUser.getState();
-        assertTrue(sub.getGivenByMePermissions().get(0).getStore().getPermissions()
-                .containsKey(data.getSubscribe(Data.ADMIN).getName()));
+        assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType()
+                .containsAll(data.getPermissionTypeList()));
+    }
+
+    /**
+     * use case 4.6.2 - remove permission
+     */
+    @Override
+    protected void testRemovePermissionSuccess() {
+        super.testRemovePermissionSuccess();
+        Subscribe sub=(Subscribe) currUser.getState();
+        assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType().
+                isEmpty());
+    }
+
+    /**
+     * test use case 4.7 - remove manager
+     * make user admin manage user niv(VALID2)
+     * remove Admin from being manager and check that niv was removed from being a manager recursively
+     */
+    @Override
+    protected void testRemoveManagerSuccess() {
+        Subscribe sub=(Subscribe) currUser.getState();
+        Permission p=sub.getGivenByMePermissions().get(0);
+        Subscribe niv=data.getSubscribe(Data.VALID2);
+        String storeName=p.getStore().getName();
+        //add another manager
+        p.getOwner().addManager(niv,storeName);
+        super.testRemoveManagerSuccess();
+        assertFalse(niv.getPermissions().containsKey(storeName));
+        assertFalse(p.getOwner().getPermissions().containsKey(storeName));
     }
 
     /**
