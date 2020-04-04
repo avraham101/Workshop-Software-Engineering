@@ -226,4 +226,12 @@ public abstract class UserState {
      * @return the purchase list
      */
     public abstract List<Purchase> watchStoreHistory(String storeName);
+
+    /**
+     * use case 6.4.1 - admin watch history purchases of some user
+     * @param userName - the user that own the purchases
+     * @return - list of purchases that of the user
+     */
+    public abstract List<Purchase> AdminatchUserPurchasesHistory(String userName);
+
 }

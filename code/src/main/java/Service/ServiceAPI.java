@@ -214,13 +214,21 @@ public class ServiceAPI {
         return logicManager.watchStoreHistory(storeName);
     }
 
-    //TODO use case 6.4.1
-    public List<Purchase> watchUserPurchasesHistory(String userName){
-        return null;
+    /**
+     * use case 6.4.1 - admin watch history purchases of some user
+     * @param userName - the user that own the purchases
+     * @return - list of purchases that of the user
+     */
+    public List<Purchase> AdminatchUserPurchasesHistory(String userName){
+        return logicManager.AdminatchUserPurchasesHistory(userName);
     }
 
-    //TODO use case 6.4.2
-    public List<Purchase> watchUserhistory(String username){
-        return null;
+    /**
+     * use case 6.4.2 - admin watch history purchases of some user
+     * @param storeName - the name of the store that own the purchases
+     * @return - list of purchases that of the store
+     */
+    public List<Purchase> AdminWatchStoreHistory(String storeName){
+        return logicManager.AdminWatchStoreHistory(storeName);
     }
 }
