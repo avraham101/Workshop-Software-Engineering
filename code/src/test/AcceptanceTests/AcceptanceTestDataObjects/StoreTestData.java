@@ -1,11 +1,15 @@
 package AcceptanceTests.AcceptanceTestDataObjects;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class StoreTestData {
     private String storeName;
     private UserTestData storeManager;
     private List<ProductTestData> products;
+    private HashMap<String, PermissionTestData> permissions;
 
     //TODO: change storeManager to storeOwner
     //TODO: add a list of store managers
@@ -14,6 +18,16 @@ public class StoreTestData {
         this.storeName = storeName;
         this.storeManager = storeManager;
         this.products = products;
+        this.permissions = new HashMap<>();
+
+        String username = storeManager.getUsername();
+        HashSet<PermissionsTypeTestData> initialPermissions = new HashSet<>();
+        initialPermissions.add(PermissionsTypeTestData.OWNER);
+        permissions.put(username, new PermissionTestData(username, initialPermissions));
+    }
+    // TODO: to complete
+    public void addPermission(String username, PermissionsTypeTestData permissionToAdd){
+
     }
 
     public String getStoreName() {
