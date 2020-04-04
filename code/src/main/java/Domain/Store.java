@@ -281,6 +281,7 @@ public class Store {
         reduceAmount(deliveryData.getProducts());
         return savePurchase(paymentData.getName(),deliveryData.getProducts());
     }
+
     /**
      * use case 2.8 - purchase cart
      * the function reduce products bought from store

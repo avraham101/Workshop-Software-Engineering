@@ -27,7 +27,7 @@ public class ProxySupply extends SupplySystem{
         if(real!=null) {
             return real.deliver(deliveryData);
         }
-        return false;
+        return true;
     }
 
     @Override

@@ -78,8 +78,8 @@ public class LogicManagerAllStubsTest {
         testBuyProducts();
         testViewDataStores();
         testViewProductsInStore();
-        testDeleteProductFromCart();
         testAddProductToCart();
+        testDeleteProductFromCart();
         testRemoveProductFromStore();
         testManageOwner();
         testRemovePermission();
