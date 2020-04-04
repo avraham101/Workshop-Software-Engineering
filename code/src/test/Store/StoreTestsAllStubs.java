@@ -3,16 +3,15 @@ package Store;
 import Data.Data;
 import Data.TestData;
 import DataAPI.ProductData;
-import Domain.Category;
-import Domain.Permission;
-import Domain.Review;
-import Domain.Store;
+import Domain.*;
 import Stubs.ProductStub;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 public class StoreTestsAllStubs {
     protected Store store;
@@ -117,18 +116,9 @@ public class StoreTestsAllStubs {
      * use case 3.3 - add re
      */
     private void testAddReview() {
-        testAddReviewFail();
         Review review = data.getReview(Data.VALID);
-        assertTrue(store.addReview(review));
-
-    }
-
-    private void testAddReviewFail() {
-        Review review = data.getReview(Data.NULL);
-        assertFalse(store.addReview(review));
-
-        review = data.getReview(Data.NULL_PRODUCT);
-        assertFalse(store.addReview(review));
-
+        store.addReview(review);
+        Product product= store.getProducts().get(review.getProductName());
+        assertTrue(product.getReviews().contains(review));
     }
 }

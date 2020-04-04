@@ -503,7 +503,9 @@ public class LogicManager {
         if(!current.isItPurchased(storeName,productName)) //Product purchased
             return false;
         Review review = new Review(current.getUserName(),storeName,productName,content);
-        return store.addReview(review);
+        store.addReview(review);
+        current.addReview(review);
+        return true;
     }
 
     /**
@@ -545,5 +547,14 @@ public class LogicManager {
         String address = paymentData.getAddress();
         String card = paymentData.getCreditCard();
         return paymentData.getName()!=null && !paymentData.getName().isEmpty() && address!=null && !address.isEmpty() && card!=null && !card.isEmpty();
+    }
+
+    /**
+     * use case 3.7 - watch purchase history
+     * the fucntion return the purchase list
+     * @return the purchase list
+     */
+    public List<Purchase> watchMyPurchaseHistory() {
+        return current.watchMyPurchaseHistory();
     }
 }

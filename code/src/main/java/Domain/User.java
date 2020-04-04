@@ -5,6 +5,7 @@ import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class User {
     private UserState state;
@@ -162,5 +163,23 @@ public class User {
      */
     public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
         return state.buyCart(paymentData, addresToDeliver);
+    }
+
+    /**
+     * use case 3.3 - add review
+     * the function add the review to the user
+     * @param review - the review to add
+     */
+    public void addReview(Review review) {
+        state.addReview(review);
+    }
+
+    /**
+     * use case 3.7 - watch purchase history
+     * the function return the purchase list
+     * @return the purchase list
+     */
+    public List<Purchase> watchMyPurchaseHistory() {
+        return state.watchMyPurchaseHistory();
     }
 }
