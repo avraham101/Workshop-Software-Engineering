@@ -68,6 +68,8 @@ public class LogicManagerAllStubsTest {
         testAddPermission();
         testAddProduct();
         testAddRequest();
+        testStoreViewRequest();
+        testReplayRequest();
         testViewSpecificProduct();
         testAddProductToCart();
         testWatchCartDetails();
@@ -248,10 +250,61 @@ public class LogicManagerAllStubsTest {
      * 2. enter request to invalid store
      */
     public void testAddRequest(){
-        assertFalse(logicManager.addRequest(data.getStore(Data.VALID).getName(), null));
-        assertFalse(logicManager.addRequest(null, "good store"));
+        testAddRequestSuccess();
+        testAddRequestFail();
     }
 
+    private void testAddRequestSuccess() {
+        Request request = data.getRequest(Data.VALID);
+        assertNotNull(currUser.addRequest(request.getStoreName(),request.getContent()));
+    }
+
+    private void testAddRequestFail() {
+        Request request1 = data.getRequest(Data.NULL_NAME);
+        Request request2 = data.getRequest(Data.NULL);
+        assertFalse(logicManager.addRequest(request1.getStoreName(), request1.getContent()));
+        assertFalse(logicManager.addRequest(request2.getStoreName(), request2.getContent()));
+    }
+
+    /**
+     * use case 4.9.1 -view request
+     */
+    public void testStoreViewRequest(){
+        testStoreViewRequestSuccess();
+        testStoreViewRequestFail();
+    }
+
+    private void testStoreViewRequestSuccess() {
+        Request request = data.getRequest(Data.VALID);
+        assertFalse(currUser.viewRequest(request.getStoreName()).isEmpty());
+    }
+
+    private void testStoreViewRequestFail() {
+        Request request1 = data.getRequest(Data.NULL_NAME);
+        Request request2 = data.getRequest(Data.WRONG_STORE);
+        assertTrue(logicManager.viewStoreRequest(request1.getStoreName()).isEmpty());
+        assertTrue(logicManager.viewStoreRequest(request2.getStoreName()).isEmpty());
+    }
+
+    /**
+     * use case 4.9.2 -replay request
+     */
+    public void testReplayRequest(){
+        testReplayRequestSuccess();
+        testReplayRequestFail();
+    }
+
+    private void testReplayRequestSuccess() {
+        Request request = data.getRequest(Data.VALID);
+        assertNotNull(currUser.replayToRequest(request.getStoreName(),request.getId(), request.getContent()));
+    }
+
+    private void testReplayRequestFail() {
+        Request request1 = data.getRequest(Data.WRONG_STORE);
+        Request request2 = data.getRequest(Data.NULL);
+        assertNull(logicManager.replayRequest(request1.getStoreName(), request1.getId(), request1.getContent()));
+        assertNull(logicManager.replayRequest(request2.getStoreName(), request2.getId(), request2.getContent()));
+    }
     /**
      * use case 3.3 - write review
      */

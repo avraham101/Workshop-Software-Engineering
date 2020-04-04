@@ -8,6 +8,7 @@ import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 import UserTests.UserAllStubsTest;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class UserStub extends User {
@@ -124,5 +125,22 @@ public class UserStub extends User {
     @Override
     public boolean canWatchUserHistory() {
         return true;
+    }
+
+    @Override
+    public Request addRequest(String storeName, String content) {
+        return new Request(getUserName(), storeName, "temp", 10);
+    }
+
+    @Override
+    public List<Request> viewRequest(String storeName) {
+        List<Request> requests = new LinkedList<>();
+        requests.add(new Request(getUserName(), storeName, "temp", 10));
+        return requests;
+    }
+
+    //@Override
+    public Request replayToRequest(String storeName, int requestID, String content) {
+        return new Request(getUserName(), storeName, "temp", 10);
     }
 }

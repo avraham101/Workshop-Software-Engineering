@@ -79,7 +79,7 @@ public class SubscribeAllStubsTest {
     }
 
     /**
-     * test 4.9.1 use case 4.9.1 - add product
+     * test use case 4.1.1 - add product
      */
     protected void addProductToStoreTest(){
         addProductToStoreTestSuccess();
@@ -90,7 +90,7 @@ public class SubscribeAllStubsTest {
     }
 
     /**
-     * test 4.9.2 - remove product
+     * test 4.1.2 - remove product
      */
 
     protected  void removeProductFromStoreTest(){

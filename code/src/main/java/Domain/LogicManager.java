@@ -664,4 +664,29 @@ public class LogicManager {
     }
 
 
+
+    /**
+     * use case 4.9.1 -view Store Request
+     * @param storeName name of store to view request.
+     * @return if the current user is manager or owner of the store the list , else empty list.
+     */
+    public List<Request> viewStoreRequest(String storeName) {
+        List<Request> requests = new LinkedList<>();
+        if(stores.containsKey(storeName))
+            requests = current.viewRequest(storeName);
+        return requests;
+    }
+
+    /**
+     * use case 4.9.2 -replay to Request
+     * @param storeName
+     * @param requestID
+     * @param content
+     * @return true if replay, false else
+     */
+    public Request replayRequest(String storeName, int requestID, String content) {
+        if (content!=null && stores.containsKey(storeName))
+            return (current.replayToRequest(storeName, requestID, content)) ;
+        return null;
+    }
 }

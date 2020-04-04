@@ -5,6 +5,7 @@ import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Guest extends UserState {
@@ -108,6 +109,7 @@ public class Guest extends UserState {
         return false;
     }
 
+
     /**
      * use case 4.5
      * @param youngOwner user to be owner
@@ -180,5 +182,20 @@ public class Guest extends UserState {
     @Override
     public boolean canWatchUserHistory() {
         return false;
+    }
+
+    /**
+     * use case 4.9.1
+     * @param storeName
+     * @return
+     */
+    @Override
+    public List<Request> viewRequest(String storeName) {
+        return new LinkedList<>();
+    }
+
+    @Override
+    public Request replayToRequest(String storeName, int requestID, String content) {
+        return null;
     }
 }
