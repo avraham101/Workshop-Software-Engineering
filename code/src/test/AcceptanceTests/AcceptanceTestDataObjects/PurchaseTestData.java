@@ -30,4 +30,16 @@ public class PurchaseTestData {
         return purchaseDate;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PurchaseTestData that = (PurchaseTestData) o;
+
+        if (Double.compare(that.totalAmount, totalAmount) != 0) return false;
+        if (productsAndAmountInPurchase != null ? !productsAndAmountInPurchase.equals(that.productsAndAmountInPurchase) : that.productsAndAmountInPurchase != null)
+            return false;
+        return purchaseDate != null ? purchaseDate.equals(that.purchaseDate) : that.purchaseDate == null;
+    }
 }
