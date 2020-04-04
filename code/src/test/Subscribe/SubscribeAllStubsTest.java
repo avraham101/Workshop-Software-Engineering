@@ -10,6 +10,8 @@ import Systems.SupplySystem.SupplySystem;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class SubscribeAllStubsTest {
@@ -46,6 +48,7 @@ public class SubscribeAllStubsTest {
         testAddPermissions();
         testRemovePermission();
         testRemoveManagerFromStore();
+        testWriteReviewSubscribe();
         logoutTest();
     }
 
@@ -306,6 +309,18 @@ public class SubscribeAllStubsTest {
         sub.getPermissions().clear();
         assertFalse(sub.removeManager(data.getSubscribe(Data.ADMIN).getName(),validStoreName));
         sub.getPermissions().put(validStoreName,permission);
+    }
+
+    /**
+     * use case 3.3 - write review
+     */
+    protected void testWriteReviewSubscribe() {
+        Review review = data.getReview(Data.VALID);
+        this.sub.addReview(review);
+        List<Review> reviewList = sub.getReviews();
+        assertEquals(1, reviewList.size());
+        assertEquals(review, reviewList.get(0));
+
     }
 
 
