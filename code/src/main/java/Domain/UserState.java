@@ -182,6 +182,18 @@ public abstract class UserState {
      * @return ture if the cart bought, otherwise false
      */
     public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
-        return cart.buy(paymentData, addresToDeliver);
+        List<Purchase> recives = cart.buy(paymentData, addresToDeliver);
+        if(recives!=null) {
+            savePurchase(recives);
+            return true;
+        }
+        return false;
     }
+
+    /**
+     * use case 2.8 buy cart
+     * the function save the receives form the buy
+     * @param receives - the recives
+     */
+    protected abstract void savePurchase(List<Purchase> receives);
 }

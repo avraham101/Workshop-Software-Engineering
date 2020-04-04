@@ -5,6 +5,8 @@ import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.List;
+
 public class Guest extends UserState {
 
     /**
@@ -115,5 +117,10 @@ public class Guest extends UserState {
     @Override
     public boolean addManager(Subscribe youngOwner, String storeName) {
         return false;
+    }
+
+    @Override
+    protected void savePurchase(List<Purchase> receives) {
+
     }
 }

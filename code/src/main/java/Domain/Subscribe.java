@@ -142,6 +142,11 @@ public class Subscribe extends UserState{
         return true;
     }
 
+    @Override
+    protected void savePurchase(List<Purchase> receives) {
+        purchases.addAll(receives);
+    }
+
     /**
      * use case 3.5
      * @param storeName - The id of the store

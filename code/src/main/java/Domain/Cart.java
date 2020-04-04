@@ -3,6 +3,8 @@ package Domain;
 import DataAPI.PaymentData;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Cart {
     private HashMap<String,Basket> baskets; // key is the store name and the value is the basket of the store
@@ -40,13 +42,17 @@ public class Cart {
      * @param addresToDeliver  - the address to shift
      * @return ture if the cart bought, otherwise false
      */
-    public boolean buy(PaymentData paymentData, String addresToDeliver) {
+    public List<Purchase> buy(PaymentData paymentData, String addresToDeliver) {
         if(!availableCart(paymentData,addresToDeliver))
-            return false;
+            return null;
+        List<Purchase> recives = new LinkedList<>();
         for(Basket basket: baskets.values()) {
-            basket.buy();
+            Purchase purchase = basket.buy();
+            if(purchase!=null) {
+                recives.add(purchase);
+            }
         }
-        return true;
+        return recives;
     }
 
     /**

@@ -6,10 +6,8 @@ import DataAPI.ProductData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class Store {
 
@@ -22,6 +20,7 @@ public class Store {
     private HashMap<String, Permission> permissions;
     private SupplySystem supplySystem;
     private PaymentSystem paymentSystem;
+    private List<Purchase> purchases;
 
     public Store(String name, PurchesPolicy purchesPolicy, DiscountPolicy discount,
                  Permission permission, SupplySystem supplySystem,
@@ -36,6 +35,7 @@ public class Store {
         this.products=new HashMap<>();
         this.categoryList=new HashMap<>();
         this.requests= new LinkedList<>();
+        this.purchases = new LinkedList<>();
     }
 
     public String getName() {
@@ -267,20 +267,19 @@ public class Store {
      * the function check if the external system is connected
      * @return true if the external system is connected, otherwise false.
      */
-    public boolean purches(PaymentData paymentData, DeliveryData deliveryData) {
+    public Purchase purches(PaymentData paymentData, DeliveryData deliveryData) {
         if(!paymentSystem.pay(paymentData)) {
-            return false;
+            return null;
         }
         if(!supplySystem.deliver(deliveryData)){
             paymentSystem.cancel(paymentData);
-            return false;
+            return null;
         }
         reduceAmount(deliveryData.getProducts());
-        return true;
+        return savePurchase(paymentData.getName(),deliveryData.getProducts());
     }
-
     /**
-     * use case 2.8 - purechase cart
+     * use case 2.8 - purchase cart
      * the function reduce products bought from store
      * reduce the amount of products that someone buy
      * @param productsToRemove - the products that someone buy
@@ -291,4 +290,19 @@ public class Store {
             productInStore.setAmount(productInStore.getAmount() - product.getAmount());
         }
     }
+
+    /**
+     * use case 2.8 - purchase cart
+     * the function save the
+     * @param buyer - the name of the buyyer
+     * @param products - the products
+     * @return the Purchase that added
+     */
+    private Purchase savePurchase(String buyer, List<ProductData> products) {
+        LocalDateTime date = LocalDateTime.now();
+        Purchase purchase = new Purchase(name,buyer,products,date);
+        this.purchases.add(purchase);
+        return purchase;
+    }
+
 }

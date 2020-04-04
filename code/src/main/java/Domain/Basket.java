@@ -161,8 +161,8 @@ public class Basket {
      * use case 2.8 - purchase cart
      * the function buy the basket
      */
-    public void buy() {
-        store.purches(paymentData,deliveryData);
+    public Purchase buy() {
+        return store.purches(paymentData,deliveryData);
     }
 
 }

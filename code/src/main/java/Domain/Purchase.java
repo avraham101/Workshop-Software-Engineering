@@ -2,16 +2,20 @@ package Domain;
 
 import DataAPI.ProductData;
 
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 public class Purchase {
-    private String storeName;
-    private ProductData product;
-    //TODO add more data off product
-    private Date date;
 
-    public Purchase(String storeName,ProductData product, Date date) {
+    private String storeName;
+    private String buyer;
+    private List<ProductData> product;
+    private LocalDateTime date;
+
+    public Purchase(String storeName, String buyer, List<ProductData> product, LocalDateTime date) {
         this.storeName = storeName;
+        this.buyer = buyer;
         this.product = product;
         this.date = date;
     }
@@ -24,19 +28,27 @@ public class Purchase {
         this.storeName = storeName;
     }
 
-    public ProductData getProduct() {
-        return product;
-    }
-
-    public void setProduct(ProductData product) {
-        this.product = product;
-    }
-
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public String getBuyer() {
+        return buyer;
+    }
+
+    public void setBuyer(String buyer) {
+        this.buyer = buyer;
+    }
+
+    public List<ProductData> getProduct() {
+        return product;
+    }
+
+    public void setProduct(List<ProductData> product) {
+        this.product = product;
     }
 }
