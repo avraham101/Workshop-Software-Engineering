@@ -32,7 +32,7 @@ public class ApplicationToStoreTest extends AcceptanceTests {
     public void applicationToStoreFailNotSubscribe(){
         boolean approval= bridge.sendApplicationToStore(stores.get(0).getStoreName(),"message");
         assertFalse(approval);
-        //TODO : test needed?
+
     }
 
     @Before

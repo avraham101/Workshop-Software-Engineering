@@ -55,6 +55,10 @@ public class EditStore extends AcceptanceTests {
 
     }
     //TODO add not my store fail??
+    @Test
+    public void addProductFailNotMyStore(){
+
+    }
 
     /****************DELETE-PRODUCT-4.1.2****************************************/
     @Test
@@ -76,9 +80,11 @@ public class EditStore extends AcceptanceTests {
 
     //TODO add not my store fail??
     /****************EDIT-PRODUCT-4.1.3*************************************/
+    @Test
     public void editProductSuccess(){
         ProductTestData product = new ProductTestData("newProduct",
                 "store0Test", 5, 15.5, "tests", null);
+
 
     }
 
