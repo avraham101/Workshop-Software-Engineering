@@ -1,5 +1,6 @@
 package Stubs;
 
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
@@ -15,19 +16,19 @@ public class UserStub extends User {
     }
 
     @Override
-    public boolean logout(){
+    public boolean logout() {
         return true;
     }
 
     @Override
     public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
-        return new Store(storeDetails.getName(),new PurchesPolicy(),new DiscountPolicy(),
-                new Permission(new Subscribe(this.getUserName(),this.getPassword())),
-                supplySystem,paymentSystem);
+        return new Store(storeDetails.getName(), new PurchesPolicy(), new DiscountPolicy(),
+                new Permission(new Subscribe(this.getUserName(), this.getPassword())),
+                supplySystem, paymentSystem);
     }
 
     @Override
-    public boolean addProductToStore(ProductData productData){
+    public boolean addProductToStore(ProductData productData) {
         return true;
     }
 
@@ -47,17 +48,25 @@ public class UserStub extends User {
     }
 
     @Override
-    public boolean addProductToCart(Store store, Product product, int amount) { return true; }
+    public boolean addProductToCart(Store store, Product product, int amount) {
+        return true;
+    }
 
     /**
      * use case 3.3 - write review
      * the function check if a product is perchesed
-     * @param storeName - the store name
+     *
+     * @param storeName   - the store name
      * @param productName
      * @return
      */
     @Override
     public boolean isItPurchased(String storeName, String productName) {
+        return true;
+    }
+
+    @Override
+    public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
         return true;
     }
 }

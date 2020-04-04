@@ -1,9 +1,7 @@
 package LogicManagerTests;
 
-import DataAPI.CartData;
-import DataAPI.ProductData;
+import DataAPI.*;
 import Data.Data;
-import DataAPI.StoreData;
 import Domain.*;
 import Systems.HashSystem;
 import org.junit.Before;
@@ -471,6 +469,20 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     private void testWriteReviewProductDidntPurchased() {
         Review review = data.getReview(Data.WRONG_PRODUCT);
         assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+    }
+
+    /**
+     * use case 2.8 - test buy Products
+     */
+    @Override
+    protected void testBuyProducts() {
+        super.testBuyProducts();
+        List<Purchase> purchaseList = this.currUser.getState().watchMyPurchaseHistory();
+        for (Purchase purchase: purchaseList) {
+            String storeName = purchase.getStoreName();
+            Store store = this.stores.get(storeName);
+            assertTrue(store.getPurchases().contains(purchase));
+        }
     }
 
 }
