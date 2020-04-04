@@ -18,50 +18,51 @@ public class FilterProductsInStoresTest extends AcceptanceTests {
     @Before
     public void setUp(){
         super.setUp();
-        bridge.addStores(stores);
-        bridge.addProducts(products);
+        addStores(stores);
+        addProducts(products);
     }
 
     @Test
     public void filterProductsInStoresTestSuccess(){
+        List<String> expectedProducts = new ArrayList<>(Arrays.asList("milkiTest" , "cheeseTest"));
         FilterTestData priceRangeFilter = new PriceRangeFilterTestData(0,5);
         FilterTestData categoryFilter = new CategoryFilterTestData("Dairy");
         List<FilterTestData> filters = new ArrayList<>(Arrays.asList(priceRangeFilter,categoryFilter));
 
-        List<ProductTestData> filteredProducts = bridge.filterProducts(products,filters);
-        List<ProductTestData> expectedFilteredProducts = Arrays.asList(products.get(1),products.get(9));
+        HashSet<ProductTestData> filteredProducts = bridge.filterProducts(products,filters);
+        HashSet<ProductTestData> expectedFilteredProducts = getFilteredProductsByName(expectedProducts);
 
-        boolean isFiltered = new HashSet<>(filteredProducts).equals(new HashSet<>(expectedFilteredProducts));
+        boolean isFiltered = filteredProducts.equals(expectedFilteredProducts);
         assertTrue(isFiltered);
     }
 
+
     @Test
     public void filterProductsInStoresTestSuccessWrongFilters(){
+        List<String> expectedProducts = new ArrayList<>(Arrays.asList("waterTest","cocacolaTest"));
         FilterTestData priceRangeFilter = new PriceRangeFilterTestData(0,Integer.MAX_VALUE + 1);
         FilterTestData categoryFilter = new CategoryFilterTestData("Sodas");
         List<FilterTestData> filters = new ArrayList<>(Arrays.asList(priceRangeFilter,categoryFilter));
 
-        List<ProductTestData> filteredProducts = bridge.filterProducts(products,filters);
-        List<ProductTestData> expectedFilteredProducts = Arrays.asList(products.get(3),products.get(4));
+        HashSet<ProductTestData> filteredProducts = bridge.filterProducts(products,filters);
+        HashSet<ProductTestData> expectedFilteredProducts = getFilteredProductsByName(expectedProducts);
 
-        boolean isFiltered = new HashSet<>(filteredProducts).equals(new HashSet<>(expectedFilteredProducts));
+        boolean isFiltered = filteredProducts.equals(expectedFilteredProducts);
         assertTrue(isFiltered);
     }
 
     @Test
     public void filterProductsInStoresTestSuccessEmptyFilters(){
         List<FilterTestData> filters = new ArrayList<>();
-        List<ProductTestData> filteredProducts = bridge.filterProducts(products,filters);
-        List<ProductTestData> expectedFilteredProducts = products;
+        HashSet<ProductTestData> filteredProducts = bridge.filterProducts(products,filters);
+        HashSet<ProductTestData> expectedFilteredProducts = new HashSet<>(products);
 
-        boolean isFiltered = new HashSet<>(filteredProducts).equals(new HashSet<>(expectedFilteredProducts));
+        boolean isFiltered = filteredProducts.equals(expectedFilteredProducts);
         assertTrue(isFiltered);
 
         filteredProducts = bridge.filterProducts(products,null);
-
-        isFiltered = new HashSet<>(filteredProducts).equals(new HashSet<>(expectedFilteredProducts));
+        isFiltered = filteredProducts.equals(expectedFilteredProducts);
         assertTrue(isFiltered);
-
     }
 
     @Test
@@ -71,13 +72,21 @@ public class FilterProductsInStoresTest extends AcceptanceTests {
         FilterTestData productNameFilter = new ProductNameFilterTestData("notExistingProduct");
         List<FilterTestData> filters = new ArrayList<>(Arrays.asList(priceRangeFilter,categoryFilter,productNameFilter));
 
-        List<ProductTestData> filteredProducts = bridge.filterProducts(products,filters);
+        HashSet<ProductTestData> filteredProducts = bridge.filterProducts(products,filters);
         assertEquals(filteredProducts.size(),0);
+    }
+
+    private HashSet<ProductTestData> getFilteredProductsByName(List<String> expectedProductsNames){
+        HashSet<ProductTestData> filteredProducts = new HashSet<>();
+        for(ProductTestData pd : products)
+            if(expectedProductsNames.contains(pd.getProductName()))
+                filteredProducts.add(pd);
+        return filteredProducts;
     }
 
     @After
     public void tearDown(){
-        bridge.deleteProducts(products);
-        bridge.deleteStores(stores);
+        deleteProducts(products);
+        deleteStores(stores);
     }
 }

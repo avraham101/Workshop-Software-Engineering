@@ -72,13 +72,11 @@ public class ProductTestData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ProductTestData otherProduct = (ProductTestData) o;
+        ProductTestData that = (ProductTestData) o;
 
-        if (amountInStore != otherProduct.amountInStore) return false;
-        if (Double.compare(otherProduct.price, price) != 0) return false;
-        if (productName != null ? !productName.equals(otherProduct.productName) : otherProduct.productName != null) return false;
-        if (storeName != null ? !storeName.equals(otherProduct.storeName) : otherProduct.storeName != null) return false;
-        return category != null ? category.equals(otherProduct.category) : otherProduct.category == null;
+        if (Double.compare(that.price, price) != 0) return false;
+        if (productName != null ? !productName.equals(that.productName) : that.productName != null) return false;
+        if (storeName != null ? !storeName.equals(that.storeName) : that.storeName != null) return false;
+        return category != null ? category.equals(that.category) : that.category == null;
     }
-
 }

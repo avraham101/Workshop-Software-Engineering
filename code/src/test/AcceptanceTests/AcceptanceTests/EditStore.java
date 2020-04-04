@@ -55,6 +55,10 @@ public class EditStore extends AcceptanceTests {
 
     }
     //TODO add not my store fail??
+    @Test
+    public void addProductFailNotMyStore(){
+
+    }
 
     /****************DELETE-PRODUCT-4.1.2****************************************/
     @Test

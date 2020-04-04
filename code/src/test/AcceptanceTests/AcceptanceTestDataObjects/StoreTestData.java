@@ -1,16 +1,36 @@
 package AcceptanceTests.AcceptanceTestDataObjects;
 
-import java.util.List;
+import java.util.*;
 
 public class StoreTestData {
     private String storeName;
     private UserTestData storeManager;
     private List<ProductTestData> products;
+    private HashMap<String, PermissionTestData> permissions;
+
+    //TODO: change storeManager to storeOwner
+    //TODO: add a list of store managers
 
     public StoreTestData(String storeName, UserTestData storeManager, List<ProductTestData> products) {
         this.storeName = storeName;
         this.storeManager = storeManager;
         this.products = products;
+        this.permissions = new HashMap<>();
+
+        String username = storeManager.getUsername();
+        HashSet<PermissionsTypeTestData> initialPermissions = new HashSet<>();
+        initialPermissions.add(PermissionsTypeTestData.OWNER);
+        permissions.put(username, new PermissionTestData(username, initialPermissions));
+    }
+
+    public void addPermission(String username, PermissionsTypeTestData permissionToAdd){
+        PermissionTestData permissionsOfUser = permissions.get(username);
+        HashSet<PermissionsTypeTestData> permissionSet = new HashSet<>();
+        permissionSet.add(permissionToAdd);
+        if(permissionsOfUser == null)
+            permissions.put(username,new PermissionTestData(username,permissionSet));
+        else
+            permissionsOfUser.getPermissions().addAll(permissionSet);
     }
 
     public String getStoreName() {
@@ -37,15 +57,20 @@ public class StoreTestData {
         this.products = products;
     }
 
-    public boolean equals (StoreTestData otherStore){
-        return (this.storeName.equals(otherStore.storeName));
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StoreTestData that = (StoreTestData) o;
+
+        return storeName != null ? storeName.equals(that.storeName) : that.storeName == null;
     }
 
     public ProductTestData getProductByName(String productName){
-        for (ProductTestData pd:products) {
-            if(pd.getProductName().equals(productName));
+        for (ProductTestData pd : products) {
+            if(pd.getProductName().equals(productName))
                 return pd;
-
         }
         return null;
     }

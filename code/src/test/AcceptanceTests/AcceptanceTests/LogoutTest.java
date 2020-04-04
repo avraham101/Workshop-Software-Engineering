@@ -1,38 +1,39 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class LogoutTest extends AcceptanceTests {
-    private UserTestData user0;
+    private String username;
+
     @Before
     public void setUp(){
         super.setUp();
-        user0 = users.get(0);
-        bridge.register(user0.getUsername(),user0.getPassword());
-        bridge.login(user0.getUsername(),user0.getPassword());
+        username = superUser.getUsername();
+        String password = superUser.getPassword();
+        bridge.register(username, password);
+        bridge.login(username, password);
     }
 
     @Test
     public void logoutTestSuccess(){
-        boolean isLoggedOut = bridge.logout(user0.getUsername());
+        boolean isLoggedOut = bridge.logout(username);
         assertTrue(isLoggedOut);
         String currentUser = bridge.getCurrentLoggedInUser();
         assertNull(currentUser);
     }
 
     @Test
-    public void logoutTestFail(){
-        boolean isLoggedOut = bridge.logout(user0.getUsername());
+    public void logoutTestFailAlreadyLoggedOut(){
+        boolean isLoggedOut = bridge.logout(username);
         assertTrue(isLoggedOut);
-        isLoggedOut = bridge.logout(user0.getUsername());
+        isLoggedOut = bridge.logout(username);
         assertFalse(isLoggedOut);
     }
 
     @After
     public void tearDown(){
-        bridge.deleteUser(user0.getUsername());
+        deleteUser(username);
     }
 }

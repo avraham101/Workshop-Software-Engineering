@@ -135,13 +135,12 @@ public abstract class AcceptanceTests extends TestCase{
         setUpStoreNameToProducts(store0Products,stores.get(2).getStoreName());
 
         UserTestData store0Manager = users.get(0);
-        //UserTestData store1Manager = users.get(1);
-       // UserTestData store2Manager = users.get(2);
-
+        UserTestData store1Manager = users.get(1);
+        UserTestData store2Manager = users.get(2);
         StoreTestData store0 = new StoreTestData("store0Test",store0Manager,store0Products);
         StoreTestData store1 = new StoreTestData("store1Test",store0Manager,store1Products);
-        StoreTestData store2 = new StoreTestData("store2Test",store0Manager,store2Products);
-
+        StoreTestData store2 = new StoreTestData("store2Test",store1Manager,store2Products);
+        store0.addPermission(store1Manager.getUsername(),PermissionsTypeTestData.PRODUCTS_INVENTORY);
         stores.addAll(Arrays.asList(store0,store1,store2));
 
         List<ProductTestData> notExistingStoreProducts = products.subList(0,4);
@@ -175,7 +174,7 @@ public abstract class AcceptanceTests extends TestCase{
         setUpBasketProductsAndAmounts(basket2,basket2Products, amounts2);
 
         List<BasketTestData> baskets0 = Arrays.asList(basket0,basket1,basket2);
-        users.get(0).getCart().addBasketsToCart(baskets0);
+        superUser.getCart().addBasketsToCart(baskets0);
 
     }
 
@@ -258,6 +257,19 @@ public abstract class AcceptanceTests extends TestCase{
         bridge.logout(superUser.getUsername());
         if(userName!=null){
             bridge.login(userName,getPasswordByUser(userName));
+        }
+    }
+
+
+    protected void deleteUser(String username){
+        String currUsername = bridge.getCurrentLoggedInUser();
+
+        if(!username.equals(currUsername)){
+            bridge.logout(currUsername);
+            bridge.login(superUser.getUsername(),superUser.getPassword());
+            bridge.deleteUser(username);
+            String currPassword = getPasswordByUser(currUsername);
+            bridge.login(currUsername,currPassword);
         }
     }
 

@@ -7,11 +7,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class OpenStoreTest extends AcceptanceTests {
-    UserTestData user;
+    private UserTestData user;
+
     @Before
     public void setUp(){
         super.setUp();
-         user = users.get(1);
+        user = users.get(1);
         bridge.login(user.getUsername(),user.getPassword());
     }
 
