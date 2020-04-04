@@ -241,7 +241,7 @@ public class Store {
             Product real = products.get(product.getName());
             if(real==null)
                 return false;
-            if(real.getAmount()<amount)
+            if(real.getAmount() < amount)
                 return false;
         }
         if(!purchesPolicy.stands(list))

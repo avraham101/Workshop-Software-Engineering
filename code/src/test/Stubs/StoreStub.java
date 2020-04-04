@@ -5,6 +5,8 @@ import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.HashMap;
+
 public class StoreStub extends Store {
 
     public StoreStub(String name, PurchesPolicy purchesPolicy, DiscountPolicy discount, Permission permissions, SupplySystem supplySystem, PaymentSystem paymentSystem) {
@@ -33,6 +35,11 @@ public class StoreStub extends Store {
      */
     @Override
     public boolean addReview(Review review) {
+        return true;
+    }
+
+    @Override
+    public boolean isAvailableProducts(HashMap<Product, Integer> list) {
         return true;
     }
 }
