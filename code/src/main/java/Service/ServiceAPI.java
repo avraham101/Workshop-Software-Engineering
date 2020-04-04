@@ -148,9 +148,13 @@ public class ServiceAPI {
         return false;
     }
 
-    //TODO use case 3.7
+    /**
+     * use case 3.7 - watch purchase history
+     * the fucntion return the purchase list
+     * @return the purchase list
+     */
     public List<Purchase> watchMyPurchaseHistory(){
-        return null;
+        return logicManager.watchMyPurchaseHistory();
     }
 
     //use case 4.1.1

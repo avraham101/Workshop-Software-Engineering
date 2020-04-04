@@ -196,4 +196,27 @@ public abstract class UserState {
      * @param receives - the recives
      */
     protected abstract void savePurchase(List<Purchase> receives);
+
+    /**
+     * use case 3.3 add review
+     * the function add a review
+     * @param review - the review to add
+     */
+    public abstract void addReview(Review review);
+
+    /**
+     * use case 3.3 add review
+     * the function return all the reviews
+     * @return
+     */
+    public List<Review> getReviews() {
+        return null;
+    }
+
+    /**
+     * use case 3.7 - watch purchase history
+     * the function return the purchase list
+     * @return the purchase list
+     */
+    public abstract List<Purchase> watchMyPurchaseHistory();
 }

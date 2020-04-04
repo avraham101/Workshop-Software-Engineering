@@ -7,6 +7,7 @@ import Systems.SupplySystem.SupplySystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Subscribe extends UserState{
@@ -17,6 +18,7 @@ public class Subscribe extends UserState{
     private List<Permission> givenByMePermissions; //map of <storeName, Domain.Permission>
     private List<Purchase> purchases;
     private List<Request> requests;
+    private List<Review> reviews;
 
     public Subscribe(String userName, String password) {
         this.userName = userName;
@@ -25,6 +27,7 @@ public class Subscribe extends UserState{
         givenByMePermissions=new ArrayList<>();
         purchases=new ArrayList<>();
         requests=new ArrayList<>();
+        reviews = new LinkedList<>();
     }
 
     /**
@@ -148,6 +151,15 @@ public class Subscribe extends UserState{
     }
 
     /**
+     * use case 3.3 - add review
+     * @param review - the review to add
+     */
+    @Override
+    public void addReview(Review review) {
+
+    }
+
+    /**
      * use case 3.5
      * @param storeName - The id of the store
      * @param content - The content of the request
@@ -175,6 +187,16 @@ public class Subscribe extends UserState{
                 return true;
         }
         return false;
+    }
+
+    /**
+     * use case 3.7 - watch purchase history
+     * the function return the purchase list
+     * @return the purchase list
+     */
+    @Override
+    public List<Purchase> watchMyPurchaseHistory() {
+        return purchases;
     }
 
     public void setUserName(String userName) {
@@ -217,4 +239,20 @@ public class Subscribe extends UserState{
         this.requests = requests;
     }
 
+    public List<Purchase> getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(List<Purchase> purchases) {
+        this.purchases = purchases;
+    }
+
+    @Override
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 }

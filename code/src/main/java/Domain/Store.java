@@ -110,6 +110,14 @@ public class Store {
         this.discount = discount;
     }
 
+    public List<Purchase> getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(List<Purchase> purchases) {
+        this.purchases = purchases;
+    }
+
     /**
      *
      * @param productData details of product to add to store
@@ -198,17 +206,12 @@ public class Store {
 
     /**
      * use case 3.3 write review
+     * pre-condition: product is in store, review is ok.
      * @param review - the review
-     * @return ture if the review add to store, otherwise false;
      */
-    public boolean addReview(Review review) {
-        if(review==null)
-            return false;
+    public void addReview(Review review) {
         Product p = products.get(review.getProductName());
-        if(p==null)
-            return false;
         p.addReview(review);
-        return true;
     }
 
     /**

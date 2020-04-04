@@ -459,7 +459,10 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     protected void testWriteReviewValid() {
         super.testWriteReviewValid();
         Review review = data.getReview(Data.VALID);
-        //TODO add here test for check if user current have this review
+        List<Review> reviews = currUser.getState().getReviews();
+        assertNotNull(reviews);
+        assertEquals(1, reviews.size());
+        assertEquals(review.getContent(), reviews.get(0).getContent());
     }
 
     /**

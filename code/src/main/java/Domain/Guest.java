@@ -123,4 +123,19 @@ public class Guest extends UserState {
     protected void savePurchase(List<Purchase> receives) {
 
     }
+
+    @Override
+    public void addReview(Review review) {
+
+    }
+
+    /**
+     * use case 3.7 - watch purchase history
+     * the function return the purchase list
+     * @return the purchase list
+     */
+    @Override
+    public List<Purchase> watchMyPurchaseHistory() {
+        return null;
+    }
 }
