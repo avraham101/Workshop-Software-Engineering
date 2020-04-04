@@ -155,17 +155,7 @@ public abstract class UserState {
      * @return - true if add, false if not
      */
     public boolean addProductToCart(Store store, Product product, int amount) {
-        Basket basket = this.cart.getBasket(store.getName());
-        boolean result;
-        if (basket != null) {
-            result = basket.addProduct(product, amount);
-        }
-        else {
-            Basket basket1 = new Basket(store);
-            cart.getBaskets().put(store.getName(),basket1);
-            result = basket1.addProduct(product, amount);
-        }
-        return result;
+        return cart.addProduct(store, product,amount);
     }
 
 
