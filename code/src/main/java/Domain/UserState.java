@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class UserState {
-    private Cart cart;
+    protected Cart cart;
 
     public UserState() {
         this.cart = new Cart();

@@ -9,6 +9,14 @@ import java.util.List;
 
 public class Guest extends UserState {
 
+    public Guest() {
+        super();
+    }
+
+    public Guest(Cart cart) {
+        this.cart = cart;
+    }
+
     /**
      * use case 2.3 - Login
      * @param user - The user who using the system
@@ -176,4 +184,6 @@ public class Guest extends UserState {
     public List<Purchase> watchStoreHistory(String storeName) {
         return null;
     }
+
+
 }

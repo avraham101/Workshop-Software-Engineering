@@ -2,21 +2,27 @@ package Guest;
 
 import Data.Data;
 import Data.TestData;
+import Domain.Cart;
 import Domain.Guest;
 import Domain.Subscribe;
 import Domain.User;
+import Stubs.CartStub;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class GuestTest {
+
     protected Guest guest;
     protected TestData data;
+    protected Cart cart;
+
     @Before
     public void setUp(){
         data=new TestData();
-        guest=new Guest();
+        cart = new CartStub();
+        guest=new Guest(cart);
     }
 
     /**
@@ -27,6 +33,7 @@ public class GuestTest {
         logoutTest();
         loginTest();
         openStoreTest();
+        addProductTest();
         addRequest();
     }
 
@@ -35,6 +42,21 @@ public class GuestTest {
      */
     private void loginTest() {
         assertTrue(guest.login(new User(),new Subscribe("yuval","sabag")));
+    }
+
+
+    /**
+     * use case 2.7 add to cart
+     */
+    public void testaddProductToCart() {
+        //TODO
+    }
+
+    /**
+     * use case - 2.8 buy cart
+     */
+    public void testbuyCart() {
+        //TODO
     }
 
     /**
