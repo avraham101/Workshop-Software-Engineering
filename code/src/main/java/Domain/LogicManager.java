@@ -544,6 +544,6 @@ public class LogicManager {
             return false;
         String address = paymentData.getAddress();
         String card = paymentData.getCreditCard();
-        return paymentData.getName()!=null && address!=null && !address.isEmpty() && card!=null && card.isEmpty();
+        return paymentData.getName()!=null && !paymentData.getName().isEmpty() && address!=null && !address.isEmpty() && card!=null && !card.isEmpty();
     }
 }
