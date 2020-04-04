@@ -2,6 +2,8 @@ package Guest;
 
 import Data.Data;
 import Data.TestData;
+import DataAPI.DeliveryData;
+import DataAPI.PaymentData;
 import Domain.*;
 import Stubs.CartStub;
 import org.junit.Before;
@@ -31,7 +33,8 @@ public class GuestTest {
         loginTest();
         openStoreTest();
         addProductTest();
-        testaddProductToCart();
+        testAddProductToCart();
+        testbuyCart();
         addRequest();
     }
 
@@ -46,7 +49,7 @@ public class GuestTest {
     /**
      * use case 2.7 add to cart
      */
-    public void testaddProductToCart() {
+    public void testAddProductToCart() {
         Store store = data.getRealStore(Data.VALID);
         Product product = data.makeProduct(data.getProductData(Data.VALID));
         assertTrue(guest.addProductToCart(store,product,product.getAmount()));
@@ -56,7 +59,9 @@ public class GuestTest {
      * use case - 2.8 buy cart
      */
     public void testbuyCart() {
-        //TODO
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        assertTrue(guest.buyCart(paymentData,deliveryData.getAddress()));
     }
 
     /**

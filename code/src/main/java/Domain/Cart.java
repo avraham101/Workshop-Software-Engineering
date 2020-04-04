@@ -24,7 +24,7 @@ public class Cart {
      */
     public Basket getBasket(String storeName) {
         for (Basket basket: this.getBaskets().values()) {
-            if (basket.getStore().getName().equals(storeName)) {
+            if (basket.getStore().getName().compareTo(storeName)==0) {
                 return basket;
             }
         }

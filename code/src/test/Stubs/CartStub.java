@@ -1,22 +1,20 @@
 package Stubs;
 
 import DataAPI.PaymentData;
-import Domain.Basket;
-import Domain.Cart;
-import Domain.Purchase;
-import Domain.Store;
+import Domain.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class CartStub extends Cart {
 
     @Override
-    public Basket getBasket(String storeName) {
-        return null;
+    public boolean addProduct(Store store, Product product, int amount) {
+        return true;
     }
 
     @Override
     public List<Purchase> buy(PaymentData paymentData, String addresToDeliver) {
-        return null;
+        return new LinkedList<>();
     }
 }
