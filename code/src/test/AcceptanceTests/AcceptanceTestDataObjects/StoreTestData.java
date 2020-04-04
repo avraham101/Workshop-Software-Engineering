@@ -1,9 +1,6 @@
 package AcceptanceTests.AcceptanceTestDataObjects;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class StoreTestData {
     private String storeName;
@@ -25,9 +22,15 @@ public class StoreTestData {
         initialPermissions.add(PermissionsTypeTestData.OWNER);
         permissions.put(username, new PermissionTestData(username, initialPermissions));
     }
-    // TODO: to complete
+    
     public void addPermission(String username, PermissionsTypeTestData permissionToAdd){
-
+        PermissionTestData permissionsOfUser = permissions.get(username);
+        HashSet<PermissionsTypeTestData> permissionSet = new HashSet<>();
+        permissionSet.add(permissionToAdd);
+        if(permissionsOfUser == null)
+            permissions.put(username,new PermissionTestData(username,permissionSet));
+        else
+            permissionsOfUser.getPermissions().addAll(permissionSet);
     }
 
     public String getStoreName() {
