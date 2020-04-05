@@ -25,4 +25,7 @@ public class PermissionTestData {
         return givenBy;
     }
 
+    public boolean containsPermission(PermissionsTypeTestData productsInventory) {
+        return permissions.contains(productsInventory);
+    }
 }
