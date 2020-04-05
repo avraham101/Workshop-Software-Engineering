@@ -53,6 +53,9 @@ public class SubscribeAllStubsTest {
         testAddPermissions();
         testRemovePermission();
         testRemoveManagerFromStore();
+        testAddRequest();
+        testViewRequest();
+        testReplayRequest();
         testWriteReviewSubscribe();
         testAddProductToCart();
         testbuyCart();
@@ -336,6 +339,34 @@ public class SubscribeAllStubsTest {
         sub.getPermissions().clear();
         assertFalse(sub.removeManager(data.getSubscribe(Data.ADMIN).getName(),validStoreName));
         sub.getPermissions().put(validStoreName,permission);
+    }
+
+    private void testAddRequest(){
+        Request excepted = data.getRequest(Data.VALID);
+        Request actual = sub.addRequest(excepted.getStoreName(), excepted.getContent());
+        assertEquals(excepted.getId(), actual.getId());
+        assertEquals(excepted.getSenderName(),actual.getSenderName());
+        assertEquals(excepted.getStoreName(), actual.getStoreName());
+        assertEquals(excepted.getContent(), actual.getContent());
+        assertEquals(excepted.getComment(), actual.getComment());
+    }
+
+    private void testViewRequest(){
+        Request request1 = data.getRequest(Data.WRONG_STORE);
+        Request request2 = data.getRequest(Data.NULL_NAME);
+        assertTrue(sub.viewRequest(request1.getStoreName()).isEmpty());
+        assertTrue(sub.viewRequest(request2.getStoreName()).isEmpty());
+    }
+
+    private void testReplayRequest(){
+        Request request1 = data.getRequest(Data.NULL_NAME);
+        Request request2 = data.getRequest(Data.WRONG_STORE);
+        Request request3 = data.getRequest(Data.WRONG_ID);
+        Request request4 = data.getRequest(Data.VALID);
+        assertNull(sub.replayToRequest(request1.getStoreName(), request1.getId(), "comment"));
+        assertNull(sub.replayToRequest(request2.getStoreName(), request2.getId(), "comment"));
+        assertNull(sub.replayToRequest(request3.getStoreName(), request3.getId(), "comment"));
+        assertNull(sub.replayToRequest(request4.getStoreName(), request4.getId(), null));
     }
 
     /**

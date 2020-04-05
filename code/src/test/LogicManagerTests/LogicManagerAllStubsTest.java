@@ -261,7 +261,7 @@ public class LogicManagerAllStubsTest {
     }
 
     private void testAddRequestFail() {
-        Request request1 = data.getRequest(Data.NULL_NAME);
+        Request request1 = data.getRequest(Data.WRONG_STORE);
         Request request2 = data.getRequest(Data.NULL);
         assertFalse(logicManager.addRequest(request1.getStoreName(), request1.getContent()));
         assertFalse(logicManager.addRequest(request2.getStoreName(), request2.getContent()));
