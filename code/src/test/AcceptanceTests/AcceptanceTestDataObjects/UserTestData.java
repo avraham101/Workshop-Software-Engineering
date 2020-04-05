@@ -1,6 +1,7 @@
 package AcceptanceTests.AcceptanceTestDataObjects;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class UserTestData {
@@ -8,6 +9,7 @@ public class UserTestData {
     private String password;
     private CartTestData cart;
     private List<PurchaseTestData> purchases;
+    private HashMap<ApplicationToStoreTestData,String> applicationAndReply;
 
 
     public UserTestData(String username, String password) {
@@ -15,6 +17,7 @@ public class UserTestData {
         this.password = password;
         this.cart = new CartTestData();
         this.purchases = new ArrayList<>();
+        this.applicationAndReply = new HashMap<>();
 
     }
 
@@ -32,6 +35,10 @@ public class UserTestData {
 
     public List<PurchaseTestData> getPurchases() {
         return purchases;
+    }
+
+    public HashMap<ApplicationToStoreTestData, String> getApplicationAndReply() {
+        return applicationAndReply;
     }
 
     @Override
