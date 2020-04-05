@@ -507,15 +507,22 @@ public class LogicManager {
         if(!validReview(storeName,productName,content))
             return false;
         Store store = stores.get(storeName);
-         if(store==null) //Store doesn't Exists
-            return false;
-        if(store.getProduct(productName)==null) //Store as the product
-            return false;
-        if(!current.isItPurchased(storeName,productName)) //Product purchased
-            return false;
+         if(store==null) {
+             return false;
+         }
         Review review = new Review(current.getUserName(),storeName,productName,content);
-        store.addReview(review);
-        current.addReview(review);
+        boolean resultStore = store.addReview(review);
+        boolean resultUser = current.addReview(review);
+        if(!resultStore && !resultUser)
+            return false;
+        else if(!resultStore) {
+            current.removeReview(review);
+            return false;
+        }
+        else if(!resultUser) {
+            store.removeReview(review);
+            return false;
+        }
         return true;
     }
 

@@ -21,6 +21,15 @@ public class Subscribe extends UserState{
     private List<Review> reviews;
 
     public Subscribe(String userName, String password) {
+        initSubscribe(userName,password);
+    }
+
+    public Subscribe(String userName, String password, Cart cart) {
+        this.cart = cart;
+        initSubscribe(userName,password);
+    }
+
+    private void initSubscribe(String userName, String password) {
         this.userName = userName;
         this.password = password;
         permissions=new HashMap<>();
@@ -166,6 +175,14 @@ public class Subscribe extends UserState{
     }
 
     /**
+     * use case 3.3 remove review
+     * @param review - the review to remove
+     */
+    public void removeReview(Review review) {
+        reviews.remove(review);
+    }
+
+    /**
      * use case 4.6.1 - add permissions
      * @param permissions types to be added
      * @param storeName store to be added
@@ -266,9 +283,12 @@ public class Subscribe extends UserState{
     @Override
     public boolean isItPurchased(String storeName, String productName) {
         for(Purchase p: purchases) {
-            if(p.getStoreName().compareTo(storeName)==0
-                    && p.getStoreName().compareTo(storeName)==0)
-                return true;
+            if(p.getStoreName().compareTo(storeName)==0) {
+                for(ProductData productData: p.getProduct()) {
+                    if(productData.getProductName().compareTo(productName)==0)
+                        return true;
+                }
+            }
         }
         return false;
     }

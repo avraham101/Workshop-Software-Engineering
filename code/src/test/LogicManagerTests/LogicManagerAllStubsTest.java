@@ -80,10 +80,11 @@ public class LogicManagerAllStubsTest {
         testEditProduct();
         testWatchStoreHistory();
         testWatchUserHistory();
+        testWriteReview();
         testViewDataStores();
         testViewProductsInStore();
-        testDeleteProductFromCart();
         testAddProductToCart();
+        testDeleteProductFromCart();
         testRemoveProductFromStore();
         testManageOwner();
         testRemovePermission();
@@ -856,5 +857,11 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.purchaseCart(paymentData, address));
     }
 
+    /**
+     * use case 3.7 - watch purchase history
+     */
+    public void testWatchPurchaseHistory() {
+
+    }
 
 }

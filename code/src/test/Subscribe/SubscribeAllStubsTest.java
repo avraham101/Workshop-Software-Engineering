@@ -2,7 +2,10 @@ package Subscribe;
 
 import Data.Data;
 import Data.TestData;
+import DataAPI.DeliveryData;
+import DataAPI.PaymentData;
 import Domain.*;
+import Stubs.CartStub;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
@@ -10,24 +13,27 @@ import Systems.SupplySystem.SupplySystem;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class SubscribeAllStubsTest {
 
     protected Subscribe sub;
+    protected Cart cart;
     protected PaymentSystem paymentSystem;
     protected SupplySystem supplySystem;
     protected TestData data;
 
     @Before
     public void setUp(){
-        sub=new Subscribe("Yuval","Sabag");
-
-        data=new TestData();
+        data = new TestData();
+        cart = new CartStub();
+        sub = new Subscribe("Yuval","Sabag",cart);
         initStore();
     }
 
-    private void initStore() {
+    protected void initStore() {
         paymentSystem = new ProxyPayment();
         supplySystem = new ProxySupply();
     }
@@ -47,6 +53,9 @@ public class SubscribeAllStubsTest {
         testAddPermissions();
         testRemovePermission();
         testRemoveManagerFromStore();
+        testWriteReviewSubscribe();
+        testAddProductToCart();
+        testbuyCart();
         testCanWatchUserHistory();
         testCanWatchStoreHistory();
         logoutTest();
@@ -69,6 +78,24 @@ public class SubscribeAllStubsTest {
         Store store = sub.openStore(data.getStore(Data.VALID),paymentSystem,supplySystem);
         assertNotNull(store);
 
+    }
+
+    /**
+     * use case 2.7 add to cart
+     */
+    public void testAddProductToCart() {
+        Store store = data.getRealStore(Data.VALID);
+        Product product = data.getRealProduct(Data.VALID);
+        assertTrue(sub.addProductToCart(store,product,product.getAmount()));
+    }
+
+    /**
+     * use case - 2.8 buy cart
+     */
+    public void testbuyCart() {
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        assertTrue(sub.buyCart(paymentData,deliveryData.getAddress()));
     }
 
     /**
@@ -339,6 +366,18 @@ public class SubscribeAllStubsTest {
 
     private void testWatchStoreHistorySuccess() {
         assertTrue(sub.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
+    }
+
+    /**
+     * use case 3.3 - write review
+     */
+    protected void testWriteReviewSubscribe() {
+        Review review = data.getReview(Data.VALID);
+        this.sub.addReview(review);
+        List<Review> reviewList = sub.getReviews();
+        assertEquals(1, reviewList.size());
+        assertEquals(review, reviewList.get(0));
+
     }
 
 

@@ -5,6 +5,8 @@ import DataAPI.ProductData;
 import Domain.*;
 import org.junit.Before;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class UserRealTest extends UserAllStubsTest{
@@ -121,5 +123,30 @@ public class UserRealTest extends UserAllStubsTest{
         super.testRemoveManagerSubscribe();
         assertFalse(niv.getPermissions().containsKey(storeName));
         assertFalse(p.getOwner().getPermissions().containsKey(storeName));
+    }
+
+    /**
+     * use case 3.3 - write review
+     */
+    @Override
+    protected void testWriteReviewSubscribe() {
+        Review review = data.getReview(Data.VALID);
+        assertTrue(user.addReview(review));
+        List<Review> reviewList = user.getState().getReviews();
+        assertEquals(1, reviewList.size());
+        assertEquals(review, reviewList.get(0));
+
+        review = data.getReview(Data.WRONG_PRODUCT);
+        assertFalse(user.addReview(review));
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     */
+    @Override
+    protected void testPurchaseSubscribe() {
+        super.testPurchaseSubscribe();
+        List<Purchase> purchases = user.getState().watchMyPurchaseHistory();
+        assertEquals(1, purchases.size());
     }
 }

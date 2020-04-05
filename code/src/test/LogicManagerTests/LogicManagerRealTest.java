@@ -612,7 +612,24 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override
     protected void testWriteReview() {
         super.testWriteReview();
+        testWriteReviewSuccess();
         testWriteReviewProductDidntPurchased();
+    }
+
+    /**
+     * part of use case 3.3 - write review
+     */
+    private void testWriteReviewSuccess() {
+        Review review = data.getReview(Data.VALID);
+        //check if the review is in store
+        Store store = stores.get(review.getStore());
+        Product p = store.getProduct(review.getProductName());
+        //check if the review is in the product
+        List<Review> reviewList = p.getReviews();
+        assertEquals(1,reviewList.size());
+        Review result = reviewList.get(0);
+        assertEquals(review.getContent(), result.getContent());
+        assertEquals(review.getWriter(), result.getWriter());
     }
 
     /**
@@ -620,8 +637,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override
     protected void testWriteReviewValid() {
-        super.testWriteReviewValid();
         Review review = data.getReview(Data.VALID);
+        assertTrue(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
         List<Review> reviews = currUser.getState().getReviews();
         assertNotNull(reviews);
         assertEquals(1, reviews.size());

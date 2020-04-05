@@ -143,4 +143,10 @@ public class UserStub extends User {
     public Request replayToRequest(String storeName, int requestID, String content) {
         return new Request(getUserName(), storeName, "temp", 10);
     }
+
+    @Override
+    public List<Purchase> watchMyPurchaseHistory() {
+        return new LinkedList<>();
+    }
+
 }
