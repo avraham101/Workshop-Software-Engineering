@@ -117,6 +117,15 @@ public class Guest extends UserState {
         return false;
     }
 
+    /**
+     * use case 3.7 - watch purchase history
+     * the function return the purchase list
+     * @return the purchase list
+     */
+    @Override
+    public List<Purchase> watchMyPurchaseHistory() {
+        return null;
+    }
 
     /**
      * use case 4.5
@@ -153,6 +162,12 @@ public class Guest extends UserState {
         return false;
     }
 
+    /**
+     * use case 4.7 - remove manager
+     * @param userName
+     * @param storeName
+     * @return
+     */
     @Override
     public boolean removeManager(String userName, String storeName) {
         return false;
@@ -168,24 +183,7 @@ public class Guest extends UserState {
 
     }
 
-    /**
-     * use case 3.7 - watch purchase history
-     * the function return the purchase list
-     * @return the purchase list
-     */
-    @Override
-    public List<Purchase> watchMyPurchaseHistory() {
-        return null;
-    }
 
-    /**
-     * use case 4.10 - watch Store History by store owner
-     * @param storeName - the store name to watch history
-     * @return the purchase list
-     */
-    public boolean canWatchStoreHistory(String storeName) {
-        return false;
-    }
 
     @Override
     public boolean canWatchUserHistory() {
@@ -202,10 +200,26 @@ public class Guest extends UserState {
         return new LinkedList<>();
     }
 
+    /**
+     * use case 4.9.2 - reply request
+     * @param storeName
+     * @param requestID
+     * @param content
+     * @return
+     */
     @Override
     public Request replayToRequest(String storeName, int requestID, String content) {
         return null;
     }
+    /**
+     * use case 4.10 - watch Store History by store owner
+     * @param storeName - the store name to watch history
+     * @return the purchase list
+     */
+    public boolean canWatchStoreHistory(String storeName) {
+        return false;
+    }
+
 
 
 }

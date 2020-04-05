@@ -1,6 +1,9 @@
 package Domain;
 
-import DataAPI.*;
+import DataAPI.CartData;
+import DataAPI.PaymentData;
+import DataAPI.ProductData;
+import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
@@ -47,57 +50,6 @@ public class User {
         return this.state.getPassword();
     }
 
-    /**
-     * use case 3.1 - Logout
-     * @return true if the user state changed back to guest
-     */
-    public boolean logout() {
-        return state.logout(this);
-    }
-
-    /**
-     * use case 3.2 - Open Store
-     * @param storeDetails - the details of the the store
-     * @param paymentSystem - the external payment system.
-     * @param supplySystem - the external supply system.
-     * @return The Store that we open, otherwise null;
-     */
-    public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
-        return state.openStore(storeDetails,paymentSystem,supplySystem);
-    }
-
-    //TODO write documentation
-    public boolean addProductToStore(ProductData productData) {
-        return state.addProductToStore(productData);
-    }
-
-    //TODO write documentation
-    public boolean removeProductFromStore(String storeName, String productName) {
-        return state.removeProductFromStore(storeName,productName);
-    }
-
-    //TODO write documentation
-    public boolean editProductFromStore(ProductData productData) {
-        return state.editProductFromStore(productData);
-    }
-
-    /**
-     * use case 3.5
-     * @param storeName
-     * @param content
-     * @return
-     */
-    public Request addRequest(String storeName, String content) { return state.addRequest(storeName, content); }
-
-    /**
-     * use case 4.5
-     * @param subscribe
-     * @param storeName
-     * @return
-     */
-    public boolean addManager(Subscribe subscribe, String storeName) {
-        return state.addManager(subscribe,storeName);
-    }
 
     /**
      * use case 2.7.1 watch cart details
@@ -130,7 +82,6 @@ public class User {
         return state.editProductInCart(productName, storeName, newAmount);
     }
 
-
     /**
      * use case 2.7.4
      * user add a product to his cart
@@ -143,49 +94,6 @@ public class User {
         return state.addProductToCart(store, product, amount);
     }
 
-    /**
-     * use case 3.3 - write review
-     * the function check if a product is perchesed
-     * @param storeName - the store name
-     * @param productName
-     * @return
-     */
-    public boolean isItPurchased(String storeName, String productName) {
-        return state.isItPurchased(storeName, productName);
-    }
-
-    /**
-     * use case 4.6.1 - add permissions
-     * @param permissions
-     * @param storeName
-     * @param userName
-     * @return
-     */
-    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return state.addPermissions(permissions,storeName,userName);
-    }
-
-    /**
-     * use case 4.6.1 -remove permissions
-     * @param permissions
-     * @param storeName
-     * @param userName
-     * @return
-     */
-    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return state.removePermissions(permissions,storeName,userName);
-    }
-
-    /**
-     * user case 4.7 - remove manager
-     * @param userName
-     * @param storeName
-     * @return
-     */
-
-    public boolean removeManager(String userName, String storeName) {
-        return state.removeManager(userName,storeName);
-    }
 
     /**
      * use case 2.8 - purchase cart
@@ -195,6 +103,36 @@ public class User {
      */
     public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
         return state.buyCart(paymentData, addresToDeliver);
+    }
+
+    /**
+     * use case 3.1 - Logout
+     * @return true if the user state changed back to guest
+     */
+    public boolean logout() {
+        return state.logout(this);
+    }
+
+    /**
+     * use case 3.2 - Open Store
+     * @param storeDetails - the details of the the store
+     * @param paymentSystem - the external payment system.
+     * @param supplySystem - the external supply system.
+     * @return The Store that we open, otherwise null;
+     */
+    public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
+        return state.openStore(storeDetails,paymentSystem,supplySystem);
+    }
+
+    /**
+     * use case 3.3 - write review
+     * the function check if a product is perchesed
+     * @param storeName - the store name
+     * @param productName
+     * @return
+     */
+    public boolean isItPurchased(String storeName, String productName) {
+        return state.isItPurchased(storeName, productName);
     }
 
     /**
@@ -218,6 +156,14 @@ public class User {
     }
 
     /**
+     * use case 3.5 - add request
+     * @param storeName
+     * @param content
+     * @return
+     */
+    public Request addRequest(String storeName, String content) { return state.addRequest(storeName, content); }
+
+    /**
      * use case 3.7 - watch purchase history
      * the function return the purchase list
      * @return the purchase list
@@ -226,35 +172,78 @@ public class User {
         return state.watchMyPurchaseHistory();
     }
 
+
     /**
-     * use case 4.10 - watch Store History by store owner
-     * @param storeName - the store name to watch history
-     * @return the purchase list
+     * use case 4.1.1 - add product to store
+     * @param productData
+     * @return
      */
-    public boolean canWatchStoreHistory(String storeName) {
-        return state.canWatchStoreHistory(storeName);
+    public boolean addProductToStore(ProductData productData) {
+        return state.addProductToStore(productData);
+    }
+
+    /**
+     * use case 4.1.2 - remove product from store
+     * @param storeName
+     * @param productName
+     * @return
+     */
+    public boolean removeProductFromStore(String storeName, String productName) {
+        return state.removeProductFromStore(storeName,productName);
+    }
+
+    /**
+     * use case 4.1.3 - edit product in store
+     * @param productData
+     * @return
+     */
+    //TODO write documentation
+    public boolean editProductFromStore(ProductData productData) {
+        return state.editProductFromStore(productData);
+    }
+
+    /**
+     * use case 4.5
+     * @param subscribe
+     * @param storeName
+     * @return
+     */
+    public boolean addManager(Subscribe subscribe, String storeName) {
+        return state.addManager(subscribe,storeName);
     }
 
 
     /**
-     * get if the user ia an admin
-     * @return - if the user is admin
+     * use case 4.6.1 - add permissions
+     * @param permissions
+     * @param storeName
+     * @param userName
+     * @return
      */
-    public boolean isAdmin() {
-        return state.isAdmin();
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return state.addPermissions(permissions,storeName,userName);
     }
 
     /**
-     * use case 6.4.2 - admin watch history purchases of some user
-     * @param store -  the store that own the purchases
-     * @return - list of purchases that of the store
+     * use case 4.6.2 -remove permissions
+     * @param permissions
+     * @param storeName
+     * @param userName
+     * @return
      */
-    public List<Purchase> AdminWatchStoreHistory(Store store) {
-        return null;
+    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return state.removePermissions(permissions,storeName,userName);
     }
 
-    public boolean canWatchUserHistory() {
-        return state.canWatchUserHistory();
+    /**
+     * user case 4.7 - remove manager
+     * @param userName
+     * @param storeName
+     * @return
+     */
+
+    public boolean removeManager(String userName, String storeName) {
+        return state.removeManager(userName,storeName);
     }
 
     /**
@@ -274,5 +263,24 @@ public class User {
      */
     public Request replayToRequest(String storeName, int requestID, String content) {
         return state.replayToRequest(storeName, requestID, content);
+    }
+
+
+    /**
+     * use case 4.10 - watch Store History by store owner
+     * @param storeName - the store name to watch history
+     * @return the purchase list
+     */
+    public boolean canWatchStoreHistory(String storeName) {
+        return state.canWatchStoreHistory(storeName);
+    }
+
+    /**
+     * use case 6.4.1 - watch user history
+     * @return
+     */
+
+    public boolean canWatchUserHistory() {
+        return state.canWatchUserHistory();
     }
 }

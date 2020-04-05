@@ -62,16 +62,6 @@ public class Subscribe extends UserState{
         return true;
     }
 
-    @Override
-    public String getName() {
-        return userName;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
     /**
      * use case 3.2
      * @param storeDetails - the details of the store
@@ -90,8 +80,74 @@ public class Subscribe extends UserState{
         return store;
     }
 
+
+    @Override
+    protected void savePurchase(List<Purchase> receives) {
+        purchases.addAll(receives);
+    }
+
     /**
-     * use case 4.9.1
+     * use case 3.3 - add review
+     * @param review - the review to add
+     */
+    @Override
+    public void addReview(Review review) {
+        reviews.add(review);
+    }
+
+    /**
+     * use case 3.3 remove review
+     * @param review - the review to remove
+     */
+    public void removeReview(Review review) {
+        reviews.remove(review);
+    }
+
+    /**
+     * use case 3.3 - write review
+     * the function check if the product is purchased
+     * @param storeName - the store name
+     * @param productName - the product name
+     * @return true if the product is purchased
+     */
+    @Override
+    public boolean isItPurchased(String storeName, String productName) {
+        for(Purchase p: purchases) {
+            if(p.getStoreName().compareTo(storeName)==0) {
+                for(ProductData productData: p.getProduct()) {
+                    if(productData.getProductName().compareTo(productName)==0)
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * use case 3.5
+     * @param storeName - The id of the store
+     * @param content - The content of the request
+     * @return true if success, false else
+     */
+    @Override
+    public Request addRequest(String storeName, String content){
+        Request request = new Request(userName, storeName, content,requests.size()+1);
+        requests.add(request);
+        return request;
+    }
+    /**
+     * use case 3.7 - watch purchase history
+     * the function return the purchase list
+     * @return the purchase list
+     */
+    @Override
+    public List<Purchase> watchMyPurchaseHistory() {
+        return purchases;
+    }
+
+
+    /**
+     * use case 4.1.1
      * @param productData product details to be added
      * @return if the product was added
      */
@@ -107,7 +163,7 @@ public class Subscribe extends UserState{
     }
 
     /**
-     * use case 4.9.2
+     * use case 4.1.2
      * @param storeName name of store to remove the product from
      * @param productName name of the product to be removed
      * @return if the product was removed
@@ -158,28 +214,6 @@ public class Subscribe extends UserState{
         store.getPermissions().put(youngOwner.getName(),newPermission);
         givenByMePermissions.add(newPermission);
         return true;
-    }
-
-    @Override
-    protected void savePurchase(List<Purchase> receives) {
-        purchases.addAll(receives);
-    }
-
-    /**
-     * use case 3.3 - add review
-     * @param review - the review to add
-     */
-    @Override
-    public void addReview(Review review) {
-        reviews.add(review);
-    }
-
-    /**
-     * use case 3.3 remove review
-     * @param review - the review to remove
-     */
-    public void removeReview(Review review) {
-        reviews.remove(review);
     }
 
     /**
@@ -243,6 +277,7 @@ public class Subscribe extends UserState{
     }
 
     /**
+     * use case 4.7 - remove manager
      * remove manager form store and the managers he managed
      * @param storeName the store to remove to be manager from and the mangers
      * managed by me
@@ -259,69 +294,6 @@ public class Subscribe extends UserState{
         permissions.remove(storeName);
 
     }
-
-    /**
-     * use case 3.5
-     * @param storeName - The id of the store
-     * @param content - The content of the request
-     * @return true if success, false else
-     */
-    @Override
-    public Request addRequest(String storeName, String content){
-        Request request = new Request(userName, storeName, content,requests.size()+1);
-        requests.add(request);
-        return request;
-    }
-
-    /**
-     * use case 3.3 - write review
-     * the function check if the product is purchased
-     * @param storeName - the store name
-     * @param productName - the product name
-     * @return true if the product is purchased
-     */
-    @Override
-    public boolean isItPurchased(String storeName, String productName) {
-        for(Purchase p: purchases) {
-            if(p.getStoreName().compareTo(storeName)==0) {
-                for(ProductData productData: p.getProduct()) {
-                    if(productData.getProductName().compareTo(productName)==0)
-                        return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * use case 3.7 - watch purchase history
-     * the function return the purchase list
-     * @return the purchase list
-     */
-    @Override
-    public List<Purchase> watchMyPurchaseHistory() {
-        return purchases;
-    }
-
-    /**
-     * use case 4.10 , 6.4.2 - watch Store History by store owner or admin
-     * @param storeName - the store name to watch history
-     * @return if can watch the purchase list
-     */
-    @Override
-    public boolean canWatchStoreHistory(String storeName) {
-        return permissions.containsKey(storeName);
-    }
-
-    /**
-     * use case 6.4.1 - watch user history check
-     * @return if can watch another user purchase list
-     */
-    @Override
-    public boolean canWatchUserHistory() {
-        return false;
-    }
-
     /**
      * use case 4.9.1
      * @param storeName
@@ -358,6 +330,37 @@ public class Subscribe extends UserState{
         }
         return null;
     }
+
+    /**
+     * use case 4.10 , 6.4.2 - watch Store History by store owner or admin
+     * @param storeName - the store name to watch history
+     * @return if can watch the purchase list
+     */
+    @Override
+    public boolean canWatchStoreHistory(String storeName) {
+        return permissions.containsKey(storeName);
+    }
+
+    /**
+     * use case 6.4.1 - watch user history check
+     * @return if can watch another user purchase list
+     */
+    @Override
+    public boolean canWatchUserHistory() {
+        return false;
+    }
+
+
+    @Override
+    public String getName() {
+        return userName;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
 
     public void setUserName(String userName) {
         this.userName = userName;
