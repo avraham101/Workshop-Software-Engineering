@@ -1,4 +1,5 @@
 /.idea
 /target
-/Workshop.iml
-/code.iml
+*.iml
+*.xml
+*.txt
