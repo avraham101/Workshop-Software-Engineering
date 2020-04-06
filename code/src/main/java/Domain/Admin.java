@@ -7,6 +7,7 @@ public class Admin extends Subscribe {
     }
 
     /**
+     * use case 6.4.1
      * get if the user ia an admin
      * @return - if the user is admin
      */
@@ -15,6 +16,11 @@ public class Admin extends Subscribe {
         return true;
     }
 
+    /**
+     * use case 6.4.2
+     * @param storeName - the store name to watch history
+     * @return
+     */
     @Override
     public boolean canWatchStoreHistory(String storeName) {
         return true;

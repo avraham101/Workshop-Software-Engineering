@@ -70,11 +70,13 @@ public class Permission {
                 permissionType.contains(PermissionType.PRODUCTS_INVENTORY);
     }
 
+    /**
+     * remove the type from permissions list
+     * @param type
+     * @return
+     */
     public boolean removeType(PermissionType type){
-        if(!this.permissionType.contains(type))
-            return false;
-        this.permissionType.remove(type);
-        return true;
+        return permissionType.remove(type);
     }
 
     public boolean canAddOwner() {

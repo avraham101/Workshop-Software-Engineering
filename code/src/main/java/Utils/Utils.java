@@ -1,4 +1,4 @@
-package Domain;
+package Utils;
 
 public class Utils {
 

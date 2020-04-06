@@ -5,7 +5,6 @@ import DataAPI.PurchaseTypeData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Product {
     private String name; //unique

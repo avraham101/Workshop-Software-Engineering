@@ -4,6 +4,8 @@ import DataAPI.*;
 import Systems.*;
 import Systems.PaymentSystem.*;
 import Systems.SupplySystem.*;
+import Utils.Utils;
+
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.logging.Level;
@@ -450,21 +452,14 @@ public class LogicManager {
 
     public boolean addRequest(String storeName, String content) {
         //TODO add logger
-        Store dest = null;
-        if (stores.containsKey(storeName))
-            dest = stores.get(storeName);
-
-        if (content!= null & dest != null) {
-            Request request = current.addRequest(storeName, content);
-            if (request == null)
-                return false;
-            else {
-                dest.addRequest(request);
-                return true;
-            }
-        }
-        return false;
+        if (content == null || !stores.containsKey(storeName)) return false;
+        Store dest = stores.get(storeName);
+        Request request = current.addRequest(storeName, content);
+        if (request == null) return false;
+        dest.addRequest(request);
+        return true;
     }
+
 
     /**
      * use case 4.3

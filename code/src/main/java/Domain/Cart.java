@@ -36,6 +36,22 @@ public class Cart {
     }
 
     /**
+     * use case 2.7
+     * @param store - the store to add to cart
+     * @param product - the product to add
+     * @param amount - the amount of the prduct
+     * @return true is succeed
+     */
+    public boolean addProduct(Store store, Product product, int amount) {
+        Basket basket = baskets.get(store.getName());
+        if (basket == null) {
+            basket = new Basket(store);
+            baskets.put(store.getName(),basket);
+        }
+        return basket.addProduct(product, amount);
+    }
+
+    /**
      * use case - 2.8 buy cart
      * the function buy this cart
      * @param paymentData - the payment info
@@ -69,19 +85,5 @@ public class Cart {
         return true;
     }
 
-    /**
-     * use case 2.7
-     * @param store - the store to add to cart
-     * @param product - the product to add
-     * @param amount - the amount of the prduct
-     * @return true is succeed
-     */
-    public boolean addProduct(Store store, Product product, int amount) {
-        Basket basket = baskets.get(store.getName());
-        if (basket == null) {
-            basket = new Basket(store);
-            baskets.put(store.getName(),basket);
-        }
-        return basket.addProduct(product, amount);
-    }
+
 }

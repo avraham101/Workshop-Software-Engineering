@@ -74,9 +74,8 @@ public class LogicManagerAllStubsTest {
         testAddProductToCart();
         testWatchCartDetails();
         testEditProductsInCart();
-        //TODO add here add product to correct
-        //TODO add this after we have purchase testWriteReview();
         testBuyProducts();
+        testWatchPurchaseHistory();
         testEditProduct();
         testWatchStoreHistory();
         testWatchUserHistory();
@@ -261,7 +260,7 @@ public class LogicManagerAllStubsTest {
     }
 
     private void testAddRequestFail() {
-        Request request1 = data.getRequest(Data.NULL_NAME);
+        Request request1 = data.getRequest(Data.WRONG_STORE);
         Request request2 = data.getRequest(Data.NULL);
         assertFalse(logicManager.addRequest(request1.getStoreName(), request1.getContent()));
         assertFalse(logicManager.addRequest(request2.getStoreName(), request2.getContent()));
@@ -861,7 +860,9 @@ public class LogicManagerAllStubsTest {
      * use case 3.7 - watch purchase history
      */
     public void testWatchPurchaseHistory() {
-
+        List<Purchase> purchases = logicManager.watchMyPurchaseHistory();
+        assertNotNull(purchases);
+        assertTrue(purchases.isEmpty());
     }
 
 }

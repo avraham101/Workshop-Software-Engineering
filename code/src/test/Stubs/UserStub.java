@@ -144,6 +144,10 @@ public class UserStub extends User {
         return new Request(getUserName(), storeName, "temp", 10);
     }
 
+    /**
+     * use case 3.7 - watch history purchases
+     * @return
+     */
     @Override
     public List<Purchase> watchMyPurchaseHistory() {
         return new LinkedList<>();

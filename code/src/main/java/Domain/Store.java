@@ -118,60 +118,7 @@ public class Store {
         this.purchases = purchases;
     }
 
-    /**
-     *
-     * @param productData details of product to add to store
-     * @return if the product was added successfully
-     */
-    public boolean addProduct(ProductData productData) {
-        if(products.containsKey(productData.getProductName()))
-            return false;
-        String categoryName=productData.getCategory();
-        if(!categoryList.containsKey(categoryName)){
-            categoryList.put(categoryName,new Category(categoryName));
-        }
-        Product product=new Product(productData,categoryList.get(categoryName));
-        products.put(productData.getProductName(),product);
-        return true;
-    }
 
-    /**
-     * remove product from the store
-     * @param productName
-     * @return  if the product had been removed
-     */
-
-    public boolean removeProduct(String productName) {
-        if(!products.containsKey(productName))
-            return false;
-        products.get(productName).getCategory().removeProduct(productName);
-        products.remove(productName);
-        return true;
-    }
-
-    /**
-     * edit product in the store
-     * @param productData
-     * @return if the product was edited successfully
-     */
-    public boolean editProduct(ProductData productData) {
-        if(!products.containsKey(productData.getProductName()))
-            return false;
-        Product old=products.get(productData.getProductName());
-        String categoryName=productData.getCategory();
-        if(!categoryList.containsKey(categoryName)){
-            categoryList.put(categoryName,new Category(categoryName));
-        }
-        old.edit(productData,categoryList.get(categoryName));
-        return true;
-    }
-
-    public boolean addRequest(Request addRequest) {
-        if(addRequest==null)
-            return false;
-        requests.put(addRequest.getId(), addRequest);
-        return true;
-    }
 
     /**
      * use case 2.7.4 - add product to cart
@@ -205,30 +152,7 @@ public class Store {
         return Objects.hash(name, purchesPolicy, discount, products, categoryList, requests, permissions, supplySystem, paymentSystem);
     }
 
-    /**
-     * use case 3.3 write review
-     * @param review - the review
-     * @return if the review added or not,
-     */
-    public boolean addReview(Review review) {
-        Product p = products.get(review.getProductName());
-        if(p==null) //Store as the product
-            return false;
-        p.addReview(review);
-        return true;
-    }
 
-    /**
-     * use case 3.3 wire review
-     * the function remove review
-     * @param review - the review to remove
-     */
-    public void removeReview(Review review) {
-        Product p = products.get(review.getProductName());
-        if(p!=null) {
-            p.addReview(review);
-        }
-    }
 
     /**
      * use case 2.8 - but cart
@@ -324,5 +248,94 @@ public class Store {
         this.purchases.add(purchase);
         return purchase;
     }
+
+    /**
+     * use case 3.3 write review
+     * @param review - the review
+     * @return if the review added or not,
+     */
+    public boolean addReview(Review review) {
+        Product p = products.get(review.getProductName());
+        if(p==null) //Store as the product
+            return false;
+        p.addReview(review);
+        return true;
+    }
+
+    /**
+     * use case 3.3 wire review
+     * the function remove review
+     * @param review - the review to remove
+     */
+    public void removeReview(Review review) {
+        Product p = products.get(review.getProductName());
+        if(p!=null) {
+            p.addReview(review);
+        }
+    }
+
+    /**
+     * use case 3.5 - add request to store
+     * @param addRequest
+     * @return
+     */
+    public boolean addRequest(Request addRequest) {
+        if(addRequest==null)
+            return false;
+        requests.put(addRequest.getId(), addRequest);
+        return true;
+    }
+
+
+    /**
+     *use case 4.1.1
+     * @param productData details of product to add to store
+     * @return if the product was added successfully
+     */
+    public boolean addProduct(ProductData productData) {
+        if(products.containsKey(productData.getProductName()))
+            return false;
+        String categoryName=productData.getCategory();
+        if(!categoryList.containsKey(categoryName)){
+            categoryList.put(categoryName,new Category(categoryName));
+        }
+        Product product=new Product(productData,categoryList.get(categoryName));
+        products.put(productData.getProductName(),product);
+        return true;
+    }
+
+    /**
+     * use case 4.1.2
+     * remove product from the store
+     * @param productName
+     * @return  if the product had been removed
+     */
+
+    public boolean removeProduct(String productName) {
+        if(!products.containsKey(productName))
+            return false;
+        products.get(productName).getCategory().removeProduct(productName);
+        products.remove(productName);
+        return true;
+    }
+
+    /**
+     * use case 4.1.3
+     * edit product in the store
+     * @param productData
+     * @return if the product was edited successfully
+     */
+    public boolean editProduct(ProductData productData) {
+        if(!products.containsKey(productData.getProductName()))
+            return false;
+        Product old=products.get(productData.getProductName());
+        String categoryName=productData.getCategory();
+        if(!categoryList.containsKey(categoryName)){
+            categoryList.put(categoryName,new Category(categoryName));
+        }
+        old.edit(productData,categoryList.get(categoryName));
+        return true;
+    }
+
 
 }

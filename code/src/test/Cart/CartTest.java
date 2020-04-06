@@ -11,12 +11,14 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CartTest {
 
-    private Cart cart;
+    private Domain.Cart cart;
     private TestData testData;
+
     @Before
     public void setUp(){
         cart = new Cart();
