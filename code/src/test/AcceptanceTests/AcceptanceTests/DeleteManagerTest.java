@@ -6,24 +6,31 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class DeleteManagerTest extends AcceptanceTests{
-    UserTestData firstManager;
-    UserTestData secondManager;
-    UserTestData thirdManager;
-    @Before
+    private UserTestData firstManager;
+    private UserTestData secondManager;
+    private UserTestData thirdManager;
+    private List<UserTestData> managers;
+
+
     //super->first->third
     //super->second
+    @Before
     public void setUp(){
-        super.setUp();
-        bridge.login(superUser.getUsername(),superUser.getPassword());
-        addStores(stores);
+        addUserStoresAndProducts(superUser);
         firstManager = users.get(1);
         secondManager = users.get(2);
         thirdManager = users.get(3);
+        managers = new ArrayList<>(Arrays.asList(firstManager,secondManager,thirdManager));
+
         bridge.appointManager(stores.get(0).getStoreName(), firstManager.getUsername());
         bridge.appointManager(stores.get(0).getStoreName(), secondManager.getUsername());
         //TODO add premission??
-        bridge.logout(superUser.getUsername());
+        bridge.logout();
         bridge.login(firstManager.getUsername(), firstManager.getPassword());
 
         bridge.appointManager(stores.get(0).getStoreName(), thirdManager.getUsername());
@@ -32,7 +39,7 @@ public class DeleteManagerTest extends AcceptanceTests{
 
     @Test
     public void deleteManagerSuccess(){
-        boolean approval=bridge.deleteManager(stores.get(0).getStoreName(), firstManager.getUsername());
+        boolean approval = bridge.deleteManager(stores.get(0).getStoreName(), firstManager.getUsername());
         assertTrue(approval);
         StoreTestData store = bridge.getStoreInfoByName(stores.get(0).getStoreName());
         assertFalse(store.isManager(firstManager.getUsername()));
@@ -41,16 +48,14 @@ public class DeleteManagerTest extends AcceptanceTests{
 
     @Test
     public void deleteManagerFailNotMyStore(){
-        boolean approval=bridge.deleteManager(stores.get(2).getStoreName(), firstManager.getUsername());
+        boolean approval = bridge.deleteManager(stores.get(2).getStoreName(), firstManager.getUsername());
         assertFalse(approval);
     }
-
 
     @Test
     public void deleteManagerFailInvalidStore(){
         boolean approval=bridge.deleteManager("not-exist", firstManager.getUsername());
         assertFalse(approval);
-
     }
 
     @Test
@@ -63,7 +68,6 @@ public class DeleteManagerTest extends AcceptanceTests{
     public void deleteManagerFailNotMyAppointment(){
         boolean approval = bridge.deleteManager(stores.get(0).getStoreName(),secondManager.getUsername());
         assertFalse(approval);
-
     }
 
     @After
