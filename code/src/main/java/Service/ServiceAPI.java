@@ -139,14 +139,14 @@ public class ServiceAPI {
         return logicManager.addReview(storeName,productName, content);
     }
 
-    //TODO use case 3.5
+    //use case 3.5
     public boolean writeRequestToStore(String storeName,String content){
-        return false;
+        return logicManager.addRequest(storeName,content);
     }
 
     /**
      * use case 3.7 - watch purchase history
-     * the fucntion return the purchase list
+     * the function return the purchase list
      * @return the purchase list
      */
     public List<Purchase> watchMyPurchaseHistory(){
@@ -193,14 +193,14 @@ public class ServiceAPI {
         return logicManager.removeManager(userName,storeName);
     }
 
-    //TODO use case 4.9.1
+    //use case 4.9.1
     public List<Request> watchRequestsOfStore(String storeName){
-        return null;
+        return logicManager.viewStoreRequest(storeName);
     }
 
-    //TODO use case 4.9.2
-    public boolean answerRequest(Request request, String StoreName){
-        return false;
+    //use case 4.9.2
+    public Request answerRequest(int requestId,String content, String storeName){
+        return logicManager.replayRequest(storeName,requestId,content);
     }
 
     /**
