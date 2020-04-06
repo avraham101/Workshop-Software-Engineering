@@ -2,26 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c3f3f331-aa9e-427c-b97c-0d7dcdf69321" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Workshop.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Workshop.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code.iml" beforeDir="false" afterPath="$PROJECT_DIR$/code.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Admin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Cart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Cart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Guest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Guest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Permission.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Permission.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Request.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Store.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Subscribe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Subscribe.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/UserState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/UserState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Utils/Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/Cart/CartTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Cart/CartTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/HashSystemTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/Stubs/UserStub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Stubs/UserStub.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,11 +20,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="139">
+            <state relative-caret-position="137">
               <caret line="94" column="35" selection-start-line="94" selection-start-column="35" selection-end-line="94" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" selection-start-line="2" selection-end-line="2" />
             </state>
           </provider>
         </entry>
@@ -88,6 +78,7 @@
         <option value="$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java" />
         <option value="$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java" />
         <option value="$PROJECT_DIR$/src/test/Guest/GuestTest.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -119,6 +110,27 @@
               <item name="code" type="b2602c69:ProjectViewProjectNode" />
               <item name="code" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="code" type="b2602c69:ProjectViewProjectNode" />
+              <item name="code" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="code" type="b2602c69:ProjectViewProjectNode" />
+              <item name="code" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Domain" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="code" type="b2602c69:ProjectViewProjectNode" />
+              <item name="code" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -136,7 +148,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1586170341439" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1586170428661" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -239,19 +251,19 @@
       <option name="project" value="LOCAL" />
       <updated>1586169479651</updated>
     </task>
-    <task id="LOCAL-00002" summary="fix bug">
-      <created>1585760006149</created>
+    <task id="LOCAL-00002" summary="finish use case 3.7 watch purchases history">
+      <created>1586170238399</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1585760006149</updated>
+      <updated>1586170238399</updated>
     </task>
-    <task id="LOCAL-00003" summary="Merge branch 'master' of https://github.com/avraham101/Workshop-Software-Engineering into use-case-2.5&#10;&#10;# Conflicts:&#10;#&#9;code/.idea/workspace.xml&#10;#&#9;code/src/main/java/Domain/LogicManager.java&#10;#&#9;code/src/test/LogicManagerTests/LogicManagerAllStubsTest.java">
-      <created>1585768548117</created>
+    <task id="LOCAL-00003" summary="Merge branch 'master' of https://github.com/avraham101/Workshop-Software-Engineering&#10;&#10;# Conflicts:&#10;#&#9;.idea/compiler.xml&#10;#&#9;code/Workshop.iml&#10;#&#9;code/code.iml">
+      <created>1586170354751</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1585768548117</updated>
+      <updated>1586170354751</updated>
     </task>
     <task id="LOCAL-00004" summary="merged from branch">
       <created>1585813807780</created>
@@ -338,13 +350,10 @@
       <option name="project" value="LOCAL" />
       <updated>1586168109363</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="UserRealTest - 2020.04.06 at 13h 32m 21s.xml">
-      <configuration name="UserRealTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="UserTests_in_code - 2020.04.06 at 13h 32m 30s.xml">
       <configuration name="UserTests in code" configurationId="JUnit" />
     </history-entry>
@@ -372,14 +381,18 @@
     <history-entry file="All_in_code - 2020.04.06 at 13h 37m 36s.xml">
       <configuration name="All in code" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="All_in_code - 2020.04.06 at 13h 50m 45s.xml">
+      <configuration name="All in code" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2073000" />
+    <option name="totallyTimeSpent" value="2276000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23238866" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23157895" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -391,7 +404,7 @@
       <window_info anchor="bottom" id="Sequence" order="0" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32719547" />
-      <window_info anchor="bottom" id="Run" order="3" visible="true" weight="0.36589697" />
+      <window_info anchor="bottom" id="Run" order="3" weight="0.36589697" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.4362606" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -400,7 +413,7 @@
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5013423" side_tool="true" weight="0.5439094" />
       <window_info anchor="bottom" id="Database Changes" order="11" />
-      <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.4986577" weight="0.3445826" />
+      <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.4986577" visible="true" weight="0.3445826" />
       <window_info anchor="bottom" id="Messages" order="13" weight="0.32577905" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -432,7 +445,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="finish use case 3.7 watch purchases history" />
-    <option name="LAST_COMMIT_MESSAGE" value="finish use case 3.7 watch purchases history" />
+    <MESSAGE value="Merge branch 'master' of https://github.com/avraham101/Workshop-Software-Engineering&#10;&#10;# Conflicts:&#10;#&#9;.idea/compiler.xml&#10;#&#9;code/Workshop.iml&#10;#&#9;code/code.iml" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'master' of https://github.com/avraham101/Workshop-Software-Engineering&#10;&#10;# Conflicts:&#10;#&#9;.idea/compiler.xml&#10;#&#9;code/Workshop.iml&#10;#&#9;code/code.iml" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/DataAPI/CartData.java">
@@ -652,8 +666,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
+        <state relative-caret-position="137">
           <caret line="94" column="35" selection-start-line="94" selection-start-column="35" selection-end-line="94" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
         </state>
       </provider>
     </entry>
