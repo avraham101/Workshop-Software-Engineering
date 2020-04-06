@@ -70,11 +70,21 @@ public class EditPermissionTest extends AcceptanceTests {
     /***************DELETE-PERMISSION-4.6.2************************************/
     @Test
     public void deletePermissionSuccess(){
-        //TODO
+        addPermissionSuccess();
+       boolean approval= bridge.deletePermission(stores.get(0).getStoreName(),
+                userToCheck.getUsername(),
+                PermissionsTypeTestData.PRODUCTS_INVENTORY);
+       assertTrue(approval);
+        StoreTestData store = bridge.getStoreInfoByName(stores.get(0).getStoreName());
+        PermissionTestData permission = store.getPermissions().get(userToCheck.getUsername());
+        assertTrue(!permission.containsPermission( PermissionsTypeTestData.PRODUCTS_INVENTORY));
+
     }
     @Test
     public void deletePermissionFailInvalidStore(){
-        boolean approval=bridge.deletePermission("InvalidStore",userToCheck.getUsername(), PermissionsTypeTestData.PRODUCTS_INVENTORY);
+        boolean approval=bridge.deletePermission("InvalidStore",
+                                userToCheck.getUsername(),
+                                PermissionsTypeTestData.PRODUCTS_INVENTORY);
         assertFalse(approval);
     }
     @Test

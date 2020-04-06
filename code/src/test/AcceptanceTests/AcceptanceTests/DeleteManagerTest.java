@@ -1,5 +1,6 @@
 package AcceptanceTests.AcceptanceTests;
 
+import AcceptanceTests.AcceptanceTestDataObjects.PermissionsTypeTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.After;
@@ -21,19 +22,23 @@ public class DeleteManagerTest extends AcceptanceTests{
     //super->second
     @Before
     public void setUp(){
-        addUserStoresAndProducts(superUser);
         firstManager = users.get(1);
         secondManager = users.get(2);
         thirdManager = users.get(3);
         managers = new ArrayList<>(Arrays.asList(firstManager,secondManager,thirdManager));
-
+        registerUsers(managers);
+        addUserStoresAndProducts(superUser);
         bridge.appointManager(stores.get(0).getStoreName(), firstManager.getUsername());
         bridge.appointManager(stores.get(0).getStoreName(), secondManager.getUsername());
-        //TODO add premission??
+        bridge.addPermissionToManager(stores.get(0).getStoreName(),
+                                    firstManager.getUsername(),
+                                    PermissionsTypeTestData.ADD_MANAGER);
+
         bridge.logout();
         bridge.login(firstManager.getUsername(), firstManager.getPassword());
-
         bridge.appointManager(stores.get(0).getStoreName(), thirdManager.getUsername());
+        bridge.logout();
+        bridge.login(superUser.getUsername(),superUser.getPassword());
 
     }
 
@@ -66,6 +71,8 @@ public class DeleteManagerTest extends AcceptanceTests{
 
     @Test
     public void deleteManagerFailNotMyAppointment(){
+        bridge.logout();
+        bridge.login(firstManager.getUsername(),firstManager.getPassword());
         boolean approval = bridge.deleteManager(stores.get(0).getStoreName(),secondManager.getUsername());
         assertFalse(approval);
     }
@@ -74,6 +81,7 @@ public class DeleteManagerTest extends AcceptanceTests{
     public void tearDown(){
 
         deleteStores(stores);//also delete the manager
-        bridge.logout(firstManager.getUsername());
+        deleteUsers(managers);
+        bridge.logout();//TODO WE NEED THIS?
     }
 }

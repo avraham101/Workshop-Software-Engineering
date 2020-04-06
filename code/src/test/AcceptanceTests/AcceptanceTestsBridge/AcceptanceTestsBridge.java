@@ -53,7 +53,7 @@ public interface AcceptanceTestsBridge {
 
     boolean addPermissionToManager(String storeName, String username, PermissionsTypeTestData productsInventory);
 
-    boolean deletePermission(String invalidStore, String username, PermissionsTypeTestData productsInventory);
+    boolean deletePermission(String storeName, String username, PermissionsTypeTestData productsInventory);
 
     HashMap<ApplicationToStoreTestData,String> getUserApplicationsAndReplies(String username);
 
