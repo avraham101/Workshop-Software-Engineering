@@ -14,7 +14,7 @@ public interface AcceptanceTestsBridge {
     boolean register(String username, String password);
     void deleteUser(String username);
     String getCurrentLoggedInUser();
-    boolean logout(String currUsername);
+    boolean logout();
     boolean login(String username, String password);
     HashSet<ProductTestData> filterProducts(List<ProductTestData> products, List<FilterTestData> filters);
     void deleteProducts(List<ProductTestData> products);
@@ -60,4 +60,6 @@ public interface AcceptanceTestsBridge {
     boolean writeReplyToApplication(String storeName, ApplicationToStoreTestData key, String value);
 
     HashSet<ApplicationToStoreTestData> viewApplicationToStore(String storeName);
+
+    boolean closeStore(String storeName);
 }

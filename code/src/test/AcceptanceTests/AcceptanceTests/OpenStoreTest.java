@@ -2,39 +2,39 @@ package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 public class OpenStoreTest extends AcceptanceTests {
     private UserTestData user;
+    private String newStoreName;
 
-    @Before
+    @BeforeClass
     public void setUp(){
-        super.setUp();
+        newStoreName = "store-name";
         user = users.get(1);
-        bridge.login(user.getUsername(),user.getPassword());
+        registerAndLogin(user);
     }
 
     @Test
     public void openStoreSuccess(){
-       StoreTestData store= bridge.openStore("store-name");
+       StoreTestData store = bridge.openStore(newStoreName);
        assertNotNull(store);
-       assertEquals(user,store.getStoreManager());
-       //TODO delete store??
+       String actualStoreOwner = bridge.getStoreInfoByName(newStoreName).getStoreOwner().getUsername();
+       assertEquals(user.getUsername(),actualStoreOwner);
     }
 
     @Test
     public void openStoreFailNameAlreadyExist(){
-        StoreTestData store1= bridge.openStore("store-name");
-        StoreTestData store2= bridge.openStore("store-name");
+        StoreTestData store1= bridge.openStore(newStoreName);
+        StoreTestData store2= bridge.openStore(newStoreName);
         assertNull(store2);
     }
     //TODO should add not subscribe??
 
-
-    @After
+    @AfterClass
     public void tearDown(){
-        bridge.logout(user.getUsername());
+        bridge.closeStore(newStoreName);
+        bridge.logout();
+        deleteUser(user.getUsername());
     }
 }
