@@ -8,6 +8,7 @@ public class StoreTestData {
     private List<ProductTestData> products;
     private HashMap<String, PermissionTestData> permissions;
     private List<PurchaseTestData> purchasesHistory;
+    private HashSet<ApplicationToStoreTestData> applications;
 
     //TODO: change storeManager to storeOwner
     //TODO: add a list of store managers
@@ -18,6 +19,7 @@ public class StoreTestData {
         this.products = new ArrayList<>();
         this.permissions = new HashMap<>();
         this.purchasesHistory = new ArrayList<>();
+        this.applications = new HashSet<>();
 
         String username = storeManager.getUsername();
         HashSet<PermissionsTypeTestData> initialPermissions = new HashSet<>();
@@ -67,6 +69,10 @@ public class StoreTestData {
         this.products = products;
     }
 
+    public HashSet<ApplicationToStoreTestData> getApplications() {
+        return applications;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -87,6 +93,11 @@ public class StoreTestData {
 
     public boolean isManager(String username) {
         return permissions.containsKey(username);
+    }
+
+    public boolean isOwner(String username) {
+        PermissionTestData userPermission = permissions.get(username);
+        return userPermission != null && userPermission.getPermissions().contains(PermissionsTypeTestData.OWNER);
     }
 
 }

@@ -3,6 +3,7 @@ package AcceptanceTests.AcceptanceTestsBridge;
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -53,4 +54,10 @@ public interface AcceptanceTestsBridge {
     boolean addPermissionToManager(String storeName, String username, PermissionsTypeTestData productsInventory);
 
     boolean deletePermission(String invalidStore, String username, PermissionsTypeTestData productsInventory);
+
+    HashMap<ApplicationToStoreTestData,String> getUserApplicationsAndReplies(String username);
+
+    boolean writeReplyToApplication(String storeName, ApplicationToStoreTestData key, String value);
+
+    HashSet<ApplicationToStoreTestData> viewApplicationToStore(String storeName);
 }

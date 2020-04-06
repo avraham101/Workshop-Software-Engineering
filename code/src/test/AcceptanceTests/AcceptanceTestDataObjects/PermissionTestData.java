@@ -10,7 +10,7 @@ public class PermissionTestData {
     public PermissionTestData(String username, Set<PermissionsTypeTestData> permissions, String givenBy) {
         this.username = username;
         this.permissions = permissions;
-        this.givenBy=givenBy;
+        this.givenBy = givenBy;
     }
 
     public String getUsername() {
