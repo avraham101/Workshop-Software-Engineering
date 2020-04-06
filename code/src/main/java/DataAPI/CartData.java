@@ -7,6 +7,7 @@ import java.util.Objects;
 
 public class CartData {
 
+    //
     private double priceBeforeDiscount;
     private double priceAfterDiscount;
     private List<ProductData> products;
