@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.logging.Level;
 
 public class LogicManager {
+    //TODO check all classes
     private HashMap<String, Subscribe> users;
     private HashMap<String, Store> stores;
     private HashSystem hashSystem;
