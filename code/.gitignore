@@ -1,3 +1,5 @@
 /.idea
 /target
-/Workshop.iml
+*.iml
+*.xml
+*.txt
