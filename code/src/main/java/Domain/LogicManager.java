@@ -137,72 +137,6 @@ public class LogicManager {
     }
 
     /**
-     * use case 3.1 - Logout
-     * @return true if the user logout
-     */
-    public boolean logout() {
-        //TODO add logger
-        return current.logout();
-    }
-
-    /**
-     * use case 3.2 - Open Store
-     * @param storeDetails - the details of the the store
-     * @return true if can open store, otherwise false.
-     */
-    public boolean openStore(StoreData storeDetails) {
-        //TODO add logger
-        if(!validStoreDetails(storeDetails))
-            return false;
-        if(stores.containsKey(storeDetails.getName()))
-            return false;
-        Store store = current.openStore(storeDetails,paymentSystem, supplySystem);
-        if(store != null) {
-            stores.put(store.getName(),store);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * The fucntion check if storeData is valid
-     * @param storeData - the store data to check
-     * @return true the store data is ok, otherwise false
-     */
-    private boolean validStoreDetails(StoreData storeData) {
-        return storeData!=null && storeData.getName() != null && storeData.getDiscountPolicy()!=null &&
-                storeData.getPurchesPolicy()!=null;
-    }
-
-    /**
-     * use case 4.1.1 add product to store
-     * @param productData -the details of the product
-     * @return true if the product was added, false otherwise
-     */
-    public boolean addProductToStore(ProductData productData) {
-        //TODO logger
-        if(productData==null)
-            return false;
-        if(!stores.containsKey(productData.getStoreName()))
-            return false;
-        if(validProduct(productData))
-            return current.addProductToStore(productData);
-        return false;
-    }
-
-    /**
-     * check if the data of the product has valid content
-     * @param productData data of the product to check
-     * @return true if the details of the product are valid
-     */
-
-    private boolean validProduct(ProductData productData) {
-        return productData.getProductName()!=null &&productData.getCategory()!=null
-                && validDiscounts(productData.getDiscount()) && productData.getPrice()>0
-                && productData.getAmount()>0 && productData.getPurchaseType()!=null;
-    }
-
-    /**
      * use 2.4.1 - show the details about every store
      * @return - details of all the stores data
      */
@@ -212,7 +146,7 @@ public class LogicManager {
         for (String storeName: stores.keySet()) {
             Store store = stores.get(storeName);
             StoreData storeData = new StoreData(store.getName(),store.getPurchesPolicy(),
-                                                store.getDiscount());
+                    store.getDiscount());
             data.add(storeData);
         }
         return data;
@@ -261,31 +195,6 @@ public class LogicManager {
     private boolean validDiscount(Discount discount) {
         return discount!=null&&discount.getPercentage()>0&&discount.getPercentage()<100;
     }
-
-    /**
-     * remove a product from store if exist
-     * @param storeName name of the store to remove the product from
-     * @param productName name of product to be removed
-     * @return if the product was removed
-     */
-    public boolean removeProductFromStore(String storeName, String productName) {
-        //TODO Logger
-        if(!stores.containsKey(storeName))
-            return false;
-        return current.removeProductFromStore(storeName,productName);
-    }
-
-    /**
-     * edit product in store if exist
-     * @param productData the product details to edit
-     * @return if the product was updated successfully
-     */
-
-    /**
-     * edit product in store if exist
-     * @param productData the product details to edit
-     * @return if the product was updated successfully
-     */
 
     /**
      * use case 2.5 - Search product in store
@@ -373,22 +282,6 @@ public class LogicManager {
         return productData;
     }
 
-    /**
-     * use case 4.1.3 - edit product
-     * @param productData the product to be edited to
-     * @return if the product was edited successfully
-     */
-
-    public boolean editProductFromStore(ProductData productData) {
-        //TODO logger
-        if(productData==null)
-            return false;
-        if(!stores.containsKey(productData.getStoreName()))
-            return false;
-        if(validProduct(productData))
-            return current.editProductFromStore(productData);
-        return false;
-    }
 
     /**
      * use case 2.7.1 watch cart details
@@ -445,97 +338,6 @@ public class LogicManager {
     }
 
     /**
-     * use case 3.5 - write request on store
-     * @param storeName name of store to write request to
-     * @param content the content of the request
-     * @return
-     */
-
-    public boolean addRequest(String storeName, String content) {
-        //TODO add logger
-        if (content == null || !stores.containsKey(storeName)) return false;
-        Store dest = stores.get(storeName);
-        Request request = current.addRequest(storeName, content);
-        if (request == null) return false;
-        dest.addRequest(request);
-        return true;
-    }
-
-
-    /**
-     * use case 4.3
-     * @param storeName the name of the store to be manager of
-     * @param userName the user to be manager of the store
-     * @return
-     */
-    public boolean manageOwner(String storeName, String userName) {
-        //TODO add logger
-        if(!users.containsKey(userName)||!stores.containsKey(storeName))
-            return false;
-        addManager(userName,storeName);
-        List<PermissionType> types=new ArrayList<>();
-        types.add(PermissionType.OWNER);
-        return current.addPermissions(types,storeName,userName);
-    }
-
-    /**
-     * use case 4.5 -add manager
-     * @param storeName name of store to be manager of
-     * @param userName
-     * @return if the manager was added successfully
-     */
-    public boolean addManager(String userName, String storeName) {
-        //TODO add logger
-        if(!users.containsKey(userName)||!stores.containsKey(storeName))
-            return false;
-        return current.addManager(users.get(userName),storeName);
-    }
-
-    /**
-     * use case 3.3 - write review
-     * @param productName - the product name
-     * @param storeName - the store name
-     * @param content - the content name
-     * @return true if the review added, otherwise false.
-     */
-    public boolean addReview(String storeName,String productName, String content) {
-        //TODO add logger
-        if(!validReview(storeName,productName,content))
-            return false;
-        Store store = stores.get(storeName);
-         if(store==null) {
-             return false;
-         }
-        Review review = new Review(current.getUserName(),storeName,productName,content);
-        boolean resultStore = store.addReview(review);
-        boolean resultUser = current.addReview(review);
-        if(!resultStore && !resultUser)
-            return false;
-        else if(!resultStore) {
-            current.removeReview(review);
-            return false;
-        }
-        else if(!resultUser) {
-            store.removeReview(review);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * use case 3.3 - write review
-     * the function return if a valid correct
-     * @param productName - the product name
-     * @param storeName - the store name
-     * @param content - the content name
-     * @return true if the review is valid, otherwise false.
-     */
-    private boolean validReview(String storeName,String productName, String content) {
-        return storeName!=null && productName!=null && content!=null &&
-                !content.isEmpty();
-    }
-
-    /**
      * use case 2.8 - purchase cart
      * @param paymentData - the payment data of this purchase
      * @param addresToDeliver - the address do Deliver the purchase
@@ -565,14 +367,200 @@ public class LogicManager {
     }
 
     /**
+     * use case 3.1 - Logout
+     * @return true if the user logout
+     */
+    public boolean logout() {
+        //TODO add logger
+        return current.logout();
+    }
+
+    /**
+     * use case 3.2 - Open Store
+     * @param storeDetails - the details of the the store
+     * @return true if can open store, otherwise false.
+     */
+    public boolean openStore(StoreData storeDetails) {
+        //TODO add logger
+        if(!validStoreDetails(storeDetails))
+            return false;
+        if(stores.containsKey(storeDetails.getName()))
+            return false;
+        Store store = current.openStore(storeDetails,paymentSystem, supplySystem);
+        if(store != null) {
+            stores.put(store.getName(),store);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * The fucntion check if storeData is valid
+     * @param storeData - the store data to check
+     * @return true the store data is ok, otherwise false
+     */
+    private boolean validStoreDetails(StoreData storeData) {
+        return storeData!=null && storeData.getName() != null && storeData.getDiscountPolicy()!=null &&
+                storeData.getPurchesPolicy()!=null;
+    }
+
+
+    /**
+     * use case 3.3 - write review
+     * @param productName - the product name
+     * @param storeName - the store name
+     * @param content - the content name
+     * @return true if the review added, otherwise false.
+     */
+    public boolean addReview(String storeName,String productName, String content) {
+        //TODO add logger
+        if(!validReview(storeName,productName,content))
+            return false;
+        Store store = stores.get(storeName);
+        if(store==null) {
+            return false;
+        }
+        Review review = new Review(current.getUserName(),storeName,productName,content);
+        boolean resultStore = store.addReview(review);
+        boolean resultUser = current.addReview(review);
+        if(!resultStore && !resultUser)
+            return false;
+        else if(!resultStore) {
+            current.removeReview(review);
+            return false;
+        }
+        else if(!resultUser) {
+            store.removeReview(review);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * use case 3.3 - write review
+     * the function return if a valid correct
+     * @param productName - the product name
+     * @param storeName - the store name
+     * @param content - the content name
+     * @return true if the review is valid, otherwise false.
+     */
+    private boolean validReview(String storeName,String productName, String content) {
+        return storeName!=null && productName!=null && content!=null &&
+                !content.isEmpty();
+    }
+
+
+    /**
+     * use case 3.5 - write request on store
+     * @param storeName name of store to write request to
+     * @param content the content of the request
+     * @return
+     */
+    public boolean addRequest(String storeName, String content) {
+        //TODO add logger
+        if (content == null || !stores.containsKey(storeName)) return false;
+        Store dest = stores.get(storeName);
+        Request request = current.addRequest(storeName, content);
+        if (request == null) return false;
+        dest.addRequest(request);
+        return true;
+    }
+
+    /**
      * use case 3.7 - watch purchase history
      * the function return the purchase list
      * @return the purchase list
      */
     public List<Purchase> watchMyPurchaseHistory() {
+        //TODO add logger
         return current.watchMyPurchaseHistory();
     }
 
+    /**
+     * use case 4.1.1 add product to store
+     * @param productData -the details of the product
+     * @return true if the product was added, false otherwise
+     */
+    public boolean addProductToStore(ProductData productData) {
+        //TODO logger
+        if(productData==null)
+            return false;
+        if(!stores.containsKey(productData.getStoreName()))
+            return false;
+        if(validProduct(productData))
+            return current.addProductToStore(productData);
+        return false;
+    }
+
+    /**
+     * check if the data of the product has valid content
+     * @param productData data of the product to check
+     * @return true if the details of the product are valid
+     */
+    private boolean validProduct(ProductData productData) {
+        return productData.getProductName()!=null &&productData.getCategory()!=null
+                && validDiscounts(productData.getDiscount()) && productData.getPrice()>0
+                && productData.getAmount()>0 && productData.getPurchaseType()!=null;
+    }
+
+    /**
+     * use case 4.1.2: remove a product from store if exist
+     * @param storeName name of the store to remove the product from
+     * @param productName name of product to be removed
+     * @return if the product was removed
+     */
+    public boolean removeProductFromStore(String storeName, String productName) {
+        //TODO Logger
+        if(!stores.containsKey(storeName))
+            return false;
+        return current.removeProductFromStore(storeName,productName);
+    }
+
+    /**
+     * use case 4.1.3 - edit product
+     * @param productData the product to be edited to
+     * @return if the product was edited successfully
+     */
+
+    public boolean editProductFromStore(ProductData productData) {
+        //TODO logger
+        if(productData==null)
+            return false;
+        if(!stores.containsKey(productData.getStoreName()))
+            return false;
+        if(validProduct(productData))
+            return current.editProductFromStore(productData);
+        return false;
+    }
+
+    /**
+     * use case 4.3
+     * @param storeName the name of the store to be manager of
+     * @param userName the user to be manager of the store
+     * @return
+     */
+    public boolean manageOwner(String storeName, String userName) {
+        //TODO add logger
+        if(!users.containsKey(userName)||!stores.containsKey(storeName))
+            return false;
+        addManager(userName,storeName);
+        List<PermissionType> types=new ArrayList<>();
+        types.add(PermissionType.OWNER);
+        return current.addPermissions(types,storeName,userName);
+    }
+
+    /**
+     * use case 4.5 -add manager
+     * @param storeName name of store to be manager of
+     * @param userName
+     * @return if the manager was added successfully
+     */
+    public boolean addManager(String userName, String storeName) {
+        //TODO add logger
+        if(!users.containsKey(userName)||!stores.containsKey(storeName))
+            return false;
+        return current.addManager(users.get(userName),storeName);
+    }
 
     /**
      * use case 4.6.1 - add permissions
@@ -632,6 +620,32 @@ public class LogicManager {
         return current.removeManager(userName,storeName);
     }
 
+    /**
+     * use case 4.9.1 -view Store Request
+     * @param storeName name of store to view request.
+     * @return if the current user is manager or owner of the store the list , else empty list.
+     */
+    public List<Request> viewStoreRequest(String storeName) {
+        //TODO add logger
+        List<Request> requests = new LinkedList<>();
+        if(stores.containsKey(storeName))
+            requests = current.viewRequest(storeName);
+        return requests;
+    }
+
+    /**
+     * use case 4.9.2 -replay to Request
+     * @param storeName
+     * @param requestID
+     * @param content
+     * @return true if replay, false else
+     */
+    public Request replayRequest(String storeName, int requestID, String content) {
+        //TODO add logger
+        if (content!=null && stores.containsKey(storeName))
+            return (current.replayToRequest(storeName, requestID, content)) ;
+        return null;
+    }
 
     /**
      * use case 6.4.1 - admin watch history purchases of some user
@@ -666,30 +680,4 @@ public class LogicManager {
         return null;
     }
 
-
-
-    /**
-     * use case 4.9.1 -view Store Request
-     * @param storeName name of store to view request.
-     * @return if the current user is manager or owner of the store the list , else empty list.
-     */
-    public List<Request> viewStoreRequest(String storeName) {
-        List<Request> requests = new LinkedList<>();
-        if(stores.containsKey(storeName))
-            requests = current.viewRequest(storeName);
-        return requests;
-    }
-
-    /**
-     * use case 4.9.2 -replay to Request
-     * @param storeName
-     * @param requestID
-     * @param content
-     * @return true if replay, false else
-     */
-    public Request replayRequest(String storeName, int requestID, String content) {
-        if (content!=null && stores.containsKey(storeName))
-            return (current.replayToRequest(storeName, requestID, content)) ;
-        return null;
-    }
 }
