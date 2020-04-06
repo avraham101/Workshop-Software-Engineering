@@ -16,6 +16,7 @@ public class Basket {
     private HashMap<Product, Integer> products; // key is the product and the value is the amount of the product in thr basket
     private PaymentData paymentData;
     private DeliveryData deliveryData;
+
     /**
      * constructor
      * @param store - the store of the basket
@@ -26,6 +27,7 @@ public class Basket {
     }
 
     /**
+     * use case 2.7.2
      * delete product from basket
      * @param productName - the product to remove
      * @return - true if removed, false if not
@@ -41,6 +43,7 @@ public class Basket {
     }
 
     /**
+     * use case 2.7.3
      * edit new amount of a product in the basket
      * @param productName - the product to change it amount
      * @param newAmount - the amount to change to
@@ -57,6 +60,7 @@ public class Basket {
     }
 
     /**
+     * use case 2.7.1
      * add product to the basket
      * @param product - the product to add
      * @param amount - the amount to add

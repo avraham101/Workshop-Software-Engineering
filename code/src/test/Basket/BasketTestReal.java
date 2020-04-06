@@ -11,9 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * test functions of the class Basket
@@ -49,6 +49,20 @@ public class BasketTestReal extends BasketTest{
         basket.addProduct(product,product.getAmount()*2);
         assertFalse(basket.available(paymentData, address));
         basket.addProduct(product,product.getAmount());
+    }
+
+    /**
+     * use case 2.8 - buy cart
+     */
+    @Override
+    protected void testBuyBasket() {
+        Purchase result = basket.buy();
+        assertNotNull(result);
+        Product product = data.getRealProduct(Data.VALID);
+        assertEquals(basket.getStore().getName(), result.getStoreName());
+        List<ProductData> productDataList = result.getProduct();
+        assertFalse(productDataList.isEmpty());
+        assertEquals(product.getName(), productDataList.get(0).getProductName());
     }
 
 }
