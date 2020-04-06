@@ -10,18 +10,15 @@ import java.util.List;
 public class GetStorePurchaseHistoryTest extends AcceptanceTests {
     @Before
     public void setUp(){
-        super.setUp();
-        addStores(stores);
-        addProducts(products);
-        bridge.login(superUser.getUsername(),superUser.getPassword());
+        addUserStoresAndProducts(superUser);
         bridge.addToCurrentUserCart(products.get(0),1);
         bridge.buyCart(validPayment,validDelivery);
-        //TODO clear history?
     }
 
     @Test
     public void getStorePurchaseHistorySuccess(){
-       List<PurchaseTestData> history=bridge.getStorePurchasesHistory(stores.get(0).getStoreName());
+       List<PurchaseTestData> history =
+               bridge.getStorePurchasesHistory(stores.get(0).getStoreName());
        assertNotNull(history);
        assertTrue(history.get(0).getProductsAndAmountInPurchase().containsKey(products.get(0)));
     }
@@ -40,8 +37,6 @@ public class GetStorePurchaseHistoryTest extends AcceptanceTests {
 
     @After
     public void tearDown(){
-        deleteStores(stores);
-        deleteProducts(products);
-        bridge.logout(superUser.getUsername());
+        deleteUserStoresAndProducts(superUser);
     }
 }

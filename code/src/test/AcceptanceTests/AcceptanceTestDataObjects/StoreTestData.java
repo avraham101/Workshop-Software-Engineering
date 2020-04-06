@@ -4,29 +4,26 @@ import java.util.*;
 
 public class StoreTestData {
     private String storeName;
-    private UserTestData storeManager;
+    private UserTestData storeOwner;
     private List<ProductTestData> products;
     private HashMap<String, PermissionTestData> permissions;
     private List<PurchaseTestData> purchasesHistory;
     private HashSet<ApplicationToStoreTestData> applications;
 
-    //TODO: change storeManager to storeOwner
-    //TODO: add a list of store managers
-
-    public StoreTestData(String storeName, UserTestData storeManager) {
+    public StoreTestData(String storeName, UserTestData storeOwner) {
         this.storeName = storeName;
-        this.storeManager = storeManager;
+        this.storeOwner = storeOwner;
         this.products = new ArrayList<>();
         this.permissions = new HashMap<>();
         this.purchasesHistory = new ArrayList<>();
         this.applications = new HashSet<>();
 
-        String username = storeManager.getUsername();
+        String username = storeOwner.getUsername();
         HashSet<PermissionsTypeTestData> initialPermissions = new HashSet<>();
         initialPermissions.add(PermissionsTypeTestData.OWNER);
         permissions.put(username, new PermissionTestData(username, initialPermissions,username));
     }
-
+    //TODO: delete?
     public void addPermission(String username, PermissionsTypeTestData permissionToAdd, String givenBy){
         PermissionTestData permissionsOfUser = permissions.get(username);
         HashSet<PermissionsTypeTestData> permissionSet = new HashSet<>();
@@ -53,12 +50,12 @@ public class StoreTestData {
         this.storeName = storeName;
     }
 
-    public UserTestData getStoreManager() {
-        return storeManager;
+    public UserTestData getStoreOwner() {
+        return storeOwner;
     }
 
-    public void setStoreManager(UserTestData storeManager) {
-        this.storeManager = storeManager;
+    public void setStoreOwner(UserTestData storeOwner) {
+        this.storeOwner = storeOwner;
     }
 
     public List<ProductTestData> getProducts() {
