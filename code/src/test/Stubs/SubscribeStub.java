@@ -7,6 +7,7 @@ import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class SubscribeStub extends Subscribe{
@@ -85,8 +86,6 @@ public class SubscribeStub extends Subscribe{
         return true;
     }
 
-
-
     @Override
     public boolean isItPurchased(String storeName, String productName){
         return true;
@@ -95,5 +94,10 @@ public class SubscribeStub extends Subscribe{
     @Override
     public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
         return true;
+    }
+
+    @Override
+    public List<Purchase> watchMyPurchaseHistory() {
+        return new LinkedList<>();
     }
 }

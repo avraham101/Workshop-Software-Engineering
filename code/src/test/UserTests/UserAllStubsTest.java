@@ -16,6 +16,8 @@ import Systems.SupplySystem.SupplySystem;
 import org.junit.Before;
 import org.junit.Test;
 //class for Unit test all stubs
+import java.util.List;
+
 import static org.junit.Assert.*;
 //class for Unit test all stubs
 
@@ -77,6 +79,7 @@ public class UserAllStubsTest {
         testEditProductFromStoreSubscribe();
         testAddProductToCart();
         testPurchaseSubscribe();
+        testWatchPurchasesSubscribe();
         testWriteReviewSubscribe();
         testRemoveProductFromStoreSubscribe();
         testRemoveManagerSubscribe();
@@ -98,6 +101,7 @@ public class UserAllStubsTest {
         testEditProductFromStoreGuest();
         testAddProductToCart();
         testPurchaseGuest();
+        testWatchPurchasesGeust();
         testWriteReviewGuest();
         testRemoveProductFromStoreGuest();
         testAddPermissionsGuest();
@@ -350,5 +354,23 @@ public class UserAllStubsTest {
         Product p = data.getRealProduct(Data.VALID);
         assertTrue(user.addProductToCart(store,p,p.getAmount()));
     }
+
+    /**
+     * test use case 3.7 - watch purchases
+     */
+    private void testWatchPurchasesGeust() {
+        List<Purchase> list = user.watchMyPurchaseHistory();
+        assertNull(list);
+    }
+
+    /**
+     * test use case 3.7 - watch purchases
+     */
+    public void testWatchPurchasesSubscribe() {
+        List<Purchase> list = user.watchMyPurchaseHistory();
+        assertNotNull(list);
+        assertTrue(list.isEmpty());
+    }
+
 
 }

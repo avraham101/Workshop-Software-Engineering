@@ -7,6 +7,7 @@ import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class GuestStub extends Guest {
@@ -63,5 +64,13 @@ public class GuestStub extends Guest {
     @Override
     public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
         return true;
+    }
+
+    /**
+     * ues case 3.7 - watch my purchase history
+     */
+    @Override
+    public List<Purchase> watchMyPurchaseHistory() {
+        return null;
     }
 }

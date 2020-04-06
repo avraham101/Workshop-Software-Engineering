@@ -149,4 +149,14 @@ public class UserRealTest extends UserAllStubsTest{
         List<Purchase> purchases = user.getState().watchMyPurchaseHistory();
         assertEquals(1, purchases.size());
     }
+
+    /**
+     * test use case 3.7 - watch purchases
+     */
+    @Override
+    public void testWatchPurchasesSubscribe() {
+        List<Purchase> list = user.watchMyPurchaseHistory();
+        assertNotNull(list);
+        assertEquals(1, list.size());
+    }
 }

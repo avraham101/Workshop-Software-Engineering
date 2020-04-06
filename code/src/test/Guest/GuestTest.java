@@ -9,6 +9,8 @@ import Stubs.CartStub;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class GuestTest {
@@ -35,6 +37,7 @@ public class GuestTest {
         addProductTest();
         testAddProductToCart();
         testbuyCart();
+        testWatchPurchases();
         addRequest();
     }
 
@@ -84,5 +87,13 @@ public class GuestTest {
 
     private  void addProductTest(){
         assertFalse(guest.addProductToStore(data.getProductData(Data.VALID)));
+    }
+
+    /**
+     * test use case 3.7 - watch purchases
+     */
+    private void testWatchPurchases() {
+        List<Purchase> list = guest.watchMyPurchaseHistory();
+        assertNull(list);
     }
 }

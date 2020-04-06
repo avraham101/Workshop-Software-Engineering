@@ -667,5 +667,15 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         }
     }
 
+    /**
+     * use case 3.7 - watch purchase history
+     */
+    @Override
+    public void testWatchPurchaseHistory() {
+        List<Purchase> purchases = logicManager.watchMyPurchaseHistory();
+        assertNotNull(purchases);
+        assertEquals(1,purchases.size());
+    }
+
 }
 

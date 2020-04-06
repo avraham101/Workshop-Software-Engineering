@@ -8,6 +8,7 @@ import org.junit.Before;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -158,4 +159,15 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         assertFalse(p.getOwner().getPermissions().containsKey(storeName));
 
     }
+
+    /**
+     * test use case 3.7 - watch purchases
+     */
+    @Override
+    public void testWatchPurchases() {
+        List<Purchase> list = sub.watchMyPurchaseHistory();
+        assertNotNull(list);
+        assertEquals(1,list.size());
+    }
+
 }
