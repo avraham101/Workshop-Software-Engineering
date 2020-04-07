@@ -20,7 +20,7 @@ public class LogicManager {
     private LoggerSystem loggerSystem;
     private User current;
 
-    public LogicManager(HashMap<String, Subscribe> users, HashMap<String, Store> stores, User current) {
+    public LogicManager(String userName, String password, HashMap<String, Subscribe> users, HashMap<String, Store> stores, User current) throws Exception {
         this.users = users;
         this.stores = stores;
         this.current = current;
@@ -29,37 +29,43 @@ public class LogicManager {
             loggerSystem = new LoggerSystem();
             paymentSystem = new ProxyPayment();
             supplySystem = new ProxySupply();
-            /**
-             * use case 1.1
-             */
             if(!paymentSystem.connect()) {
                 throw new Exception("Payment System Crashed");
             }
             if(!supplySystem.connect()) {
                 throw new Exception("Supply System Crashed");
             }
+            if(!register(userName,password)) {
+                throw new Exception("Admin Register Crashed");
+            }
         } catch (Exception e) {
-            System.exit(1);
+            throw new Exception("System crashed");
         }
     }
 
-    public LogicManager() {
+    /**
+     * use case 1.1 - Init Trading System
+     * @param userName - the user name
+     * @param password - the user password
+     * @throws Exception - system crashed exception
+     */
+    public LogicManager(String userName, String password) throws Exception {
         users = new HashMap<>();
         stores = new HashMap<>();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
-            /**
-             * use case 1.1
-             */
             if(!paymentSystem.connect()) {
                 throw new Exception("Payment System Crashed");
             }
             if(!supplySystem.connect()) {
                 throw new Exception("Supply System Crashed");
             }
+            if(!register(userName,password)) {
+                throw new Exception("Admin Register Crashed");
+            }
         } catch (Exception e) {
-            System.exit(1);
+            throw new Exception("System crashed");
         }
         current = new User();
     }
