@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="05e8ee0e-932c-4138-ba00-2c920c3ad416" name="Default" comment="fixed tests">
+    <list default="true" id="05e8ee0e-932c-4138-ba00-2c920c3ad416" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AddToCartTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AddToCartTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AppointManagerTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AppointManagerTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/EditCartTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/EditCartTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/FilterProductsInStoresTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/FilterProductsInStoresTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/InitialStartTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/InitialStartTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/LoginTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/LoginTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/LogoutTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/LogoutTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/ManagerPermissionsTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/ManagerPermissionsTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/RegisterTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/RegisterTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/ViewAndReplyApplicationToStore.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/ViewAndReplyApplicationToStore.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/WriteReviewOnProductTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/WriteReviewOnProductTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/Data/TestData.java" afterPath="$PROJECT_DIR$/code/src/test/Data/TestData.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -63,7 +51,7 @@
         <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/InitialStartTest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="567">
-              <caret line="27" column="22" lean-forward="false" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="22" />
+              <caret line="27" column="22" lean-forward="true" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="22" />
               <folding>
                 <element signature="e#318#319#0" expanded="true" />
                 <element signature="e#354#355#0" expanded="true" />
@@ -374,7 +362,7 @@
       <option name="presentableId" value="Default" />
       <updated>1585926831330</updated>
       <workItem from="1585926832568" duration="33000" />
-      <workItem from="1586255960599" duration="4469000" />
+      <workItem from="1586255960599" duration="4505000" />
     </task>
     <task id="LOCAL-00001" summary="fixed tests">
       <created>1586199195159</created>
@@ -390,11 +378,18 @@
       <option name="project" value="LOCAL" />
       <updated>1586199215601</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="fixed tests">
+      <created>1586261340973</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1586261340973</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23317000" />
+    <option name="totallyTimeSpent" value="23353000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -807,7 +802,7 @@
     <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/InitialStartTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="567">
-          <caret line="27" column="22" lean-forward="false" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="22" />
+          <caret line="27" column="22" lean-forward="true" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="22" />
           <folding>
             <element signature="e#318#319#0" expanded="true" />
             <element signature="e#354#355#0" expanded="true" />

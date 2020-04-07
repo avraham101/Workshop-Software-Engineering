@@ -4,7 +4,6 @@ import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsBridge;
 import junit.framework.TestCase;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -14,26 +13,27 @@ import java.util.Date;
 import java.util.List;
 
 public abstract class AcceptanceTests extends TestCase{
-    protected AcceptanceTestsBridge bridge;
-    protected List<UserTestData> users;
-    protected List<StoreTestData> stores;
-    protected List<ProductTestData> products;
-    protected StoreTestData notExistingStore;
-    protected DeliveryDetailsTestData validDelivery;
-    protected  DeliveryDetailsTestData invalidDelivery;
-    protected PaymentTestData validPayment;
-    protected PaymentTestData invalidPayment;
-    protected UserTestData superUser;
-    protected UserTestData admin;
+    protected static AcceptanceTestsBridge bridge;
+    protected static List<UserTestData> users;
+    protected static List<StoreTestData> stores;
+    protected static List<ProductTestData> products;
+    protected static StoreTestData notExistingStore;
+    protected static DeliveryDetailsTestData validDelivery;
+    protected static DeliveryDetailsTestData invalidDelivery;
+    protected static PaymentTestData validPayment;
+    protected static PaymentTestData invalidPayment;
+    protected static UserTestData superUser;
+    protected static UserTestData admin;
 
     //TODO : removes calls to super.setUp() in child classes
+    //TODO : removes calls to beforeClass in other classes
 
     @BeforeClass
-    public void setUp(){
-        this.bridge = AcceptanceTestsDriver.getBridge();
-        this.users = new ArrayList<>();
-        this.stores = new ArrayList<>();
-        this.products = new ArrayList<>();
+    public static void setUpAll(){
+        bridge = AcceptanceTestsDriver.getBridge();
+        users = new ArrayList<>();
+        stores = new ArrayList<>();
+        products = new ArrayList<>();
 
         setUpUsers();
         setUpDelivery();
@@ -43,23 +43,17 @@ public abstract class AcceptanceTests extends TestCase{
         setUpCarts();
         setUpPayments();
         setUpDelivery();
-        setUpInitialStart();
     }
 
-    @Test
-    private void setUpInitialStart() {
-        InitialStartTest initialStartTest = new InitialStartTest();
-        initialStartTest.runInitialStartAllTests();
-    }
 
-    private void setUpPayments() {
+    private static void setUpPayments() {
         Date validDate = new Date();
         Date invalidDate = new Date(0);
         validPayment = new PaymentTestData("1111","343",validDate);
         invalidPayment = new PaymentTestData("1111","343",invalidDate);
     }
 
-    private void setUpDelivery() {
+    private static void setUpDelivery() {
         validDelivery = new DeliveryDetailsTestData
                 ("israel","ashdod","valid",7);
         invalidDelivery = new DeliveryDetailsTestData
@@ -67,7 +61,7 @@ public abstract class AcceptanceTests extends TestCase{
     }
 
 
-    private void setUpUsers() {
+    private static void setUpUsers() {
         admin = new UserTestData("admin","admin");
         UserTestData user0 = new UserTestData("testUser0","testUser0Pass");
         UserTestData user1 = new UserTestData("testUser1","testUser1Pass");
@@ -77,7 +71,7 @@ public abstract class AcceptanceTests extends TestCase{
         users.addAll(Arrays.asList(user0, user1,user2,user3));
     }
 
-    private void setUpProducts(){
+    private static void setUpProducts(){
         ProductTestData prod0 = new ProductTestData("appleTest",
                                                     "store0Test",
                                                     30,
@@ -145,7 +139,7 @@ public abstract class AcceptanceTests extends TestCase{
 
     }
 
-    private void setUpStores(){
+    private static void setUpStores(){
 
         UserTestData store0Owner = users.get(0);
         UserTestData store1Owner = users.get(1);
@@ -162,7 +156,7 @@ public abstract class AcceptanceTests extends TestCase{
 
     }
 
-    private void setUpCarts() {
+    private static void setUpCarts() {
         List<ProductTestData> basket0Products = products.subList(0,2);
         List<ProductTestData> basket1Products = Arrays.asList(products.get(4));
         List<ProductTestData> basket2Products = Arrays.asList(products.get(9));
@@ -179,19 +173,19 @@ public abstract class AcceptanceTests extends TestCase{
         setUpBasketProductsAndAmounts(basket1,basket1Products, amounts1);
         setUpBasketProductsAndAmounts(basket2,basket2Products, amounts2);
 
-        List<BasketTestData> baskets0 = Arrays.asList(basket0,basket1,basket2);
-        superUser.getCart().addBasketsToCart(baskets0);
+        List<BasketTestData> baskets = Arrays.asList(basket0,basket1,basket2);
+        superUser.getCart().addBasketsToCart(baskets);
 
     }
 
-    private void setUpBasketProductsAndAmounts(BasketTestData basket,
+    private static void setUpBasketProductsAndAmounts(BasketTestData basket,
                                                List<ProductTestData> basketProducts,
                                                int[] amounts) {
         for (int i=0;i<amounts.length;i++)
             basket.addProductToBasket(basketProducts.get(i),amounts[i]);
     }
 
-    private String getPasswordByUser(String userName){
+    private static String getPasswordByUser(String userName){
         for (UserTestData ud : users) {
             if(ud.getUsername().equals(userName))
                 return ud.getPassword();
@@ -199,7 +193,7 @@ public abstract class AcceptanceTests extends TestCase{
         return null;
     }
 
-    protected  void deleteStores (List<StoreTestData> stores){
+    protected static void deleteStores (List<StoreTestData> stores){
         String userName = bridge.getCurrentLoggedInUser();
         if(userName != null){
             bridge.logout();
@@ -215,7 +209,7 @@ public abstract class AcceptanceTests extends TestCase{
         }
     }
 
-    protected  void addStores(List<StoreTestData> stores){
+    protected static void addStores(List<StoreTestData> stores){
         String userName = bridge.getCurrentLoggedInUser();
         if(userName!=null){
             bridge.logout();
@@ -229,13 +223,14 @@ public abstract class AcceptanceTests extends TestCase{
         }
 
         bridge.logout();
+
         if(userName!=null){
             bridge.login(userName,getPasswordByUser(userName));
         }
 
     }
 
-    protected void deleteProducts( List<ProductTestData> products){
+    protected static void deleteProducts( List<ProductTestData> products){
         String userName = bridge.getCurrentLoggedInUser();
         if(userName != null){
             bridge.logout();
@@ -251,7 +246,7 @@ public abstract class AcceptanceTests extends TestCase{
         }
 
     }
-    protected  void addProducts(List<ProductTestData> products){
+    protected static void addProducts(List<ProductTestData> products){
         String userName = bridge.getCurrentLoggedInUser();
         if(userName != null){
             bridge.logout();
@@ -265,7 +260,7 @@ public abstract class AcceptanceTests extends TestCase{
 
     }
 
-    protected void changeAmountOfProductInStore(ProductTestData product,int amount){
+    protected static void changeAmountOfProductInStore(ProductTestData product,int amount){
         String userName = bridge.getCurrentLoggedInUser();
         if(userName != null){
             bridge.logout();
@@ -279,7 +274,7 @@ public abstract class AcceptanceTests extends TestCase{
     }
 
 
-    protected void deleteUserAndLoginToPreviousUser(String username){
+    protected static void deleteUserAndLoginToPreviousUser(String username){
         String currUsername = bridge.getCurrentLoggedInUser();
         String currPassword = getPasswordByUser(username);
 
@@ -291,13 +286,13 @@ public abstract class AcceptanceTests extends TestCase{
         }
     }
 
-    protected void deleteUser(String username){
+    protected static void deleteUser(String username){
         bridge.logout();
         bridge.login(admin.getUsername(),admin.getPassword());
         bridge.deleteUser(username);
     }
 
-    protected void registerAndLogin(UserTestData user){
+    protected static void registerAndLogin(UserTestData user){
         bridge.logout();
         String username = user.getUsername();
         String password = user.getPassword();
@@ -305,33 +300,36 @@ public abstract class AcceptanceTests extends TestCase{
         bridge.login(username,password);
     }
 
-    protected void addUserStoresAndProducts(UserTestData user){
+    protected static void logoutAndLogin(UserTestData toLoginUser){
+        bridge.logout();
+        bridge.login(toLoginUser.getUsername(),toLoginUser.getPassword());
+    }
+
+    protected static void addUserStoresAndProducts(UserTestData user){
         registerAndLogin(user);
         addStores(stores);
         addProducts(products);
     }
 
-    protected void deleteUserStoresAndProducts(UserTestData user){
+    protected static void deleteUserStoresAndProducts(UserTestData user){
         deleteProducts(products);
         deleteStores(stores);
         deleteUser(user.getUsername());
 
     }
 
-    protected void registerUsers(List<UserTestData> usersToRegister){
+    protected static void registerUsers(List<UserTestData> usersToRegister){
         for(UserTestData user : usersToRegister)
             bridge.register(user.getUsername(),user.getPassword());
     }
 
-    protected void deleteUsers(List<UserTestData> usersToDelete){
+    protected static void deleteUsers(List<UserTestData> usersToDelete){
         for(UserTestData user : usersToDelete)
             deleteUser(user.getUsername());
     }
 
     @AfterClass
-    public void tearDown(){
-        deleteUser(users.get(1).getUsername());
-        deleteUser(users.get(0).getUsername());
-        deleteUser(admin.getUsername());
+    public static void tearDownAll(){
+        bridge.resetSystem();
     }
 }
