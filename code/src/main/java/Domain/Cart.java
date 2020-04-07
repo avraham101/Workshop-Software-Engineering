@@ -18,7 +18,7 @@ public class Cart {
     }
 
     /**
-     * return a basket
+     * the function return a basket
      * @param storeName - the store name of the basket
      * @return - the basket of the store, if not found then null
      */
@@ -31,6 +31,7 @@ public class Cart {
         return null;
     }
 
+    //TODO Unused function
     public void setBaskets(HashMap<String, Basket> baskets) {
         this.baskets = baskets;
     }
@@ -84,6 +85,5 @@ public class Cart {
         }
         return true;
     }
-
 
 }
