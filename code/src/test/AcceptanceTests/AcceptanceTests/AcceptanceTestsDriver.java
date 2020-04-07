@@ -6,7 +6,7 @@ import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsProxyBridge;
 public class AcceptanceTestsDriver {
     public static AcceptanceTestsBridge getBridge() {
         AcceptanceTestsProxyBridge bridge = new AcceptanceTestsProxyBridge();
-        bridge.setRealBridge(null);
+        //bridge.setRealBridge(null);
         return bridge;
     }
 }

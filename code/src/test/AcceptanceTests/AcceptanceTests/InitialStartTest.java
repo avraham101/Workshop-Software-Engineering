@@ -1,9 +1,11 @@
 package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
+
 
 public class InitialStartTest extends AcceptanceTests {
 
@@ -14,7 +16,6 @@ public class InitialStartTest extends AcceptanceTests {
         user1 = users.get(1);
     }
 
-    //TODO: need to add the admin before
     @Test
     public void testInitialStartSuccess(){
         String username = admin.getUsername();

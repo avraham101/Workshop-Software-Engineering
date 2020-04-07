@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import static org.junit.Assert.*;
+
 
 public class FilterProductsInStoresTest extends AcceptanceTests {
 

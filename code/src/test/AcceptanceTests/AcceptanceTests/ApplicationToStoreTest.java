@@ -3,6 +3,8 @@ package AcceptanceTests.AcceptanceTests;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
+
 
 public class ApplicationToStoreTest extends AcceptanceTests {
     UserTestData user;

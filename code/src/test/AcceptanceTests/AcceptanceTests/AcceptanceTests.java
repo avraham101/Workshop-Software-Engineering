@@ -2,7 +2,6 @@ package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsBridge;
-import junit.framework.TestCase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
@@ -11,7 +10,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public abstract class AcceptanceTests extends TestCase{
+import static junit.framework.TestCase.assertTrue;
+
+public class AcceptanceTests {
     protected static AcceptanceTestsBridge bridge;
     protected static List<UserTestData> users;
     protected static List<StoreTestData> stores;
@@ -65,6 +66,8 @@ public abstract class AcceptanceTests extends TestCase{
         UserTestData user3 = new UserTestData("testUser3","testUser3Pass");
         superUser = user0;
         users.addAll(Arrays.asList(user0, user1,user2,user3));
+        boolean init = bridge.initialStart(admin.getUsername(),admin.getPassword());
+        assertTrue(init);
     }
 
     private static void setUpProducts(){
@@ -164,7 +167,7 @@ public abstract class AcceptanceTests extends TestCase{
         BasketTestData basket1 = new BasketTestData(stores.get(1).getStoreName());
         BasketTestData basket2 = new BasketTestData(stores.get(2).getStoreName());
 
-        int[] amounts0 = {12,3,6};
+        int[] amounts0 = {12,3};
         int[] amounts1 = {7};
         int[] amounts2 = {42};
 

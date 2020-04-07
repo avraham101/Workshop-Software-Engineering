@@ -5,6 +5,8 @@ import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
+
 
 public class AppointAnotherOwnerToStoreTest extends AcceptanceTests {
     private UserTestData owner;
