@@ -1,10 +1,14 @@
 package Stubs;
 
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class SubscribeStub extends Subscribe{
 
@@ -33,4 +37,72 @@ public class SubscribeStub extends Subscribe{
         return true;
     }
 
+    @Override
+    public boolean removeProductFromStore(String storeName, String productName) {
+        return true;
+    }
+
+    @Override
+    public boolean editProductFromStore(ProductData productData) {
+        return true;
+    }
+
+    @Override
+    public boolean addManager(Subscribe youngOwner, String storeName) {
+        return true;
+    }
+
+    @Override
+    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return true;
+    }
+
+    @Override
+    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return true;
+    }
+
+    @Override
+    public boolean removeManager(String userName, String storeName) {
+        return true;
+    }
+
+    /**
+     * use case 6.4.1 -watch user history
+     * @return
+     */
+    @Override
+    public boolean canWatchUserHistory() {
+        return false;
+    }
+
+    /**
+     * use case 4.10, 6.4.2 - watch store history
+     * @param storeName - the store name to watch history
+     * @return
+     */
+    @Override
+    public boolean canWatchStoreHistory(String storeName) {
+        return true;
+    }
+
+    @Override
+    public boolean isItPurchased(String storeName, String productName){
+        return true;
+    }
+
+    @Override
+    public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
+        return true;
+    }
+
+    @Override
+    public List<Purchase> watchMyPurchaseHistory() {
+        return new LinkedList<>();
+    }
+
+    @Override
+    public boolean addReview(Review review) {
+        return true;
+    }
 }

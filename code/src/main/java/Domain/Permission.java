@@ -19,6 +19,11 @@ public class Permission {
         permissionType=new HashSet<>();
     }
 
+    public Permission(Subscribe sub, HashSet<PermissionType> permissionTypes) {
+        this.owner = owner;
+        permissionType=permissionTypes;
+    }
+
     public Subscribe getOwner() {
         return owner;
     }
@@ -46,13 +51,14 @@ public class Permission {
     /**
      * Use case 3.2
      * @param type - the permission type
-     * @return true if the permission doesnt exits
+     * @return true if the permission doesnt exists or if the manager is not owner
      */
     public boolean addType(PermissionType type) {
-        if(this.permissionType.contains(type))
+        if(permissionType.contains(PermissionType.OWNER)||this.permissionType.contains(type))
             return false;
-        this.permissionType.add(type);
-        return true;
+        if(type==PermissionType.OWNER)
+            permissionType.clear();
+        return this.permissionType.add(type);
     }
 
     /**
@@ -64,11 +70,18 @@ public class Permission {
                 permissionType.contains(PermissionType.PRODUCTS_INVENTORY);
     }
 
+    /**
+     * remove the type from permissions list
+     * @param type
+     * @return
+     */
     public boolean removeType(PermissionType type){
-        if(!this.permissionType.contains(type))
-            return false;
-        this.permissionType.remove(type);
-        return true;
+        return permissionType.remove(type);
+    }
+
+    public boolean canAddOwner() {
+        return permissionType.contains(PermissionType.ADD_OWNER)||
+                permissionType.contains(PermissionType.OWNER);
     }
 }
 

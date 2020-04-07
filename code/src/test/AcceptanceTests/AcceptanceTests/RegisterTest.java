@@ -25,7 +25,7 @@ public class RegisterTest extends AcceptanceTests {
 
     @Test
     public void testRegisterFailAlreadyRegistered(){
-        bridge.register(username, password);
+        testRegisterSuccess();
         boolean isRegistered = bridge.register(username, password);
         assertFalse(isRegistered);
     }

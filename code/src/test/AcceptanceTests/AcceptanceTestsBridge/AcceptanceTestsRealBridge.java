@@ -2,22 +2,26 @@ package AcceptanceTests.AcceptanceTestsBridge;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
+import DataAPI.StoreData;
 import Service.ServiceAPI;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     private ServiceAPI serviceAPI;
-
-    public AcceptanceTestsRealBridge(){
-        this.serviceAPI = new ServiceAPI();
-    }
+    private UserTestData currentUser;
 
     @Override
     public boolean initialStart(String username, String password) {
-        return false;
+        try{
+            this.serviceAPI = new ServiceAPI(username,password);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     @Override
@@ -27,22 +31,37 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public void resetSystem() {
-
+        try {
+            this.serviceAPI = new ServiceAPI("admin", "admin");
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public boolean register(String username, String password) {
-        return false;
+        return serviceAPI.register(username,password);
     }
 
+    //TODO: need to implement without resetting ?
     @Override
     public void deleteUser(String username) {
-
+        try {
+            this.serviceAPI = new ServiceAPI("admin", "admin");
+            this.currentUser = null;
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public String getCurrentLoggedInUser() {
-        return null;
+        if(currentUser!=null)
+            return currentUser.getUsername();
+        else
+            return null;
     }
 
     @Override
@@ -52,6 +71,10 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public boolean login(String username, String password) {
+        if(serviceAPI.login(username,password)){
+            currentUser = new UserTestData(username,password);
+            return true;
+        }
         return false;
     }
 
@@ -117,7 +140,19 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public List<StoreTestData> getStoresInfo() {
-        return null;
+        List<StoreData> storeData = serviceAPI.viewStores();
+        return buildStoresTestData(storeData);
+    }
+
+    private List<StoreTestData> buildStoresTestData(List<StoreData> storeData){
+        List<StoreTestData> storeTestData = new ArrayList<>();
+        for(StoreData sd : storeData)
+            storeTestData.add(buildStoreTestData(sd));
+        return storeTestData;
+    }
+
+    private StoreTestData buildStoreTestData(StoreData sd) {
+        UserTestData storeOwner =
     }
 
     @Override

@@ -5,7 +5,6 @@ import DataAPI.PurchaseTypeData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Product {
     private String name; //unique
@@ -26,6 +25,25 @@ public class Product {
         this.discount=productData.getDiscount();
         this.reviews=new ArrayList<>();
     }
+
+    /**
+     * clone function for edit product
+     * @param productData
+     * @param category
+     * parameters to get data from
+     */
+
+    public void edit(ProductData productData, Category category) {
+        this.purchaseType = createPurchaseType(productData.getPurchaseType());
+        category.removeProduct(name);
+        this.category = category;
+        category.addProduct(this);
+        this.amount=productData.getAmount();
+        this.price=productData.getPrice();
+        this.discount=productData.getDiscount();
+    }
+
+
 
     private PurchaseType createPurchaseType(PurchaseTypeData purchaseType) {
         if(purchaseType==PurchaseTypeData.IMMEDDIATE)
@@ -101,4 +119,24 @@ public class Product {
                 category.getName().equals(product.getCategory());
     }
 
+    /**
+     * use case 2.4.1 - view all products from store
+     * @return the price of the product after discount
+     */
+    public double getDiscountPrice() {
+        double p = price;
+        for (Discount d: discount) {
+            p = p -  p* d.getPercentage();
+        }
+        return p;
+    }
+
+    /**
+     * use case 3.3 - write review
+     * this function add the review to the product
+     * @param review - the review
+     */
+    public void addReview(Review review) {
+        this.reviews.add(review);
+    }
 }

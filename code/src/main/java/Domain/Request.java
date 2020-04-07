@@ -6,11 +6,13 @@ public class Request {
     private String storeName;
     private String content;
     private String comment;
+    private int id;
 
-    public Request(String senderName, String storeName, String content) {
+    public Request(String senderName, String storeName, String content,int id) {
         this.senderName = senderName;
         this.storeName=storeName;
         this.content = content;
+        this.id=id;
         comment=null;
     }
 
@@ -45,4 +47,14 @@ public class Request {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
 }
