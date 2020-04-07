@@ -13,15 +13,12 @@ public class LoginTest extends AcceptanceTests {
 
     @Before
     public void setUp(){
-        super.setUp();
-        String currUsername = bridge.getCurrentLoggedInUser();
-        bridge.logout(currUsername);
+        bridge.logout();
         username = superUser.getUsername();
         password = superUser.getPassword();
         bridge.register(username,password);
         notExistUserName = username + username;
         notExistPassword = password + password;
-
     }
 
     @Test
@@ -34,7 +31,7 @@ public class LoginTest extends AcceptanceTests {
 
     @Test
     public void testLoginFailWrongPassword(){
-        boolean isLoggedInWrongPassword = bridge.login(username,password+"a");
+        boolean isLoggedInWrongPassword = bridge.login(username,notExistPassword);
         String currUsername = bridge.getCurrentLoggedInUser();
         assertFalse(isLoggedInWrongPassword);
         assertNull(currUsername);

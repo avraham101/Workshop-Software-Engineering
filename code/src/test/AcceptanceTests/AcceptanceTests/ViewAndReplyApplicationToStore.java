@@ -22,21 +22,17 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
 
     @Before
     public void setUp() {
-        super.setUp();
-        responder  = superUser;
+        responder = superUser;
         asker = users.get(1);
         storeName = stores.get(0).getStoreName();
-        bridge.register(responder.getUsername(),responder.getPassword());
-        bridge.register(asker.getUsername(),asker.getPassword());
-        bridge.login(responder.getUsername(),responder.getPassword());
-        addStores(stores);
-        bridge.logout(responder.getUsername());
+
+        registerAndLogin(responder);
+        registerAndLogin(asker);
         setUpApplicationsAndReplies();
-        bridge.login(responder.getUsername(),responder.getPassword());
+        registerAndLogin(responder);
     }
 
     private void setUpApplicationsAndReplies() {
-        bridge.login(asker.getUsername(),asker.getPassword());
         this.applications = new HashSet<>();
         this.applicationsAndReplies = new HashMap<>();
 
@@ -47,13 +43,11 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
         for(ApplicationToStoreTestData app : applications) {
             bridge.sendApplicationToStore(storeName, app.getContent());
             applicationsAndReplies.put(app, "rep" + i);
+            i++;
         }
 
         ApplicationToStoreTestData wrongApp = new ApplicationToStoreTestData(storeName, asker.getUsername() + asker.getUsername(), "wrongApp");
-        String wrongRep = "wrongRep";
-        wrongApplication = new Pair<>(wrongApp,wrongRep);
-
-        bridge.logout(asker.getUsername());
+        wrongApplication = new Pair<>(wrongApp,"wrongRep");
     }
 
     @Test
@@ -64,7 +58,7 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
 
     @Test
     public void viewApplicationToStoreTestFailNotLoggedIn(){
-        bridge.logout(responder.getUsername());
+        bridge.logout();
         HashSet<ApplicationToStoreTestData> actualApplications = bridge.viewApplicationToStore(storeName);
         assertNull(actualApplications);
     }
@@ -91,7 +85,7 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
 
     @Test
     public void replyApplicationToStoreTestFailNotLoggedIn(){
-        bridge.logout(responder.getUsername());
+        bridge.logout();
 
         HashMap<ApplicationToStoreTestData,String> emptyAppAndRep = bridge.getUserApplicationsAndReplies(asker.getUsername());
         assertNull(emptyAppAndRep);

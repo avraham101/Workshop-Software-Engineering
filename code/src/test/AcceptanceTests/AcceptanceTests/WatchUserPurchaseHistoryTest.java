@@ -13,14 +13,8 @@ public class WatchUserPurchaseHistoryTest extends AcceptanceTests {
 
     @Before
     public void setUp(){
-        super.setUp();
         user0 = superUser;
-        String username = user0.getUsername();
-        String password = user0.getPassword();
-        bridge.register(username,password);
-        bridge.login(username,password);
-        addStores(stores);
-        addProducts(products);
+        addUserStoresAndProducts(user0);
         PurchaseTestData purchase0 = bridge.buyCart(validPayment, validDelivery);
         user0.getPurchases().add(purchase0);
     }
@@ -34,7 +28,7 @@ public class WatchUserPurchaseHistoryTest extends AcceptanceTests {
     }
     @Test
     public void watchUserPurchaseHistoryTestFail(){
-        bridge.logout(user0.getUsername());
+        bridge.logout();
         List<PurchaseTestData> actualPurchases = bridge.getUserPurchases(user0.getUsername());
         assertNull(actualPurchases);
         bridge.login(user0.getUsername(),user0.getPassword());
@@ -42,8 +36,6 @@ public class WatchUserPurchaseHistoryTest extends AcceptanceTests {
 
     @After
     public void tearDown(){
-        deleteProducts(products);
-        deleteStores(stores);
-        deleteUser(user0.getUsername());
+        deleteUserStoresAndProducts(user0);
     }
 }

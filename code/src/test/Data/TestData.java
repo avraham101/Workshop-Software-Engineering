@@ -1,13 +1,12 @@
 package Data;
 
+import AcceptanceTests.AcceptanceTests.AcceptanceTests;
 import DataAPI.ProductData;
 import DataAPI.PurchaseTypeData;
 import DataAPI.StoreData;
 import Domain.Discount;
 import Domain.DiscountPolicy;
 import Domain.PurchesPolicy;
-
-import Data.Data;
 import Domain.Subscribe;
 
 import java.util.ArrayList;
@@ -25,7 +24,6 @@ public class TestData {
         setUpDiscountData();
         setUpProductData();
         setUpStoreData();
-
     }
 
     private void setUpUsers() {

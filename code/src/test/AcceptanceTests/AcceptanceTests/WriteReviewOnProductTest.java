@@ -18,18 +18,16 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
 
     @Test
     public void setUp(){
-        super.setUp();
         user0 = superUser;
-        bridge.register(user0.getUsername(),user0.getPassword());
-        bridge.login(user0.getUsername(),user0.getPassword());
+        addUserStoresAndProducts(user0);
 
-        addStores(stores);
-        addProducts(products);
         bridge.addCartToUser(superUser.getUsername(),superUser.getCart());
         purchase0 = bridge.buyCart(validPayment,validDelivery);
-        superUser.getPurchases().add(purchase0);
-
         notExistingProductInPurchase = products.get(7);
+        setUpTestProductsReviews();
+    }
+
+    private void setUpTestProductsReviews(){
         productsAndReviews = new HashMap<>();
         ReviewTestData review0 = new ReviewTestData(user0.getUsername(),"review0test");
         ReviewTestData review4 = new ReviewTestData(user0.getUsername(),"review4test");
@@ -44,9 +42,8 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
 
         for(Map.Entry<ProductTestData,ReviewTestData> entry : productsAndReviews.entrySet()){
             ProductTestData product = entry.getKey();
-            String storeName = product.getStoreName();
             ReviewTestData review = entry.getValue();
-            boolean isWritten = bridge.writeReviewOnProduct(storeName,product,review);
+            boolean isWritten = bridge.writeReviewOnProduct(product,review);
             assertTrue(isWritten);
 
             ReviewTestData actualReview = bridge.getReviewByProductAndDate(purchase0.getPurchaseDate(),product);
@@ -56,7 +53,7 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
 
     @Test
     public void writeReviewOnProductTestFailLogoutUser(){
-        boolean isLoggedOut = bridge.logout(user0.getUsername());
+        boolean isLoggedOut = bridge.logout();
         assertTrue(isLoggedOut);
         writeReviewOnProductTestSuccess();
     }
@@ -65,9 +62,9 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
     public void writeReviewOnProductTestFailNotExistingStore(){
         ProductTestData productToReview = products.get(0);
         ReviewTestData review = productsAndReviews.get(productToReview);
-        String storeName = notExistingStore.getStoreName();
+        productToReview.setStoreName(notExistingStore.getStoreName());
 
-        boolean isWritten = bridge.writeReviewOnProduct(storeName, productToReview, review);
+        boolean isWritten = bridge.writeReviewOnProduct(productToReview, review);
         assertFalse(isWritten);
     }
 
@@ -75,16 +72,13 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
     public void writeReviewOnProductTestFailNotExistingProductInPurchase(){
         ProductTestData productToReview = notExistingProductInPurchase;
         ReviewTestData review = productsAndReviews.get(productToReview);
-        String storeName = notExistingProductInPurchase.getStoreName();
 
-        boolean isWritten = bridge.writeReviewOnProduct(storeName, productToReview, review);
+        boolean isWritten = bridge.writeReviewOnProduct(productToReview, review);
         assertFalse(isWritten);
     }
 
     @After
     public void tearDown(){
-        deleteProducts(products);
-        deleteStores(stores);
-        deleteUser(superUser.getUsername());
+        deleteUserStoresAndProducts(user0);
     }
 }

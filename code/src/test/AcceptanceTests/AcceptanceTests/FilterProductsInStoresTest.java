@@ -17,37 +17,33 @@ public class FilterProductsInStoresTest extends AcceptanceTests {
 
     @Before
     public void setUp(){
-        super.setUp();
         addStores(stores);
         addProducts(products);
     }
 
     @Test
     public void filterProductsInStoresTestSuccess(){
-        List<String> expectedProducts = new ArrayList<>(Arrays.asList("milkiTest" , "cheeseTest"));
+        HashSet<ProductTestData> expectedProducts = new HashSet<>(Arrays.asList(products.get(5) , products.get(9)));
         FilterTestData priceRangeFilter = new PriceRangeFilterTestData(0,5);
         FilterTestData categoryFilter = new CategoryFilterTestData("Dairy");
         List<FilterTestData> filters = new ArrayList<>(Arrays.asList(priceRangeFilter,categoryFilter));
 
         HashSet<ProductTestData> filteredProducts = bridge.filterProducts(products,filters);
-        HashSet<ProductTestData> expectedFilteredProducts = getFilteredProductsByName(expectedProducts);
 
-        boolean isFiltered = filteredProducts.equals(expectedFilteredProducts);
+        boolean isFiltered = filteredProducts.equals(expectedProducts);
         assertTrue(isFiltered);
     }
 
-
     @Test
     public void filterProductsInStoresTestSuccessWrongFilters(){
-        List<String> expectedProducts = new ArrayList<>(Arrays.asList("waterTest","cocacolaTest"));
+        HashSet<ProductTestData> expectedProducts = new HashSet<>(Arrays.asList(products.get(4),products.get(3)));
         FilterTestData priceRangeFilter = new PriceRangeFilterTestData(0,Integer.MAX_VALUE + 1);
         FilterTestData categoryFilter = new CategoryFilterTestData("Sodas");
         List<FilterTestData> filters = new ArrayList<>(Arrays.asList(priceRangeFilter,categoryFilter));
 
         HashSet<ProductTestData> filteredProducts = bridge.filterProducts(products,filters);
-        HashSet<ProductTestData> expectedFilteredProducts = getFilteredProductsByName(expectedProducts);
 
-        boolean isFiltered = filteredProducts.equals(expectedFilteredProducts);
+        boolean isFiltered = filteredProducts.equals(expectedProducts);
         assertTrue(isFiltered);
     }
 
@@ -76,13 +72,6 @@ public class FilterProductsInStoresTest extends AcceptanceTests {
         assertEquals(filteredProducts.size(),0);
     }
 
-    private HashSet<ProductTestData> getFilteredProductsByName(List<String> expectedProductsNames){
-        HashSet<ProductTestData> filteredProducts = new HashSet<>();
-        for(ProductTestData pd : products)
-            if(expectedProductsNames.contains(pd.getProductName()))
-                filteredProducts.add(pd);
-        return filteredProducts;
-    }
 
     @After
     public void tearDown(){

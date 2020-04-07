@@ -11,7 +11,6 @@ public class RegisterTest extends AcceptanceTests {
 
     @Before
     public void setUp(){
-        super.setUp();
         username = superUser.getUsername();
         password = superUser.getPassword();
     }
@@ -20,8 +19,6 @@ public class RegisterTest extends AcceptanceTests {
     public void testRegisterSuccess(){
        boolean isRegistered = bridge.register(username, password);
        assertTrue(isRegistered);
-       boolean isAdmin = bridge.getAdminUsername().equals(username);
-       assertTrue(isAdmin);
     }
 
     @Test

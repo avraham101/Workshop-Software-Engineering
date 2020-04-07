@@ -9,7 +9,6 @@ import org.junit.Test;
 public class AppointManagerTest extends AcceptanceTests  {
     @Before
     public void setUp(){
-        super.setUp();
         bridge.login(superUser.getUsername(),superUser.getPassword());
     }
 

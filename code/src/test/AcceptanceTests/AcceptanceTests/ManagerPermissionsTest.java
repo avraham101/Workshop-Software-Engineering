@@ -1,13 +1,13 @@
 package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.ReviewTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class ManagerPermissionsTest extends AcceptanceTests {
@@ -17,29 +17,29 @@ public class ManagerPermissionsTest extends AcceptanceTests {
 
     @Before
     public void setUp(){
-        super.setUp();
-        manager = users.get(1);
-        newManager = users.get(2);
 
-        bridge.register(superUser.getUsername(),superUser.getPassword());
-        bridge.register(manager.getUsername(),manager.getPassword());
-        bridge.register(newManager.getUsername(),newManager.getPassword());
-        bridge.login(superUser.getUsername(),superUser.getPassword());
-        bridge.appointManager(stores.get(0).getStoreName(), manager.getUsername());
-        bridge.logout(superUser.getUsername());
-        bridge.login(manager.getUsername(),manager.getPassword());
-
+        setUpManagerPermissionsTestManagers();
         newProduct = new ProductTestData("newProductTest",
                                         "store0Test",
                                         100,
                                         6,
                                         "Dairy",
-                                        new ArrayList<ReviewTestData>());
+                                        new ArrayList<>());
         addStores(stores);
         addProducts(products);
     }
 
+    private void setUpManagerPermissionsTestManagers(){
+        manager = users.get(1);
+        newManager = users.get(2);
 
+        registerAndLogin(superUser);
+        registerAndLogin(manager);
+        registerAndLogin(newManager);
+        logoutAndLogin(superUser);
+        bridge.appointManager(stores.get(0).getStoreName(), manager.getUsername());
+        logoutAndLogin(manager);
+    }
     @Test
     public void managerPermissionsTestSuccess(){
         boolean isAdded = bridge.addProduct(newProduct);
@@ -68,12 +68,8 @@ public class ManagerPermissionsTest extends AcceptanceTests {
 
     @After
     public void tearDown(){
-        bridge.logout(manager.getUsername());
-        bridge.login(superUser.getUsername(),superUser.getPassword());
         deleteProducts(products);
         deleteStores(stores);
-        deleteUser(newManager.getUsername());
-        deleteUser(manager.getUsername());
-        deleteUser(superUser.getUsername());
+        deleteUsers(Arrays.asList(newManager,manager,superUser));
     }
 }
