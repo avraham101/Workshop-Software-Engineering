@@ -14,6 +14,7 @@ public class InitialStartTest extends AcceptanceTests {
         user1 = users.get(1);
     }
 
+    //TODO: need to add the admin before
     @Test
     public void testInitialStartSuccess(){
         String username = admin.getUsername();
