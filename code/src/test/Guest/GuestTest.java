@@ -4,6 +4,7 @@ import Data.Data;
 import Data.TestData;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
+import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
 import Stubs.CartStub;
@@ -36,10 +37,15 @@ public class GuestTest {
         loginTest();
         openStoreTest();
         testAddProductToStore();
+        testEditProductInStore();
+        testRemoveProductInStore();
         testAddProductToCart();
         testbuyCart();
         testWatchPurchases();
         addRequest();
+        testAddReview();
+        testAddManager();
+        testAddPermission();
     }
 
     /**
@@ -80,9 +86,14 @@ public class GuestTest {
         assertNull(guest.openStore(storeData, null, null));
     }
 
+    /**
+     * test use case 3.3 - write review
+     */
     private void testAddReview() {
+        ProductData productData = data.getProductData(Data.VALID);
+        assertFalse(guest.isItPurchased(productData.getStoreName(), productData.getProductName()));
         Review review = data.getReview(Data.VALID);
-        guest.addReview(review);
+        assertFalse(guest.addReview(review));
     }
 
     /**
@@ -104,9 +115,40 @@ public class GuestTest {
     /**
      * test use case 4.1.1 -add product
      */
-
     private  void testAddProductToStore(){
         assertFalse(guest.addProductToStore(data.getProductData(Data.VALID)));
     }
 
+    /**
+     * test use case 4.1.2
+     */
+    private void testEditProductInStore() {
+        assertFalse(guest.editProductFromStore(data.getProductData(Data.VALID)));
+    }
+
+    /**
+     * test use case 4.1.3
+     */
+    private void testRemoveProductInStore() {
+        ProductData productData = data.getProductData(Data.VALID);
+        assertFalse(guest.removeProductFromStore(productData.getStoreName(),productData.getProductName()));
+    }
+
+    /**
+     * test use case 4.5
+     */
+    private void testAddManager() {
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        StoreData storeData = data.getStore(Data.VALID);
+        guest.addManager(subscribe, storeData.getName());
+    }
+
+    /**
+     * test use case 4.6.1
+     */
+    private void testAddPermission() {
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        StoreData storeData = data.getStore(Data.VALID);
+        guest.addPermissions(data.getPermissionTypeList(),storeData.getName(),storeData.getName());
+    }
 }
