@@ -1,5 +1,6 @@
 package AcceptanceTests.AcceptanceTests;
 
+import AcceptanceTests.AcceptanceTestDataObjects.PermissionsTypeTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.After;
@@ -38,7 +39,8 @@ public class ManagerPermissionsTest extends AcceptanceTests {
         registerAndLogin(newManager);
         logoutAndLogin(superUser);
         bridge.appointManager(stores.get(0).getStoreName(), manager.getUsername());
-        logoutAndLogin(manager);
+        bridge.addPermissionToManager(stores.get(0).getStoreName(),manager.getUsername(), PermissionsTypeTestData.PRODUCTS_INVENTORY);
+       logoutAndLogin(manager);
     }
     @Test
     public void managerPermissionsTestSuccess(){

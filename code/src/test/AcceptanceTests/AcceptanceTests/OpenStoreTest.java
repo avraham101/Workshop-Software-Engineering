@@ -8,7 +8,7 @@ public class OpenStoreTest extends AcceptanceTests {
     private UserTestData user;
     private String newStoreName;
 
-    @BeforeClass
+    @Before
     public void setUp(){
         newStoreName = "store-name";
         user = users.get(1);
@@ -29,11 +29,10 @@ public class OpenStoreTest extends AcceptanceTests {
         StoreTestData store2= bridge.openStore(newStoreName);
         assertNull(store2);
     }
-    //TODO should add not subscribe??
 
-    @AfterClass
+    @After
     public void tearDown(){
-        bridge.closeStore(newStoreName);
+        bridge.deleteStore(newStoreName);
         bridge.logout();
         deleteUser(user.getUsername());
     }

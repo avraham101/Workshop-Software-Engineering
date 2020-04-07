@@ -9,16 +9,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class BuyCartTest extends AcceptanceTests {
     @Before
     public void setUp(){
-        super.setUp();
         addStores(stores);
         addProducts(products);
-
     }
+
     @Test
     public void buyCartSuccess(){
         addProductToCart();
@@ -27,22 +27,24 @@ public class BuyCartTest extends AcceptanceTests {
         PurchaseTestData receipt = bridge.buyCart(validPayment,validDelivery);
         assertNotNull(receipt);
         assertEquals(receipt.getTotalAmount(),totalAmount);
-      //  assertEquals(receipt.getProductsAndAmountInPurchase(), );//TODO check recipt pruducts==prev cart??
-        assertTrue(bridge.getCurrentUsersCart().isEmpty());
 
+        HashMap<ProductTestData,Integer> prodAndAmountsInCart = currCart.getProductsAndAmountsInCart();
+        HashMap<ProductTestData,Integer> prodAndAmountsInPurchase = receipt.getProductsAndAmountInPurchase();
+        assertEquals(prodAndAmountsInCart,prodAndAmountsInPurchase);
+        assertTrue(bridge.getCurrentUsersCart().isEmpty());
     }
 
     @Test
     public void buyCartFailEmptyCart(){
-
-        addProductToCart();
         assertNull(bridge.buyCart(validPayment,validDelivery));
     }
     @Test
     public void buyCartFailInvalidPayment(){
         addProductToCart();
+        CartTestData expectedCart = bridge.getCurrentUsersCart();
         assertNull(bridge.buyCart(invalidPayment,validDelivery));
-        assertTrue(!bridge.getCurrentUsersCart().isEmpty());
+        CartTestData actualCart = bridge.getCurrentUsersCart();
+        assertEquals(expectedCart,actualCart);
     }
     @Test
     public void buyCartFailInvalidDeliveryDetails(){
@@ -58,7 +60,7 @@ public class BuyCartTest extends AcceptanceTests {
         ProductTestData product = store.getProducts().get(0);
         List<ProductTestData> productsToAdd = new ArrayList<>();
         productsToAdd.add(product);
-        bridge.addToCurrentUserCart(store.getStoreName(),product,1);
+        bridge.addToCurrentUserCart(product,1);
         deleteProducts(productsToAdd);
         assertNull(bridge.buyCart(validPayment,validDelivery));
     }
@@ -71,13 +73,11 @@ public class BuyCartTest extends AcceptanceTests {
 
     }
     private void addProductToCart(){
-        bridge.addToCurrentUserCart(stores.get(0).getStoreName(),
-                stores.get(0).getProducts().get(0),1);
+        bridge.addToCurrentUserCart(stores.get(0).getProducts().get(0),1);
     }
 
     @After
     public void tearDown(){
-        deleteProducts(products);
-        deleteStores(stores);
+        bridge.resetSystem();
     }
 }

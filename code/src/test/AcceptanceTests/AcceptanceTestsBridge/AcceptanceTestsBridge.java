@@ -61,5 +61,5 @@ public interface AcceptanceTestsBridge {
 
     HashSet<ApplicationToStoreTestData> viewApplicationToStore(String storeName);
 
-    boolean closeStore(String storeName);
+    boolean deleteStore(String storeName);
 }

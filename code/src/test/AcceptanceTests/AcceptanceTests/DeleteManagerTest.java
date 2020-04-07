@@ -79,9 +79,7 @@ public class DeleteManagerTest extends AcceptanceTests{
 
     @After
     public void tearDown(){
-
-        deleteStores(stores);//also delete the manager
+        deleteStores(stores);
         deleteUsers(managers);
-        bridge.logout();//TODO WE NEED THIS?
     }
 }

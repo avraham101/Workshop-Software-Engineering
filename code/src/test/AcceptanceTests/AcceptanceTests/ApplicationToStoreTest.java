@@ -8,35 +8,32 @@ public class ApplicationToStoreTest extends AcceptanceTests {
     UserTestData user;
     @Before
     public void setUp(){
-        super.setUp();
         addStores(stores);
-        user = users.get(1);
+        user = users.get(2);
+        registerAndLogin(user);
     }
 
     @Test
     public void applicationToStoreTestSuccess(){
-        bridge.login(user.getUsername(),user.getPassword());
         boolean approval= bridge.sendApplicationToStore(stores.get(0).getStoreName(),"message");
         assertTrue(approval);
-
     }
 
     @Test
     public void applicationToStoreFailInvalidStoreName(){
-        bridge.login(user.getUsername(),user.getPassword());
         boolean approval= bridge.sendApplicationToStore("invalid","message");
         assertFalse(approval);
     }
 
     @Test
-    public void applicationToStoreFailNotSubscribe(){
+    public void applicationToStoreFailNotSubscribed(){
         boolean approval= bridge.sendApplicationToStore(stores.get(0).getStoreName(),"message");
         assertFalse(approval);
-
     }
 
     @Before
     public void tearDown(){
         deleteStores(stores);
+        deleteUser(user.getUsername());
     }
 }

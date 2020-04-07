@@ -1,7 +1,9 @@
 package AcceptanceTests.AcceptanceTestDataObjects;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CartTestData {
     private List<BasketTestData> baskets;
@@ -24,6 +26,16 @@ public class CartTestData {
 
     public List<BasketTestData> getBaskets() {
         return baskets;
+    }
+
+    public HashMap<ProductTestData,Integer> getProductsAndAmountsInCart(){
+        HashMap<ProductTestData,Integer> productsAndAmount = new HashMap<>();
+
+        for(BasketTestData basket : baskets)
+            for(Map.Entry<ProductTestData,Integer> prodAndAmount : basket.getProductsAndAmountInBasket().entrySet())
+                productsAndAmount.put(prodAndAmount.getKey(),prodAndAmount.getValue());
+
+        return productsAndAmount;
     }
 
     @Override

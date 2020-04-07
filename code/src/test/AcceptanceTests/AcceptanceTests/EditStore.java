@@ -11,29 +11,26 @@ import java.util.List;
 public class EditStore extends AcceptanceTests {
     @Before
     public void setUp(){
-        super.setUp();
-        bridge.login(superUser.getUsername(),superUser.getPassword());
-        addStores(stores);
-        addProducts(products);
+        addUserStoresAndProducts(superUser);
     }
     /****************ADD-PRODUCT-4.1.1*************************************/
     @Test
     public void addProductToStoreSuccess(){
+        String storeName = stores.get(0).getStoreName();
         ProductTestData product = new ProductTestData("newProduct",
-                "store0Test",5,15.5,"tests",null);
-        boolean approval=bridge.addProduct(product);
+                storeName,5,15.5,"tests",null);
+        boolean approval = bridge.addProduct(product);
         assertTrue(approval);
-        StoreTestData store = bridge.getStoreInfoByName("store0Test");
-        ProductTestData prod=store.getProductByName("newProduct");
-        assertEquals(prod ,product);
 
+        StoreTestData store = bridge.getStoreInfoByName(storeName);
+        ProductTestData prod = store.getProductByName("newProduct");
+        assertEquals(prod ,product);
     }
 
     @Test
     public void addProductToStoreFailProductExist(){
         boolean approval = bridge.addProduct(stores.get(0).getProducts().get(0));
         assertFalse(approval);
-
     }
 
     @Test
@@ -42,8 +39,6 @@ public class EditStore extends AcceptanceTests {
                 "store0Test",-1,15.5,"tests",null);
         boolean approval = bridge.addProduct(product);
         assertFalse(approval);
-
-
     }
 
     @Test
@@ -52,7 +47,6 @@ public class EditStore extends AcceptanceTests {
                 "store0Test",5,-1,"tests",null);
         boolean approval = bridge.addProduct(product);
         assertFalse(approval);
-
     }
 
     @Test
@@ -61,17 +55,15 @@ public class EditStore extends AcceptanceTests {
                 "store2Test",5,15.5,"tests",null);
         boolean approval = bridge.addProduct(product);
         assertFalse(approval);
-
-
     }
 
     /****************DELETE-PRODUCT-4.1.2****************************************/
     @Test
     public void deleteProductSuccess(){
         ProductTestData product = stores.get(0).getProducts().get(0);
-        boolean approval=bridge.deleteProduct(product);
+        boolean approval = bridge.deleteProduct(product);
         assertTrue(approval);
-        StoreTestData store=bridge.getStoreInfoByName(stores.get(0).getStoreName());
+        StoreTestData store = bridge.getStoreInfoByName(stores.get(0).getStoreName());
         assertNull(store.getProductByName(product.getProductName()));
 
     }
@@ -82,7 +74,6 @@ public class EditStore extends AcceptanceTests {
         boolean approval = bridge.deleteProduct(product);
         assertFalse(approval);
     }
-
 
     @Test
     public void deleteProductFailNotMyStore(){
@@ -131,16 +122,13 @@ public class EditStore extends AcceptanceTests {
     }
     @Test
     public void editProductFailNotMyStore(){
-        ProductTestData product = stores.get(1).getProducts().get(0);
+        ProductTestData product = stores.get(2).getProducts().get(0);
         boolean approval = bridge.editProductInStore(product);
         assertFalse(approval);
     }
 
-
-
-
     @After
     public void tearDown(){
-        bridge.logout(superUser.getUsername());
+        deleteUserStoresAndProducts(superUser);
     }
 }

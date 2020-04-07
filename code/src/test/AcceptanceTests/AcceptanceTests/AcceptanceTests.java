@@ -5,7 +5,6 @@ import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsBridge;
 import junit.framework.TestCase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,9 +23,6 @@ public abstract class AcceptanceTests extends TestCase{
     protected static PaymentTestData invalidPayment;
     protected static UserTestData superUser;
     protected static UserTestData admin;
-
-    //TODO : removes calls to super.setUp() in child classes
-    //TODO : removes calls to beforeClass in other classes
 
     @BeforeClass
     public static void setUpAll(){
@@ -143,16 +139,19 @@ public abstract class AcceptanceTests extends TestCase{
 
         UserTestData store0Owner = users.get(0);
         UserTestData store1Owner = users.get(1);
+
+        bridge.register(store0Owner.getUsername(),store0Owner.getPassword());
+        bridge.register(store1Owner.getUsername(),store1Owner.getPassword());
+
         StoreTestData store0 = new StoreTestData("store0Test",store0Owner);
         StoreTestData store1 = new StoreTestData("store1Test",store0Owner);
         StoreTestData store2 = new StoreTestData("store2Test",store1Owner);
-        store0.addPermission(store1Owner.getUsername(),PermissionsTypeTestData.PRODUCTS_INVENTORY, store0Owner.getUsername());
+
         stores.addAll(Arrays.asList(store0,store1,store2));
 
-//        List<ProductTestData> notExistingStoreProducts = products.subList(0,4);
-//        UserTestData notExistingStoreManager = users.get(1);
-//        notExistingStore = new StoreTestData("notExistingStore",
-//                                            notExistingStoreManager);
+        UserTestData notExistingStoreManager = users.get(1);
+        notExistingStore = new StoreTestData("notExistingStore",
+                                            notExistingStoreManager);
 
     }
 
@@ -200,8 +199,10 @@ public abstract class AcceptanceTests extends TestCase{
         }
         bridge.login(superUser.getUsername(),superUser.getPassword());
 
-        for(StoreTestData store : stores)
-            bridge.closeStore(store.getStoreName());
+        for(StoreTestData store : stores) {
+            bridge.deleteStore(store.getStoreName());
+            bridge.deleteUser(store.getStoreOwner().getUsername());
+        }
 
         bridge.logout();
         if(userName != null){

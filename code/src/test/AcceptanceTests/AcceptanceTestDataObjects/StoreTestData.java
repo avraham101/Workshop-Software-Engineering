@@ -23,16 +23,6 @@ public class StoreTestData {
         initialPermissions.add(PermissionsTypeTestData.OWNER);
         permissions.put(username, new PermissionTestData(username, initialPermissions,username));
     }
-    //TODO: delete?
-    public void addPermission(String username, PermissionsTypeTestData permissionToAdd, String givenBy){
-        PermissionTestData permissionsOfUser = permissions.get(username);
-        HashSet<PermissionsTypeTestData> permissionSet = new HashSet<>();
-        permissionSet.add(permissionToAdd);
-        if(permissionsOfUser == null)
-            permissions.put(username,new PermissionTestData(username,permissionSet,givenBy));
-        else
-            permissionsOfUser.getPermissions().addAll(permissionSet);
-    }
 
     public HashMap<String, PermissionTestData> getPermissions() {
         return permissions;
