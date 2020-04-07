@@ -26,8 +26,6 @@ public interface AcceptanceTestsBridge {
     boolean deleteFromCurrentUserCart(BasketTestData basketToDeleteFrom, ProductTestData productToDelete);
     boolean changeCurrentUserAmountOfProductInCart(BasketTestData basketToChangeAmountIn, ProductTestData productToChangeAmount, int newAmount);
     boolean addToCurrentUserCart( ProductTestData productToAdd, int amount);
-    void deleteCartOfUser(String username);
-    void purchaseProducts(PurchaseTestData purchase);
     boolean writeReviewOnProduct(ProductTestData product, ReviewTestData review);
     ReviewTestData getReviewByProductAndDate(String purchaseDate, ProductTestData product);
     List<StoreTestData> getStoresInfo();
@@ -39,27 +37,17 @@ public interface AcceptanceTestsBridge {
     boolean addProduct(ProductTestData product);
     boolean deleteProduct(ProductTestData product);
     StoreTestData getStoreInfoByName(String storeName);
-
     boolean editProductInStore(ProductTestData product);
     boolean appointManager(String storeName, String username);
-
     boolean deleteManager(String storeName,String username);
-
     List<PurchaseTestData> getStorePurchasesHistory(String storeName);
-
     List<PurchaseTestData> getUserPurchaseHistory(String username);
     List<PurchaseTestData> getUserPurchases(String username);
     boolean appointOwnerToStore(String storeName, String username);
-
     boolean addPermissionToManager(String storeName, String username, PermissionsTypeTestData productsInventory);
-
     boolean deletePermission(String storeName, String username, PermissionsTypeTestData productsInventory);
-
     HashMap<ApplicationToStoreTestData,String> getUserApplicationsAndReplies(String username);
-
     boolean writeReplyToApplication(String storeName, ApplicationToStoreTestData key, String value);
-
     HashSet<ApplicationToStoreTestData> viewApplicationToStore(String storeName);
-
     boolean deleteStore(String storeName);
 }
