@@ -18,6 +18,17 @@ public class Guest extends UserState {
         this.cart = cart;
     }
 
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
+    }
+
     /**
      * use case 2.3 - Login
      * @param user - The user who using the system
@@ -30,14 +41,12 @@ public class Guest extends UserState {
         return true;
     }
 
+    /**
+     * use case 2.8 - purchase cart and save
+     * @param receives - the recives
+     */
     @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
+    protected void savePurchase(List<Purchase> receives) {
     }
 
     /**
@@ -63,6 +72,29 @@ public class Guest extends UserState {
     }
 
     /**
+     * use case 3.3 - write review
+     * the function check if the product is purchased
+     * @param storeName - the store name
+     * @param productName - the product name
+     * @return always false, dosent have purchase history
+     */
+    @Override
+    public boolean isItPurchased(String storeName, String productName) {
+        return false;
+    }
+
+    /**
+     * use case 3.3 - add review
+     * @param review - the review to add
+     */
+    @Override
+    public boolean addReview(Review review) {
+        return false;
+    }
+
+
+
+    /**
      * use case 3.5
      * @param storeName - The id of the store
      * @param content - The content of the request
@@ -72,6 +104,17 @@ public class Guest extends UserState {
     public Request addRequest(String storeName, String content){
         return null;
     }
+
+    /**
+     * use case 3.7 - watch purchase history
+     * the function return the purchase list
+     * @return the purchase list
+     */
+    @Override
+    public List<Purchase> watchMyPurchaseHistory() {
+        return null;
+    }
+
 
     /**
      * use case 4.1.1 -add product
@@ -105,27 +148,6 @@ public class Guest extends UserState {
         return false;
     }
 
-    /**
-     * use case 3.3 - write review
-     * the function check if the product is purchased
-     * @param storeName - the store name
-     * @param productName - the product name
-     * @return always false, dosent have purchase history
-     */
-    @Override
-    public boolean isItPurchased(String storeName, String productName) {
-        return false;
-    }
-
-    /**
-     * use case 3.7 - watch purchase history
-     * the function return the purchase list
-     * @return the purchase list
-     */
-    @Override
-    public List<Purchase> watchMyPurchaseHistory() {
-        return null;
-    }
 
     /**
      * use case 4.5
@@ -173,23 +195,6 @@ public class Guest extends UserState {
         return false;
     }
 
-    @Override
-    protected void savePurchase(List<Purchase> receives) {
-
-    }
-
-    @Override
-    public void addReview(Review review) {
-
-    }
-
-
-
-    @Override
-    public boolean canWatchUserHistory() {
-        return false;
-    }
-
     /**
      * use case 4.9.1
      * @param storeName
@@ -211,6 +216,7 @@ public class Guest extends UserState {
     public Request replayToRequest(String storeName, int requestID, String content) {
         return null;
     }
+
     /**
      * use case 4.10 - watch Store History by store owner
      * @param storeName - the store name to watch history
@@ -221,5 +227,12 @@ public class Guest extends UserState {
     }
 
 
-
+    /**
+     * use case 6.4.1
+     * @return
+     */
+    @Override
+    public boolean canWatchUserHistory() {
+        return false;
+    }
 }

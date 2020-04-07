@@ -91,8 +91,9 @@ public class Subscribe extends UserState{
      * @param review - the review to add
      */
     @Override
-    public void addReview(Review review) {
+    public boolean addReview(Review review) {
         reviews.add(review);
+        return true;
     }
 
     /**

@@ -145,7 +145,7 @@ public abstract class UserState {
      * the function add a review
      * @param review - the review to add
      */
-    public abstract void addReview(Review review);
+    public abstract boolean addReview(Review review);
 
     /**
      * use case 3.3 add review

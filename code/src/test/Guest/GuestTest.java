@@ -4,6 +4,7 @@ import Data.Data;
 import Data.TestData;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
+import DataAPI.StoreData;
 import Domain.*;
 import Stubs.CartStub;
 import org.junit.Before;
@@ -34,7 +35,7 @@ public class GuestTest {
         logoutTest();
         loginTest();
         openStoreTest();
-        addProductTest();
+        testAddProductToStore();
         testAddProductToCart();
         testbuyCart();
         testWatchPurchases();
@@ -75,18 +76,21 @@ public class GuestTest {
      * test use case 3.2 - Open Store
      */
     private void openStoreTest() {
-        assertNull(guest.openStore(null, null, null));
+        StoreData storeData = data.getStore(Data.WRONG_STORE);
+        assertNull(guest.openStore(storeData, null, null));
     }
 
-    private void addRequest() {assertNull(guest.addRequest("Store", "good store"));}
-
+    private void testAddReview() {
+        Review review = data.getReview(Data.VALID);
+        guest.addReview(review);
+    }
 
     /**
-     * test use case 4.9.1 -add product
+     * use case 3.5 - add request
      */
-
-    private  void addProductTest(){
-        assertFalse(guest.addProductToStore(data.getProductData(Data.VALID)));
+    private void addRequest() {
+        Request request = data.getRequest(Data.WRONG_STORE);
+        assertNull(guest.addRequest(request.getStoreName(), request.getContent()));
     }
 
     /**
@@ -96,4 +100,13 @@ public class GuestTest {
         List<Purchase> list = guest.watchMyPurchaseHistory();
         assertNull(list);
     }
+
+    /**
+     * test use case 4.1.1 -add product
+     */
+
+    private  void testAddProductToStore(){
+        assertFalse(guest.addProductToStore(data.getProductData(Data.VALID)));
+    }
+
 }

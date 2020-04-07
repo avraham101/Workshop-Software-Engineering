@@ -27,6 +27,7 @@ public class DiscountTest {
     }
 
     /**
+     * use case 2.8
      * main test class for guest
      */
     @Test
