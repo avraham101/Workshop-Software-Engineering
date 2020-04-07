@@ -25,10 +25,20 @@ public class Category {
         return products;
     }
 
+    /**
+     * use case 4.1.1 - add product to store
+     * the function add pro
+     * @param product
+     * @return
+     */
     public boolean addProduct (Product product){
         return products.add(product);
     }
 
+    /**
+     * use case 4.1.2 - remove product from store
+     * @param productName - the product name
+     */
     public void removeProduct(String productName) {
         Product toRemove=null;
         for(Product p: products)
