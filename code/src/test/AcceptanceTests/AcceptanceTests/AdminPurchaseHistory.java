@@ -35,7 +35,6 @@ public class AdminPurchaseHistory extends AcceptanceTests {
     public void getUserPurchaseHistoryFailInvalidUser(){
         List<PurchaseTestData> history = bridge.getUserPurchaseHistory("guest");
         assertNull(history);
-
     }
 /*****************STORE-HISTORY-6.4.2********************************************/
     @Test
@@ -49,10 +48,5 @@ public class AdminPurchaseHistory extends AcceptanceTests {
     public void getStorePurchaseHistoryFailStoreNotExist(){
         List<PurchaseTestData> history = bridge.getStorePurchasesHistory("notExist");
         assertNull(history);
-    }
-
-    @After
-    public void tearDown(){
-        deleteUserStoresAndProducts(userToCheck);
     }
 }

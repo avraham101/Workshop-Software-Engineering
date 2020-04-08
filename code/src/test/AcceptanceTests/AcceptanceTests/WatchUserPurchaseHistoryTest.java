@@ -23,7 +23,7 @@ public class WatchUserPurchaseHistoryTest extends AcceptanceTests {
 
     @Test
     public void watchUserPurchaseHistoryTestSuccess(){
-        List<PurchaseTestData> actualPurchases = bridge.getUserPurchases(user0.getUsername());
+        List<PurchaseTestData> actualPurchases = bridge.getCurrentUserPurchaseHistory();
         List<PurchaseTestData> expectedPurchase = user0.getPurchases();
 
         assertEquals(expectedPurchase,actualPurchases);
@@ -31,13 +31,7 @@ public class WatchUserPurchaseHistoryTest extends AcceptanceTests {
     @Test
     public void watchUserPurchaseHistoryTestFail(){
         bridge.logout();
-        List<PurchaseTestData> actualPurchases = bridge.getUserPurchases(user0.getUsername());
+        List<PurchaseTestData> actualPurchases = bridge.getCurrentUserPurchaseHistory();
         assertNull(actualPurchases);
-        bridge.login(user0.getUsername(),user0.getPassword());
-    }
-
-    @After
-    public void tearDown(){
-        deleteUserStoresAndProducts(user0);
     }
 }

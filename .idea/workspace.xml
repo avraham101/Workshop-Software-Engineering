@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="05e8ee0e-932c-4138-ba00-2c920c3ad416" name="Default" comment="">
+    <list default="true" id="05e8ee0e-932c-4138-ba00-2c920c3ad416" name="Default" comment="fixed ac tests applicable to system">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AppointAnotherOwnerToStoreTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AppointAnotherOwnerToStoreTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/FilterProductsInStoresTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/FilterProductsInStoresTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,16 +19,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="ServiceAPI.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/code/src/main/java/Service/ServiceAPI.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="426">
-              <caret line="117" column="37" lean-forward="true" selection-start-line="117" selection-start-column="37" selection-end-line="117" selection-end-column="37" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="LogicManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/code/src/main/java/Domain/LogicManager.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -89,66 +85,81 @@
       <file leaf-file-name="AcceptanceTestsRealBridge.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="736">
-              <caret line="233" column="0" lean-forward="false" selection-start-line="233" selection-start-column="0" selection-end-line="233" selection-end-column="0" />
+            <state relative-caret-position="425">
+              <caret line="213" column="41" lean-forward="true" selection-start-line="213" selection-start-column="41" selection-end-line="213" selection-end-column="41" />
               <folding>
-                <element signature="e#874#875#0" expanded="true" />
-                <element signature="e#901#902#0" expanded="true" />
-                <element signature="e#1193#1194#0" expanded="true" />
-                <element signature="e#1254#1255#0" expanded="true" />
-                <element signature="e#1479#1480#0" expanded="true" />
-                <element signature="e#1507#1508#0" expanded="true" />
-                <element signature="e#2530#2531#0" expanded="true" />
-                <element signature="e#2557#2558#0" expanded="true" />
-                <element signature="e#3010#3011#0" expanded="true" />
-                <element signature="e#3038#3039#0" expanded="true" />
-                <element signature="e#3143#3144#0" expanded="true" />
-                <element signature="e#3171#3172#0" expanded="true" />
-                <element signature="e#3286#3287#0" expanded="true" />
-                <element signature="e#3313#3314#0" expanded="true" />
-                <element signature="e#6132#6133#0" expanded="true" />
-                <element signature="e#6159#6160#0" expanded="true" />
-                <element signature="e#8741#8742#0" expanded="true" />
-                <element signature="e#8768#8769#0" expanded="true" />
-                <marker date="1586373315665" expanded="false" signature="7736:7747" ph=" { " />
-                <marker date="1586373315665" expanded="false" signature="7759:7765" ph=" }" />
-                <marker date="1586373315665" expanded="false" signature="7856:7867" ph=" { " />
-                <marker date="1586373315665" expanded="false" signature="7880:7886" ph=" }" />
-                <marker date="1586373315665" expanded="false" signature="7956:7967" ph=" { " />
-                <marker date="1586373315665" expanded="false" signature="7980:7986" ph=" }" />
-                <marker date="1586373315665" expanded="false" signature="8059:8070" ph=" { " />
-                <marker date="1586373315665" expanded="false" signature="8083:8089" ph=" }" />
-                <marker date="1586373315665" expanded="false" signature="8166:8177" ph=" { " />
-                <marker date="1586373315665" expanded="false" signature="8189:8195" ph=" }" />
-                <marker date="1586373315665" expanded="false" signature="8273:8284" ph=" { " />
-                <marker date="1586373315665" expanded="false" signature="8297:8303" ph=" }" />
-                <marker date="1586373315665" expanded="false" signature="8387:8398" ph=" { " />
-                <marker date="1586373315665" expanded="false" signature="8411:8417" ph=" }" />
-                <marker date="1586373315665" expanded="false" signature="8500:8511" ph=" { " />
-                <marker date="1586373315665" expanded="false" signature="8524:8530" ph=" }" />
-                <marker date="1586373315665" expanded="false" signature="8622:8633" ph=" { " />
-                <marker date="1586373315665" expanded="false" signature="8645:8651" ph=" }" />
+                <element signature="e#899#900#0" expanded="true" />
+                <element signature="e#926#927#0" expanded="true" />
+                <element signature="e#1218#1219#0" expanded="true" />
+                <element signature="e#1279#1280#0" expanded="true" />
+                <element signature="e#1504#1505#0" expanded="true" />
+                <element signature="e#1532#1533#0" expanded="true" />
+                <element signature="e#2555#2556#0" expanded="true" />
+                <element signature="e#2582#2583#0" expanded="true" />
+                <element signature="e#3035#3036#0" expanded="true" />
+                <element signature="e#3063#3064#0" expanded="true" />
+                <element signature="e#3168#3169#0" expanded="true" />
+                <element signature="e#3196#3197#0" expanded="true" />
+                <element signature="e#3311#3312#0" expanded="true" />
+                <element signature="e#3338#3339#0" expanded="true" />
+                <element signature="e#6157#6158#0" expanded="true" />
+                <element signature="e#6184#6185#0" expanded="true" />
+                <element signature="e#9335#9336#0" expanded="true" />
+                <element signature="e#9362#9363#0" expanded="true" />
+                <marker date="1586374255472" expanded="false" signature="8330:8341" ph=" { " />
+                <marker date="1586374255472" expanded="false" signature="8353:8359" ph=" }" />
+                <marker date="1586374255472" expanded="false" signature="8450:8461" ph=" { " />
+                <marker date="1586374255472" expanded="false" signature="8474:8480" ph=" }" />
+                <marker date="1586374255472" expanded="false" signature="8550:8561" ph=" { " />
+                <marker date="1586374255472" expanded="false" signature="8574:8580" ph=" }" />
+                <marker date="1586374255472" expanded="false" signature="8653:8664" ph=" { " />
+                <marker date="1586374255472" expanded="false" signature="8677:8683" ph=" }" />
+                <marker date="1586374255472" expanded="false" signature="8760:8771" ph=" { " />
+                <marker date="1586374255472" expanded="false" signature="8783:8789" ph=" }" />
+                <marker date="1586374255472" expanded="false" signature="8867:8878" ph=" { " />
+                <marker date="1586374255472" expanded="false" signature="8891:8897" ph=" }" />
+                <marker date="1586374255472" expanded="false" signature="8981:8992" ph=" { " />
+                <marker date="1586374255472" expanded="false" signature="9005:9011" ph=" }" />
+                <marker date="1586374255472" expanded="false" signature="9094:9105" ph=" { " />
+                <marker date="1586374255472" expanded="false" signature="9118:9124" ph=" }" />
+                <marker date="1586374255472" expanded="false" signature="9216:9227" ph=" { " />
+                <marker date="1586374255472" expanded="false" signature="9239:9245" ph=" }" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BuyCartTest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/BuyCartTest.java">
+      <file leaf-file-name="PurchaseTestData.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/PurchaseTestData.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="44" column="53" lean-forward="false" selection-start-line="44" selection-start-column="53" selection-end-line="44" selection-end-column="53" />
+              <folding>
+                <element signature="e#1291#1292#0" expanded="true" />
+                <element signature="e#1351#1352#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WatchUserPurchaseHistoryTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="459">
-              <caret line="29" column="33" lean-forward="false" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
+              <caret line="25" column="61" lean-forward="false" selection-start-line="25" selection-start-column="61" selection-end-line="25" selection-end-column="61" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AdminPurchaseHistory.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java">
+      <file leaf-file-name="AcceptanceTestsBridge.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-20">
-              <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="491">
+              <caret line="39" column="56" lean-forward="false" selection-start-line="39" selection-start-column="27" selection-end-line="39" selection-end-column="56" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -191,6 +202,7 @@
       <find>purchase</find>
       <find>watch</find>
       <find>history</find>
+      <find>getCurrentUserPurchaseHistory</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -240,8 +252,8 @@
         <option value="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AppointAnotherOwnerToStoreTest.java" />
         <option value="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" />
         <option value="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java" />
-        <option value="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/PurchaseTestData.java" />
         <option value="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java" />
+        <option value="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/PurchaseTestData.java" />
         <option value="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" />
       </list>
     </option>
@@ -638,7 +650,7 @@
       <workItem from="1585926832568" duration="33000" />
       <workItem from="1586255960599" duration="10985000" />
       <workItem from="1586271268614" duration="13617000" />
-      <workItem from="1586326510622" duration="17161000" />
+      <workItem from="1586326510622" duration="18087000" />
     </task>
     <task id="LOCAL-00001" summary="fixed tests">
       <created>1586199195159</created>
@@ -759,7 +771,14 @@
       <option name="project" value="LOCAL" />
       <updated>1586373321199</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="fixed ac tests applicable to system">
+      <created>1586373335026</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1586373335026</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -795,7 +814,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60611000" />
+    <option name="totallyTimeSpent" value="61537000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1119,16 +1138,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="25" column="80" lean-forward="true" selection-start-line="25" selection-start-column="80" selection-end-line="25" selection-end-column="80" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/code/src/main/java/Domain/Purchase.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
@@ -1177,16 +1186,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="394">
-          <caret line="38" column="36" lean-forward="false" selection-start-line="38" selection-start-column="36" selection-end-line="38" selection-end-column="36" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/code/src/main/java/DataAPI/PurchaseTypeData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
@@ -1200,19 +1199,6 @@
         <state relative-caret-position="216">
           <caret line="10" column="30" lean-forward="false" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/PurchaseTestData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding>
-            <element signature="e#1109#1110#0" expanded="true" />
-            <element signature="e#1155#1156#0" expanded="true" />
-            <element signature="e#1660#1661#0" expanded="true" />
-            <element signature="e#1684#1685#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1291,47 +1277,76 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="25" column="61" lean-forward="false" selection-start-line="25" selection-start-column="61" selection-end-line="25" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="491">
+          <caret line="39" column="56" lean-forward="false" selection-start-line="39" selection-start-column="27" selection-end-line="39" selection-end-column="56" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/PurchaseTestData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="44" column="53" lean-forward="false" selection-start-line="44" selection-start-column="53" selection-end-line="44" selection-end-column="53" />
+          <folding>
+            <element signature="e#1291#1292#0" expanded="true" />
+            <element signature="e#1351#1352#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="736">
-          <caret line="233" column="0" lean-forward="false" selection-start-line="233" selection-start-column="0" selection-end-line="233" selection-end-column="0" />
+        <state relative-caret-position="425">
+          <caret line="213" column="41" lean-forward="true" selection-start-line="213" selection-start-column="41" selection-end-line="213" selection-end-column="41" />
           <folding>
-            <element signature="e#874#875#0" expanded="true" />
-            <element signature="e#901#902#0" expanded="true" />
-            <element signature="e#1193#1194#0" expanded="true" />
-            <element signature="e#1254#1255#0" expanded="true" />
-            <element signature="e#1479#1480#0" expanded="true" />
-            <element signature="e#1507#1508#0" expanded="true" />
-            <element signature="e#2530#2531#0" expanded="true" />
-            <element signature="e#2557#2558#0" expanded="true" />
-            <element signature="e#3010#3011#0" expanded="true" />
-            <element signature="e#3038#3039#0" expanded="true" />
-            <element signature="e#3143#3144#0" expanded="true" />
-            <element signature="e#3171#3172#0" expanded="true" />
-            <element signature="e#3286#3287#0" expanded="true" />
-            <element signature="e#3313#3314#0" expanded="true" />
-            <element signature="e#6132#6133#0" expanded="true" />
-            <element signature="e#6159#6160#0" expanded="true" />
-            <element signature="e#8741#8742#0" expanded="true" />
-            <element signature="e#8768#8769#0" expanded="true" />
-            <marker date="1586373315665" expanded="false" signature="7736:7747" ph=" { " />
-            <marker date="1586373315665" expanded="false" signature="7759:7765" ph=" }" />
-            <marker date="1586373315665" expanded="false" signature="7856:7867" ph=" { " />
-            <marker date="1586373315665" expanded="false" signature="7880:7886" ph=" }" />
-            <marker date="1586373315665" expanded="false" signature="7956:7967" ph=" { " />
-            <marker date="1586373315665" expanded="false" signature="7980:7986" ph=" }" />
-            <marker date="1586373315665" expanded="false" signature="8059:8070" ph=" { " />
-            <marker date="1586373315665" expanded="false" signature="8083:8089" ph=" }" />
-            <marker date="1586373315665" expanded="false" signature="8166:8177" ph=" { " />
-            <marker date="1586373315665" expanded="false" signature="8189:8195" ph=" }" />
-            <marker date="1586373315665" expanded="false" signature="8273:8284" ph=" { " />
-            <marker date="1586373315665" expanded="false" signature="8297:8303" ph=" }" />
-            <marker date="1586373315665" expanded="false" signature="8387:8398" ph=" { " />
-            <marker date="1586373315665" expanded="false" signature="8411:8417" ph=" }" />
-            <marker date="1586373315665" expanded="false" signature="8500:8511" ph=" { " />
-            <marker date="1586373315665" expanded="false" signature="8524:8530" ph=" }" />
-            <marker date="1586373315665" expanded="false" signature="8622:8633" ph=" { " />
-            <marker date="1586373315665" expanded="false" signature="8645:8651" ph=" }" />
+            <element signature="e#899#900#0" expanded="true" />
+            <element signature="e#926#927#0" expanded="true" />
+            <element signature="e#1218#1219#0" expanded="true" />
+            <element signature="e#1279#1280#0" expanded="true" />
+            <element signature="e#1504#1505#0" expanded="true" />
+            <element signature="e#1532#1533#0" expanded="true" />
+            <element signature="e#2555#2556#0" expanded="true" />
+            <element signature="e#2582#2583#0" expanded="true" />
+            <element signature="e#3035#3036#0" expanded="true" />
+            <element signature="e#3063#3064#0" expanded="true" />
+            <element signature="e#3168#3169#0" expanded="true" />
+            <element signature="e#3196#3197#0" expanded="true" />
+            <element signature="e#3311#3312#0" expanded="true" />
+            <element signature="e#3338#3339#0" expanded="true" />
+            <element signature="e#6157#6158#0" expanded="true" />
+            <element signature="e#6184#6185#0" expanded="true" />
+            <element signature="e#9335#9336#0" expanded="true" />
+            <element signature="e#9362#9363#0" expanded="true" />
+            <marker date="1586374255472" expanded="false" signature="8330:8341" ph=" { " />
+            <marker date="1586374255472" expanded="false" signature="8353:8359" ph=" }" />
+            <marker date="1586374255472" expanded="false" signature="8450:8461" ph=" { " />
+            <marker date="1586374255472" expanded="false" signature="8474:8480" ph=" }" />
+            <marker date="1586374255472" expanded="false" signature="8550:8561" ph=" { " />
+            <marker date="1586374255472" expanded="false" signature="8574:8580" ph=" }" />
+            <marker date="1586374255472" expanded="false" signature="8653:8664" ph=" { " />
+            <marker date="1586374255472" expanded="false" signature="8677:8683" ph=" }" />
+            <marker date="1586374255472" expanded="false" signature="8760:8771" ph=" { " />
+            <marker date="1586374255472" expanded="false" signature="8783:8789" ph=" }" />
+            <marker date="1586374255472" expanded="false" signature="8867:8878" ph=" { " />
+            <marker date="1586374255472" expanded="false" signature="8891:8897" ph=" }" />
+            <marker date="1586374255472" expanded="false" signature="8981:8992" ph=" { " />
+            <marker date="1586374255472" expanded="false" signature="9005:9011" ph=" }" />
+            <marker date="1586374255472" expanded="false" signature="9094:9105" ph=" { " />
+            <marker date="1586374255472" expanded="false" signature="9118:9124" ph=" }" />
+            <marker date="1586374255472" expanded="false" signature="9216:9227" ph=" { " />
+            <marker date="1586374255472" expanded="false" signature="9239:9245" ph=" }" />
           </folding>
         </state>
       </provider>

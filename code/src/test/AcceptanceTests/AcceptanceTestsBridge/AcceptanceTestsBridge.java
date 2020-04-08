@@ -37,6 +37,7 @@ public interface AcceptanceTestsBridge {
     boolean deleteManager(String storeName,String username);
     List<PurchaseTestData> getStorePurchasesHistory(String storeName);
     List<PurchaseTestData> getUserPurchaseHistory(String username);
+    List<PurchaseTestData> getCurrentUserPurchaseHistory();
     boolean appointOwnerToStore(String storeName, String username);
     boolean addPermissionToManager(String storeName, String username, PermissionsTypeTestData productsInventory);
     boolean deletePermission(String storeName, String username, PermissionsTypeTestData productsInventory);
