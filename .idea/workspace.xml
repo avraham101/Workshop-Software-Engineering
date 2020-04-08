@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="05e8ee0e-932c-4138-ba00-2c920c3ad416" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/DiscountTestData.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/StoreTestData.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/StoreTestData.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTestsDriver.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTestsDriver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/GetStoresInfo.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/GetStoresInfo.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/InitialStartTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/InitialStartTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -665,7 +657,7 @@
       <workItem from="1585926832568" duration="33000" />
       <workItem from="1586255960599" duration="10985000" />
       <workItem from="1586271268614" duration="13617000" />
-      <workItem from="1586326510622" duration="7417000" />
+      <workItem from="1586326510622" duration="7492000" />
     </task>
     <task id="LOCAL-00001" summary="fixed tests">
       <created>1586199195159</created>
@@ -758,7 +750,14 @@
       <option name="project" value="LOCAL" />
       <updated>1586286226223</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="fixed ac tests applicable to system">
+      <created>1586334009035</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1586334009035</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -794,7 +793,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50867000" />
+    <option name="totallyTimeSpent" value="50942000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -849,7 +848,8 @@
     <MESSAGE value="added proxy bridge" />
     <MESSAGE value="Merge branches 'AcceptanceTests' and 'master' of https://github.com/avraham101/Workshop-Software-Engineering into AcceptanceTests&#10;&#10;# Conflicts:&#10;#&#9;.idea/encodings.xml&#10;#&#9;.idea/vcs.xml&#10;#&#9;code/.gitignore&#10;#&#9;code/.idea/compiler.xml&#10;#&#9;code/.idea/misc.xml&#10;#&#9;code/.idea/workspace.xml&#10;#&#9;code/src/test/Data/TestData.java" />
     <MESSAGE value="merged with master to actests&#10;started working on the adapter" />
-    <option name="LAST_COMMIT_MESSAGE" value="merged with master to actests&#10;started working on the adapter" />
+    <MESSAGE value="fixed ac tests applicable to system" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed ac tests applicable to system" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
