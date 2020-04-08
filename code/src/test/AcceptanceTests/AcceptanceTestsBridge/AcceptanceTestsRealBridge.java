@@ -6,9 +6,7 @@ import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
-import Domain.Discount;
-import Domain.Purchase;
-import Domain.Review;
+import Domain.*;
 import Service.ServiceAPI;
 
 import java.util.*;
@@ -196,23 +194,30 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
             return null;
         }
         else {
-            List<Purchase>  history =  serviceAPI.watchMyPurchaseHistory();
-            HashMap<ProductTestData,Integer> productsAndAmountInPurchase = new HashMap<>();
-            Date date = new Date();
-            for (Purchase purchase: history) {
-                 List<ProductData> products = purchase.getProduct();
-                for (ProductData product: products) {
-                    productsAndAmountInPurchase.put(buildProductTestData(product)
-                                                    ,product.getAmount());
-
-                }
-
-
-            }
-            PurchaseTestData purchaseTestData = new PurchaseTestData(productsAndAmountInPurchase,
-                    date,)
+                return getPurchaseTestDataFromHistory();
         }
 
+    }
+
+    public PurchaseTestData getPurchaseTestDataFromHistory(){
+        List<Purchase>  history =  serviceAPI.watchMyPurchaseHistory();
+        HashMap<ProductTestData,Integer> productsAndAmountInPurchase = new HashMap<>();
+        double totalCost=0;
+        Date date = new Date();
+        for (Purchase purchase: history) {
+            List<ProductData> products = purchase.getProduct();
+            for (ProductData product: products) {
+                productsAndAmountInPurchase.put(buildProductTestData(product)
+                        ,product.getAmount());
+                totalCost+=product.getPriceAfterDiscount()*product.getAmount();
+
+            }
+
+
+        }
+        PurchaseTestData purchaseTestData = new PurchaseTestData
+                (productsAndAmountInPurchase, date,totalCost);
+        return  purchaseTestData;
     }
 
     @Override
@@ -222,12 +227,22 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public StoreTestData openStore(String storeName) {
-        return null;
+        StoreData store = new StoreData(storeName,new PurchesPolicy(),new DiscountPolicy());
+        boolean approval=serviceAPI.openStore(store);
+        if(!approval) {
+            return null;
+        }
+        else{
+          return getStoreInfoByName(storeName); //TODO : REDUNDANT -SEE OPEN STORE
+        }
+
     }
+
+
 
     @Override
     public boolean sendApplicationToStore(String storeName, String message) {
-        return false;
+        return serviceAPI.writeRequestToStore(storeName,message);
     }
 
     @Override
@@ -242,6 +257,17 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public StoreTestData getStoreInfoByName(String storeName) {
+
+        List<StoreData> stores=serviceAPI.viewStores();
+        for (StoreData st: stores) {
+            if(st.getName().equals(storeName)){
+                StoreTestData openedStore = new StoreTestData(storeName,currentUser);
+                return openedStore;
+
+            }
+
+
+        }
         return null;
     }
 

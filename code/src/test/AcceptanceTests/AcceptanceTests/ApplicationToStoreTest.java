@@ -33,9 +33,5 @@ public class ApplicationToStoreTest extends AcceptanceTests {
         assertFalse(approval);
     }
 
-    @Before
-    public void tearDown(){
-        deleteStores(stores);
-        deleteUser(user.getUsername());
-    }
+
 }
