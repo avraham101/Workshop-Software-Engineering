@@ -6,7 +6,6 @@ public class StoreTestData {
     private String storeName;
     private UserTestData storeOwner;
     private List<ProductTestData> products;
-    private HashMap<String, PermissionTestData> permissions;
     private List<PurchaseTestData> purchasesHistory;
     private HashSet<ApplicationToStoreTestData> applications;
 
@@ -14,18 +13,9 @@ public class StoreTestData {
         this.storeName = storeName;
         this.storeOwner = storeOwner;
         this.products = new ArrayList<>();
-        this.permissions = new HashMap<>();
         this.purchasesHistory = new ArrayList<>();
         this.applications = new HashSet<>();
 
-        String username = storeOwner.getUsername();
-        HashSet<PermissionsTypeTestData> initialPermissions = new HashSet<>();
-        initialPermissions.add(PermissionsTypeTestData.OWNER);
-        permissions.put(username, new PermissionTestData(username, initialPermissions,username));
-    }
-
-    public HashMap<String, PermissionTestData> getPermissions() {
-        return permissions;
     }
 
     public List<PurchaseTestData> getPurchasesHistory() {
@@ -76,15 +66,6 @@ public class StoreTestData {
                 return pd;
         }
         return null;
-    }
-
-    public boolean isManager(String username) {
-        return permissions.containsKey(username);
-    }
-
-    public boolean isOwner(String username) {
-        PermissionTestData userPermission = permissions.get(username);
-        return userPermission != null && userPermission.getPermissions().contains(PermissionsTypeTestData.OWNER);
     }
 
 }

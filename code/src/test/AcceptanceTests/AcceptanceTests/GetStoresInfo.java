@@ -44,9 +44,4 @@ public class GetStoresInfo extends AcceptanceTests {
         assertNull(productsInStoreSystem);
     }
 
-    @After
-    public void tearDown(){
-        bridge.deleteProducts(products);
-        bridge.deleteStores(stores);
-    }
 }

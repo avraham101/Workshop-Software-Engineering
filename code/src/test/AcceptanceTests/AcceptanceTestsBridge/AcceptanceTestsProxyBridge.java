@@ -45,11 +45,6 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
         return false;
     }
 
-    @Override
-    public void deleteUser(String username) {
-        if(realBridge!=null)
-            realBridge.deleteUser(username);
-    }
 
     @Override
     public String getCurrentLoggedInUser() {
@@ -73,23 +68,10 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public HashSet<ProductTestData> filterProducts(List<ProductTestData> products, List<FilterTestData> filters) {
-        if(realBridge!=null)
-            return realBridge.filterProducts(products,filters);
+    public HashSet<ProductTestData> filterProducts(List<FilterTestData> filters) {
         return null;
     }
 
-    @Override
-    public void deleteProducts(List<ProductTestData> products) {
-        if(realBridge!=null)
-            deleteProducts(products);
-    }
-
-    @Override
-    public void deleteStores(List<StoreTestData> stores) {
-        if(realBridge!=null)
-            realBridge.deleteStores(stores);
-    }
 
     @Override
     public void addStores(List<StoreTestData> stores) {
@@ -103,11 +85,6 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
             realBridge.addProducts(products);
     }
 
-    @Override
-    public void addCartToUser(String username, CartTestData cart) {
-        if(realBridge!=null)
-            realBridge.addCartToUser(username,cart);
-    }
 
     @Override
     public CartTestData getCurrentUsersCart() {
@@ -249,13 +226,6 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public List<PurchaseTestData> getUserPurchases(String username) {
-        if(realBridge!=null)
-            return realBridge.getUserPurchases(username);
-        return null;
-    }
-
-    @Override
     public boolean appointOwnerToStore(String storeName, String username) {
         if(realBridge!=null)
             return realBridge.appointOwnerToStore(storeName,username);
@@ -277,13 +247,6 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public HashMap<ApplicationToStoreTestData, String> getUserApplicationsAndReplies(String username) {
-        if(realBridge!=null)
-            return realBridge.getUserApplicationsAndReplies(username);
-        return null;
-    }
-
-    @Override
     public boolean writeReplyToApplication(String storeName, ApplicationToStoreTestData application, String reply) {
         if(realBridge!=null)
             return realBridge.writeReplyToApplication(storeName,application,reply);
@@ -297,10 +260,4 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
         return null;
     }
 
-    @Override
-    public boolean deleteStore(String storeName) {
-        if(realBridge!=null)
-            return realBridge.deleteStore(storeName);
-        return false;
-    }
 }

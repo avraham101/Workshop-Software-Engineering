@@ -2,6 +2,7 @@ package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsBridge;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
@@ -195,23 +196,6 @@ public class AcceptanceTests {
         return null;
     }
 
-    protected static void deleteStores (List<StoreTestData> stores){
-        String userName = bridge.getCurrentLoggedInUser();
-        if(userName != null){
-            bridge.logout();
-        }
-        bridge.login(superUser.getUsername(),superUser.getPassword());
-
-        for(StoreTestData store : stores) {
-            bridge.deleteStore(store.getStoreName());
-            bridge.deleteUser(store.getStoreOwner().getUsername());
-        }
-
-        bridge.logout();
-        if(userName != null){
-            bridge.login(userName,getPasswordByUser(userName));
-        }
-    }
 
     protected static void addStores(List<StoreTestData> stores){
         String userName = bridge.getCurrentLoggedInUser();
@@ -234,22 +218,7 @@ public class AcceptanceTests {
 
     }
 
-    protected static void deleteProducts( List<ProductTestData> products){
-        String userName = bridge.getCurrentLoggedInUser();
-        if(userName != null){
-            bridge.logout();
-        }
-        bridge.login(admin.getUsername(),admin.getPassword());
 
-        for(ProductTestData product : products)
-            bridge.deleteProduct(product);
-
-        bridge.logout();
-        if(userName != null){
-            bridge.login(userName,getPasswordByUser(userName));
-        }
-
-    }
     protected static void addProducts(List<ProductTestData> products){
         String userName = bridge.getCurrentLoggedInUser();
         if(userName != null){
@@ -278,24 +247,6 @@ public class AcceptanceTests {
     }
 
 
-    protected static void deleteUserAndLoginToPreviousUser(String username){
-        String currUsername = bridge.getCurrentLoggedInUser();
-        String currPassword = getPasswordByUser(username);
-
-        if(!username.equals(currUsername)){
-            bridge.logout();
-            bridge.login(admin.getUsername(),admin.getPassword());
-            bridge.deleteUser(username);
-            bridge.login(currUsername,currPassword);
-        }
-    }
-
-    protected static void deleteUser(String username){
-        bridge.logout();
-        bridge.login(admin.getUsername(),admin.getPassword());
-        bridge.deleteUser(username);
-    }
-
     protected static void registerAndLogin(UserTestData user){
         bridge.logout();
         String username = user.getUsername();
@@ -315,25 +266,14 @@ public class AcceptanceTests {
         addProducts(products);
     }
 
-    protected static void deleteUserStoresAndProducts(UserTestData user){
-        deleteProducts(products);
-        deleteStores(stores);
-        deleteUser(user.getUsername());
-
-    }
 
     protected static void registerUsers(List<UserTestData> usersToRegister){
         for(UserTestData user : usersToRegister)
             bridge.register(user.getUsername(),user.getPassword());
     }
 
-    protected static void deleteUsers(List<UserTestData> usersToDelete){
-        for(UserTestData user : usersToDelete)
-            deleteUser(user.getUsername());
-    }
-
-    @AfterClass
-    public static void tearDownAll(){
+    @After
+    public  void tearDownAll(){
         bridge.resetSystem();
     }
 }
