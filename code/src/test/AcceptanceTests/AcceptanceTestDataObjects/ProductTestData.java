@@ -8,17 +8,23 @@ public class ProductTestData {
     private int amountInStore;
     private double price;
     private String category;
+    private List<DiscountTestData> discounts;
     private List<ReviewTestData> reviews;
 
-    public ProductTestData(String productName, String storeName, int amountInStore, double price, String category, List<ReviewTestData> reviews) {
+    public ProductTestData(String productName, String storeName, int amountInStore, double price, String category,
+                           List<ReviewTestData> reviews, List<DiscountTestData> discounts) {
         this.productName = productName;
         this.storeName = storeName;
         this.amountInStore = amountInStore;
         this.price = price;
         this.category = category;
         this.reviews = reviews;
+        this.discounts = discounts;
     }
 
+    public List<DiscountTestData> getDiscounts() {
+        return discounts;
+    }
     public String getProductName() {
         return productName;
     }
@@ -74,9 +80,8 @@ public class ProductTestData {
 
         ProductTestData that = (ProductTestData) o;
 
-        if (Double.compare(that.price, price) != 0) return false;
         if (productName != null ? !productName.equals(that.productName) : that.productName != null) return false;
-        if (storeName != null ? !storeName.equals(that.storeName) : that.storeName != null) return false;
-        return category != null ? category.equals(that.category) : that.category == null;
+        return storeName != null ? storeName.equals(that.storeName) : that.storeName == null;
     }
+
 }
