@@ -2,15 +2,16 @@ package AcceptanceTests.AcceptanceTestsBridge;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
+import DataAPI.DeliveryData;
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.Discount;
+import Domain.Purchase;
 import Domain.Review;
 import Service.ServiceAPI;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     private ServiceAPI serviceAPI;
@@ -188,7 +189,30 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public PurchaseTestData buyCart(PaymentTestData paymentMethod, DeliveryDetailsTestData deliveryDetails) {
-        return null;
+        PaymentData paymentData = new PaymentData(paymentMethod.getCreditCardOwner()
+                ,"address",paymentMethod.getCreditCardNumber() );//TODO: SHOW ROY
+        boolean approval = serviceAPI.purchaseCart(paymentData,deliveryDetails.toString());
+        if(!approval){
+            return null;
+        }
+        else {
+            List<Purchase>  history =  serviceAPI.watchMyPurchaseHistory();
+            HashMap<ProductTestData,Integer> productsAndAmountInPurchase = new HashMap<>();
+            Date date = new Date();
+            for (Purchase purchase: history) {
+                 List<ProductData> products = purchase.getProduct();
+                for (ProductData product: products) {
+                    productsAndAmountInPurchase.put(buildProductTestData(product)
+                                                    ,product.getAmount());
+
+                }
+
+
+            }
+            PurchaseTestData purchaseTestData = new PurchaseTestData(productsAndAmountInPurchase,
+                    date,)
+        }
+
     }
 
     @Override

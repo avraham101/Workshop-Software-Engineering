@@ -13,5 +13,8 @@ public class DeliveryDetailsTestData {
         this.houseNumber = houseNumber;
     }
 
+    public String toString(){
+        return country+" "+city+" "+street+" "+houseNumber;
+    }
 
 }

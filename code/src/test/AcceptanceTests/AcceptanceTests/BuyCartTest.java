@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class BuyCartTest extends AcceptanceTests {
+    double delta= 0.001;
     @Before
     public void setUp(){
         addStores(stores);
@@ -28,7 +29,7 @@ public class BuyCartTest extends AcceptanceTests {
         double totalAmount = currCart.getTotalAmount();
         PurchaseTestData receipt = bridge.buyCart(validPayment,validDelivery);
         assertNotNull(receipt);
-        assertEquals(receipt.getTotalAmount(),totalAmount);
+        assertEquals(receipt.getTotalAmount(),totalAmount,delta);
 
         HashMap<ProductTestData,Integer> prodAndAmountsInCart = currCart.getProductsAndAmountsInCart();
         HashMap<ProductTestData,Integer> prodAndAmountsInPurchase = receipt.getProductsAndAmountInPurchase();
@@ -60,11 +61,11 @@ public class BuyCartTest extends AcceptanceTests {
     public void buyCartFailProductNotInStore(){
         StoreTestData store = stores.get(0);
         ProductTestData product = store.getProducts().get(0);
-        List<ProductTestData> productsToAdd = new ArrayList<>();
-        productsToAdd.add(product);
+        product.setStoreName(stores.get(1).getStoreName());//TODO SHOW ROY
         bridge.addToCurrentUserCart(product,1);
-        deleteProducts(productsToAdd);
+
         assertNull(bridge.buyCart(validPayment,validDelivery));
+
     }
     @Test
     public void buyCartFailInvalidAmount(){
@@ -78,8 +79,4 @@ public class BuyCartTest extends AcceptanceTests {
         bridge.addToCurrentUserCart(stores.get(0).getProducts().get(0),1);
     }
 
-    @After
-    public void tearDown(){
-        bridge.resetSystem();
-    }
 }
