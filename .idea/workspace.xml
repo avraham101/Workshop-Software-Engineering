@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="05e8ee0e-932c-4138-ba00-2c920c3ad416" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/BasketTestData.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/BasketTestData.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/ProductTestData.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/ProductTestData.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -82,8 +85,8 @@
       <file leaf-file-name="UserTestData.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/UserTestData.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="513">
-              <caret line="21" column="5" lean-forward="true" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
+            <state relative-caret-position="297">
+              <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -657,7 +660,7 @@
       <workItem from="1585926832568" duration="33000" />
       <workItem from="1586255960599" duration="10985000" />
       <workItem from="1586271268614" duration="13617000" />
-      <workItem from="1586326510622" duration="7492000" />
+      <workItem from="1586326510622" duration="8812000" />
     </task>
     <task id="LOCAL-00001" summary="fixed tests">
       <created>1586199195159</created>
@@ -757,7 +760,14 @@
       <option name="project" value="LOCAL" />
       <updated>1586334009035</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="fixed ac tests applicable to system">
+      <created>1586334024364</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1586334024364</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -793,7 +803,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50942000" />
+    <option name="totallyTimeSpent" value="52262000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1270,17 +1280,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/ProductTestData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="82" column="33" lean-forward="false" selection-start-line="82" selection-start-column="33" selection-end-line="82" selection-end-column="33" />
-          <folding>
-            <element signature="e#927#928#0" expanded="true" />
-            <element signature="e#961#962#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/GetStoresInfo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="57">
@@ -1297,10 +1296,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/ProductTestData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="82" column="33" lean-forward="false" selection-start-line="82" selection-start-column="33" selection-end-line="82" selection-end-column="33" />
+          <folding>
+            <element signature="e#927#928#0" expanded="true" />
+            <element signature="e#961#962#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/UserTestData.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
-          <caret line="21" column="5" lean-forward="true" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
+        <state relative-caret-position="297">
+          <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
           <folding />
         </state>
       </provider>

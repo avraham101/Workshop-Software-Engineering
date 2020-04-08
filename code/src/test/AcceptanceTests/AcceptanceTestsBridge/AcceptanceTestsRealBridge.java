@@ -2,11 +2,13 @@ package AcceptanceTests.AcceptanceTestsBridge;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
+import DataAPI.ProductData;
 import DataAPI.StoreData;
+import Domain.Discount;
+import Domain.Review;
 import Service.ServiceAPI;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -44,18 +46,6 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return serviceAPI.register(username,password);
     }
 
-    //TODO: need to implement without resetting ?
-    @Override
-    public void deleteUser(String username) {
-        try {
-            this.serviceAPI = new ServiceAPI("admin", "admin");
-            this.currentUser = null;
-        }catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public String getCurrentLoggedInUser() {
         if(currentUser!=null)
@@ -79,19 +69,10 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public HashSet<ProductTestData> filterProducts(List<ProductTestData> products, List<FilterTestData> filters) {
+    public HashSet<ProductTestData> filterProducts(List<FilterTestData> filters) {
         return null;
     }
 
-    @Override
-    public void deleteProducts(List<ProductTestData> products) {
-
-    }
-
-    @Override
-    public void deleteStores(List<StoreTestData> stores) {
-
-    }
 
     @Override
     public void addStores(List<StoreTestData> stores) {
@@ -103,10 +84,6 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     }
 
-    @Override
-    public void addCartToUser(String username, CartTestData cart) {
-
-    }
 
     @Override
     public CartTestData getCurrentUsersCart() {
@@ -151,9 +128,58 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return storeTestData;
     }
 
-    private StoreTestData buildStoreTestData(StoreData sd) {
-        UserTestData storeOwner =
+    private StoreTestData buildStoreTestData(StoreData storeData) {
+        String storeName = storeData.getName();
+        List<ProductData> storeProducts  = serviceAPI.viewProductsInStore(storeName);
+        List<ProductTestData> storeTestProducts = buildProductsTestData(storeProducts);
+        StoreTestData storeToReturn = new StoreTestData(storeName,null);
+        storeToReturn.setProducts(storeTestProducts);
+        return storeToReturn;
     }
+
+    private List<ProductTestData> buildProductsTestData(List<ProductData> storeProducts) {
+        List<ProductTestData> productsTestData = new ArrayList<>();
+        for(ProductData pd : storeProducts)
+            productsTestData.add(buildProductTestData(pd));
+
+        return productsTestData;
+    }
+
+    private ProductTestData buildProductTestData(ProductData productData) {
+        String storeName = productData.getStoreName();
+        String productName = productData.getProductName();
+        int amountInStore = productData.getAmount();
+        double price = productData.getPrice();
+        String category = productData.getCategory();
+        List<DiscountTestData> discounts = buildDiscountsTestData(productData.getDiscount());
+        List<ReviewTestData> reviews = buildReviewsTestData(productData.getReviews());
+
+        return new ProductTestData(productName,storeName,amountInStore,price,category,reviews,discounts);
+    }
+
+    private List<ReviewTestData> buildReviewsTestData(List<Review> reviews) {
+        List<ReviewTestData> reviewsTestData  = new ArrayList<>();
+        for(Review review : reviews)
+            reviewsTestData.add(buildReviewTestData(review));
+        return reviewsTestData;
+    }
+
+    private ReviewTestData buildReviewTestData(Review review) {
+        return new ReviewTestData(review.getWriter(),review.getContent());
+    }
+
+    private List<DiscountTestData> buildDiscountsTestData(List<Discount> discounts) {
+        List<DiscountTestData> discountsTestData = new ArrayList<>();
+        for(Discount discount : discounts )
+            discountsTestData.add(buildDiscountTestData(discount));
+
+        return discountsTestData;
+    }
+
+    private DiscountTestData buildDiscountTestData(Discount discount) {
+        return new DiscountTestData(discount.getPercentage(),null);
+    }
+
 
     @Override
     public List<ProductTestData> getStoreProducts(String storeName) {
@@ -221,11 +247,6 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public List<PurchaseTestData> getUserPurchases(String username) {
-        return null;
-    }
-
-    @Override
     public boolean appointOwnerToStore(String storeName, String username) {
         return false;
     }
@@ -241,11 +262,6 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public HashMap<ApplicationToStoreTestData, String> getUserApplicationsAndReplies(String username) {
-        return null;
-    }
-
-    @Override
     public boolean writeReplyToApplication(String storeName, ApplicationToStoreTestData key, String value) {
         return false;
     }
@@ -255,8 +271,4 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return null;
     }
 
-    @Override
-    public boolean deleteStore(String storeName) {
-        return false;
-    }
 }

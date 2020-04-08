@@ -1,6 +1,9 @@
 package AcceptanceTests.AcceptanceTestDataObjects;
 
+import Domain.Discount;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BasketTestData {
@@ -40,12 +43,22 @@ public class BasketTestData {
     }
 
     public double getTotalAmount (){
-        double amount=0;
+        double totalPrice = 0;
         for (Map.Entry<ProductTestData,Integer> entry: productsAndAmountInBasket.entrySet()) {
-            amount += entry.getKey().getPrice()*entry.getValue();
+            double productPrice = entry.getKey().getPrice();
+            int amount = entry.getValue();
+            List<DiscountTestData> discounts = entry.getKey().getDiscounts();
+            totalPrice += calculateProductPriceAfterDiscount(productPrice,amount,discounts);
         }
-        return amount;
+        return totalPrice ;
     }
+
+    private double calculateProductPriceAfterDiscount(double productPrice, int amount, List<DiscountTestData> discounts) {
+        for(DiscountTestData discount : discounts)
+            productPrice *= (1-discount.getPercentage());
+        return productPrice * amount;
+    }
+
     public boolean isEmpty(){
         return productsAndAmountInBasket.isEmpty();
     }
