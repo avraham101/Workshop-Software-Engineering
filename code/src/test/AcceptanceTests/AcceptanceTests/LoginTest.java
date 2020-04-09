@@ -53,8 +53,4 @@ public class LoginTest extends AcceptanceTests {
         assertFalse(isLoggedIn);
     }
 
-    @After
-    public void tearDown(){
-        deleteUser(username);
-    }
 }

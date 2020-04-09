@@ -6,10 +6,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static junit.framework.TestCase.assertTrue;
 
@@ -47,8 +44,8 @@ public class AcceptanceTests {
     private static void setUpPayments() {
         Date validDate = new Date();
         Date invalidDate = new Date(0);
-        validPayment = new PaymentTestData("1111","343",validDate);
-        invalidPayment = new PaymentTestData("1111","343",invalidDate);
+        validPayment = new PaymentTestData("ownerValid","1111","343",validDate);
+        invalidPayment = new PaymentTestData("ownerInvalid","1111","343",invalidDate);
     }
 
     private static void setUpDelivery() {
@@ -77,61 +74,62 @@ public class AcceptanceTests {
                                                     30,
                                                     1.5,
                                                     "Fruits",
-                                                    new ArrayList<ReviewTestData>());
+                                                    new ArrayList<>(),new ArrayList<>());
         ProductTestData prod1 = new ProductTestData("milkTest",
                                                     "store0Test",
                                                     100,
                                                     5.79,
                                                     "Dairy",
-                                                    new ArrayList<ReviewTestData>());
+                                                    new ArrayList<>(),new ArrayList<>());
         ProductTestData prod2 = new ProductTestData("burekasTest",
                                                     "store0Test",
                                                     90,
                                                     2,
                                                     "Pastries",
-                                                    new ArrayList<ReviewTestData>());
+                                                    new ArrayList<>(),new ArrayList<>());
         ProductTestData prod3 = new ProductTestData("cocacolaTest",
                                                     "store1Test",
                                                     200,
                                                     6,
                                                     "Sodas",
-                                                    new ArrayList<ReviewTestData>());
+                                                    new ArrayList<>(),new ArrayList<>());
         ProductTestData prod4 = new ProductTestData("waterTest",
                                                     "store1Test",
                                                     500,
                                                     3,
                                                     "Sodas",
-                                                    new ArrayList<ReviewTestData>());
+                                                    new ArrayList<>(),new ArrayList<>());
         ProductTestData prod5 = new ProductTestData("milkiTest",
                                                     "store1Test",
                                                     52,
                                                     4,
                                                     "Dairy",
-                                                    new ArrayList<ReviewTestData>());
+                                                    new ArrayList<>(),new ArrayList<>());
         ProductTestData prod6 = new ProductTestData("tomatoTest",
                                                     "store2Test",
                                                     140,
                                                     3.5,
                                                     "Vegetables",
-                                                    new ArrayList<ReviewTestData>());
+                                                    new ArrayList<>(),new ArrayList<>());
         ProductTestData prod7 = new ProductTestData("onionTest",
                                                     "store2Test",
                                                     100,
                                                     1.5,
                                                     "Vegetables",
-                                                    new ArrayList<ReviewTestData>());
+                                                    new ArrayList<>(),new ArrayList<>());
         ProductTestData prod8 = new ProductTestData("bambaTest",
                                                     "store2Test",
                                                     100,
                                                     3.80,
                                                     "Snacks",
-                                                    new ArrayList<ReviewTestData>());
+                                                    new ArrayList<>(), new ArrayList<>());
         ProductTestData prod9 = new ProductTestData("cheeseTest",
                                                     "store2Test",
                                                     500,
                                                     4.5,
                                                     "Dairy",
-                                                    new ArrayList<ReviewTestData>());
+                                                    new ArrayList<>(),
+                                                    new ArrayList<>());
 
         products.addAll(Arrays.asList(prod0, prod1,prod2,
                                         prod3,prod4,prod5,
@@ -270,6 +268,12 @@ public class AcceptanceTests {
     protected static void registerUsers(List<UserTestData> usersToRegister){
         for(UserTestData user : usersToRegister)
             bridge.register(user.getUsername(),user.getPassword());
+    }
+
+    protected void addCartToUser(CartTestData cart) {
+        for(BasketTestData basket : cart.getBaskets())
+            for(Map.Entry<ProductTestData,Integer> prodAndAmount : basket.getProductsAndAmountInBasket().entrySet())
+                bridge.addToCurrentUserCart(prodAndAmount.getKey(),prodAndAmount.getValue());
     }
 
     @After

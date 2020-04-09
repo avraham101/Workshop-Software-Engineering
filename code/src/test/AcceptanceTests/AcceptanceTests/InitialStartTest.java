@@ -27,7 +27,7 @@ public class InitialStartTest extends AcceptanceTests {
 //        deleteUser(admin.getUsername());
 //    }
 
-    //TODO: to delete?
+    //TODO: to delete all class?
 //    @Test
 //    public void testInitialStartFail(){
 //        String username0 = admin.getUsername();

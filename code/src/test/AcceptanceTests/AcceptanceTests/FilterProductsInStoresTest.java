@@ -49,20 +49,6 @@ public class FilterProductsInStoresTest extends AcceptanceTests {
         assertTrue(isFiltered);
     }
 
-//    @Test
-//    public void filterProductsInStoresTestSuccessEmptyFilters(){
-//        List<FilterTestData> filters = new ArrayList<>();
-//        HashSet<ProductTestData> filteredProducts = bridge.filterProducts(products,filters);
-//        HashSet<ProductTestData> expectedFilteredProducts = new HashSet<>(products);
-//
-//        boolean isFiltered = filteredProducts.equals(expectedFilteredProducts);
-//        assertTrue(isFiltered);
-//
-//        filteredProducts = bridge.filterProducts(products,null);
-//        isFiltered = filteredProducts.equals(expectedFilteredProducts);
-//        assertTrue(isFiltered);
-//    }
-
     @Test
     public void filterProductsInStoresTestFailWrongFilters(){
         FilterTestData priceRangeFilter = new PriceRangeFilterTestData(Integer.MIN_VALUE,Integer.MAX_VALUE);

@@ -22,6 +22,7 @@ public class AddToCartTest extends AcceptanceTests {
         user0 = superUser;
         addUserStoresAndProducts(user0);
         cart0 = user0.getCart();
+        addCartToUser(cart0);
     }
     @Test
     public void addToCartTestSuccessExistingBasket(){
@@ -57,9 +58,15 @@ public class AddToCartTest extends AcceptanceTests {
         ProductTestData productToAdd = products.get(8);
         int amount = 10;
 
-        deleteProducts(new ArrayList<>(Collections.singletonList(productToAdd)));
+        logoutAndDeleteProduct(productToAdd);
         boolean isAdded = bridge.addToCurrentUserCart(productToAdd,amount);
         assertFalse(isAdded);
+    }
+
+    private void logoutAndDeleteProduct(ProductTestData productToDelete){
+        logoutAndLogin(admin);
+        bridge.deleteProduct(productToDelete);
+        logoutAndLogin(user0);
     }
 
     @Test
@@ -75,8 +82,4 @@ public class AddToCartTest extends AcceptanceTests {
         assertFalse(isAdded);
     }
 
-    @After
-    public void tearDown(){
-        deleteUserStoresAndProducts(user0);
-    }
 }

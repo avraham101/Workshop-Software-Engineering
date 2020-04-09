@@ -69,6 +69,8 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
 
     @Override
     public HashSet<ProductTestData> filterProducts(List<FilterTestData> filters) {
+        if(realBridge!=null)
+            return realBridge.filterProducts(filters);
         return null;
     }
 
@@ -94,16 +96,16 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean deleteFromCurrentUserCart(BasketTestData basketToDeleteFrom, ProductTestData productToDelete) {
+    public boolean deleteFromCurrentUserCart(ProductTestData productToDelete) {
         if(realBridge!=null)
-            return deleteFromCurrentUserCart(basketToDeleteFrom,productToDelete);
+            return deleteFromCurrentUserCart(productToDelete);
         return false;
     }
 
     @Override
-    public boolean changeCurrentUserAmountOfProductInCart(BasketTestData basketToChangeAmountIn, ProductTestData productToChangeAmount, int newAmount) {
+    public boolean changeCurrentUserAmountOfProductInCart(ProductTestData productToChangeAmount, int newAmount) {
         if(realBridge!=null)
-            return realBridge.changeCurrentUserAmountOfProductInCart(basketToChangeAmountIn,productToChangeAmount,newAmount);
+            return realBridge.changeCurrentUserAmountOfProductInCart(productToChangeAmount,newAmount);
         return false;
     }
 
@@ -122,9 +124,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public ReviewTestData getReviewByProductAndDate(String purchaseDate, ProductTestData product) {
+    public List<ReviewTestData> getProductsReviews(ProductTestData product) {
         if(realBridge!=null)
-            return realBridge.getReviewByProductAndDate(purchaseDate,product);
+            return realBridge.getProductsReviews(product);
         return null;
     }
 
@@ -226,6 +228,11 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
+    public List<PurchaseTestData> getCurrentUserPurchaseHistory() {
+        return null;
+    }
+
+    @Override
     public boolean appointOwnerToStore(String storeName, String username) {
         if(realBridge!=null)
             return realBridge.appointOwnerToStore(storeName,username);
@@ -247,9 +254,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean writeReplyToApplication(String storeName, ApplicationToStoreTestData application, String reply) {
+    public boolean writeReplyToApplication(int requestId,String storeName, ApplicationToStoreTestData application, String reply) {
         if(realBridge!=null)
-            return realBridge.writeReplyToApplication(storeName,application,reply);
+            return realBridge.writeReplyToApplication(requestId,storeName,application,reply);
         return false;
     }
 
@@ -257,6 +264,20 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     public HashSet<ApplicationToStoreTestData> viewApplicationToStore(String storeName) {
         if(realBridge!=null)
             return realBridge.viewApplicationToStore(storeName);
+        return null;
+    }
+
+    @Override
+    public HashMap<ApplicationToStoreTestData, String> getUserApplicationsAndReplies(String username, String storeName) {
+        if(realBridge!=null)
+            return realBridge.getUserApplicationsAndReplies(username,storeName);
+        return null;
+    }
+
+    @Override
+    public List<ApplicationToStoreTestData> getUserApplications(String username, String storeName) {
+        if(realBridge!=null)
+            return realBridge.getUserApplications(username,storeName);
         return null;
     }
 

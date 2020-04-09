@@ -9,6 +9,7 @@ import Systems.SupplySystem.SupplySystem;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class UserState {
     protected Cart cart;
@@ -47,10 +48,12 @@ public abstract class UserState {
         double priceAfterDiscount = 0;
         double priceBeforeDiscount = 0;
         for (Basket basket: cart.getBaskets().values()) {
-            for (Product product: basket.getProducts().keySet()) {
+            for (Map.Entry<Product,Integer> productAndAmount: basket.getProducts().entrySet()) {
+                Product product = productAndAmount.getKey();
                 priceBeforeDiscount += product.getPrice();
                 priceAfterDiscount += product.getDiscountPrice();
                 ProductData productData = new ProductData(product, basket.getStore().getName());
+                productData.setAmount(productAndAmount.getValue());
                 products.add(productData);
             }
         }

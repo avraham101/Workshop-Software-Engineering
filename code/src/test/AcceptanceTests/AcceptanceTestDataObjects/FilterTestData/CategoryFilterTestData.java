@@ -4,7 +4,7 @@ public class CategoryFilterTestData extends FilterTestData {
     private String category;
 
     public CategoryFilterTestData(String category) {
-        super("category filter");
+        super(FilterType.CATEGORY);
         this.category = category;
     }
 

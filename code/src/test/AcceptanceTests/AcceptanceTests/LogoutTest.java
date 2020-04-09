@@ -28,9 +28,4 @@ public class LogoutTest extends AcceptanceTests {
         isLoggedOut = bridge.logout();
         assertFalse(isLoggedOut);
     }
-
-    @After
-    public void tearDown(){
-        deleteUser(superUser.getUsername());
-    }
 }

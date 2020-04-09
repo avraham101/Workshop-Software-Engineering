@@ -1,17 +1,30 @@
 package AcceptanceTests.AcceptanceTests;
 
+import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 
 public class AppointManagerTest extends AcceptanceTests  {
+    private ProductTestData productToAdd;
     @Before
     public void setUp(){
+
         registerAndLogin(superUser);
+        productToAdd = new ProductTestData("appointManagerProductTest",
+                                                            stores.get(0).getStoreName(),
+                                                            100,
+                                                            10,
+                                                            "Dairy",
+                                                            new ArrayList<>(),
+                                                            new ArrayList<>());
     }
 
     @Test
@@ -20,8 +33,9 @@ public class AppointManagerTest extends AcceptanceTests  {
         UserTestData newManager = users.get(2);
         boolean approval = bridge.appointManager(store.getStoreName(),newManager.getUsername());
         assertTrue(approval);
-        StoreTestData newStore = bridge.getStoreInfoByName(store.getStoreName());
-        assertTrue(newStore.isManager(newManager.getUsername()));
+        logoutAndLogin(newManager);
+        boolean isManager = bridge.addProduct(productToAdd);
+        assertTrue(isManager);
     }
 
     @Test
@@ -29,8 +43,11 @@ public class AppointManagerTest extends AcceptanceTests  {
         StoreTestData store = stores.get(0);
         UserTestData newManager = users.get(2);
         bridge.appointManager(store.getStoreName(),newManager.getUsername());
-        boolean approval =bridge.appointManager(store.getStoreName(),newManager.getUsername());
+        boolean approval = bridge.appointManager(store.getStoreName(),newManager.getUsername());
         assertFalse(approval);
+        logoutAndLogin(newManager);
+        boolean isManager = bridge.addProduct(productToAdd);
+        assertTrue(isManager);
     }
 
     @Test
@@ -46,10 +63,5 @@ public class AppointManagerTest extends AcceptanceTests  {
         UserTestData newManager = users.get(2);
         boolean approval = bridge.appointManager(store.getStoreName(),newManager.getUsername());
         assertFalse(approval);
-    }
-
-    @After
-    public void tearDown(){
-        deleteStores(stores);
     }
 }

@@ -1,24 +1,34 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.PermissionTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.PermissionsTypeTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 
 
 public class EditPermissionTest extends AcceptanceTests {
     UserTestData userToCheck;
+    ProductTestData productToAdd;
+
     @Before
     public void setUp(){
         userToCheck = users.get(1);
         bridge.register(userToCheck.getUsername(),userToCheck.getPassword());
         addUserStoresAndProducts(superUser);
         bridge.appointManager(stores.get(0).getStoreName(),userToCheck.getUsername());
+
+        productToAdd = new ProductTestData("newProductTest",
+                stores.get(0).getStoreName(),
+                100,
+                4,
+                "Dairy",
+                new ArrayList<>(),
+                new ArrayList<>());
     }
 
     /*****************Add-Permission -4.6.1***********************************/
@@ -29,9 +39,9 @@ public class EditPermissionTest extends AcceptanceTests {
                                                         userToCheck.getUsername(),
                                                         PermissionsTypeTestData.PRODUCTS_INVENTORY);
         assertTrue(approval);
-        StoreTestData store = bridge.getStoreInfoByName(stores.get(0).getStoreName());
-        PermissionTestData permission = store.getPermissions().get(userToCheck.getUsername());
-        assertTrue(permission.containsPermission( PermissionsTypeTestData.PRODUCTS_INVENTORY));
+        logoutAndLogin(userToCheck);
+        boolean isAdded = bridge.addProduct(productToAdd);
+        assertTrue(isAdded);
     }
 
     @Test
@@ -73,13 +83,14 @@ public class EditPermissionTest extends AcceptanceTests {
     @Test
     public void deletePermissionSuccess(){
         addPermissionSuccess();
-       boolean approval= bridge.deletePermission(stores.get(0).getStoreName(),
-                userToCheck.getUsername(),
-                PermissionsTypeTestData.PRODUCTS_INVENTORY);
-       assertTrue(approval);
-        StoreTestData store = bridge.getStoreInfoByName(stores.get(0).getStoreName());
-        PermissionTestData permission = store.getPermissions().get(userToCheck.getUsername());
-        assertTrue(!permission.containsPermission( PermissionsTypeTestData.PRODUCTS_INVENTORY));
+        bridge.deleteProduct(productToAdd);
+        boolean approval= bridge.deletePermission(stores.get(0).getStoreName(),
+                 userToCheck.getUsername(),
+                    PermissionsTypeTestData.PRODUCTS_INVENTORY);
+        assertTrue(approval);
+        logoutAndLogin(userToCheck);
+        boolean isAdded = bridge.addProduct(productToAdd);
+        assertFalse(isAdded);
 
     }
     @Test
@@ -105,12 +116,6 @@ public class EditPermissionTest extends AcceptanceTests {
     public void deletePermissionFailPermissionNotExist(){
         boolean approval=bridge.deletePermission(stores.get(0).getStoreName(),userToCheck.getUsername(), PermissionsTypeTestData.OWNER);
         assertFalse(approval);
-    }
-
-    @After
-    public void tearDown(){
-        deleteUser(userToCheck.getUsername());
-        deleteUserStoresAndProducts(superUser);
     }
 
 }
