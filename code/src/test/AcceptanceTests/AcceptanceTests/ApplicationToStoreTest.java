@@ -26,6 +26,7 @@ public class ApplicationToStoreTest extends AcceptanceTests {
     public void applicationToStoreTestSuccess(){
         boolean approval= bridge.sendApplicationToStore(application.getStoreName(),application.getContent());
         assertTrue(approval);
+        registerAndLogin(superUser);
         List<ApplicationToStoreTestData> applications = bridge.getUserApplications(user.getUsername(),application.getStoreName());
         assertTrue(applications.contains(application));
     }
