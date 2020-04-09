@@ -55,6 +55,8 @@ public class LogicManager {
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
+            paymentSystem = new ProxyPayment();
+            supplySystem = new ProxySupply();
             if(!paymentSystem.connect()) {
                 throw new Exception("Payment System Crashed");
             }
