@@ -19,7 +19,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
      *  use case 2.7.4 - add product to cart
      */
     @Override
-    protected void testAddProductToCart() {
+    public void testAddProductToCart() {
         super.testAddProductToCart();
         testAddProductToCartInvalidProduct();
     }
@@ -43,7 +43,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
      * test use case 3.2 - Open Store
      */
     @Override
-    protected void testOpenStore() {
+    public void testOpenStore() {
         super.testOpenStore();
         StoreData storeData = data.getStore(Data.VALID);
         Store store = stores.get(storeData.getName());

@@ -61,27 +61,28 @@ public class LogicManagerAllStubsTest {
         logicManager.register(other.getName(),other.getPassword());
     }
 
-    @Test
+    /**--------------------------------set-ups-------------------------------------------------------------------*/
+
     public void test() {
-        testExternalSystems();
-        testRegister();
-        testLogin();
-        testOpenStore();
-        testAddManagerToStore();
-        testAddPermission();
-        testAddProduct();
-        testAddRequest();
-        testStoreViewRequest();
-        testReplayRequest();
-        testViewSpecificProduct();
-        testAddProductToCart();
-        testWatchCartDetails();
-        testEditProductsInCart();
-        testBuyProducts();
-        testWatchPurchaseHistory();
-        testEditProduct();
-        testWatchStoreHistory();
-        testWatchUserHistory();
+        //testExternalSystems();
+        //testRegister();
+        //testLogin();
+        //testOpenStore();
+        //testAddManagerToStore();
+        //testAddPermission();
+        //testAddProduct();
+        //testAddRequest();
+        //testStoreViewRequest();
+        //testReplayRequest();
+        //testViewSpecificProduct();
+        //testAddProductToCart();
+        //testWatchCartDetails();
+        //testEditProductsInCart();
+        //testBuyProducts();
+        //testWatchPurchaseHistory();
+        //testEditProduct();
+        //testWatchStoreHistory();
+        //testWatchUserHistory();
         testWriteReview();
         testViewDataStores();
         testViewProductsInStore();
@@ -89,15 +90,106 @@ public class LogicManagerAllStubsTest {
         testDeleteProductFromCart();
         testRemoveProductFromStore();
         testManageOwner();
-        testRemovePermission();
+        //testRemovePermission();
         testRemoveManager();
-        testLogout();
+        //testLogout();
     }
+
+    /**
+     * set up for register a user
+     */
+    private void setUpRegisteredUser(){
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        logicManager.register(subscribe.getName(),subscribe.getPassword());
+    }
+
+    /**
+     * set up for valid user to be login and registered
+     */
+    private void setUpLogedInUser(){
+        setUpRegisteredUser();
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        logicManager.login(subscribe.getName(),subscribe.getPassword());
+    }
+
+    /**
+     * set up for opening a valid store
+     */
+    private void setUpOpenedStore(){
+        setUpLogedInUser();
+        StoreData storeData = data.getStore(Data.VALID);
+        logicManager.openStore(storeData);
+    }
+
+    /**
+     * set up for adding a new manager, sub manager of the connected user
+     */
+    private void setUpManagerAdded(){
+        setUpOpenedStore();
+        logicManager.addManager(data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName());
+    }
+
+    /**
+     * set up a sub manager of current logged in user with permissions of ADD_MANAGER and ADD_OWNER
+     */
+    private void setUpPermissionsAdded(){
+        setUpManagerAdded();
+        currUser.addPermissions(data.getPermissionTypeList(),
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName());
+    }
+
+    /**
+     * set up for the store to be opened and a valid product to be added
+     */
+    protected void setUpProductAdded(){
+        setUpOpenedStore();
+        logicManager.addProductToStore(data.getProductData(Data.VALID));
+    }
+
+    /**
+     * set up for a state where a valid request was added for a valid store
+     */
+    private void setUpRequestAdded(){
+        setUpOpenedStore();
+        Request request = data.getRequest(Data.VALID);
+        logicManager.addRequest(request.getStoreName(),request.getContent());
+    }
+
+    /**
+     * set up a valid product in a valid cart
+     * //extended by the tests of LogicManageRealTests
+     */
+    protected void setUpProductAddedToCart(){
+        setUpProductAdded();
+    }
+
+    /**
+     * set up a user and store with a valid non empty purchase history
+     */
+    protected void setUpBoughtProduct(){
+        setUpProductAddedToCart();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        logicManager.purchaseCart(paymentData, address);
+    }
+
+    /**
+     * set up bought products and go to admin state for getting admin permissions
+     */
+    protected void setUpBoughtProductAdminState(){
+        setUpBoughtProduct();
+        String adminName=data.getSubscribe(Data.ADMIN).getName();
+        currUser.setState(users.get(adminName));
+    }
+
+
+    /**--------------------------------set-ups-------------------------------------------------------------------*/
 
     /**
      * test: use case 1.1 - Init System
      */
-    private void testExternalSystems() {
+    @Test
+    public void testExternalSystems() {
         ProxyPayment proxyPayment = new ProxyPayment();
         assertTrue(proxyPayment.connect());
         ProxySupply proxySupply = new ProxySupply();
@@ -156,7 +248,9 @@ public class LogicManagerAllStubsTest {
     /**
      * test use case 2.3 - Login
      */
+    @Test
     public void testLogin() {
+        setUpRegisteredUser();
         testLoginFailNull();
         testLoginFailWrongName();
         testLoginFailWrongPassword();
@@ -197,7 +291,7 @@ public class LogicManagerAllStubsTest {
 
     /**
      * use case 2.4.1 - view all stores details
-     */
+     *///TODO init set up
     protected void testViewDataStores() {
         List<StoreData> expected = new LinkedList<>();
         expected.add(data.getStore(Data.VALID));
@@ -207,7 +301,7 @@ public class LogicManagerAllStubsTest {
 
     /**
      * use case 2.4.2 - view the products in some store test
-     */
+     *///TODO init set up
     protected void testViewProductsInStore() {
         List<ProductData> expected = new LinkedList<>();
         String storeName = data.getStore(Data.VALID).getName();
@@ -234,7 +328,9 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 2.5 - view specific product
      */
-    protected void testViewSpecificProduct() {
+    @Test
+    public void testViewSpecificProduct() {
+        setUpProductAdded();
         testViewSpecificProductWrongSearch();
         testViewSpecificProductWrongFilter();
         testViewSpecificProductSearchAndFilter();
@@ -304,7 +400,9 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 2.7.1 fails tests
      */
-    protected void testWatchCartDetails() {
+    @Test
+    public void testWatchCartDetails() {
+        setUpProductAddedToCart();
         testWatchCartDetailsNull();
         testWatchCartDetailsNullStore();
     }
@@ -360,7 +458,9 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 2.7.3 fail tests
      */
-    protected void testEditProductsInCart() {
+    @Test
+    public void testEditProductsInCart() {
+        setUpProductAddedToCart();
         testEditProductsInCartBasketIsNull();
         testEditProductsInCartNegativeAmount();
         testEditProductsInCartProductIsNull();
@@ -394,7 +494,9 @@ public class LogicManagerAllStubsTest {
     /**
      *  use case 2.7.4 - add product to cart
      */
-    protected void testAddProductToCart() {
+    @Test
+    public void testAddProductToCart() {
+        setUpProductAdded();
         testAddProductToCartInvalidStore();
     }
 
@@ -409,7 +511,9 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 2.8 - test buy Products
      */
-    protected void testBuyProducts() {
+    @Test
+    public void testBuyProducts() {
+        setUpProductAddedToCart();
         testFailBuyProducts();
         testSuccessBuyProducts();
     }
@@ -469,14 +573,18 @@ public class LogicManagerAllStubsTest {
     /**
      * test: use case 3.1 - Logout
      */
-    protected void testLogout() {
+    @Test
+    public void testLogout() {
+        setUpLogedInUser();
         assertTrue(currUser.logout());
     }
 
     /**
      * test use case 3.2 - Open Store
      */
-    protected void testOpenStore() {
+    @Test
+    public void testOpenStore() {
+        setUpLogedInUser();
         testOpenStoreFail();
         testOpenStoreSucces();
     }
@@ -553,14 +661,16 @@ public class LogicManagerAllStubsTest {
      * 1. enter null content
      * 2. enter request to invalid store
      */
+    @Test
     public void testAddRequest(){
+        setUpProductAdded();
         testAddRequestSuccess();
         testAddRequestFail();
     }
 
     private void testAddRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
-        assertNotNull(currUser.addRequest(request.getStoreName(),request.getContent()));
+        assertTrue(logicManager.addRequest(request.getStoreName(),request.getContent()));
     }
 
     private void testAddRequestFail() {
@@ -573,7 +683,9 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 3.7 - watch purchase history
      */
+    @Test
     public void testWatchPurchaseHistory() {
+        setUpBoughtProduct();
         List<Purchase> purchases = logicManager.watchMyPurchaseHistory();
         assertNotNull(purchases);
         assertTrue(purchases.isEmpty());
@@ -582,12 +694,15 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 4.1.1 - add product
      */
-    protected void testAddProduct(){
+    @Test
+    public void testAddProduct(){
+        setUpOpenedStore();
         testAddProductFail();
         testProductSuccess();
     }
 
     protected void testProductSuccess() {
+
         assertTrue(logicManager.addProductToStore(data.getProductData(Data.VALID)));
     }
 
@@ -630,7 +745,9 @@ public class LogicManagerAllStubsTest {
     /**
      * test use case 4.1.3 - edit product in store
      */
-    protected void testEditProduct(){
+    @Test
+    public void testEditProduct(){
+        setUpProductAdded();
         testEditProductFail();
         testEditProductSuccess();
     }
@@ -639,6 +756,9 @@ public class LogicManagerAllStubsTest {
         assertTrue(logicManager.editProductFromStore(data.getProductData(Data.EDIT)));
     }
 
+    /**
+     * test edit product to be illegal fields
+     */
     protected void testEditProductFail() {
         assertFalse(logicManager.editProductFromStore(null));
         assertFalse(logicManager.editProductFromStore(data.getProductData(Data.NULL_NAME)));
@@ -652,7 +772,6 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.editProductFromStore(data.getProductData(Data.WRONG_DISCOUNT)));
         assertFalse(logicManager.editProductFromStore(data.getProductData(Data.NEGATIVE_PERCENTAGE)));
     }
-
 
     /**
      * test : use case 4.3 add owner
@@ -677,7 +796,9 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 4.5 add manager
      */
-    protected void testAddManagerToStore(){
+    @Test
+    public void testAddManagerToStore(){
+        setUpOpenedStore();
         testAddManagerToStoreFail();
         testAddManagerStoreSuccess();
     }
@@ -701,7 +822,9 @@ public class LogicManagerAllStubsTest {
     /**
      * test use case 4.6.1- add permission
      */
-    private void testAddPermission(){
+    @Test
+    public void testAddPermission(){
+        setUpManagerAdded();
         testAddPermissionFail();
         testAddPermissionSuccess();
     }
@@ -733,33 +856,11 @@ public class LogicManagerAllStubsTest {
     /**
      * test use case 4.6.2 - remove permissions
      */
+    @Test
     public void testRemovePermission(){
+        setUpPermissionsAdded();
         testRemovePermissionFail();
         testRemovePermissionSuccess();
-    }
-
-    /**
-     * test use case 4.7 - remove manager
-     */
-    private void testRemoveManager(){
-        testRemoveManagerFail();
-        testRemoveManagerSuccess();
-    }
-
-    protected void testRemoveManagerSuccess() {
-        assertTrue(logicManager.removeManager(data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()));
-    }
-
-    /**
-     * test not existing store or not existing user
-     */
-    private void testRemoveManagerFail() {
-        String storeName=data.getStore(Data.VALID).getName();
-        String userName=data.getSubscribe(Data.ADMIN).getName();
-        //invalid username
-        assertFalse(logicManager.removeManager(storeName,storeName));
-        //invalid storeName
-        assertFalse(logicManager.removeManager(userName,userName));
     }
 
     /**
@@ -787,9 +888,35 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
+     * test use case 4.7 - remove manager
+     */
+    private void testRemoveManager(){
+        testRemoveManagerFail();
+        testRemoveManagerSuccess();
+    }
+
+    protected void testRemoveManagerSuccess() {
+        assertTrue(logicManager.removeManager(data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()));
+    }
+
+    /**
+     * test not existing store or not existing user
+     */
+    private void testRemoveManagerFail() {
+        String storeName=data.getStore(Data.VALID).getName();
+        String userName=data.getSubscribe(Data.ADMIN).getName();
+        //invalid username
+        assertFalse(logicManager.removeManager(storeName,storeName));
+        //invalid storeName
+        assertFalse(logicManager.removeManager(userName,userName));
+    }
+
+    /**
      * use case 4.9.1 -view request
      */
+    @Test
     public void testStoreViewRequest(){
+        setUpRequestAdded();
         testStoreViewRequestSuccess();
         testStoreViewRequestFail();
     }
@@ -809,7 +936,9 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 4.9.2 -replay request
      */
+    @Test
     public void testReplayRequest(){
+        setUpRequestAdded();
         testReplayRequestSuccess();
         testReplayRequestFail();
     }
@@ -829,7 +958,9 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 6.4.1 - watch User History
      */
-    private void testWatchUserHistory(){
+    @Test
+    public void testWatchUserHistory(){
+        setUpBoughtProductAdminState();
         testWatchUserHistoryUserNotExist();
         testWatchUserHistorySuccess();
     }
@@ -851,7 +982,9 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 6.4.2 , 4.10 - watch store history
      */
-    private void testWatchStoreHistory(){
+    @Test
+    public void testWatchStoreHistory(){
+        setUpBoughtProductAdminState();
         testWatchStoreHistoryStoreNotExist();
         testWatchStoreHistorySuccess();
     }
