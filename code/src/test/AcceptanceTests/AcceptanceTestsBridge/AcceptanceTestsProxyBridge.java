@@ -254,9 +254,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean writeReplyToApplication(String storeName, ApplicationToStoreTestData application, String reply) {
+    public boolean writeReplyToApplication(int requestId,String storeName, ApplicationToStoreTestData application, String reply) {
         if(realBridge!=null)
-            return realBridge.writeReplyToApplication(storeName,application,reply);
+            return realBridge.writeReplyToApplication(requestId,storeName,application,reply);
         return false;
     }
 

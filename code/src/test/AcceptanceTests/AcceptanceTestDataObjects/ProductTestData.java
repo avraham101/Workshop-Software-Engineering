@@ -84,4 +84,10 @@ public class ProductTestData {
         return storeName != null ? storeName.equals(that.storeName) : that.storeName == null;
     }
 
+    @Override
+    public int hashCode() {
+        int result = productName.hashCode();
+        result = 31 * result + storeName.hashCode();
+        return result;
+    }
 }
