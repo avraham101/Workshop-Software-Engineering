@@ -153,4 +153,8 @@ public class UserStub extends User {
         return new LinkedList<>();
     }
 
+    @Override
+    public boolean addReview(Review review) {
+        return true;
+    }
 }

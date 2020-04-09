@@ -1,5 +1,7 @@
 package Stubs;
 
+import DataAPI.DeliveryData;
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
@@ -38,8 +40,18 @@ public class StoreStub extends Store {
         return true;
     }
 
+    /**
+     * use case 2.8 - buy cart
+     * @param list - the products
+     * @return
+     */
     @Override
     public boolean isAvailableProducts(HashMap<Product, Integer> list) {
         return true;
+    }
+
+    @Override
+    public Purchase purches(PaymentData paymentData, DeliveryData deliveryData) {
+        return null;
     }
 }

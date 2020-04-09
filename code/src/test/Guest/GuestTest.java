@@ -4,6 +4,8 @@ import Data.Data;
 import Data.TestData;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
+import DataAPI.ProductData;
+import DataAPI.StoreData;
 import Domain.*;
 import Stubs.CartStub;
 import org.junit.Before;
@@ -34,11 +36,16 @@ public class GuestTest {
         logoutTest();
         loginTest();
         openStoreTest();
-        addProductTest();
+        testAddProductToStore();
+        testEditProductInStore();
+        testRemoveProductInStore();
         testAddProductToCart();
         testbuyCart();
         testWatchPurchases();
         addRequest();
+        testAddReview();
+        testAddManager();
+        testAddPermission();
     }
 
     /**
@@ -75,18 +82,26 @@ public class GuestTest {
      * test use case 3.2 - Open Store
      */
     private void openStoreTest() {
-        assertNull(guest.openStore(null, null, null));
+        StoreData storeData = data.getStore(Data.WRONG_STORE);
+        assertNull(guest.openStore(storeData, null, null));
     }
 
-    private void addRequest() {assertNull(guest.addRequest("Store", "good store"));}
-
+    /**
+     * test use case 3.3 - write review
+     */
+    private void testAddReview() {
+        ProductData productData = data.getProductData(Data.VALID);
+        assertFalse(guest.isItPurchased(productData.getStoreName(), productData.getProductName()));
+        Review review = data.getReview(Data.VALID);
+        assertFalse(guest.addReview(review));
+    }
 
     /**
-     * test use case 4.9.1 -add product
+     * use case 3.5 - add request
      */
-
-    private  void addProductTest(){
-        assertFalse(guest.addProductToStore(data.getProductData(Data.VALID)));
+    private void addRequest() {
+        Request request = data.getRequest(Data.WRONG_STORE);
+        assertNull(guest.addRequest(request.getStoreName(), request.getContent()));
     }
 
     /**
@@ -95,5 +110,45 @@ public class GuestTest {
     private void testWatchPurchases() {
         List<Purchase> list = guest.watchMyPurchaseHistory();
         assertNull(list);
+    }
+
+    /**
+     * test use case 4.1.1 -add product
+     */
+    private  void testAddProductToStore(){
+        assertFalse(guest.addProductToStore(data.getProductData(Data.VALID)));
+    }
+
+    /**
+     * test use case 4.1.2
+     */
+    private void testEditProductInStore() {
+        assertFalse(guest.editProductFromStore(data.getProductData(Data.VALID)));
+    }
+
+    /**
+     * test use case 4.1.3
+     */
+    private void testRemoveProductInStore() {
+        ProductData productData = data.getProductData(Data.VALID);
+        assertFalse(guest.removeProductFromStore(productData.getStoreName(),productData.getProductName()));
+    }
+
+    /**
+     * test use case 4.5
+     */
+    private void testAddManager() {
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        StoreData storeData = data.getStore(Data.VALID);
+        guest.addManager(subscribe, storeData.getName());
+    }
+
+    /**
+     * test use case 4.6.1
+     */
+    private void testAddPermission() {
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        StoreData storeData = data.getStore(Data.VALID);
+        guest.addPermissions(data.getPermissionTypeList(),storeData.getName(),storeData.getName());
     }
 }

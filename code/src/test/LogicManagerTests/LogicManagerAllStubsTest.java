@@ -51,9 +51,12 @@ public class LogicManagerAllStubsTest {
         data=new TestData();
         users=new HashMap<>();
         stores=new HashMap<>();
-        logicManager = new LogicManager(users,stores,currUser);
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
-        logicManager.register(subscribe.getName(),subscribe.getPassword());
+        try {
+            logicManager = new LogicManager(subscribe.getName(), subscribe.getPassword(), users, stores, currUser);
+        } catch (Exception e) {
+            fail();
+        }
         Subscribe other=data.getSubscribe(Data.VALID2);
         logicManager.register(other.getName(),other.getPassword());
     }

@@ -100,4 +100,9 @@ public class SubscribeStub extends Subscribe{
     public List<Purchase> watchMyPurchaseHistory() {
         return new LinkedList<>();
     }
+
+    @Override
+    public boolean addReview(Review review) {
+        return true;
+    }
 }

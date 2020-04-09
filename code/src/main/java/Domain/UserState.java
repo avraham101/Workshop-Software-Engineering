@@ -7,6 +7,7 @@ import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,10 +48,12 @@ public abstract class UserState {
         double priceAfterDiscount = 0;
         double priceBeforeDiscount = 0;
         for (Basket basket: cart.getBaskets().values()) {
-            for (Product product: basket.getProducts().keySet()) {
+            HashMap<Product, Integer> map = basket.getProducts();
+            for (Product product: map.keySet()) {
                 priceBeforeDiscount += product.getPrice();
                 priceAfterDiscount += product.getDiscountPrice();
                 ProductData productData = new ProductData(product, basket.getStore().getName());
+                productData.setAmount(map.get(product));
                 products.add(productData);
             }
         }
@@ -145,7 +148,7 @@ public abstract class UserState {
      * the function add a review
      * @param review - the review to add
      */
-    public abstract void addReview(Review review);
+    public abstract boolean addReview(Review review);
 
     /**
      * use case 3.3 add review

@@ -6,10 +6,17 @@ import Domain.*;
 import java.util.List;
 
 public class ServiceAPI {
+
     private LogicManager logicManager;
 
-    public ServiceAPI() {
-        logicManager=new LogicManager();
+    /**
+     * use case 1.1 - Init Trading System
+     * @param userName - the user name
+     * @param password - the user password
+     * @throws Exception - system crashed exception
+     */
+    public ServiceAPI(String userName, String password) throws Exception{
+        logicManager = new LogicManager(userName, password);
     }
 
     /**

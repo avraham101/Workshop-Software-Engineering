@@ -46,6 +46,7 @@ public class BasketTest {
         testDeleteFromBasket();
         teatAddToBasket();
         testIfBasketAvailableToBuy();
+        testBuyBasket();
     }
 
     /**
@@ -62,7 +63,7 @@ public class BasketTest {
     }
 
     /**
-     * use case 2.7 - add product to cart
+     * use case 2.7.1 - add product to cart
      * test add product in a basket
      */
     private void teatAddToBasket() {
@@ -93,6 +94,14 @@ public class BasketTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         assertTrue(basket.available(paymentData, address));
+    }
+
+    /**
+     * use case 2.8 - buy cart
+     */
+    protected void testBuyBasket() {
+       Purchase result = basket.buy();
+       assertNull(result);
     }
 
 }

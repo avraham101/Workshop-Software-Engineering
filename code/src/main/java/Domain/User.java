@@ -143,8 +143,7 @@ public class User {
     public boolean addReview(Review review) {
         if(!isItPurchased(review.getStore(),review.getProductName())) //Product purchased
             return false;
-        state.addReview(review);
-        return true;
+        return state.addReview(review);
     }
 
     /**
