@@ -1,5 +1,7 @@
 package AcceptanceTests.AcceptanceTestDataObjects;
 
+import java.util.Objects;
+
 public class ApplicationToStoreTestData {
     private String writer;
     private String content;
@@ -45,5 +47,10 @@ public class ApplicationToStoreTestData {
         if (writer != null ? !writer.equals(that.writer) : that.writer != null) return false;
         if (content != null ? !content.equals(that.content) : that.content != null) return false;
         return storeName != null ? storeName.equals(that.storeName) : that.storeName == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(writer, content, storeName);
     }
 }
