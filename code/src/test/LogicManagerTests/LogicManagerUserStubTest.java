@@ -3,13 +3,8 @@ package LogicManagerTests;
 import Data.Data;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
-import Domain.Product;
-import Domain.Purchase;
-import Domain.Review;
 import Domain.Store;
 import org.junit.Before;
-
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -34,13 +29,13 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
      */
     private void testAddProductToCartInvalidProduct() {
         ProductData product = data.getProductData(Data.NULL_PRODUCT);
-        assertFalse(logicManager.aadProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
+        assertFalse(logicManager.addProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
         product = data.getProductData(Data.NEGATIVE_AMOUNT);
-        assertFalse(logicManager.aadProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
+        assertFalse(logicManager.addProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
         product = data.getProductData(Data.ZERO);
-        assertFalse(logicManager.aadProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
+        assertFalse(logicManager.addProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
         product = data.getProductData(Data.NULL_STORE);
-        assertFalse(logicManager.aadProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
+        assertFalse(logicManager.addProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
 
     }
 

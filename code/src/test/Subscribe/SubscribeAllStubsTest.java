@@ -75,15 +75,7 @@ public class SubscribeAllStubsTest {
     }
 
 
-    /**
-     * test use case 3.2 - Open Store.
-     * store: Niv shiraze store added.
-     */
-    protected void openStoreTest() {
-        Store store = sub.openStore(data.getStore(Data.VALID),paymentSystem,supplySystem);
-        assertNotNull(store);
 
-    }
 
     /**
      * use case 2.7 add to cart
@@ -108,6 +100,58 @@ public class SubscribeAllStubsTest {
      */
     private void logoutTest(){
         assertTrue(sub.logout(new User()));
+    }
+
+    /**
+     * test use case 3.2 - Open Store
+     */
+    protected void openStoreTest() {
+        Store store = sub.openStore(data.getStore(Data.VALID),paymentSystem,supplySystem);
+        assertNotNull(store);
+
+    }
+
+    /**
+     * use case 3.3 - write review
+     */
+    protected void testWriteReviewSubscribe() {
+        Review review = data.getReview(Data.VALID);
+        this.sub.addReview(review);
+        List<Review> reviewList = sub.getReviews();
+        assertEquals(1, reviewList.size());
+        assertEquals(review, reviewList.get(0));
+
+    }
+
+    /**
+     * use case 3.5 - add request
+     */
+    private void testAddRequest(){
+        Request excepted = data.getRequest(Data.VALID);
+        Request actual = sub.addRequest(excepted.getStoreName(), excepted.getContent());
+        assertEquals(excepted.getId(), actual.getId());
+        assertEquals(excepted.getSenderName(),actual.getSenderName());
+        assertEquals(excepted.getStoreName(), actual.getStoreName());
+        assertEquals(excepted.getContent(), actual.getContent());
+        assertEquals(excepted.getComment(), actual.getComment());
+    }
+
+    /**
+     * test use case 3.7 - watch purchases
+     */
+    private void testWatchPurchasesEmpty() {
+        List<Purchase> list = sub.watchMyPurchaseHistory();
+        assertNotNull(list);
+        assertTrue(list.isEmpty());
+    }
+
+    /**
+     * test use case 3.7 - watch purchases
+     */
+    public void testWatchPurchases() {
+        List<Purchase> list = sub.watchMyPurchaseHistory();
+        assertNotNull(list);
+        assertEquals(0,list.size());
     }
 
     /**
@@ -313,9 +357,6 @@ public class SubscribeAllStubsTest {
     /**
      * test use case 4.7 - remove manager
      */
-    /**
-     * use case 4.5 add manager
-     */
     private void testRemoveManagerFromStore(){
         testRemoveManagerFromStoreFail();
         testRemoveManagerStoreSuccess();
@@ -343,16 +384,9 @@ public class SubscribeAllStubsTest {
         sub.getPermissions().put(validStoreName,permission);
     }
 
-    private void testAddRequest(){
-        Request excepted = data.getRequest(Data.VALID);
-        Request actual = sub.addRequest(excepted.getStoreName(), excepted.getContent());
-        assertEquals(excepted.getId(), actual.getId());
-        assertEquals(excepted.getSenderName(),actual.getSenderName());
-        assertEquals(excepted.getStoreName(), actual.getStoreName());
-        assertEquals(excepted.getContent(), actual.getContent());
-        assertEquals(excepted.getComment(), actual.getComment());
-    }
-
+    /**
+     * use case 4.9.1 - view request
+     */
     private void testViewRequest(){
         Request request1 = data.getRequest(Data.WRONG_STORE);
         Request request2 = data.getRequest(Data.NULL_NAME);
@@ -360,6 +394,9 @@ public class SubscribeAllStubsTest {
         assertTrue(sub.viewRequest(request2.getStoreName()).isEmpty());
     }
 
+    /**
+     * test use case 4.9.2 - reply request
+     */
     private void testReplayRequest(){
         Request request1 = data.getRequest(Data.NULL_NAME);
         Request request2 = data.getRequest(Data.WRONG_STORE);
@@ -399,36 +436,6 @@ public class SubscribeAllStubsTest {
 
     private void testWatchStoreHistorySuccess() {
         assertTrue(sub.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
-    }
-
-    /**
-     * use case 3.3 - write review
-     */
-    protected void testWriteReviewSubscribe() {
-        Review review = data.getReview(Data.VALID);
-        this.sub.addReview(review);
-        List<Review> reviewList = sub.getReviews();
-        assertEquals(1, reviewList.size());
-        assertEquals(review, reviewList.get(0));
-
-    }
-
-    /**
-     * test use case 3.7 - watch purchases
-     */
-    private void testWatchPurchasesEmpty() {
-        List<Purchase> list = sub.watchMyPurchaseHistory();
-        assertNotNull(list);
-        assertTrue(list.isEmpty());
-    }
-
-    /**
-     * test use case 3.7 - watch purchases
-     */
-    public void testWatchPurchases() {
-        List<Purchase> list = sub.watchMyPurchaseHistory();
-        assertNotNull(list);
-        assertEquals(0,list.size());
     }
 
 

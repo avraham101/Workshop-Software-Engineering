@@ -140,7 +140,7 @@ public class GuestTest {
     private void testAddManager() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         StoreData storeData = data.getStore(Data.VALID);
-        guest.addManager(subscribe, storeData.getName());
+        assertFalse(guest.addManager(subscribe, storeData.getName()));
     }
 
     /**
@@ -149,6 +149,6 @@ public class GuestTest {
     private void testAddPermission() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         StoreData storeData = data.getStore(Data.VALID);
-        guest.addPermissions(data.getPermissionTypeList(),storeData.getName(),storeData.getName());
+        assertFalse(guest.addPermissions(data.getPermissionTypeList(),storeData.getName(),subscribe.getName()));
     }
 }

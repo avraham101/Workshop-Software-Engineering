@@ -35,6 +35,37 @@ public class StoreTestsAllStubs {
         testRemoveProduct();
     }
 
+    /**
+     * use case 3.3 - add re
+     */
+    private void testAddReview() {
+        Review review = data.getReview(Data.VALID);
+        assertTrue(store.addReview(review));
+        Product product= store.getProducts().get(review.getProductName());
+        assertTrue(product.getReviews().contains(review));
+        review = data.getReview(Data.WRONG_PRODUCT);
+        assertFalse(store.addReview(review));
+
+    }
+
+    /**
+     * test if the amount of product has been change
+     */
+    private void testCheckReduceAmount() {
+        ProductData product = data.getProductData(Data.VALID);
+        int amount = store.getProduct(product.getProductName()).getAmount();
+        assertEquals(amount - 1, product.getAmount());
+    }
+
+    /**
+     * test if it is available to purchase from the store
+     */
+    private void testPurchase() {
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        Purchase purchase = store.purches(paymentData,deliveryData);
+        assertNotNull(purchase);
+    }
 
     /**
      * use case 4.1.1 -add product
@@ -115,36 +146,4 @@ public class StoreTestsAllStubs {
         assertTrue(store.editProduct(data.getProductData(Data.EDIT)));
     }
 
-    /**
-     * use case 3.3 - add re
-     */
-    private void testAddReview() {
-        Review review = data.getReview(Data.VALID);
-        assertTrue(store.addReview(review));
-        Product product= store.getProducts().get(review.getProductName());
-        assertTrue(product.getReviews().contains(review));
-
-        review = data.getReview(Data.WRONG_PRODUCT);
-        assertFalse(store.addReview(review));
-
-    }
-
-    /**
-     * test if the amount of product has been change
-     */
-    private void testCheckReduceAmount() {
-        ProductData product = data.getProductData(Data.VALID);
-        int amount = store.getProduct(product.getProductName()).getAmount();
-        assertEquals(amount - 1, product.getAmount());
-    }
-
-    /**
-     * test if it is available to purchase from the store
-     */
-    private void testPurchase() {
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        Purchase purchase = store.purches(paymentData,deliveryData);
-        assertNotNull(purchase);
-    }
 }

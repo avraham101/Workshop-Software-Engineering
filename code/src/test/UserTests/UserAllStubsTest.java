@@ -128,6 +128,38 @@ public class UserAllStubsTest {
     }
 
     /**
+     * use case 2.7 - add product to cart
+     */
+    private void testAddProductToCart() {
+        Store store = data.getRealStore(Data.VALID);
+        Product p = data.getRealProduct(Data.VALID);
+        assertTrue(user.addProductToCart(store,p,p.getAmount()));
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     */
+    private void testPurchase() {
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        assertTrue(user.buyCart(paymentData,deliveryData.getAddress()));
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     */
+    protected void testPurchaseSubscribe() {
+        testPurchase();
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     */
+    private void testPurchaseGuest() {
+        testPurchase();
+    }
+
+    /**
      * test: use case 3.1 - Logout
      */
     protected void testLogoutGuest(){
@@ -160,6 +192,46 @@ public class UserAllStubsTest {
         SupplySystem supplySystem = new ProxySupply();
         Store store = user.openStore(storeData,paymentSystem, supplySystem);
         assertEquals(storeData.getName(), store.getName());
+    }
+
+    /**
+     * use case 3.3 - write review
+     */
+    protected void testWriteReviewGuest() {
+        Review review = data.getReview(Data.VALID);
+        assertFalse(user.addReview(review));
+    }
+
+    /**
+     * use case 3.3 - write review
+     */
+    protected void testWriteReviewSubscribe() {
+        Review review = data.getReview(Data.VALID);
+        assertTrue(user.addReview(review));
+    }
+
+    /**
+     * test use case 3.5 - add request
+     */
+    private void testAddRequestGuest() {
+        assertNull(user.addRequest(data.getRequest(Data.VALID).getStoreName(),
+                data.getRequest(Data.VALID).getComment())); }
+
+    /**
+     * test use case 3.7 - watch purchases
+     */
+    private void testWatchPurchasesGeust() {
+        List<Purchase> list = user.watchMyPurchaseHistory();
+        assertNull(list);
+    }
+
+    /**
+     * test use case 3.7 - watch purchases
+     */
+    public void testWatchPurchasesSubscribe() {
+        List<Purchase> list = user.watchMyPurchaseHistory();
+        assertNotNull(list);
+        assertTrue(list.isEmpty());
     }
 
     /**
@@ -258,6 +330,20 @@ public class UserAllStubsTest {
 
 
     /**
+     * test use case 4.9.1 - view request
+     */
+    private void testViewRequestGuest() {
+        assertTrue(user.viewRequest(data.getStore(Data.VALID).getName()).isEmpty());
+    }
+
+    /**
+     * test use case 4.9.2 - reply request
+     */
+    private void testReplayRequestGuest(){
+        assertNull(user.replayToRequest(data.getRequest(Data.VALID).getStoreName()
+            , data.getRequest(Data.VALID).getId(), "I want replay but can't"));}
+
+    /**
      * use case 6.4.1 - watch user store
      */
     public void testCanWatchUserHistoryGuest(){
@@ -298,79 +384,5 @@ public class UserAllStubsTest {
     public void testCanWatchStoreHistoryAdmin(){
         assertTrue(user.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
     }
-    private void testAddRequestGuest() { assertNull(user.addRequest(data.getRequest(Data.VALID).getStoreName(), data.getRequest(Data.VALID).getComment())); }
-
-    private void testViewRequestGuest() {
-        assertTrue(user.viewRequest(data.getStore(Data.VALID).getName()).isEmpty());
-    }
-
-    private void testReplayRequestGuest(){ assertNull(user.replayToRequest(data.getRequest(Data.VALID).getStoreName(), data.getRequest(Data.VALID).getId(), "I want replay but can't"));}
-
-
-    /**
-     * use case 3.3 - write review
-     */
-    protected void testWriteReviewGuest() {
-        Review review = data.getReview(Data.VALID);
-        assertFalse(user.addReview(review));
-    }
-
-    /**
-     * use case 3.3 - write review
-     */
-    protected void testWriteReviewSubscribe() {
-        Review review = data.getReview(Data.VALID);
-        assertTrue(user.addReview(review));
-    }
-
-    /**
-     * use case 2.8 - purchase cart
-     */
-    private void testPurchase() {
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        assertTrue(user.buyCart(paymentData,deliveryData.getAddress()));
-    }
-
-    /**
-     * use case 2.8 - purchase cart
-     */
-    protected void testPurchaseSubscribe() {
-        testPurchase();
-    }
-
-    /**
-     * use case 2.8 - purchase cart
-     */
-    private void testPurchaseGuest() {
-        testPurchase();
-    }
-
-    /**
-     * use case 2.7 - add product to cart
-     */
-    private void testAddProductToCart() {
-        Store store = data.getRealStore(Data.VALID);
-        Product p = data.getRealProduct(Data.VALID);
-        assertTrue(user.addProductToCart(store,p,p.getAmount()));
-    }
-
-    /**
-     * test use case 3.7 - watch purchases
-     */
-    private void testWatchPurchasesGeust() {
-        List<Purchase> list = user.watchMyPurchaseHistory();
-        assertNull(list);
-    }
-
-    /**
-     * test use case 3.7 - watch purchases
-     */
-    public void testWatchPurchasesSubscribe() {
-        List<Purchase> list = user.watchMyPurchaseHistory();
-        assertNotNull(list);
-        assertTrue(list.isEmpty());
-    }
-
 
 }

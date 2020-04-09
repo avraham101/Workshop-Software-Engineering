@@ -403,7 +403,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testAddProductToCartInvalidStore() {
         ProductData product = data.getProductData(Data.NULL_STORE);
-        assertFalse(logicManager.aadProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
+        assertFalse(logicManager.addProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
     }
 
     /**
@@ -578,11 +578,10 @@ public class LogicManagerAllStubsTest {
         assertNotNull(purchases);
         assertTrue(purchases.isEmpty());
     }
+
     /**
      * use case 4.1.1 - add product
      */
-
-    //TODO: Added
     protected void testAddProduct(){
         testAddProductFail();
         testProductSuccess();

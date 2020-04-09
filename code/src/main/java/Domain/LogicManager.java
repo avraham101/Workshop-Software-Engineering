@@ -334,7 +334,7 @@ public class LogicManager {
      * @param amount - the amount of the product that need to add to the cart
      * @return - true if added, false if not
      */
-    public boolean aadProductToCart(String productName,String storeName,int amount) {
+    public boolean addProductToCart(String productName, String storeName, int amount) {
         //TODO add logger
         boolean result = false;
         Store store = stores.get(storeName);

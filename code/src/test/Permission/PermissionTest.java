@@ -42,6 +42,9 @@ public class PermissionTest {
         testAddTypeWhenOwnerFail();
     }
 
+    /**
+     * test add owner
+     */
     private void testAddOwner() {
         assertTrue(permission.addType(PermissionType.OWNER));
         assertEquals(1, permissionTypes.size());
