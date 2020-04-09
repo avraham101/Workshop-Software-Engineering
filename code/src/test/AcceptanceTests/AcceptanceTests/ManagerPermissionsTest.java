@@ -1,8 +1,6 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.PermissionsTypeTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +26,7 @@ public class ManagerPermissionsTest extends AcceptanceTests {
                                         100,
                                         6,
                                         "Dairy",
-                                        new ArrayList<>(),new ArrayList<>());
+                                        new ArrayList<ReviewTestData>(),new ArrayList<DiscountTestData>());
         addStores(stores);
         addProducts(products);
     }

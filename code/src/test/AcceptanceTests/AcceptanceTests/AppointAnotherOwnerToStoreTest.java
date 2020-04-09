@@ -1,8 +1,6 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.*;
 import Domain.Product;
 import org.junit.After;
 import org.junit.Before;
@@ -34,8 +32,8 @@ public class AppointAnotherOwnerToStoreTest extends AcceptanceTests {
                                                             100,
                                                             4,
                                                             "Dairy",
-                                                            new ArrayList<>(),
-                                                            new ArrayList<>());
+                                                            new ArrayList<ReviewTestData>(),
+                                                            new ArrayList<DiscountTestData>());
     }
 
     @Test
