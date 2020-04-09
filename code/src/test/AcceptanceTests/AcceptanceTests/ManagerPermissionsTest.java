@@ -21,7 +21,8 @@ public class ManagerPermissionsTest extends AcceptanceTests {
 
     @Before
     public void setUp(){
-
+        addStores(stores);
+        addProducts(products);
         setUpManagerPermissionsTestManagers();
         newProduct = new ProductTestData("newProductTest",
                                         "store0Test",
@@ -29,8 +30,7 @@ public class ManagerPermissionsTest extends AcceptanceTests {
                                         6,
                                         "Dairy",
                                         new ArrayList<>(),new ArrayList<>());
-        addStores(stores);
-        addProducts(products);
+
     }
 
     private void setUpManagerPermissionsTestManagers(){
@@ -60,6 +60,7 @@ public class ManagerPermissionsTest extends AcceptanceTests {
     public void managerPermissionsTestFailAddNewManager(){
         boolean isAdded = bridge.appointManager(newProduct.getStoreName(),newManager.getUsername());
         assertFalse(isAdded);
+        logoutAndLogin(newManager);
         boolean isAddedProduct = bridge.addProduct(newProduct);
         assertFalse(isAddedProduct);
     }

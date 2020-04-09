@@ -182,7 +182,7 @@ public class ServiceAPI {
 
     //use case 4.5
     public boolean addManagerToStore(String storeName,String userName){
-        return logicManager.addManager(storeName,userName);
+        return logicManager.addManager(userName,storeName);
     }
 
     //use case 4.6.1
