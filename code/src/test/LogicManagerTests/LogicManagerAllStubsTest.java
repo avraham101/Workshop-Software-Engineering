@@ -110,6 +110,7 @@ public class LogicManagerAllStubsTest {
     /**
      * test: use case 2.2 - Register
      */
+    @Test
     public void testRegister() {
         testRegisterSuccess();
         testRegisterFailWrongName();
@@ -184,16 +185,6 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * use case 2.4.1 - view all stores details
-     */
-    protected void testViewDataStores() {
-        List<StoreData> expected = new LinkedList<>();
-        expected.add(data.getStore(Data.VALID));
-        assertEquals(expected, logicManager.viewStores());
-        assertNotEquals(null, logicManager.viewStores());
-    }
-
-    /**
      * part of use case 2.3 - Login
      */
     protected void testLoginSuccess() {
@@ -201,177 +192,14 @@ public class LogicManagerAllStubsTest {
         assertTrue(logicManager.login(subscribe.getName(),subscribe.getPassword()));
     }
 
-
     /**
-     * test: use case 3.1 - Logout
+     * use case 2.4.1 - view all stores details
      */
-    protected void testLogout() {
-        assertTrue(currUser.logout());
-    }
-
-    /**
-     * test use case 3.2 - Open Store
-     */
-    protected void testOpenStore() {
-        testOpenStoreFail();
-        testOpenStoreSucces();
-    }
-
-    /**
-     * part of test use case 3.2 - Open Store
-     */
-    private void testOpenStoreFail() {
-        assertFalse(logicManager.openStore(data.getStore(Data.NULL)));
-        assertFalse(logicManager.openStore(data.getStore(Data.NULL_NAME)));
-        assertFalse(logicManager.openStore(data.getStore(Data.NULL_PURCHASE)));
-        assertFalse(logicManager.openStore(data.getStore(Data.NULL_DISCOUNT)));
-    }
-
-    /**
-     * part of test use case 3.2 - Open Store
-     */
-    protected void testOpenStoreSucces(){
-        StoreData storeData = data.getStore(Data.VALID);
-        assertTrue(logicManager.openStore(storeData));
-        Store store = stores.get(storeData.getName());
-        Permission permission = new Permission(data.getSubscribe(Data.VALID));
-        StoreStub storeStub = new StoreStub(store.getName(),store.getPurchesPolicy(),
-                store.getDiscount(),permission,store.getSupplySystem(),
-                store.getPaymentSystem());
-        permission.setStore(storeStub);
-        stores.put(storeData.getName(),storeStub);
-    }
-
-    /**
-     * use case 3.5 -add request
-     * ------
-     * in this level we test the:
-     * 1. enter null content
-     * 2. enter request to invalid store
-     */
-    public void testAddRequest(){
-        testAddRequestSuccess();
-        testAddRequestFail();
-    }
-
-    private void testAddRequestSuccess() {
-        Request request = data.getRequest(Data.VALID);
-        assertNotNull(currUser.addRequest(request.getStoreName(),request.getContent()));
-    }
-
-    private void testAddRequestFail() {
-        Request request1 = data.getRequest(Data.WRONG_STORE);
-        Request request2 = data.getRequest(Data.NULL);
-        assertFalse(logicManager.addRequest(request1.getStoreName(), request1.getContent()));
-        assertFalse(logicManager.addRequest(request2.getStoreName(), request2.getContent()));
-    }
-
-    /**
-     * use case 4.9.1 -view request
-     */
-    public void testStoreViewRequest(){
-        testStoreViewRequestSuccess();
-        testStoreViewRequestFail();
-    }
-
-    private void testStoreViewRequestSuccess() {
-        Request request = data.getRequest(Data.VALID);
-        assertFalse(currUser.viewRequest(request.getStoreName()).isEmpty());
-    }
-
-    private void testStoreViewRequestFail() {
-        Request request1 = data.getRequest(Data.NULL_NAME);
-        Request request2 = data.getRequest(Data.WRONG_STORE);
-        assertTrue(logicManager.viewStoreRequest(request1.getStoreName()).isEmpty());
-        assertTrue(logicManager.viewStoreRequest(request2.getStoreName()).isEmpty());
-    }
-
-    /**
-     * use case 4.9.2 -replay request
-     */
-    public void testReplayRequest(){
-        testReplayRequestSuccess();
-        testReplayRequestFail();
-    }
-
-    private void testReplayRequestSuccess() {
-        Request request = data.getRequest(Data.VALID);
-        assertNotNull(currUser.replayToRequest(request.getStoreName(),request.getId(), request.getContent()));
-    }
-
-    private void testReplayRequestFail() {
-        Request request1 = data.getRequest(Data.WRONG_STORE);
-        Request request2 = data.getRequest(Data.NULL);
-        assertNull(logicManager.replayRequest(request1.getStoreName(), request1.getId(), request1.getContent()));
-        assertNull(logicManager.replayRequest(request2.getStoreName(), request2.getId(), request2.getContent()));
-    }
-    /**
-     * use case 3.3 - write review
-     */
-    protected void testWriteReview() {
-        testWriteReviewInvalid();
-        testWriteReviewValid();
-    }
-
-    /**
-     * part of use case 3.3 - write review
-     */
-    private void testWriteReviewInvalid() {
-        Review review = data.getReview(Data.NULL_STORE);
-        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
-
-        review = data.getReview(Data.NULL_PRODUCT);
-        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
-
-        review = data.getReview(Data.NULL_CONTENT);
-        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
-
-        review = data.getReview(Data.EMPTY_CONTENT);
-        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
-
-        review = data.getReview(Data.WRONG_STORE);
-        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
-
-        review = data.getReview(Data.NULL_PRODUCT);
-        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
-
-    }
-
-    /**
-     * part of use case 3.3 - write review
-     */
-    protected void testWriteReviewValid() {
-        Review review = data.getReview(Data.VALID);
-        assertTrue(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
-    }
-
-
-    /**
-     * use case 4.1.1 - add product
-     */
-
-    //TODO: Added
-    protected void testAddProduct(){
-        testAddProductFail();
-        testProductSuccess();
-    }
-
-    protected void testProductSuccess() {
-        assertTrue(logicManager.addProductToStore(data.getProductData(Data.VALID)));
-    }
-
-    protected void testAddProductFail(){
-        assertFalse(logicManager.addProductToStore(null));
-        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NULL_NAME)));
-        assertFalse(logicManager.addProductToStore(data.getProductData(Data.WRONG_STORE)));
-        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NULL_CATEGORY)));
-        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NULL_DISCOUNT)));
-        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NEGATIVE_AMOUNT)));
-        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NEGATIVE_PRICE)));
-        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NULL_PURCHASE)));
-        assertFalse(logicManager.addProductToStore(data.getProductData(Data.OVER_100_PERCENTAGE)));
-        assertFalse(logicManager.addProductToStore(data.getProductData(Data.WRONG_DISCOUNT)));
-        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NEGATIVE_PERCENTAGE)));
+    protected void testViewDataStores() {
+        List<StoreData> expected = new LinkedList<>();
+        expected.add(data.getStore(Data.VALID));
+        assertEquals(expected, logicManager.viewStores());
+        assertNotEquals(null, logicManager.viewStores());
     }
 
     /**
@@ -469,6 +297,312 @@ public class LogicManagerAllStubsTest {
         assertTrue(products.isEmpty());
     }
 
+
+    /**
+     * use case 2.7.1 fails tests
+     */
+    protected void testWatchCartDetails() {
+        testWatchCartDetailsNull();
+        testWatchCartDetailsNullStore();
+    }
+
+
+
+    /**
+     * use case 2.7.1 fail when the product is null
+     */
+    private void testWatchCartDetailsNull() {
+        ProductData productData = data.getProductData(Data.NULL_PRODUCT);
+        CartData cartData = logicManager.watchCartDetatils();
+        assertFalse(cartData.getProducts().contains(productData));
+    }
+
+    /**
+     * use case 2.7.1 fail when the basket is null
+     */
+    private void testWatchCartDetailsNullStore() {
+        ProductData productData = data.getProductData(Data.NULL_STORE);
+        CartData cartData = logicManager.watchCartDetatils();
+        assertFalse(cartData.getProducts().contains(productData));
+    }
+
+
+    /**
+     * use case 2.7.2 delete product from cart
+     * fails tests
+     */
+    protected void testDeleteProductFromCart() {
+        testDeleteProductFromCartBasketIsNull();
+        testDeleteProductFromCartProductIsNull();
+    }
+
+    /**
+     * use case 2.7.2 delete product from cart
+     * fails test - product is null
+     */
+    private void testDeleteProductFromCartProductIsNull() {
+        ProductData productData = data.getProductData(Data.NULL_PRODUCT);
+        assertFalse(logicManager.deleteFromCart(productData.getProductName(),productData.getStoreName()));
+    }
+
+    /**
+     * use case 2.7.2 delete product from cart
+     * fails test - basket is null
+     */
+    private void testDeleteProductFromCartBasketIsNull() {
+        ProductData productData = data.getProductData(Data.NULL_STORE);
+        assertFalse(logicManager.deleteFromCart(productData.getProductName(),productData.getStoreName()));
+    }
+
+    /**
+     * use case 2.7.3 fail tests
+     */
+    protected void testEditProductsInCart() {
+        testEditProductsInCartBasketIsNull();
+        testEditProductsInCartNegativeAmount();
+        testEditProductsInCartProductIsNull();
+    }
+
+    /**
+     * use case 2.7.3 fail test when the product is null
+     */
+    private void testEditProductsInCartProductIsNull() {
+        ProductData productData = data.getProductData(Data.NULL_PRODUCT);
+        assertFalse(logicManager.editProductInCart(productData.getProductName(),productData.getStoreName(),productData.getAmount()));
+    }
+
+    /**
+     * use case 2.7.3 fail test when the amount is negative
+     */
+    private void testEditProductsInCartNegativeAmount() {
+        ProductData productData = data.getProductData(Data.NULL_STORE);
+        assertFalse(logicManager.editProductInCart(productData.getProductName(),productData.getStoreName(),productData.getAmount()));
+    }
+
+    /**
+     * use case 2.7.3 fail test when the basket is null
+     */
+    private void testEditProductsInCartBasketIsNull() {
+        ProductData productData = data.getProductData(Data.NULL_STORE);
+        assertFalse(logicManager.editProductInCart(productData.getProductName(),productData.getStoreName(),productData.getAmount() + 1));
+    }
+
+
+    /**
+     *  use case 2.7.4 - add product to cart
+     */
+    protected void testAddProductToCart() {
+        testAddProductToCartInvalidStore();
+    }
+
+    /**
+     * part of use case 2.7.4 - add product to cart
+     */
+    private void testAddProductToCartInvalidStore() {
+        ProductData product = data.getProductData(Data.NULL_STORE);
+        assertFalse(logicManager.aadProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
+    }
+
+    /**
+     * use case 2.8 - test buy Products
+     */
+    protected void testBuyProducts() {
+        testFailBuyProducts();
+        testSuccessBuyProducts();
+    }
+
+    /**
+     * use case 2.8 - test buy Products
+     * success tests
+     */
+    private void testSuccessBuyProducts() {
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertTrue(logicManager.purchaseCart(paymentData, address));
+    }
+
+    /**
+     * use case 2.8 - test buy Products
+     * fails tests
+     */
+    private void testFailBuyProducts() {
+        // null data payment
+        assertFalse(logicManager.purchaseCart(null, null));
+        // null address in payment
+        PaymentData paymentData = data.getPaymentData(Data.NULL_ADDRESS);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // empty address in payment
+        paymentData = data.getPaymentData(Data.EMPTY_ADDRESS);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // null payment
+        paymentData = data.getPaymentData(Data.NULL_PAYMENT);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // empty payment
+        paymentData = data.getPaymentData(Data.EMPTY_PAYMENT);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // null name in payment
+        paymentData = data.getPaymentData(Data.NULL_NAME);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // empty name in payment
+        paymentData = data.getPaymentData(Data.EMPTY_NAME);
+        address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // null address
+        paymentData = data.getPaymentData(Data.VALID);
+        address = data.getDeliveryData(Data.NULL_ADDRESS).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+        // empty address
+        paymentData = data.getPaymentData(Data.VALID);
+        address = data.getDeliveryData(Data.EMPTY_ADDRESS).getAddress();
+        assertFalse(logicManager.purchaseCart(paymentData, address));
+    }
+
+
+    /**
+     * test: use case 3.1 - Logout
+     */
+    protected void testLogout() {
+        assertTrue(currUser.logout());
+    }
+
+    /**
+     * test use case 3.2 - Open Store
+     */
+    protected void testOpenStore() {
+        testOpenStoreFail();
+        testOpenStoreSucces();
+    }
+
+    /**
+     * part of test use case 3.2 - Open Store
+     */
+    private void testOpenStoreFail() {
+        assertFalse(logicManager.openStore(data.getStore(Data.NULL)));
+        assertFalse(logicManager.openStore(data.getStore(Data.NULL_NAME)));
+        assertFalse(logicManager.openStore(data.getStore(Data.NULL_PURCHASE)));
+        assertFalse(logicManager.openStore(data.getStore(Data.NULL_DISCOUNT)));
+    }
+
+    /**
+     * part of test use case 3.2 - Open Store
+     */
+    protected void testOpenStoreSucces(){
+        StoreData storeData = data.getStore(Data.VALID);
+        assertTrue(logicManager.openStore(storeData));
+        Store store = stores.get(storeData.getName());
+        Permission permission = new Permission(data.getSubscribe(Data.VALID));
+        StoreStub storeStub = new StoreStub(store.getName(),store.getPurchesPolicy(),
+                store.getDiscount(),permission,store.getSupplySystem(),
+                store.getPaymentSystem());
+        permission.setStore(storeStub);
+        stores.put(storeData.getName(),storeStub);
+    }
+
+    /**
+     * use case 3.3 - write review
+     */
+    protected void testWriteReview() {
+        testWriteReviewInvalid();
+        testWriteReviewValid();
+    }
+
+    /**
+     * part of use case 3.3 - write review
+     */
+    private void testWriteReviewInvalid() {
+        Review review = data.getReview(Data.NULL_STORE);
+        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+
+        review = data.getReview(Data.NULL_PRODUCT);
+        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+
+        review = data.getReview(Data.NULL_CONTENT);
+        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+
+        review = data.getReview(Data.EMPTY_CONTENT);
+        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+
+        review = data.getReview(Data.WRONG_STORE);
+        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+
+        review = data.getReview(Data.NULL_PRODUCT);
+        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+
+    }
+
+    /**
+     * part of use case 3.3 - write review
+     */
+    protected void testWriteReviewValid() {
+        Review review = data.getReview(Data.VALID);
+        assertTrue(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+    }
+
+    /**
+     * use case 3.5 -add request
+     * ------
+     * in this level we test the:
+     * 1. enter null content
+     * 2. enter request to invalid store
+     */
+    public void testAddRequest(){
+        testAddRequestSuccess();
+        testAddRequestFail();
+    }
+
+    private void testAddRequestSuccess() {
+        Request request = data.getRequest(Data.VALID);
+        assertNotNull(currUser.addRequest(request.getStoreName(),request.getContent()));
+    }
+
+    private void testAddRequestFail() {
+        Request request1 = data.getRequest(Data.WRONG_STORE);
+        Request request2 = data.getRequest(Data.NULL);
+        assertFalse(logicManager.addRequest(request1.getStoreName(), request1.getContent()));
+        assertFalse(logicManager.addRequest(request2.getStoreName(), request2.getContent()));
+    }
+
+    /**
+     * use case 3.7 - watch purchase history
+     */
+    public void testWatchPurchaseHistory() {
+        List<Purchase> purchases = logicManager.watchMyPurchaseHistory();
+        assertNotNull(purchases);
+        assertTrue(purchases.isEmpty());
+    }
+    /**
+     * use case 4.1.1 - add product
+     */
+
+    //TODO: Added
+    protected void testAddProduct(){
+        testAddProductFail();
+        testProductSuccess();
+    }
+
+    protected void testProductSuccess() {
+        assertTrue(logicManager.addProductToStore(data.getProductData(Data.VALID)));
+    }
+
+    protected void testAddProductFail(){
+        assertFalse(logicManager.addProductToStore(null));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NULL_NAME)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.WRONG_STORE)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NULL_CATEGORY)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NULL_DISCOUNT)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NEGATIVE_AMOUNT)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NEGATIVE_PRICE)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NULL_PURCHASE)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.OVER_100_PERCENTAGE)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.WRONG_DISCOUNT)));
+        assertFalse(logicManager.addProductToStore(data.getProductData(Data.NEGATIVE_PERCENTAGE)));
+    }
+
     /**
      * use case 4.1.2 -delete product
      */
@@ -489,14 +623,6 @@ public class LogicManagerAllStubsTest {
     protected void testRemoveProductSuccess() {
         ProductData p=data.getProductData(Data.VALID);
         assertTrue(logicManager.removeProductFromStore(p.getStoreName(),p.getProductName()));
-    }
-
-    /**
-     * use case 2.7.1 fails tests
-     */
-    protected void testWatchCartDetails() {
-        testWatchCartDetailsNull();
-        testWatchCartDetailsNullStore();
     }
 
     /**
@@ -659,6 +785,46 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
+     * use case 4.9.1 -view request
+     */
+    public void testStoreViewRequest(){
+        testStoreViewRequestSuccess();
+        testStoreViewRequestFail();
+    }
+
+    private void testStoreViewRequestSuccess() {
+        Request request = data.getRequest(Data.VALID);
+        assertFalse(currUser.viewRequest(request.getStoreName()).isEmpty());
+    }
+
+    private void testStoreViewRequestFail() {
+        Request request1 = data.getRequest(Data.NULL_NAME);
+        Request request2 = data.getRequest(Data.WRONG_STORE);
+        assertTrue(logicManager.viewStoreRequest(request1.getStoreName()).isEmpty());
+        assertTrue(logicManager.viewStoreRequest(request2.getStoreName()).isEmpty());
+    }
+
+    /**
+     * use case 4.9.2 -replay request
+     */
+    public void testReplayRequest(){
+        testReplayRequestSuccess();
+        testReplayRequestFail();
+    }
+
+    private void testReplayRequestSuccess() {
+        Request request = data.getRequest(Data.VALID);
+        assertNotNull(currUser.replayToRequest(request.getStoreName(),request.getId(), request.getContent()));
+    }
+
+    private void testReplayRequestFail() {
+        Request request1 = data.getRequest(Data.WRONG_STORE);
+        Request request2 = data.getRequest(Data.NULL);
+        assertNull(logicManager.replayRequest(request1.getStoreName(), request1.getId(), request1.getContent()));
+        assertNull(logicManager.replayRequest(request2.getStoreName(), request2.getId(), request2.getContent()));
+    }
+
+    /**
      * use case 6.4.1 - watch User History
      */
     private void testWatchUserHistory(){
@@ -700,169 +866,6 @@ public class LogicManagerAllStubsTest {
      */
     protected void testWatchStoreHistorySuccess() {
         assertNotNull(logicManager.watchStorePurchasesHistory(data.getStore(Data.VALID).getName()));
-    }
-
-    /**
-     * use case 2.7.1 fail when the product is null
-     */
-    private void testWatchCartDetailsNull() {
-        ProductData productData = data.getProductData(Data.NULL_PRODUCT);
-        CartData cartData = logicManager.watchCartDetatils();
-        assertFalse(cartData.getProducts().contains(productData));
-    }
-
-    /**
-     * use case 2.7.1 fail when the basket is null
-     */
-    private void testWatchCartDetailsNullStore() {
-        ProductData productData = data.getProductData(Data.NULL_STORE);
-        CartData cartData = logicManager.watchCartDetatils();
-        assertFalse(cartData.getProducts().contains(productData));
-    }
-
-
-    /**
-     * use case 2.7.2 delete product from cart
-     * fails tests
-     */
-    protected void testDeleteProductFromCart() {
-        testDeleteProductFromCartBasketIsNull();
-        testDeleteProductFromCartProductIsNull();
-    }
-
-    /**
-     * use case 2.7.2 delete product from cart
-     * fails test - product is null
-     */
-    private void testDeleteProductFromCartProductIsNull() {
-        ProductData productData = data.getProductData(Data.NULL_PRODUCT);
-        assertFalse(logicManager.deleteFromCart(productData.getProductName(),productData.getStoreName()));
-    }
-
-    /**
-     * use case 2.7.2 delete product from cart
-     * fails test - basket is null
-     */
-    private void testDeleteProductFromCartBasketIsNull() {
-        ProductData productData = data.getProductData(Data.NULL_STORE);
-        assertFalse(logicManager.deleteFromCart(productData.getProductName(),productData.getStoreName()));
-    }
-
-    /**
-     * use case 2.7.3 fail tests
-     */
-    protected void testEditProductsInCart() {
-        testEditProductsInCartBasketIsNull();
-        testEditProductsInCartNegativeAmount();
-        testEditProductsInCartProductIsNull();
-    }
-
-    /**
-     * use case 2.7.3 fail test when the product is null
-     */
-    private void testEditProductsInCartProductIsNull() {
-        ProductData productData = data.getProductData(Data.NULL_PRODUCT);
-        assertFalse(logicManager.editProductInCart(productData.getProductName(),productData.getStoreName(),productData.getAmount()));
-    }
-
-    /**
-     * use case 2.7.3 fail test when the amount is negative
-     */
-    private void testEditProductsInCartNegativeAmount() {
-        ProductData productData = data.getProductData(Data.NULL_STORE);
-        assertFalse(logicManager.editProductInCart(productData.getProductName(),productData.getStoreName(),productData.getAmount()));
-    }
-
-    /**
-     * use case 2.7.3 fail test when the basket is null
-     */
-    private void testEditProductsInCartBasketIsNull() {
-        ProductData productData = data.getProductData(Data.NULL_STORE);
-        assertFalse(logicManager.editProductInCart(productData.getProductName(),productData.getStoreName(),productData.getAmount() + 1));
-    }
-
-
-    /**
-     *  use case 2.7.4 - add product to cart
-     */
-    protected void testAddProductToCart() {
-        testAddProductToCartInvalidStore();
-    }
-
-    /**
-     * part of use case 2.7.4 - add product to cart
-     */
-    private void testAddProductToCartInvalidStore() {
-        ProductData product = data.getProductData(Data.NULL_STORE);
-        assertFalse(logicManager.aadProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
-    }
-
-    /**
-     * use case 2.8 - test buy Products
-     */
-    protected void testBuyProducts() {
-        testFailBuyProducts();
-        testSuccessBuyProducts();
-    }
-
-    /**
-     * use case 2.8 - test buy Products
-     * success tests
-     */
-     private void testSuccessBuyProducts() {
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertTrue(logicManager.purchaseCart(paymentData, address));
-    }
-
-    /**
-     * use case 2.8 - test buy Products
-     * fails tests
-     */
-    private void testFailBuyProducts() {
-        // null data payment
-        assertFalse(logicManager.purchaseCart(null, null));
-        // null address in payment
-        PaymentData paymentData = data.getPaymentData(Data.NULL_ADDRESS);
-        String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(paymentData, address));
-        // empty address in payment
-        paymentData = data.getPaymentData(Data.EMPTY_ADDRESS);
-        address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(paymentData, address));
-        // null payment
-        paymentData = data.getPaymentData(Data.NULL_PAYMENT);
-        address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(paymentData, address));
-        // empty payment
-        paymentData = data.getPaymentData(Data.EMPTY_PAYMENT);
-        address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(paymentData, address));
-        // null name in payment
-        paymentData = data.getPaymentData(Data.NULL_NAME);
-        address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(paymentData, address));
-        // empty name in payment
-        paymentData = data.getPaymentData(Data.EMPTY_NAME);
-        address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(paymentData, address));
-        // null address
-        paymentData = data.getPaymentData(Data.VALID);
-        address = data.getDeliveryData(Data.NULL_ADDRESS).getAddress();
-        assertFalse(logicManager.purchaseCart(paymentData, address));
-        // empty address
-        paymentData = data.getPaymentData(Data.VALID);
-        address = data.getDeliveryData(Data.EMPTY_ADDRESS).getAddress();
-        assertFalse(logicManager.purchaseCart(paymentData, address));
-    }
-
-    /**
-     * use case 3.7 - watch purchase history
-     */
-    public void testWatchPurchaseHistory() {
-        List<Purchase> purchases = logicManager.watchMyPurchaseHistory();
-        assertNotNull(purchases);
-        assertTrue(purchases.isEmpty());
     }
 
 }
