@@ -1,13 +1,13 @@
 package AcceptanceTests.AcceptanceTestDataObjects.FilterTestData;
 
 public class FilterTestData {
-    private String filterType;
+    private FilterType filterType;
 
-    public FilterTestData(String filterType) {
+    public FilterTestData(FilterType filterType) {
         this.filterType = filterType;
     }
 
-    public String getFilterType() {
+    public FilterType getFilterType() {
         return filterType;
     }
 }

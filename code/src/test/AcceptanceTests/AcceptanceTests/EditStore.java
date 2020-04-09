@@ -2,9 +2,11 @@ package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -18,13 +20,12 @@ public class EditStore extends AcceptanceTests {
     public void addProductToStoreSuccess(){
         String storeName = stores.get(0).getStoreName();
         ProductTestData product = new ProductTestData("newProduct",
-                storeName,5,15.5,"tests",null);
+                storeName,5,15.5,"tests",new ArrayList<>(),new ArrayList<>());
         boolean approval = bridge.addProduct(product);
         assertTrue(approval);
 
-        StoreTestData store = bridge.getStoreInfoByName(storeName);
-        ProductTestData prod = store.getProductByName("newProduct");
-        assertEquals(prod ,product);
+        List<ProductTestData> products = bridge.getStoreProducts(storeName);
+        assertTrue(products.contains(product));
     }
 
     @Test
@@ -36,25 +37,34 @@ public class EditStore extends AcceptanceTests {
     @Test
     public void addProductToStoreFailInvalidAmount(){
         ProductTestData product = new ProductTestData("newProduct",
-                "store0Test",-1,15.5,"tests",null);
+                "store0Test",-1,15.5,"tests",new ArrayList<>(),new ArrayList<>());
         boolean approval = bridge.addProduct(product);
         assertFalse(approval);
+
+        List<ProductTestData> products = bridge.getStoreProducts("store0Test");
+        assertFalse(products.contains(product));
     }
 
     @Test
     public void addProductFailInvalidPrice(){
         ProductTestData product = new ProductTestData("newProduct",
-                "store0Test",5,-1,"tests",null);
+                "store0Test",5,-1,"tests",new ArrayList<>(),new ArrayList<>());
         boolean approval = bridge.addProduct(product);
         assertFalse(approval);
+
+        List<ProductTestData> products = bridge.getStoreProducts("store0Test");
+        assertFalse(products.contains(product));
     }
 
     @Test
     public void addProductFailNotMyStore(){
         ProductTestData product = new ProductTestData("newProduct",
-                "store2Test",5,15.5,"tests",null);
+                "store2Test",5,15.5,"tests",new ArrayList<>(),new ArrayList<>());
         boolean approval = bridge.addProduct(product);
         assertFalse(approval);
+
+        List<ProductTestData> products = bridge.getStoreProducts("store2Test");
+        assertFalse(products.contains(product));
     }
 
     /****************DELETE-PRODUCT-4.1.2****************************************/
@@ -63,14 +73,15 @@ public class EditStore extends AcceptanceTests {
         ProductTestData product = stores.get(0).getProducts().get(0);
         boolean approval = bridge.deleteProduct(product);
         assertTrue(approval);
-        StoreTestData store = bridge.getStoreInfoByName(stores.get(0).getStoreName());
-        assertNull(store.getProductByName(product.getProductName()));
+
+        List<ProductTestData> products = bridge.getStoreProducts(stores.get(0).getStoreName());
+        assertFalse(products.contains(product));
 
     }
     @Test
     public void deleteProductNotExist() {
         ProductTestData product = new ProductTestData("newProduct",
-                "store0Test", 5, 15.5, "tests", null);
+                "store0Test", 5, 15.5, "tests", new ArrayList<>(),new ArrayList<>());
         boolean approval = bridge.deleteProduct(product);
         assertFalse(approval);
     }
@@ -92,8 +103,10 @@ public class EditStore extends AcceptanceTests {
         boolean approval = bridge.editProductInStore(product);
         assertTrue(approval);
         StoreTestData store = bridge.getStoreInfoByName( stores.get(0).getStoreName());
+        List<ProductTestData> products = bridge.getStoreProducts(stores.get(0).getStoreName());
+        store.setProducts(products);
         ProductTestData newProduct = store.getProductByName(product.getProductName());
-        assertEquals(product.getPrice(),newProduct.getPrice());
+        assertEquals(product.getPrice(),newProduct.getPrice(),0.0);
         assertEquals(product.getAmountInStore(),newProduct.getAmountInStore());
         assertEquals(product.getCategory(),newProduct.getCategory());
     }

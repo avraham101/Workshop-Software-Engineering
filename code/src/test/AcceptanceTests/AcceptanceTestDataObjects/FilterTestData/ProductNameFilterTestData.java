@@ -1,10 +1,12 @@
 package AcceptanceTests.AcceptanceTestDataObjects.FilterTestData;
 
+
+
 public class ProductNameFilterTestData extends FilterTestData {
     private String productName;
 
     public ProductNameFilterTestData(String productName) {
-        super("product name");
+        super(FilterType.PRODUCT_NAME);
         this.productName = productName;
     }
 

@@ -1,13 +1,12 @@
 package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.PurchaseTestData;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-
 
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class GetStorePurchaseHistoryTest extends AcceptanceTests {
     @Before
@@ -28,17 +27,13 @@ public class GetStorePurchaseHistoryTest extends AcceptanceTests {
     @Test
     public void getStorePurchaseHistoryFailNotMyStore(){
         List<PurchaseTestData> history = bridge.getStorePurchasesHistory(stores.get(2).getStoreName());
-        assertNull(history);
+        assertFalse(history.size() != 0);
     }
 
     @Test
     public void getStorePurchaseHistoryFailStoreNotExist(){
         List<PurchaseTestData> history = bridge.getStorePurchasesHistory("notExist");
-        assertNull(history);
+        assertFalse(history.size() != 0);
     }
 
-    @After
-    public void tearDown(){
-        deleteUserStoresAndProducts(superUser);
-    }
 }

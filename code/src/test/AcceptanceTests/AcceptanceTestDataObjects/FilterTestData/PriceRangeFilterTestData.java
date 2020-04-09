@@ -5,7 +5,7 @@ public class PriceRangeFilterTestData extends FilterTestData {
     private double highestPrice;
 
     public PriceRangeFilterTestData(double lowestPrice, double highestPrice) {
-        super("price range");
+        super(FilterType.PRICE_RANGE);
         this.lowestPrice = lowestPrice;
         this.highestPrice = highestPrice;
     }
