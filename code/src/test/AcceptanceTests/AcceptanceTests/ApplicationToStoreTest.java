@@ -1,41 +1,50 @@
 package AcceptanceTests.AcceptanceTests;
 
+import AcceptanceTests.AcceptanceTestDataObjects.ApplicationToStoreTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 
 public class ApplicationToStoreTest extends AcceptanceTests {
-    UserTestData user;
+    private ApplicationToStoreTestData application;
+    private UserTestData user;
+
     @Before
     public void setUp(){
         addStores(stores);
         user = users.get(2);
         registerAndLogin(user);
+        application = new ApplicationToStoreTestData(stores.get(0).getStoreName(), user.getUsername(),"message");
     }
 
     @Test
     public void applicationToStoreTestSuccess(){
-        boolean approval= bridge.sendApplicationToStore(stores.get(0).getStoreName(),"message");
+        boolean approval= bridge.sendApplicationToStore(application.getStoreName(),application.getContent());
         assertTrue(approval);
+        List<ApplicationToStoreTestData> applications = bridge.getUserApplications(user.getUsername(),application.getStoreName());
+        assertTrue(applications.contains(application));
     }
 
     @Test
     public void applicationToStoreFailInvalidStoreName(){
-        boolean approval= bridge.sendApplicationToStore("invalid","message");
+        application.setStoreName("Invalid");
+        boolean approval= bridge.sendApplicationToStore(application.getStoreName(),application.getContent());
         assertFalse(approval);
+        List<ApplicationToStoreTestData> applications = bridge.getUserApplications(user.getUsername(),application.getStoreName());
+        assertFalse(applications.contains(application));
     }
 
     @Test
     public void applicationToStoreFailNotSubscribed(){
-        boolean approval= bridge.sendApplicationToStore(stores.get(0).getStoreName(),"message");
+        bridge.logout();
+        boolean approval= bridge.sendApplicationToStore(application.getStoreName(),application.getContent());
         assertFalse(approval);
-    }
-
-    @Before
-    public void tearDown(){
-        deleteStores(stores);
-        deleteUser(user.getUsername());
+        List<ApplicationToStoreTestData> applications = bridge.getUserApplications(user.getUsername(),application.getStoreName());
+        assertFalse(applications.contains(application));
     }
 }

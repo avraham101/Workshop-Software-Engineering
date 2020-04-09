@@ -29,8 +29,4 @@ public class RegisterTest extends AcceptanceTests {
         boolean isRegistered = bridge.register(username, password);
         assertFalse(isRegistered);
     }
-    @After
-    public void tearDown(){
-        bridge.deleteUser(username);
-    }
 }

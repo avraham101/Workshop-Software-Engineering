@@ -1,20 +1,16 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.PurchaseTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.ReviewTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
-import org.junit.After;
+import AcceptanceTests.AcceptanceTestDataObjects.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WriteReviewOnProductTest extends AcceptanceTests{
     private UserTestData user0;
-    private PurchaseTestData purchase0;
     private HashMap<ProductTestData,ReviewTestData> productsAndReviews;
     private ProductTestData notExistingProductInPurchase;
 
@@ -23,11 +19,11 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
         user0 = superUser;
         addUserStoresAndProducts(user0);
 
-        bridge.addCartToUser(superUser.getUsername(),superUser.getCart());
-        purchase0 = bridge.buyCart(validPayment,validDelivery);
+        addCartToUser(superUser.getCart());
         notExistingProductInPurchase = products.get(7);
         setUpTestProductsReviews();
     }
+
 
     private void setUpTestProductsReviews(){
         productsAndReviews = new HashMap<>();
@@ -48,8 +44,8 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
             boolean isWritten = bridge.writeReviewOnProduct(product,review);
             assertTrue(isWritten);
 
-            ReviewTestData actualReview = bridge.getReviewByProductAndDate(purchase0.getPurchaseDate(),product);
-            assertEquals(review,actualReview);
+            List<ReviewTestData> actualReviews = bridge.getProductsReviews(product);
+            assertTrue(actualReviews.contains(review));
         }
     }
 
@@ -57,7 +53,16 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
     public void writeReviewOnProductTestFailLogoutUser(){
         boolean isLoggedOut = bridge.logout();
         assertTrue(isLoggedOut);
-        writeReviewOnProductTestSuccess();
+
+        for(Map.Entry<ProductTestData,ReviewTestData> entry : productsAndReviews.entrySet()){
+            ProductTestData product = entry.getKey();
+            ReviewTestData review = entry.getValue();
+            boolean isWritten = bridge.writeReviewOnProduct(product,review);
+            assertTrue(isWritten);
+
+            List<ReviewTestData> actualReviews = bridge.getProductsReviews(product);
+            assertFalse(actualReviews.contains(review));
+        }
     }
 
     @Test
@@ -68,6 +73,9 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
 
         boolean isWritten = bridge.writeReviewOnProduct(productToReview, review);
         assertFalse(isWritten);
+
+        List<ReviewTestData> actualReviews = bridge.getProductsReviews(productToReview);
+        assertFalse(actualReviews.contains(review));
     }
 
     @Test
@@ -77,10 +85,9 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
 
         boolean isWritten = bridge.writeReviewOnProduct(productToReview, review);
         assertFalse(isWritten);
+
+        List<ReviewTestData> actualReviews = bridge.getProductsReviews(productToReview);
+        assertFalse(actualReviews.contains(review));
     }
 
-    @After
-    public void tearDown(){
-        deleteUserStoresAndProducts(user0);
-    }
 }

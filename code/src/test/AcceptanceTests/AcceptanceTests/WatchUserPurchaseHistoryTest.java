@@ -17,6 +17,7 @@ public class WatchUserPurchaseHistoryTest extends AcceptanceTests {
     public void setUp(){
         user0 = superUser;
         addUserStoresAndProducts(user0);
+        addCartToUser(user0.getCart());
         PurchaseTestData purchase0 = bridge.buyCart(validPayment, validDelivery);
         user0.getPurchases().add(purchase0);
     }
@@ -32,6 +33,6 @@ public class WatchUserPurchaseHistoryTest extends AcceptanceTests {
     public void watchUserPurchaseHistoryTestFail(){
         bridge.logout();
         List<PurchaseTestData> actualPurchases = bridge.getCurrentUserPurchaseHistory();
-        assertNull(actualPurchases);
+        assertEquals(0,actualPurchases.size());
     }
 }

@@ -12,6 +12,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 public class ManagerPermissionsTest extends AcceptanceTests {
     private UserTestData manager;
@@ -27,7 +28,7 @@ public class ManagerPermissionsTest extends AcceptanceTests {
                                         100,
                                         6,
                                         "Dairy",
-                                        new ArrayList<>());
+                                        new ArrayList<>(),new ArrayList<>());
         addStores(stores);
         addProducts(products);
     }
@@ -48,9 +49,10 @@ public class ManagerPermissionsTest extends AcceptanceTests {
     public void managerPermissionsTestSuccess(){
         boolean isAdded = bridge.addProduct(newProduct);
         assertTrue(isAdded);
-        products.add(newProduct);
         HashSet<ProductTestData> actualProducts = new HashSet<>(bridge.getStoreProducts(newProduct.getStoreName()));
-        HashSet<ProductTestData> expectedProducts = new HashSet<>(products);
+        List<ProductTestData> expectedProductsList = products.subList(0,3);
+        expectedProductsList.add(newProduct);
+        HashSet<ProductTestData> expectedProducts = new HashSet<>(expectedProductsList);
         assertEquals(expectedProducts,actualProducts);
     }
 
@@ -58,22 +60,13 @@ public class ManagerPermissionsTest extends AcceptanceTests {
     public void managerPermissionsTestFailAddNewManager(){
         boolean isAdded = bridge.appointManager(newProduct.getStoreName(),newManager.getUsername());
         assertFalse(isAdded);
-        boolean isManager = bridge.getStoreInfoByName(newProduct.getStoreName()).isManager(newManager.getUsername());
-        assertFalse(isManager);
+        boolean isAddedProduct = bridge.addProduct(newProduct);
+        assertFalse(isAddedProduct);
     }
 
     @Test
     public void managerPermissionsTestFailAddNewOwner(){
         boolean isAdded = bridge.appointOwnerToStore(newProduct.getStoreName(),newManager.getUsername());
         assertFalse(isAdded);
-        boolean isOwner = bridge.getStoreInfoByName(newProduct.getStoreName()).isOwner(newManager.getUsername());
-        assertFalse(isOwner);
-    }
-
-    @After
-    public void tearDown(){
-        deleteProducts(products);
-        deleteStores(stores);
-        deleteUsers(Arrays.asList(newManager,manager,superUser));
     }
 }

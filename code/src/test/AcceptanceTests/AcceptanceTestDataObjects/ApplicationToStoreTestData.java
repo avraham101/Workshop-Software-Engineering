@@ -23,6 +23,18 @@ public class ApplicationToStoreTestData {
         return storeName;
     }
 
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
