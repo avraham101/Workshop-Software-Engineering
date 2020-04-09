@@ -169,11 +169,13 @@ public class LogicManager {
         //TODO add logger
         List<ProductData> data = new LinkedList<>();
         Store store = stores.get(storeName);
-        Set<String> keys = store.getProducts().keySet();
-        for (String key: keys) {
-            Product product = store.getProducts().get(key);
-            ProductData productData = new ProductData(product, storeName);
-            data.add(productData);
+        if(store!=null) {
+            Set<String> keys = store.getProducts().keySet();
+            for (String key : keys) {
+                Product product = store.getProducts().get(key);
+                ProductData productData = new ProductData(product, storeName);
+                data.add(productData);
+            }
         }
         return data;
     }
