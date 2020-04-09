@@ -85,6 +85,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
                 case CATEGORY:
                     search = Search.CATEGORY;
                     category = ((CategoryFilterTestData) filterTestData).getCategory();
+                    value = category;
                     break;
                 case PRICE_RANGE:
                     minValue = ((PriceRangeFilterTestData) filterTestData).getLowestPrice();
@@ -527,11 +528,8 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public List<ApplicationToStoreTestData> getUserApplications(String username, String storeName) {
-        HashMap<ApplicationToStoreTestData,String> appsAndReplies = getUserApplicationsAndReplies(username,storeName);
-        List<ApplicationToStoreTestData> applications = new ArrayList<>();
-        for(Map.Entry<ApplicationToStoreTestData,String> appAndRep : appsAndReplies.entrySet())
-            applications.add(appAndRep.getKey());
-        return applications;
+        List<Request> requests = serviceAPI.watchRequestsOfStore(storeName);
+        return buildApplicationsToStore(requests);
     }
 
     private List<ApplicationToStoreTestData> buildApplicationsToStore(List<Request> requests) {

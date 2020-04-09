@@ -181,7 +181,7 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     @Override
     public boolean deleteProduct(ProductTestData product) {
         if(realBridge!=null)
-            return deleteProduct(product);
+            return realBridge.deleteProduct(product);
         return false;
     }
 
