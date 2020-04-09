@@ -109,7 +109,7 @@ public abstract class UserState {
      * use case - 2.8 buy cart
      * @param paymentData - the payment info
      * @param addresToDeliver  - the address to shift
-     * @return ture if the cart bought, otherwise false
+     * @return true if the cart bought, otherwise false
      */
     public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
         List<Purchase> recives = cart.buy(paymentData, addresToDeliver);
