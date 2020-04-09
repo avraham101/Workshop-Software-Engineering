@@ -31,11 +31,6 @@ public class Cart {
         return null;
     }
 
-    //TODO Unused function
-    public void setBaskets(HashMap<String, Basket> baskets) {
-        this.baskets = baskets;
-    }
-
     /**
      * use case 2.7
      * @param store - the store to add to cart

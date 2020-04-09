@@ -6,7 +6,6 @@ import Domain.*;
 import Systems.HashSystem;
 import org.junit.Before;
 
-import javax.sql.DataSource;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -249,7 +248,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     private void testAddProductToCartValid() {
         ProductData product = data.getProductData(Data.VALID);
-        assertTrue(logicManager.aadProductToCart(product.getProductName(),
+        assertTrue(logicManager.addProductToCart(product.getProductName(),
                 product.getStoreName(), product.getAmount()));
     }
 
@@ -259,7 +258,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     private void testAddProductToCartBasketNull() {
         ProductData product = data.getProductData(Data.WRONG_STORE);
-        assertFalse(logicManager.aadProductToCart(product.getProductName(),
+        assertFalse(logicManager.addProductToCart(product.getProductName(),
                 product.getStoreName(), product.getAmount()));
     }
 
@@ -575,6 +574,53 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * use case 4.9.1 - view request
+     */
+    @Override
+    public void testStoreViewRequest(){
+        super.testStoreViewRequest();
+        testStoreViewRequestSuccess();
+        testStoreViewRequestFail();
+    }
+
+    private void testStoreViewRequestSuccess() {
+        testAddRequest();
+        StoreData storeData = data.getStore(Data.VALID);
+        List<Request> excepted = new LinkedList<>(stores.get(storeData.getName()).getRequests().values());
+        List<Request> actual = logicManager.viewStoreRequest(storeData.getName());
+        assertTrue(excepted.containsAll(actual));
+    }
+
+    private void testStoreViewRequestFail() {
+        assertTrue(logicManager.viewStoreRequest(data.getStore(Data.NULL_NAME).getName()).isEmpty());
+    }
+
+    /**
+     * test use case 4.9.2
+     */
+    @Override
+    public void testReplayRequest() {
+        testReplayRequestSuccess();
+        testReplayRequestFail();
+    }
+
+    private void testReplayRequestSuccess() {
+        testAddRequest();
+        Request request = data.getRequest(Data.VALID);
+        //check the comment save
+        StoreData storeData = data.getStore(Data.VALID);
+        Request actual = currUser.replayToRequest(request.getStoreName(), request.getId(), "The milk is there, open your eyes!");
+        Request excepted = stores.get(storeData.getName()).getRequests().get(request.getId());
+        assertEquals(excepted.getId(),actual.getId());
+        assertEquals(excepted.getComment(),actual.getComment());
+    }
+
+    private void testReplayRequestFail() {
+        Request request = data.getRequest(Data.WRONG_ID);
+        assertNull(logicManager.replayRequest(request.getStoreName(), request.getId(), request.getContent()));
+    }
+
+    /**
      * test use case 4.10 and 6.4.2 -watch store history
      */
     @Override
@@ -621,53 +667,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(purchase.getBuyer(),data.getSubscribe(Data.VALID).getName());
         assertEquals(purchase.getProduct().get(0).getProductName(),
                 data.getProductData(Data.VALID).getProductName());
-    }
-
-    /**
-     * use case 4.9.1 - view request
-     */
-    @Override
-    public void testStoreViewRequest(){
-        super.testStoreViewRequest();
-        testStoreViewRequestSuccess();
-        testStoreViewRequestFail();
-    }
-
-    private void testStoreViewRequestSuccess() {
-        testAddRequest();
-        StoreData storeData = data.getStore(Data.VALID);
-        List<Request> excepted = new LinkedList<>(stores.get(storeData.getName()).getRequests().values());
-        List<Request> actual = logicManager.viewStoreRequest(storeData.getName());
-        assertTrue(excepted.containsAll(actual));
-    }
-
-    private void testStoreViewRequestFail() {
-        assertTrue(logicManager.viewStoreRequest(data.getStore(Data.NULL_NAME).getName()).isEmpty());
-    }
-
-    /**
-     * test use case 4.9.2
-     */
-    @Override
-    public void testReplayRequest() {
-        testReplayRequestSuccess();
-        testReplayRequestFail();
-    }
-
-    private void testReplayRequestSuccess() {
-        testAddRequest();
-        Request request = data.getRequest(Data.VALID);
-        //check the comment save
-        StoreData storeData = data.getStore(Data.VALID);
-        Request actual = currUser.replayToRequest(request.getStoreName(), request.getId(), "The milk is there, open your eyes!");
-        Request excepted = stores.get(storeData.getName()).getRequests().get(request.getId());
-        assertEquals(excepted.getId(),actual.getId());
-        assertEquals(excepted.getComment(),actual.getComment());
-    }
-
-    private void testReplayRequestFail() {
-        Request request = data.getRequest(Data.WRONG_ID);
-        assertNull(logicManager.replayRequest(request.getStoreName(), request.getId(), request.getContent()));
     }
 
 

@@ -49,18 +49,7 @@ public class BasketTest {
         testBuyBasket();
     }
 
-    /**
-     * use case 2.7.3 - edit product
-     * test edit amount of product in a basket
-     */
-    private void testEditAmountFromBasket() {
-        HashMap<ProductData, Integer> products = data.getProductsInBasket(Data.VALID);
-        for (ProductData productData: products.keySet()) {
-            String productName = productData.getProductName();
-            assertTrue(basket.editAmount(productName,5));
-        }
-        assertFalse(basket.editAmount(null,5));
-    }
+
 
     /**
      * use case 2.7.1 - add product to cart
@@ -84,6 +73,19 @@ public class BasketTest {
             Product product = new Product(productData,new Category(""));
             assertTrue(basket.deleteProduct(product.getName()));
         }
+    }
+
+    /**
+     * use case 2.7.3 - edit product
+     * test edit amount of product in a basket
+     */
+    private void testEditAmountFromBasket() {
+        HashMap<ProductData, Integer> products = data.getProductsInBasket(Data.VALID);
+        for (ProductData productData: products.keySet()) {
+            String productName = productData.getProductName();
+            assertTrue(basket.editAmount(productName,5));
+        }
+        assertFalse(basket.editAmount(null,5));
     }
 
     /**

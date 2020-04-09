@@ -22,6 +22,24 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         super.initStore();
     }
 
+    /**
+     * use case 2.7 add to cart
+     */
+    @Override
+    public void testAddProductToCart() {
+        super.testAddProductToCart();
+        Store store = data.getRealStore(Data.VALID);
+        Product product = data.getRealProduct(Data.VALID);
+        HashMap<Product,Integer> products = cart.getBasket(store.getName()).getProducts();
+        assertEquals(1,products.size());
+        Iterator<Product> iterator =  products.keySet().iterator();
+        Product real = iterator.next();
+        assertEquals(real.getName(),product.getName());
+    }
+
+    /**
+     * use case 3.2 - Open Store
+     */
     @Override
     protected void openStoreTest() {
         StoreData storeData=data.getStore(Data.VALID);
@@ -36,6 +54,19 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         assertTrue(permission.getPermissionType().contains(PermissionType.OWNER));
     }
 
+    /**
+     * test use case 3.7 - watch purchases
+     */
+    @Override
+    public void testWatchPurchases() {
+        List<Purchase> list = sub.watchMyPurchaseHistory();
+        assertNotNull(list);
+        assertEquals(1,list.size());
+    }
+
+    /**
+     * test use case 4.1.1 - add product to store
+     */
     @Override
     protected void addProductToStoreTest() {
         addProductToStoreTestFail();
@@ -64,7 +95,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     }
 
     /**
-     * use case 4.1.3
+     * use case 4.1.3 - edit product
      */
     @Override
     protected void testSuccessEditProduct() {
@@ -94,20 +125,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         assertTrue(newManager.getPermissions().containsKey(store.getName()));
     }
 
-    /**
-     * use case 2.7 add to cart
-     */
-    @Override
-    public void testAddProductToCart() {
-        super.testAddProductToCart();
-        Store store = data.getRealStore(Data.VALID);
-        Product product = data.getRealProduct(Data.VALID);
-        HashMap<Product,Integer> products = cart.getBasket(store.getName()).getProducts();
-        assertEquals(1,products.size());
-        Iterator<Product> iterator =  products.keySet().iterator();
-        Product real = iterator.next();
-        assertEquals(real.getName(),product.getName());
-    }
+
 
     /**
      * check use case 4.6.1 - add permission
@@ -158,16 +176,6 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         assertFalse(niv.getPermissions().containsKey(storeName));
         assertFalse(p.getOwner().getPermissions().containsKey(storeName));
 
-    }
-
-    /**
-     * test use case 3.7 - watch purchases
-     */
-    @Override
-    public void testWatchPurchases() {
-        List<Purchase> list = sub.watchMyPurchaseHistory();
-        assertNotNull(list);
-        assertEquals(1,list.size());
     }
 
 }

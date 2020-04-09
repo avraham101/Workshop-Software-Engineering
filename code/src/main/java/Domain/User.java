@@ -196,7 +196,6 @@ public class User {
      * @param productData
      * @return
      */
-    //TODO write documentation
     public boolean editProductFromStore(ProductData productData) {
         return state.editProductFromStore(productData);
     }
