@@ -21,7 +21,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         init();
     }
 
-
     /**
      * test use case 2.3 - Login
      */
@@ -73,7 +72,210 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         }
     }
 
+    /**
+     * use case 2.5 - view specific product
+     */
+    @Override
+    protected void testViewSpecificProduct() {
+        testViewSpecificProductWrongSearch();
+        testViewSpecificProductWrongFilter();
+        testViewSpecificProductSearchNone();
+        testViewSpecificProductSearchByName();
+        testViewSpecificProductSearchByCategory();
+        testViewSpecificProductSearchByKeyWord();
+        testViewSpecificProductFillterMin();
+        testViewSpecificProductFillterMax();
+        testViewSpecificProductFillterCategory();
+    }
 
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductSearch(Filter correct, int listSize, Filter wrong) {
+        //SUCCESS
+        List<ProductData> products = logicManager.viewSpecificProducts(correct);
+        assertFalse(products.isEmpty()); //sepose to be 1 product valid
+        assertEquals(listSize, products.size());
+        ProductData result = products.get(0);
+        ProductData expected = data.getProductData(Data.VALID);
+        assertTrue(data.compareProductData(expected, result));
+        //FAIL
+        products = logicManager.viewSpecificProducts(wrong);
+        assertTrue(products.isEmpty());
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductSearchNone() {
+        //SUCCESS ALWAYS
+        Filter filter = data.getFilter(Data.VALID);
+        filter.setSearch(Search.NONE);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        assertFalse(products.isEmpty()); //sepose to be 1 product valid
+        assertEquals(1, products.size());
+        ProductData result = products.get(0);
+        ProductData expected = data.getProductData(Data.VALID);
+        assertTrue(data.compareProductData(expected, result));
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    protected void testViewSpecificProductSearchByName() {
+        Filter correct = data.getFilter(Data.VALID);
+        correct.setSearch(Search.PRODUCT_NAME);
+        Filter wrong = data.getFilter(Data.WRONG_NAME);
+        testViewSpecificProductSearch(correct, 1,wrong);
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductSearchByCategory() {
+        ProductData productData = data.getProductData(Data.VALID);
+        Filter correct = data.getFilter(Data.VALID);
+        correct.setSearch(Search.CATEGORY);
+        correct.setValue(productData.getCategory());
+        Filter wrong = data.getFilter(Data.WRONG_CATEGORY);
+        testViewSpecificProductSearch(correct, 1,wrong);
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductSearchByKeyWord() {
+        ProductData productData = data.getProductData(Data.VALID);
+        Filter correct = data.getFilter(Data.VALID);
+        correct.setSearch(Search.KEY_WORD);
+        correct.setValue(productData.getProductName());
+        Filter wrong = data.getFilter(Data.WRONG_KEY_WORD);
+        testViewSpecificProductSearch(correct, 1,wrong);
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductFillter(Filter correct, Filter wrong) {
+        //SUCCESS
+        List<ProductData> products = logicManager.viewSpecificProducts(correct);
+        assertFalse(products.isEmpty());
+        int size = 0;
+        for(Store s: stores.values()) {
+            size+=s.getProducts().size();
+        }
+        assertEquals(size, products.size());
+        //FAIL
+        products = logicManager.viewSpecificProducts(wrong);
+        assertTrue(products.isEmpty());
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductFillterMin() {
+        Filter correct = data.getFilter(Data.FILTER_MIN);
+        Filter wrong = data.getFilter(Data.NEGATIVE_MIN);
+        testViewSpecificProductFillter(correct, wrong);
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductFillterMax() {
+        Filter correct = data.getFilter(Data.FILTER_MAX);
+        Filter wrong = data.getFilter(Data.NEGATIVE_MAX);
+        testViewSpecificProductFillter(correct, wrong);
+    }
+
+    /**
+     * part of use case 2.5 - view specific product
+     */
+    private void testViewSpecificProductFillterCategory() {
+        Filter correct = data.getFilter(Data.FILTER_ALL_CATEGORIES);
+        Filter wrong = data.getFilter(Data.WRONG_CATEGORY);
+        testViewSpecificProductFillter(correct, wrong);
+    }
+
+
+    /**
+     * use case 2.7.1 - watch cart details
+     * success test
+     */
+    @Override
+    protected void testWatchCartDetails() {
+        ProductData productData = data.getProductData(Data.VALID);
+        CartData cartData = logicManager.watchCartDetatils();
+        List<ProductData> list = cartData.getProducts();
+        assertEquals(1, list.size());
+        assertEquals(list.get(0).getProductName(), productData.getProductName());
+    }
+
+    /**
+     * use case 2.7.2 - delete product from cart
+     * success test
+     */
+    @Override
+    protected void testDeleteProductFromCart() {
+        ProductData productData = data.getProductData(Data.VALID);
+        assertTrue(logicManager.deleteFromCart(productData.getProductName(),productData.getStoreName()));
+
+    }
+
+    /**
+     * use case 2.7.3 - edit amount of product in cart
+     * success test
+     */
+    @Override
+    protected void testEditProductsInCart() {
+        ProductData productData = data.getProductData(Data.VALID);
+        assertTrue(logicManager.editProductInCart(productData.getProductName(),productData.getStoreName(),1));
+    }
+
+    /**
+     *  use case 2.7.4 - add product to cart
+     *  success test
+     */
+    @Override
+    protected void testAddProductToCart() {
+        super.testAddProductToCart();
+        testAddProductToCartBasketNull();
+        testAddProductToCartValid();
+    }
+
+    /**
+     * use case 2.7.4
+     * test add product when every thing right
+     */
+    private void testAddProductToCartValid() {
+        ProductData product = data.getProductData(Data.VALID);
+        assertTrue(logicManager.aadProductToCart(product.getProductName(),
+                product.getStoreName(), product.getAmount()));
+    }
+
+    /**
+     * use case 2.7.4
+     * test add product when the basket is null
+     */
+    private void testAddProductToCartBasketNull() {
+        ProductData product = data.getProductData(Data.WRONG_STORE);
+        assertFalse(logicManager.aadProductToCart(product.getProductName(),
+                product.getStoreName(), product.getAmount()));
+    }
+
+    /**
+     * use case 2.8 - test buy Products
+     */
+    @Override
+    protected void testBuyProducts() {
+        super.testBuyProducts();
+        List<Purchase> purchaseList = this.currUser.getState().watchMyPurchaseHistory();
+        for (Purchase purchase: purchaseList) {
+            String storeName = purchase.getStoreName();
+            Store store = this.stores.get(storeName);
+            assertTrue(store.getPurchases().contains(purchase));
+        }
+    }
 
     /**
      * test: use case 3.1 - Logout
@@ -95,8 +297,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         testOpenStoreUserPermissions();
         testOpenStoreStorePermissions();
     }
-
-
 
     /**
      * part of test use case 3.2 - Open Store
@@ -129,6 +329,53 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertTrue(p.getPermissionType().contains(PermissionType.OWNER));
     }
 
+
+    /**
+     * use case 3.3 - write review
+     */
+    @Override
+    protected void testWriteReview() {
+        super.testWriteReview();
+        testWriteReviewSuccess();
+        testWriteReviewProductDidntPurchased();
+    }
+
+    /**
+     * part of use case 3.3 - write review
+     */
+    private void testWriteReviewSuccess() {
+        Review review = data.getReview(Data.VALID);
+        //check if the review is in store
+        Store store = stores.get(review.getStore());
+        Product p = store.getProduct(review.getProductName());
+        //check if the review is in the product
+        List<Review> reviewList = p.getReviews();
+        assertEquals(1,reviewList.size());
+        Review result = reviewList.get(0);
+        assertEquals(review.getContent(), result.getContent());
+        assertEquals(review.getWriter(), result.getWriter());
+    }
+
+    /**
+     * part of use case 3.3 - write review
+     */
+    @Override
+    protected void testWriteReviewValid() {
+        Review review = data.getReview(Data.VALID);
+        assertTrue(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+        List<Review> reviews = currUser.getState().getReviews();
+        assertNotNull(reviews);
+        assertEquals(1, reviews.size());
+        assertEquals(review.getContent(), reviews.get(0).getContent());
+    }
+
+    /**
+     * part of use case 3.3 - write review
+     */
+    private void testWriteReviewProductDidntPurchased() {
+        Review review = data.getReview(Data.WRONG_PRODUCT);
+        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+    }
 
     /**
      * use case 3.5 -add request
@@ -167,51 +414,13 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
-     * use case 4.9.1 - view request
+     * use case 3.7 - watch purchase history
      */
     @Override
-    public void testStoreViewRequest(){
-        super.testStoreViewRequest();
-        testStoreViewRequestSuccess();
-        testStoreViewRequestFail();
-    }
-
-    private void testStoreViewRequestSuccess() {
-        testAddRequest();
-        StoreData storeData = data.getStore(Data.VALID);
-        List<Request> excepted = new LinkedList<>(stores.get(storeData.getName()).getRequests().values());
-        List<Request> actual = logicManager.viewStoreRequest(storeData.getName());
-        assertTrue(excepted.containsAll(actual));
-    }
-
-    private void testStoreViewRequestFail() {
-        assertTrue(logicManager.viewStoreRequest(data.getStore(Data.NULL_NAME).getName()).isEmpty());
-    }
-
-    /**
-     * test use case 4.9.2
-     */
-    @Override
-    public void testReplayRequest() {
-        testReplayRequestSuccess();
-        testReplayRequestFail();
-
-    }
-
-    private void testReplayRequestSuccess() {
-        testAddRequest();
-        Request request = data.getRequest(Data.VALID);
-        //check the comment save
-        StoreData storeData = data.getStore(Data.VALID);
-        Request actual = currUser.replayToRequest(request.getStoreName(), request.getId(), "The milk is there, open your eyes!");
-        Request excepted = stores.get(storeData.getName()).getRequests().get(request.getId());
-        assertEquals(excepted.getId(),actual.getId());
-        assertEquals(excepted.getComment(),actual.getComment());
-    }
-
-    private void testReplayRequestFail() {
-        Request request = data.getRequest(Data.WRONG_ID);
-        assertNull(logicManager.replayRequest(request.getStoreName(), request.getId(), request.getContent()));
+    public void testWatchPurchaseHistory() {
+        List<Purchase> purchases = logicManager.watchMyPurchaseHistory();
+        assertNotNull(purchases);
+        assertEquals(1,purchases.size());
     }
 
     /**
@@ -415,267 +624,52 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
-     * use case 2.5 - view specific product
+     * use case 4.9.1 - view request
      */
     @Override
-    protected void testViewSpecificProduct() {
-        testViewSpecificProductWrongSearch();
-        testViewSpecificProductWrongFilter();
-        testViewSpecificProductSearchNone();
-        testViewSpecificProductSearchByName();
-        testViewSpecificProductSearchByCategory();
-        testViewSpecificProductSearchByKeyWord();
-        testViewSpecificProductFillterMin();
-        testViewSpecificProductFillterMax();
-        testViewSpecificProductFillterCategory();
+    public void testStoreViewRequest(){
+        super.testStoreViewRequest();
+        testStoreViewRequestSuccess();
+        testStoreViewRequestFail();
+    }
+
+    private void testStoreViewRequestSuccess() {
+        testAddRequest();
+        StoreData storeData = data.getStore(Data.VALID);
+        List<Request> excepted = new LinkedList<>(stores.get(storeData.getName()).getRequests().values());
+        List<Request> actual = logicManager.viewStoreRequest(storeData.getName());
+        assertTrue(excepted.containsAll(actual));
+    }
+
+    private void testStoreViewRequestFail() {
+        assertTrue(logicManager.viewStoreRequest(data.getStore(Data.NULL_NAME).getName()).isEmpty());
     }
 
     /**
-     * part of use case 2.5 - view specific product
-     */
-    private void testViewSpecificProductSearch(Filter correct, int listSize, Filter wrong) {
-        //SUCCESS
-        List<ProductData> products = logicManager.viewSpecificProducts(correct);
-        assertFalse(products.isEmpty()); //sepose to be 1 product valid
-        assertEquals(listSize, products.size());
-        ProductData result = products.get(0);
-        ProductData expected = data.getProductData(Data.VALID);
-        assertTrue(data.compareProductData(expected, result));
-        //FAIL
-        products = logicManager.viewSpecificProducts(wrong);
-        assertTrue(products.isEmpty());
-    }
-
-    /**
-     * use case 2.7.1 - watch cart details
-     * success test
+     * test use case 4.9.2
      */
     @Override
-    protected void testWatchCartDetails() {
-        ProductData productData = data.getProductData(Data.VALID);
-        CartData cartData = logicManager.watchCartDetatils();
-        List<ProductData> list = cartData.getProducts();
-        assertEquals(1, list.size());
-        assertEquals(list.get(0).getProductName(), productData.getProductName());
+    public void testReplayRequest() {
+        testReplayRequestSuccess();
+        testReplayRequestFail();
     }
 
-    /**
-     * use case 2.7.2 - delete product from cart
-     * success test
-     */
-    @Override
-    protected void testDeleteProductFromCart() {
-        ProductData productData = data.getProductData(Data.VALID);
-        assertTrue(logicManager.deleteFromCart(productData.getProductName(),productData.getStoreName()));
-
+    private void testReplayRequestSuccess() {
+        testAddRequest();
+        Request request = data.getRequest(Data.VALID);
+        //check the comment save
+        StoreData storeData = data.getStore(Data.VALID);
+        Request actual = currUser.replayToRequest(request.getStoreName(), request.getId(), "The milk is there, open your eyes!");
+        Request excepted = stores.get(storeData.getName()).getRequests().get(request.getId());
+        assertEquals(excepted.getId(),actual.getId());
+        assertEquals(excepted.getComment(),actual.getComment());
     }
 
-    /**
-     * use case 2.7.3 - edit amount of product in cart
-     * success test
-     */
-    @Override
-    protected void testEditProductsInCart() {
-        ProductData productData = data.getProductData(Data.VALID);
-        assertTrue(logicManager.editProductInCart(productData.getProductName(),productData.getStoreName(),1));
+    private void testReplayRequestFail() {
+        Request request = data.getRequest(Data.WRONG_ID);
+        assertNull(logicManager.replayRequest(request.getStoreName(), request.getId(), request.getContent()));
     }
 
-
-
-    /**
-     *  use case 2.7.4 - add product to cart
-     *  success test
-     */
-    @Override
-    protected void testAddProductToCart() {
-        super.testAddProductToCart();
-        testAddProductToCartBasketNull();
-        testAddProductToCartValid();
-    }
-
-    /**
-     * use case 2.7.4
-     * test add product when every thing right
-     */
-    private void testAddProductToCartValid() {
-        ProductData product = data.getProductData(Data.VALID);
-        assertTrue(logicManager.aadProductToCart(product.getProductName(),
-                product.getStoreName(), product.getAmount()));
-    }
-
-    /**
-     * use case 2.7.4
-     * test add product when the basket is null
-     */
-    private void testAddProductToCartBasketNull() {
-        ProductData product = data.getProductData(Data.WRONG_STORE);
-        assertFalse(logicManager.aadProductToCart(product.getProductName(),
-                product.getStoreName(), product.getAmount()));
-    }
-
-    /**
-     * part of use case 2.5 - view specific product
-     */
-    private void testViewSpecificProductSearchNone() {
-        //SUCCESS ALWAYS
-        Filter filter = data.getFilter(Data.VALID);
-        filter.setSearch(Search.NONE);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
-        assertFalse(products.isEmpty()); //sepose to be 1 product valid
-        assertEquals(1, products.size());
-        ProductData result = products.get(0);
-        ProductData expected = data.getProductData(Data.VALID);
-        assertTrue(data.compareProductData(expected, result));
-    }
-
-    /**
-     * part of use case 2.5 - view specific product
-     */
-    protected void testViewSpecificProductSearchByName() {
-        Filter correct = data.getFilter(Data.VALID);
-        correct.setSearch(Search.PRODUCT_NAME);
-        Filter wrong = data.getFilter(Data.WRONG_NAME);
-        testViewSpecificProductSearch(correct, 1,wrong);
-    }
-
-    /**
-     * part of use case 2.5 - view specific product
-     */
-    private void testViewSpecificProductSearchByCategory() {
-        ProductData productData = data.getProductData(Data.VALID);
-        Filter correct = data.getFilter(Data.VALID);
-        correct.setSearch(Search.CATEGORY);
-        correct.setValue(productData.getCategory());
-        Filter wrong = data.getFilter(Data.WRONG_CATEGORY);
-        testViewSpecificProductSearch(correct, 1,wrong);
-    }
-
-    /**
-     * part of use case 2.5 - view specific product
-     */
-    private void testViewSpecificProductSearchByKeyWord() {
-        ProductData productData = data.getProductData(Data.VALID);
-        Filter correct = data.getFilter(Data.VALID);
-        correct.setSearch(Search.KEY_WORD);
-        correct.setValue(productData.getProductName());
-        Filter wrong = data.getFilter(Data.WRONG_KEY_WORD);
-        testViewSpecificProductSearch(correct, 1,wrong);
-    }
-
-    /**
-     * part of use case 2.5 - view specific product
-     */
-    private void testViewSpecificProductFillter(Filter correct, Filter wrong) {
-        //SUCCESS
-        List<ProductData> products = logicManager.viewSpecificProducts(correct);
-        assertFalse(products.isEmpty());
-        int size = 0;
-        for(Store s: stores.values()) {
-            size+=s.getProducts().size();
-        }
-        assertEquals(size, products.size());
-        //FAIL
-        products = logicManager.viewSpecificProducts(wrong);
-        assertTrue(products.isEmpty());
-    }
-
-    /**
-     * part of use case 2.5 - view specific product
-     */
-    private void testViewSpecificProductFillterMin() {
-        Filter correct = data.getFilter(Data.FILTER_MIN);
-        Filter wrong = data.getFilter(Data.NEGATIVE_MIN);
-        testViewSpecificProductFillter(correct, wrong);
-    }
-
-    /**
-     * part of use case 2.5 - view specific product
-     */
-    private void testViewSpecificProductFillterMax() {
-        Filter correct = data.getFilter(Data.FILTER_MAX);
-        Filter wrong = data.getFilter(Data.NEGATIVE_MAX);
-        testViewSpecificProductFillter(correct, wrong);
-    }
-
-    /**
-     * part of use case 2.5 - view specific product
-     */
-    private void testViewSpecificProductFillterCategory() {
-        Filter correct = data.getFilter(Data.FILTER_ALL_CATEGORIES);
-        Filter wrong = data.getFilter(Data.WRONG_CATEGORY);
-        testViewSpecificProductFillter(correct, wrong);
-    }
-
-    /**
-     * use case 3.3 - write review
-     */
-    @Override
-    protected void testWriteReview() {
-        super.testWriteReview();
-        testWriteReviewSuccess();
-        testWriteReviewProductDidntPurchased();
-    }
-
-    /**
-     * part of use case 3.3 - write review
-     */
-    private void testWriteReviewSuccess() {
-        Review review = data.getReview(Data.VALID);
-        //check if the review is in store
-        Store store = stores.get(review.getStore());
-        Product p = store.getProduct(review.getProductName());
-        //check if the review is in the product
-        List<Review> reviewList = p.getReviews();
-        assertEquals(1,reviewList.size());
-        Review result = reviewList.get(0);
-        assertEquals(review.getContent(), result.getContent());
-        assertEquals(review.getWriter(), result.getWriter());
-    }
-
-    /**
-     * part of use case 3.3 - write review
-     */
-    @Override
-    protected void testWriteReviewValid() {
-        Review review = data.getReview(Data.VALID);
-        assertTrue(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
-        List<Review> reviews = currUser.getState().getReviews();
-        assertNotNull(reviews);
-        assertEquals(1, reviews.size());
-        assertEquals(review.getContent(), reviews.get(0).getContent());
-    }
-
-    /**
-     * part of use case 3.3 - write review
-     */
-    private void testWriteReviewProductDidntPurchased() {
-        Review review = data.getReview(Data.WRONG_PRODUCT);
-        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
-    }
-
-    /**
-     * use case 2.8 - test buy Products
-     */
-    @Override
-    protected void testBuyProducts() {
-        super.testBuyProducts();
-        List<Purchase> purchaseList = this.currUser.getState().watchMyPurchaseHistory();
-        for (Purchase purchase: purchaseList) {
-            String storeName = purchase.getStoreName();
-            Store store = this.stores.get(storeName);
-            assertTrue(store.getPurchases().contains(purchase));
-        }
-    }
-
-    /**
-     * use case 3.7 - watch purchase history
-     */
-    @Override
-    public void testWatchPurchaseHistory() {
-        List<Purchase> purchases = logicManager.watchMyPurchaseHistory();
-        assertNotNull(purchases);
-        assertEquals(1,purchases.size());
-    }
 
 }
 
