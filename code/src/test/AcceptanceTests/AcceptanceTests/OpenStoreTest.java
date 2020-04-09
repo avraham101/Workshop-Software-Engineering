@@ -21,7 +21,7 @@ public class OpenStoreTest extends AcceptanceTests {
     public void openStoreSuccess(){
        StoreTestData store = bridge.openStore(newStoreName);
        assertNotNull(store);
-       String actualStoreOwner = bridge.getStoreInfoByName(newStoreName).getStoreOwner().getUsername();
+       String actualStoreOwner = bridge.getStoreInfoByName(newStoreName).getStoreOwner().getUsername();//TODO: redundant?- we insert store owner...
        assertEquals(user.getUsername(),actualStoreOwner);
     }
 
@@ -32,10 +32,5 @@ public class OpenStoreTest extends AcceptanceTests {
         assertNull(store2);
     }
 
-    @After
-    public void tearDown(){
-        bridge.deleteStore(newStoreName);
-        bridge.logout();
-        deleteUser(user.getUsername());
-    }
+
 }

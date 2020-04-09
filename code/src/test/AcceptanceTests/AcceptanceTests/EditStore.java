@@ -127,8 +127,4 @@ public class EditStore extends AcceptanceTests {
         assertFalse(approval);
     }
 
-    @After
-    public void tearDown(){
-        deleteUserStoresAndProducts(superUser);
-    }
 }

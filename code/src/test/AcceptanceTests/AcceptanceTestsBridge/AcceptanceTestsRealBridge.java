@@ -230,40 +230,34 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         PaymentData paymentData = new PaymentData(paymentMethod.getCreditCardOwner()
                 ,"address",paymentMethod.getCreditCardNumber() );//TODO: SHOW ROY
         boolean approval = serviceAPI.purchaseCart(paymentData,deliveryDetails.toString());
-
-        return approval? buildPurchaseTestData(serviceAPI.watchMyPurchaseHistory()) : null;
-    }
-
-    private  List<PurchaseTestData> buildPurchasesTestData(List<Purchase> purchaseHistory){
-        List<PurchaseTestData> purchases = new ArrayList<>();
-        for(Purchase purchase : purchaseHistory){
-            PurchaseTestData toAddPurchase = buildPurchaseTestData(new ArrayList<>(Collections.singletonList(purchase)));
-            toAddPurchase.setPurchaseDate(Date
-                                        .from(purchase.getDate().atZone(ZoneId.systemDefault()).toInstant()));
-            purchases.add(toAddPurchase);
+        if(!approval){
+            return null;
         }
-        return purchases;
+        else {
+                return getPurchaseTestDataFromHistory();
+        }
+
     }
 
-    private PurchaseTestData buildPurchaseTestData(List<Purchase> purchaseHistory){
+    public PurchaseTestData getPurchaseTestDataFromHistory(){
+        List<Purchase>  history =  serviceAPI.watchMyPurchaseHistory();
         HashMap<ProductTestData,Integer> productsAndAmountInPurchase = new HashMap<>();
+        double totalCost=0;
         Date date = new Date();
-
-        for (Purchase purchase: purchaseHistory) {
+        for (Purchase purchase: history) {
             List<ProductData> products = purchase.getProduct();
             for (ProductData product: products) {
                 productsAndAmountInPurchase.put(buildProductTestData(product)
                         ,product.getAmount());
+                totalCost+=product.getPriceAfterDiscount()*product.getAmount();
+
             }
+
+
         }
-
-        PurchaseTestData purchaseTestData = new PurchaseTestData(productsAndAmountInPurchase,
-                                                                date,
-                                                                0.0);
-        double totalAmount = purchaseTestData.calculateTotalAmount();
-        purchaseTestData.setTotalAmount(totalAmount);
-
-        return purchaseTestData;
+        PurchaseTestData purchaseTestData = new PurchaseTestData
+                (productsAndAmountInPurchase, date,totalCost);
+        return  purchaseTestData;
     }
 
     @Override
@@ -276,9 +270,11 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return null;
     }
 
+
+
     @Override
     public boolean sendApplicationToStore(String storeName, String message) {
-        return false;
+        return serviceAPI.writeRequestToStore(storeName,message);
     }
 
     @Override
@@ -326,6 +322,17 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public StoreTestData getStoreInfoByName(String storeName) {
+
+        List<StoreData> stores=serviceAPI.viewStores();
+        for (StoreData st: stores) {
+            if(st.getName().equals(storeName)){
+                StoreTestData openedStore = new StoreTestData(storeName,currentUser);
+                return openedStore;
+
+            }
+
+
+        }
         return null;
     }
 
