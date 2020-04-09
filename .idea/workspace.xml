@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="05e8ee0e-932c-4138-ba00-2c920c3ad416" name="Default" comment="">
+    <list default="true" id="05e8ee0e-932c-4138-ba00-2c920c3ad416" name="Default" comment="fixed Application to store test">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/ApplicationToStoreTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/ApplicationToStoreTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -33,10 +33,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ApplicationToStoreTest.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ApplicationToStoreTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/ApplicationToStoreTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
+            <state relative-caret-position="287">
               <caret line="28" column="36" lean-forward="false" selection-start-line="28" selection-start-column="36" selection-end-line="28" selection-end-column="36" />
               <folding />
             </state>
@@ -121,11 +121,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AcceptanceTestsRealBridge.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AcceptanceTestsRealBridge.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="360">
-              <caret line="521" column="50" lean-forward="true" selection-start-line="521" selection-start-column="50" selection-end-line="521" selection-end-column="50" />
+              <caret line="516" column="5" lean-forward="false" selection-start-line="516" selection-start-column="5" selection-end-line="516" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -231,8 +231,8 @@
         <option value="$PROJECT_DIR$/code/src/main/java/Domain/LogicManager.java" />
         <option value="$PROJECT_DIR$/code/src/main/java/Service/ServiceAPI.java" />
         <option value="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/ManagerPermissionsTest.java" />
-        <option value="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" />
         <option value="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/ApplicationToStoreTest.java" />
+        <option value="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" />
       </list>
     </option>
   </component>
@@ -799,7 +799,14 @@
       <option name="project" value="LOCAL" />
       <updated>1586451926806</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="fixed Application to store test">
+      <created>1586451940098</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1586451940098</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -835,7 +842,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="96429000" />
+    <option name="totallyTimeSpent" value="96517000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1390,21 +1397,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java">
+    <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/ApplicationToStoreTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="521" column="50" lean-forward="true" selection-start-line="521" selection-start-column="50" selection-end-line="521" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="287">
+          <caret line="28" column="36" lean-forward="false" selection-start-line="28" selection-start-column="36" selection-end-line="28" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/ApplicationToStoreTest.java">
+    <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="28" column="36" lean-forward="false" selection-start-line="28" selection-start-column="36" selection-end-line="28" selection-end-column="36" />
-          <folding />
+        <state relative-caret-position="360">
+          <caret line="516" column="5" lean-forward="false" selection-start-line="516" selection-start-column="5" selection-end-line="516" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
