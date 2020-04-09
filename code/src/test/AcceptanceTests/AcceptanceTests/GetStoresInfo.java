@@ -17,14 +17,15 @@ public class GetStoresInfo extends AcceptanceTests {
      */
     @Before
     public void setUp(){
-        bridge.addStores(stores);
-        bridge.addProducts(products);
+        addStores(stores);
+        addProducts(products);
     }
     //use case 2.4.1
     @Test
     public void getStoresInfo(){
         Set<StoreTestData> storesInSystem = new HashSet<>(bridge.getStoresInfo());
         Set<StoreTestData> insertedStores = new HashSet<>(stores);
+        System.out.println(bridge.getStoresInfo().get(2).equals(stores.get(0)));
         assertEquals(storesInSystem,insertedStores);
     }
 
@@ -41,7 +42,7 @@ public class GetStoresInfo extends AcceptanceTests {
     public void getProductOfStoreFail(){
         Set<ProductTestData> productsInStoreSystem = new HashSet<>
                 (bridge.getStoreProducts(notExistingStore.getStoreName()));
-        assertNull(productsInStoreSystem);
+        assertEquals(0,productsInStoreSystem.size());
     }
 
 }

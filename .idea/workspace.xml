@@ -3,10 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="05e8ee0e-932c-4138-ba00-2c920c3ad416" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/ProductTestData.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/ProductTestData.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/ViewAndReplyApplicationToStore.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/ViewAndReplyApplicationToStore.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/main/java/Domain/LogicManager.java" afterPath="$PROJECT_DIR$/code/src/main/java/Domain/LogicManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/StoreTestData.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestDataObjects/StoreTestData.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/GetStoresInfo.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/GetStoresInfo.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/LogoutTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/LogoutTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -22,21 +24,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="ServiceAPI.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/code/src/main/java/Service/ServiceAPI.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="55" column="0" lean-forward="false" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
-              <folding>
-                <element signature="e#1279#1280#0" expanded="true" />
-                <element signature="e#1327#1328#0" expanded="true" />
-                <element signature="e#4325#4326#0" expanded="true" />
-                <element signature="e#4384#4385#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="LogicManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/code/src/main/java/Domain/LogicManager.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -47,11 +34,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GetStoresInfo.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GetStoresInfo.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/GetStoresInfo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="19" column="26" lean-forward="false" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
+            <state relative-caret-position="-162">
+              <caret line="14" column="6" lean-forward="true" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EditStore.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/EditStore.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="5" column="22" lean-forward="true" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -354,7 +351,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/code" />
-    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
@@ -775,7 +772,14 @@
       <option name="project" value="LOCAL" />
       <updated>1586434714480</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="started to run acceptance test">
+      <created>1586441455615</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1586441455615</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -811,7 +815,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="88735000" />
+    <option name="totallyTimeSpent" value="89784000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -825,6 +829,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32996634" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -840,7 +845,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32996634" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20730397" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20730397" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32996634" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -900,7 +905,8 @@
     <MESSAGE value="fixed some tests" />
     <MESSAGE value="fixed merge" />
     <MESSAGE value="fixed some test" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed some test" />
+    <MESSAGE value="started to run acceptance test" />
+    <option name="LAST_COMMIT_MESSAGE" value="started to run acceptance test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1008,16 +1014,6 @@
         <state relative-caret-position="2106">
           <caret line="85" column="43" lean-forward="false" selection-start-line="85" selection-start-column="43" selection-end-line="85" selection-end-column="43" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/EditStore.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="348">
-          <caret line="141" column="0" lean-forward="true" selection-start-line="141" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1340,8 +1336,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/GetStoresInfo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="19" column="26" lean-forward="false" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
+        <state relative-caret-position="-162">
+          <caret line="14" column="6" lean-forward="true" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/EditStore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="5" column="22" lean-forward="true" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
           <folding />
         </state>
       </provider>

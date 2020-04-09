@@ -149,6 +149,14 @@ public class AcceptanceTests {
         StoreTestData store1 = new StoreTestData("store1Test",store0Owner);
         StoreTestData store2 = new StoreTestData("store2Test",store1Owner);
 
+        List<ProductTestData> store0Products = products.subList(0,3);
+        List<ProductTestData> store1Products = products.subList(3,6);
+        List<ProductTestData> store2Products = products.subList(6,10);
+
+        store0.setProducts(store0Products);
+        store1.setProducts(store1Products);
+        store2.setProducts(store2Products);
+
         stores.addAll(Arrays.asList(store0,store1,store2));
 
         UserTestData notExistingStoreManager = users.get(1);
@@ -206,6 +214,7 @@ public class AcceptanceTests {
             UserTestData owner = store.getStoreOwner();
             registerAndLogin(owner);
             bridge.openStore(store.getStoreName());
+            bridge.appointOwnerToStore(store.getStoreName(),admin.getUsername());
         }
 
         bridge.logout();

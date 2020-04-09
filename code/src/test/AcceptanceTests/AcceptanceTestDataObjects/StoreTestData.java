@@ -60,6 +60,11 @@ public class StoreTestData {
         return storeName != null ? storeName.equals(that.storeName) : that.storeName == null;
     }
 
+    @Override
+    public int hashCode() {
+        return storeName.hashCode();
+    }
+
     public ProductTestData getProductByName(String productName){
         for (ProductTestData pd : products) {
             if(pd.getProductName().equals(productName))
