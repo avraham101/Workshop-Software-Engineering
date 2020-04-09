@@ -18,8 +18,8 @@ public class WatchUserPurchaseHistoryTest extends AcceptanceTests {
         user0 = superUser;
         addUserStoresAndProducts(user0);
         addCartToUser(user0.getCart());
-        PurchaseTestData purchase0 = bridge.buyCart(validPayment, validDelivery);
-        user0.getPurchases().add(purchase0);
+       // PurchaseTestData purchase0 = bridge.buyCart(validPayment, validDelivery);
+        //user0.getPurchases().add(purchase0);
     }
 
     @Test

@@ -27,8 +27,8 @@ public class EditPermissionTest extends AcceptanceTests {
                 100,
                 4,
                 "Dairy",
-                new ArrayList<>(),
-                new ArrayList<>());
+                new ArrayList<ReviewTestData>(),
+                new ArrayList<DiscountTestData>());
     }
 
     /*****************Add-Permission -4.6.1***********************************/

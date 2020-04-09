@@ -145,10 +145,10 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public PurchaseTestData buyCart(PaymentTestData paymentMethod, DeliveryDetailsTestData deliveryDetails) {
+    public boolean buyCart(PaymentTestData paymentMethod, DeliveryDetailsTestData deliveryDetails) {
         if(realBridge!=null)
             return realBridge.buyCart(paymentMethod,deliveryDetails);
-        return null;
+        return true;
     }
 
     @Override

@@ -254,21 +254,31 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //TODO: CHECK AND COMPLETE
     @Override
-    public PurchaseTestData buyCart(PaymentTestData paymentMethod, DeliveryDetailsTestData deliveryDetails) {
-        PaymentData paymentData = new PaymentData(paymentMethod.getCreditCardOwner()
-                ,"address",paymentMethod.getCreditCardNumber() );//TODO: SHOW ROY
-        boolean approval = serviceAPI.purchaseCart(paymentData,deliveryDetails.toString());
-        if(!approval){
-            return null;
+    public boolean buyCart(PaymentTestData paymentMethod, DeliveryDetailsTestData deliveryDetails) {
+        PaymentData paymentData;
+        String delivery;
+        if(deliveryDetails!=null){
+            delivery= deliveryDetails.toString();
         }
-        else {
-                return getPurchaseTestDataFromHistory();
+        else{
+            delivery=null;
         }
+        if(paymentMethod!=null){
+         paymentData = new PaymentData(paymentMethod.getCreditCardOwner(),"addr",paymentMethod.getCreditCardNumber());
+        }
+        else{
+            paymentData=null;
+        }
+
+        boolean approval = serviceAPI.purchaseCart(paymentData,delivery);
+        return approval;
 
     }
 
     public PurchaseTestData getPurchaseTestDataFromHistory(){
         List<Purchase>  history =  serviceAPI.watchMyPurchaseHistory();
+        if(history==null)
+            return null;
         HashMap<ProductTestData,Integer> productsAndAmountInPurchase = new HashMap<>();
         double totalCost=0;
         Date date = new Date();

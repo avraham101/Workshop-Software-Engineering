@@ -1,8 +1,6 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,19 +21,16 @@ public class AppointManagerTest extends AcceptanceTests  {
                                                             100,
                                                             10,
                                                             "Dairy",
-                                                            new ArrayList<>(),
-                                                            new ArrayList<>());
+                                                            new ArrayList<ReviewTestData>(),
+                                                            new ArrayList<DiscountTestData>());
     }
 
     @Test
-    public void appointManagerSuccess(){
+    public void appointManagerSuccess() {
         StoreTestData store = stores.get(0);
         UserTestData newManager = users.get(2);
-        boolean approval = bridge.appointManager(store.getStoreName(),newManager.getUsername());
+        boolean approval = bridge.appointManager(store.getStoreName(), newManager.getUsername());
         assertTrue(approval);
-        logoutAndLogin(newManager);
-        boolean isManager = bridge.addProduct(productToAdd);
-        assertTrue(isManager);
     }
 
     @Test
@@ -45,9 +40,7 @@ public class AppointManagerTest extends AcceptanceTests  {
         bridge.appointManager(store.getStoreName(),newManager.getUsername());
         boolean approval = bridge.appointManager(store.getStoreName(),newManager.getUsername());
         assertFalse(approval);
-        logoutAndLogin(newManager);
-        boolean isManager = bridge.addProduct(productToAdd);
-        assertTrue(isManager);
+
     }
 
     @Test
