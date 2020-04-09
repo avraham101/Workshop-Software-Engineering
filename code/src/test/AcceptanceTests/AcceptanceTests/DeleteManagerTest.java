@@ -1,9 +1,6 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.PermissionsTypeTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,8 +46,8 @@ public class DeleteManagerTest extends AcceptanceTests{
                                             100,
                                             4,
                                             "Dairy",
-                                            new ArrayList<>(),
-                                            new ArrayList<>());
+                                            new ArrayList<ReviewTestData>(),
+                                            new ArrayList<DiscountTestData>());
 
     }
 

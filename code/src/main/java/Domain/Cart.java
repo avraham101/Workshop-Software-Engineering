@@ -79,6 +79,8 @@ public class Cart {
      * @return true is available, otherwise false
      */
     private boolean availableCart(PaymentData paymentData, String addresToDeliver) {
+        if(baskets.values().isEmpty())
+            return false;
         for(Basket basket: baskets.values()) {
             if(!basket.available(paymentData, addresToDeliver))
                 return false;

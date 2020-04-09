@@ -43,16 +43,15 @@ public class AcceptanceTests {
 
     private static void setUpPayments() {
         Date validDate = new Date();
-        Date invalidDate = new Date(0);
+        //Date invalidDate = new Date(0);
         validPayment = new PaymentTestData("ownerValid","1111","343",validDate);
-        invalidPayment = new PaymentTestData("ownerInvalid","1111","343",invalidDate);
+        invalidPayment = null;
     }
 
     private static void setUpDelivery() {
         validDelivery = new DeliveryDetailsTestData
                 ("israel","ashdod","valid",7);
-        invalidDelivery = new DeliveryDetailsTestData
-                ("israel","ashdod","invalid",-15);
+        invalidDelivery =null;
     }
 
 
