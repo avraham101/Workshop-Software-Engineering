@@ -33,54 +33,119 @@ public class SubscribeAllStubsTest {
         initStore();
     }
 
+    /**--------------------------------set-ups-------------------------------------------------------------------*/
+
     protected void initStore() {
         paymentSystem = new ProxyPayment();
         supplySystem = new ProxySupply();
     }
 
     /**
+     * set up to open a store
+     */
+    protected void setUpStoreOpened(){
+        sub.openStore(data.getStore(Data.VALID),paymentSystem,supplySystem);
+    }
+
+    /**
+     * set up manager added to a store
+     */
+    protected void setUpManagerAdded(){
+        setUpStoreOpened();
+        sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName());
+    }
+
+    /**
+     * set up a manager with permissions
+     */
+    private void setUpAddedPermissions(){
+        setUpManagerAdded();
+        sub.addPermissions(data.getPermissionTypeList(),
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName());
+    }
+
+    /**
+     * set up valid product in the store of sub
+     */
+    private void setUpProductAdded(){
+        setUpStoreOpened();
+        sub.addProductToStore(data.getProductData(Data.VALID));
+    }
+
+    /**
+     * set up a valid cart with a valid product
+     */
+    private void setUpProductAddedToCart(){
+        setUpProductAdded();
+        Store store = data.getRealStore(Data.VALID);
+        Product product = data.getRealProduct(Data.VALID);
+        sub.addProductToCart(store,product,product.getAmount());
+    }
+
+    /**
+     * set up a valid purchase history
+     */
+    protected void setUpProductBought(){
+        setUpProductAddedToCart();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        sub.buyCart(paymentData,deliveryData.getAddress());
+    }
+
+    /**
+     * set up request to the valid store of sub
+     */
+    private void setUpRequestAdded(){
+        setUpStoreOpened();
+        Request excepted = data.getRequest(Data.VALID);
+        sub.addRequest(excepted.getStoreName(), excepted.getContent());
+    }
+
+    /**--------------------------------set-ups-------------------------------------------------------------------*/
+
+
+    /**
      * test use case 2.3 - Login
      * main test function for subscribe
      */
-    @Test
     public void test(){
-        loginTest();
-        testWatchPurchasesEmpty();
-        openStoreTest();
-        testAddManagerToStore();
-        addProductToStoreTest();
-        testEditProduct();
-        removeProductFromStoreTest();
-        testAddPermissions();
-        testRemovePermission();
-        testRemoveManagerFromStore();
-        testAddRequest();
-        testViewRequest();
-        testReplayRequest();
-        testWriteReviewSubscribe();
-        testAddProductToCart();
-        testbuyCart();
+        //loginTest();
+        //testWatchPurchasesEmpty();
+        //openStoreTest();
+        //testAddManagerToStore();
+        //addProductToStoreTest();
+        //testEditProduct();
+        //removeProductFromStoreTest();
+        //testAddPermissions();
+        //testRemovePermission();
+        //testRemoveManagerFromStore();
+        //testAddRequest();
+        //testViewRequest();
+        //testReplayRequest();
+        //testWriteReviewSubscribe();
+        //testAddProductToCart();
+        testBuyCart();
         testWatchPurchases();
-        testCanWatchUserHistory();
-        testCanWatchStoreHistory();
-        logoutTest();
+        //testCanWatchUserHistory();
+        //testCanWatchStoreHistory();
+        //logoutTest();
     }
 
     /**
      * part of test use case 2.3 - Login.
      * test login where all fields are stubs
      */
-    protected void loginTest() {
+    @Test
+    public void loginTest() {
         assertFalse(sub.login(new User(),new Subscribe("avraham","calev")));
     }
-
-
-
 
     /**
      * use case 2.7 add to cart
      */
+    @Test
     public void testAddProductToCart() {
+        setUpProductAdded();
         Store store = data.getRealStore(Data.VALID);
         Product product = data.getRealProduct(Data.VALID);
         assertTrue(sub.addProductToCart(store,product,product.getAmount()));
@@ -89,7 +154,9 @@ public class SubscribeAllStubsTest {
     /**
      * use case - 2.8 buy cart
      */
-    public void testbuyCart() {
+    @Test
+    public void testBuyCart() {
+        setUpProductAddedToCart();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
         assertTrue(sub.buyCart(paymentData,deliveryData.getAddress()));
@@ -98,14 +165,16 @@ public class SubscribeAllStubsTest {
     /**
      * test: use case 3.1 - Logout
      */
-    private void logoutTest(){
+    @Test
+    public void logoutTest(){
         assertTrue(sub.logout(new User()));
     }
 
     /**
      * test use case 3.2 - Open Store
      */
-    protected void openStoreTest() {
+    @Test
+    public void openStoreTest() {
         Store store = sub.openStore(data.getStore(Data.VALID),paymentSystem,supplySystem);
         assertNotNull(store);
 
@@ -114,19 +183,21 @@ public class SubscribeAllStubsTest {
     /**
      * use case 3.3 - write review
      */
-    protected void testWriteReviewSubscribe() {
+    @Test
+    public void testWriteReviewSubscribe() {
         Review review = data.getReview(Data.VALID);
-        this.sub.addReview(review);
+        assertTrue(sub.addReview(review));
         List<Review> reviewList = sub.getReviews();
         assertEquals(1, reviewList.size());
         assertEquals(review, reviewList.get(0));
-
     }
 
     /**
      * use case 3.5 - add request
      */
-    private void testAddRequest(){
+    @Test
+    public void testAddRequest(){
+        setUpStoreOpened();
         Request excepted = data.getRequest(Data.VALID);
         Request actual = sub.addRequest(excepted.getStoreName(), excepted.getContent());
         assertEquals(excepted.getId(), actual.getId());
@@ -139,7 +210,8 @@ public class SubscribeAllStubsTest {
     /**
      * test use case 3.7 - watch purchases
      */
-    private void testWatchPurchasesEmpty() {
+    @Test
+    public void testWatchPurchasesEmpty() {
         List<Purchase> list = sub.watchMyPurchaseHistory();
         assertNotNull(list);
         assertTrue(list.isEmpty());
@@ -148,7 +220,9 @@ public class SubscribeAllStubsTest {
     /**
      * test use case 3.7 - watch purchases
      */
+    @Test
     public void testWatchPurchases() {
+        setUpProductBought();
         List<Purchase> list = sub.watchMyPurchaseHistory();
         assertNotNull(list);
         assertEquals(0,list.size());
@@ -157,7 +231,9 @@ public class SubscribeAllStubsTest {
     /**
      * test use case 4.1.1 - add product
      */
-    protected void addProductToStoreTest(){
+    @Test
+    public void addProductToStoreTest(){
+        setUpStoreOpened();
         addProductToStoreTestSuccess();
     }
 
@@ -168,8 +244,9 @@ public class SubscribeAllStubsTest {
     /**
      * test 4.1.2 - remove product
      */
-
-    protected  void removeProductFromStoreTest(){
+    @Test
+    public void removeProductFromStoreTest(){
+        setUpProductAdded();
         checkRemoveProductFail();
         checkRemoveProductSuccess();
     }
@@ -205,7 +282,9 @@ public class SubscribeAllStubsTest {
     /**
      * test use case 4.1.3 - edit product
      */
-    private void testEditProduct(){
+    @Test
+    public void testEditProduct(){
+        setUpProductAdded();
         testFailEditProduct();
         testSuccessEditProduct();
     }
@@ -231,10 +310,6 @@ public class SubscribeAllStubsTest {
         permission.addType(PermissionType.OWNER);
     }
 
-    /**
-     * success case
-     */
-
     protected void testSuccessEditProduct(){
         assertTrue(sub.editProductFromStore(data.getProductData(Data.EDIT)));
     }
@@ -243,7 +318,9 @@ public class SubscribeAllStubsTest {
     /**
      * use case 4.5 add manager
      */
-    private void testAddManagerToStore(){
+    @Test
+    public void testAddManagerToStore(){
+        setUpStoreOpened();
         testAddManagerToStoreFail();
         testAddManagerStoreSuccess();
         testAlreadyManager();
@@ -259,7 +336,6 @@ public class SubscribeAllStubsTest {
     protected void testAddManagerStoreSuccess() {
         assertTrue(sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()));
     }
-
 
     private void testAddManagerToStoreFail() {
         checkAddManagerHasNoPermission();
@@ -293,7 +369,9 @@ public class SubscribeAllStubsTest {
     /**
      * test use case 4.6.1 - add permissions to manager
      */
-    protected void testAddPermissions(){
+    @Test
+    public void testAddPermissions(){
+        setUpManagerAdded();
         testAddPermissionNotManager();
         testAddPermissionDontHavePermission();
         testAddPermissionSuccess();
@@ -325,7 +403,9 @@ public class SubscribeAllStubsTest {
     /**
      * test use case 4.6.2 - remove permission
      */
-    private void testRemovePermission(){
+    @Test
+    public void testRemovePermission(){
+        setUpAddedPermissions();
         testRemovePermissionNotManager();
         testRemovePermissionDontHavePermission();
         testRemovePermissionSuccess();
@@ -357,7 +437,9 @@ public class SubscribeAllStubsTest {
     /**
      * test use case 4.7 - remove manager
      */
-    private void testRemoveManagerFromStore(){
+    @Test
+    public void testRemoveManagerFromStore(){
+        setUpManagerAdded();
         testRemoveManagerFromStoreFail();
         testRemoveManagerStoreSuccess();
     }
@@ -387,7 +469,9 @@ public class SubscribeAllStubsTest {
     /**
      * use case 4.9.1 - view request
      */
-    private void testViewRequest(){
+    @Test
+    public void testViewRequest(){
+        setUpRequestAdded();
         Request request1 = data.getRequest(Data.WRONG_STORE);
         Request request2 = data.getRequest(Data.NULL_NAME);
         assertTrue(sub.viewRequest(request1.getStoreName()).isEmpty());
@@ -397,7 +481,9 @@ public class SubscribeAllStubsTest {
     /**
      * test use case 4.9.2 - reply request
      */
-    private void testReplayRequest(){
+    @Test
+    public void testReplayRequest(){
+        setUpRequestAdded();
         Request request1 = data.getRequest(Data.NULL_NAME);
         Request request2 = data.getRequest(Data.WRONG_STORE);
         Request request3 = data.getRequest(Data.WRONG_ID);
@@ -411,14 +497,17 @@ public class SubscribeAllStubsTest {
     /**
      * test use case 6.4.1 - watch user history
      */
-    private void testCanWatchUserHistory(){
+    @Test
+    public void testCanWatchUserHistory(){
         assertFalse(sub.canWatchUserHistory());
     }
 
     /**
      * test use case 6.4.2 and 4.10 - watch store history
      */
-    private void testCanWatchStoreHistory(){
+    @Test
+    public void testCanWatchStoreHistory(){
+        setUpStoreOpened();
         testWatchStoreHistorySuccess();
         testWatchStoreHistoryNotManger();
     }

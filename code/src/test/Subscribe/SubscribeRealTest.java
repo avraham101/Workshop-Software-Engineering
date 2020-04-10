@@ -5,6 +5,7 @@ import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
 import org.junit.Before;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,7 +26,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     /**
      * use case 2.7 add to cart
      */
-    @Override
+    @Override @Test
     public void testAddProductToCart() {
         super.testAddProductToCart();
         Store store = data.getRealStore(Data.VALID);
@@ -40,8 +41,8 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     /**
      * use case 3.2 - Open Store
      */
-    @Override
-    protected void openStoreTest() {
+    @Override @Test
+    public void openStoreTest() {
         StoreData storeData=data.getStore(Data.VALID);
         Store store = sub.openStore(storeData,paymentSystem,supplySystem);
         assertEquals(storeData.getName(), store.getName());
@@ -57,8 +58,9 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     /**
      * test use case 3.7 - watch purchases
      */
-    @Override
+    @Override @Test
     public void testWatchPurchases() {
+        setUpProductBought();
         List<Purchase> list = sub.watchMyPurchaseHistory();
         assertNotNull(list);
         assertEquals(1,list.size());
@@ -67,8 +69,9 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     /**
      * test use case 4.1.1 - add product to store
      */
-    @Override
-    protected void addProductToStoreTest() {
+    @Override @Test
+    public void addProductToStoreTest() {
+        setUpStoreOpened();
         addProductToStoreTestFail();
         super.addProductToStoreTest();
     }
@@ -130,8 +133,8 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     /**
      * check use case 4.6.1 - add permission
      */
-    @Override
-    protected void testAddPermissions() {
+    @Override @Test
+    public void testAddPermissions() {
         super.testAddPermissions();
         testAddPermissionTwiceFail();
     }
@@ -164,15 +167,15 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      * make user admin manage user niv(VALID2)
      * remove Admin from being manager and check that niv was removed from being a manager recursively
      */
-
-    @Override
-    protected void testRemoveManagerStoreSuccess() {
+    @Override @Test
+    public void testRemoveManagerStoreSuccess() {
+        setUpManagerAdded();
         Permission p=sub.getGivenByMePermissions().get(0);
         Subscribe niv=data.getSubscribe(Data.VALID2);
         String storeName=p.getStore().getName();
         //add another manager
         p.getOwner().addManager(niv,storeName);
-        super.testRemoveManagerStoreSuccess();
+        assertTrue(sub.removeManager(data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()));
         assertFalse(niv.getPermissions().containsKey(storeName));
         assertFalse(p.getOwner().getPermissions().containsKey(storeName));
 
