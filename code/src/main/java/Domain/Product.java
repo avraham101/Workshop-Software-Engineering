@@ -139,4 +139,13 @@ public class Product {
     public void addReview(Review review) {
         this.reviews.add(review);
     }
+
+    /**
+     * use case 3.3 - write review
+     * this function add the review to the product
+     * @param review - the review
+     */
+    public void removeReview(Review review) {
+        this.reviews.remove(review);
+    }
 }
