@@ -10,6 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 import static org.junit.Assert.*;
 
+/**
+ * use case 4.7 - delete manager
+ */
 
 public class DeleteManagerTest extends AcceptanceTests{
     private UserTestData firstManager;

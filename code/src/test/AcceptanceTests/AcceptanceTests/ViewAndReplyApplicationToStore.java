@@ -12,6 +12,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+/**
+ * 4.9 - view and replay user's applications
+ */
 public class ViewAndReplyApplicationToStore extends AcceptanceTests {
 
     private HashSet<ApplicationToStoreTestData> applications;
@@ -51,6 +54,10 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
         wrongApplication = new Pair<>(wrongApp,"wrongRep");
     }
 
+    /**
+     * use case 4.9.1 - view user's application to store
+     */
+
     @Test
     public void viewApplicationToStoreTestSuccess(){
         HashSet<ApplicationToStoreTestData> actualApplications = bridge.viewApplicationToStore(storeName);
@@ -69,6 +76,10 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
         HashSet<ApplicationToStoreTestData> actualApplications = bridge.viewApplicationToStore(storeName + storeName);
         assertFalse(actualApplications.size() != 0);
     }
+
+    /**
+     * 4.9.2 - reply to user's applications
+     */
 
     @Test
     public void replyApplicationToStoreTestSuccess(){

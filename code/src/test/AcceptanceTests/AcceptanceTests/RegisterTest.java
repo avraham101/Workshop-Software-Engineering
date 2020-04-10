@@ -1,10 +1,12 @@
 package AcceptanceTests.AcceptanceTests;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ * use case 2.2 - Register
+ */
 
 public class RegisterTest extends AcceptanceTests {
 

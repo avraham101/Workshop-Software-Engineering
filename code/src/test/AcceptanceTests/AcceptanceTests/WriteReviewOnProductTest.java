@@ -10,6 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * use case 3.3 - write review
+ */
+
 public class WriteReviewOnProductTest extends AcceptanceTests{
     private UserTestData user0;
     private HashMap<ProductTestData,ReviewTestData> productsAndReviews;

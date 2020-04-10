@@ -5,6 +5,9 @@ import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.*;
 import static org.junit.Assert.*;
 
+/**
+ * use case 3.2 - Open Store
+ */
 
 public class OpenStoreTest extends AcceptanceTests {
     private UserTestData user;
@@ -28,7 +31,6 @@ public class OpenStoreTest extends AcceptanceTests {
 
     @Test
     public void openStoreFailNameAlreadyExist(){
-        StoreTestData store1= bridge.openStore(newStoreName);
         StoreTestData store2= bridge.openStore(newStoreName);
         assertNull(store2);
     }

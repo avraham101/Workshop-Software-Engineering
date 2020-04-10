@@ -14,7 +14,9 @@ import java.util.HashSet;
 import java.util.List;
 import static org.junit.Assert.*;
 
-
+/**
+ * use case 2.5 - Search product in store
+ */
 public class FilterProductsInStoresTest extends AcceptanceTests {
 
     @Before

@@ -9,6 +9,9 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * use case 3.5 - write application to store
+ */
 
 public class ApplicationToStoreTest extends AcceptanceTests {
     private ApplicationToStoreTestData application;

@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class GetStoresInfo extends AcceptanceTests {
-    /*
+    /**
     use case 2.4
      */
     @Before
@@ -20,7 +20,10 @@ public class GetStoresInfo extends AcceptanceTests {
         addStores(stores);
         addProducts(products);
     }
-    //use case 2.4.1
+
+    /***
+     * use 2.4.1 - show the details about every store
+     */
     @Test
     public void getStoresInfo(){
         Set<StoreTestData> storesInSystem = new HashSet<>(bridge.getStoresInfo());
@@ -29,7 +32,9 @@ public class GetStoresInfo extends AcceptanceTests {
         assertEquals(storesInSystem,insertedStores);
     }
 
-    //use case 2.4.2
+    /**
+     * use case 2.4.2 - show the products of a given store
+     */
     @Test
     public void getProductsOfStoreSuccess(){
         String targetStore = stores.get(0).getStoreName();

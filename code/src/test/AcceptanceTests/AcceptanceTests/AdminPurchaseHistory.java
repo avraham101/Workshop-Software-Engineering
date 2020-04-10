@@ -23,7 +23,10 @@ public class AdminPurchaseHistory extends AcceptanceTests {
         bridge.logout();
         bridge.login(admin.getUsername(),admin.getPassword());
     }
-/****************USER-HISTORY-6.4.1******************************************/
+
+    /**
+     * use case 6.4.1 - admin watch history purchases of some user
+     */
     @Test
     public void getUserPurchaseHistorySuccess(){
         List<PurchaseTestData> history = bridge.getUserPurchaseHistory(userToCheck.getUsername());
@@ -36,7 +39,10 @@ public class AdminPurchaseHistory extends AcceptanceTests {
         List<PurchaseTestData> history = bridge.getUserPurchaseHistory("guest");
         assertNull(history);
     }
-/*****************STORE-HISTORY-6.4.2********************************************/
+
+    /**
+     * use case 6.4.2 - admin watch history purchases of some user
+     */
 
     @Test
     public void getStorePurchaseHistorySuccess(){

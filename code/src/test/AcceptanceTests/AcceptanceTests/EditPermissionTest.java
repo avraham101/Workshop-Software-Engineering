@@ -1,7 +1,6 @@
 package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,7 +30,9 @@ public class EditPermissionTest extends AcceptanceTests {
                 new ArrayList<DiscountTestData>());
     }
 
-    /*****************Add-Permission -4.6.1***********************************/
+    /**
+     * 4.6.1 -  Add-Permission
+     */
 
     @Test
     public void addPermissionSuccess(){
@@ -78,8 +79,9 @@ public class EditPermissionTest extends AcceptanceTests {
                                                         PermissionsTypeTestData.PRODUCTS_INVENTORY);
         assertFalse(approval);
     }
-
-    /***************DELETE-PERMISSION-4.6.2************************************/
+    /**
+     * 4.6.2 - delete permission
+     */
     private void addPermission(){
         bridge.addPermissionToManager(stores.get(0).getStoreName(),
                 userToCheck.getUsername(),

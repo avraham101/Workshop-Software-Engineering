@@ -14,6 +14,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * use case 2.8 - purchase cart
+ */
+
 public class BuyCartTest extends AcceptanceTests {
     @Before
     public void setUp(){
@@ -24,8 +28,6 @@ public class BuyCartTest extends AcceptanceTests {
     @Test
     public void buyCartSuccess(){
         addProductToCart();
-        //CartTestData currCart = bridge.getCurrentUsersCart();
-        //double totalAmount = currCart.getTotalAmount();
         boolean approval = bridge.buyCart(validPayment,validDelivery);
         assertTrue(approval);
         CartTestData currCart = bridge.getCurrentUsersCart();

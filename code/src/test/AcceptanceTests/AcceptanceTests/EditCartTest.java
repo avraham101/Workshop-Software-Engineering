@@ -29,6 +29,10 @@ public class EditCartTest extends AcceptanceTests {
         notExistingBasket.addProductToBasket(productInNonExistingBaskets,13);
     }
 
+    /**
+     * use case 2.7.1 - watch cart details
+     */
+
     @Test
     public void viewCartTestSuccess(){
         CartTestData actualCart = bridge.getCurrentUsersCart();
@@ -36,6 +40,10 @@ public class EditCartTest extends AcceptanceTests {
 
         assertEquals(actualCart,expectedCart);
     }
+
+    /**
+     * use case 2.7.2 - delete product from cart
+     */
 
     @Test
     public void deleteFromCartTestSuccess(){
@@ -78,6 +86,10 @@ public class EditCartTest extends AcceptanceTests {
         boolean isDeleted = bridge.deleteFromCurrentUserCart(nonExistingProductInBasket);
         assertFalse(isDeleted);
     }
+
+    /**
+     * use case 2.7.3 edit amount of product
+     */
 
     @Test
     public void changeAmountOfProductInCartSuccess(){

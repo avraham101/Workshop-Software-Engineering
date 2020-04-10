@@ -10,6 +10,10 @@ import static org.junit.Assert.*;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * use case 3.7 - watch purchase history
+ */
+
 public class WatchUserPurchaseHistoryTest extends AcceptanceTests {
     private UserTestData user0;
 

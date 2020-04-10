@@ -10,6 +10,9 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
+/**
+ * use case 4.3 - appoint owner
+ */
 
 public class AppointAnotherOwnerToStoreTest extends AcceptanceTests {
     private UserTestData owner;

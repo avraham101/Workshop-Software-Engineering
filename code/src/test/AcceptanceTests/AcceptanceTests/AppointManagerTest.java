@@ -1,15 +1,16 @@
 package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.Assert.*;
 
+/**
+ * use case 4.5 - appoint manager
+ */
 
 public class AppointManagerTest extends AcceptanceTests  {
     UserTestData userToAdd;

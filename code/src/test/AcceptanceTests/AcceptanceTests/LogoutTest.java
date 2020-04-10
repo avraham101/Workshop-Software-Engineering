@@ -5,6 +5,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * use case 3.1 - Logout
+ */
 
 public class LogoutTest extends AcceptanceTests {
 

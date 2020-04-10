@@ -12,6 +12,10 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 
+/**
+ * use case 2.7.4 - add product to the cart
+ */
+
 public class AddToCartTest extends AcceptanceTests {
 
     private UserTestData user0;

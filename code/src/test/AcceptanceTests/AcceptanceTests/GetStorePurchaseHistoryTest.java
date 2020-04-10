@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
-
+//TODO : you use the wrong fun!! its the admin uc
 import static org.junit.Assert.*;
 
 public class GetStorePurchaseHistoryTest extends AcceptanceTests {

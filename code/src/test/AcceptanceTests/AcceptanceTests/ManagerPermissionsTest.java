@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * 5.1 - manager permission operations
+ */
 public class ManagerPermissionsTest extends AcceptanceTests {
     private UserTestData manager;
     private UserTestData newManager;

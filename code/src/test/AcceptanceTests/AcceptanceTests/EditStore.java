@@ -18,7 +18,9 @@ public class EditStore extends AcceptanceTests {
     public void setUp(){
         addUserStoresAndProducts(superUser);
     }
-    /****************ADD-PRODUCT-4.1.1*************************************/
+    /**
+     * 4.1.1 - add product
+     */
     @Test
     public void addProductToStoreSuccess(){
         String storeName = stores.get(0).getStoreName();
@@ -73,8 +75,10 @@ public class EditStore extends AcceptanceTests {
         List<ProductTestData> products = bridge.getStoreProducts("store2Test");
         assertFalse(products.contains(product));
     }
+    /**
+     * 4.1.2 - delete product
+     */
 
-    /****************DELETE-PRODUCT-4.1.2****************************************/
     @Test
     public void deleteProductSuccess(){
         ProductTestData product = stores.get(0).getProducts().get(0);
