@@ -14,7 +14,7 @@ public class WatchUserPurchaseHistoryTest extends AcceptanceTests {
     private UserTestData user0;
 
     @Before
-    public void setUp(){ //TODO: what use case??
+    public void setUp(){
         user0 = superUser;
         addUserStoresAndProducts(user0);
         addCartToUser(user0.getCart());

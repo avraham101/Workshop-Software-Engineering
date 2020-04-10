@@ -3,7 +3,6 @@ package AcceptanceTests.AcceptanceTests;
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsBridge;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import java.util.*;
@@ -43,7 +42,6 @@ public class AcceptanceTests {
 
     private static void setUpPayments() {
         Date validDate = new Date();
-        //Date invalidDate = new Date(0);
         validPayment = new PaymentTestData("ownerValid","1111","343",validDate);
         invalidPayment = null;
     }

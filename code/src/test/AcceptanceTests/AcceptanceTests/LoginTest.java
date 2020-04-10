@@ -5,6 +5,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Login Tests
+ * Use Case 2.3
+ */
 public class LoginTest extends AcceptanceTests {
 
     private String username;

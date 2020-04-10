@@ -2,15 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="05e8ee0e-932c-4138-ba00-2c920c3ad416" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/InitialStartTest.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AppointManagerTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AppointManagerTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/BuyCartTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/BuyCartTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/DeleteManagerTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/DeleteManagerTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/EditCartTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/EditCartTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/EditStore.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/EditStore.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/OpenStoreTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/OpenStoreTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/LoginTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/LoginTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" afterPath="$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -26,7 +23,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="ServiceAPI.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ServiceAPI.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/code/src/main/java/Service/ServiceAPI.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="165">
@@ -110,10 +107,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AcceptanceTests.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AcceptanceTests.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-999">
+            <state relative-caret-position="93">
               <caret line="18" column="32" lean-forward="false" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -145,7 +142,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>changeCurrentUserAmountOfProductInCart</find>
       <find>addToCurrentUserCart</find>
       <find>bridge</find>
       <find>brid</find>
@@ -175,6 +171,7 @@
       <find>watchMyPurchaseHistory</find>
       <find>getCurrentUserPurchaseHistory</find>
       <find>sendApplicationToStore</find>
+      <find>writeRequestToStore</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -843,7 +840,14 @@
       <option name="project" value="LOCAL" />
       <updated>1586499539101</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="20/21 ac tests passed">
+      <created>1586510955395</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1586510955395</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -879,7 +883,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="108464000" />
+    <option name="totallyTimeSpent" value="108828000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -972,7 +976,8 @@
     <MESSAGE value="started to run acceptance test" />
     <MESSAGE value="fixed Application to store test" />
     <MESSAGE value="15/21 ac tests passed" />
-    <option name="LAST_COMMIT_MESSAGE" value="15/21 ac tests passed" />
+    <MESSAGE value="20/21 ac tests passed" />
+    <option name="LAST_COMMIT_MESSAGE" value="20/21 ac tests passed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1468,16 +1473,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-999">
-          <caret line="18" column="32" lean-forward="false" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/LoginTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-675">
@@ -1535,6 +1530,16 @@
         <state relative-caret-position="165">
           <caret line="149" column="38" lean-forward="false" selection-start-line="149" selection-start-column="19" selection-end-line="149" selection-end-column="38" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="93">
+          <caret line="18" column="32" lean-forward="false" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

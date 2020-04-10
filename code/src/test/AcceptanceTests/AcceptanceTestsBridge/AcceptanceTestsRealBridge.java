@@ -124,7 +124,6 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return buildCartTestData(cartData);
     }
 
-    //TODO: CHECK AND COMPLETE
     private CartTestData buildCartTestData(CartData cartData) {
         HashMap<String,BasketTestData> basketsAndStoreNames = new HashMap<>();
         Set<String> storeNames = new HashSet<>();
@@ -252,7 +251,6 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return buildProductsTestData(serviceAPI.viewProductsInStore(storeName));
     }
 
-    //TODO: CHECK AND COMPLETE
     @Override
     public boolean buyCart(PaymentTestData paymentMethod, DeliveryDetailsTestData deliveryDetails) {
         PaymentData paymentData;
