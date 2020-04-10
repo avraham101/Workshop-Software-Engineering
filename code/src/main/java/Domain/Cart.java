@@ -62,9 +62,13 @@ public class Cart {
             Purchase purchase = basket.buy();
             if(purchase!=null) {
                 recives.add(purchase);
-                baskets.remove(basket.getStore().getName());
+                //TODO remove this baskets.remove(basket.getStore().getName());
+            }
+            else {
+                return null;
             }
         }
+        baskets.clear(); //remove all baskets after buying all
         return recives;
     }
 
