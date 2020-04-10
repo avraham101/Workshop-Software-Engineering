@@ -128,8 +128,6 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         assertTrue(newManager.getPermissions().containsKey(store.getName()));
     }
 
-
-
     /**
      * check use case 4.6.1 - add permission
      */
