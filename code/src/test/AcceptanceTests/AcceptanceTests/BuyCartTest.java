@@ -56,7 +56,7 @@ public class BuyCartTest extends AcceptanceTests {
     public void buyCartFailProductNotInStore(){
         StoreTestData store = stores.get(0);
         ProductTestData product = store.getProducts().get(0);
-        product.setStoreName(stores.get(1).getStoreName());//TODO SHOW ROY
+        product.setStoreName(stores.get(1).getStoreName());
         bridge.addToCurrentUserCart(product,1);
 
         assertFalse(bridge.buyCart(validPayment,validDelivery));

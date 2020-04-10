@@ -56,11 +56,11 @@ public class DeleteManagerTest extends AcceptanceTests{
         boolean approval = bridge.deleteManager(stores.get(0).getStoreName(), firstManager.getUsername());
         assertTrue(approval);
         logoutAndLogin(firstManager);
-        boolean isManager = bridge.addProduct(productToAdd); //TODO: change to watch hist?
-        assertFalse(isManager);
+        List<PurchaseTestData> isManager = bridge.getStorePurchasesHistory(stores.get(0).getStoreName());
+        assertNull(isManager);
         logoutAndLogin(thirdManager);
-        isManager = bridge.addProduct(productToAdd);
-        assertFalse(isManager);
+        isManager = bridge.getStorePurchasesHistory(stores.get(0).getStoreName());
+        assertNull(isManager);
     }
 
     @Test

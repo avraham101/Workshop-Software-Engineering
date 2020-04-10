@@ -12,7 +12,6 @@ import static org.junit.Assert.*;
 
 
 public class AppointManagerTest extends AcceptanceTests  {
-    private ProductTestData productToAdd;
     UserTestData userToAdd;
     @Before
     public void setUp(){
@@ -23,13 +22,6 @@ public class AppointManagerTest extends AcceptanceTests  {
 
         registerAndLogin(superUser);
         addStores(stores);
-        productToAdd = new ProductTestData("appointManagerProductTest", //TODO:why??
-                                                            stores.get(0).getStoreName(),
-                                                            100,
-                                                            10,
-                                                            "Dairy",
-                                                            new ArrayList<ReviewTestData>(),
-                                                            new ArrayList<DiscountTestData>());
     }
 
     @Test

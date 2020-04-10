@@ -21,8 +21,9 @@ public class OpenStoreTest extends AcceptanceTests {
     public void openStoreSuccess(){
        StoreTestData store = bridge.openStore(newStoreName);
        assertNotNull(store);
-       String actualStoreOwner = bridge.getStoreInfoByName(newStoreName).getStoreOwner().getUsername();//TODO: redundant?- we insert store owner...
-       assertEquals(user.getUsername(),actualStoreOwner);
+       products.get(0).setStoreName(newStoreName);
+       boolean isOwner = bridge.addProduct(products.get(0));
+       assertTrue(isOwner);
     }
 
     @Test

@@ -16,7 +16,6 @@ import static org.junit.Assert.*;
 public class EditStore extends AcceptanceTests {
     @Before
     public void setUp(){
-        super.setUpAll(); //TODO CONSULT ROY ABOUT OTHER OPT
         addUserStoresAndProducts(superUser);
     }
     /****************ADD-PRODUCT-4.1.1*************************************/
@@ -121,14 +120,6 @@ public class EditStore extends AcceptanceTests {
         assertEquals(product.getCategory(),newProduct.getCategory());
     }
 
-   /* @Test //TODO : TALK TO ROY MAYBE DELETE
-    public void editProductFailAlreadyExistName(){
-        ProductTestData product = stores.get(0).getProducts().get(0);
-        product.setProductName(stores.get(0).getProducts().get(1).getProductName());
-        boolean approval = bridge.editProductInStore(product);
-        assertFalse(approval);
-    }*/
-
     @Test
     public void editProductFailInvalidAmount(){
         ProductTestData product = stores.get(0).getProducts().get(0);
@@ -150,5 +141,8 @@ public class EditStore extends AcceptanceTests {
         assertFalse(approval);
     }
 
-
+    @After
+    public void tearDown(){
+        setUpAll();
+    }
 }
