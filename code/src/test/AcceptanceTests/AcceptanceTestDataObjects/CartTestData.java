@@ -1,9 +1,8 @@
 package AcceptanceTests.AcceptanceTestDataObjects;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import Basket.BasketTest;
+
+import java.util.*;
 
 public class CartTestData {
     private List<BasketTestData> baskets;
@@ -45,7 +44,10 @@ public class CartTestData {
 
         CartTestData that = (CartTestData) o;
 
-        return baskets != null ? baskets.equals(that.baskets) : that.baskets == null;
+        HashSet<BasketTestData> basketsSet = new HashSet<BasketTestData>(baskets);
+        HashSet<BasketTestData> thatBasketsSet = new HashSet<BasketTestData>(that.baskets);
+
+        return baskets != null ? basketsSet.equals(thatBasketsSet) : that.baskets == null;
     }
 
     public BasketTestData getBasket(String storeName) {
@@ -69,5 +71,14 @@ public class CartTestData {
 
         }
         return true;
+    }
+
+    public List<PurchaseTestData> makePurchasesTestData() {
+        Date date = new Date();
+        List<PurchaseTestData> purchases = new ArrayList<>();
+
+        for(BasketTestData basketTestData : baskets)
+                purchases.add(new PurchaseTestData(basketTestData.getProductsAndAmountInBasket(),date,basketTestData.getTotalAmount()));
+        return purchases;
     }
 }

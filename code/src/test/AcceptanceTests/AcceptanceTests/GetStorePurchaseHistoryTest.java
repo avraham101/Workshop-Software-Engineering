@@ -27,13 +27,13 @@ public class GetStorePurchaseHistoryTest extends AcceptanceTests {
     @Test
     public void getStorePurchaseHistoryFailNotMyStore(){
         List<PurchaseTestData> history = bridge.getStorePurchasesHistory(stores.get(2).getStoreName());
-        assertFalse(history.size() != 0);
+        assertNull(history);
     }
 
     @Test
     public void getStorePurchaseHistoryFailStoreNotExist(){
         List<PurchaseTestData> history = bridge.getStorePurchasesHistory("notExist");
-        assertFalse(history.size() != 0);
+        assertNull(history);
     }
 
 }

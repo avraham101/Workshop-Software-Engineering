@@ -11,13 +11,14 @@ public class LoggerSystem {
      * constructor
      * @throws IOException -  if there are IO problems opening the files
      */
-    public LoggerSystem() throws IOException {
-        FileHandler fileHandlerEvents = new FileHandler("Workshop202Events.txt",8096, 1, true);
-        FileHandler fileHandlerError = new FileHandler("Workshop202Errors.txt",8096, 1, true);
-        setHandlersFormat(fileHandlerEvents, fileHandlerError);
-        EVENT_LOGGER.addHandler(fileHandlerEvents);
-        ERROR_LOGGER.addHandler(fileHandlerError);
-        EVENT_LOGGER.setLevel(Level.ALL);
+    public  LoggerSystem() throws IOException {
+            FileHandler fileHandlerEvents = new FileHandler("Workshop202Events.txt", 8096, 1, true);
+            FileHandler fileHandlerError = new FileHandler("Workshop202Errors.txt", 8096, 1, true);
+            setHandlersFormat(fileHandlerEvents, fileHandlerError);
+            EVENT_LOGGER.addHandler(fileHandlerEvents);
+            ERROR_LOGGER.addHandler(fileHandlerError);
+            EVENT_LOGGER.setLevel(Level.ALL);
+
     }
 
     /**

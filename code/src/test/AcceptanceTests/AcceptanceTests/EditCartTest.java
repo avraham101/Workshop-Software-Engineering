@@ -92,7 +92,9 @@ public class EditCartTest extends AcceptanceTests {
                 (productToChangeAmount, expectedAmount);
         assertTrue(isChanged);
 
-        int actualAmount = bridge.getCurrentUsersCart().getBaskets().get(0).
+        CartTestData testCart = bridge.getCurrentUsersCart();
+
+        int actualAmount = testCart.getBasket(basketToChangeAmountIn.getStoreName()).
                 getProductsAndAmountInBasket().get(productToChangeAmount);
         assertEquals(expectedAmount,actualAmount);
     }
@@ -133,7 +135,7 @@ public class EditCartTest extends AcceptanceTests {
 
         boolean isChanged0 = bridge.changeCurrentUserAmountOfProductInCart
                             (productToChangedAmount,newAmount0);
-        int actualAmount0 = bridge.getCurrentUsersCart().getBaskets().get(0).
+        int actualAmount0 = bridge.getCurrentUsersCart().getBasket(basketToChangedAmountFrom.getStoreName()).
                             getProductsAndAmountInBasket().get(productToChangedAmount);
 
         assertFalse(isChanged0);
@@ -141,7 +143,7 @@ public class EditCartTest extends AcceptanceTests {
 
         boolean isChanged1 = bridge.changeCurrentUserAmountOfProductInCart
                             (productToChangedAmount,newAmount1);
-        int actualAmount1 = bridge.getCurrentUsersCart().getBaskets().get(0).
+        int actualAmount1 = bridge.getCurrentUsersCart().getBasket(basketToChangedAmountFrom.getStoreName()).
                 getProductsAndAmountInBasket().get(productToChangedAmount);
 
         assertFalse(isChanged1);

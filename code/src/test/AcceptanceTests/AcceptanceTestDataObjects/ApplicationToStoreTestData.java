@@ -51,6 +51,9 @@ public class ApplicationToStoreTestData {
 
     @Override
     public int hashCode() {
-        return Objects.hash(writer, content, storeName);
+        int result = writer.hashCode();
+        result = 31 * result + content.hashCode();
+        result = 31 * result + storeName.hashCode();
+        return result;
     }
 }

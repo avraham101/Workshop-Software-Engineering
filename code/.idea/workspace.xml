@@ -2,11 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c10b92c6-f0e8-420a-a9b7-6d8013fc24c9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AppointManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AppointManagerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/DeleteManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/DeleteManagerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditStore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/ManagerPermissionsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/ManagerPermissionsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Cart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Cart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Systems/LoggerSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Systems/LoggerSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/ApplicationToStoreTestData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/ApplicationToStoreTestData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/BasketTestData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/BasketTestData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/CartTestData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/CartTestData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/PurchaseTestData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/PurchaseTestData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/BuyCartTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/BuyCartTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditCartTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditCartTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditPermissionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditPermissionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/FilterProductsInStoresTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/FilterProductsInStoresTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStorePurchaseHistoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStorePurchaseHistoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/LoginTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/LoginTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/ViewAndReplyApplicationToStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/ViewAndReplyApplicationToStore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/WriteReviewOnProductTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/WriteReviewOnProductTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,8 +36,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="125">
-              <caret line="421" selection-start-line="421" selection-end-line="421" />
+            <state relative-caret-position="115">
+              <caret line="272" selection-start-line="272" selection-end-line="272" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#990#991#0" expanded="true" />
@@ -34,34 +50,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/StoreTestData.java">
+        <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
-              <caret line="25" selection-start-line="25" selection-end-line="25" />
-              <folding>
-                <element signature="e#783#784#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/ProductTestData.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="750">
-              <caret line="36" selection-start-line="36" selection-end-line="36" />
-              <folding>
-                <element signature="e#1129#1130#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/ApplicationToStoreTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="42" column="9" selection-start-line="42" selection-start-column="9" selection-end-line="42" selection-end-column="9" />
+            <state relative-caret-position="1275">
+              <caret line="51" column="26" selection-start-line="51" selection-start-column="26" selection-end-line="51" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -70,22 +62,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/DeleteManagerTest.java">
+        <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="58" column="90" selection-start-line="58" selection-start-column="90" selection-end-line="58" selection-end-column="90" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStorePurchaseHistoryTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="367">
-              <caret line="34" selection-start-line="34" selection-end-line="34" />
+            <state relative-caret-position="158">
+              <caret line="149" selection-start-line="149" selection-end-line="149" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -94,16 +74,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java">
+        <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/BuyCartTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="156">
-              <caret line="184" selection-start-line="184" selection-end-line="184" />
-              <folding>
-                <element signature="e#5145#5146#0" expanded="true" />
-                <element signature="e#5205#5206#0" expanded="true" />
-                <element signature="e#6674#6675#0" expanded="true" />
-                <element signature="e#6737#6738#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="275">
+              <caret line="23" column="2" selection-start-line="23" selection-start-column="2" selection-end-line="23" selection-end-column="2" />
             </state>
           </provider>
         </entry>
@@ -111,8 +85,52 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Domain/LogicManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="571" selection-start-line="571" selection-end-line="571" />
+            <state relative-caret-position="91">
+              <caret line="56" column="35" selection-start-line="56" selection-start-column="35" selection-end-line="56" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Systems/LoggerSystem.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="10" column="18" lean-forward="true" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
+              <folding>
+                <element signature="e#1060#1061#0" expanded="true" />
+                <element signature="e#1217#1218#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Domain/User.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="133">
+              <caret line="104" selection-start-line="104" selection-end-line="104" />
+              <folding>
+                <element signature="e#6917#6918#0" expanded="true" />
+                <element signature="e#6968#6969#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Domain/UserState.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="174">
+              <caret line="114" column="40" selection-start-line="114" selection-start-column="40" selection-end-line="114" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Cart.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="494">
+              <caret line="72" column="28" selection-start-line="72" selection-start-column="28" selection-end-line="72" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -120,8 +138,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="125">
-              <caret line="13" column="43" selection-start-line="13" selection-start-column="43" selection-end-line="13" selection-end-column="43" />
+            <state relative-caret-position="210">
+              <caret line="288" selection-start-line="288" selection-end-line="288" />
+              <folding>
+                <element signature="e#12422#12423#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -163,6 +184,7 @@
       <find>100</find>
       <find>appo</find>
       <find>add</find>
+      <find>getCurr</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -186,20 +208,14 @@
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/buyCart.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AppointMangerTest.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetUserPurchaseHistory.java" />
-        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStorePurchaseHistoryTest.java" />
-        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/StoreTestData.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/PermissionTestData.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/PaymentTestData.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/DeliveryDetailsTestData.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/OpenStoreTest.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AppointAnotherOwnerToStoreTest.java" />
-        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditPermissionTest.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" />
-        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Domain/Cart.java" />
-        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/BuyCartTest.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/ApplicationToStoreTestData.java" />
         <option value="$PROJECT_DIR$/src/main/java/Domain/User.java" />
         <option value="$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java" />
@@ -210,6 +226,14 @@
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditStore.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AppointManagerTest.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/DeleteManagerTest.java" />
+        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStorePurchaseHistoryTest.java" />
+        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditPermissionTest.java" />
+        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java" />
+        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java" />
+        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/BuyCartTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Domain/Cart.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Systems/LoggerSystem.java" />
       </list>
     </option>
   </component>
@@ -311,7 +335,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1586498271187" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1586507286024" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="SDKs" />
@@ -330,8 +354,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.GetStorePurchaseHistoryTest">
-    <configuration name="AppointManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.AcceptanceTests.AcceptanceTests in Workshop">
+    <configuration name="AcceptanceTests.AcceptanceTests in Workshop" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Workshop" />
       <extension name="coverage">
         <pattern>
@@ -340,12 +364,12 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="AcceptanceTests.AcceptanceTests" />
-      <option name="MAIN_CLASS_NAME" value="AcceptanceTests.AcceptanceTests.AppointManagerTest" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AppointManagerTest.appointManagerSuccess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AdminPurchaseHistory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Workshop" />
       <extension name="coverage">
         <pattern>
@@ -354,14 +378,28 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="AcceptanceTests.AcceptanceTests" />
-      <option name="MAIN_CLASS_NAME" value="AcceptanceTests.AcceptanceTests.AppointManagerTest" />
-      <option name="METHOD_NAME" value="appointManagerSuccess" />
+      <option name="MAIN_CLASS_NAME" value="AcceptanceTests.AcceptanceTests.AdminPurchaseHistory" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AdminPurchaseHistory.getUserPurchaseHistoryFailInvalidUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Workshop" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="AcceptanceTests.AcceptanceTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="AcceptanceTests.AcceptanceTests" />
+      <option name="MAIN_CLASS_NAME" value="AcceptanceTests.AcceptanceTests.AdminPurchaseHistory" />
+      <option name="METHOD_NAME" value="getUserPurchaseHistoryFailInvalidUser" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DeleteManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BuyCartTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Workshop" />
       <extension name="coverage">
         <pattern>
@@ -370,12 +408,12 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="AcceptanceTests.AcceptanceTests" />
-      <option name="MAIN_CLASS_NAME" value="AcceptanceTests.AcceptanceTests.DeleteManagerTest" />
+      <option name="MAIN_CLASS_NAME" value="AcceptanceTests.AcceptanceTests.BuyCartTest" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EditStore" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BuyCartTest.buyCartSuccess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Workshop" />
       <extension name="coverage">
         <pattern>
@@ -384,32 +422,20 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="AcceptanceTests.AcceptanceTests" />
-      <option name="MAIN_CLASS_NAME" value="AcceptanceTests.AcceptanceTests.EditStore" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="GetStorePurchaseHistoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Workshop" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="AcceptanceTests.AcceptanceTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="AcceptanceTests.AcceptanceTests" />
-      <option name="MAIN_CLASS_NAME" value="AcceptanceTests.AcceptanceTests.GetStorePurchaseHistoryTest" />
+      <option name="MAIN_CLASS_NAME" value="AcceptanceTests.AcceptanceTests.BuyCartTest" />
+      <option name="METHOD_NAME" value="buyCartSuccess" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.GetStorePurchaseHistoryTest" />
-        <item itemvalue="JUnit.DeleteManagerTest" />
-        <item itemvalue="JUnit.AppointManagerTest" />
-        <item itemvalue="JUnit.AppointManagerTest.appointManagerSuccess" />
-        <item itemvalue="JUnit.EditStore" />
+        <item itemvalue="JUnit.AcceptanceTests.AcceptanceTests in Workshop" />
+        <item itemvalue="JUnit.BuyCartTest" />
+        <item itemvalue="JUnit.BuyCartTest.buyCartSuccess" />
+        <item itemvalue="JUnit.AdminPurchaseHistory" />
+        <item itemvalue="JUnit.AdminPurchaseHistory.getUserPurchaseHistoryFailInvalidUser" />
       </list>
     </recent_temporary>
   </component>
@@ -477,7 +503,7 @@
       <workItem from="1586336510709" duration="5431000" />
       <workItem from="1586365038288" duration="2746000" />
       <workItem from="1586441463667" duration="16306000" />
-      <workItem from="1586496304675" duration="1621000" />
+      <workItem from="1586496304675" duration="5966000" />
     </task>
     <task id="LOCAL-00007" summary="get stores info">
       <created>1585903984055</created>
@@ -619,43 +645,50 @@
       <option name="project" value="LOCAL" />
       <updated>1586452217634</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="4.1 4.5 4.7">
+      <created>1586502018131</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1586502018131</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="AppointManagerTest_appointManagerSuccess - 2020.04.09 at 22h 23m 09s.xml">
-      <configuration name="AppointManagerTest.appointManagerSuccess" configurationId="JUnit" />
+    <history-entry file="BuyCartTest_buyCartSuccess - 2020.04.10 at 10h 55m 17s.xml">
+      <configuration name="BuyCartTest.buyCartSuccess" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="AppointManagerTest - 2020.04.10 at 08h 25m 46s.xml">
-      <configuration name="AppointManagerTest" configurationId="JUnit" />
+    <history-entry file="BuyCartTest_buyCartSuccess - 2020.04.10 at 11h 05m 15s.xml">
+      <configuration name="BuyCartTest.buyCartSuccess" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="AppointManagerTest - 2020.04.10 at 08h 27m 27s.xml">
-      <configuration name="AppointManagerTest" configurationId="JUnit" />
+    <history-entry file="BuyCartTest_buyCartSuccess - 2020.04.10 at 11h 07m 44s.xml">
+      <configuration name="BuyCartTest.buyCartSuccess" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="AppointManagerTest_appointManagerSuccess - 2020.04.10 at 08h 30m 00s.xml">
-      <configuration name="AppointManagerTest.appointManagerSuccess" configurationId="JUnit" />
+    <history-entry file="BuyCartTest - 2020.04.10 at 11h 07m 56s.xml">
+      <configuration name="BuyCartTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="AppointManagerTest - 2020.04.10 at 08h 34m 23s.xml">
-      <configuration name="AppointManagerTest" configurationId="JUnit" />
+    <history-entry file="AcceptanceTests_AcceptanceTests_in_Workshop - 2020.04.10 at 11h 08m 15s.xml">
+      <configuration name="AcceptanceTests.AcceptanceTests in Workshop" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="AppointManagerTest_appointManagerSuccess - 2020.04.10 at 08h 35m 15s.xml">
-      <configuration name="AppointManagerTest.appointManagerSuccess" configurationId="JUnit" />
+    <history-entry file="BuyCartTest_buyCartSuccess - 2020.04.10 at 11h 13m 45s.xml">
+      <configuration name="BuyCartTest.buyCartSuccess" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="AppointManagerTest_appointManagerSuccess - 2020.04.10 at 08h 35m 39s.xml">
-      <configuration name="AppointManagerTest.appointManagerSuccess" configurationId="JUnit" />
+    <history-entry file="BuyCartTest - 2020.04.10 at 11h 15m 55s.xml">
+      <configuration name="BuyCartTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="AppointManagerTest - 2020.04.10 at 08h 35m 47s.xml">
-      <configuration name="AppointManagerTest" configurationId="JUnit" />
+    <history-entry file="AcceptanceTests_AcceptanceTests_in_Workshop - 2020.04.10 at 11h 16m 20s.xml">
+      <configuration name="AcceptanceTests.AcceptanceTests in Workshop" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DeleteManagerTest - 2020.04.10 at 08h 36m 39s.xml">
-      <configuration name="DeleteManagerTest" configurationId="JUnit" />
+    <history-entry file="AcceptanceTests_AcceptanceTests_in_Workshop - 2020.04.10 at 11h 18m 00s.xml">
+      <configuration name="AcceptanceTests.AcceptanceTests in Workshop" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="GetStorePurchaseHistoryTest - 2020.04.10 at 08h 40m 34s.xml">
-      <configuration name="GetStorePurchaseHistoryTest" configurationId="JUnit" />
+    <history-entry file="AcceptanceTests_AcceptanceTests_in_Workshop - 2020.04.10 at 11h 20m 11s.xml">
+      <configuration name="AcceptanceTests.AcceptanceTests in Workshop" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="101034000" />
+    <option name="totallyTimeSpent" value="105379000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -670,7 +703,7 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24228188" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24228188" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -680,7 +713,7 @@
       <window_info anchor="bottom" id="Messages" order="0" weight="0.3286119" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.3286119" />
+      <window_info anchor="bottom" id="Run" order="3" visible="true" weight="0.36402267" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.39943343" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -700,37 +733,6 @@
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info anchor="right" id="Database" order="8" />
     </layout>
-    <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.24228188" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Image Layers" order="2" />
-      <window_info id="Designer" order="3" />
-      <window_info id="UI Designer" order="4" />
-      <window_info id="Capture Tool" order="5" />
-      <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="0" weight="0.3286119" />
-      <window_info anchor="bottom" id="Message" order="1" />
-      <window_info anchor="bottom" id="Find" order="2" />
-      <window_info anchor="bottom" id="Run" order="3" visible="true" weight="0.3286119" />
-      <window_info anchor="bottom" id="Debug" order="4" weight="0.39943343" />
-      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="7" weight="0.3286119" />
-      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="9" weight="0.20679887" />
-      <window_info anchor="bottom" id="Database Changes" order="10" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3286119" />
-      <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Theme Preview" order="4" />
-      <window_info anchor="right" id="Maven" order="5" />
-      <window_info anchor="right" id="Capture Analysis" order="6" />
-      <window_info anchor="right" id="Palette&#9;" order="7" />
-      <window_info anchor="right" id="Database" order="8" />
-    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -752,7 +754,8 @@
     <MESSAGE value="finish 2.8,3.2,3.5" />
     <MESSAGE value="fixed 2.8 &amp; 3.5" />
     <MESSAGE value="comm" />
-    <option name="LAST_COMMIT_MESSAGE" value="comm" />
+    <MESSAGE value="4.1 4.5 4.7" />
+    <option name="LAST_COMMIT_MESSAGE" value="4.1 4.5 4.7" />
   </component>
   <component name="WindowStateProjectService">
     <state x="618" y="301" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" />
@@ -785,25 +788,11 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/BuyCartTest.java</url>
-          <line>25</line>
-          <properties class="AcceptanceTests.AcceptanceTests.BuyCartTest" method="buyCartSuccess">
-            <option name="EMULATED" value="true" />
-          </properties>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditStore.java</url>
           <line>82</line>
           <properties />
           <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Domain/LogicManager.java</url>
-          <line>570</line>
-          <properties />
-          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -880,16 +869,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStoresInfo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-102">
@@ -961,16 +940,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditPermissionTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-115">
-          <caret line="24" column="42" selection-start-line="24" selection-start-column="27" selection-end-line="24" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AddToCartTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="500">
@@ -985,37 +954,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/UserState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="114" column="40" selection-start-line="114" selection-start-column="40" selection-end-line="114" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Cart.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="82" column="25" selection-start-line="82" selection-start-column="25" selection-end-line="82" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/DataAPI/PaymentData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="149">
           <caret line="9" column="11" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/BuyCartTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1325">
-          <caret line="65" column="2" selection-start-line="65" selection-start-column="2" selection-end-line="65" selection-end-column="2" />
-          <folding>
-            <element signature="e#1432#1433#0" expanded="true" />
-            <element signature="e#1502#1503#0" expanded="true" />
-            <element signature="e#2687#2688#0" expanded="true" />
-            <element signature="e#2768#2769#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1026,16 +968,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="21" column="10" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/ApplicationToStoreTestData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="625">
@@ -1043,13 +975,6 @@
           <folding>
             <element signature="e#1478#1479#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="49" column="37" selection-start-line="49" selection-start-column="37" selection-end-line="49" selection-end-column="37" />
         </state>
       </provider>
     </entry>
@@ -1084,17 +1009,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="191" selection-start-line="191" selection-end-line="191" />
-          <folding>
-            <element signature="e#6917#6918#0" expanded="true" />
-            <element signature="e#6968#6969#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditStore.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3155">
@@ -1115,66 +1029,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/StoreTestData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
-          <folding>
-            <element signature="e#783#784#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/UserTestData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="325">
           <caret line="24" selection-start-line="24" selection-end-line="24" />
           <folding>
             <element signature="e#706#707#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="421" selection-start-line="421" selection-end-line="421" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#990#991#0" expanded="true" />
-            <element signature="e#1017#1018#0" expanded="true" />
-            <element signature="e#1309#1310#0" expanded="true" />
-            <element signature="e#1370#1371#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="184" selection-start-line="184" selection-end-line="184" />
-          <folding>
-            <element signature="e#5145#5146#0" expanded="true" />
-            <element signature="e#5205#5206#0" expanded="true" />
-            <element signature="e#6674#6675#0" expanded="true" />
-            <element signature="e#6737#6738#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/LogicManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="571" selection-start-line="571" selection-end-line="571" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="204" selection-start-line="204" selection-end-line="204" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1199,13 +1059,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="13" column="43" selection-start-line="13" selection-start-column="43" selection-end-line="13" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/DeleteManagerTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -1216,12 +1069,156 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStorePurchaseHistoryTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/StoreTestData.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
-          <caret line="34" selection-start-line="34" selection-end-line="34" />
+        <state relative-caret-position="133">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+          <folding>
+            <element signature="e#783#784#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditPermissionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1887">
+          <caret line="82" column="22" selection-start-line="82" selection-start-column="22" selection-end-line="82" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="137">
+          <caret line="16" column="48" selection-start-line="16" selection-start-column="48" selection-end-line="16" selection-end-column="48" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStorePurchaseHistoryTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="62">
+          <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="117" selection-start-line="117" selection-end-line="117" />
+          <folding>
+            <element signature="e#5145#5146#0" expanded="true" />
+            <element signature="e#5205#5206#0" expanded="true" />
+            <element signature="e#6674#6675#0" expanded="true" />
+            <element signature="e#6737#6738#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="104" selection-start-line="104" selection-end-line="104" />
+          <folding>
+            <element signature="e#6917#6918#0" expanded="true" />
+            <element signature="e#6968#6969#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="288" selection-start-line="288" selection-end-line="288" />
+          <folding>
+            <element signature="e#12422#12423#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="149" selection-start-line="149" selection-end-line="149" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/UserState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="114" column="40" selection-start-line="114" selection-start-column="40" selection-end-line="114" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Cart.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="494">
+          <caret line="72" column="28" selection-start-line="72" selection-start-column="28" selection-end-line="72" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/BuyCartTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="23" column="2" selection-start-line="23" selection-start-column="2" selection-end-line="23" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="272" selection-start-line="272" selection-end-line="272" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#990#991#0" expanded="true" />
+            <element signature="e#1017#1018#0" expanded="true" />
+            <element signature="e#1309#1310#0" expanded="true" />
+            <element signature="e#1370#1371#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1275">
+          <caret line="51" column="26" selection-start-line="51" selection-start-column="26" selection-end-line="51" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/LogicManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="91">
+          <caret line="56" column="35" selection-start-line="56" selection-start-column="35" selection-end-line="56" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Systems/LoggerSystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="10" column="18" lean-forward="true" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
+          <folding>
+            <element signature="e#1060#1061#0" expanded="true" />
+            <element signature="e#1217#1218#0" expanded="true" />
           </folding>
         </state>
       </provider>

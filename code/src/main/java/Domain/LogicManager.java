@@ -67,7 +67,7 @@ public class LogicManager {
                 throw new Exception("Admin Register Crashed");
             }
         } catch (Exception e) {
-            throw new Exception("System crashed");
+            throw new Exception(e.getMessage());
         }
         current = new User();
     }

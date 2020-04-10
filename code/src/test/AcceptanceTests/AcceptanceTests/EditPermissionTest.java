@@ -80,10 +80,15 @@ public class EditPermissionTest extends AcceptanceTests {
     }
 
     /***************DELETE-PERMISSION-4.6.2************************************/
+    private void addPermission(){
+        bridge.addPermissionToManager(stores.get(0).getStoreName(),
+                userToCheck.getUsername(),
+                PermissionsTypeTestData.PRODUCTS_INVENTORY);
+    }
+
     @Test
     public void deletePermissionSuccess(){
-        addPermissionSuccess();
-        bridge.deleteProduct(productToAdd);
+        addPermission();
         boolean approval= bridge.deletePermission(stores.get(0).getStoreName(),
                  userToCheck.getUsername(),
                     PermissionsTypeTestData.PRODUCTS_INVENTORY);

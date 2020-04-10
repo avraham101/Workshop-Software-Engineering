@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class BuyCartTest extends AcceptanceTests {
-    double delta= 0.001;
     @Before
     public void setUp(){
         addStores(stores);
@@ -29,7 +28,8 @@ public class BuyCartTest extends AcceptanceTests {
         //double totalAmount = currCart.getTotalAmount();
         boolean approval = bridge.buyCart(validPayment,validDelivery);
         assertTrue(approval);
-        assertTrue(bridge.getCurrentUsersCart().isEmpty());
+        CartTestData currCart = bridge.getCurrentUsersCart();
+        assertTrue(currCart.isEmpty());
     }
 
     @Test
@@ -71,6 +71,7 @@ public class BuyCartTest extends AcceptanceTests {
 
     }
     private void addProductToCart(){
+
         bridge.addToCurrentUserCart(stores.get(0).getProducts().get(0),1);
     }
 

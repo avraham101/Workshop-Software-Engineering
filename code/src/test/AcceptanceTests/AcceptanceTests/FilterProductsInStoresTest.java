@@ -38,7 +38,6 @@ public class FilterProductsInStoresTest extends AcceptanceTests {
 
     @Test
     public void filterProductsInStoresTestFailOneWrongOneRightFilters(){
-        HashSet<ProductTestData> expectedProducts = new HashSet<>(Arrays.asList(products.get(4),products.get(3)));
         FilterTestData priceRangeFilter = new PriceRangeFilterTestData(0,Integer.MAX_VALUE + 1);
         FilterTestData categoryFilter = new CategoryFilterTestData("Sodas");
         List<FilterTestData> filters = new ArrayList<>(Arrays.asList(priceRangeFilter,categoryFilter));
