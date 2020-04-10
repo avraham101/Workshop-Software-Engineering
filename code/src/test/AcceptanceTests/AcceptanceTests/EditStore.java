@@ -4,6 +4,7 @@ import AcceptanceTests.AcceptanceTestDataObjects.DiscountTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ReviewTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,6 +16,7 @@ import static org.junit.Assert.*;
 public class EditStore extends AcceptanceTests {
     @Before
     public void setUp(){
+        super.setUpAll(); //TODO CONSULT ROY ABOUT OTHER OPT
         addUserStoresAndProducts(superUser);
     }
     /****************ADD-PRODUCT-4.1.1*************************************/
@@ -77,6 +79,7 @@ public class EditStore extends AcceptanceTests {
     @Test
     public void deleteProductSuccess(){
         ProductTestData product = stores.get(0).getProducts().get(0);
+
         boolean approval = bridge.deleteProduct(product);
         assertTrue(approval);
 
@@ -118,13 +121,13 @@ public class EditStore extends AcceptanceTests {
         assertEquals(product.getCategory(),newProduct.getCategory());
     }
 
-    @Test
+   /* @Test //TODO : TALK TO ROY MAYBE DELETE
     public void editProductFailAlreadyExistName(){
         ProductTestData product = stores.get(0).getProducts().get(0);
-        product.setProductName(stores.get(0).getProducts().get(0).getProductName());
+        product.setProductName(stores.get(0).getProducts().get(1).getProductName());
         boolean approval = bridge.editProductInStore(product);
         assertFalse(approval);
-    }
+    }*/
 
     @Test
     public void editProductFailInvalidAmount(){
@@ -146,5 +149,6 @@ public class EditStore extends AcceptanceTests {
         boolean approval = bridge.editProductInStore(product);
         assertFalse(approval);
     }
+
 
 }

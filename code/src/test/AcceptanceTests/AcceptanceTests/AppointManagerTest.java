@@ -6,17 +6,24 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 
 public class AppointManagerTest extends AcceptanceTests  {
     private ProductTestData productToAdd;
+    UserTestData userToAdd;
     @Before
     public void setUp(){
+        List<UserTestData> userLst = new ArrayList<>();
+        userToAdd = users.get(2);
+        userLst.add(userToAdd);
+        registerUsers(userLst);
 
         registerAndLogin(superUser);
-        productToAdd = new ProductTestData("appointManagerProductTest",
+        addStores(stores);
+        productToAdd = new ProductTestData("appointManagerProductTest", //TODO:why??
                                                             stores.get(0).getStoreName(),
                                                             100,
                                                             10,
@@ -28,17 +35,15 @@ public class AppointManagerTest extends AcceptanceTests  {
     @Test
     public void appointManagerSuccess() {
         StoreTestData store = stores.get(0);
-        UserTestData newManager = users.get(2);
-        boolean approval = bridge.appointManager(store.getStoreName(), newManager.getUsername());
+        boolean approval = bridge.appointManager(store.getStoreName(), userToAdd.getUsername());
         assertTrue(approval);
     }
 
     @Test
     public void appointMangerFailManagerAlreadyExist(){
         StoreTestData store = stores.get(0);
-        UserTestData newManager = users.get(2);
-        bridge.appointManager(store.getStoreName(),newManager.getUsername());
-        boolean approval = bridge.appointManager(store.getStoreName(),newManager.getUsername());
+        bridge.appointManager(store.getStoreName(),userToAdd.getUsername());
+        boolean approval = bridge.appointManager(store.getStoreName(),userToAdd.getUsername());
         assertFalse(approval);
 
     }
@@ -53,8 +58,8 @@ public class AppointManagerTest extends AcceptanceTests  {
     @Test
     public void appointManagerFailNotMyStore(){
         StoreTestData store = stores.get(2);
-        UserTestData newManager = users.get(2);
-        boolean approval = bridge.appointManager(store.getStoreName(),newManager.getUsername());
+
+        boolean approval = bridge.appointManager(store.getStoreName(),userToAdd.getUsername());
         assertFalse(approval);
     }
 }
