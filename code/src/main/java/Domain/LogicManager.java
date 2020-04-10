@@ -436,7 +436,7 @@ public class LogicManager {
         boolean resultUser = current.addReview(review);
         if(!resultStore && !resultUser)
             return false;
-        else if(!resultStore) {
+        if(!resultStore) {
             current.removeReview(review);
             return false;
         }

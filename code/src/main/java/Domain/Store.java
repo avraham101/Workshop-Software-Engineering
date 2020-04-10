@@ -270,7 +270,7 @@ public class Store {
     public void removeReview(Review review) {
         Product p = products.get(review.getProductName());
         if(p!=null) {
-            p.addReview(review);
+            p.removeReview(review);
         }
     }
 
