@@ -20,6 +20,16 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         init();
     }
 
+    /**---------------------set-ups-------------------------------------------*/
+    @Override
+    protected void setUpProductAddedToCart() {
+        super.setUpProductAddedToCart();
+        ProductData product = data.getProductData(Data.VALID);
+        logicManager.addProductToCart(product.getProductName(),
+                product.getStoreName(), product.getAmount());
+    }
+    /**----------------------set-ups------------------------------------------*/
+
     /**
      * test use case 2.3 - Login
      */
@@ -75,7 +85,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * use case 2.5 - view specific product
      */
     @Override
-    protected void testViewSpecificProduct() {
+    public void testViewSpecificProduct() {
+        setUpProductAdded();
         testViewSpecificProductWrongSearch();
         testViewSpecificProductWrongFilter();
         testViewSpecificProductSearchNone();
@@ -202,7 +213,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * success test
      */
     @Override
-    protected void testWatchCartDetails() {
+    public void testWatchCartDetails() {
+        super.testWatchCartDetails();
         ProductData productData = data.getProductData(Data.VALID);
         CartData cartData = logicManager.watchCartDetatils();
         List<ProductData> list = cartData.getProducts();
@@ -226,7 +238,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * success test
      */
     @Override
-    protected void testEditProductsInCart() {
+    public void testEditProductsInCart() {
+        setUpProductAddedToCart();
         ProductData productData = data.getProductData(Data.VALID);
         assertTrue(logicManager.editProductInCart(productData.getProductName(),productData.getStoreName(),1));
     }
@@ -236,7 +249,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      *  success test
      */
     @Override
-    protected void testAddProductToCart() {
+    public void testAddProductToCart() {
         super.testAddProductToCart();
         testAddProductToCartBasketNull();
         testAddProductToCartValid();
@@ -266,7 +279,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * use case 2.8 - test buy Products
      */
     @Override
-    protected void testBuyProducts() {
+    public void testBuyProducts() {
         super.testBuyProducts();
         List<Purchase> purchaseList = this.currUser.getState().watchMyPurchaseHistory();
         for (Purchase purchase: purchaseList) {
@@ -290,7 +303,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * test use case 3.2 - Open Store
      */
     @Override
-    protected void testOpenStore() {
+    public void testOpenStore() {
         super.testOpenStore();
         testOpenStorePurchesAndDiscontPolicy();
         testOpenStoreUserPermissions();
@@ -381,6 +394,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override
     public void testAddRequest(){
+        setUpProductAdded();
         testSubscribeAddRequestSuccess();
         testSubscribeAddRequestFail();
     }
@@ -417,6 +431,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override
     public void testWatchPurchaseHistory() {
+        setUpBoughtProduct();
         List<Purchase> purchases = logicManager.watchMyPurchaseHistory();
         assertNotNull(purchases);
         assertEquals(1,purchases.size());
@@ -427,7 +442,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
 
     @Override
-    protected void testAddProduct() {
+    public void testAddProduct() {
         super.testAddProduct();
         testAddProductWithSameName();
     }
@@ -625,8 +640,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override
     protected void testWatchStoreHistorySuccess() {
-        //add product to cart for seeing the purchases
-        testAddProductToCartValid();
         testWatchStoreHistorySuccessNotAdmin();
         testWatchStoreHistorySuccessWhenAdmin();
     }
@@ -644,16 +657,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override
     protected void testWatchUserHistorySuccess() {
         checkValidPurchase(logicManager.watchUserPurchasesHistory(data.getSubscribe(Data.VALID).getName()));
-        currUser.setState(users.get(data.getSubscribe(Data.VALID).getName()));
     }
 
     /**
      * test use case 6.4.2 user watch history when admin
      */
     protected void testWatchStoreHistorySuccessWhenAdmin() {
-        //put admin to watch the store off
-        String adminName=data.getSubscribe(Data.ADMIN).getName();
-        currUser.setState(users.get(adminName));
         checkValidPurchase(logicManager.watchStorePurchasesHistory(data.getStore(Data.VALID).getName()));
     }
 
