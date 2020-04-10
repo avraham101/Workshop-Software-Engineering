@@ -58,7 +58,12 @@ public class PurchaseTestData {
 
     @Override
     public int hashCode() {
-        return 0;
+        int result;
+        long temp;
+        result = productsAndAmountInPurchase.hashCode();
+        temp = Double.doubleToLongBits(totalAmount);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 
     public double calculateTotalAmount() {

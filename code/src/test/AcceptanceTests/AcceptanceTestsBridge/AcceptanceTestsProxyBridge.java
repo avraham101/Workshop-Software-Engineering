@@ -98,7 +98,7 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     @Override
     public boolean deleteFromCurrentUserCart(ProductTestData productToDelete) {
         if(realBridge!=null)
-            return deleteFromCurrentUserCart(productToDelete);
+            return realBridge.deleteFromCurrentUserCart(productToDelete);
         return false;
     }
 
@@ -229,6 +229,8 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
 
     @Override
     public List<PurchaseTestData> getCurrentUserPurchaseHistory() {
+        if(realBridge!=null)
+            return realBridge.getCurrentUserPurchaseHistory();
         return null;
     }
 

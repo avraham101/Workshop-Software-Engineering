@@ -429,7 +429,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public List<PurchaseTestData> getStorePurchasesHistory(String storeName) {
-        List<Purchase> purchases = serviceAPI.watchStoreHistory(storeName);
+        List<Purchase> purchases = serviceAPI.AdminWatchStoreHistory(storeName);
         return buildPurchasesTestData(purchases);
     }
 
@@ -439,30 +439,34 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return buildPurchasesTestData(purchases);
     }
     private List<PurchaseTestData> buildPurchasesTestData(List<Purchase> history) {
-        HashMap<ProductTestData,Integer> productsAndAmountInPurchase = new HashMap<>();
-        List<PurchaseTestData> purchasesTestData = new ArrayList<>();
-        double totalCost=0;
-        Date date = new Date();
-        for (Purchase purchase: history) {
-            List<ProductData> products = purchase.getProduct();
-            for (ProductData product: products) {
-                productsAndAmountInPurchase.put(buildProductTestData(product)
-                        ,product.getAmount());
-                totalCost+=product.getPriceAfterDiscount()*product.getAmount();
+        if(history!=null) {
+            List<PurchaseTestData> purchasesTestData = new ArrayList<>();
+            double totalCost = 0;
+            Date date = new Date();
+            for (Purchase purchase : history) {
+                HashMap<ProductTestData, Integer> productsAndAmountInPurchase = new HashMap<>();
+                List<ProductData> products = purchase.getProduct();
+                for (ProductData product : products) {
+                    productsAndAmountInPurchase.put(buildProductTestData(product)
+                            , product.getAmount());
+                    totalCost += product.getPriceAfterDiscount() * product.getAmount();
 
+                }
+                PurchaseTestData purchaseTestData = new PurchaseTestData
+                        (productsAndAmountInPurchase, date, totalCost);
+                purchasesTestData.add(purchaseTestData);
+                totalCost = 0;
             }
-            PurchaseTestData purchaseTestData = new PurchaseTestData
-                    (productsAndAmountInPurchase, date,totalCost);
-            purchasesTestData.add(purchaseTestData);
-        }
 
-        return  purchasesTestData;
+            return purchasesTestData;
+        }
+        return null;
     }
 
     @Override
     public List<PurchaseTestData> getCurrentUserPurchaseHistory() {
         List<Purchase> purchaseHistory = serviceAPI.watchMyPurchaseHistory();
-          return buildPurchasesTestData(purchaseHistory);
+        return buildPurchasesTestData(purchaseHistory);
     }
 
     @Override
@@ -500,7 +504,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public boolean writeReplyToApplication(int requestId,String storeName, ApplicationToStoreTestData application, String reply) {
 
-        return serviceAPI.answerRequest(requestId, reply, application.getStoreName()) != null;
+        return serviceAPI.answerRequest(requestId, reply, storeName) != null;
     }
 
     @Override

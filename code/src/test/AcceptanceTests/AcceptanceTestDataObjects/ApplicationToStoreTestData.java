@@ -46,4 +46,12 @@ public class ApplicationToStoreTestData {
         if (content != null ? !content.equals(that.content) : that.content != null) return false;
         return storeName != null ? storeName.equals(that.storeName) : that.storeName == null;
     }
+
+    @Override
+    public int hashCode() {
+        int result = writer.hashCode();
+        result = 31 * result + content.hashCode();
+        result = 31 * result + storeName.hashCode();
+        return result;
+    }
 }

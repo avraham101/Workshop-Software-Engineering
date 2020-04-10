@@ -1,6 +1,7 @@
 package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -13,14 +14,17 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
     private UserTestData user0;
     private HashMap<ProductTestData,ReviewTestData> productsAndReviews;
     private ProductTestData notExistingProductInPurchase;
+    private ReviewTestData notExistingProductInPurchaseReview;
 
-    @Test
+    @Before
     public void setUp(){
         user0 = superUser;
         addUserStoresAndProducts(user0);
 
         addCartToUser(superUser.getCart());
+        bridge.buyCart(validPayment,validDelivery);
         notExistingProductInPurchase = products.get(7);
+        notExistingProductInPurchaseReview = new ReviewTestData(user0.getUsername(),"notExistingProductInPurchaseReview");
         setUpTestProductsReviews();
     }
 
@@ -58,7 +62,7 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
             ProductTestData product = entry.getKey();
             ReviewTestData review = entry.getValue();
             boolean isWritten = bridge.writeReviewOnProduct(product,review);
-            assertTrue(isWritten);
+            assertFalse(isWritten);
 
             List<ReviewTestData> actualReviews = bridge.getProductsReviews(product);
             assertFalse(actualReviews.contains(review));
@@ -81,7 +85,7 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
     @Test
     public void writeReviewOnProductTestFailNotExistingProductInPurchase(){
         ProductTestData productToReview = notExistingProductInPurchase;
-        ReviewTestData review = productsAndReviews.get(productToReview);
+        ReviewTestData review = notExistingProductInPurchaseReview;
 
         boolean isWritten = bridge.writeReviewOnProduct(productToReview, review);
         assertFalse(isWritten);

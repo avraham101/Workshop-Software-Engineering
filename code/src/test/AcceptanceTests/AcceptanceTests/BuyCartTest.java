@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class BuyCartTest extends AcceptanceTests {
-    double delta= 0.001;
     @Before
     public void setUp(){
         addStores(stores);

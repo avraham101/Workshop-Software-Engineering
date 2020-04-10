@@ -37,6 +37,8 @@ public class AdminPurchaseHistory extends AcceptanceTests {
         assertEquals(0,history.size());
     }
 /*****************STORE-HISTORY-6.4.2********************************************/
+//TODO: fix here to
+
     @Test
     public void getStorePurchaseHistorySuccess(){
         List<PurchaseTestData> history = bridge.getStorePurchasesHistory(stores.get(0).getStoreName());

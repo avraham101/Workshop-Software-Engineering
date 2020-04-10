@@ -42,6 +42,13 @@ public class BasketTestData {
         return productsAndAmountInBasket != null ? productsAndAmountInBasket.equals(that.productsAndAmountInBasket) : that.productsAndAmountInBasket == null;
     }
 
+    @Override
+    public int hashCode() {
+        int result = storeName.hashCode();
+        result = 31 * result + productsAndAmountInBasket.hashCode();
+        return result;
+    }
+
     public double getTotalAmount (){
         double totalPrice = 0;
         for (Map.Entry<ProductTestData,Integer> entry: productsAndAmountInBasket.entrySet()) {
