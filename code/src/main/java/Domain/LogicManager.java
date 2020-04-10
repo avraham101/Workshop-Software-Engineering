@@ -79,8 +79,8 @@ public class LogicManager {
      * @return true if the register complete,otherwise false
      */
     public boolean register(String userName, String password) {
-        loggerSystem.getEventLogger().logp(Level.FINE, "Logic Manager", "register", "register: {0} {1}",
-                new Object[] { userName, password });
+        loggerSystem.writeEvent("LogicManager","register","the function register user",
+                new Object[] {userName, password});
         if(!validName(userName) || !validPassword(password)) {
             return false;
         }
