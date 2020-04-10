@@ -26,56 +26,65 @@ public class StoreTestsAllStubs {
                 new Permission(data.getSubscribe(Data.VALID)), new ProxySupply(),new ProxyPayment());
     }
 
-    @Test
-    public void test(){
-        testAddProduct();
-        testEditProduct();
-        testPurchase();
-        testCheckReduceAmount();
-        testRemoveProduct();
-    }
+    /**--------------------------------set-ups-------------------------------------------------------------------*/
+
 
     /**
-     * use case 3.3 - add re
+     * prepare a valid product in the store
      */
-    private void testAddReview() {
+    protected void setUpProductAdded(){
+        store.addProduct(data.getProductData(Data.VALID));
+        ProductData p=data.getProductData(Data.VALID);
+        store.getProducts().put(p.getProductName(),new ProductStub(p,new Category(p.getCategory())));
+    }
+
+    /**--------------------------------set-ups-------------------------------------------------------------------*/
+
+    /**
+     * use case 3.3 - add review
+     */
+    @Test
+    public void testAddReview() {
+        setUpProductAdded();
         Review review = data.getReview(Data.VALID);
         assertTrue(store.addReview(review));
         Product product= store.getProducts().get(review.getProductName());
         assertTrue(product.getReviews().contains(review));
         review = data.getReview(Data.WRONG_PRODUCT);
         assertFalse(store.addReview(review));
-
-    }
-
-    /**
-     * test if the amount of product has been change
-     */
-    private void testCheckReduceAmount() {
-        ProductData product = data.getProductData(Data.VALID);
-        int amount = store.getProduct(product.getProductName()).getAmount();
-        assertEquals(amount - 1, product.getAmount());
     }
 
     /**
      * test if it is available to purchase from the store
      */
-    private void testPurchase() {
+    @Test
+    public void testPurchase() {
+        setUpProductAdded();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
         Purchase purchase = store.purches(paymentData,deliveryData);
         assertNotNull(purchase);
+        testCheckReduceAmount();
+    }
+
+    /**
+     * test if the amount of product has been change
+     */
+
+    private void testCheckReduceAmount() {
+        ProductData product = data.getProductData(Data.VALID);
+        int amount = store.getProduct(product.getProductName()).getAmount();
+        assertEquals(amount + 1, product.getAmount());
     }
 
     /**
      * use case 4.1.1 -add product
      */
-    private void testAddProduct() {
+    @Test
+    public void testAddProduct() {
         testAddProductSuccess();
-        //add product stub
         testAddProductSameName();
         testAddProductHasCategory();
-        testAddReview();
     }
 
     /**
@@ -85,15 +94,6 @@ public class StoreTestsAllStubs {
         ProductData p=data.getProductData(Data.VALID);
         store.getProducts().remove(p.getProductName());
         assertTrue(store.addProduct(data.getProductData(Data.VALID)));
-        makeProductStub();
-    }
-
-    /**
-     * insert stub product to the products map
-     */
-    protected void makeProductStub() {
-        ProductData p=data.getProductData(Data.VALID);
-        store.getProducts().put(p.getProductName(),new ProductStub(p,new Category(p.getCategory())));
     }
 
     /**
@@ -113,7 +113,9 @@ public class StoreTestsAllStubs {
     /**
      * test use case 4.1.2 remove product from store
      */
-    protected void testRemoveProduct() {
+    @Test
+    public void testRemoveProduct() {
+        setUpProductAdded();
         testSuccessRemoveProduct();
         testFailRemoveProduct();
     }
@@ -129,7 +131,9 @@ public class StoreTestsAllStubs {
     /**
      * test use case 4.1.3 edit product
      */
-    protected void testEditProduct(){
+    @Test
+    public void testEditProduct(){
+        setUpProductAdded();
         testFailEditProduct();
         testSuccessEditProduct();
     }

@@ -4,6 +4,7 @@ import Data.*;
 import DataAPI.ProductData;
 import Domain.*;
 import org.junit.Before;
+import org.junit.Test;
 
 import java.util.List;
 
@@ -12,21 +13,30 @@ import static org.junit.Assert.*;
 public class UserRealTest extends UserAllStubsTest{
     @Before
     public void setUp(){
-        data =new TestData();
-        user=new User();
+        super.setUp();
     }
 
-    //don't need init cause the state is changing in the login method
     @Override
-    protected void initSubscribe(){
-        return;
+    protected void setUpGuest() {
+        userState = new Guest();
+        user = new User(userState);
+    }
+
+    /**
+     * set up to subscribe state
+     */
+    @Override
+    protected void setUpSubscribe(){
+        setUpGuest();
+        user.login(data.getSubscribe(Data.VALID));
     }
 
     /**
      * test use case 2.3 - Login
      * user: Yuval Sabag
      */
-    protected void testLoginGuest(){
+    @Override @Test
+    public void testLoginGuest(){
         super.testLoginGuest();
         assertEquals(user.getPassword(), data.getSubscribe(Data.VALID).getPassword());
         assertEquals(user.getUserName(), data.getSubscribe(Data.VALID).getName());
@@ -35,9 +45,9 @@ public class UserRealTest extends UserAllStubsTest{
     /**
      * use case 2.8 - purchase cart
      */
-    @Override
-    protected void testPurchaseSubscribe() {
-        super.testPurchaseSubscribe();
+    @Override @Test
+    public void testPurchase() {
+        super.testPurchase();
         List<Purchase> purchases = user.getState().watchMyPurchaseHistory();
         assertEquals(1, purchases.size());
     }
@@ -45,8 +55,9 @@ public class UserRealTest extends UserAllStubsTest{
     /**
      * use case 3.3 - write review
      */
-    @Override
-    protected void testWriteReviewSubscribe() {
+    @Override @Test
+    public void testWriteReviewSubscribe() {
+        setUpProductBought();
         Review review = data.getReview(Data.VALID);
         assertTrue(user.addReview(review));
         List<Review> reviewList = user.getState().getReviews();
@@ -60,8 +71,9 @@ public class UserRealTest extends UserAllStubsTest{
     /**
      * test use case 3.7 - watch purchases
      */
-    @Override
+    @Override @Test
     public void testWatchPurchasesSubscribe() {
+        setUpProductBought();
         List<Purchase> list = user.watchMyPurchaseHistory();
         assertNotNull(list);
         assertEquals(1, list.size());
@@ -70,8 +82,8 @@ public class UserRealTest extends UserAllStubsTest{
     /**
      * test 4.1.1 use case -add product
      */
-    @Override
-    protected void testAddProductToStoreSubscribe() {
+    @Override @Test
+    public void testAddProductToStoreSubscribe() {
         super.testAddProductToStoreSubscribe();
         Product product=((Subscribe) user.getState()).getPermissions().get(data.getStore(Data.VALID).getName()).
                 getStore().getProducts().get(data.getProductData(Data.VALID).getProductName());
@@ -81,8 +93,8 @@ public class UserRealTest extends UserAllStubsTest{
     /**
      * test 4.1.2 use case -
      */
-    @Override
-    protected void testRemoveProductFromStoreSubscribe() {
+    @Override @Test
+    public void testRemoveProductFromStoreSubscribe() {
         super.testRemoveProductFromStoreSubscribe();
         Subscribe sub=(Subscribe)user.getState();
         assertFalse(sub.getPermissions().containsKey(data.getProductData(Data.VALID).getProductName()));
@@ -91,8 +103,8 @@ public class UserRealTest extends UserAllStubsTest{
     /**
      * use case 4.1.3 -edit product
      */
-    @Override
-    protected void testEditProductFromStoreSubscribe() {
+    @Override @Test
+    public void testEditProductFromStoreSubscribe() {
         super.testEditProductFromStoreSubscribe();
         ProductData product= data.getProductData(Data.EDIT);
         Subscribe sub=(Subscribe) user.getState();
@@ -104,7 +116,7 @@ public class UserRealTest extends UserAllStubsTest{
      * use case 4.5 - add manager
      */
     @Override
-    protected void testAddManagerSubscribe() {
+    public void testAddManagerSubscribe() {
         super.testAddManagerSubscribe();
         Subscribe sub=(Subscribe) user.getState();
         assertTrue(sub.getGivenByMePermissions().get(0).getStore().getPermissions()
@@ -122,8 +134,8 @@ public class UserRealTest extends UserAllStubsTest{
     /**
      * 4.6.1 - add permission
      */
-    @Override
-    protected void testAddPermissionsSubscribe() {
+    @Override @Test
+    public void testAddPermissionsSubscribe() {
         super.testAddPermissionsSubscribe();
         Subscribe sub=(Subscribe) user.getState();
         assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType()
@@ -133,9 +145,9 @@ public class UserRealTest extends UserAllStubsTest{
     /**
      * check use case 4.6.2 - remove permissions
      */
-    @Override
-    protected void testRemovePermissionsSubscibe() {
-        super.testRemovePermissionsSubscibe();
+    @Override @Test
+    public void testRemovePermissionsSubscribe() {
+        super.testRemovePermissionsSubscribe();
         Subscribe sub=(Subscribe) user.getState();
         assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType().
                 isEmpty());
@@ -146,15 +158,16 @@ public class UserRealTest extends UserAllStubsTest{
      * make user admin manage user niv(VALID2)
      * remove Admin from being manager and check that niv was removed from being a manager recursively
      */
-    @Override
-    protected void testRemoveManagerSubscribe() {
+    @Override @Test
+    public void testRemoveManagerSubscribe() {
+        setUpAddedManager();
         Subscribe sub=(Subscribe) user.getState();
         Permission p=sub.getGivenByMePermissions().get(0);
         Subscribe niv=data.getSubscribe(Data.VALID2);
         String storeName=p.getStore().getName();
         //add another manager
         p.getOwner().addManager(niv,storeName);
-        super.testRemoveManagerSubscribe();
+        assertTrue(user.removeManager(data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()));
         assertFalse(niv.getPermissions().containsKey(storeName));
         assertFalse(p.getOwner().getPermissions().containsKey(storeName));
     }

@@ -21,23 +21,19 @@ public class AdminTest  {
         admin=new Admin(s.getName(),s.getPassword());
     }
 
-    @Test
-    public void test(){
-        testCanWatchUserHistory();
-        testStoreHistory();
-    }
-
     /**
      * test use case 6.4.1 - watch user history
      */
-    private void testCanWatchUserHistory(){
+    @Test
+    public void testCanWatchUserHistory(){
         assertTrue(admin.canWatchUserHistory());
     }
 
     /**
      * test use case 6.4.2 and 4.10 - watch store history
      */
-    private void testStoreHistory(){
+    @Test
+    public void testStoreHistory(){
         assertTrue(admin.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
     }
 }

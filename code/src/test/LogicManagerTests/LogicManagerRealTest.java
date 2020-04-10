@@ -513,12 +513,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertFalse(sub.getPermissions().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
 
-
-
     /**
      * use case 4.1.3 edit product
      */
-
     @Override
     protected void testEditProductSuccess() {
         super.testEditProductSuccess();

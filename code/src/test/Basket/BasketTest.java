@@ -39,9 +39,18 @@ public class BasketTest {
         permission.setStore(store);
     }
 
-    @Test
+    /**--------------set-ups----------------------*/
+    protected void setUpAddedToBasket(){
+        HashMap<ProductData, Integer> products = data.getProductsInBasket(Data.VALID);
+        for (ProductData productData: products.keySet()) {
+            Product product = data.getRealProduct(Data.VALID);
+            basket.addProduct(product, product.getAmount());
+        }
+    }
+
+
     public void testBasket() {
-        teatAddToBasket();
+        //teatAddToBasket();
         testEditAmountFromBasket();
         testDeleteFromBasket();
         teatAddToBasket();
@@ -55,7 +64,8 @@ public class BasketTest {
      * use case 2.7.1 - add product to cart
      * test add product in a basket
      */
-    private void teatAddToBasket() {
+    @Test
+    public void teatAddToBasket() {
         HashMap<ProductData, Integer> products = data.getProductsInBasket(Data.VALID);
         for (ProductData productData: products.keySet()) {
             Product product = data.getRealProduct(Data.VALID);
@@ -67,7 +77,9 @@ public class BasketTest {
      * use case 2.7.2 - remove product from cart
      * test delete product from a basket
      */
-    private void testDeleteFromBasket() {
+    @Test
+    public void testDeleteFromBasket() {
+        setUpAddedToBasket();
         HashMap<ProductData, Integer> products = data.getProductsInBasket(Data.VALID);
         for (ProductData productData: products.keySet()) {
             Product product = new Product(productData,new Category(""));
@@ -79,7 +91,9 @@ public class BasketTest {
      * use case 2.7.3 - edit product
      * test edit amount of product in a basket
      */
-    private void testEditAmountFromBasket() {
+    @Test
+    public void testEditAmountFromBasket() {
+        setUpAddedToBasket();
         HashMap<ProductData, Integer> products = data.getProductsInBasket(Data.VALID);
         for (ProductData productData: products.keySet()) {
             String productName = productData.getProductName();
@@ -92,7 +106,9 @@ public class BasketTest {
      * use case 2.8 - buy cart
      * test if the basket is available for buying
      */
-    protected void testIfBasketAvailableToBuy() {
+    @Test
+    public void testIfBasketAvailableToBuy() {
+        setUpAddedToBasket();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         assertTrue(basket.available(paymentData, address));
@@ -101,7 +117,9 @@ public class BasketTest {
     /**
      * use case 2.8 - buy cart
      */
-    protected void testBuyBasket() {
+    @Test
+    public void testBuyBasket() {
+        setUpAddedToBasket();
        Purchase result = basket.buy();
        assertNull(result);
     }

@@ -28,109 +28,123 @@ public class UserAllStubsTest {
     protected UserState userState;
     protected TestData data;
 
-
     @Before
     public void setUp() {
-        initGuest();
-    }
-
-    protected void initGuest() {
-        userState = new GuestStub();
-        user = new User(userState);
         data =new TestData();
     }
 
-    protected void initSubscribe() {
+    /**--------------------------------set-ups-------------------------------------------------------------------*/
+
+    /**
+     * init guest state
+     */
+    protected void setUpGuest() {
+        userState = new GuestStub();
+        user = new User(userState);
+    }
+
+    /**
+     * init subscribe state
+     */
+    protected void setUpSubscribe() {
         String userName = null;
         String password = null;
         userState = new SubscribeStub(userName, password);
         user = new User(userState);
     }
 
-    protected void initAdmin(){
+    /**
+     * init admin state
+     */
+    protected void setUpAdmin(){
         Subscribe s=data.getSubscribe(Data.ADMIN);
         userState = new AdminStub(s.getName(), s.getPassword());
         user = new User(userState);
     }
 
-    @Test
-    public void test() {
-        testGuest();
-        testSubscribe();
-        testAdmin();
-    }
-
-    private void testAdmin() {
-        initAdmin();
-        testCanWatchUserHistoryAdmin();
-        testCanWatchStoreHistoryAdmin();
-    }
-
-    private void testSubscribe() {
-        initSubscribe();
-        testLoginSubscribe();
-        testOpenStoreSubscribe();
-        testAddManagerSubscribe();
-        testCanWatchStoreHistorySubscribe();
-        testCanWatchUserHistorySubscribe();
-        testAddPermissionsSubscribe();
-        testRemovePermissionsSubscibe();
-        testAddProductToStoreSubscribe();
-        testEditProductFromStoreSubscribe();
-        testAddProductToCart();
-        testPurchaseSubscribe();
-        testWatchPurchasesSubscribe();
-        testWriteReviewSubscribe();
-        testRemoveProductFromStoreSubscribe();
-        testRemoveManagerSubscribe();
-        //last test on list
-        testLogoutSubscribe();
+    /**
+     * set up a store for the subscribed user
+     */
+    private void setUpOpenStore(){
+        setUpSubscribe();
+        StoreData storeData = new StoreData("Store", new PurchesPolicy(), new DiscountPolicy());
+        PaymentSystem paymentSystem = new ProxyPayment();
+        SupplySystem supplySystem = new ProxySupply();
+        Store store = user.openStore(storeData,paymentSystem, supplySystem);
     }
 
     /**
-     * login is last test of these sequence
+     * set up add manager for the store of subscribed user
      */
-    protected void testGuest() {
-        testLogoutGuest();
-        testOpenStoreGuest();
-        testCanWatchUserHistoryGuest();
-        testCanWatchStoreHistoryGuest();
-        testAddManagerGuest();
-        testRemoveManagerGuest();
-        testAddProductToStoreGuest();
-        testEditProductFromStoreGuest();
-        testAddProductToCart();
-        testPurchaseGuest();
-        testWatchPurchasesGeust();
-        testWriteReviewGuest();
-        testRemoveProductFromStoreGuest();
-        testAddPermissionsGuest();
-        testRemovePermissionsGuest();
-        testAddRequestGuest();
-        testViewRequestGuest();
-        testReplayRequestGuest();
-        //last guest test
-        testLoginGuest();
+    protected void setUpAddedManager(){
+        setUpOpenStore();
+        user.addManager(data.getSubscribe(Data.ADMIN), data.getStore(Data.VALID).getName());
     }
+
+    /**
+     * set up add manager  for the store of subscribed user and add to him permissions
+     */
+    private void setUpPermissionAdded(){
+        setUpAddedManager();
+        user.addPermissions(data.getPermissionTypeList(),
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName());
+    }
+
+    /**
+     * set up add product to a store
+     */
+    private void setUpProductAdded(){
+        setUpOpenStore();
+        user.addProductToStore(data.getProductData(Data.VALID));
+    }
+
+    /**
+     * set up product added to cart
+     */
+    private void setUpProductAddedToCart(){
+        setUpProductAdded();
+        Store store = data.getRealStore(Data.VALID);
+        Product p = data.getRealProduct(Data.VALID);
+        assertTrue(user.addProductToCart(store,p,p.getAmount()));
+    }
+
+    /**
+     * set up the subscribe to purchase a product
+     */
+    protected void setUpProductBought(){
+        setUpProductAddedToCart();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        user.buyCart(paymentData,deliveryData.getAddress());
+    }
+
+
+    /**--------------------------------set-ups-------------------------------------------------------------------*/
 
     /**
      * test use case 2.3 - Login
      */
-    protected void testLoginGuest() {
+    @Test
+    public void testLoginGuest() {
+        setUpGuest();
         assertTrue(user.login(data.getSubscribe(Data.VALID)));
     }
 
     /**
      * test use case 2.3 - Login
      */
-    protected void testLoginSubscribe() {
+    @Test
+    public void testLoginSubscribe() {
+        setUpSubscribe();
         assertFalse(user.login(data.getSubscribe(Data.VALID)));
     }
 
     /**
      * use case 2.7 - add product to cart
      */
-    private void testAddProductToCart() {
+    @Test
+    public void testAddProductToCart() {
+        setUpProductAdded();
         Store store = data.getRealStore(Data.VALID);
         Product p = data.getRealProduct(Data.VALID);
         assertTrue(user.addProductToCart(store,p,p.getAmount()));
@@ -139,44 +153,38 @@ public class UserAllStubsTest {
     /**
      * use case 2.8 - purchase cart
      */
-    private void testPurchase() {
+    @Test
+    public void testPurchase() {
+        setUpProductAddedToCart();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
         assertTrue(user.buyCart(paymentData,deliveryData.getAddress()));
     }
 
     /**
-     * use case 2.8 - purchase cart
-     */
-    protected void testPurchaseSubscribe() {
-        testPurchase();
-    }
-
-    /**
-     * use case 2.8 - purchase cart
-     */
-    private void testPurchaseGuest() {
-        testPurchase();
-    }
-
-    /**
      * test: use case 3.1 - Logout
      */
-    protected void testLogoutGuest(){
+    @Test
+    public void testLogoutGuest(){
+        setUpGuest();
         assertFalse(user.logout());
     }
 
     /**
      * test: use case 3.1 - Logout
      */
-    protected void testLogoutSubscribe(){
+    @Test
+    public void testLogoutSubscribe(){
+        setUpSubscribe();
         assertTrue(user.logout());
     }
 
     /**
      * test: use case 3.2 - Open Store
      */
-    protected void testOpenStoreGuest() {
+    @Test
+    public void testOpenStoreGuest() {
+        setUpGuest();
         StoreData storeData = new StoreData("Store", new PurchesPolicy(), new DiscountPolicy());
         PaymentSystem paymentSystem = new ProxyPayment();
         SupplySystem supplySystem = new ProxySupply();
@@ -186,7 +194,9 @@ public class UserAllStubsTest {
     /**
      * test: use case 3.2 - Open Store
      */
-    protected void testOpenStoreSubscribe() {
+    @Test
+    public void testOpenStoreSubscribe() {
+        setUpSubscribe();
         StoreData storeData = new StoreData("Store", new PurchesPolicy(), new DiscountPolicy());
         PaymentSystem paymentSystem = new ProxyPayment();
         SupplySystem supplySystem = new ProxySupply();
@@ -197,7 +207,9 @@ public class UserAllStubsTest {
     /**
      * use case 3.3 - write review
      */
-    protected void testWriteReviewGuest() {
+    @Test
+    public void testWriteReviewGuest() {
+        setUpGuest();
         Review review = data.getReview(Data.VALID);
         assertFalse(user.addReview(review));
     }
@@ -205,7 +217,9 @@ public class UserAllStubsTest {
     /**
      * use case 3.3 - write review
      */
-    protected void testWriteReviewSubscribe() {
+    @Test
+    public void testWriteReviewSubscribe() {
+        setUpProductBought();
         Review review = data.getReview(Data.VALID);
         assertTrue(user.addReview(review));
     }
@@ -213,14 +227,18 @@ public class UserAllStubsTest {
     /**
      * test use case 3.5 - add request
      */
-    private void testAddRequestGuest() {
+    @Test
+    public void testAddRequestGuest() {
+        setUpGuest();
         assertNull(user.addRequest(data.getRequest(Data.VALID).getStoreName(),
                 data.getRequest(Data.VALID).getComment())); }
 
     /**
      * test use case 3.7 - watch purchases
      */
-    private void testWatchPurchasesGeust() {
+    @Test
+    public void testWatchPurchasesGeust() {
+        setUpGuest();
         List<Purchase> list = user.watchMyPurchaseHistory();
         assertNull(list);
     }
@@ -228,7 +246,9 @@ public class UserAllStubsTest {
     /**
      * test use case 3.7 - watch purchases
      */
+    @Test
     public void testWatchPurchasesSubscribe() {
+        setUpProductBought();
         List<Purchase> list = user.watchMyPurchaseHistory();
         assertNotNull(list);
         assertTrue(list.isEmpty());
@@ -238,14 +258,18 @@ public class UserAllStubsTest {
      * test: use case 4.1.1 -add product to store
      * guest can't add product
      */
-    protected void testAddProductToStoreGuest(){
+    @Test
+    public void testAddProductToStoreGuest(){
+        setUpGuest();
         assertFalse(user.addProductToStore(data.getProductData(Data.VALID)));
     }
 
     /**
      *test: use case 4.1.1 - add product to store in subscribe state
      */
-    protected void testAddProductToStoreSubscribe(){
+    @Test
+    public void testAddProductToStoreSubscribe(){
+        setUpOpenStore();
         assertTrue(user.addProductToStore(data.getProductData(Data.VALID)));
     }
 
@@ -253,7 +277,9 @@ public class UserAllStubsTest {
      * test : use case 4.1.2 -remove product to store
      * guest can't do it
      */
-    protected void testRemoveProductFromStoreGuest(){
+    @Test
+    public void testRemoveProductFromStoreGuest(){
+        setUpGuest();
         ProductData product= data.getProductData(Data.VALID);
         assertFalse(user.removeProductFromStore(product.getStoreName(),product.getProductName()));
     }
@@ -262,7 +288,9 @@ public class UserAllStubsTest {
      * test : use case 4.1.2 -remove product to store
      * guest can't do it
      */
-    protected void testRemoveProductFromStoreSubscribe(){
+    @Test
+    public void testRemoveProductFromStoreSubscribe(){
+        setUpProductAdded();
         ProductData product= data.getProductData(Data.VALID);
         assertTrue(user.removeProductFromStore(product.getStoreName(),product.getProductName()));
     }
@@ -270,35 +298,49 @@ public class UserAllStubsTest {
     /**
      * test use case 4.1.3 - edit product from store
      */
-    protected void testEditProductFromStoreGuest(){
+    @Test
+    public void testEditProductFromStoreGuest(){
+        setUpGuest();
         assertFalse(user.editProductFromStore(data.getProductData(Data.EDIT)));
     }
 
-    protected void testEditProductFromStoreSubscribe() {
+    @Test
+    public void testEditProductFromStoreSubscribe() {
+        setUpProductAdded();
         assertTrue(user.editProductFromStore(data.getProductData(Data.EDIT)));
     }
 
     /**
      * test use case 4.5 -addManager
      */
-
-    protected void testAddManagerGuest(){
+    @Test
+    public void testAddManagerGuest(){
+        setUpGuest();
         assertFalse(user.addManager(data.getSubscribe(Data.ADMIN), data.getStore(Data.VALID).getName()));
     }
 
-    protected void testAddManagerSubscribe(){
+    /**
+     * test add manager subscribed
+     */
+    @Test
+    public void testAddManagerSubscribe(){
+        setUpOpenStore();
         assertTrue(user.addManager(data.getSubscribe(Data.ADMIN), data.getStore(Data.VALID).getName()));
     }
 
     /**
      * test se case 4.6.1 - add permissions
      */
-    private void testAddPermissionsGuest(){
+    @Test
+    public void testAddPermissionsGuest(){
+        setUpGuest();
         assertFalse(user.addPermissions(data.getPermissionTypeList(),
                 data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()));
     }
 
-    protected void testAddPermissionsSubscribe(){
+    @Test
+    public void testAddPermissionsSubscribe(){
+        setUpAddedManager();
         assertTrue(user.addPermissions(data.getPermissionTypeList(),
                 data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
     }
@@ -306,12 +348,16 @@ public class UserAllStubsTest {
     /**
      * test use case 4.6.2 - remove permissions
      */
-    private void testRemovePermissionsGuest(){
+    @Test
+    public void testRemovePermissionsGuest(){
+        setUpGuest();
         assertFalse(user.removePermissions(data.getPermissionTypeList(),
                 data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()));
     }
 
-    protected void testRemovePermissionsSubscibe(){
+    @Test
+    public void testRemovePermissionsSubscribe(){
+        setUpPermissionAdded();
         assertTrue(user.removePermissions(data.getPermissionTypeList(),
                 data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
     }
@@ -319,12 +365,15 @@ public class UserAllStubsTest {
     /**
      * test use case 4.7 -remove manager
      */
-
-    protected void testRemoveManagerGuest(){
+    @Test
+    public void testRemoveManagerGuest(){
+        setUpGuest();
         assertFalse(user.removeManager(data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()));
     }
 
-    protected void testRemoveManagerSubscribe(){
+    @Test
+    public void testRemoveManagerSubscribe(){
+        setUpAddedManager();
         assertTrue(user.removeManager(data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()));
     }
 
@@ -332,56 +381,72 @@ public class UserAllStubsTest {
     /**
      * test use case 4.9.1 - view request
      */
-    private void testViewRequestGuest() {
+    @Test
+    public void testViewRequestGuest() {
+        setUpGuest();
         assertTrue(user.viewRequest(data.getStore(Data.VALID).getName()).isEmpty());
     }
 
     /**
      * test use case 4.9.2 - reply request
      */
-    private void testReplayRequestGuest(){
+    @Test
+    public void testReplayRequestGuest(){
+        setUpGuest();
         assertNull(user.replayToRequest(data.getRequest(Data.VALID).getStoreName()
             , data.getRequest(Data.VALID).getId(), "I want replay but can't"));}
 
     /**
      * use case 6.4.1 - watch user store
      */
+    @Test
     public void testCanWatchUserHistoryGuest(){
+        setUpGuest();
         assertFalse(user.canWatchUserHistory());
     }
 
     /**
      * use case 6.4.1 - admin watch user store
      */
-    public void testCanWatchUserHistorySubscribe(){
+    @Test
+    public void testCanWatchUserHistorySubscribe() {
+        setUpSubscribe();
         assertFalse(user.canWatchUserHistory());
     }
 
     /**
      * use case 6.4.1 - admin watch user store
      */
+    @Test
     public void testCanWatchUserHistoryAdmin(){
+        setUpAdmin();
         assertTrue(user.canWatchUserHistory());
     }
 
     /**
      * use case 6.4.2 ,4.10- watch store
      */
+    @Test
     public void testCanWatchStoreHistoryGuest(){
+        setUpGuest();
         assertFalse(user.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
     }
 
     /**
      * use case 6.4.2 - watch store
      */
+    @Test
     public void testCanWatchStoreHistorySubscribe(){
+        setUpOpenStore();
         assertTrue(user.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
     }
 
     /**
      * use case 6.4.2 - admin watch store
      */
+    @Test
     public void testCanWatchStoreHistoryAdmin(){
+        setUpAdmin();
         assertTrue(user.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
     }
 

@@ -223,7 +223,7 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * test a case that triyng to register user twice
+     * test a case that trying to register user twice
      */
     @Test
     public void testRegisterFailAlreadyRegistered(){
