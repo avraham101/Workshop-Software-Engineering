@@ -2,15 +2,11 @@ package LogicManagerTests;
 
 import Data.Data;
 import Domain.Admin;
-import Domain.LogicManager;
-import Domain.Purchase;
 import Domain.Subscribe;
 import Stubs.UserStub;
 import Systems.HashSystem;
 import org.junit.Before;
-
-import java.util.HashMap;
-import java.util.List;
+import org.junit.Test;
 
 import static org.junit.Assert.*;
 
@@ -28,18 +24,10 @@ public class LogicManagerUserAndStoresStubs extends LogicManagerAllStubsTest {
     }
 
     /**
-     * test: use case 2.2 - Register
-     */
-    @Override
-    public void testRegister() {
-        testAdmin();
-        super.testRegister();
-    }
-
-    /**
      * part of test: use case 2.2 - Register
      */
-    public void testAdmin() {
+    @Test
+    public void testAdminRegister() {
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         assertTrue(users.get(subscribe.getName()) instanceof Admin);
     }

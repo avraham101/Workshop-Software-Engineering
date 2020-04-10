@@ -58,8 +58,14 @@ public class UserStub extends User {
     /**
      * use case 3.3 - write review
      * the function check if a product is perchesed
-     *
-     * @param storeName   - the store name
+     */
+    @Override
+    public boolean addReview(Review review) {
+        return true;
+    }
+
+     /** check if product was purchased
+      *  @param storeName   - the store name
      * @param productName
      * @return
      */
@@ -153,8 +159,5 @@ public class UserStub extends User {
         return new LinkedList<>();
     }
 
-    @Override
-    public boolean addReview(Review review) {
-        return true;
-    }
+
 }

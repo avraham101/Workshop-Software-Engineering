@@ -5,6 +5,7 @@ import Data.Data;
 import Domain.*;
 import Systems.HashSystem;
 import org.junit.Before;
+import org.junit.Test;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -28,12 +29,25 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         logicManager.addProductToCart(product.getProductName(),
                 product.getStoreName(), product.getAmount());
     }
+
+    /**
+     * set up manager added and make the new manager adding another manager
+     * set up to check use case 4.7 that the mangers will be removed and all the managers he managed
+     * will be removed as well
+     */
+    @Override
+    protected void setUpManagerAddedSubManagerAdded(){
+        setUpPermissionsAdded();
+        currUser.setState(users.get(data.getSubscribe(Data.ADMIN).getName()));
+        logicManager.addManager(data.getSubscribe(Data.VALID2).getName(),data.getStore(Data.VALID).getName());
+        currUser.setState(users.get(data.getSubscribe(Data.VALID).getName()));
+    }
     /**----------------------set-ups------------------------------------------*/
 
     /**
      * test use case 2.3 - Login
      */
-    @Override
+    @Override @Test
     public void testLogin() {
         super.testLogin();
         testLoginFailAlreadyUserLogged();
@@ -64,8 +78,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 2.4.1 - view all stores details
      */
-    @Override
-    protected void testViewDataStores() {
+    @Override @Test
+    public void testViewDataStores() {
+        super.testViewDataStores();
         for (StoreData storeData : logicManager.viewStores()) {
             assertTrue(stores.containsKey(storeData.getName()));
         }
@@ -74,7 +89,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 2.4.2 - view the products in some store test
      */
-    protected void testViewProductsInStore() {
+    @Override @Test
+    public void testViewProductsInStore() {
+        setUpProductAdded();
         String storeName = data.getStore(Data.VALID).getName();
         for (ProductData productData: logicManager.viewProductsInStore(storeName)) {
             assertTrue(stores.get(storeName).getProducts().containsKey(productData.getProductName()));
@@ -84,7 +101,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 2.5 - view specific product
      */
-    @Override
+    @Override @Test
     public void testViewSpecificProduct() {
         setUpProductAdded();
         testViewSpecificProductWrongSearch();
@@ -212,7 +229,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * use case 2.7.1 - watch cart details
      * success test
      */
-    @Override
+    @Override @Test
     public void testWatchCartDetails() {
         super.testWatchCartDetails();
         ProductData productData = data.getProductData(Data.VALID);
@@ -226,8 +243,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * use case 2.7.2 - delete product from cart
      * success test
      */
-    @Override
-    protected void testDeleteProductFromCart() {
+    @Override @Test
+    public void testDeleteProductFromCart() {
+        setUpProductAddedToCart();
         ProductData productData = data.getProductData(Data.VALID);
         assertTrue(logicManager.deleteFromCart(productData.getProductName(),productData.getStoreName()));
 
@@ -237,7 +255,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * use case 2.7.3 - edit amount of product in cart
      * success test
      */
-    @Override
+    @Override @Test
     public void testEditProductsInCart() {
         setUpProductAddedToCart();
         ProductData productData = data.getProductData(Data.VALID);
@@ -248,7 +266,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      *  use case 2.7.4 - add product to cart
      *  success test
      */
-    @Override
+    @Override @Test
     public void testAddProductToCart() {
         super.testAddProductToCart();
         testAddProductToCartBasketNull();
@@ -278,7 +296,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 2.8 - test buy Products
      */
-    @Override
+    @Override @Test
     public void testBuyProducts() {
         super.testBuyProducts();
         List<Purchase> purchaseList = this.currUser.getState().watchMyPurchaseHistory();
@@ -292,7 +310,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * test: use case 3.1 - Logout
      */
-    @Override
+    @Override @Test
     public void testLogout() {
         super.testLogout();
         //test while in Guest Mode
@@ -302,7 +320,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * test use case 3.2 - Open Store
      */
-    @Override
+    @Override @Test
     public void testOpenStore() {
         super.testOpenStore();
         testOpenStorePurchesAndDiscontPolicy();
@@ -345,8 +363,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 3.3 - write review
      */
-    @Override
-    protected void testWriteReview() {
+    @Override @Test
+    public void testWriteReview() {
         super.testWriteReview();
         testWriteReviewSuccess();
         testWriteReviewProductDidntPurchased();
@@ -392,7 +410,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 3.5 -add request
      */
-    @Override
+    @Override @Test
     public void testAddRequest(){
         setUpProductAdded();
         testSubscribeAddRequestSuccess();
@@ -429,7 +447,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 3.7 - watch purchase history
      */
-    @Override
+    @Override @Test
     public void testWatchPurchaseHistory() {
         setUpBoughtProduct();
         List<Purchase> purchases = logicManager.watchMyPurchaseHistory();
@@ -440,8 +458,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * test use case 4.1.1 -add product to store
      */
-
-    @Override
+    @Override @Test
     public void testAddProduct() {
         super.testAddProduct();
         testAddProductWithSameName();
@@ -516,10 +533,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override
     protected void testManageOwnerSuccess() {
-        currUser.setState(users.get(data.getSubscribe(Data.ADMIN).getName()));
         super.testManageOwnerSuccess();
         checkPermissions(Data.VALID2);
-        currUser.setState(users.get(data.getSubscribe(Data.VALID).getName()));
     }
 
     /**
@@ -591,7 +606,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 4.9.1 - view request
      */
-    @Override
+    @Override @Test
     public void testStoreViewRequest(){
         super.testStoreViewRequest();
         testStoreViewRequestSuccess();
@@ -613,7 +628,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * test use case 4.9.2
      */
-    @Override
+    @Override @Test
     public void testReplayRequest() {
         testReplayRequestSuccess();
         testReplayRequestFail();

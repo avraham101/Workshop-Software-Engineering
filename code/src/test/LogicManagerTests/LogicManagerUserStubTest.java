@@ -15,6 +15,18 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
         super.setUp();
     }
 
+    /**---------------------------------set up-------------------------------------*/
+
+    @Override
+    protected void setUpOpenedStore() {
+        setUpLogedInUser();
+        StoreData storeData = data.getStore(Data.VALID);
+        logicManager.openStore(storeData);
+    }
+
+    /**---------------------------------set-ups-------------------------------------*/
+
+
     /**
      *  use case 2.7.4 - add product to cart
      */
