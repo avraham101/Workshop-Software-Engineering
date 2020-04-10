@@ -14,6 +14,8 @@ public class LoggerSystem {
     private Loggy errors;
 
     public LoggerSystem() {
+        File file = new File(".\\src\\Logs");
+        file.mkdirs();
         this.pathEvents = ".\\src\\Logs\\events.txt";
         this.pathErrors = ".\\src\\Logs\\errors.txt";
         createEvent();
