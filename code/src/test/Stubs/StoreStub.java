@@ -11,8 +11,8 @@ import java.util.HashMap;
 
 public class StoreStub extends Store {
 
-    public StoreStub(String name, PurchesPolicy purchesPolicy, DiscountPolicy discount, Permission permissions, SupplySystem supplySystem, PaymentSystem paymentSystem) {
-        super(name, purchesPolicy, discount, permissions, supplySystem, paymentSystem);
+    public StoreStub(String name, PurchasePolicy purchasePolicy, DiscountPolicy discount, Permission permissions, SupplySystem supplySystem, PaymentSystem paymentSystem) {
+        super(name, purchasePolicy, discount, permissions, supplySystem, paymentSystem);
     }
 
     /**

@@ -33,7 +33,7 @@ public class BasketTest {
     private void initStore() {
         Permission permission = new Permission(data.getSubscribe(Data.VALID));
         StoreData storeData = data.getStore(Data.VALID);
-        store = new StoreStub(storeData.getName(),storeData.getPurchesPolicy(),
+        store = new StoreStub(storeData.getName(),storeData.getPurchasePolicy(),
                 storeData.getDiscountPolicy(),permission,new ProxySupply(),
                 new ProxyPayment());
         permission.setStore(store);

@@ -1,10 +1,7 @@
 package LogicManagerTests;
 
 import Data.*;
-import DataAPI.CartData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Domain.*;
 import Stubs.StoreStub;
 import Stubs.SubscribeStub;
@@ -89,7 +86,7 @@ public class LogicManagerAllStubsTest {
         logicManager.openStore(storeData);
         Store store = stores.get(storeData.getName());
         Permission permission = new Permission(data.getSubscribe(Data.VALID));
-        StoreStub storeStub = new StoreStub(store.getName(),store.getPurchesPolicy(),
+        StoreStub storeStub = new StoreStub(store.getName(),store.getPurchasePolicy(),
                 store.getDiscount(),permission,store.getSupplySystem(),
                 store.getPaymentSystem());
         permission.setStore(storeStub);

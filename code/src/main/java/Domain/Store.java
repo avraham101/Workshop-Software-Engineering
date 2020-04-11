@@ -12,7 +12,7 @@ import java.util.*;
 public class Store {
 
     private String name; //unique
-    private PurchesPolicy purchesPolicy;
+    private PurchasePolicy purchasePolicy;
     private DiscountPolicy discount;
     private HashMap<String, Product> products;
     private HashMap<String, Category> categoryList;
@@ -22,11 +22,11 @@ public class Store {
     private PaymentSystem paymentSystem;
     private List<Purchase> purchases;
 
-    public Store(String name, PurchesPolicy purchesPolicy, DiscountPolicy discount,
+    public Store(String name, PurchasePolicy purchasePolicy, DiscountPolicy discount,
                  Permission permission, SupplySystem supplySystem,
                  PaymentSystem paymentSystem) {
         this.name = name;
-        this.purchesPolicy = purchesPolicy;
+        this.purchasePolicy = purchasePolicy;
         this.discount = discount;
         this.permissions = new HashMap<>();
         this.permissions.put(permission.getOwner().getName(), permission);
@@ -46,12 +46,12 @@ public class Store {
         this.name = name;
     }
 
-    public PurchesPolicy getPurchesPolicy() {
-        return purchesPolicy;
+    public PurchasePolicy getPurchasePolicy() {
+        return purchasePolicy;
     }
 
-    public void setPurchesPolicy(PurchesPolicy purchesPolicy) {
-        this.purchesPolicy = purchesPolicy;
+    public void setPurchasePolicy(PurchasePolicy purchasePolicy) {
+        this.purchasePolicy = purchasePolicy;
     }
 
     public DiscountPolicy getDiscount() {
@@ -137,7 +137,7 @@ public class Store {
         if (o == null || getClass() != o.getClass()) return false;
         Store store = (Store) o;
         return Objects.equals(name, store.name) &&
-                Objects.equals(purchesPolicy, store.purchesPolicy) &&
+                Objects.equals(purchasePolicy, store.purchasePolicy) &&
                 Objects.equals(discount, store.discount) &&
                 Objects.equals(products, store.products) &&
                 Objects.equals(categoryList, store.categoryList) &&
@@ -149,7 +149,7 @@ public class Store {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, purchesPolicy, discount, products, categoryList, requests, permissions, supplySystem, paymentSystem);
+        return Objects.hash(name, purchasePolicy, discount, products, categoryList, requests, permissions, supplySystem, paymentSystem);
     }
 
 
@@ -169,7 +169,7 @@ public class Store {
             if(real.getAmount() < amount)
                 return false;
         }
-        if(!purchesPolicy.stands(list))
+        if(!purchasePolicy.stands(list))
             return false;
         return true;
     }

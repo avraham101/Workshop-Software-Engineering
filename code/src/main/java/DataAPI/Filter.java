@@ -1,4 +1,4 @@
-package Domain;
+package DataAPI;
 
 public class Filter {
 

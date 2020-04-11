@@ -8,7 +8,6 @@ import Utils.Utils;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
-import java.util.logging.Level;
 
 public class LogicManager {
     //TODO check all classes
@@ -153,7 +152,7 @@ public class LogicManager {
         List<StoreData> data = new LinkedList<>();
         for (String storeName: stores.keySet()) {
             Store store = stores.get(storeName);
-            StoreData storeData = new StoreData(store.getName(),store.getPurchesPolicy(),
+            StoreData storeData = new StoreData(store.getName(),store.getPurchasePolicy(),
                     store.getDiscount());
             data.add(storeData);
         }
@@ -411,7 +410,7 @@ public class LogicManager {
      */
     private boolean validStoreDetails(StoreData storeData) {
         return storeData!=null && storeData.getName() != null && storeData.getDiscountPolicy()!=null &&
-                storeData.getPurchesPolicy()!=null;
+                storeData.getPurchasePolicy()!=null;
     }
 
 
