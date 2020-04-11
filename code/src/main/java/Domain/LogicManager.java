@@ -55,18 +55,30 @@ public class LogicManager {
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
+            loggerSystem.writeEvent("Logic Manager","constructor",
+                    "Initialize the system", new Object[]{userName, password});
             paymentSystem = new ProxyPayment();
             supplySystem = new ProxySupply();
             if(!paymentSystem.connect()) {
+                loggerSystem.writeError("Logic manager", "constructor",
+                        "Fail connection to payment system",new Object[]{userName, password});
                 throw new Exception("Payment System Crashed");
             }
             if(!supplySystem.connect()) {
+                loggerSystem.writeError("Logic manager", "constructor",
+                        "Fail connection to supply system",new Object[]{userName, password});
                 throw new Exception("Supply System Crashed");
             }
             if(!register(userName,password)) {
+                loggerSystem.writeError("Logic manager", "constructor",
+                        "Fail register",new Object[]{userName, password});
                 throw new Exception("Admin Register Crashed");
             }
         } catch (Exception e) {
+            if (loggerSystem != null){
+                loggerSystem.writeError("Logic manager", "constructor",
+                        "System crashed",new Object[]{userName, password});
+            }
             throw new Exception("System crashed");
         }
         current = new User();
@@ -95,7 +107,8 @@ public class LogicManager {
                 users.put(userName,subscribe);
                 return true;
             } catch (NoSuchAlgorithmException e) {
-                //TODO add to logger
+                loggerSystem.writeError("Logic manager", "register",
+                        "Fail register the user",new Object[]{userName, password});
             }
         }
         return false;
@@ -108,7 +121,8 @@ public class LogicManager {
      * @return true if the user is logged to the system, otherwise false
      */
     public boolean login(String userName, String password) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","login",
+                "login a user", new Object[] {userName, password});
         if(!validName(userName) || !validPassword(password)) {
             return false;
         }
@@ -120,7 +134,8 @@ public class LogicManager {
                     return current.login(subscribe);
                 }
             } catch (NoSuchAlgorithmException e) {
-                //TODO add to logger
+                loggerSystem.writeError("Logic manager", "login",
+                        "Fail to login the user",new Object[]{userName, password});
             }
         }
         return false;
@@ -149,7 +164,8 @@ public class LogicManager {
      * @return - details of all the stores data
      */
     public List<StoreData> viewStores() {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","viewStores",
+                "view the details of the stores in the system", new Object[] {});
         List<StoreData> data = new LinkedList<>();
         for (String storeName: stores.keySet()) {
             Store store = stores.get(storeName);
@@ -166,7 +182,8 @@ public class LogicManager {
      * @return - list of ProductData of the products in the store
      */
     public List<ProductData> viewProductsInStore(String storeName) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","viewProductsInStore",
+                "view the details of the stores in the system", new Object[] {storeName});
         List<ProductData> data = new LinkedList<>();
         Store store = stores.get(storeName);
         if(store!=null) {
@@ -185,7 +202,6 @@ public class LogicManager {
      * @param discounts of the product
      * @return if the discounts are not null and between 0 to 100
      */
-
     private boolean validDiscounts(List<Discount> discounts) {
         if(discounts==null)
             return false;
@@ -201,7 +217,6 @@ public class LogicManager {
      * @param discount of the product
      * @return if the discount is not null and between 0 to 100
      */
-
     private boolean validDiscount(Discount discount) {
         return discount!=null&&discount.getPercentage()>0&&discount.getPercentage()<100;
     }
@@ -212,7 +227,8 @@ public class LogicManager {
      * @return - list of products after filer and sorter.
      */
     public List<ProductData> viewSpecificProducts(Filter filter) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","viewSpecificProducts",
+                "view products after a filter", new Object[] {filter});
         if(!validFilter(filter))
             return new LinkedList<>();
         List<ProductData> productsData = new LinkedList<>();
@@ -241,6 +257,8 @@ public class LogicManager {
      * @return - list of products after filer and sorter.
      */
     private List<ProductData> searchProducts(List<ProductData> products, Search search, String value) {
+        loggerSystem.writeEvent("LogicManager","searchProducts",
+                "search products in store after filter and sorter", new Object[] {products, search, value});
         if(search == Search.NONE) {
             return products;
         }
@@ -273,6 +291,8 @@ public class LogicManager {
      * @return - list of products after filer and sorter.
      */
     private List<ProductData> filterProducts(List<ProductData> products, Filter filter) {
+        loggerSystem.writeEvent("LogicManager","filterProducts",
+                "search products in store after filter", new Object[] {products, filter});
         List<ProductData> productData = new LinkedList<>();
         for(ProductData p: products) {
             //filter by min price
@@ -299,7 +319,8 @@ public class LogicManager {
      * @return - the cart details
      */
     public CartData watchCartDetatils() {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","watchCartDetatils",
+                "view the user cart data", new Object[] {});
         return current.watchCartDetatils();
     }
 
@@ -311,7 +332,8 @@ public class LogicManager {
      * @return - true if the delete work, false if not
      */
     public boolean deleteFromCart(String productName,String storeName){
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","deleteFromCart",
+                "delete product from the user cart", new Object[] {productName, storeName});
         return current.deleteFromCart(productName,storeName);
     }
 
@@ -323,7 +345,8 @@ public class LogicManager {
      * @return - true if succeeded, false if not
      */
     public boolean editProductInCart(String productName,String storeName,int newAmount) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","editProductInCart",
+                "edit the amount of a product in the cart", new Object[] {productName, storeName, newAmount});
         return current.editProductInCart(productName,storeName, newAmount);
     }
 
@@ -335,7 +358,8 @@ public class LogicManager {
      * @return - true if added, false if not
      */
     public boolean addProductToCart(String productName, String storeName, int amount) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","addProductToCart",
+                "add a product to the cart", new Object[] {productName, storeName, amount});
         boolean result = false;
         Store store = stores.get(storeName);
         if (store != null) {
@@ -354,7 +378,8 @@ public class LogicManager {
      * @return true is the purchase succeeded, otherwise false
      */
     public boolean purchaseCart(PaymentData paymentData, String addresToDeliver) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","purchaseCart",
+                "buy the products in the cart", new Object[] {paymentData, addresToDeliver});
         if (!validPaymentData(paymentData))
             return false;
         if (addresToDeliver == null || addresToDeliver.isEmpty())
@@ -381,7 +406,8 @@ public class LogicManager {
      * @return true if the user logout
      */
     public boolean logout() {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","logout",
+                "a user logout from the system", new Object[] {});
         return current.logout();
     }
 
@@ -391,7 +417,8 @@ public class LogicManager {
      * @return true if can open store, otherwise false.
      */
     public boolean openStore(StoreData storeDetails) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","openStore",
+                "open new store", new Object[] {storeDetails});
         if(!validStoreDetails(storeDetails))
             return false;
         if(stores.containsKey(storeDetails.getName()))
@@ -423,7 +450,8 @@ public class LogicManager {
      * @return true if the review added, otherwise false.
      */
     public boolean addReview(String storeName,String productName, String content) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","addReview",
+                "add a review for the product", new Object[] {storeName, productName, content});
         if(!validReview(storeName,productName,content))
             return false;
         Store store = stores.get(storeName);
@@ -467,7 +495,8 @@ public class LogicManager {
      * @return
      */
     public boolean addRequest(String storeName, String content) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","addRequest",
+                "add a request to the store", new Object[] {storeName, content});
         if (content == null || !stores.containsKey(storeName)) return false;
         Store dest = stores.get(storeName);
         Request request = current.addRequest(storeName, content);
@@ -482,7 +511,8 @@ public class LogicManager {
      * @return the purchase list
      */
     public List<Purchase> watchMyPurchaseHistory() {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","watchMyPurchaseHistory",
+                "user view his purchase history", new Object[] {});
         return current.watchMyPurchaseHistory();
     }
 
@@ -492,7 +522,8 @@ public class LogicManager {
      * @return true if the product was added, false otherwise
      */
     public boolean addProductToStore(ProductData productData) {
-        //TODO logger
+        loggerSystem.writeEvent("LogicManager","addProductToStore",
+                "add a product to store", new Object[] {productData});
         if(productData==null)
             return false;
         if(!stores.containsKey(productData.getStoreName()))
@@ -520,7 +551,8 @@ public class LogicManager {
      * @return if the product was removed
      */
     public boolean removeProductFromStore(String storeName, String productName) {
-        //TODO Logger
+        loggerSystem.writeEvent("LogicManager","addProductToStore",
+                "remove a product to store", new Object[] {storeName, productName});
         if(!stores.containsKey(storeName))
             return false;
         return current.removeProductFromStore(storeName,productName);
@@ -531,9 +563,9 @@ public class LogicManager {
      * @param productData the product to be edited to
      * @return if the product was edited successfully
      */
-
     public boolean editProductFromStore(ProductData productData) {
-        //TODO logger
+        loggerSystem.writeEvent("LogicManager","editProductFromStore",
+                "edit the product amount in the store", new Object[] {productData});
         if(productData==null)
             return false;
         if(!stores.containsKey(productData.getStoreName()))
@@ -550,7 +582,8 @@ public class LogicManager {
      * @return
      */
     public boolean manageOwner(String storeName, String userName) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","manageOwner",
+                "store owner add a owner to the store", new Object[] {storeName, userName});
         if(!users.containsKey(userName)||!stores.containsKey(storeName))
             return false;
         addManager(userName,storeName);
@@ -566,7 +599,8 @@ public class LogicManager {
      * @return if the manager was added successfully
      */
     public boolean addManager(String userName, String storeName) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","addManager",
+                "store owner add a manager to the store", new Object[] {storeName, userName});
         if(!users.containsKey(userName)||!stores.containsKey(storeName))
             return false;
         return current.addManager(users.get(userName),storeName);
@@ -580,7 +614,8 @@ public class LogicManager {
      * @return
      */
     public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","addPermissions",
+                "store owner add a manager's permissions", new Object[] {permissions, storeName, userName});
         if(!validList(permissions))
             return false;
         if (!users.containsKey(userName) || !stores.containsKey(storeName))
@@ -589,7 +624,6 @@ public class LogicManager {
     }
 
     //check if list is valid and contains no nulls
-
     private boolean validList(List<? extends Object> checkList) {
         if(checkList==null)
             return false;
@@ -606,9 +640,9 @@ public class LogicManager {
      * @param userName of the user to remove his permissions
      * @return if the permission were removed
      */
-
     public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","removePermissions",
+                "store owner remove manager's permission", new Object[] {permissions, storeName, userName});
         if(!validList(permissions))
             return false;
         if (!users.containsKey(userName) || !stores.containsKey(storeName))
@@ -624,7 +658,8 @@ public class LogicManager {
      * @return if the manager was removed
      */
     public boolean removeManager(String userName, String storeName) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","removeManager",
+                "store owner remove manager", new Object[] {storeName, userName});
         if (!users.containsKey(userName) || !stores.containsKey(storeName))
             return false;
         return current.removeManager(userName,storeName);
@@ -636,7 +671,8 @@ public class LogicManager {
      * @return if the current user is manager or owner of the store the list , else empty list.
      */
     public List<Request> viewStoreRequest(String storeName) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","viewStoreRequest",
+                "store owner view the requests of the store", new Object[] {storeName});
         List<Request> requests = new LinkedList<>();
         if(stores.containsKey(storeName))
             requests = current.viewRequest(storeName);
@@ -651,7 +687,8 @@ public class LogicManager {
      * @return true if replay, false else
      */
     public Request replayRequest(String storeName, int requestID, String content) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","viewStoreRequest",
+                "store owner view the requests of the store", new Object[] {storeName});
         if (content!=null && stores.containsKey(storeName))
             return (current.replayToRequest(storeName, requestID, content)) ;
         return null;
@@ -663,7 +700,8 @@ public class LogicManager {
      * @return - list of purchases that of the user
      */
     public List<Purchase> watchUserPurchasesHistory(String userName) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","watchUserPurchasesHistory",
+                "admin watch a user purchase history", new Object[] {userName});
         if(!users.containsKey(userName))
             return null;
         if (current.canWatchUserHistory()) {
@@ -680,7 +718,8 @@ public class LogicManager {
      * @return - list of purchases that of the store
      */
     public List<Purchase> watchStorePurchasesHistory(String storeName) {
-        //TODO add logger
+        loggerSystem.writeEvent("LogicManager","watchStorePurchasesHistory",
+                "admin watch a store purchase history", new Object[] {storeName});
         if(!stores.containsKey(storeName))
             return null;
         if (current.canWatchStoreHistory(storeName)) {
