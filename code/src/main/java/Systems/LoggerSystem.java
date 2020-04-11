@@ -41,6 +41,7 @@ public class LoggerSystem {
 }
 
 class Loggy {
+
     private Object lock;
     private File file;
 
