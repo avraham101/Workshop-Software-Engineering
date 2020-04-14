@@ -6,7 +6,6 @@ import DataAPI.StoreData;
 import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
-import UserTests.UserAllStubsTest;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,7 +24,7 @@ public class UserStub extends User {
 
     @Override
     public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
-        return new Store(storeDetails.getName(), new PurchesPolicy(), new DiscountPolicy(),
+        return new Store(storeDetails.getName(), new PurchasePolicy(), new DiscountPolicy(),
                 new Permission(new Subscribe(this.getUserName(), this.getPassword())),
                 supplySystem, paymentSystem);
     }
@@ -58,8 +57,14 @@ public class UserStub extends User {
     /**
      * use case 3.3 - write review
      * the function check if a product is perchesed
-     *
-     * @param storeName   - the store name
+     */
+    @Override
+    public boolean addReview(Review review) {
+        return true;
+    }
+
+     /** check if product was purchased
+      *  @param storeName   - the store name
      * @param productName
      * @return
      */
@@ -153,8 +158,5 @@ public class UserStub extends User {
         return new LinkedList<>();
     }
 
-    @Override
-    public boolean addReview(Review review) {
-        return true;
-    }
+
 }

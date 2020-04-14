@@ -6,10 +6,9 @@ import static org.junit.Assert.*;
 
 public class StoreTestReal extends StoreTestsAllStubs {
 
-    @Override
-    protected void makeProductStub() {
-    }
-
+    /**
+     * use case 4.1.1
+     */
     @Override
     protected void testAddProductSuccess() {
         super.testAddProductSuccess();

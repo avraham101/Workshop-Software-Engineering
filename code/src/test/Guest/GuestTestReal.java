@@ -6,6 +6,7 @@ import Domain.Cart;
 import Domain.Product;
 import Domain.Store;
 import org.junit.Before;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,10 +23,22 @@ public class GuestTestReal extends GuestTest{
         guest=new Domain.Guest(cart);
     }
 
+    /**------------set-ups-------------------*/
+
+    /**
+     * add valid product to the cart
+     */
+    private void setUpProductAddedToCart(){
+        Store store = data.getRealStore(Data.VALID);
+        Product product = data.getRealProduct(Data.VALID);
+        guest.addProductToCart(store,product,product.getAmount());
+    }
+
+    /**------------set-ups-------------------*/
     /**
      * use case 2.7 add to cart
      */
-    @Override
+    @Override @Test
     public void testAddProductToCart() {
         super.testAddProductToCart();
         Store store = data.getRealStore(Data.VALID);
@@ -35,5 +48,11 @@ public class GuestTestReal extends GuestTest{
         Iterator<Product> iterator =  products.keySet().iterator();
         Product real = iterator.next();
         assertEquals(real.getName(),product.getName());
+    }
+
+    @Override @Test
+    public void testbuyCart() {
+        setUpProductAddedToCart();
+        super.testbuyCart();
     }
 }

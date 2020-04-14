@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface AcceptanceTestsBridge {
     boolean initialStart(String username, String password);
-    String getAdminUsername(); //?
     void resetSystem();
     boolean register(String username, String password);
     String getCurrentLoggedInUser();
@@ -48,4 +47,6 @@ public interface AcceptanceTestsBridge {
     HashMap<ApplicationToStoreTestData,String> getUserApplicationsAndReplies(String username,String storeName);
 
     List<ApplicationToStoreTestData> getUserApplications(String username, String storeName);
+
+    List<PurchaseTestData> userGetStorePurchasesHistory(String storeName);
 }

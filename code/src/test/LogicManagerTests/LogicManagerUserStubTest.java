@@ -3,13 +3,8 @@ package LogicManagerTests;
 import Data.Data;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
-import Domain.Product;
-import Domain.Purchase;
-import Domain.Review;
 import Domain.Store;
 import org.junit.Before;
-
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -20,11 +15,47 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
         super.setUp();
     }
 
+    /**---------------------------------set up-------------------------------------*/
+
+    @Override
+    protected void setUpOpenedStore() {
+        setUpLogedInUser();
+        StoreData storeData = data.getStore(Data.VALID);
+        logicManager.openStore(storeData);
+    }
+
+    /**---------------------------------set-ups-------------------------------------*/
+
+
+    /**
+     *  use case 2.7.4 - add product to cart
+     */
+    @Override
+    public void testAddProductToCart() {
+        super.testAddProductToCart();
+        testAddProductToCartInvalidProduct();
+    }
+
+    /**
+     * part of use case 2.7.4 - add product to cart
+     */
+    private void testAddProductToCartInvalidProduct() {
+        ProductData product = data.getProductData(Data.NULL_PRODUCT);
+        assertFalse(logicManager.addProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
+        product = data.getProductData(Data.NEGATIVE_AMOUNT);
+        assertFalse(logicManager.addProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
+        product = data.getProductData(Data.ZERO);
+        assertFalse(logicManager.addProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
+        product = data.getProductData(Data.NULL_STORE);
+        assertFalse(logicManager.addProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
+
+    }
+
     /**
      * test use case 3.2 - Open Store
      */
     @Override
-    protected void testOpenStore() {
+    public void testOpenStore() {
         super.testOpenStore();
         StoreData storeData = data.getStore(Data.VALID);
         Store store = stores.get(storeData.getName());
@@ -36,36 +67,12 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
     }
 
     /**
-     *  use case 2.7.4 - add product to cart
-     */
-    @Override
-    protected void testAddProductToCart() {
-        super.testAddProductToCart();
-        testAddProductToCartInvalidProduct();
-    }
-
-    /**
      * part of test use case 3.2 - Open Store
      */
     @Override
     protected void testOpenStoreSucces(){
         StoreData storeData = data.getStore(Data.VALID);
         assertTrue(logicManager.openStore(storeData));
-    }
-
-    /**
-     * part of use case 2.7.4 - add product to cart
-     */
-    private void testAddProductToCartInvalidProduct() {
-        ProductData product = data.getProductData(Data.NULL_PRODUCT);
-        assertFalse(logicManager.aadProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
-        product = data.getProductData(Data.NEGATIVE_AMOUNT);
-        assertFalse(logicManager.aadProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
-        product = data.getProductData(Data.ZERO);
-        assertFalse(logicManager.aadProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
-        product = data.getProductData(Data.NULL_STORE);
-        assertFalse(logicManager.aadProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
-
     }
 
     /**

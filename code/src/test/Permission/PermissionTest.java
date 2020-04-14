@@ -26,37 +26,46 @@ public class PermissionTest {
         permission=new Permission(sub,permissionTypes);
     }
 
-    @Test
-    public void test(){
-        testAddType();
-    }
-
     /**
      * test add type
      */
-
-    private void testAddType() {
+    @Test
+    public void testAddType() {
         testAddTypeSuccess();
         testAddTypeAgainFail();
         testAddOwner();
         testAddTypeWhenOwnerFail();
     }
 
-    private void testAddOwner() {
+    /**
+     * test add type basic success case
+     */
+    public void testAddTypeSuccess() {
+        assertTrue(permission.addType(PermissionType.PRODUCTS_INVENTORY));
+    }
+
+    /**
+     * test add owner
+     */
+    public void testAddOwner() {
         assertTrue(permission.addType(PermissionType.OWNER));
         assertEquals(1, permissionTypes.size());
         assertTrue(permissionTypes.contains(PermissionType.OWNER));
     }
 
+    /**
+     * test add the same type twice fail
+     */
     private void testAddTypeAgainFail() {
         assertFalse(permission.addType(PermissionType.PRODUCTS_INVENTORY));
     }
 
+    /**
+     * test add type when the permission is owner, fails
+     */
     private void testAddTypeWhenOwnerFail(){
         assertFalse(permission.addType(PermissionType.ADD_MANAGER));
     }
 
-    private void testAddTypeSuccess() {
-        assertTrue(permission.addType(PermissionType.PRODUCTS_INVENTORY));
-    }
+
 }

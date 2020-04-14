@@ -19,20 +19,20 @@ public class GetStorePurchaseHistoryTest extends AcceptanceTests {
     @Test
     public void getStorePurchaseHistorySuccess(){
        List<PurchaseTestData> history =
-               bridge.getStorePurchasesHistory(stores.get(0).getStoreName());
+               bridge.userGetStorePurchasesHistory(stores.get(0).getStoreName());
        assertNotNull(history);
        assertTrue(history.get(0).getProductsAndAmountInPurchase().containsKey(products.get(0)));
     }
 
     @Test
     public void getStorePurchaseHistoryFailNotMyStore(){
-        List<PurchaseTestData> history = bridge.getStorePurchasesHistory(stores.get(2).getStoreName());
+        List<PurchaseTestData> history = bridge.userGetStorePurchasesHistory(stores.get(2).getStoreName());
         assertNull(history);
     }
 
     @Test
     public void getStorePurchaseHistoryFailStoreNotExist(){
-        List<PurchaseTestData> history = bridge.getStorePurchasesHistory("notExist");
+        List<PurchaseTestData> history = bridge.userGetStorePurchasesHistory("notExist");
         assertNull(history);
     }
 

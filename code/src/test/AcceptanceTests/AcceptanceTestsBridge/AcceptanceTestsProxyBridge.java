@@ -26,25 +26,16 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public String getAdminUsername() {
-        if(realBridge!=null)
-            return realBridge.getAdminUsername();
-        return null;
-    }
-
-    @Override
     public void resetSystem() {
         if(realBridge!=null)
             realBridge.resetSystem();
     }
-
     @Override
     public boolean register(String username, String password) {
         if(realBridge!=null)
             return realBridge.register(username,password);
         return false;
     }
-
 
     @Override
     public String getCurrentLoggedInUser() {
@@ -283,4 +274,10 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
         return null;
     }
 
+    @Override
+    public List<PurchaseTestData> userGetStorePurchasesHistory(String storeName) {
+        if(realBridge!=null)
+            return realBridge.userGetStorePurchasesHistory(storeName);
+        return null;
+    }
 }

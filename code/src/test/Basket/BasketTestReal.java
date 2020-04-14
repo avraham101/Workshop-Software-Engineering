@@ -27,12 +27,25 @@ public class BasketTestReal extends BasketTest{
         basket = new Basket(store);
     }
 
+    /**------------------------------set-ups------------*/
+    /**
+     * set up for checking buying product
+     */
+    private void setUpForBuy(){
+        setUpAddedToBasket();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        basket.available(paymentData, address);
+    }
+
+    /**------------------------------set-ups------------*/
+
     /**
      * use case 2.8 - buy cart
      * test if the basket is available for buying
      */
-    @Override
-    protected void testIfBasketAvailableToBuy() {
+    @Override @Test
+    public void testIfBasketAvailableToBuy() {
         super.testIfBasketAvailableToBuy();
         testIfBasketAvailableToBuyFails();
     }
@@ -54,8 +67,9 @@ public class BasketTestReal extends BasketTest{
     /**
      * use case 2.8 - buy cart
      */
-    @Override
-    protected void testBuyBasket() {
+    @Override @Test
+    public void testBuyBasket() {
+        setUpForBuy();
         Purchase result = basket.buy();
         assertNotNull(result);
         Product product = data.getRealProduct(Data.VALID);

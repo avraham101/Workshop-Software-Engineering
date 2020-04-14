@@ -1,50 +1,110 @@
 package Systems;
 
-import java.io.IOException;
+import java.io.*;
+import java.time.LocalDateTime;
 import java.util.logging.*;
 
 public class LoggerSystem {
-    private final static Logger EVENT_LOGGER = Logger.getLogger("Event logger"); // logger for the events
-    private final static Logger ERROR_LOGGER = Logger.getLogger("Error logger"); // logger for the errors
 
-    /**
-     * constructor
-     * @throws IOException -  if there are IO problems opening the files
-     */
-    public  LoggerSystem() throws IOException {
-            FileHandler fileHandlerEvents = new FileHandler("Workshop202Events.txt", 8096, 1, true);
-            FileHandler fileHandlerError = new FileHandler("Workshop202Errors.txt", 8096, 1, true);
-            setHandlersFormat(fileHandlerEvents, fileHandlerError);
-            EVENT_LOGGER.addHandler(fileHandlerEvents);
-            ERROR_LOGGER.addHandler(fileHandlerError);
-            EVENT_LOGGER.setLevel(Level.ALL);
+    private Object eventLock = new Object();
+    private Object errorLock = new Object();
+    private String pathEvents;
+    private String pathErrors;
+    private Loggy events;
+    private Loggy errors;
 
+    public LoggerSystem() {
+        File file = new File(".\\src\\Logs");
+        file.mkdirs();
+        this.pathEvents = ".\\src\\Logs\\events.txt";
+        this.pathErrors = ".\\src\\Logs\\errors.txt";
+        createEvent();
+        createError();
     }
 
-    /**
-     * getter of the event logger
-     * @return - the EVENT_LOGGER
-     */
-    public Logger getEventLogger() {
-        return EVENT_LOGGER;
+    private void createEvent() {
+        events = new Loggy(eventLock, pathEvents);
     }
 
-    /**
-     * getter of the error logger
-     * @return - the ERROR_LOGGER
-     */
-    public Logger getErrorLogger() {
-        return ERROR_LOGGER;
+    private void createError() {
+        errors = new Loggy(errorLock, pathErrors);
     }
 
-    /**
-     * set the formats of the handlers
-     * @param fileHandlerEvents - the handler of the events
-     * @param fileHandlerErrors - the handler of the errors
-     */
-    private void setHandlersFormat(FileHandler fileHandlerEvents, FileHandler fileHandlerErrors) {
-        fileHandlerEvents.setFormatter(new SimpleFormatter());
-        fileHandlerErrors.setFormatter(new SimpleFormatter());
+    public void writeEvent(String className, String methodName, String msg, Object[] params) {
+        events.write(className, methodName, msg, params);
     }
 
+    public void writeError(String className, String methodName, String msg, Object[] params) {
+        errors.write(className, methodName, msg, params);
+    }
+
+}
+
+class Loggy {
+
+    private Object lock;
+    private File file;
+
+    public Loggy(Object lock, String path) {
+        synchronized (lock) {
+            this.lock = lock;
+            this.file = new File(path);
+            if(!file.exists()) {
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void write(String className, String methodName, String msg, Object[] params) {
+        synchronized (lock) {
+            try(FileOutputStream writer = new FileOutputStream(file,true)) {
+                writer.write(printDate());
+                writer.write(printHeader(className,methodName));
+                writer.write(printParams(params));
+                writer.write(printDes(msg));
+            } catch (Exception e) {
+                //TODO
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private byte[] printDate() {
+        LocalDateTime time = LocalDateTime.now();
+        String output = time.toString() +"\n";
+        return output.getBytes();
+    }
+
+    private byte[] printHeader(String className, String method) {
+        String output = "Class: " + className;
+        output += " Method: "+method+"\n";
+        return output.getBytes();
+    }
+
+    private byte[] printParams(Object[] params) {
+        String output = "params: ";
+        if(params.length==0) {
+            output = "No params";
+            return output.getBytes();
+        }
+        for(int i=0;i<params.length; i++) {
+            output += " ("+i+") ";
+            if(params[i]==null)
+                output+= "Null";
+            else
+                output += params[i].toString();
+        }
+        output += "\n";
+        return output.getBytes();
+    }
+
+    private byte[] printDes(String des) {
+        String output = "Description: ";
+        output+=des +"\n";
+        return output.getBytes();
+    }
 }

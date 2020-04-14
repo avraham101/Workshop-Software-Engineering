@@ -29,35 +29,17 @@ public class GuestTest {
     }
 
     /**
-     * main test class for guest
-     */
-    @Test
-    public void test(){
-        logoutTest();
-        loginTest();
-        openStoreTest();
-        testAddProductToStore();
-        testEditProductInStore();
-        testRemoveProductInStore();
-        testAddProductToCart();
-        testbuyCart();
-        testWatchPurchases();
-        addRequest();
-        testAddReview();
-        testAddManager();
-        testAddPermission();
-    }
-
-    /**
      * test use case 2.3 - Login
      */
-    private void loginTest() {
+    @Test
+    public void loginTest() {
         assertTrue(guest.login(new User(),new Subscribe("yuval","sabag")));
     }
 
     /**
      * use case 2.7 add to cart
      */
+    @Test
     public void testAddProductToCart() {
         Store store = data.getRealStore(Data.VALID);
         Product product = data.getRealProduct(Data.VALID);
@@ -67,6 +49,7 @@ public class GuestTest {
     /**
      * use case - 2.8 buy cart
      */
+    @Test
     public void testbuyCart() {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
@@ -76,12 +59,14 @@ public class GuestTest {
     /**
      * test use case 3.1 - Logout
      */
-    private void logoutTest(){assertFalse(guest.logout(new User()));}
+    @Test
+    public void logoutTest(){assertFalse(guest.logout(new User()));}
 
     /**
      * test use case 3.2 - Open Store
      */
-    private void openStoreTest() {
+    @Test
+    public void openStoreTest() {
         StoreData storeData = data.getStore(Data.WRONG_STORE);
         assertNull(guest.openStore(storeData, null, null));
     }
@@ -89,7 +74,8 @@ public class GuestTest {
     /**
      * test use case 3.3 - write review
      */
-    private void testAddReview() {
+    @Test
+    public void testAddReview() {
         ProductData productData = data.getProductData(Data.VALID);
         assertFalse(guest.isItPurchased(productData.getStoreName(), productData.getProductName()));
         Review review = data.getReview(Data.VALID);
@@ -99,7 +85,8 @@ public class GuestTest {
     /**
      * use case 3.5 - add request
      */
-    private void addRequest() {
+    @Test
+    public void addRequest() {
         Request request = data.getRequest(Data.WRONG_STORE);
         assertNull(guest.addRequest(request.getStoreName(), request.getContent()));
     }
@@ -107,7 +94,8 @@ public class GuestTest {
     /**
      * test use case 3.7 - watch purchases
      */
-    private void testWatchPurchases() {
+    @Test
+    public void testWatchPurchases() {
         List<Purchase> list = guest.watchMyPurchaseHistory();
         assertNull(list);
     }
@@ -115,21 +103,24 @@ public class GuestTest {
     /**
      * test use case 4.1.1 -add product
      */
-    private  void testAddProductToStore(){
+    @Test
+    public void testAddProductToStore(){
         assertFalse(guest.addProductToStore(data.getProductData(Data.VALID)));
     }
 
     /**
      * test use case 4.1.2
      */
-    private void testEditProductInStore() {
+    @Test
+    public void testEditProductInStore() {
         assertFalse(guest.editProductFromStore(data.getProductData(Data.VALID)));
     }
 
     /**
      * test use case 4.1.3
      */
-    private void testRemoveProductInStore() {
+    @Test
+    public void testRemoveProductInStore() {
         ProductData productData = data.getProductData(Data.VALID);
         assertFalse(guest.removeProductFromStore(productData.getStoreName(),productData.getProductName()));
     }
@@ -137,18 +128,20 @@ public class GuestTest {
     /**
      * test use case 4.5
      */
-    private void testAddManager() {
+    @Test
+    public void testAddManager() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         StoreData storeData = data.getStore(Data.VALID);
-        guest.addManager(subscribe, storeData.getName());
+        assertFalse(guest.addManager(subscribe, storeData.getName()));
     }
 
     /**
      * test use case 4.6.1
      */
-    private void testAddPermission() {
+    @Test
+    public void testAddPermission() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         StoreData storeData = data.getStore(Data.VALID);
-        guest.addPermissions(data.getPermissionTypeList(),storeData.getName(),storeData.getName());
+        assertFalse(guest.addPermissions(data.getPermissionTypeList(),storeData.getName(),subscribe.getName()));
     }
 }

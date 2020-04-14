@@ -12,7 +12,6 @@ public class CartData {
     private double priceAfterDiscount;
     private List<ProductData> products;
 
-
     public CartData(double priceBeforeDiscount, double priceAfterDiscount, List<ProductData> products) {
         this.priceBeforeDiscount = priceBeforeDiscount;
         this.priceAfterDiscount = priceAfterDiscount;

@@ -72,7 +72,7 @@ public class Subscribe extends UserState{
     @Override
     public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
         Permission permission = new Permission(this);
-        Store store = new Store(storeDetails.getName(),storeDetails.getPurchesPolicy(),
+        Store store = new Store(storeDetails.getName(),storeDetails.getPurchasePolicy(),
                 storeDetails.getDiscountPolicy(), permission, supplySystem, paymentSystem);
         permission.setStore(store);
         permission.addType(PermissionType.OWNER); //Always true, store just created.

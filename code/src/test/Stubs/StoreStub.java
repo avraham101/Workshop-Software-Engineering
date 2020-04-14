@@ -11,22 +11,17 @@ import java.util.HashMap;
 
 public class StoreStub extends Store {
 
-    public StoreStub(String name, PurchesPolicy purchesPolicy, DiscountPolicy discount, Permission permissions, SupplySystem supplySystem, PaymentSystem paymentSystem) {
-        super(name, purchesPolicy, discount, permissions, supplySystem, paymentSystem);
+    public StoreStub(String name, PurchasePolicy purchasePolicy, DiscountPolicy discount, Permission permissions, SupplySystem supplySystem, PaymentSystem paymentSystem) {
+        super(name, purchasePolicy, discount, permissions, supplySystem, paymentSystem);
     }
 
+    /**
+     * use case 2.8 - buy cart
+     * @param list - the products
+     * @return
+     */
     @Override
-    public boolean addProduct(ProductData productData) {
-        return true;
-    }
-
-    @Override
-    public boolean removeProduct(String productName) {
-        return true;
-    }
-
-    @Override
-    public boolean editProduct(ProductData productData) {
+    public boolean isAvailableProducts(HashMap<Product, Integer> list) {
         return true;
     }
 
@@ -41,17 +36,40 @@ public class StoreStub extends Store {
     }
 
     /**
-     * use case 2.8 - buy cart
-     * @param list - the products
+     * use case 4.1.1 add product to store
+     * @param productData details of product to add to store
      * @return
      */
     @Override
-    public boolean isAvailableProducts(HashMap<Product, Integer> list) {
+    public boolean addProduct(ProductData productData) {
         return true;
     }
 
+    /**
+     * use case 4.1.2 - remove product from store
+     * @param productName
+     * @return
+     */
+    @Override
+    public boolean removeProduct(String productName) {
+        return true;
+    }
+
+    /**
+     * use case 4.1.3 edit product in store
+     * @param productData details of product to edit in store
+     * @return
+     */
+    @Override
+    public boolean editProduct(ProductData productData) {
+        return true;
+    }
+
+
+    //TODO add doumentation
     @Override
     public Purchase purches(PaymentData paymentData, DeliveryData deliveryData) {
         return null;
     }
+
 }

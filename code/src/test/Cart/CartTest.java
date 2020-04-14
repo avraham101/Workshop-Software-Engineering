@@ -25,19 +25,24 @@ public class CartTest {
         testData = new TestData();
     }
 
+    /**-------------------------set-ups------------------------------*/
+
     /**
-     * main test class for guest
+     *  prepare product in the cart
      */
-    @Test
-    public void test() {
-        testAddProduct();
-        testBuy();
+    private void setUpProductAdded(){
+        Store store = testData.getRealStore(Data.VALID);
+        Product product = testData.getRealProduct(Data.VALID);
+        cart.addProduct(store,product,product.getAmount());
     }
+
+    /**-------------------------set-ups------------------------------*/
 
     /**
      * use case 2.7 - add product to cart
      */
-    private void testAddProduct() {
+    @Test
+    public void testAddProduct() {
         Store store = testData.getRealStore(Data.VALID);
         Product product = testData.getRealProduct(Data.VALID);
         assertTrue(cart.addProduct(store,product,product.getAmount()));
@@ -46,7 +51,9 @@ public class CartTest {
     /**
      * use case 2.8 - buy
      */
-    private void testBuy() {
+    @Test
+    public void testBuy() {
+        setUpProductAdded();
         PaymentData paymentData = testData.getPaymentData(Data.VALID);
         DeliveryData deliveryData = testData.getDeliveryData(Data.VALID);
         List<Purchase> purchases = cart.buy(paymentData,deliveryData.getAddress());

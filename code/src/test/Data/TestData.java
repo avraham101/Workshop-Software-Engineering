@@ -2,8 +2,6 @@ package Data;
 
 import DataAPI.*;
 import Domain.*;
-import Data.Data;
-import Domain.*;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
 
@@ -114,12 +112,12 @@ public class TestData {
 
     private void setUpStoreData() {
         stores = new HashMap<>();
-        stores.put(Data.VALID,new StoreData("Store",new PurchesPolicy(), new DiscountPolicy()));
+        stores.put(Data.VALID,new StoreData("Store",new PurchasePolicy(), new DiscountPolicy()));
         stores.put(Data.NULL, null);
-        stores.put(Data.NULL_NAME, new StoreData(null,new PurchesPolicy(), new DiscountPolicy()));
-        stores.put(Data.WRONG_STORE, new StoreData(null,new PurchesPolicy(), new DiscountPolicy()));
+        stores.put(Data.NULL_NAME, new StoreData(null,new PurchasePolicy(), new DiscountPolicy()));
+        stores.put(Data.WRONG_STORE, new StoreData(null,new PurchasePolicy(), new DiscountPolicy()));
         stores.put(Data.NULL_PURCHASE, new StoreData("Store",null, new DiscountPolicy()));
-        stores.put(Data.NULL_DISCOUNT, new StoreData("Store",new PurchesPolicy(), null));
+        stores.put(Data.NULL_DISCOUNT, new StoreData("Store",new PurchasePolicy(), null));
     }
 
     private void setUpBasketData() {
@@ -242,7 +240,7 @@ public class TestData {
     public Store getRealStore(Data data) {
         StoreData storeData = getStore(data);
         Permission permission = new Permission(getSubscribe(Data.VALID));
-        Store store = new Store(storeData.getName(),storeData.getPurchesPolicy(),
+        Store store = new Store(storeData.getName(),storeData.getPurchasePolicy(),
                 storeData.getDiscountPolicy(), permission, new ProxySupply(), new ProxyPayment());
         permission.setStore(store);
         store.addProduct(getProductData(Data.VALID));

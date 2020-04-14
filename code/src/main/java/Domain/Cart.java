@@ -31,11 +31,6 @@ public class Cart {
         return null;
     }
 
-    //TODO Unused function
-    public void setBaskets(HashMap<String, Basket> baskets) {
-        this.baskets = baskets;
-    }
-
     /**
      * use case 2.7
      * @param store - the store to add to cart
@@ -67,13 +62,13 @@ public class Cart {
             Purchase purchase = basket.buy();
             if(purchase!=null) {
                 recives.add(purchase);
-                //baskets.remove(basket.getStore().getName());
+                //TODO remove this baskets.remove(basket.getStore().getName());
             }
-            else{
+            else {
                 return null;
             }
         }
-        baskets.clear();
+        baskets.clear(); //remove all baskets after buying all
         return recives;
     }
 

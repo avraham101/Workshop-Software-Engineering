@@ -7,9 +7,9 @@ import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public abstract class UserState {
     protected Cart cart;
@@ -48,12 +48,12 @@ public abstract class UserState {
         double priceAfterDiscount = 0;
         double priceBeforeDiscount = 0;
         for (Basket basket: cart.getBaskets().values()) {
-            for (Map.Entry<Product,Integer> productAndAmount: basket.getProducts().entrySet()) {
-                Product product = productAndAmount.getKey();
+            HashMap<Product, Integer> map = basket.getProducts();
+            for (Product product: map.keySet()) {
                 priceBeforeDiscount += product.getPrice();
                 priceAfterDiscount += product.getDiscountPrice();
                 ProductData productData = new ProductData(product, basket.getStore().getName());
-                productData.setAmount(productAndAmount.getValue());
+                productData.setAmount(map.get(product));
                 products.add(productData);
             }
         }
@@ -109,7 +109,7 @@ public abstract class UserState {
      * use case - 2.8 buy cart
      * @param paymentData - the payment info
      * @param addresToDeliver  - the address to shift
-     * @return ture if the cart bought, otherwise false
+     * @return true if the cart bought, otherwise false
      */
     public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
         List<Purchase> recives = cart.buy(paymentData, addresToDeliver);
