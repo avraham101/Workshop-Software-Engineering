@@ -31,6 +31,7 @@ public class OpenStoreTest extends AcceptanceTests {
 
     @Test
     public void openStoreFailNameAlreadyExist(){
+        StoreTestData store1= bridge.openStore(newStoreName);
         StoreTestData store2= bridge.openStore(newStoreName);
         assertNull(store2);
     }
