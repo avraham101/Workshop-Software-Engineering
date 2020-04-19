@@ -43,6 +43,7 @@ public class StoreTestsAllStubs {
     /**
      * use case 3.3 - add review
      */
+    //TODO split test
     @Test
     public void testAddReview() {
         setUpProductAdded();
@@ -52,6 +53,7 @@ public class StoreTestsAllStubs {
         assertTrue(product.getReviews().contains(review));
         review = data.getReview(Data.WRONG_PRODUCT);
         assertFalse(store.addReview(review));
+        //TODO check review wasn't added
     }
 
     /**
@@ -120,10 +122,13 @@ public class StoreTestsAllStubs {
         testFailRemoveProduct();
     }
 
-    private void testSuccessRemoveProduct() {
+    protected void testSuccessRemoveProduct() {
         assertTrue(store.removeProduct(data.getProductData(Data.VALID).getProductName()));
     }
 
+    /**
+     * test cant remove product twice
+     */
     private void testFailRemoveProduct() {
         assertFalse(store.removeProduct(data.getProductData(Data.VALID).getProductName()));
     }

@@ -50,6 +50,9 @@ public class GuestTestReal extends GuestTest{
         assertEquals(real.getName(),product.getName());
     }
 
+    /**
+     * use case 2.8
+     */
     @Override @Test
     public void testbuyCart() {
         setUpProductAddedToCart();

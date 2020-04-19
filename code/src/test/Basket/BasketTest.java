@@ -48,18 +48,6 @@ public class BasketTest {
         }
     }
 
-
-    public void testBasket() {
-        //teatAddToBasket();
-        testEditAmountFromBasket();
-        testDeleteFromBasket();
-        teatAddToBasket();
-        testIfBasketAvailableToBuy();
-        testBuyBasket();
-    }
-
-
-
     /**
      * use case 2.7.1 - add product to cart
      * test add product in a basket

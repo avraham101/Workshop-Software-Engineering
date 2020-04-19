@@ -51,6 +51,8 @@ public class CartTest {
     /**
      * use case 2.8 - buy
      */
+    //TODO split to few tests
+    //TODO each test which failed, check state didn't change
     @Test
     public void testBuy() {
         setUpProductAdded();

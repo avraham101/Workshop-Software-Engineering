@@ -43,13 +43,35 @@ public class UserRealTest extends UserAllStubsTest{
     }
 
     /**
+     * use case 2.7 - add product to cart
+     */
+    @Test
+    public void testAddProductToCart() {
+        setUpProductAdded();
+        Store store = data.getRealStore(Data.VALID);
+        Product p = data.getRealProduct(Data.VALID);
+        assertTrue(user.addProductToCart(store,p,p.getAmount()));
+        assertTrue(user.getState().getCart().getBasket(store.getName()).getProducts().containsKey(p));
+    }
+
+    /**
      * use case 2.8 - purchase cart
      */
+    //TODO change test because change purchase
     @Override @Test
     public void testPurchase() {
         super.testPurchase();
         List<Purchase> purchases = user.getState().watchMyPurchaseHistory();
         assertEquals(1, purchases.size());
+    }
+
+    /**
+     * use case 3.1 - logout
+     */
+    @Override @Test
+    public void testLogoutSubscribe() {
+        super.testLogoutSubscribe();
+        assertTrue(user.getState() instanceof Guest);
     }
 
     /**
@@ -63,8 +85,15 @@ public class UserRealTest extends UserAllStubsTest{
         List<Review> reviewList = user.getState().getReviews();
         assertEquals(1, reviewList.size());
         assertEquals(review, reviewList.get(0));
+    }
 
-        review = data.getReview(Data.WRONG_PRODUCT);
+    /**
+     * use case 3.3
+     */
+    @Test
+    public void testWriteWrongReviewSubscribe(){
+        setUpProductBought();
+        Review review = data.getReview(Data.WRONG_PRODUCT);
         assertFalse(user.addReview(review));
     }
 

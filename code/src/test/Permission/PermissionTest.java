@@ -65,6 +65,7 @@ public class PermissionTest {
      */
     private void testAddTypeWhenOwnerFail(){
         assertFalse(permission.addType(PermissionType.ADD_MANAGER));
+        assertFalse(permission.getPermissionType().contains(PermissionType.ADD_MANAGER));
     }
 
 

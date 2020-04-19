@@ -70,7 +70,7 @@ public class UserAllStubsTest {
         StoreData storeData = new StoreData("Store", new PurchasePolicy(), new DiscountPolicy());
         PaymentSystem paymentSystem = new ProxyPayment();
         SupplySystem supplySystem = new ProxySupply();
-        Store store = user.openStore(storeData,paymentSystem, supplySystem);
+        user.openStore(storeData,paymentSystem, supplySystem);
     }
 
     /**
@@ -93,7 +93,7 @@ public class UserAllStubsTest {
     /**
      * set up add product to a store
      */
-    private void setUpProductAdded(){
+    protected void setUpProductAdded(){
         setUpOpenStore();
         user.addProductToStore(data.getProductData(Data.VALID));
     }
@@ -127,7 +127,8 @@ public class UserAllStubsTest {
     @Test
     public void testLoginGuest() {
         setUpGuest();
-        assertTrue(user.login(data.getSubscribe(Data.VALID)));
+        Subscribe sub=data.getSubscribe(Data.VALID);
+        assertTrue(user.login(sub));
     }
 
     /**
@@ -153,6 +154,7 @@ public class UserAllStubsTest {
     /**
      * use case 2.8 - purchase cart
      */
+    //TODO change purchase and change tests also
     @Test
     public void testPurchase() {
         setUpProductAddedToCart();

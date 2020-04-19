@@ -33,7 +33,10 @@ public class GuestTest {
      */
     @Test
     public void loginTest() {
-        assertTrue(guest.login(new User(),new Subscribe("yuval","sabag")));
+        User user=new User();
+        Subscribe sub=new Subscribe("yuval","sabag");
+        assertTrue(guest.login(user,sub));
+        assertSame(user.getState(), sub);
     }
 
     /**

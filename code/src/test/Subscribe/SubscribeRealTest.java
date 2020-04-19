@@ -39,6 +39,16 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     }
 
     /**
+     * test: use case 3.1 - Logout
+     */
+    @Override @Test
+    public void logoutTest(){
+        User user=new User();
+        assertTrue(sub.logout(user));
+        assertTrue(user.getState() instanceof Guest);
+    }
+
+    /**
      * use case 3.2 - Open Store
      */
     @Override @Test
@@ -68,33 +78,15 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
 
     /**
      * test use case 4.1.1 - add product to store
+     * test the product was added to store
      */
     @Override @Test
-    public void addProductToStoreTest() {
-        setUpStoreOpened();
-        addProductToStoreTestFail();
-        super.addProductToStoreTest();
-    }
-
-    private void addProductToStoreTestFail() {
-        testAddProductNotManagerOfStore();
-        testAddProductDontHavePermission();
-    }
-
-    private void testAddProductDontHavePermission() {
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.addProductToStore(data.getProductData(Data.VALID)));
-        permission.addType(PermissionType.OWNER);
-    }
-
-    private void testAddProductNotManagerOfStore() {
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        sub.getPermissions().clear();
-        assertFalse(sub.addProductToStore(data.getProductData(Data.VALID)));
-        sub.getPermissions().put(validStoreName,permission);
+    public void addProductToStoreTestSuccess() {
+        super.addProductToStoreTestSuccess();
+        ProductData pData=data.getProductData(Data.VALID);
+        Product p= sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore().getProducts().
+                get(pData.getProductName());
+        assertTrue(p.equal(pData));
     }
 
     /**

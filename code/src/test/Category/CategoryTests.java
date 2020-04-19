@@ -49,6 +49,7 @@ public class CategoryTests {
     public void testAddProduct() {
         Product product = data.getRealProduct(Data.VALID);
         assertTrue(category.addProduct(product));
+        assertTrue(category.getProducts().contains(product));
     }
 
     /**

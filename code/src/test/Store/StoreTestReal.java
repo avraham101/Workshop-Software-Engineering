@@ -16,6 +16,12 @@ public class StoreTestReal extends StoreTestsAllStubs {
         assertTrue(store.getProducts().get(p.getProductName()).equal(p));
     }
 
+    @Override
+    protected void testSuccessRemoveProduct() {
+        super.testSuccessRemoveProduct();
+        assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+    }
+
     /**
      * use case 4.1.3
      */
