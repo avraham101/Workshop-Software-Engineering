@@ -28,7 +28,6 @@ public class GetStoresInfo extends AcceptanceTests {
     public void getStoresInfo(){
         Set<StoreTestData> storesInSystem = new HashSet<>(bridge.getStoresInfo());
         Set<StoreTestData> insertedStores = new HashSet<>(stores);
-        System.out.println(bridge.getStoresInfo().get(2).equals(stores.get(0)));
         assertEquals(storesInSystem,insertedStores);
     }
 

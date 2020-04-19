@@ -215,7 +215,7 @@ public class Store {
             return null;
         }
         if(!supplySystem.deliver(deliveryData)){
-            paymentSystem.cancel(paymentData);
+            paymentSystem.cancel(paymentData);//error log
             return null;
         }
         reduceAmount(deliveryData.getProducts());
