@@ -14,7 +14,7 @@ public class ServiceAPI {
      * @param userName - the user name
      * @param password - the user password
      * @throws Exception - system crashed exception
-     */
+     *///TODO another constructor
     public ServiceAPI(String userName, String password) throws Exception{
         logicManager = new LogicManager(userName, password);
     }
