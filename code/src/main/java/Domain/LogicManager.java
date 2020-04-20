@@ -4,18 +4,18 @@ import DataAPI.*;
 import Systems.*;
 import Systems.PaymentSystem.*;
 import Systems.SupplySystem.*;
-import Utils.*;
-
+import Utils.Utils;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LogicManager {
     //TODO check all classes
     private HashMap<String, Subscribe> subscribes;
-    private OurHashMap<String, Store> stores;
-    private OurHashMap<Integer,User> loggedInUsers;
+    private ConcurrentHashMap<String, Store> stores;
+    private ConcurrentHashMap<Integer,User> loggedInUsers;
     private AtomicInteger usersIdCounter;
     private HashSystem hashSystem;
     private PaymentSystem paymentSystem;
@@ -23,11 +23,11 @@ public class LogicManager {
     private LoggerSystem loggerSystem;
     private User current;
 
-    public LogicManager(String userName, String password, HashMap<String, Subscribe> subscribes, OurHashMap<String, Store> stores, User current) throws Exception {
+    public LogicManager(String userName, String password, HashMap<String, Subscribe> subscribes, ConcurrentHashMap<String, Store> stores, User current) throws Exception {
         this.subscribes = subscribes;
         this.stores = stores;
         this.current = current;
-        this.loggedInUsers=new OurHashMap<Integer,User>();
+        this.loggedInUsers=new ConcurrentHashMap<>();
         usersIdCounter=new AtomicInteger(0);
         try {
             hashSystem = new HashSystem();
@@ -56,9 +56,9 @@ public class LogicManager {
      */
     public LogicManager(String userName, String password) throws Exception {
         subscribes = new HashMap<>();
-        stores = new OurHashMap<String, Store>();
+        stores = new ConcurrentHashMap<>();
         usersIdCounter=new AtomicInteger(0);
-        this.loggedInUsers=new OurHashMap<Integer,User>();
+        this.loggedInUsers=new ConcurrentHashMap<>();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -93,9 +93,9 @@ public class LogicManager {
 
     public LogicManager(String userName, String password, PaymentSystem paymentSystem, SupplySystem supplySystem) throws Exception {
         subscribes = new HashMap<>();
-        stores = new OurHashMap<String, Store>();
+        stores = new ConcurrentHashMap<>();
+        this.loggedInUsers=new ConcurrentHashMap<>();
         usersIdCounter=new AtomicInteger(0);
-        this.loggedInUsers=new OurHashMap<Integer,User>();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
