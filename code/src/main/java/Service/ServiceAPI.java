@@ -14,6 +14,7 @@ public class ServiceAPI {
 
     /**
      * use case 1.1 - Init Trading System
+     * //TODO : ACCEPTANCE TEST
      * @param userName - the user name
      * @param password - the user password
      * @throws Exception - system crashed exception
@@ -36,6 +37,7 @@ public class ServiceAPI {
     }
     /**
      * use case 2.2 - Register
+     * acceptance test class : RegisterTest
      * @param userName - the user Name
      * @param password - the user password
      * @return true if the register complete, otherwise false
@@ -46,6 +48,7 @@ public class ServiceAPI {
 
     /***
      * use case 2.3 - Login
+     * acceptance test class : LoginTest
      * @param userName - the user Name
      * @param password - the user password
      * @return true if the user is logged to the system, otherwise false
@@ -56,6 +59,7 @@ public class ServiceAPI {
 
     /**
      * use 2.4.1 - show the details about every store
+     * acceptance test class : GetStoreInfo
      * @return - details of all the stores data
      */
     public List<StoreData> viewStores() {
@@ -73,6 +77,7 @@ public class ServiceAPI {
 
     /**
      * use case 2.5 - Search product in store
+     * acceptance test class : FilterProductsInStoresTest
      * @param filter - the filter chosen
      * @return - list of products after filer and sorter.
      */
@@ -83,6 +88,7 @@ public class ServiceAPI {
 
     /**
      * use case 2.7.1 - watch cart details
+     * acceptance test class : EditCartTest
      * return the details about a cart
      * @return - the cart details
      */
@@ -90,8 +96,9 @@ public class ServiceAPI {
         return logicManager.watchCartDetatils();
     }
 
-    /**asassas
-     * use case 2.7.2 - delete producr from cart
+    /**
+     * use case 2.7.2 - delete product from cart
+     * acceptance test class : EditCartTest
      * delete product from the cart
      * @param productName - the product to remove
      * @param storeName - the store that sale this product
@@ -103,6 +110,7 @@ public class ServiceAPI {
 
     /**
      * use case 2.7.3 edit amount of product
+     * acceptance test class : EditCartTest
      * @param productName - the product to edit it's amount
      * @param storeName - the store of the product
      * @param newAmount - the new amount
@@ -114,6 +122,7 @@ public class ServiceAPI {
 
     /**
      * use case 2.7.4 - add product to the cart
+     * acceptance test class : AddToCartTest
      * @param productName - the product to add
      * @param storeName - the store of the product
      * @param amount - the amount of the product that need to add to the cart
@@ -125,6 +134,7 @@ public class ServiceAPI {
 
     /**
      * use case 2.8 - purchase cart
+     * acceptance test class : BuyCartTest
      * @param paymentData - the payment data of this purchase
      * @param addressToDeliver - the addressToDiliver
      * @return true is the purchase succeeded, otherwise false
@@ -135,6 +145,7 @@ public class ServiceAPI {
 
     /**
      * use case 3.1 - Logout
+     * acceptance test class : LogoutTest
      * @return true if the user logout
      */
     public boolean logout(int id){
@@ -143,6 +154,7 @@ public class ServiceAPI {
 
     /***
      * use case 3.2 - Open Store
+     * acceptance test class : OpenStoreTest
      * @param storeDetails - the details of the store
      * @return true if store is created
      */
@@ -152,6 +164,7 @@ public class ServiceAPI {
 
     /***
      * use case 3.3 - write review
+     * acceptance test class : WriteReviewOnProductTest
      * @param productName - the name of the product name
      * @param storeName - the store name
      * @param content - the content name
@@ -161,13 +174,22 @@ public class ServiceAPI {
         return logicManager.addReview(storeName,productName, content);
     }
 
-    //use case 3.5
+    /**
+     * use case 3.5 - write a request to specific store
+     * acceptance test class : ApplicationToStoreTest
+     * @param id - user id
+     * @param storeName - the store name
+     * @param content - the content of the request
+     * @return true if the review added, otherwise false
+     */
+
     public boolean writeRequestToStore(int id,String storeName,String content){
         return logicManager.addRequest(storeName,content);
     }
 
     /**
      * use case 3.7 - watch purchase history
+     * acceptance test class : WatchUserPurchaseHistoryTest
      * the function return the purchase list
      * @return the purchase list
      */
@@ -177,6 +199,7 @@ public class ServiceAPI {
 
     /**
      * use case 4.1.1
+     * acceptance test class : EditStore
      * @param id - user id
      * @param productData - data of product
      * @return if product was added
@@ -187,6 +210,7 @@ public class ServiceAPI {
 
     /**
      * use case 4.1.2
+     * acceptance test class : EditStore
      * @param id- user id
      * @param productName - the name of the product name
      * @param storeName - the store name
@@ -198,6 +222,7 @@ public class ServiceAPI {
 
     /**
      * use case 4.1.3
+     * acceptance test class : EditStore
      * @param id - user id
      * @param productData - data of product
      * @return if product was edited
@@ -208,6 +233,7 @@ public class ServiceAPI {
 
     /**
      * use case 4.3
+     * acceptance test class : AppointAnotherOwnerToStoreTest
      * @param id - user id
      * @param storeName - name of store
      * @param userName - name of user
@@ -219,6 +245,7 @@ public class ServiceAPI {
 
     /**
      * use case 4.5- add manager to store
+     * acceptance test class : AppointManagerTest
      * @param id - of user
      * @param storeName - name of store
      * @param userName - name of user
@@ -230,6 +257,7 @@ public class ServiceAPI {
 
     /**
      * use case 4.6.1 - add permissions
+     * acceptance test class : EditPermissionTest
      * @param id of current user
      * @param permissions to add
      * @param storeName of store
@@ -242,6 +270,7 @@ public class ServiceAPI {
 
     /**
      * use case 4.6.2 - remove permissions
+     * acceptance test class : EditPermissionTest
      * @param id
      * @param permissions
      * @param storeName
@@ -254,6 +283,7 @@ public class ServiceAPI {
 
     /**
      * use case 4.7 - remove manger
+     * acceptance test class : DeleteManagerTest
      * @param id
      * @param userName
      * @param storeName
@@ -265,6 +295,7 @@ public class ServiceAPI {
 
     /**
      * use case 4.9.1 - watch request
+     * acceptance test class : ViewAndReplyApplicationToStore
      * @param id
      * @param storeName
      * @return the request of the store to watch
@@ -275,6 +306,7 @@ public class ServiceAPI {
 
     /**
      * use case 4.9.2 -reply request
+     * acceptance test class : ViewAndReplyApplicationToStore
      * @param id of user
      * @param requestId
      * @param content
@@ -287,6 +319,7 @@ public class ServiceAPI {
 
     /**
      * use case 4.10 - watch Store History by store owner
+     * acceptance test class : GetStorePurchaseHistoryTest
      * @param storeName - the store name to watch history
      * @return the purchase list
      */
@@ -296,6 +329,7 @@ public class ServiceAPI {
 
     /**
      * use case 6.4.1 - admin watch history purchases of some user
+     * acceptance test class : AdminPurchaseHistory
      * @param userName - the user that own the purchases
      * @return - list of purchases that of the user
      */
@@ -305,6 +339,7 @@ public class ServiceAPI {
 
     /**
      * use case 6.4.2 - admin watch history purchases of some user
+     * acceptance test class : AdminPurchaseHistory
      * @param storeName - the name of the store that own the purchases
      * @return - list of purchases that of the store
      */
