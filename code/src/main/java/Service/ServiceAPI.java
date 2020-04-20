@@ -26,6 +26,14 @@ public class ServiceAPI {
         this.logicManager = new LogicManager(userName, password,paymentSystem,supplySystem);
     }
 
+
+    /**
+     * hand shake to connect to the system
+     * @return
+     */
+    public int connectToSystem(){
+        return logicManager.connectToSystem();
+    }
     /**
      * use case 2.2 - Register
      * @param userName - the user Name
@@ -42,7 +50,7 @@ public class ServiceAPI {
      * @param password - the user password
      * @return true if the user is logged to the system, otherwise false
      */
-    public boolean login(String userName, String password) {
+    public boolean login(int id,String userName, String password) {
         return logicManager.login(userName, password);
     }
 
@@ -78,7 +86,7 @@ public class ServiceAPI {
      * return the details about a cart
      * @return - the cart details
      */
-    public CartData watchCartDetatils(){
+    public CartData watchCartDetatils(int id){
         return logicManager.watchCartDetatils();
     }
 
@@ -89,7 +97,7 @@ public class ServiceAPI {
      * @param storeName - the store that sale this product
      * @return - true if the delete work, false if not
      */
-    public boolean deleteFromCart(String productName,String storeName){
+    public boolean deleteFromCart(int id,String productName,String storeName){
         return logicManager.deleteFromCart(productName, storeName);
     }
 
@@ -100,7 +108,7 @@ public class ServiceAPI {
      * @param newAmount - the new amount
      * @return - true if succeeded, false if not
      */
-    public boolean editProductInCart(String productName,String storeName,int newAmount){
+    public boolean editProductInCart(int id,String productName,String storeName,int newAmount){
         return logicManager.editProductInCart(productName, storeName, newAmount);
     }
 
@@ -111,7 +119,7 @@ public class ServiceAPI {
      * @param amount - the amount of the product that need to add to the cart
      * @return - true if added, false if not
      */
-    public boolean addProductToCart(String productName,String storeName,int amount){
+    public boolean addProductToCart(int id,String productName,String storeName,int amount){
         return logicManager.addProductToCart(productName, storeName, amount);
     }
 
@@ -121,7 +129,7 @@ public class ServiceAPI {
      * @param addressToDeliver - the addressToDiliver
      * @return true is the purchase succeeded, otherwise false
      */
-    public boolean purchaseCart(PaymentData paymentData, String addressToDeliver){
+    public boolean purchaseCart(int id,PaymentData paymentData, String addressToDeliver){
         return logicManager.purchaseCart(paymentData,addressToDeliver);
     }
 
@@ -129,7 +137,7 @@ public class ServiceAPI {
      * use case 3.1 - Logout
      * @return true if the user logout
      */
-    public boolean logout(){
+    public boolean logout(int id){
         return logicManager.logout();
     }
 
@@ -138,7 +146,7 @@ public class ServiceAPI {
      * @param storeDetails - the details of the store
      * @return true if store is created
      */
-    public boolean openStore(StoreData storeDetails){
+    public boolean openStore(int id,StoreData storeDetails){
         return logicManager.openStore(storeDetails);
     }
 
@@ -149,12 +157,12 @@ public class ServiceAPI {
      * @param content - the content name
      * @return true if the review added, otherwise false
      */
-    public boolean writeReview(String storeName,String productName, String content){
+    public boolean writeReview(int id,String storeName,String productName, String content){
         return logicManager.addReview(storeName,productName, content);
     }
 
     //use case 3.5
-    public boolean writeRequestToStore(String storeName,String content){
+    public boolean writeRequestToStore(int id,String storeName,String content){
         return logicManager.addRequest(storeName,content);
     }
 
@@ -163,57 +171,117 @@ public class ServiceAPI {
      * the function return the purchase list
      * @return the purchase list
      */
-    public List<Purchase> watchMyPurchaseHistory(){
+    public List<Purchase> watchMyPurchaseHistory(int id){
         return logicManager.watchMyPurchaseHistory();
     }
 
-    //use case 4.1.1
-    public boolean addProductToStore(ProductData productData){
+    /**
+     * use case 4.1.1
+     * @param id - user id
+     * @param productData - data of product
+     * @return if product was added
+     */
+    public boolean addProductToStore(int id,ProductData productData){
         return logicManager.addProductToStore(productData);
     }
 
-    //use case 4.1.2
-    public boolean removeProductFromStore(String storeName,String productName){
+    /**
+     * use case 4.1.2
+     * @param id- user id
+     * @param productName - the name of the product name
+     * @param storeName - the store name
+     * @return if product was removed
+     */
+    public boolean removeProductFromStore(int id,String storeName,String productName){
         return logicManager.removeProductFromStore(storeName,productName);
     }
 
-    // use case 4.1.3
-    public boolean editProductFromStore(ProductData productData){
+    /**
+     * use case 4.1.3
+     * @param id - user id
+     * @param productData - data of product
+     * @return if product was edited
+     */
+    public boolean editProductFromStore(int id,ProductData productData){
         return logicManager.editProductFromStore(productData);
     }
 
-    //use case 4.3
-    public boolean manageOwner(String storeName,String userName){
+    /**
+     * use case 4.3
+     * @param id - user id
+     * @param storeName - name of store
+     * @param userName - name of user
+     * @return if new owner was managed
+     */
+    public boolean manageOwner(int id,String storeName,String userName){
         return logicManager.manageOwner(storeName,userName);
     }
 
-    //use case 4.5
-    public boolean addManagerToStore(String storeName,String userName){
+    /**
+     * use case 4.5- add manager to store
+     * @param id - of user
+     * @param storeName - name of store
+     * @param userName - name of user
+     * @return if the manger was added
+     */
+    public boolean addManagerToStore(int id,String storeName,String userName){
         return logicManager.addManager(userName,storeName);
     }
 
-    //use case 4.6.1
-    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName){
+    /**
+     * use case 4.6.1 - add permissions
+     * @param id of current user
+     * @param permissions to add
+     * @param storeName of store
+     * @param userName of user
+     * @return
+     */
+    public boolean addPermissions(int id,List<PermissionType> permissions, String storeName, String userName){
         return logicManager.addPermissions(permissions,storeName,userName);
     }
 
-    //use case 4.6.2
-    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName){
+    /**
+     * use case 4.6.2 - remove permissions
+     * @param id
+     * @param permissions
+     * @param storeName
+     * @param userName
+     * @return if permissions were removed
+     */
+    public boolean removePermissions(int id,List<PermissionType> permissions, String storeName, String userName){
         return logicManager.removePermissions(permissions,storeName,userName);
     }
 
-    //use case 4.7
-    public boolean removeManager(String userName,String storeName){
+    /**
+     * use case 4.7 - remove manger
+     * @param id
+     * @param userName
+     * @param storeName
+     * @return if the manager was removed and also the managers he managed
+     */
+    public boolean removeManager(int id,String userName,String storeName){
         return logicManager.removeManager(userName,storeName);
     }
 
-    //use case 4.9.1
-    public List<Request> watchRequestsOfStore(String storeName){
+    /**
+     * use case 4.9.1 - watch request
+     * @param id
+     * @param storeName
+     * @return the request of the store to watch
+     */
+    public List<Request> watchRequestsOfStore(int id,String storeName){
         return logicManager.viewStoreRequest(storeName);
     }
 
-    //use case 4.9.2
-    public Request answerRequest(int requestId,String content, String storeName){
+    /**
+     * use case 4.9.2 -reply request
+     * @param id of user
+     * @param requestId
+     * @param content
+     * @param storeName
+     * @return the request with the apply
+     */
+    public Request answerRequest(int id,int requestId,String content, String storeName){
         return logicManager.replayRequest(storeName,requestId,content);
     }
 
@@ -222,7 +290,7 @@ public class ServiceAPI {
      * @param storeName - the store name to watch history
      * @return the purchase list
      */
-    public List<Purchase> watchStoreHistory(String storeName){
+    public List<Purchase> watchStoreHistory(int id,String storeName){
         return logicManager.watchStorePurchasesHistory(storeName);
     }
 
@@ -231,7 +299,7 @@ public class ServiceAPI {
      * @param userName - the user that own the purchases
      * @return - list of purchases that of the user
      */
-    public List<Purchase> AdminWatchUserPurchasesHistory(String userName){
+    public List<Purchase> AdminWatchUserPurchasesHistory(int id,String userName){
         return logicManager.watchUserPurchasesHistory(userName);
     }
 
@@ -240,7 +308,7 @@ public class ServiceAPI {
      * @param storeName - the name of the store that own the purchases
      * @return - list of purchases that of the store
      */
-    public List<Purchase> AdminWatchStoreHistory(String storeName){
+    public List<Purchase> AdminWatchStoreHistory(int id,String storeName){
         return logicManager.watchStorePurchasesHistory(storeName);
     }
 

@@ -8,11 +8,14 @@ import Utils.Utils;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class LogicManager {
     //TODO check all classes
     private HashMap<String, Subscribe> users;
     private HashMap<String, Store> stores;
+    private HashMap<Integer,User> loggedInUsers;
+    private AtomicInteger usersIdCounter;
     private HashSystem hashSystem;
     private PaymentSystem paymentSystem;
     private SupplySystem supplySystem;
@@ -23,6 +26,8 @@ public class LogicManager {
         this.users = users;
         this.stores = stores;
         this.current = current;
+        this.loggedInUsers=new HashMap<>();
+        usersIdCounter=new AtomicInteger(0);
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -51,6 +56,8 @@ public class LogicManager {
     public LogicManager(String userName, String password) throws Exception {
         users = new HashMap<>();
         stores = new HashMap<>();
+        usersIdCounter=new AtomicInteger(0);
+        this.loggedInUsers=new HashMap<>();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -86,6 +93,8 @@ public class LogicManager {
     public LogicManager(String userName, String password, PaymentSystem paymentSystem, SupplySystem supplySystem) throws Exception {
         users = new HashMap<>();
         stores = new HashMap<>();
+        this.loggedInUsers=new HashMap<>();
+        usersIdCounter=new AtomicInteger(0);
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -116,6 +125,16 @@ public class LogicManager {
             throw new Exception("System crashed");
         }
         current = new User();
+    }
+
+    /**
+     * hand shake for connecting to system
+     * @return
+     */
+    public int connectToSystem() {
+        int newId=usersIdCounter.getAndIncrement();
+        loggedInUsers.put(newId,new User());
+        return newId;
     }
 
     /**
