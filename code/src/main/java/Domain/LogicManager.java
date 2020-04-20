@@ -83,6 +83,41 @@ public class LogicManager {
         current = new User();
     }
 
+    public LogicManager(String userName, String password, PaymentSystem paymentSystem, SupplySystem supplySystem) throws Exception {
+        users = new HashMap<>();
+        stores = new HashMap<>();
+        try {
+            hashSystem = new HashSystem();
+            loggerSystem = new LoggerSystem();
+            loggerSystem.writeEvent("Logic Manager","constructor",
+                    "Initialize the system", new Object[]{userName, password});
+            this.paymentSystem = paymentSystem;
+            this.supplySystem = supplySystem;
+            if(!this.paymentSystem.connect()) {
+                loggerSystem.writeError("Logic manager", "constructor",
+                        "Fail connection to payment system",new Object[]{userName, password});
+                throw new Exception("Payment System Crashed");
+            }
+            if(!this.supplySystem.connect()) {
+                loggerSystem.writeError("Logic manager", "constructor",
+                        "Fail connection to supply system",new Object[]{userName, password});
+                throw new Exception("Supply System Crashed");
+            }
+            if(users.isEmpty()&&!register(userName,password)) {
+                loggerSystem.writeError("Logic manager", "constructor",
+                        "Fail register",new Object[]{userName, password});
+                throw new Exception("Admin Register Crashed");
+            }
+        } catch (Exception e) {
+            if (loggerSystem != null){
+                loggerSystem.writeError("Logic manager", "constructor",
+                        "System crashed",new Object[]{userName, password});
+            }
+            throw new Exception("System crashed");
+        }
+        current = new User();
+    }
+
     /**
      * use case 2.2 - Register
      * @param userName - the user Name
