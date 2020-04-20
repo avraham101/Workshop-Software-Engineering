@@ -12,9 +12,9 @@ import Systems.SupplySystem.ProxySupply;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 //class for Unit test all stubs
 import static org.junit.Assert.*;
@@ -23,8 +23,9 @@ public class LogicManagerAllStubsTest {
 
     protected LogicManager logicManager;
     protected User currUser;
-    protected HashMap<String,Subscribe> users;
-    protected HashMap<String,Store> stores;
+    protected ConcurrentHashMap<Integer,User> loggedInUsers;
+    protected ConcurrentHashMap<String,Subscribe> users;
+    protected ConcurrentHashMap<String,Store> stores;
     protected TestData data;
 
     /**
@@ -46,8 +47,9 @@ public class LogicManagerAllStubsTest {
 
     protected void init() {
         data=new TestData();
-        users=new HashMap<>();
-        stores=new HashMap<>();
+        users=new ConcurrentHashMap<>();
+        stores=new ConcurrentHashMap<>();
+        loggedInUsers=new ConcurrentHashMap<>();
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         try {
             logicManager = new LogicManager(subscribe.getName(), subscribe.getPassword(), users, stores, currUser);
@@ -76,7 +78,7 @@ public class LogicManagerAllStubsTest {
     protected void setUpLogedInUser(){
         setUpRegisteredUser();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        logicManager.login(subscribe.getName(),subscribe.getPassword());
+        logicManager.login(id, subscribe.getName(),subscribe.getPassword());
     }
 
     /**
@@ -85,7 +87,7 @@ public class LogicManagerAllStubsTest {
     protected void setUpOpenedStore(){
         setUpLogedInUser();
         StoreData storeData = data.getStore(Data.VALID);
-        logicManager.openStore(storeData);
+        logicManager.openStore(id, storeData);
         Store store = stores.get(storeData.getName());
         Permission permission = new Permission(data.getSubscribe(Data.VALID));
         StoreStub storeStub = new StoreStub(store.getName(),store.getPurchasePolicy(),
@@ -153,7 +155,7 @@ public class LogicManagerAllStubsTest {
         setUpProductAddedToCart();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        logicManager.purchaseCart(paymentData, address);
+        logicManager.purchaseCart(id, paymentData, address);
     }
 
     /**
@@ -253,7 +255,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testLoginFailNull() {
         Subscribe subscribe = data.getSubscribe(Data.NULL);
-        assertFalse(logicManager.login(subscribe.getName(), subscribe.getPassword()));
+        assertFalse(logicManager.login(id, subscribe.getName(), subscribe.getPassword()));
     }
 
     /**
@@ -261,7 +263,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testLoginFailWrongName() {
         Subscribe subscribe = data.getSubscribe(Data.WRONG_NAME);
-        assertFalse(logicManager.login(subscribe.getName(), subscribe.getPassword()));
+        assertFalse(logicManager.login(id, subscribe.getName(), subscribe.getPassword()));
     }
 
     /**
@@ -269,7 +271,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testLoginFailWrongPassword() {
         Subscribe subscribe = data.getSubscribe(Data.WRONG_PASSWORD);
-        assertFalse(logicManager.login(subscribe.getName(), subscribe.getPassword()));
+        assertFalse(logicManager.login(id, subscribe.getName(), subscribe.getPassword()));
     }
 
     /**
@@ -277,7 +279,7 @@ public class LogicManagerAllStubsTest {
      */
     protected void testLoginSuccess() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        assertTrue(logicManager.login(subscribe.getName(),subscribe.getPassword()));
+        assertTrue(logicManager.login(id, subscribe.getName(),subscribe.getPassword()));
     }
 
     /**
@@ -412,7 +414,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testWatchCartDetailsNull() {
         ProductData productData = data.getProductData(Data.NULL_PRODUCT);
-        CartData cartData = logicManager.watchCartDetatils();
+        CartData cartData = logicManager.watchCartDetails(id);
         assertFalse(cartData.getProducts().contains(productData));
     }
 
@@ -421,7 +423,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testWatchCartDetailsNullStore() {
         ProductData productData = data.getProductData(Data.NULL_STORE);
-        CartData cartData = logicManager.watchCartDetatils();
+        CartData cartData = logicManager.watchCartDetails(id);
         assertFalse(cartData.getProducts().contains(productData));
     }
 
@@ -526,7 +528,7 @@ public class LogicManagerAllStubsTest {
     private void testSuccessBuyProducts() {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertTrue(logicManager.purchaseCart(paymentData, address));
+        assertTrue(logicManager.purchaseCart(id, paymentData, address));
     }
 
     /**
@@ -537,39 +539,39 @@ public class LogicManagerAllStubsTest {
     //TODO split tests
     private void testFailBuyProducts() {
         // null data payment
-        assertFalse(logicManager.purchaseCart(null, null));
+        assertFalse(logicManager.purchaseCart(id, null, null));
         // null address in payment
         PaymentData paymentData = data.getPaymentData(Data.NULL_ADDRESS);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(paymentData, address));
+        assertFalse(logicManager.purchaseCart(id, paymentData, address));
         // empty address in payment
         paymentData = data.getPaymentData(Data.EMPTY_ADDRESS);
         address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(paymentData, address));
+        assertFalse(logicManager.purchaseCart(id, paymentData, address));
         // null payment
         paymentData = data.getPaymentData(Data.NULL_PAYMENT);
         address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(paymentData, address));
+        assertFalse(logicManager.purchaseCart(id, paymentData, address));
         // empty payment
         paymentData = data.getPaymentData(Data.EMPTY_PAYMENT);
         address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(paymentData, address));
+        assertFalse(logicManager.purchaseCart(id, paymentData, address));
         // null name in payment
         paymentData = data.getPaymentData(Data.NULL_NAME);
         address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(paymentData, address));
+        assertFalse(logicManager.purchaseCart(id, paymentData, address));
         // empty name in payment
         paymentData = data.getPaymentData(Data.EMPTY_NAME);
         address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(paymentData, address));
+        assertFalse(logicManager.purchaseCart(id, paymentData, address));
         // null address
         paymentData = data.getPaymentData(Data.VALID);
         address = data.getDeliveryData(Data.NULL_ADDRESS).getAddress();
-        assertFalse(logicManager.purchaseCart(paymentData, address));
+        assertFalse(logicManager.purchaseCart(id, paymentData, address));
         // empty address
         paymentData = data.getPaymentData(Data.VALID);
         address = data.getDeliveryData(Data.EMPTY_ADDRESS).getAddress();
-        assertFalse(logicManager.purchaseCart(paymentData, address));
+        assertFalse(logicManager.purchaseCart(id, paymentData, address));
     }
 
 
@@ -598,10 +600,10 @@ public class LogicManagerAllStubsTest {
      */
     //TODO split tests and check store wasnt added in each test
     private void testOpenStoreFail() {
-        assertFalse(logicManager.openStore(data.getStore(Data.NULL)));
-        assertFalse(logicManager.openStore(data.getStore(Data.NULL_NAME)));
-        assertFalse(logicManager.openStore(data.getStore(Data.NULL_PURCHASE)));
-        assertFalse(logicManager.openStore(data.getStore(Data.NULL_DISCOUNT)));
+        assertFalse(logicManager.openStore(id, data.getStore(Data.NULL)));
+        assertFalse(logicManager.openStore(id, data.getStore(Data.NULL_NAME)));
+        assertFalse(logicManager.openStore(id, data.getStore(Data.NULL_PURCHASE)));
+        assertFalse(logicManager.openStore(id, data.getStore(Data.NULL_DISCOUNT)));
     }
 
     /**
@@ -609,7 +611,7 @@ public class LogicManagerAllStubsTest {
      */
     protected void testOpenStoreSucces(){
         StoreData storeData = data.getStore(Data.VALID);
-        assertTrue(logicManager.openStore(storeData));
+        assertTrue(logicManager.openStore(id, storeData));
     }
 
     /**
@@ -628,22 +630,22 @@ public class LogicManagerAllStubsTest {
     //TODO split tests
     private void testWriteReviewInvalid() {
         Review review = data.getReview(Data.NULL_STORE);
-        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+        assertFalse(logicManager.addReview(id, review.getStore(),review.getProductName(),review.getContent()));
 
         review = data.getReview(Data.NULL_PRODUCT);
-        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+        assertFalse(logicManager.addReview(id, review.getStore(),review.getProductName(),review.getContent()));
 
         review = data.getReview(Data.NULL_CONTENT);
-        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+        assertFalse(logicManager.addReview(id, review.getStore(),review.getProductName(),review.getContent()));
 
         review = data.getReview(Data.EMPTY_CONTENT);
-        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+        assertFalse(logicManager.addReview(id, review.getStore(),review.getProductName(),review.getContent()));
 
         review = data.getReview(Data.WRONG_STORE);
-        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+        assertFalse(logicManager.addReview(id, review.getStore(),review.getProductName(),review.getContent()));
 
         review = data.getReview(Data.NULL_PRODUCT);
-        assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+        assertFalse(logicManager.addReview(id, review.getStore(),review.getProductName(),review.getContent()));
 
     }
 
@@ -652,7 +654,7 @@ public class LogicManagerAllStubsTest {
      */
     protected void testWriteReviewValid() {
         Review review = data.getReview(Data.VALID);
-        assertTrue(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
+        assertTrue(logicManager.addReview(id, review.getStore(),review.getProductName(),review.getContent()));
     }
 
     /**
@@ -960,8 +962,8 @@ public class LogicManagerAllStubsTest {
     private void testStoreViewRequestFail() {
         Request request1 = data.getRequest(Data.NULL_NAME);
         Request request2 = data.getRequest(Data.WRONG_STORE);
-        assertTrue(logicManager.viewStoreRequest(request1.getStoreName()).isEmpty());
-        assertTrue(logicManager.viewStoreRequest(request2.getStoreName()).isEmpty());
+        assertTrue(logicManager.viewStoreRequest(id, request1.getStoreName()).isEmpty());
+        assertTrue(logicManager.viewStoreRequest(id, request2.getStoreName()).isEmpty());
     }
 
     /**
@@ -983,8 +985,8 @@ public class LogicManagerAllStubsTest {
     private void testReplayRequestFail() {
         Request request1 = data.getRequest(Data.WRONG_STORE);
         Request request2 = data.getRequest(Data.NULL);
-        assertNull(logicManager.replayRequest(request1.getStoreName(), request1.getId(), request1.getContent()));
-        assertNull(logicManager.replayRequest(request2.getStoreName(), request2.getId(), request2.getContent()));
+        assertNull(logicManager.replayRequest(id, request1.getStoreName(), request1.getId(), request1.getContent()));
+        assertNull(logicManager.replayRequest(id, request2.getStoreName(), request2.getId(), request2.getContent()));
     }
 
     /**
@@ -1001,14 +1003,14 @@ public class LogicManagerAllStubsTest {
      * test user that not exist on users map
      */
     private void testWatchUserHistoryUserNotExist() {
-        assertNull(logicManager.watchUserPurchasesHistory(data.getStore(Data.VALID).getName()));
+        assertNull(logicManager.watchUserPurchasesHistory(id, data.getStore(Data.VALID).getName()));
     }
 
     /**
      * test success
      */
     protected void testWatchUserHistorySuccess() {
-        assertNotNull(logicManager.watchUserPurchasesHistory(data.getSubscribe(Data.VALID).getName()));
+        assertNotNull(logicManager.watchUserPurchasesHistory(id, data.getSubscribe(Data.VALID).getName()));
     }
 
     /**
@@ -1025,14 +1027,14 @@ public class LogicManagerAllStubsTest {
      * test store that not exist on users map
      */
     private void testWatchStoreHistoryStoreNotExist() {
-        assertNull(logicManager.watchStorePurchasesHistory(data.getSubscribe(Data.VALID).getName()));
+        assertNull(logicManager.watchStorePurchasesHistory(id, data.getSubscribe(Data.VALID).getName()));
     }
 
     /**
      * test success
      */
     protected void testWatchStoreHistorySuccess() {
-        assertNotNull(logicManager.watchStorePurchasesHistory(data.getStore(Data.VALID).getName()));
+        assertNotNull(logicManager.watchStorePurchasesHistory(id, data.getStore(Data.VALID).getName()));
     }
 
 }

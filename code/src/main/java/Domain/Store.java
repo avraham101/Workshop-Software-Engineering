@@ -15,10 +15,10 @@ public class Store {
     private String name; //unique
     private PurchasePolicy purchasePolicy;
     private DiscountPolicy discount;
-    private HashMap<String, Product> products;
-    private HashMap<String, Category> categoryList;
-    private HashMap<Integer, Request> requests;
-    private HashMap<String, Permission> permissions;
+    private ConcurrentHashMap<String, Product> products;
+    private ConcurrentHashMap<String, Category> categoryList;
+    private ConcurrentHashMap<Integer, Request> requests;
+    private ConcurrentHashMap<String, Permission> permissions;
     private SupplySystem supplySystem;
     private PaymentSystem paymentSystem;
     private List<Purchase> purchases;
@@ -29,13 +29,13 @@ public class Store {
         this.name = name;
         this.purchasePolicy = purchasePolicy;
         this.discount = discount;
-        this.permissions = new HashMap<>();
+        this.permissions = new ConcurrentHashMap<>();
         this.permissions.put(permission.getOwner().getName(), permission);
         this.supplySystem = supplySystem;
         this.paymentSystem = paymentSystem;
-        this.products=new HashMap<>();
-        this.categoryList=new HashMap<>();
-        this.requests= new HashMap<>();
+        this.products=new ConcurrentHashMap<>();
+        this.categoryList=new ConcurrentHashMap<>();
+        this.requests= new ConcurrentHashMap<>();
         this.purchases = new LinkedList<>();
     }
 
@@ -59,35 +59,35 @@ public class Store {
         return discount;
     }
 
-    public HashMap<String, Product> getProducts() {
+    public ConcurrentHashMap<String, Product> getProducts() {
         return products;
     }
 
-    public void setProducts(HashMap<String, Product> products) {
+    public void setProducts(ConcurrentHashMap<String, Product> products) {
         this.products = products;
     }
 
-    public HashMap<String, Category> getCategoryList() {
+    public ConcurrentHashMap<String, Category> getCategoryList() {
         return categoryList;
     }
 
-    public void setCategoryList(HashMap<String, Category> categoryList) {
+    public void setCategoryList(ConcurrentHashMap<String, Category> categoryList) {
         this.categoryList = categoryList;
     }
 
-    public HashMap<Integer, Request> getRequests() {
+    public ConcurrentHashMap<Integer, Request> getRequests() {
         return requests;
     }
 
-    public void setRequests(HashMap<Integer, Request> requests) {
+    public void setRequests(ConcurrentHashMap<Integer, Request> requests) {
         this.requests = requests;
     }
 
-    public HashMap<String, Permission> getPermissions() {
+    public ConcurrentHashMap<String, Permission> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(HashMap<String, Permission> permissions) {
+    public void setPermissions(ConcurrentHashMap<String, Permission> permissions) {
         this.permissions = permissions;
     }
 
@@ -112,14 +112,12 @@ public class Store {
     }
 
     public List<Purchase> getPurchases() {
-        return purchases;
+        List<Purchase> purchaseList;
+        synchronized (purchases){
+            purchaseList = new ArrayList<>(purchases);
+        }
+        return purchaseList;
     }
-
-    public void setPurchases(List<Purchase> purchases) {
-        this.purchases = purchases;
-    }
-
-
 
     /**
      * use case 2.7.4 - add product to cart
@@ -246,7 +244,9 @@ public class Store {
     private Purchase savePurchase(String buyer, List<ProductData> products) {
         LocalDateTime date = LocalDateTime.now();
         Purchase purchase = new Purchase(name,buyer,products,date);
-        this.purchases.add(purchase);
+        synchronized (purchases) {
+            this.purchases.add(purchase);
+        }
         return purchase;
     }
 
@@ -280,13 +280,12 @@ public class Store {
      * @param addRequest
      * @return
      */
-    public boolean addRequest(Request addRequest) {
+    public synchronized boolean addRequest(Request addRequest) {
         if(addRequest==null)
             return false;
         requests.put(addRequest.getId(), addRequest);
         return true;
     }
-
 
     /**
      *use case 4.1.1
@@ -294,15 +293,14 @@ public class Store {
      * @return if the product was added successfully
      */
     public boolean addProduct(ProductData productData) {
-        if(products.containsKey(productData.getProductName()))
-            return false;
         String categoryName=productData.getCategory();
+        if(categoryName==null)
+            return false;
         if(!categoryList.containsKey(categoryName)){
             categoryList.put(categoryName,new Category(categoryName));
         }
         Product product=new Product(productData,categoryList.get(categoryName));
-        products.put(productData.getProductName(),product);
-        return true;
+        return products.putIfAbsent(productData.getProductName(),product)==null;
     }
 
     /**
@@ -311,12 +309,16 @@ public class Store {
      * @param productName
      * @return  if the product had been removed
      */
-
     public boolean removeProduct(String productName) {
         if(!products.containsKey(productName))
             return false;
-        products.get(productName).getCategory().removeProduct(productName);
-        products.remove(productName);
+        Product product=products.get(productName);
+        if(product!=null) {
+            product.getWriteLock().lock();
+            product.getCategory().removeProduct(productName);
+            products.remove(productName);
+            product.getWriteLock().unlock();
+        }
         return true;
     }
 
@@ -337,6 +339,5 @@ public class Store {
         old.edit(productData,categoryList.get(categoryName));
         return true;
     }
-
 
 }

@@ -5,25 +5,29 @@ import DataAPI.PurchaseTypeData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Product {
     private String name; //unique
-    private int amount;
+    private AtomicInteger amount;
     private double price;
     private List<Discount> discount;
     private PurchaseType purchaseType;
     private Category category;
     private List<Review> reviews;
+    private ReentrantReadWriteLock lock;
 
     public Product(ProductData productData, Category category) {
         this.name = productData.getProductName();
         this.purchaseType = createPurchaseType(productData.getPurchaseType());
         this.category = category;
         category.addProduct(this);
-        this.amount=productData.getAmount();
+        this.amount=new AtomicInteger(productData.getAmount());
         this.price=productData.getPrice();
         this.discount=productData.getDiscount();
         this.reviews=new ArrayList<>();
+        lock=new ReentrantReadWriteLock();
     }
 
     /**
@@ -34,13 +38,15 @@ public class Product {
      */
 
     public void edit(ProductData productData, Category category) {
+        getWriteLock().lock();
         this.purchaseType = createPurchaseType(productData.getPurchaseType());
         category.removeProduct(name);
         this.category = category;
         category.addProduct(this);
-        this.amount=productData.getAmount();
+        this.amount=new AtomicInteger(productData.getAmount());
         this.price=productData.getPrice();
         this.discount=productData.getDiscount();
+        getWriteLock().unlock();
     }
 
 
@@ -93,11 +99,11 @@ public class Product {
     }
 
     public int getAmount() {
-        return amount;
+        return amount.get();
     }
 
     public void setAmount(int amount) {
-        this.amount = amount;
+        this.amount.set(amount);
     }
 
     public double getPrice() {
@@ -112,8 +118,16 @@ public class Product {
         this.purchaseType = purchaseType;
     }
 
+    public ReentrantReadWriteLock.ReadLock getReadLock() {
+        return lock.readLock();
+    }
+
+    public ReentrantReadWriteLock.WriteLock getWriteLock(){
+        return lock.writeLock();
+    }
+
     public boolean equal(ProductData product) {
-        return amount == product.getAmount() &&
+        return amount.get() == product.getAmount() &&
                 product.getPrice()==price &&
                 name.equals(product.getProductName()) &&
                 category.getName().equals(product.getCategory());
@@ -137,7 +151,9 @@ public class Product {
      * @param review - the review
      */
     public void addReview(Review review) {
+        getWriteLock().lock();
         this.reviews.add(review);
+        getWriteLock().unlock();
     }
 
     /**
@@ -146,6 +162,8 @@ public class Product {
      * @param review - the review
      */
     public void removeReview(Review review) {
+        getWriteLock().lock();
         this.reviews.remove(review);
+        getWriteLock().lock();
     }
 }

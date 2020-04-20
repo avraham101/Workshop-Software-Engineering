@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Subscribe extends UserState{
 
@@ -21,6 +22,7 @@ public class Subscribe extends UserState{
     private List<Request> requests;
     private List<Review> reviews;
     private AtomicInteger sessionNumber;
+    private ReentrantReadWriteLock lock;
 
     public Subscribe(String userName, String password) {
         initSubscribe(userName,password);
@@ -32,6 +34,7 @@ public class Subscribe extends UserState{
     }
 
     private void initSubscribe(String userName, String password) {
+        lock=new ReentrantReadWriteLock();
         this.userName = userName;
         this.password = password;
         permissions=new HashMap<>();
@@ -62,6 +65,7 @@ public class Subscribe extends UserState{
     @Override
     public boolean logout(User user) {
         user.setState(new Guest());
+        sessionNumber.set(-1);
         return true;
     }
 
@@ -86,7 +90,9 @@ public class Subscribe extends UserState{
 
     @Override
     protected void savePurchase(List<Purchase> receives) {
+        lock.writeLock().lock();
         purchases.addAll(receives);
+        lock.writeLock().unlock();
     }
 
     /**
@@ -116,14 +122,17 @@ public class Subscribe extends UserState{
      */
     @Override
     public boolean isItPurchased(String storeName, String productName) {
+        lock.readLock().lock();
         for(Purchase p: purchases) {
             if(p.getStoreName().compareTo(storeName)==0) {
                 for(ProductData productData: p.getProduct()) {
                     if(productData.getProductName().compareTo(productName)==0)
+                        lock.readLock().unlock();
                         return true;
                 }
             }
         }
+        lock.readLock().unlock();
         return false;
     }
 
@@ -158,9 +167,9 @@ public class Subscribe extends UserState{
 
     @Override
     public boolean addProductToStore(ProductData productData) {
-        if(!permissions.containsKey(productData.getStoreName()))
-            return false;
         Permission permission=permissions.get(productData.getStoreName());
+        if(permission==null)
+            return false;
         if(!permission.canAddProduct())
             return false;
         return permission.getStore().addProduct(productData);
@@ -206,18 +215,20 @@ public class Subscribe extends UserState{
         if(!permissions.containsKey(storeName))
             return false;
         Permission permission=permissions.get(storeName);
-        if(!permission.canAddOwner())
-            return false;
         Store store=permission.getStore();
-        //if he is already manager
-        if(store.getPermissions().containsKey(youngOwner.getName()))
+        if(store==null||!permission.canAddOwner())
             return false;
         //create new permission process
         Permission newPermission=new Permission(youngOwner,store);
-        youngOwner.getPermissions().put(storeName,newPermission);
-        store.getPermissions().put(youngOwner.getName(),newPermission);
-        givenByMePermissions.add(newPermission);
-        return true;
+        if(store.getPermissions().putIfAbsent(youngOwner.getName(),newPermission)==null) {
+            youngOwner.getPermissions().put(storeName, newPermission);
+            lock.writeLock().lock();
+            givenByMePermissions.add(newPermission);
+            lock.writeLock().unlock();
+            return true;
+        }
+        return false;
+
     }
 
     /**
@@ -229,6 +240,7 @@ public class Subscribe extends UserState{
      */
     @Override
     public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        lock.readLock().lock();
         for(Permission p: givenByMePermissions){
             if(p.getStore().getName().equals(storeName)&&p.getOwner().getName().equals(userName)){
                 boolean added=false;
@@ -237,6 +249,7 @@ public class Subscribe extends UserState{
                 return added;
             }
         }
+        lock.readLock().unlock();
         return false;
     }
 
@@ -250,6 +263,7 @@ public class Subscribe extends UserState{
 
     @Override
     public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        lock.readLock().lock();
         for(Permission p: givenByMePermissions){
             if(p.getStore().getName().equals(storeName)&&p.getOwner().getName().equals(userName)){
                 boolean removed=false;
@@ -258,6 +272,7 @@ public class Subscribe extends UserState{
                 return removed;
             }
         }
+        lock.readLock().unlock();
         return false;
     }
 
@@ -271,9 +286,13 @@ public class Subscribe extends UserState{
     public boolean removeManager(String userName, String storeName) {
         if(!permissions.containsKey(storeName))
             return false;
+
         for(Permission p: givenByMePermissions) {
             if (p.getStore().getName().equals(storeName) && p.getOwner().getName().equals(userName)) {
                 p.getOwner().removeManagerFromStore(storeName);
+                lock.writeLock().lock();
+                givenByMePermissions.remove(p);
+                lock.writeLock().lock();
                 return true;
             }
         }
@@ -287,15 +306,21 @@ public class Subscribe extends UserState{
      * managed by me
      */
     private void removeManagerFromStore(String storeName) {
+        Permission permission=null;
+        lock.writeLock().lock();
         for(Permission p: givenByMePermissions) {
             if (p.getStore().getName().equals(storeName)) {
                 p.getOwner().removeManagerFromStore(storeName);
+                permission=p;
             }
         }
-        //remove the permission from the store
-        permissions.get(storeName).getStore().getPermissions().remove(userName);
+        givenByMePermissions.remove(permission);
+        lock.writeLock().unlock();
+        Store store=permissions.get(storeName).getStore();
         //remove the permission from the user
         permissions.remove(storeName);
+        //remove the permission from the store
+        store.getPermissions().remove(userName);
 
     }
     /**
@@ -306,11 +331,14 @@ public class Subscribe extends UserState{
     @Override
     public List<Request> viewRequest(String storeName) {
         List<Request> output = new LinkedList<>();
-        if(! permissions.containsKey(storeName)) return output;
+        if(! permissions.containsKey(storeName))
+            return output;
         Permission permission = permissions.get(storeName);
         if(permission != null){
             Store store = permission.getStore();
+            //TODO check if concurrent
             output = new LinkedList<>(store.getRequests().values());
+
         }
         return output;
     }
@@ -324,11 +352,15 @@ public class Subscribe extends UserState{
      */
     @Override
     public Request replayToRequest(String storeName, int requestID, String content) {
-        if(! permissions.containsKey(storeName) | content==null) return null;
+        //TODO don't check content is null twice
+        if(! permissions.containsKey(storeName) | content==null)
+            return null;
         Permission permission = permissions.get(storeName);
-        if(permission == null) return null;
+        if(permission == null)
+            return null;
         Store store = permission.getStore();
-        if(store.getRequests().containsKey(requestID)) {
+        //TODO add to use case what happened when has few comments
+        if(store!=null&&store.getRequests().containsKey(requestID)) {
             store.getRequests().get(requestID).setComment(content);
             return store.getRequests().get(requestID);
         }

@@ -21,7 +21,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
     protected void setUpOpenedStore() {
         setUpLogedInUser();
         StoreData storeData = data.getStore(Data.VALID);
-        logicManager.openStore(storeData);
+        logicManager.openStore(id, storeData);
     }
 
     /**---------------------------------set-ups-------------------------------------*/
@@ -64,7 +64,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
         assertNotNull(store);
         assertEquals(storeData.getName(),store.getName());
         //This test check if can add store twiced
-        assertFalse(logicManager.openStore(data.getStore(Data.VALID)));
+        assertFalse(logicManager.openStore(id, data.getStore(Data.VALID)));
     }
 
     /**
@@ -73,7 +73,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
     @Override
     protected void testOpenStoreSucces(){
         StoreData storeData = data.getStore(Data.VALID);
-        assertTrue(logicManager.openStore(storeData));
+        assertTrue(logicManager.openStore(id, storeData));
     }
 
     /**
