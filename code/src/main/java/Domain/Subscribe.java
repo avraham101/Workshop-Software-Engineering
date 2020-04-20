@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Subscribe extends UserState{
 
@@ -19,6 +20,7 @@ public class Subscribe extends UserState{
     private List<Purchase> purchases;
     private List<Request> requests;
     private List<Review> reviews;
+    private AtomicInteger sessionNumber;
 
     public Subscribe(String userName, String password) {
         initSubscribe(userName,password);
@@ -37,6 +39,7 @@ public class Subscribe extends UserState{
         purchases=new ArrayList<>();
         requests=new ArrayList<>();
         reviews = new LinkedList<>();
+        sessionNumber=new AtomicInteger(-1);
     }
 
     /**
@@ -418,5 +421,9 @@ public class Subscribe extends UserState{
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public AtomicInteger getSessionNumber() {
+        return sessionNumber;
     }
 }

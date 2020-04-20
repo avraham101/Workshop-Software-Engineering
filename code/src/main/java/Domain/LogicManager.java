@@ -4,7 +4,8 @@ import DataAPI.*;
 import Systems.*;
 import Systems.PaymentSystem.*;
 import Systems.SupplySystem.*;
-import Utils.Utils;
+import Utils.*;
+
 
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -12,9 +13,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class LogicManager {
     //TODO check all classes
-    private HashMap<String, Subscribe> users;
-    private HashMap<String, Store> stores;
-    private HashMap<Integer,User> loggedInUsers;
+    private HashMap<String, Subscribe> subscribes;
+    private OurHashMap<String, Store> stores;
+    private OurHashMap<Integer,User> loggedInUsers;
     private AtomicInteger usersIdCounter;
     private HashSystem hashSystem;
     private PaymentSystem paymentSystem;
@@ -22,11 +23,11 @@ public class LogicManager {
     private LoggerSystem loggerSystem;
     private User current;
 
-    public LogicManager(String userName, String password, HashMap<String, Subscribe> users, HashMap<String, Store> stores, User current) throws Exception {
-        this.users = users;
+    public LogicManager(String userName, String password, HashMap<String, Subscribe> subscribes, OurHashMap<String, Store> stores, User current) throws Exception {
+        this.subscribes = subscribes;
         this.stores = stores;
         this.current = current;
-        this.loggedInUsers=new HashMap<>();
+        this.loggedInUsers=new OurHashMap<Integer,User>();
         usersIdCounter=new AtomicInteger(0);
         try {
             hashSystem = new HashSystem();
@@ -39,7 +40,7 @@ public class LogicManager {
             if(!supplySystem.connect()) {
                 throw new Exception("Supply System Crashed");
             }
-            if(users.isEmpty()&&!register(userName,password)) {
+            if(subscribes.isEmpty()&&!register(userName,password)) {
                 throw new Exception("Admin Register Crashed");
             }
         } catch (Exception e) {
@@ -54,10 +55,10 @@ public class LogicManager {
      * @throws Exception - system crashed exception
      */
     public LogicManager(String userName, String password) throws Exception {
-        users = new HashMap<>();
-        stores = new HashMap<>();
+        subscribes = new HashMap<>();
+        stores = new OurHashMap<String, Store>();
         usersIdCounter=new AtomicInteger(0);
-        this.loggedInUsers=new HashMap<>();
+        this.loggedInUsers=new OurHashMap<Integer,User>();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -75,7 +76,7 @@ public class LogicManager {
                         "Fail connection to supply system",new Object[]{userName, password});
                 throw new Exception("Supply System Crashed");
             }
-            if(users.isEmpty()&&!register(userName,password)) {
+            if(subscribes.isEmpty()&&!register(userName,password)) {
                 loggerSystem.writeError("Logic manager", "constructor",
                         "Fail register",new Object[]{userName, password});
                 throw new Exception("Admin Register Crashed");
@@ -91,10 +92,10 @@ public class LogicManager {
     }
 
     public LogicManager(String userName, String password, PaymentSystem paymentSystem, SupplySystem supplySystem) throws Exception {
-        users = new HashMap<>();
-        stores = new HashMap<>();
-        this.loggedInUsers=new HashMap<>();
+        subscribes = new HashMap<>();
+        stores = new OurHashMap<String, Store>();
         usersIdCounter=new AtomicInteger(0);
+        this.loggedInUsers=new OurHashMap<Integer,User>();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -112,7 +113,7 @@ public class LogicManager {
                         "Fail connection to supply system",new Object[]{userName, password});
                 throw new Exception("Supply System Crashed");
             }
-            if(users.isEmpty()&&!register(userName,password)) {
+            if(subscribes.isEmpty()&&!register(userName,password)) {
                 loggerSystem.writeError("Logic manager", "constructor",
                         "Fail register",new Object[]{userName, password});
                 throw new Exception("Admin Register Crashed");
@@ -149,20 +150,22 @@ public class LogicManager {
         if(!validName(userName) || !validPassword(password)) {
             return false;
         }
-        if(!users.containsKey(userName)){
-            try {
-                password = hashSystem.encrypt(password);
-                Subscribe subscribe =null;
-                if(users.isEmpty())
-                    subscribe = new Admin(userName, password);
-                else
-                    subscribe = new Subscribe(userName, password);
-                users.put(userName,subscribe);
-                return true;
-            } catch (NoSuchAlgorithmException e) {
-                loggerSystem.writeError("Logic manager", "register",
-                        "Fail register the user",new Object[]{userName, password});
-            }
+        Subscribe subscribe =null;
+        try {
+            password = hashSystem.encrypt(password);
+        } catch (NoSuchAlgorithmException e) {
+            loggerSystem.writeError("Logic manager", "register",
+                    "Fail register the user",new Object[]{userName, password});
+            return false;
+        }
+        //TODO put if absent??
+        if(!this.subscribes.containsKey(userName)){
+            if(this.subscribes.isEmpty())
+                subscribe = new Admin(userName, password);
+            else
+                subscribe = new Subscribe(userName, password);
+            this.subscribes.put(userName,subscribe);
+            return true;
         }
         return false;
     }
@@ -179,18 +182,21 @@ public class LogicManager {
         if(!validName(userName) || !validPassword(password)) {
             return false;
         }
-        if (users.containsKey(userName)) {
+        Subscribe subscribe = this.subscribes.get(userName);
+        //TODO test login change session number
+        User user=loggedInUsers.get(0);
+        if(subscribe!=null&&subscribe.getSessionNumber().compareAndSet(-1,0)){
             try {
                 password = hashSystem.encrypt(password);
-                Subscribe subscribe = users.get(userName);
                 if (subscribe.getPassword().compareTo(password) == 0) {
-                    return current.login(subscribe);
+                    return user.login(subscribe);
                 }
             } catch (NoSuchAlgorithmException e) {
                 loggerSystem.writeError("Logic manager", "login",
                         "Fail to login the user",new Object[]{userName, password});
             }
         }
+
         return false;
     }
 
@@ -431,6 +437,7 @@ public class LogicManager {
      * @return true is the purchase succeeded, otherwise false
      */
     //TODO change use case and change tests to work with stubs external systems
+    //TODO synchronize product when reduce amount
     public boolean purchaseCart(PaymentData paymentData, String addresToDeliver) {
         loggerSystem.writeEvent("LogicManager","purchaseCart",
                 "buy the products in the cart", new Object[] {paymentData, addresToDeliver});
@@ -638,7 +645,7 @@ public class LogicManager {
     public boolean manageOwner(String storeName, String userName) {
         loggerSystem.writeEvent("LogicManager","manageOwner",
                 "store owner add a owner to the store", new Object[] {storeName, userName});
-        if(!users.containsKey(userName)||!stores.containsKey(storeName))
+        if(!subscribes.containsKey(userName)||!stores.containsKey(storeName))
             return false;
         addManager(userName,storeName);
         List<PermissionType> types=new ArrayList<>();
@@ -655,9 +662,9 @@ public class LogicManager {
     public boolean addManager(String userName, String storeName) {
         loggerSystem.writeEvent("LogicManager","addManager",
                 "store owner add a manager to the store", new Object[] {storeName, userName});
-        if(!users.containsKey(userName)||!stores.containsKey(storeName))
+        if(!subscribes.containsKey(userName)||!stores.containsKey(storeName))
             return false;
-        return current.addManager(users.get(userName),storeName);
+        return current.addManager(subscribes.get(userName),storeName);
     }
 
     /**
@@ -672,7 +679,7 @@ public class LogicManager {
                 "store owner add a manager's permissions", new Object[] {permissions, storeName, userName});
         if(!validList(permissions))
             return false;
-        if (!users.containsKey(userName) || !stores.containsKey(storeName))
+        if (!subscribes.containsKey(userName) || !stores.containsKey(storeName))
             return false;
         return current.addPermissions(permissions, storeName, userName);
     }
@@ -699,7 +706,7 @@ public class LogicManager {
                 "store owner remove manager's permission", new Object[] {permissions, storeName, userName});
         if(!validList(permissions))
             return false;
-        if (!users.containsKey(userName) || !stores.containsKey(storeName))
+        if (!subscribes.containsKey(userName) || !stores.containsKey(storeName))
             return false;
         return current.removePermissions(permissions, storeName, userName);
     }
@@ -714,7 +721,7 @@ public class LogicManager {
     public boolean removeManager(String userName, String storeName) {
         loggerSystem.writeEvent("LogicManager","removeManager",
                 "store owner remove manager", new Object[] {storeName, userName});
-        if (!users.containsKey(userName) || !stores.containsKey(storeName))
+        if (!subscribes.containsKey(userName) || !stores.containsKey(storeName))
             return false;
         return current.removeManager(userName,storeName);
     }
@@ -756,10 +763,10 @@ public class LogicManager {
     public List<Purchase> watchUserPurchasesHistory(String userName) {
         loggerSystem.writeEvent("LogicManager","watchUserPurchasesHistory",
                 "admin watch a user purchase history", new Object[] {userName});
-        if(!users.containsKey(userName))
+        if(!subscribes.containsKey(userName))
             return null;
         if (current.canWatchUserHistory()) {
-            Subscribe user = this.users.get(userName);
+            Subscribe user = this.subscribes.get(userName);
             return user.getPurchases();
         }
         return null;
