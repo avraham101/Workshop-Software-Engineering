@@ -26,7 +26,6 @@ public class ServiceAPI {
         this.logicManager = new LogicManager(userName, password,paymentSystem,supplySystem);
     }
 
-
     /**
      * hand shake to connect to the system
      * @return
@@ -34,6 +33,7 @@ public class ServiceAPI {
     public int connectToSystem(){
         return logicManager.connectToSystem();
     }
+
     /**
      * use case 2.2 - Register
      * @param userName - the user Name
