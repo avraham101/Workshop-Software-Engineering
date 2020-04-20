@@ -248,7 +248,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         setUpProductAddedToCart();
         ProductData productData = data.getProductData(Data.VALID);
         assertTrue(logicManager.deleteFromCart(productData.getProductName(),productData.getStoreName()));
-
+        Basket basket=currUser.getState().getCart().getBasket(productData.getStoreName());
+        for(Product p:basket.getProducts().keySet())
+            assertFalse(p.equal(productData));
     }
 
     /**
@@ -260,6 +262,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         setUpProductAddedToCart();
         ProductData productData = data.getProductData(Data.VALID);
         assertTrue(logicManager.editProductInCart(productData.getProductName(),productData.getStoreName(),1));
+        //TODO check that the product was edited
     }
 
     /**
@@ -281,6 +284,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         ProductData product = data.getProductData(Data.VALID);
         assertTrue(logicManager.addProductToCart(product.getProductName(),
                 product.getStoreName(), product.getAmount()));
+        //TODO check product added to cart
     }
 
     /**
@@ -291,11 +295,13 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         ProductData product = data.getProductData(Data.WRONG_STORE);
         assertFalse(logicManager.addProductToCart(product.getProductName(),
                 product.getStoreName(), product.getAmount()));
+        //TODO check product wasnt added to cart
     }
 
     /**
      * use case 2.8 - test buy Products
      */
+    //TODO change test because change implemetation
     @Override @Test
     public void testBuyProducts() {
         super.testBuyProducts();
@@ -417,7 +423,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         testSubscribeAddRequestFail();
     }
 
-    public void testSubscribeAddRequestSuccess() {
+    private void testSubscribeAddRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
         assertTrue(logicManager.addRequest(request.getStoreName(), request.getContent()));
 
@@ -437,7 +443,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(subscribe.getRequests().get(0).getComment(), request.getComment());
     }
 
-    public void testSubscribeAddRequestFail() {
+    //TODO split to 2 tests and check the request wasnt added
+    private void testSubscribeAddRequestFail() {
         Request request1 = data.getRequest(Data.NULL_NAME);
         Request request2 = data.getRequest(Data.NULL);
         assertFalse(logicManager.addRequest(request1.getStoreName(), request1.getContent()));
@@ -486,9 +493,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
         Subscribe sub = ((Subscribe) currUser.getState());
         Permission permission = sub.getPermissions().get(validStoreName);
+        Store store=permission.getStore();
         sub.getPermissions().clear();
         assertFalse(logicManager.addProductToStore(data.getProductData(Data.VALID)));
         sub.getPermissions().put(validStoreName,permission);
+        assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
 
     /**
@@ -498,9 +507,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
         Subscribe sub = ((Subscribe) currUser.getState());
         Permission permission = sub.getPermissions().get(validStoreName);
+        Store store=permission.getStore();
         permission.removeType(PermissionType.OWNER);
         assertFalse(logicManager.addProductToStore(data.getProductData(Data.VALID)));
         permission.addType(PermissionType.OWNER);
+        assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
 
     /**
@@ -511,6 +522,32 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         super.testRemoveProductSuccess();
         Subscribe sub=(Subscribe)currUser.getState();
         assertFalse(sub.getPermissions().containsKey(data.getProductData(Data.VALID).getProductName()));
+    }
+
+    @Test
+    public void checkRemoveProductNotManager() {
+        setUpProductAdded();
+        String validStoreName = data.getProductData(Data.VALID).getStoreName();
+        Subscribe sub = ((Subscribe) currUser.getState());
+        Permission permission = sub.getPermissions().get(validStoreName);
+        Store store=permission.getStore();
+        sub.getPermissions().clear();
+        assertFalse(sub.removeProductFromStore(data.getProductData(Data.VALID).getProductName(),validStoreName));
+        sub.getPermissions().put(validStoreName,permission);
+        assertTrue(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+    }
+
+    @Test
+    public void checkRemoveProductHasNoPermission() {
+        setUpProductAdded();
+        String validStoreName = data.getProductData(Data.VALID).getStoreName();
+        Subscribe sub = ((Subscribe) currUser.getState());
+        Permission permission = sub.getPermissions().get(validStoreName);
+        Store store=permission.getStore();
+        permission.removeType(PermissionType.OWNER);
+        assertFalse(sub.removeProductFromStore(data.getProductData(Data.VALID).getProductName(),validStoreName));
+        permission.addType(PermissionType.OWNER);
+        assertTrue(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
 
     /**
@@ -525,6 +562,34 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
                 .getProducts().get(product.getProductName()).equal(product));
     }
 
+    @Test
+    public void checkEditProductNotManager() {
+        setUpProductAdded();
+        String validStoreName = data.getProductData(Data.VALID).getStoreName();
+        Subscribe sub = ((Subscribe) currUser.getState());
+        Permission permission=sub.getPermissions().get(validStoreName);
+        ProductData pData=data.getProductData(Data.EDIT);
+        Store store=permission.getStore();
+        sub.getPermissions().clear();
+        assertFalse(sub.editProductFromStore(pData));
+        assertFalse(store.getProducts().get(pData.getProductName()).equal(pData));
+        sub.getPermissions().put(validStoreName,permission);
+    }
+
+    @Test
+    public void checkEditProductHasNoPermission() {
+        setUpProductAdded();
+        String validStoreName = data.getProductData(Data.VALID).getStoreName();
+        Subscribe sub = ((Subscribe) currUser.getState());
+        Permission permission=sub.getPermissions().get(validStoreName);
+        ProductData pData=data.getProductData(Data.EDIT);
+        Store store=permission.getStore();
+        permission.removeType(PermissionType.OWNER);
+        assertFalse(sub.editProductFromStore(data.getProductData(Data.VALID)));
+        assertFalse(store.getProducts().get(pData.getProductName()).equal(pData));
+        permission.addType(PermissionType.OWNER);
+    }
+
     /**
      * use case 4.3 - manage owner
      */
@@ -532,6 +597,14 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     protected void testManageOwnerSuccess() {
         super.testManageOwnerSuccess();
         checkPermissions(Data.VALID2);
+    }
+
+    @Override
+    protected void testManageOwnerFail() {
+        super.testManageOwnerFail();
+        String sName=data.getStore(Data.VALID).getName();
+        assertFalse(logicManager.manageOwner(sName,sName));
+        assertFalse(stores.get(sName).getPermissions().containsKey(sName));
     }
 
     /**

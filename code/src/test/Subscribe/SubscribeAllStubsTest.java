@@ -303,7 +303,7 @@ public class SubscribeAllStubsTest {
         Store store=permission.getStore();
         sub.getPermissions().clear();
         assertFalse(sub.editProductFromStore(pData));
-        //assertFalse(store.getProducts().get(pData.getProductName()).equal(pData));
+        assertFalse(store.getProducts().get(pData.getProductName()).equal(pData));
         sub.getPermissions().put(validStoreName,permission);
     }
 

@@ -295,6 +295,7 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 2.4.2 - view the products in some store test
      */
+    //TODO split tests
     @Test
     public void testViewProductsInStore() {
         setUpProductAdded();
@@ -343,6 +344,7 @@ public class LogicManagerAllStubsTest {
     /**
      * part of use case 2.5 - view spesific products
      */
+    //TODO split tests
     protected void testViewSpecificProductWrongFilter() {
         Filter filter = data.getFilter(Data.NULL);
         List<ProductData> products = logicManager.viewSpecificProducts(filter);
@@ -368,6 +370,7 @@ public class LogicManagerAllStubsTest {
     /**
      * part of use case 2.5 - view spesific products
      */
+    //TODO split tests
     private void testViewSpecificProductSearchAndFilter() {
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.NONE);
@@ -487,7 +490,6 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.editProductInCart(productData.getProductName(),productData.getStoreName(),productData.getAmount() + 1));
     }
 
-
     /**
      *  use case 2.7.4 - add product to cart
      */
@@ -508,6 +510,7 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 2.8 - test buy Products
      */
+    //TODO change because change implementation
     @Test
     public void testBuyProducts() {
         setUpProductAddedToCart();
@@ -519,6 +522,7 @@ public class LogicManagerAllStubsTest {
      * use case 2.8 - test buy Products
      * success tests
      */
+    //TODO change because change implementation
     private void testSuccessBuyProducts() {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
@@ -529,6 +533,8 @@ public class LogicManagerAllStubsTest {
      * use case 2.8 - test buy Products
      * fails tests
      */
+    //TODO change because change implementation
+    //TODO split tests
     private void testFailBuyProducts() {
         // null data payment
         assertFalse(logicManager.purchaseCart(null, null));
@@ -574,6 +580,7 @@ public class LogicManagerAllStubsTest {
     public void testLogout() {
         setUpLogedInUser();
         assertTrue(currUser.logout());
+        assertTrue(currUser.getState() instanceof Guest);
     }
 
     /**
@@ -589,6 +596,7 @@ public class LogicManagerAllStubsTest {
     /**
      * part of test use case 3.2 - Open Store
      */
+    //TODO split tests and check store wasnt added in each test
     private void testOpenStoreFail() {
         assertFalse(logicManager.openStore(data.getStore(Data.NULL)));
         assertFalse(logicManager.openStore(data.getStore(Data.NULL_NAME)));
@@ -617,6 +625,7 @@ public class LogicManagerAllStubsTest {
     /**
      * part of use case 3.3 - write review
      */
+    //TODO split tests
     private void testWriteReviewInvalid() {
         Review review = data.getReview(Data.NULL_STORE);
         assertFalse(logicManager.addReview(review.getStore(),review.getProductName(),review.getContent()));
@@ -698,6 +707,7 @@ public class LogicManagerAllStubsTest {
         assertTrue(logicManager.addProductToStore(data.getProductData(Data.VALID)));
     }
 
+    //TODO split tests and check product wasn't added
     protected void testAddProductFail(){
         assertFalse(logicManager.addProductToStore(null));
         assertFalse(logicManager.addProductToStore(data.getProductData(Data.NULL_NAME)));
@@ -719,14 +729,13 @@ public class LogicManagerAllStubsTest {
     public void testRemoveProductFromStore(){
         setUpProductAdded();
         testRemoveProductSuccess();
-        testRemoveProductFail();
+        testRemoveProductTwiceFail();
     }
 
     /**
      * test remove with no exist store
      */
-
-    private void testRemoveProductFail() {
+    private void testRemoveProductTwiceFail() {
         assertFalse(logicManager.removeProductFromStore(data.getSubscribe(Data.VALID).getName()
                 ,data.getProductData(Data.VALID).getProductName()));
     }
@@ -753,6 +762,7 @@ public class LogicManagerAllStubsTest {
     /**
      * test edit product to be illegal fields
      */
+    //TODO split tests
     protected void testEditProductFail() {
         assertFalse(logicManager.editProductFromStore(null));
         assertFalse(logicManager.editProductFromStore(data.getProductData(Data.NULL_NAME)));
@@ -774,7 +784,13 @@ public class LogicManagerAllStubsTest {
     public void testManageOwner(){
         setUpOpenedStore();
         testManageOwnerFail();
+        testManageOwnerFailAgain();
         testManageOwnerSuccess();
+    }
+
+    private void testManageOwnerFailAgain() {
+        assertFalse(logicManager.manageOwner(data.getSubscribe(Data.VALID).getName(),
+                data.getSubscribe(Data.VALID2).getName()));
     }
 
     protected void testManageOwnerSuccess() {
@@ -782,11 +798,9 @@ public class LogicManagerAllStubsTest {
                 data.getSubscribe(Data.VALID2).getName()));
     }
 
-    private void testManageOwnerFail() {
+    protected void testManageOwnerFail() {
         assertFalse(logicManager.manageOwner(data.getStore(Data.VALID).getName()
                 ,data.getStore(Data.VALID).getName()));
-        assertFalse(logicManager.manageOwner(data.getSubscribe(Data.VALID).getName(),
-                data.getSubscribe(Data.VALID2).getName()));
     }
 
     /**
@@ -795,7 +809,8 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testAddManagerToStore(){
         setUpOpenedStore();
-        testAddManagerToStoreFail();
+        testAddManagerToStoreFailStore();
+        testAddManagerToStoreFailUser();
         testAddManagerStoreSuccess();
     }
 
@@ -804,15 +819,23 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * test not existing store or not existing user
+     * test not existing store
      */
-    private void testAddManagerToStoreFail() {
-        String storeName=data.getStore(Data.VALID).getName();
+    private void testAddManagerToStoreFailStore() {
         String userName=data.getSubscribe(Data.ADMIN).getName();
-        //invalid username
-        assertFalse(logicManager.addManager(storeName,storeName));
+        String storeName=data.getStore(Data.VALID).getName();
         //invalid storeName
         assertFalse(logicManager.addManager(userName,userName));
+        assertFalse(stores.get(storeName).getPermissions().containsKey(userName));
+    }
+
+    /**
+     * test not existing user
+     */
+    private void testAddManagerToStoreFailUser(){
+        String storeName=data.getStore(Data.VALID).getName();
+        assertFalse(logicManager.addManager(storeName,storeName));
+        assertFalse(stores.get(storeName).getPermissions().containsKey(storeName));
     }
 
     /**
@@ -832,6 +855,7 @@ public class LogicManagerAllStubsTest {
      * 3. null list
      * 4. list with null
      */
+    //TODO split tests
     private void testAddPermissionFail() {
         String user=data.getSubscribe(Data.ADMIN).getName();
         String store=data.getStore(Data.VALID).getName();
@@ -889,22 +913,31 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testRemoveManager(){
         setUpManagerAddedSubManagerAdded();
-        testRemoveManagerFail();
+        testRemoveManagerFailStore();
+        testRemoveManagerFailUser();
         testRemoveManagerSuccess();
     }
+
+
 
     protected void testRemoveManagerSuccess() {
         assertTrue(logicManager.removeManager(data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()));
     }
 
     /**
-     * test not existing store or not existing user
+     * test not existing user
      */
-    private void testRemoveManagerFail() {
+    private void testRemoveManagerFailStore() {
         String storeName=data.getStore(Data.VALID).getName();
-        String userName=data.getSubscribe(Data.ADMIN).getName();
         //invalid username
         assertFalse(logicManager.removeManager(storeName,storeName));
+    }
+
+    /**
+     * test not existing store
+     */
+    private void testRemoveManagerFailUser() {
+        String userName=data.getSubscribe(Data.ADMIN).getName();
         //invalid storeName
         assertFalse(logicManager.removeManager(userName,userName));
     }
@@ -946,6 +979,7 @@ public class LogicManagerAllStubsTest {
         assertNotNull(currUser.replayToRequest(request.getStoreName(),request.getId(), request.getContent()));
     }
 
+    //TODO split test to 2 tests
     private void testReplayRequestFail() {
         Request request1 = data.getRequest(Data.WRONG_STORE);
         Request request2 = data.getRequest(Data.NULL);
