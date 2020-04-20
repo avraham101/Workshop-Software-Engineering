@@ -52,7 +52,7 @@ public class TestData {
         users.put(Data.NULL_NAME, new Subscribe(null, "Admin"));
         users.put(Data.NULL_PASSWORD, new Subscribe("Admin", null));
         users.put(Data.WRONG_NAME, new Subscribe("","Changed_Password"));
-        users.put(Data.WRONG_PASSWORD, new Subscribe("Admin",""));
+        users.put(Data.WRONG_PASSWORD, new Subscribe("Yossi",""));
         users.put(Data.VALID2,new Subscribe("Niv","Shirazi"));
     }
 

@@ -34,7 +34,7 @@ public class LogicManager {
             if(!supplySystem.connect()) {
                 throw new Exception("Supply System Crashed");
             }
-            if(!register(userName,password)) {
+            if(users.isEmpty()&&!register(userName,password)) {
                 throw new Exception("Admin Register Crashed");
             }
         } catch (Exception e) {
@@ -68,7 +68,7 @@ public class LogicManager {
                         "Fail connection to supply system",new Object[]{userName, password});
                 throw new Exception("Supply System Crashed");
             }
-            if(!register(userName,password)) {
+            if(users.isEmpty()&&!register(userName,password)) {
                 loggerSystem.writeError("Logic manager", "constructor",
                         "Fail register",new Object[]{userName, password});
                 throw new Exception("Admin Register Crashed");
@@ -376,6 +376,7 @@ public class LogicManager {
      * @param addresToDeliver - the address do Deliver the purchase
      * @return true is the purchase succeeded, otherwise false
      */
+    //TODO change use case and change tests to work with stubs external systems
     public boolean purchaseCart(PaymentData paymentData, String addresToDeliver) {
         loggerSystem.writeEvent("LogicManager","purchaseCart",
                 "buy the products in the cart", new Object[] {paymentData, addresToDeliver});

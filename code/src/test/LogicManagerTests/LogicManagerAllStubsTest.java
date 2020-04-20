@@ -58,6 +58,8 @@ public class LogicManagerAllStubsTest {
         logicManager.register(other.getName(),other.getPassword());
     }
 
+
+
     /**--------------------------------set-ups-------------------------------------------------------------------*/
 
     /**
@@ -166,6 +168,7 @@ public class LogicManagerAllStubsTest {
 
     /**--------------------------------set-ups-------------------------------------------------------------------*/
 
+    //TODO add test when cant connect systems supply and payment
     /**
      * test: use case 1.1 - Init System
      */
@@ -199,6 +202,7 @@ public class LogicManagerAllStubsTest {
     public void testRegisterFailWrongName() {
         Subscribe subscribe = data.getSubscribe(Data.WRONG_NAME);
         assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()));
+        assertFalse(users.containsKey(subscribe.getName()));
     }
 
     /**
@@ -207,7 +211,8 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testRegisterFailWrongPassword() {
         Subscribe subscribe = data.getSubscribe(Data.WRONG_PASSWORD);
-        assertFalse(logicManager.register(subscribe.getName(), subscribe.getName()));
+        assertFalse(logicManager.register(subscribe.getName(), subscribe.getPassword()));
+        assertFalse(users.containsKey(subscribe.getName()));
     }
 
     /**
@@ -217,6 +222,7 @@ public class LogicManagerAllStubsTest {
     public void testRegisterFailNull() {
         Subscribe subscribe = data.getSubscribe(Data.NULL);
         assertFalse(logicManager.register(subscribe.getName(), subscribe.getName()));
+        assertFalse(users.containsKey(subscribe.getName()));
     }
 
     /**
@@ -232,6 +238,7 @@ public class LogicManagerAllStubsTest {
     /**
      * test use case 2.3 - Login
      */
+    //TODO check when failed that the user is not logged in
     @Test
     public void testLogin() {
         setUpRegisteredUser();

@@ -39,6 +39,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
     /**
      * part of use case 2.7.4 - add product to cart
      */
+    //TODO split tests and check the product wasn't added
     private void testAddProductToCartInvalidProduct() {
         ProductData product = data.getProductData(Data.NULL_PRODUCT);
         assertFalse(logicManager.addProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
@@ -78,6 +79,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
     /**
      * part of use case 3.3 - write review
      */
+    //TODO why it is empty
     @Override
     protected void testWriteReviewValid() {
 
