@@ -1231,7 +1231,6 @@ public class LogicManagerAllStubsTest {
         assertNotNull(currUser.replayToRequest(request.getStoreName(),request.getId(), request.getContent()));
     }
 
-    //TODO split test to 2 tests
     private void testReplayRequestFailWrongStore() {
         Request request1 = data.getRequest(Data.WRONG_STORE);
         assertNull(logicManager.replayRequest(data.getId(Data.VALID), request1.getStoreName(), request1.getId(), request1.getContent()));
