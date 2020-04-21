@@ -68,7 +68,8 @@ public class ManagerPermissionsTest extends AcceptanceTests {
 
     @Test
     public void managerPermissionsTestFailAddNewOwner(){
-        boolean isAdded = bridge.appointOwnerToStore(newProduct.getStoreName(),newManager.getUsername());
+        boolean isAdded = bridge.appointOwnerToStore(manager.getId(),
+                newProduct.getStoreName(),newManager.getUsername());
         assertFalse(isAdded);
     }
 }

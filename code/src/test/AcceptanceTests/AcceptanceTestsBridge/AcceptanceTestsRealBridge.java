@@ -188,7 +188,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-4.3---------------------------------//
     @Override
-    public boolean appointOwnerToStore(String storeName, String username) {
+    public boolean appointOwnerToStore(int id,String storeName, String username) {
         return serviceAPI.manageOwner(id,storeName,username);
     }
     //---------------------------Use-Case-4.3---------------------------------//
