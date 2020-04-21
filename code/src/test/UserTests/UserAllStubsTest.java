@@ -231,10 +231,18 @@ public class UserAllStubsTest {
         assertNull(user.addRequest(request.getId(),request.getStoreName(),request.getComment())); }
 
     /**
+     * test use case 3.5 - add request
+     */
+    @Test
+    public void testAddRequestSubscribe() {
+        setUpOpenStore();
+        Request request = data.getRequest(Data.VALID);
+        assertNotNull(user.addRequest(request.getId(),request.getStoreName(),request.getComment())); }
+    /**
      * test use case 3.7 - watch purchases
      */
     @Test
-    public void testWatchPurchasesGeust() {
+    public void testWatchPurchasesGuest() {
         setUpGuest();
         List<Purchase> list = user.watchMyPurchaseHistory();
         assertNull(list);
