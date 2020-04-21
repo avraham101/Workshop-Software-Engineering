@@ -634,9 +634,9 @@ public class LogicManager {
         User current=connectedUsers.get(id);
         if(productData==null)
             return false;
-        if(validProduct(productData))
+        if(!validProduct(productData))
             return false;
-        if(!stores.containsKey(productData.getStoreName()))
+        if(stores.containsKey(productData.getStoreName()))
             return current.addProductToStore(productData);
         return false;
     }
