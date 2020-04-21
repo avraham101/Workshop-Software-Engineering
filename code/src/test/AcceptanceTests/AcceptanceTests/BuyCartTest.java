@@ -4,6 +4,8 @@ import AcceptanceTests.AcceptanceTestDataObjects.CartTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.PurchaseTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
+import Systems.PaymentSystem.PaymentSystem;
+import Systems.SupplySystem.SupplySystem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,8 +21,11 @@ import java.util.List;
  */
 
 public class BuyCartTest extends AcceptanceTests {
-    @Before
-    public void setUp(){
+
+    public void setUp(PaymentSystem paymentSystem , SupplySystem deliverySystem){
+        bridge.initialStart(admin.getId(),admin.getUsername(),
+                admin.getPassword(),paymentSystem,deliverySystem);
+
         addStores(stores);
         addProducts(products);
     }

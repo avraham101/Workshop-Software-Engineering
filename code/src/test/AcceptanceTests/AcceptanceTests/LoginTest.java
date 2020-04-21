@@ -18,7 +18,6 @@ public class LoginTest extends AcceptanceTests {
 
     @Before
     public void setUp(){
-        bridge.logout();
         username = users.get(2).getUsername();
         password = users.get(2).getPassword();
         bridge.register(username,password);

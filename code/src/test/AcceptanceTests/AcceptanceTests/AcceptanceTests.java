@@ -54,15 +54,19 @@ public class AcceptanceTests {
 
 
     private static void setUpUsers() {
-        admin = new UserTestData("admin","admin");
-        UserTestData user0 = new UserTestData("testUser0","testUser0Pass");
-        UserTestData user1 = new UserTestData("testUser1","testUser1Pass");
-        UserTestData user2 = new UserTestData("testUser2","testUser2Pass");
-        UserTestData user3 = new UserTestData("testUser3","testUser3Pass");
+        admin = new UserTestData(generateUserId(),"admin","admin");
+
+        UserTestData user0 = new UserTestData(generateUserId(),"testUser0","testUser0Pass");
+        UserTestData user1 = new UserTestData(generateUserId(),"testUser1","testUser1Pass");
+        UserTestData user2 = new UserTestData(generateUserId(),"testUser2","testUser2Pass");
+        UserTestData user3 = new UserTestData(generateUserId(),"testUser3","testUser3Pass");
         superUser = user0;
         users.addAll(Arrays.asList(user0, user1,user2,user3));
         boolean init = bridge.initialStart(admin.getUsername(),admin.getPassword());
         assertTrue(init);
+    }
+    protected static int generateUserId(){
+        return bridge.connect();
     }
 
     private static void setUpProducts(){
