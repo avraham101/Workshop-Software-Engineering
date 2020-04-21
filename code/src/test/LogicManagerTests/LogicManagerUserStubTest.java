@@ -33,24 +33,49 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
     @Override
     public void testAddProductToCart() {
         super.testAddProductToCart();
-        testAddProductToCartInvalidProduct();
+        testAddProductToCartNullProduct();
+        testAddProductToCartNegativeAmount();
+        testAddProductToCartZeroAmount();
+        testAddProductToCartNullStore();
     }
 
     /**
-     * part of use case 2.7.4 - add product to cart
+     * part of use case 2.7.4 - check adding null product to cart
      */
-    //TODO split tests and check the product wasn't added
-    private void testAddProductToCartInvalidProduct() {
+    private void testAddProductToCartNullProduct() {
         ProductData product = data.getProductData(Data.NULL_PRODUCT);
-        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID),product.getProductName(),product.getStoreName(),product.getAmount()));
-        product = data.getProductData(Data.NEGATIVE_AMOUNT);
-        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID),product.getProductName(),product.getStoreName(),product.getAmount()));
-        product = data.getProductData(Data.ZERO);
-        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID),product.getProductName(),product.getStoreName(),product.getAmount()));
-        product = data.getProductData(Data.NULL_STORE);
-        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID),product.getProductName(),product.getStoreName(),product.getAmount()));
-
+        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName(), product.getAmount()));
+        logicManager.deleteFromCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName());
     }
+
+    /**
+     * part of use case 2.7.4 - check adding negative amount of product to cart
+     */
+    private void testAddProductToCartNegativeAmount() {
+        ProductData product = data.getProductData(Data.NEGATIVE_AMOUNT);
+        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName(), product.getAmount()));
+        logicManager.deleteFromCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName());
+    }
+
+    /**
+     * part of use case 2.7.4 - check adding negative amount of product to cart
+     */
+    private void testAddProductToCartZeroAmount() {
+        ProductData product = data.getProductData(Data.ZERO);
+        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName(), product.getAmount()));
+        logicManager.deleteFromCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName());
+    }
+
+    /**
+     * part of use case 2.7.4 - check adding negative amount of product to cart
+     */
+    private void testAddProductToCartNullStore() {
+        ProductData product = data.getProductData(Data.NULL_STORE);
+        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName(), product.getAmount()));
+        logicManager.deleteFromCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName());
+    }
+
+
 
     /**
      * test use case 3.2 - Open Store

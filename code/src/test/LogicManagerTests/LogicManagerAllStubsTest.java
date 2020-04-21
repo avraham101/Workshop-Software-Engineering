@@ -162,6 +162,7 @@ public class LogicManagerAllStubsTest {
      */
     protected void setUpProductAddedToCart(){
         setUpProductAdded();
+        this.currUser.addProductToCart(data.getRealStore(Data.VALID),data.getRealProduct(Data.VALID),1);
     }
 
     /**
