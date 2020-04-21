@@ -19,7 +19,7 @@ public class EditPermissionTest extends AcceptanceTests {
         userToCheck = users.get(1);
         bridge.register(userToCheck.getUsername(),userToCheck.getPassword());
         addUserStoresAndProducts(superUser);
-        bridge.appointManager(stores.get(0).getStoreName(),userToCheck.getUsername());
+        bridge.appointManager(superUser.getId(),stores.get(0).getStoreName(),userToCheck.getUsername());
 
         productToAdd = new ProductTestData("newProductTest",
                 stores.get(0).getStoreName(),

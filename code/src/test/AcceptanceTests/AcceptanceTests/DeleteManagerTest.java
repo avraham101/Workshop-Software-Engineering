@@ -32,15 +32,15 @@ public class DeleteManagerTest extends AcceptanceTests{
         managers = new ArrayList<>(Arrays.asList(firstManager,secondManager,thirdManager));
         registerUsers(managers);
         addUserStoresAndProducts(superUser);
-        bridge.appointManager(stores.get(0).getStoreName(), firstManager.getUsername());
-        bridge.appointManager(stores.get(0).getStoreName(), secondManager.getUsername());
+        bridge.appointManager(superUser.getId(),stores.get(0).getStoreName(), firstManager.getUsername());
+        bridge.appointManager(superUser.getId(),stores.get(0).getStoreName(), secondManager.getUsername());
         bridge.addPermissionToManager(stores.get(0).getStoreName(),
                                     firstManager.getUsername(),
                                     PermissionsTypeTestData.ADD_MANAGER);
 
         bridge.logout(superUser.getId());
         bridge.login(firstManager.getId(),firstManager.getUsername(), firstManager.getPassword());
-        bridge.appointManager(stores.get(0).getStoreName(), thirdManager.getUsername());
+        bridge.appointManager(firstManager.getId(),stores.get(0).getStoreName(), thirdManager.getUsername());
         bridge.logout(firstManager.getId());
         bridge.login(superUser.getId(),superUser.getUsername(),superUser.getPassword());
 

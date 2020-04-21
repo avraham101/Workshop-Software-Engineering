@@ -189,9 +189,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean appointManager(String storeName, String username) {
+    public boolean appointManager(int id, String storeName, String username) {
         if(realBridge!=null)
-            return realBridge.appointManager(storeName,username);
+            return realBridge.appointManager(id,storeName,username);
         return false;
     }
 
