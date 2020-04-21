@@ -227,8 +227,8 @@ public class UserAllStubsTest {
     @Test
     public void testAddRequestGuest() {
         setUpGuest();
-        assertNull(user.addRequest(data.getRequest(Data.VALID).getStoreName(),
-                data.getRequest(Data.VALID).getComment())); }
+        Request request = data.getRequest(Data.VALID);
+        assertNull(user.addRequest(request.getId(),request.getStoreName(),request.getComment())); }
 
     /**
      * test use case 3.7 - watch purchases

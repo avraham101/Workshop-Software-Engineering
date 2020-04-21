@@ -225,7 +225,7 @@ public class TestData {
         requests.put(Data.WRONG_NAME, new Request(users.get(Data.WRONG_NAME).getName(), stores.get(Data.VALID).getName(), "where is the milk in this store?", 1));
         requests.put(Data.WRONG_STORE, new Request(users.get(Data.VALID).getName(), stores.get(Data.WRONG_STORE).getName(), "where is the milk in this store?", 1));
         requests.put(Data.NULL_NAME, new Request(users.get(Data.VALID).getName(), stores.get(Data.NULL_NAME).getName(), "where is the milk in this store?", 1));
-        requests.put(Data.NULL, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), null, 1));
+        requests.put(Data.NULL_CONTENT, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), null, 1));
         requests.put(Data.WRONG_ID, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), "where is the milk in this store?", -1));
     }
 

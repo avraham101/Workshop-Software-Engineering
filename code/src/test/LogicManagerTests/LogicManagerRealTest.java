@@ -448,13 +448,15 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 3.5 -add request
      */
-    @Override @Test
+    @Override
     public void testAddRequest(){
-        setUpProductAdded();
+        setUpOpenedStore();
         testSubscribeAddRequestSuccess();
-        testSubscribeAddRequestFail();
     }
 
+    /**
+     * part of use case 3.5 -add request
+     */
     private void testSubscribeAddRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
         assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(), request.getContent()));
@@ -473,14 +475,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(subscribe.getRequests().get(0).getStoreName(), request.getStoreName());
         assertEquals(subscribe.getRequests().get(0).getContent(), request.getContent());
         assertEquals(subscribe.getRequests().get(0).getComment(), request.getComment());
-    }
-
-    //TODO split to 2 tests and check the request wasnt added
-    private void testSubscribeAddRequestFail() {
-        Request request1 = data.getRequest(Data.NULL_NAME);
-        Request request2 = data.getRequest(Data.NULL);
-        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request1.getStoreName(), request1.getContent()));
-        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request2.getStoreName(), request2.getContent()));
     }
 
     /**
