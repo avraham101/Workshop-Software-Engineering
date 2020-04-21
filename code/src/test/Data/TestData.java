@@ -250,7 +250,7 @@ public class TestData {
         StoreData storeData = getStore(data);
         Permission permission = new Permission(getSubscribe(Data.VALID));
         Store store = new Store(storeData.getName(),storeData.getPurchasePolicy(),
-                storeData.getDiscountPolicy(), permission, new ProxySupply(), new ProxyPayment());
+                storeData.getDiscountPolicy(), permission);
         permission.setStore(store);
         store.addProduct(getProductData(Data.VALID));
         return store;

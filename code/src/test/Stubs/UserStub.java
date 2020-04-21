@@ -23,10 +23,9 @@ public class UserStub extends User {
     }
 
     @Override
-    public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
+    public Store openStore(StoreData storeDetails) {
         return new Store(storeDetails.getName(), new PurchasePolicy(), new DiscountPolicy(),
-                new Permission(new Subscribe(this.getUserName(), this.getPassword())),
-                supplySystem, paymentSystem);
+                new Permission(new Subscribe(this.getUserName(), this.getPassword())));
     }
 
     @Override

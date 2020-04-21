@@ -15,13 +15,27 @@ import static org.junit.Assert.*;
 //no stubs full integration
 public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
+
     @Before
     public void setUp() {
-        currUser = new User();
         init();
+        currUser=connectedUsers.get(data.getId(Data.VALID));
     }
 
     /**---------------------set-ups-------------------------------------------*/
+
+    /**
+     * set up connect
+     */
+    @Override
+    protected void setUpConnect(){
+        logicManager.connectToSystem();
+        logicManager.connectToSystem();
+        logicManager.connectToSystem();
+        //work with the regular user has current user
+        currUser=connectedUsers.get(data.getId(Data.VALID));
+    }
+
     @Override
     protected void setUpProductAddedToCart() {
         super.setUpProductAddedToCart();
@@ -51,10 +65,16 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     public void testLogin() {
         super.testLogin();
         testLoginFailAlreadyUserLogged();
+        testLoginFailAlreadySubscribeLogged();
+    }
+
+    private void testLoginFailAlreadySubscribeLogged() {
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        assertFalse(logicManager.login(data.getId(Data.VALID2), subscribe.getName(),subscribe.getPassword()));
     }
 
     public void testLoginFailAlreadyUserLogged() {
-        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         assertFalse(logicManager.login(data.getId(Data.VALID), subscribe.getName(),subscribe.getPassword()));
     }
 
@@ -66,6 +86,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         super.testLoginSuccess();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         assertEquals(currUser.getUserName(),subscribe.getName());
+        //check session number
+        assertEquals(((Subscribe)currUser.getState()).getSessionNumber().get(),data.getId(Data.VALID));
         try {
             HashSystem hashSystem = new HashSystem();
             String password = hashSystem.encrypt(subscribe.getPassword());

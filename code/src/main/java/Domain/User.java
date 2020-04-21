@@ -116,12 +116,10 @@ public class User {
     /**
      * use case 3.2 - Open Store
      * @param storeDetails - the details of the the store
-     * @param paymentSystem - the external payment system.
-     * @param supplySystem - the external supply system.
      * @return The Store that we open, otherwise null;
      */
-    public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
-        return state.openStore(storeDetails,paymentSystem,supplySystem);
+    public Store openStore(StoreData storeDetails) {
+        return state.openStore(storeDetails);
     }
 
     /**

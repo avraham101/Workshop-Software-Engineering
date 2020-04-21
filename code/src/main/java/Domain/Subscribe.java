@@ -2,13 +2,12 @@ package Domain;
 
 import DataAPI.ProductData;
 import DataAPI.StoreData;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.SupplySystem.SupplySystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -16,7 +15,7 @@ public class Subscribe extends UserState{
 
     private String userName; //unique
     private String password;
-    private HashMap<String, Permission> permissions; //map of <storeName, Domain.Permission>
+    private ConcurrentHashMap<String, Permission> permissions; //map of <storeName, Domain.Permission>
     private List<Permission> givenByMePermissions; //map of <storeName, Domain.Permission>
     private List<Purchase> purchases;
     private List<Request> requests;
@@ -37,7 +36,7 @@ public class Subscribe extends UserState{
         lock=new ReentrantReadWriteLock();
         this.userName = userName;
         this.password = password;
-        permissions=new HashMap<>();
+        permissions=new ConcurrentHashMap<>();
         givenByMePermissions=new ArrayList<>();
         purchases=new ArrayList<>();
         requests=new ArrayList<>();
@@ -72,15 +71,14 @@ public class Subscribe extends UserState{
     /**
      * use case 3.2
      * @param storeDetails - the details of the store
-     * @param paymentSystem - The external payment System
-     * @param supplySystem - The external supply System
      * @return The store that we opened.
+     * this function is synchronized because of the locker in logic manger open store function.
      */
     @Override
-    public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
+    public Store openStore(StoreData storeDetails) {
         Permission permission = new Permission(this);
         Store store = new Store(storeDetails.getName(),storeDetails.getPurchasePolicy(),
-                storeDetails.getDiscountPolicy(), permission, supplySystem, paymentSystem);
+                storeDetails.getDiscountPolicy(), permission);
         permission.setStore(store);
         permission.addType(PermissionType.OWNER); //Always true, store just created.
         permissions.put(store.getName(),permission);
@@ -406,11 +404,11 @@ public class Subscribe extends UserState{
         this.password = password;
     }
 
-    public HashMap<String, Permission> getPermissions() {
+    public ConcurrentHashMap<String, Permission> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(HashMap<String, Permission> permissions) {
+    public void setPermissions(ConcurrentHashMap<String, Permission> permissions) {
         this.permissions = permissions;
     }
 

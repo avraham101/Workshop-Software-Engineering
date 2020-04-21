@@ -71,11 +71,14 @@ public class LogicManagerAllStubsTest {
     /**
      * set up connect
      */
-    private void setUpConnect(){
+    protected void setUpConnect(){
         logicManager.connectToSystem();
         logicManager.connectToSystem();
         logicManager.connectToSystem();
         //work with the regular user has current user
+        connectedUsers.put(data.getId(Data.VALID),new UserStub());
+        connectedUsers.put(data.getId(Data.ADMIN),new UserStub());
+        connectedUsers.put(data.getId(Data.VALID2),new UserStub());
         currUser=connectedUsers.get(data.getId(Data.VALID));
     }
 
@@ -107,8 +110,7 @@ public class LogicManagerAllStubsTest {
         Store store = stores.get(storeData.getName());
         Permission permission = new Permission(data.getSubscribe(Data.VALID));
         StoreStub storeStub = new StoreStub(store.getName(),store.getPurchasePolicy(),
-                store.getDiscount(),permission,store.getSupplySystem(),
-                store.getPaymentSystem());
+                store.getDiscount(),permission);
         permission.setStore(storeStub);
         stores.put(storeData.getName(),storeStub);
     }

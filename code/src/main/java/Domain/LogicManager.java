@@ -506,8 +506,7 @@ public class LogicManager {
 
     /**
      * use case 3.2 - Open Store
-     *
-     * @param id
+     * @param id - the number of the session that is connected
      * @param storeDetails - the details of the the store
      * @return true if can open store, otherwise false.
      */
@@ -521,8 +520,7 @@ public class LogicManager {
         synchronized (openStoreLocker) {
             if (stores.containsKey(storeDetails.getName()))
                 return false;
-            //TODO delete payment and supply
-            Store store = current.openStore(storeDetails,paymentSystem, supplySystem);
+            Store store = current.openStore(storeDetails);
             if(store != null) {
                 stores.put(store.getName(),store);
                 return true;

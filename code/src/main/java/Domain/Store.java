@@ -19,20 +19,15 @@ public class Store {
     private ConcurrentHashMap<String, Category> categoryList;
     private ConcurrentHashMap<Integer, Request> requests;
     private ConcurrentHashMap<String, Permission> permissions;
-    private SupplySystem supplySystem;
-    private PaymentSystem paymentSystem;
     private List<Purchase> purchases;
 
     public Store(String name, PurchasePolicy purchasePolicy, DiscountPolicy discount,
-                 Permission permission, SupplySystem supplySystem,
-                 PaymentSystem paymentSystem) {
+                 Permission permission) {
         this.name = name;
         this.purchasePolicy = purchasePolicy;
         this.discount = discount;
         this.permissions = new ConcurrentHashMap<>();
         this.permissions.put(permission.getOwner().getName(), permission);
-        this.supplySystem = supplySystem;
-        this.paymentSystem = paymentSystem;
         this.products=new ConcurrentHashMap<>();
         this.categoryList=new ConcurrentHashMap<>();
         this.requests= new ConcurrentHashMap<>();
@@ -91,22 +86,6 @@ public class Store {
         this.permissions = permissions;
     }
 
-    public SupplySystem getSupplySystem() {
-        return supplySystem;
-    }
-
-    public void setSupplySystem(SupplySystem supplySystem) {
-        this.supplySystem = supplySystem;
-    }
-
-    public PaymentSystem getPaymentSystem() {
-        return paymentSystem;
-    }
-
-    public void setPaymentSystem(PaymentSystem paymentSystem) {
-        this.paymentSystem = paymentSystem;
-    }
-
     public void setDiscount(DiscountPolicy discount) {
         this.discount = discount;
     }
@@ -141,14 +120,12 @@ public class Store {
                 Objects.equals(products, store.products) &&
                 Objects.equals(categoryList, store.categoryList) &&
                 Objects.equals(requests, store.requests) &&
-                Objects.equals(permissions, store.permissions) &&
-                Objects.equals(supplySystem, store.supplySystem) &&
-                Objects.equals(paymentSystem, store.paymentSystem);
+                Objects.equals(permissions, store.permissions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, purchasePolicy, discount, products, categoryList, requests, permissions, supplySystem, paymentSystem);
+        return Objects.hash(name, purchasePolicy, discount, products, categoryList, requests, permissions);
     }
 
 
@@ -184,25 +161,6 @@ public class Store {
         return discount.stands(list);
     }
 
-    /**
-     * use case 7 - payment system
-     * use case 2.8 - purchase cart
-     * the function check if the external system is connected
-     * @return true if the external system is connected, otherwise false.
-     */
-    public boolean isAvailablePurchese() {
-        return paymentSystem.isConnected();
-    }
-
-    /**
-     * use case 8 - deliver system
-     * use case 2.8 - purchase cart
-     * the function check if the external system is connected
-     * @return true if the external system is connected, otherwise false.
-     */
-    public boolean isAvailableDelivery() {
-        return this.supplySystem.isConnected();
-    }
 
     /**
      * use case 2.8 - purchase cart
@@ -210,13 +168,6 @@ public class Store {
      * @return true if the external system is connected, otherwise false.
      */
     public Purchase purches(PaymentData paymentData, DeliveryData deliveryData) {
-        if(!paymentSystem.pay(paymentData)) {
-            return null;
-        }
-        if(!supplySystem.deliver(deliveryData)){
-            paymentSystem.cancel(paymentData);//error log
-            return null;
-        }
         reduceAmount(deliveryData.getProducts());
         return savePurchase(paymentData.getName(),deliveryData.getProducts());
     }
