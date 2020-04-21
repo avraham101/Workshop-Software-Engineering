@@ -18,8 +18,8 @@ public interface AcceptanceTestsBridge {
     boolean logout(int id);
     boolean login(int id, String username, String password);
     HashSet<ProductTestData> filterProducts(List<FilterTestData> filters);
-    void addProducts(List<ProductTestData> products);
-    boolean addProduct(ProductTestData product);
+    void addProducts(int id,List<ProductTestData> products);
+    boolean addProduct(int id, ProductTestData product);
     CartTestData getCurrentUsersCart();
     boolean deleteFromCurrentUserCart(ProductTestData productToDelete);
     boolean changeCurrentUserAmountOfProductInCart(ProductTestData productToChangeAmount, int newAmount);
@@ -29,12 +29,12 @@ public interface AcceptanceTestsBridge {
     List<StoreTestData> getStoresInfo();
     List<ProductTestData> getStoreProducts(String storeName);
     boolean buyCart(PaymentTestData paymentMethod , DeliveryDetailsTestData deliveryDetails);
-    void changeAmountOfProductInStore(ProductTestData product, int amount);
+    void changeAmountOfProductInStore(int id,ProductTestData product, int amount);
     StoreTestData openStore(int id,String storeName);
-    boolean sendApplicationToStore(String storeName, String message);
-    boolean deleteProduct(ProductTestData product);
+    boolean sendApplicationToStore(int id, String storeName, String message);
+    boolean deleteProduct(int id,ProductTestData product);
     StoreTestData getStoreInfoByName(String storeName);
-    boolean editProductInStore(ProductTestData product);
+    boolean editProductInStore(int id,ProductTestData product);
     boolean appointManager(String storeName, String username);
     boolean deleteManager(String storeName,String username);
     List<PurchaseTestData> getStorePurchasesHistory(String storeName);
@@ -46,7 +46,7 @@ public interface AcceptanceTestsBridge {
     boolean writeReplyToApplication(int requestId,String storeName, ApplicationToStoreTestData key, String value);
     HashSet<ApplicationToStoreTestData> viewApplicationToStore(String storeName);
     HashMap<ApplicationToStoreTestData,String> getUserApplicationsAndReplies(String username,String storeName);
-    List<ApplicationToStoreTestData> getUserApplications(String username, String storeName);
+    List<ApplicationToStoreTestData> getUserApplications(int id,String username, String storeName);
     List<PurchaseTestData> userGetStorePurchasesHistory(String storeName);
     int connect();
 

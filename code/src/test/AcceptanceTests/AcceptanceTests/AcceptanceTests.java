@@ -228,7 +228,7 @@ public class AcceptanceTests {
     protected  void addProducts(List<ProductTestData> products){
 
         bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
-        bridge.addProducts(products);
+        bridge.addProducts(admin.getId(),products);
         bridge.logout(admin.getId());
 
 
@@ -237,7 +237,7 @@ public class AcceptanceTests {
     protected  void changeAmountOfProductInStore(ProductTestData product,int amount){
 
         bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
-        bridge.changeAmountOfProductInStore(product,amount);
+        bridge.changeAmountOfProductInStore(admin.getId(),product,amount);
         bridge.logout(admin.getId());
 
     }
@@ -258,9 +258,15 @@ public class AcceptanceTests {
     }
 
     protected  void addUserStoresAndProducts(UserTestData user){
-        registerAndLogin(user);
+
         addStores(stores);
         addProducts(products);
+        registerAndLogin(user);
+    }
+    protected  void addUserAndStores(UserTestData user){
+        registerAndLogin(user);
+        addStores(stores);
+
     }
 
 

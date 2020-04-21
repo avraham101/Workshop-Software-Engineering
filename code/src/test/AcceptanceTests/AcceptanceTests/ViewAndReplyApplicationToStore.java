@@ -46,7 +46,7 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
 
         int i = 0;
         for(ApplicationToStoreTestData app : applications) {
-            bridge.sendApplicationToStore(storeName, app.getContent());
+            bridge.sendApplicationToStore(asker.getId(),storeName, app.getContent());
             applicationsAndReplies.put(app, "rep" + i);
             i++;
         }

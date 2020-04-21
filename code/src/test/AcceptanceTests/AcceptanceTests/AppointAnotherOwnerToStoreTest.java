@@ -43,8 +43,7 @@ public class AppointAnotherOwnerToStoreTest extends AcceptanceTests {
     public void appointAnotherOwnerToStoreTestSuccess(){
         boolean isOwner = bridge.appointOwnerToStore(shareOwnershipStore.getStoreName(),newOwner.getUsername());
         assertTrue(isOwner);
-        isOwner = bridge.addProduct(productToAdd);
-        assertTrue(isOwner);
+
     }
 
     @Test
@@ -52,10 +51,7 @@ public class AppointAnotherOwnerToStoreTest extends AcceptanceTests {
         appointAnotherOwnerToStoreTestSuccess();
         boolean isOwner = bridge.appointOwnerToStore(shareOwnershipStore.getStoreName(),newOwner.getUsername());
         assertFalse(isOwner);
-        logoutAndLogin(newOwner);
-        bridge.deleteProduct(productToAdd);
-        isOwner = bridge.addProduct(productToAdd);
-        assertTrue(isOwner);
+
     }
 
     @Test
@@ -63,9 +59,7 @@ public class AppointAnotherOwnerToStoreTest extends AcceptanceTests {
         String wrongUsername = newOwner.getUsername() + newOwner.getUsername();
         boolean isOwner = bridge.appointOwnerToStore(shareOwnershipStore.getStoreName(),wrongUsername);
         assertFalse(isOwner);
-        logoutAndLogin(new UserTestData(newOwner.getId(),wrongUsername,wrongUsername));
-        isOwner = bridge.addProduct(productToAdd);
-        assertFalse(isOwner);
+
     }
 
     @Test
@@ -73,9 +67,6 @@ public class AppointAnotherOwnerToStoreTest extends AcceptanceTests {
         String wrongStoreName = shareOwnershipStore.getStoreName() + shareOwnershipStore.getStoreName();
         boolean isOwner = bridge.appointOwnerToStore(wrongStoreName,newOwner.getUsername());
         assertFalse(isOwner);
-        logoutAndLogin(newOwner);
-        productToAdd.setStoreName(wrongStoreName);
-        isOwner = bridge.addProduct(productToAdd);
-        assertFalse(isOwner);
+
     }
 }

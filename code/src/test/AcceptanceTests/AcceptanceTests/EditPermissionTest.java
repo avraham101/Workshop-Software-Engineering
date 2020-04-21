@@ -41,7 +41,7 @@ public class EditPermissionTest extends AcceptanceTests {
                                                         PermissionsTypeTestData.PRODUCTS_INVENTORY);
         assertTrue(approval);
         logoutAndLogin(userToCheck);
-        boolean isAdded = bridge.addProduct(productToAdd);
+        boolean isAdded = bridge.addProduct(userToCheck.getId(),productToAdd);
         assertTrue(isAdded);
     }
 
@@ -96,7 +96,7 @@ public class EditPermissionTest extends AcceptanceTests {
                     PermissionsTypeTestData.PRODUCTS_INVENTORY);
         assertTrue(approval);
         logoutAndLogin(userToCheck);
-        boolean isAdded = bridge.addProduct(productToAdd);
+        boolean isAdded = bridge.addProduct(userToCheck.getId(),productToAdd);
         assertFalse(isAdded);
 
     }

@@ -39,12 +39,12 @@ public class LogicManager {
         this.connectedUsers =connectedUsers;
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
-        requestIdGenerator = new AtomicInteger(0);
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
             this.paymentSystem = paymentSystem;
             this.supplySystem = supplySystem;
+            //TODO add write to logger when exception
             if(!paymentSystem.connect()) {
                 throw new Exception("Payment System Crashed");
             }
@@ -115,6 +115,7 @@ public class LogicManager {
         stores = new ConcurrentHashMap<>();
         this.connectedUsers =new ConcurrentHashMap<>();
         usersIdCounter=new AtomicInteger(0);
+        requestIdGenerator = new AtomicInteger(0);
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -450,8 +451,10 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","addProductToCart",
                 "add a product to the cart", new Object[] {productName, storeName, amount});
         boolean result = false;
+        Store store = null;
         User current=connectedUsers.get(id);
-        Store store = stores.get(storeName);
+        if (storeName != null)
+            store = stores.get(storeName);
         if (store != null) {
             Product product = store.getProduct(productName);
             if (product != null && amount > 0 && amount <= product.getAmount()) {

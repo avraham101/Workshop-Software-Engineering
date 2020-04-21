@@ -48,7 +48,7 @@ public class ManagerPermissionsTest extends AcceptanceTests {
     }
     @Test
     public void managerPermissionsTestSuccess(){
-        boolean isAdded = bridge.addProduct(newProduct);
+        boolean isAdded = bridge.addProduct(manager.getId(),newProduct);
         assertTrue(isAdded);
         HashSet<ProductTestData> actualProducts = new HashSet<>(bridge.getStoreProducts(newProduct.getStoreName()));
         List<ProductTestData> expectedProductsList = products.subList(0,3);
@@ -62,7 +62,7 @@ public class ManagerPermissionsTest extends AcceptanceTests {
         boolean isAdded = bridge.appointManager(newProduct.getStoreName(),newManager.getUsername());
         assertFalse(isAdded);
         logoutAndLogin(newManager);
-        boolean isAddedProduct = bridge.addProduct(newProduct);
+        boolean isAddedProduct = bridge.addProduct(newManager.getId(),newProduct);
         assertFalse(isAddedProduct);
     }
 
