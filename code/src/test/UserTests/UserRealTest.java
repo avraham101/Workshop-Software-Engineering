@@ -147,7 +147,7 @@ public class UserRealTest extends UserAllStubsTest{
     /**
      * use case 4.5 - add manager
      */
-    @Override
+    @Override @Test
     public void testAddManagerSubscribe() {
         super.testAddManagerSubscribe();
         Subscribe sub=(Subscribe) user.getState();

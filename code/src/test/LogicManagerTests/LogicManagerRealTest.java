@@ -649,10 +649,10 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertNotNull(newManager);
         assertTrue(newManager.getPermissions().containsKey(store.getName()));
     }
+
     /**
      * use case 4.5 - add manager
      */
-
     @Override
     protected void testAddManagerStoreSuccess() {
         super.testAddManagerStoreSuccess();
@@ -662,7 +662,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 4.6.1 -add permission
      */
-
     @Override
     protected void testAddPermissionSuccess() {
         super.testAddPermissionSuccess();
