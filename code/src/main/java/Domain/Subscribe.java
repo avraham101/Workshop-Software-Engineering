@@ -4,7 +4,6 @@ import DataAPI.ProductData;
 import DataAPI.StoreData;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -136,13 +135,15 @@ public class Subscribe extends UserState{
 
     /**
      * use case 3.5
+     *
+     * @param requestId
      * @param storeName - The id of the store
      * @param content - The content of the request
      * @return true if success, false else
      */
     @Override
-    public Request addRequest(String storeName, String content){
-        Request request = new Request(userName, storeName, content,requests.size()+1);
+    public Request addRequest(int requestId, String storeName, String content){
+        Request request = new Request(userName, storeName, content,requestId);
         requests.add(request);
         return request;
     }

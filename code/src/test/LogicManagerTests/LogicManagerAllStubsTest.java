@@ -803,27 +803,51 @@ public class LogicManagerAllStubsTest {
 
     /**
      * use case 3.5 -add request
-     * ------
      * in this level we test the:
      * 1. enter null content
      * 2. enter request to invalid store
      */
     @Test
     public void testAddRequest(){
-        setUpProductAdded();
+        setUpOpenedStore();
         testAddRequestSuccess();
-        testAddRequestFail();
     }
 
-    private void testAddRequestSuccess() {
+     /**
+     * part of use case 3.5 -add request
+     */
+     private void testAddRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
         assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(),request.getContent()));
     }
 
-    private void testAddRequestFail() {
+    /**
+     * part of use case 3.5 -add request
+     */
+    @Test
+    public void testAddRequestWrongName() {
+        setUpOpenedStore();
         Request request1 = data.getRequest(Data.WRONG_STORE);
-        Request request2 = data.getRequest(Data.NULL);
         assertFalse(logicManager.addRequest(data.getId(Data.VALID),request1.getStoreName(), request1.getContent()));
+    }
+
+    /**
+     * part of use case 3.5 -add request
+     */
+    @Test
+    public void testAddRequestNullName() {
+        setUpOpenedStore();
+        Request request2 = data.getRequest(Data.NULL_NAME);
+        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request2.getStoreName(), request2.getContent()));
+    }
+
+    /**
+     * part of use case 3.5 -add request
+     */
+    @Test
+    public void testAddRequestContentNull() {
+        setUpOpenedStore();
+        Request request2 = data.getRequest(Data.NULL_CONTENT);
         assertFalse(logicManager.addRequest(data.getId(Data.VALID),request2.getStoreName(), request2.getContent()));
     }
 
