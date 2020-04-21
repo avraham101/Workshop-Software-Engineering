@@ -812,7 +812,7 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","viewStoreRequest",
                 "store owner view the requests of the store", new Object[] {storeName});
         User current=connectedUsers.get(id);
-        if (content!=null && stores.containsKey(storeName))
+        if (content!=null && storeName!=null && stores.containsKey(storeName))
             return (current.replayToRequest(storeName, requestID, content)) ;
         return null;
     }
