@@ -3,13 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f0366da3-85c5-4ead-a08b-f6642ede6572" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Store.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/Data/TestData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Data/TestData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerRealTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerRealTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerUserStubTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerUserStubTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/Store/StoreTestsAllStubs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Store/StoreTestsAllStubs.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -42,16 +35,25 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Store.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="56">
-              <caret line="104" column="10" lean-forward="true" selection-start-line="104" selection-start-column="10" selection-end-line="104" selection-end-column="28" />
+              <caret line="104" column="10" selection-start-line="104" selection-start-column="10" selection-end-line="104" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/Store/StoreTestsAllStubs.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="209">
+              <caret line="51" column="5" selection-start-line="51" selection-start-column="5" selection-end-line="51" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/Store/StoreTestsAllStubs.java">
+        <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="50" column="23" lean-forward="true" selection-start-line="50" selection-start-column="23" selection-end-line="50" selection-end-column="23" />
+            <state relative-caret-position="89">
+              <caret line="364" column="34" selection-start-line="364" selection-start-column="16" selection-end-line="364" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -232,6 +234,13 @@
               <item name="code" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="LogicManagerTests" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="code" type="b2602c69:ProjectViewProjectNode" />
+              <item name="code" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="Store" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -260,7 +269,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587476012575" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587476221370" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -279,8 +288,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.StoreTestsAllStubs.testViewProductInStore">
-    <configuration name="LogicManagerAllStubsTest.testViewProductInStoreNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.LogicManagerTests in code">
+    <configuration name="LogicManagerAllStubsTest.testViewDataStores" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="code" />
       <extension name="coverage">
         <pattern>
@@ -290,7 +299,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="LogicManagerTests" />
       <option name="MAIN_CLASS_NAME" value="LogicManagerTests.LogicManagerAllStubsTest" />
-      <option name="METHOD_NAME" value="testViewProductInStoreNull" />
+      <option name="METHOD_NAME" value="testViewDataStores" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -360,11 +369,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.StoreTestsAllStubs.testViewProductInStore" />
         <item itemvalue="JUnit.LogicManagerTests in code" />
+        <item itemvalue="JUnit.LogicManagerAllStubsTest.testViewDataStores" />
+        <item itemvalue="JUnit.StoreTestsAllStubs.testViewProductInStore" />
         <item itemvalue="JUnit.LogicManagerUserStubTest.testViewProductsInStore" />
         <item itemvalue="JUnit.LogicManagerAllStubsTest.testViewProductsInStore" />
-        <item itemvalue="JUnit.LogicManagerAllStubsTest.testViewProductInStoreNull" />
       </list>
     </recent_temporary>
   </component>
@@ -639,22 +648,17 @@
       <option name="project" value="LOCAL" />
       <updated>1587464515168</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="finish use case 2.4.1 #42">
+      <created>1587476109314</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1587476109314</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="LogicManagerAllStubsTest_testViewProductsInStore - 2020.04.21 at 16h 19m 19s.xml">
-      <configuration name="LogicManagerAllStubsTest.testViewProductsInStore" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="LogicManagerAllStubsTest_testViewProductInStoreNotExists - 2020.04.21 at 16h 22m 16s.xml">
-      <configuration name="LogicManagerAllStubsTest.testViewProductInStoreNotExists" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="LogicManagerAllStubsTest_testViewProductInStoreNotExists - 2020.04.21 at 16h 23m 29s.xml">
-      <configuration name="LogicManagerAllStubsTest.testViewProductInStoreNotExists" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="LogicManagerAllStubsTest_testViewProductInStoreNotExists - 2020.04.21 at 16h 24m 11s.xml">
-      <configuration name="LogicManagerAllStubsTest.testViewProductInStoreNotExists" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="LogicManagerAllStubsTest_testViewProductInStoreNotExists - 2020.04.21 at 16h 24m 41s.xml">
       <configuration name="LogicManagerAllStubsTest.testViewProductInStoreNotExists" configurationId="JUnit" />
     </history-entry>
@@ -673,9 +677,21 @@
     <history-entry file="LogicManagerTests_in_code - 2020.04.21 at 16h 28m 31s.xml">
       <configuration name="LogicManagerTests in code" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="StoreTestsAllStubs_testViewProductInStore - 2020.04.21 at 16h 33m 13s.xml">
+      <configuration name="StoreTestsAllStubs.testViewProductInStore" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="StoreTestsAllStubs_testViewProductInStore - 2020.04.21 at 16h 33m 39s.xml">
+      <configuration name="StoreTestsAllStubs.testViewProductInStore" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="LogicManagerAllStubsTest_testViewDataStores - 2020.04.21 at 16h 36m 29s.xml">
+      <configuration name="LogicManagerAllStubsTest.testViewDataStores" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="LogicManagerTests_in_code - 2020.04.21 at 16h 37m 08s.xml">
+      <configuration name="LogicManagerTests in code" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="122980000" />
+    <option name="totallyTimeSpent" value="123266000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -690,7 +706,7 @@
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4973545" visible="true" weight="0.21538462" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4973545" visible="true" weight="0.21538462" />
       <window_info id="Structure" order="1" sideWeight="0.5026455" side_tool="true" weight="0.21538462" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -701,7 +717,7 @@
       <window_info anchor="bottom" id="Messages" order="0" weight="0.3285968" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.66477734" visible="true" weight="0.3321492" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.66477734" visible="true" weight="0.13499112" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.36412078" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -784,7 +800,8 @@
     <MESSAGE value="All tests use case #33" />
     <MESSAGE value="use case 3.5 #68 starting" />
     <MESSAGE value="finish logicManger tests use case 3.5 #68" />
-    <option name="LAST_COMMIT_MESSAGE" value="finish logicManger tests use case 3.5 #68" />
+    <MESSAGE value="finish use case 2.4.1 #42" />
+    <option name="LAST_COMMIT_MESSAGE" value="finish use case 2.4.1 #42" />
   </component>
   <component name="WindowStateProjectService">
     <state x="618" y="301" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" />
@@ -819,7 +836,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/Store/StoreTestsAllStubs.java</url>
-          <line>147</line>
+          <line>146</line>
           <properties />
           <option name="timeStamp" value="28" />
         </line-breakpoint>
@@ -1270,13 +1287,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="59">
-          <caret line="407" column="16" selection-start-line="407" selection-start-column="16" selection-end-line="407" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerUserStubTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="62">
@@ -1287,14 +1297,21 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Store.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="56">
-          <caret line="104" column="10" lean-forward="true" selection-start-line="104" selection-start-column="10" selection-end-line="104" selection-end-column="28" />
+          <caret line="104" column="10" selection-start-line="104" selection-start-column="10" selection-end-line="104" selection-end-column="28" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/Store/StoreTestsAllStubs.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="50" column="23" lean-forward="true" selection-start-line="50" selection-start-column="23" selection-end-line="50" selection-end-column="23" />
+        <state relative-caret-position="209">
+          <caret line="51" column="5" selection-start-line="51" selection-start-column="5" selection-end-line="51" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="89">
+          <caret line="364" column="34" selection-start-line="364" selection-start-column="16" selection-end-line="364" selection-end-column="34" />
         </state>
       </provider>
     </entry>
