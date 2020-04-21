@@ -24,17 +24,25 @@ public class LogicManager {
     private User current;
     private final Object openStoreLocker=new Object();
 
-    public LogicManager(String userName, String password, ConcurrentHashMap<String, Subscribe> subscribes, ConcurrentHashMap<String, Store> stores, User current) throws Exception {
+    /**
+     * test constructor, mock systems
+     * @param userName
+     * @param password
+     * @param subscribes
+     * @param stores
+     * @throws Exception
+     */
+    public LogicManager(String userName, String password, ConcurrentHashMap<String, Subscribe> subscribes, ConcurrentHashMap<String, Store> stores,
+                        ConcurrentHashMap<Integer,User> connectedUsers,PaymentSystem paymentSystem,SupplySystem supplySystem) throws Exception {
         this.subscribes = subscribes;
         this.stores = stores;
-        this.current = current;
-        this.connectedUsers =new ConcurrentHashMap<>();
+        this.connectedUsers =connectedUsers;
         usersIdCounter=new AtomicInteger(0);
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
-            paymentSystem = new ProxyPayment();
-            supplySystem = new ProxySupply();
+            paymentSystem = paymentSystem;
+            supplySystem = supplySystem;
             if(!paymentSystem.connect()) {
                 throw new Exception("Payment System Crashed");
             }
@@ -57,7 +65,7 @@ public class LogicManager {
      */
     public LogicManager(String userName, String password) throws Exception {
         subscribes = new ConcurrentHashMap<>();
-        stores = new ConcurrentHashMap<>();
+        this.stores = new ConcurrentHashMap<>();
         usersIdCounter=new AtomicInteger(0);
         this.connectedUsers =new ConcurrentHashMap<>();
         try {
@@ -92,6 +100,14 @@ public class LogicManager {
         current = new User();
     }
 
+    /**
+     * test constructor moc systems
+     * @param userName
+     * @param password
+     * @param paymentSystem
+     * @param supplySystem
+     * @throws Exception
+     */
     public LogicManager(String userName, String password, PaymentSystem paymentSystem, SupplySystem supplySystem) throws Exception {
         subscribes = new ConcurrentHashMap<>();
         stores = new ConcurrentHashMap<>();

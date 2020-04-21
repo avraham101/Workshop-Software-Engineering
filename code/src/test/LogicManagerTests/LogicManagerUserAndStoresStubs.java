@@ -35,7 +35,7 @@ public class LogicManagerUserAndStoresStubs extends LogicManagerAllStubsTest {
     /**
      * part of test: use case 2.2 - Register
      */
-    @Override
+    @Override @Test
     public void testRegisterSuccess() {
         super.testRegisterSuccess();
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);

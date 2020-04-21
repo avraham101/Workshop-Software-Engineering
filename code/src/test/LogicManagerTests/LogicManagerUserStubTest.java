@@ -21,7 +21,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
     protected void setUpOpenedStore() {
         setUpLogedInUser();
         StoreData storeData = data.getStore(Data.VALID);
-        logicManager.openStore(id, storeData);
+        logicManager.openStore(data.getId(Data.VALID), storeData);
     }
 
     /**---------------------------------set-ups-------------------------------------*/
@@ -42,13 +42,13 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
     //TODO split tests and check the product wasn't added
     private void testAddProductToCartInvalidProduct() {
         ProductData product = data.getProductData(Data.NULL_PRODUCT);
-        assertFalse(logicManager.addProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
+        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID),product.getProductName(),product.getStoreName(),product.getAmount()));
         product = data.getProductData(Data.NEGATIVE_AMOUNT);
-        assertFalse(logicManager.addProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
+        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID),product.getProductName(),product.getStoreName(),product.getAmount()));
         product = data.getProductData(Data.ZERO);
-        assertFalse(logicManager.addProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
+        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID),product.getProductName(),product.getStoreName(),product.getAmount()));
         product = data.getProductData(Data.NULL_STORE);
-        assertFalse(logicManager.addProductToCart(product.getProductName(),product.getStoreName(),product.getAmount()));
+        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID),product.getProductName(),product.getStoreName(),product.getAmount()));
 
     }
 
@@ -64,7 +64,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
         assertNotNull(store);
         assertEquals(storeData.getName(),store.getName());
         //This test check if can add store twiced
-        assertFalse(logicManager.openStore(id, data.getStore(Data.VALID)));
+        assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.VALID)));
     }
 
     /**
@@ -73,7 +73,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
     @Override
     protected void testOpenStoreSucces(){
         StoreData storeData = data.getStore(Data.VALID);
-        assertTrue(logicManager.openStore(id, storeData));
+        assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData));
     }
 
     /**
