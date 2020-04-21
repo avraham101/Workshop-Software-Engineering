@@ -123,7 +123,7 @@ public class UserRealTest extends UserAllStubsTest{
     }
 
     /**
-     * test 4.1.2 use case -
+     * test 4.1.2 use case - remove product
      */
     @Override @Test
     public void testRemoveProductFromStoreSubscribe() {
