@@ -155,7 +155,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-3.5---------------------------------//
     @Override
-    public boolean sendApplicationToStore(String storeName, String message) {
+    public boolean sendApplicationToStore(int id, String storeName, String message) {
         return serviceAPI.writeRequestToStore(id,storeName,message);
     }
     //---------------------------Use-Case-3.5---------------------------------//
@@ -247,7 +247,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public List<ApplicationToStoreTestData> getUserApplications(String username, String storeName) {
+    public List<ApplicationToStoreTestData> getUserApplications(int id,String username, String storeName) {
         List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName);
         return buildApplicationsToStore(requests);
     }
@@ -403,12 +403,12 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public StoreTestData getStoreInfoByName(String storeName) {
 
-//        List<StoreData> stores = serviceAPI.viewStores();
-//        for (StoreData st: stores) {
-//            if(st.getName().equals(storeName)){
-//                return new StoreTestData(storeName,currentUser);
-//            }
-//        }
+        List<StoreData> stores = serviceAPI.viewStores();
+        for (StoreData st: stores) {
+            if(st.getName().equals(storeName)){
+                return new StoreTestData(storeName,null);
+            }
+        }
         return null;
     }
 

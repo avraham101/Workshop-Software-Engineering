@@ -160,9 +160,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean sendApplicationToStore(String storeName, String message) {
+    public boolean sendApplicationToStore(int id, String storeName, String message) {
         if(realBridge!=null)
-            return realBridge.sendApplicationToStore(storeName,message);
+            return realBridge.sendApplicationToStore(id,storeName,message);
         return false;
     }
 
@@ -272,9 +272,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public List<ApplicationToStoreTestData> getUserApplications(String username, String storeName) {
+    public List<ApplicationToStoreTestData> getUserApplications(int id, String username, String storeName) {
         if(realBridge!=null)
-            return realBridge.getUserApplications(username,storeName);
+            return realBridge.getUserApplications(id,username,storeName);
         return null;
     }
 

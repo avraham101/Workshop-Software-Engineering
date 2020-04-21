@@ -32,7 +32,7 @@ public interface AcceptanceTestsBridge {
     boolean buyCart(PaymentTestData paymentMethod , DeliveryDetailsTestData deliveryDetails);
     void changeAmountOfProductInStore(ProductTestData product, int amount);
     StoreTestData openStore(String storeName);
-    boolean sendApplicationToStore(String storeName, String message);
+    boolean sendApplicationToStore(int id, String storeName, String message);
     boolean deleteProduct(ProductTestData product);
     StoreTestData getStoreInfoByName(String storeName);
     boolean editProductInStore(ProductTestData product);
@@ -47,7 +47,7 @@ public interface AcceptanceTestsBridge {
     boolean writeReplyToApplication(int requestId,String storeName, ApplicationToStoreTestData key, String value);
     HashSet<ApplicationToStoreTestData> viewApplicationToStore(String storeName);
     HashMap<ApplicationToStoreTestData,String> getUserApplicationsAndReplies(String username,String storeName);
-    List<ApplicationToStoreTestData> getUserApplications(String username, String storeName);
+    List<ApplicationToStoreTestData> getUserApplications(int id,String username, String storeName);
     List<PurchaseTestData> userGetStorePurchasesHistory(String storeName);
     int connect();
 
