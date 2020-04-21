@@ -340,8 +340,18 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override @Test
     public void testLogout() {
+        setUpLogedInUser();
+        Subscribe sub= (Subscribe) currUser.getState();
         super.testLogout();
-        //test while in Guest Mode
+        assertEquals(sub.getSessionNumber().get(),-1);
+    }
+
+    /**
+     * logout twice from same user
+     */
+    @Test
+    public void logoutTwice(){
+        super.testLogout();
         assertFalse(currUser.logout());
     }
 
