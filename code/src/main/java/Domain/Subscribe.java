@@ -330,14 +330,13 @@ public class Subscribe extends UserState{
     @Override
     public List<Request> viewRequest(String storeName) {
         List<Request> output = new LinkedList<>();
-        if(! permissions.containsKey(storeName))
+        if(storeName==null || !permissions.containsKey(storeName))
             return output;
         Permission permission = permissions.get(storeName);
         if(permission != null){
             Store store = permission.getStore();
             //TODO check if concurrent
             output = new LinkedList<>(store.getRequests().values());
-
         }
         return output;
     }

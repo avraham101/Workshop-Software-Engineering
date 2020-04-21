@@ -495,9 +495,17 @@ public class SubscribeAllStubsTest {
     @Test
     public void testViewRequest(){
         setUpRequestAdded();
+        testViewRequestWrongStore();
+        testViewRequestNullName();
+    }
+
+    private void testViewRequestWrongStore() {
         Request request1 = data.getRequest(Data.WRONG_STORE);
-        Request request2 = data.getRequest(Data.NULL_NAME);
         assertTrue(sub.viewRequest(request1.getStoreName()).isEmpty());
+    }
+
+    private void testViewRequestNullName() {
+        Request request2 = data.getRequest(Data.NULL_NAME);
         assertTrue(sub.viewRequest(request2.getStoreName()).isEmpty());
     }
 
