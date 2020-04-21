@@ -11,11 +11,7 @@ import static org.junit.Assert.*;
 
 public class LogoutTest extends AcceptanceTests {
 
-
-
-
-
-
+    //TODO yessssssssssssssssssssssssssssssssssss
     @Before
     public void setUp(){
         registerAndLogin(superUser);
