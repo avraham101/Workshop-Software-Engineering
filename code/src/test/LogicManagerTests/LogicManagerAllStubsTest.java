@@ -66,8 +66,6 @@ public class LogicManagerAllStubsTest {
         logicManager.register(other.getName(),other.getPassword());
     }
 
-
-
     /**--------------------------------set-ups-------------------------------------------------------------------*/
 
     /**
@@ -613,18 +611,41 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testOpenStore() {
         setUpLogedInUser();
-        testOpenStoreFail();
         testOpenStoreSucces();
+    }
+    /**
+     * part of test use case 3.2 - Open Store
+     */
+    @Test
+    public void testOpenStoreNull() {
+        setUpLogedInUser();
+        assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL)));
     }
 
     /**
      * part of test use case 3.2 - Open Store
      */
-    //TODO split tests and check store wasnt added in each test
-    private void testOpenStoreFail() {
-        assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL)));
+    @Test
+    public void testOpenStoreNullName() {
+        setUpLogedInUser();
         assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_NAME)));
+    }
+
+    /**
+     * part of test use case 3.2 - Open Store
+     */
+    @Test
+    public void testOpenStoreNullPurchase() {
+        setUpLogedInUser();
         assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_PURCHASE)));
+    }
+
+    /**
+     * part of test use case 3.2 - Open Store
+     */
+    @Test
+    public void testOpenStoreNullDiscount() {
+        setUpLogedInUser();
         assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_DISCOUNT)));
     }
 
@@ -634,6 +655,17 @@ public class LogicManagerAllStubsTest {
     protected void testOpenStoreSucces(){
         StoreData storeData = data.getStore(Data.VALID);
         assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData));
+    }
+
+    /**
+     * part of test use case 3.2 - Open Store
+     */
+    @Test
+    public void testOpenStoreReopen() {
+        setUpLogedInUser();
+        testOpenStoreSucces();
+        StoreData storeData = data.getStore(Data.VALID);
+        assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData));
     }
 
     /**
