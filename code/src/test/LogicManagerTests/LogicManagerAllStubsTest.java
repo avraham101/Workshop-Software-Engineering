@@ -1223,7 +1223,6 @@ public class LogicManagerAllStubsTest {
         setUpRequestAdded();
         testReplayRequestSuccess();
         testReplayRequestFailWrongStore();
-        testReplayRequestFailNullRequest();
     }
 
     private void testReplayRequestSuccess() {
@@ -1234,11 +1233,6 @@ public class LogicManagerAllStubsTest {
     private void testReplayRequestFailWrongStore() {
         Request request1 = data.getRequest(Data.WRONG_STORE);
         assertNull(logicManager.replayRequest(data.getId(Data.VALID), request1.getStoreName(), request1.getId(), request1.getContent()));
-    }
-
-    private void testReplayRequestFailNullRequest() {
-        Request request2 = data.getRequest(Data.NULL_CONTENT);
-        assertNull(logicManager.replayRequest(data.getId(Data.VALID), request2.getStoreName(), request2.getId(), request2.getContent()));
     }
 
     /**

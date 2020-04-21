@@ -352,7 +352,7 @@ public class Subscribe extends UserState{
     @Override
     public Request replayToRequest(String storeName, int requestID, String content) {
         //TODO don't check content is null twice
-        if(! permissions.containsKey(storeName) | content==null)
+        if((storeName==null || !permissions.containsKey(storeName)) | content==null)
             return null;
         Permission permission = permissions.get(storeName);
         if(permission == null)
