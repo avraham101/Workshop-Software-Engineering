@@ -21,7 +21,6 @@ public class LogicManager {
     private PaymentSystem paymentSystem;
     private SupplySystem supplySystem;
     private LoggerSystem loggerSystem;
-    private User current;
     private final Object openStoreLocker=new Object();
 
     /**
@@ -97,7 +96,6 @@ public class LogicManager {
             }
             throw new Exception("System crashed");
         }
-        current = new User();
     }
 
     /**
@@ -142,7 +140,6 @@ public class LogicManager {
             }
             throw new Exception("System crashed");
         }
-        current = new User();
     }
 
     /**
@@ -473,6 +470,7 @@ public class LogicManager {
     public boolean purchaseCart(int id, PaymentData paymentData, String addresToDeliver) {
         loggerSystem.writeEvent("LogicManager","purchaseCart",
                 "buy the products in the cart", new Object[] {paymentData, addresToDeliver});
+        User current=connectedUsers.get(id);
         if (!validPaymentData(paymentData))
             return false;
         if (addresToDeliver == null || addresToDeliver.isEmpty())
