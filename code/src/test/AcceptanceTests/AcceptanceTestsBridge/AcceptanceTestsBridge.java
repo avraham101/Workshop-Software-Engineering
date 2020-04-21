@@ -18,7 +18,6 @@ public interface AcceptanceTestsBridge {
     boolean logout(int id);
     boolean login(int id, String username, String password);
     HashSet<ProductTestData> filterProducts(List<FilterTestData> filters);
-    void addStores(List<StoreTestData> stores);
     void addProducts(List<ProductTestData> products);
     boolean addProduct(ProductTestData product);
     CartTestData getCurrentUsersCart();
@@ -31,7 +30,7 @@ public interface AcceptanceTestsBridge {
     List<ProductTestData> getStoreProducts(String storeName);
     boolean buyCart(PaymentTestData paymentMethod , DeliveryDetailsTestData deliveryDetails);
     void changeAmountOfProductInStore(ProductTestData product, int amount);
-    StoreTestData openStore(String storeName);
+    StoreTestData openStore(int id,String storeName);
     boolean sendApplicationToStore(String storeName, String message);
     boolean deleteProduct(ProductTestData product);
     StoreTestData getStoreInfoByName(String storeName);

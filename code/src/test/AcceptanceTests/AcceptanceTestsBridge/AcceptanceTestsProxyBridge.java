@@ -71,12 +71,6 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
 
 
     @Override
-    public void addStores(List<StoreTestData> stores) {
-        if(realBridge!=null)
-            realBridge.addStores(stores);
-    }
-
-    @Override
     public void addProducts(List<ProductTestData> products) {
         if(realBridge!=null)
             realBridge.addProducts(products);
@@ -153,9 +147,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public StoreTestData openStore(String storeName) {
+    public StoreTestData openStore(int id,String storeName) {
         if(realBridge!=null)
-            return realBridge.openStore(storeName);
+            return realBridge.openStore(id,storeName);
         return null;
     }
 

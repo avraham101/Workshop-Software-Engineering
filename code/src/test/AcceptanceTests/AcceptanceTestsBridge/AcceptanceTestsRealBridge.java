@@ -134,7 +134,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-3.2---------------------------------//
     @Override
-    public StoreTestData openStore(String storeName) {
+    public StoreTestData openStore(int id,String storeName) {
         StoreData store = new StoreData(storeName,new PurchasePolicy(),new DiscountPolicy());
         boolean approval = serviceAPI.openStore(id,store);
         if(!approval) {
@@ -296,11 +296,6 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         }
     }
 
-    @Override
-    public void addStores(List<StoreTestData> stores) {
-        for (StoreTestData storeTestData : stores)
-            openStore(storeTestData.getStoreName());
-    }
 
     @Override
     public void addProducts(List<ProductTestData> products) {
@@ -403,12 +398,12 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public StoreTestData getStoreInfoByName(String storeName) {
 
-//        List<StoreData> stores = serviceAPI.viewStores();
-//        for (StoreData st: stores) {
-//            if(st.getName().equals(storeName)){
-//                return new StoreTestData(storeName,currentUser);
-//            }
-//        }
+        List<StoreData> stores = serviceAPI.viewStores();
+        for (StoreData st: stores) {
+            if(st.getName().equals(storeName)){
+                return new StoreTestData(storeName,null);
+            }
+        }
         return null;
     }
 

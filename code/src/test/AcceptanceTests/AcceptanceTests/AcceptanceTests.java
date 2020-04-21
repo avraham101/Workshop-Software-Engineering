@@ -213,7 +213,7 @@ public class AcceptanceTests {
         for(StoreTestData store : stores) {
             UserTestData owner = store.getStoreOwner();
             registerAndLogin(owner);
-            bridge.openStore(store.getStoreName());
+            bridge.openStore(store.getStoreOwner().getId(),store.getStoreName());
             bridge.appointOwnerToStore(store.getStoreName(),admin.getUsername());
         }
 
