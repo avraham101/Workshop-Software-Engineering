@@ -71,11 +71,14 @@ public class LogicManagerAllStubsTest {
     /**
      * set up connect
      */
-    private void setUpConnect(){
+    protected void setUpConnect(){
         logicManager.connectToSystem();
         logicManager.connectToSystem();
         logicManager.connectToSystem();
         //work with the regular user has current user
+        connectedUsers.put(data.getId(Data.VALID),new UserStub());
+        connectedUsers.put(data.getId(Data.ADMIN),new UserStub());
+        connectedUsers.put(data.getId(Data.VALID2),new UserStub());
         currUser=connectedUsers.get(data.getId(Data.VALID));
     }
 
