@@ -371,32 +371,66 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * use case 2.4.2 - view the products in some store test
+     * use case 2.4.2 - view the products in some store with valid data test
      */
-    //TODO split tests
     @Test
     public void testViewProductsInStore() {
         setUpProductAdded();
         List<ProductData> expected = new LinkedList<>();
         String storeName = data.getStore(Data.VALID).getName();
         assertEquals(expected, logicManager.viewProductsInStore(storeName));
+    }
 
+    /**
+     * use case 2.4.2 - view the products in some store with null category test
+     */
+    @Test
+    public void testViewProductsInStoreNullCategory() {
+        setUpProductAdded();
+        List<ProductData> expected = new LinkedList<>();
+        String storeName = data.getStore(Data.VALID).getName();
         expected.add(data.getProductData(Data.NULL_CATEGORY));
         assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
         expected.remove(data.getProductData(Data.NULL_CATEGORY));
+    }
 
+    /**
+     * use case 2.4.2 - view the products in some store with null name test
+     */
+    @Test
+    public void testViewProductsInStoreNullCategoryName() {
+        setUpProductAdded();
+        List<ProductData> expected = new LinkedList<>();
+        String storeName = data.getStore(Data.VALID).getName();
         expected.add(data.getProductData((Data.NULL_NAME)));
         assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.add(data.getProductData((Data.NULL_NAME)));
+        expected.remove(data.getProductData((Data.NULL_NAME)));
+    }
 
+    /**
+     * use case 2.4.2 - view the products in some store with null discount test
+     */
+    @Test
+    public void testViewProductsInStoreNullDiscount() {
+        setUpProductAdded();
+        List<ProductData> expected = new LinkedList<>();
+        String storeName = data.getStore(Data.VALID).getName();
         expected.add(data.getProductData((Data.NULL_DISCOUNT)));
         assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.add(data.getProductData((Data.NULL_DISCOUNT)));
+        expected.remove(data.getProductData((Data.NULL_DISCOUNT)));
+    }
 
+    /**
+     * use case 2.4.2 - view the products in some store with null purchase test
+     */
+    @Test
+    public void testViewProductsInStoreNullPurchase() {
+        setUpProductAdded();
+        List<ProductData> expected = new LinkedList<>();
+        String storeName = data.getStore(Data.VALID).getName();
         expected.add(data.getProductData((Data.NULL_PURCHASE)));
         assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.add(data.getProductData((Data.NULL_PURCHASE)));
-        expected.add(data.getProductData((Data.NULL_PURCHASE)));
+        expected.remove(data.getProductData((Data.NULL_PURCHASE)));
     }
 
     /**
