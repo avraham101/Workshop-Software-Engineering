@@ -11,6 +11,11 @@ import static org.junit.Assert.*;
 
 public class LogoutTest extends AcceptanceTests {
 
+
+
+
+
+
     @Before
     public void setUp(){
         registerAndLogin(superUser);
