@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f0366da3-85c5-4ead-a08b-f6642ede6572" name="Default Changelist" comment="">
+    <list default="true" id="f0366da3-85c5-4ead-a08b-f6642ede6572" name="Default Changelist" comment="All tests use case #33">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -36,11 +35,29 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="50" column="82" selection-start-line="50" selection-start-column="82" selection-end-line="50" selection-end-column="82" />
+            <state relative-caret-position="34">
+              <caret line="48" column="33" selection-start-line="48" selection-start-column="19" selection-end-line="48" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="81">
+              <caret line="68" column="24" selection-start-line="68" selection-start-column="21" selection-end-line="68" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="220">
+              <caret line="156" lean-forward="true" selection-start-line="156" selection-end-line="156" />
             </state>
           </provider>
         </entry>
@@ -139,8 +156,8 @@
       <find>permissions</find>
       <find>i</find>
       <find>openStore</find>
-      <find>3.2</find>
       <find>SubscribeStub</find>
+      <find>3.2</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -148,7 +165,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="master" />
+        <entry key="$PROJECT_DIR$/.." value="use_case_2.3_open_store" />
       </map>
     </option>
   </component>
@@ -284,7 +301,14 @@
               <item name="code" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="UserTests" type="462c0819:PsiDirectoryNode" />
+              <item name="Guest" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="code" type="b2602c69:ProjectViewProjectNode" />
+              <item name="code" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="Subscribe" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="code" type="b2602c69:ProjectViewProjectNode" />
@@ -305,7 +329,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587458447501" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587458695227" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -471,7 +495,7 @@
       <workItem from="1586441463667" duration="16306000" />
       <workItem from="1586496304675" duration="6045000" />
       <workItem from="1586509461422" duration="6936000" />
-      <workItem from="1587453312440" duration="4933000" />
+      <workItem from="1587453312440" duration="6016000" />
     </task>
     <task id="LOCAL-00007" summary="get stores info">
       <created>1585903984055</created>
@@ -655,28 +679,17 @@
       <option name="project" value="LOCAL" />
       <updated>1587457798387</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="All tests use case #33">
+      <created>1587458471131</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1587458471131</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="LogicManagerAllStubsTest - 2020.04.21 at 11h 25m 08s.xml">
-      <configuration name="LogicManagerAllStubsTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="LogicManagerAllStubsTest - 2020.04.21 at 11h 25m 53s.xml">
-      <configuration name="LogicManagerAllStubsTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="LogicManagerUserStubTest - 2020.04.21 at 11h 27m 44s.xml">
-      <configuration name="LogicManagerUserStubTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="LogicManagerUserAndStoresStubs - 2020.04.21 at 11h 28m 57s.xml">
-      <configuration name="LogicManagerUserAndStoresStubs" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="LogicManagerRealTest - 2020.04.21 at 11h 29m 34s.xml">
-      <configuration name="LogicManagerRealTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="UserAllStubsTest - 2020.04.21 at 11h 30m 36s.xml">
-      <configuration name="UserAllStubsTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="UserAllStubsTest_testOpenStoreSubscribe - 2020.04.21 at 11h 32m 07s.xml">
       <configuration name="UserAllStubsTest.testOpenStoreSubscribe" configurationId="JUnit" />
     </history-entry>
@@ -689,9 +702,27 @@
     <history-entry file="UserAllStubsTest_testOpenStoreSubscribe - 2020.04.21 at 11h 36m 33s.xml">
       <configuration name="UserAllStubsTest.testOpenStoreSubscribe" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="UserAllStubsTest - 2020.04.21 at 11h 37m 54s.xml">
+      <configuration name="UserAllStubsTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UserRealTest - 2020.04.21 at 11h 38m 03s.xml">
+      <configuration name="UserRealTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="GuestTest - 2020.04.21 at 11h 39m 58s.xml">
+      <configuration name="GuestTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="GuestTestReal - 2020.04.21 at 11h 40m 07s.xml">
+      <configuration name="GuestTestReal" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SubscribeAllStubsTest - 2020.04.21 at 11h 40m 41s.xml">
+      <configuration name="SubscribeAllStubsTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SubscribeRealTest - 2020.04.21 at 11h 40m 49s.xml">
+      <configuration name="SubscribeRealTest" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="117389000" />
+    <option name="totallyTimeSpent" value="118472000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -704,7 +735,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="simpleUML" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21538462" />
@@ -717,13 +747,13 @@
       <window_info anchor="bottom" id="Messages" order="0" weight="0.3285968" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.66477734" weight="0.40142095" />
-      <window_info active="true" anchor="bottom" id="Debug" order="4" visible="true" weight="0.28774422" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.66477734" weight="0.41030195" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.5008881" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3286119" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="9" weight="0.20603907" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="9" visible="true" weight="0.20603907" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3286119" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" weight="0.3285968" />
@@ -792,7 +822,8 @@
     <MESSAGE value="removed payment system, and purchase system&#10;from store.&#10;use case #33" />
     <MESSAGE value="LogicManger All Stubs test use case #33" />
     <MESSAGE value="LogicManger tests use case #33" />
-    <option name="LAST_COMMIT_MESSAGE" value="LogicManger tests use case #33" />
+    <MESSAGE value="All tests use case #33" />
+    <option name="LAST_COMMIT_MESSAGE" value="All tests use case #33" />
   </component>
   <component name="WindowStateProjectService">
     <state x="618" y="301" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" />
@@ -833,7 +864,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java</url>
-          <line>870</line>
+          <line>926</line>
           <properties />
           <option name="timeStamp" value="43" />
         </line-breakpoint>
@@ -1083,13 +1114,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
-          <caret line="47" column="47" selection-start-line="47" selection-start-column="47" selection-end-line="47" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/Stubs/GuestStub.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
@@ -1105,13 +1129,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="25" column="61" selection-start-line="25" selection-start-column="61" selection-end-line="25" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="80" column="33" lean-forward="true" selection-start-line="80" selection-start-column="33" selection-end-line="80" selection-end-column="33" />
         </state>
       </provider>
     </entry>
@@ -1313,8 +1330,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="50" column="82" selection-start-line="50" selection-start-column="82" selection-end-line="50" selection-end-column="82" />
+        <state relative-caret-position="34">
+          <caret line="48" column="33" selection-start-line="48" selection-start-column="19" selection-end-line="48" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="81">
+          <caret line="68" column="24" selection-start-line="68" selection-start-column="21" selection-end-line="68" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="156" lean-forward="true" selection-start-line="156" selection-end-line="156" />
         </state>
       </provider>
     </entry>
