@@ -59,7 +59,7 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
 
     @Test
     public void writeReviewOnProductTestFailLogoutUser(){
-        boolean isLoggedOut = bridge.logout(user0.getId());
+        boolean isLoggedOut = bridge.logout();
         assertTrue(isLoggedOut);
 
         for(Map.Entry<ProductTestData,ReviewTestData> entry : productsAndReviews.entrySet()){

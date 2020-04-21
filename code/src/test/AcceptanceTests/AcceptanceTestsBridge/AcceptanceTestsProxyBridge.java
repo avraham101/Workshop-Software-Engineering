@@ -2,8 +2,6 @@ package AcceptanceTests.AcceptanceTestsBridge;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.SupplySystem.SupplySystem;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,13 +16,6 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
 
     public void setRealBridge(AcceptanceTestsBridge bridge){
         this.realBridge = bridge;
-    }
-
-    @Override
-    public boolean initialStart(String username, String password, PaymentSystem paymentSystem, SupplySystem deliverySystem) {
-        if(realBridge!=null)
-            return realBridge.initialStart(username,password,paymentSystem,deliverySystem);
-        return false;
     }
 
     @Override
@@ -46,19 +37,24 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
         return false;
     }
 
-
+    @Override
+    public String getCurrentLoggedInUser() {
+        if(realBridge!=null)
+            return realBridge.getCurrentLoggedInUser();
+        return null;
+    }
 
     @Override
-    public boolean logout(int id) {
+    public boolean logout() {
         if(realBridge!=null)
-            return realBridge.logout(id);
+            return realBridge.logout();
         return false;
     }
 
     @Override
-    public boolean login(int id, String username, String password) {
+    public boolean login(String username, String password) {
         if(realBridge!=null)
-            return realBridge.login(id,username,password);
+            return realBridge.login(username,password);
         return false;
     }
 
@@ -283,12 +279,5 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
         if(realBridge!=null)
             return realBridge.userGetStorePurchasesHistory(storeName);
         return null;
-    }
-
-    @Override
-    public int connect() {
-        if(realBridge!=null)
-            return realBridge.connect();
-        return -1;
     }
 }

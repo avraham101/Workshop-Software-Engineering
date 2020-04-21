@@ -259,24 +259,13 @@ public class LogicManager {
     public List<ProductData> viewProductsInStore(String storeName) {
         loggerSystem.writeEvent("LogicManager","viewProductsInStore",
                 "view the details of the stores in the system", new Object[] {storeName});
-        List<ProductData> data = new LinkedList<>();
+        if(storeName==null)
+            return null;
         Store store = stores.get(storeName);
         if(store!=null) {
-            //TODO put inside store
-            //TODO add tests to store
-            Set<String> keys = store.getProducts().keySet();
-            for (String key : keys) {
-                Product product = store.getProducts().get(key);
-                //synchronized product from delete
-                if(product!=null) {
-                    product.getReadLock().lock();
-                    ProductData productData = new ProductData(product, storeName);
-                    data.add(productData);
-                    product.getReadLock().unlock();
-                }
-            }
+            return store.viewProductInStore();
         }
-        return data;
+        return null;
     }
 
     /**
