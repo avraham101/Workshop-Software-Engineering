@@ -574,8 +574,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 4.1.3 edit product
      */
-    @Override
-    protected void testEditProductSuccess() {
+    @Override @Test
+    public void testEditProductSuccess() {
         super.testEditProductSuccess();
         ProductData product=data.getProductData(Data.EDIT);
         Subscribe sub=(Subscribe) currUser.getState();
@@ -583,6 +583,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
                 .getProducts().get(product.getProductName()).equal(product));
     }
 
+    /**
+     * edit product when not manager
+     */
     @Test
     public void checkEditProductNotManager() {
         setUpProductAdded();
@@ -597,6 +600,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         sub.getPermissions().put(validStoreName,permission);
     }
 
+    /**
+     * edit product when not have crud products permission
+     */
     @Test
     public void checkEditProductHasNoPermission() {
         setUpProductAdded();
