@@ -3,9 +3,7 @@ package LogicManagerTests;
 import Data.*;
 import DataAPI.*;
 import Domain.*;
-import Stubs.StoreStub;
-import Stubs.SubscribeStub;
-import Stubs.UserStub;
+import Stubs.*;
 import Systems.HashSystem;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -196,15 +194,70 @@ public class LogicManagerAllStubsTest {
      */
     @Test
     public void testExternalSystems() {
-        ProxyPayment proxyPayment = new ProxyPayment();
-        assertTrue(proxyPayment.connect());
-        ProxySupply proxySupply = new ProxySupply();
-        assertTrue(proxySupply.connect());
+        assertTrue(this.paymentSystem.connect());
+        assertTrue(this.supplySystem.connect());
         try {
             HashSystem hashSystem = new HashSystem();
             hashSystem.encrypt("testExternalSystems");
         } catch (Exception e) {
             fail();
+        }
+    }
+
+    /**
+     * test: use case 1.1 - Init System
+     * checking for exception due to false connection from the payment external system
+     */
+    @Test
+    public void testFailPaymentSystem() {
+        PaymentSystem stubPayment = new PaymentSystemStub();
+        ProxySupply proxySupply = new ProxySupply();
+        assertFalse(stubPayment.connect());
+        assertTrue(proxySupply.connect());
+        data=new TestData();
+        users=new ConcurrentHashMap<>();
+        stores=new ConcurrentHashMap<>();
+        connectedUsers =new ConcurrentHashMap<>();
+        Subscribe subscribe = data.getSubscribe(Data.ADMIN);
+        try {
+            LogicManager test = new LogicManager(subscribe.getName(), subscribe.getPassword(), users, stores,
+                    connectedUsers,paymentSystem,supplySystem);
+        } catch (Exception e) {
+            assertTrue(true);
+        }
+    }
+
+    /**
+     * test: use case 1.1 - Init System
+     * checking for exception due to false connection output from the supply external system
+     */
+    @Test
+    public void testFailSupplySystem() {
+        ProxyPayment proxyPayment = new ProxyPayment();
+        SupplySystem stubSupply = new SupplySystemStub();
+        assertTrue(proxyPayment.connect());
+        assertFalse(stubSupply.connect());
+        data=new TestData();
+        users=new ConcurrentHashMap<>();
+        stores=new ConcurrentHashMap<>();
+        connectedUsers =new ConcurrentHashMap<>();
+        Subscribe subscribe = data.getSubscribe(Data.ADMIN);
+        try {
+            LogicManager test = new LogicManager(subscribe.getName(), subscribe.getPassword(), users, stores,
+                    connectedUsers,paymentSystem,supplySystem);
+        } catch (Exception e) {
+            assertTrue(true);
+        }
+    }
+
+    /**
+     * test connection to the system
+     */
+    @Test
+    public void testConnectToSystem() {
+        for (int id = 0; id < 10; id++) {
+            assertEquals(id, logicManager.connectToSystem());
+            assertTrue(this.connectedUsers.containsKey(id));
         }
     }
 
