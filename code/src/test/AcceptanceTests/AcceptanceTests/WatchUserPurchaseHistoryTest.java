@@ -36,7 +36,7 @@ public class WatchUserPurchaseHistoryTest extends AcceptanceTests {
     }
     @Test
     public void watchUserPurchaseHistoryTestFail(){
-        bridge.logout(user0.getId());
+        bridge.logout();
         List<PurchaseTestData> actualPurchases = bridge.getCurrentUserPurchaseHistory();
         assertNull(actualPurchases);
     }

@@ -11,54 +11,49 @@ import static org.junit.Assert.*;
  */
 public class LoginTest extends AcceptanceTests {
 
-    private int id;
     private String username;
     private String password;
-    private int notExistId;
     private String notExistUserName;
     private String notExistPassword;
 
     @Before
     public void setUp(){
-        id = users.get(2).getId();
+        bridge.logout();
         username = users.get(2).getUsername();
         password = users.get(2).getPassword();
         bridge.register(username,password);
-        notExistId = id*id;
         notExistUserName = username + username;
         notExistPassword = password + password;
     }
 
     @Test
     public void testLoginSuccess() {
-        boolean loggedIn = bridge.login(id,username, password);
+        boolean loggedIn = bridge.login(username, password);
         assertTrue(loggedIn);
+        String currUsername = bridge.getCurrentLoggedInUser();
+        assertEquals(username, currUsername);
     }
 
     @Test
     public void testLoginFailWrongPassword(){
-        boolean isLoggedInWrongPassword = bridge.login(id,username,notExistPassword);
+        boolean isLoggedInWrongPassword = bridge.login(username,notExistPassword);
+        String currUsername = bridge.getCurrentLoggedInUser();
         assertFalse(isLoggedInWrongPassword);
+        assertNull(currUsername);
 
     }
     @Test
     public void testLoginFailNotExistUser(){
-        boolean isLoggedInNotExist = bridge.login(id,notExistUserName,notExistPassword);
+        boolean isLoggedInNotExist = bridge.login(notExistUserName,notExistPassword);
+        String currUsername = bridge.getCurrentLoggedInUser();
         assertFalse(isLoggedInNotExist);
-    }
-
-    @Test
-    public void testLoginFailWrongId(){
-        boolean isLoggedIn = bridge.login(id,username,password);
-        assertTrue(isLoggedIn);
-        isLoggedIn = bridge.login(notExistId,username,password);
-        assertFalse(isLoggedIn);
+        assertNull(currUsername);
     }
 
     @Test
     public void testLoginFailAlreadyLoggedIn(){
         testLoginSuccess();
-        boolean isLoggedIn = bridge.login(id,username,password);
+        boolean isLoggedIn = bridge.login(username,password);
         assertFalse(isLoggedIn);
     }
 
