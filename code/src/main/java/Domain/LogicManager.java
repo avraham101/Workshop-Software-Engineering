@@ -792,7 +792,7 @@ public class LogicManager {
                 "store owner view the requests of the store", new Object[] {storeName});
         User current=connectedUsers.get(id);
         List<Request> requests = new LinkedList<>();
-        if(stores.containsKey(storeName))
+        if(storeName != null && stores.containsKey(storeName))
             requests = current.viewRequest(storeName);
         return requests;
     }
