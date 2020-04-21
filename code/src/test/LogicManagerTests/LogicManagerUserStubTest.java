@@ -5,6 +5,7 @@ import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.Store;
 import org.junit.Before;
+import org.junit.Test;
 
 import static org.junit.Assert.*;
 
@@ -26,6 +27,18 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
 
     /**---------------------------------set-ups-------------------------------------*/
 
+
+    /**
+     * use case 2.4.2 - view the products in some store test
+     */
+    @Override @Test
+    public void testViewProductsInStore() {
+        setUpProductAdded();
+        String storeName = data.getStore(Data.VALID).getName();
+        for (ProductData productData: logicManager.viewProductsInStore(storeName)) {
+            assertTrue(stores.get(storeName).getProducts().containsKey(productData.getProductName()));
+        }
+    }
 
     /**
      *  use case 2.7.4 - add product to cart

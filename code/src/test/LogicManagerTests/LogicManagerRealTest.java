@@ -109,18 +109,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
-     * use case 2.4.2 - view the products in some store test
-     */
-    @Override @Test
-    public void testViewProductsInStore() {
-        setUpProductAdded();
-        String storeName = data.getStore(Data.VALID).getName();
-        for (ProductData productData: logicManager.viewProductsInStore(storeName)) {
-            assertTrue(stores.get(storeName).getProducts().containsKey(productData.getProductName()));
-        }
-    }
-
-    /**
      * use case 2.5 - view specific product
      */
     @Override @Test
