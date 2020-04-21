@@ -99,7 +99,7 @@ public class SubscribeAllStubsTest {
     private void setUpRequestAdded(){
         setUpStoreOpened();
         Request excepted = data.getRequest(Data.VALID);
-        sub.addRequest(excepted.getStoreName(), excepted.getContent());
+        sub.addRequest(excepted.getId(), excepted.getStoreName(), excepted.getContent());
     }
 
     /**--------------------------------set-ups-------------------------------------------------------------------*/
@@ -152,7 +152,6 @@ public class SubscribeAllStubsTest {
     public void openStoreTest() {
         Store store = sub.openStore(data.getStore(Data.VALID));
         assertNotNull(store);
-
     }
 
     /**
@@ -174,7 +173,7 @@ public class SubscribeAllStubsTest {
     public void testAddRequest(){
         setUpStoreOpened();
         Request excepted = data.getRequest(Data.VALID);
-        Request actual = sub.addRequest(excepted.getStoreName(), excepted.getContent());
+        Request actual = sub.addRequest(excepted.getId(), excepted.getStoreName(), excepted.getContent());
         assertEquals(excepted.getId(), actual.getId());
         assertEquals(excepted.getSenderName(),actual.getSenderName());
         assertEquals(excepted.getStoreName(), actual.getStoreName());
