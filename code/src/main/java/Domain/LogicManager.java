@@ -39,6 +39,7 @@ public class LogicManager {
         this.connectedUsers =connectedUsers;
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
+        requestIdGenerator = new AtomicInteger(0);
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -69,6 +70,7 @@ public class LogicManager {
         subscribes = new ConcurrentHashMap<>();
         this.stores = new ConcurrentHashMap<>();
         usersIdCounter=new AtomicInteger(0);
+        requestIdGenerator = new AtomicInteger(0);
         this.connectedUsers =new ConcurrentHashMap<>();
         try {
             hashSystem = new HashSystem();
