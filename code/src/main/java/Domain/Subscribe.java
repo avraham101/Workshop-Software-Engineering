@@ -356,8 +356,7 @@ public class Subscribe extends UserState{
             return null;
         Store store = permission.getStore();
         //TODO add to use case what happened when has few comments
-        if(store!=null&&store.getRequests().containsKey(requestID)) {
-            store.getRequests().get(requestID).getCommentReference().compareAndSet(null, content);
+        if(store!=null&&store.getRequests().containsKey(requestID) && store.getRequests().get(requestID).getCommentReference().compareAndSet(null, content)) {
             return store.getRequests().get(requestID);
         }
         return null;
