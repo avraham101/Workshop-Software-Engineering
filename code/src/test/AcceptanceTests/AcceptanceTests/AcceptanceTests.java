@@ -205,10 +205,7 @@ public class AcceptanceTests {
 
 
     protected static void addStores(List<StoreTestData> stores){
-        String userName = bridge.getCurrentLoggedInUser();
-        if(userName!=null){
-            bridge.logout();
-        }
+
         bridge.login(admin.getUsername(),admin.getPassword());
 
         for(StoreTestData store : stores) {
@@ -220,38 +217,27 @@ public class AcceptanceTests {
 
         bridge.logout();
 
-        if(userName!=null){
-            bridge.login(userName,getPasswordByUser(userName));
-        }
+
+
 
     }
 
 
     protected static void addProducts(List<ProductTestData> products){
-        String userName = bridge.getCurrentLoggedInUser();
-        if(userName != null){
-            bridge.logout();
-        }
+
         bridge.login(admin.getUsername(),admin.getPassword());
         bridge.addProducts(products);
         bridge.logout();
-        if(userName != null){
-            bridge.login(userName,getPasswordByUser(userName));
-        }
+
 
     }
 
     protected static void changeAmountOfProductInStore(ProductTestData product,int amount){
-        String userName = bridge.getCurrentLoggedInUser();
-        if(userName != null){
-            bridge.logout();
-        }
+
         bridge.login(admin.getUsername(),admin.getPassword());
         bridge.changeAmountOfProductInStore(product,amount);
         bridge.logout();
-        if(userName != null){
-            bridge.login(userName,getPasswordByUser(userName));
-        }
+
     }
 
 

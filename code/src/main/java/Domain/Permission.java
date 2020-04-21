@@ -1,27 +1,32 @@
 package Domain;
 
 import java.util.HashSet;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Permission {
 
     private Subscribe owner;
     private Store store;
     private HashSet<PermissionType> permissionType;
+    private ReentrantReadWriteLock lock;
 
     public Permission(Subscribe owner) {
         this.owner = owner;
         permissionType=new HashSet<>();
+        lock=new ReentrantReadWriteLock();
     }
 
     public Permission(Subscribe owner, Store store) {
         this.owner = owner;
         this.store = store;
         permissionType=new HashSet<>();
+        lock=new ReentrantReadWriteLock();
     }
 
     public Permission(Subscribe sub, HashSet<PermissionType> permissionTypes) {
         this.owner = owner;
         permissionType=permissionTypes;
+        lock=new ReentrantReadWriteLock();
     }
 
     public Subscribe getOwner() {
@@ -41,11 +46,10 @@ public class Permission {
     }
 
     public HashSet<PermissionType> getPermissionType() {
-        return permissionType;
-    }
-
-    public void setPermissionType(HashSet<PermissionType> permissionType) {
-        this.permissionType = permissionType;
+        lock.readLock().lock();
+        HashSet<PermissionType> p = new HashSet<>(permissionType);
+        lock.readLock().unlock();
+        return p;
     }
 
     /**
@@ -54,11 +58,14 @@ public class Permission {
      * @return true if the permission doesnt exists or if the manager is not owner
      */
     public boolean addType(PermissionType type) {
+        lock.writeLock().lock();
         if(permissionType.contains(PermissionType.OWNER)||this.permissionType.contains(type))
             return false;
         if(type==PermissionType.OWNER)
             permissionType.clear();
-        return this.permissionType.add(type);
+        boolean result=this.permissionType.add(type);
+        lock.writeLock().unlock();
+        return result;
     }
 
     /**
@@ -66,8 +73,11 @@ public class Permission {
      * @return true if user has permission to CRUD products of store
      */
     public boolean canAddProduct() {
-        return permissionType.contains(PermissionType.OWNER)||
+        lock.readLock().lock();
+        boolean result=permissionType.contains(PermissionType.OWNER)||
                 permissionType.contains(PermissionType.PRODUCTS_INVENTORY);
+        lock.readLock().unlock();
+        return result;
     }
 
     /**
@@ -76,12 +86,18 @@ public class Permission {
      * @return
      */
     public boolean removeType(PermissionType type){
-        return permissionType.remove(type);
+        lock.writeLock().lock();
+        boolean result=permissionType.remove(type);
+        lock.writeLock().unlock();
+        return result;
     }
 
     public boolean canAddOwner() {
-        return permissionType.contains(PermissionType.ADD_OWNER)||
+        lock.readLock().lock();
+        boolean result=permissionType.contains(PermissionType.ADD_OWNER)||
                 permissionType.contains(PermissionType.OWNER);
+        lock.readLock().unlock();
+        return result;
     }
 }
 

@@ -47,9 +47,8 @@ public class UserAllStubsTest {
      * init subscribe state
      */
     protected void setUpSubscribe() {
-        String userName = null;
-        String password = null;
-        userState = new SubscribeStub(userName, password);
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        userState = new SubscribeStub(subscribe.getName(), subscribe.getPassword());
         user = new User(userState);
     }
 
@@ -70,7 +69,7 @@ public class UserAllStubsTest {
         StoreData storeData = new StoreData("Store", new PurchasePolicy(), new DiscountPolicy());
         PaymentSystem paymentSystem = new ProxyPayment();
         SupplySystem supplySystem = new ProxySupply();
-        user.openStore(storeData,paymentSystem, supplySystem);
+        user.openStore(storeData);
     }
 
     /**
@@ -188,9 +187,7 @@ public class UserAllStubsTest {
     public void testOpenStoreGuest() {
         setUpGuest();
         StoreData storeData = new StoreData("Store", new PurchasePolicy(), new DiscountPolicy());
-        PaymentSystem paymentSystem = new ProxyPayment();
-        SupplySystem supplySystem = new ProxySupply();
-        assertNull(user.openStore(storeData,paymentSystem, supplySystem));
+        assertNull(user.openStore(storeData));
     }
 
     /**
@@ -200,9 +197,7 @@ public class UserAllStubsTest {
     public void testOpenStoreSubscribe() {
         setUpSubscribe();
         StoreData storeData = new StoreData("Store", new PurchasePolicy(), new DiscountPolicy());
-        PaymentSystem paymentSystem = new ProxyPayment();
-        SupplySystem supplySystem = new ProxySupply();
-        Store store = user.openStore(storeData,paymentSystem, supplySystem);
+        Store store = user.openStore(storeData);
         assertEquals(storeData.getName(), store.getName());
     }
 

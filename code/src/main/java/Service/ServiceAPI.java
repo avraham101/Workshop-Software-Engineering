@@ -2,7 +2,6 @@ package Service;
 
 import DataAPI.*;
 import Domain.*;
-import Systems.HashSystem;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
@@ -27,7 +26,6 @@ public class ServiceAPI {
         this.logicManager = new LogicManager(userName, password,paymentSystem,supplySystem);
     }
 
-
     /**
      * hand shake to connect to the system
      * @return
@@ -35,6 +33,7 @@ public class ServiceAPI {
     public int connectToSystem(){
         return logicManager.connectToSystem();
     }
+
     /**
      * use case 2.2 - Register
      * acceptance test class : RegisterTest
@@ -54,7 +53,7 @@ public class ServiceAPI {
      * @return true if the user is logged to the system, otherwise false
      */
     public boolean login(int id,String userName, String password) {
-        return logicManager.login(userName, password);
+        return logicManager.login(id,userName, password);
     }
 
     /**
@@ -93,7 +92,7 @@ public class ServiceAPI {
      * @return - the cart details
      */
     public CartData watchCartDetatils(int id){
-        return logicManager.watchCartDetatils();
+        return logicManager.watchCartDetails(id);
     }
 
     /**
@@ -105,7 +104,7 @@ public class ServiceAPI {
      * @return - true if the delete work, false if not
      */
     public boolean deleteFromCart(int id,String productName,String storeName){
-        return logicManager.deleteFromCart(productName, storeName);
+        return logicManager.deleteFromCart(id,productName, storeName);
     }
 
     /**
@@ -117,7 +116,7 @@ public class ServiceAPI {
      * @return - true if succeeded, false if not
      */
     public boolean editProductInCart(int id,String productName,String storeName,int newAmount){
-        return logicManager.editProductInCart(productName, storeName, newAmount);
+        return logicManager.editProductInCart(id,productName, storeName, newAmount);
     }
 
     /**
@@ -129,7 +128,7 @@ public class ServiceAPI {
      * @return - true if added, false if not
      */
     public boolean addProductToCart(int id,String productName,String storeName,int amount){
-        return logicManager.addProductToCart(productName, storeName, amount);
+        return logicManager.addProductToCart(id,productName, storeName, amount);
     }
 
     /**
@@ -140,7 +139,7 @@ public class ServiceAPI {
      * @return true is the purchase succeeded, otherwise false
      */
     public boolean purchaseCart(int id,PaymentData paymentData, String addressToDeliver){
-        return logicManager.purchaseCart(paymentData,addressToDeliver);
+        return logicManager.purchaseCart(id,paymentData,addressToDeliver);
     }
 
     /**
@@ -149,7 +148,7 @@ public class ServiceAPI {
      * @return true if the user logout
      */
     public boolean logout(int id){
-        return logicManager.logout();
+        return logicManager.logout(id);
     }
 
     /***
@@ -159,7 +158,7 @@ public class ServiceAPI {
      * @return true if store is created
      */
     public boolean openStore(int id,StoreData storeDetails){
-        return logicManager.openStore(storeDetails);
+        return logicManager.openStore(id,storeDetails);
     }
 
     /***
@@ -171,7 +170,7 @@ public class ServiceAPI {
      * @return true if the review added, otherwise false
      */
     public boolean writeReview(int id,String storeName,String productName, String content){
-        return logicManager.addReview(storeName,productName, content);
+        return logicManager.addReview(id,storeName,productName, content);
     }
 
     /**
@@ -184,7 +183,7 @@ public class ServiceAPI {
      */
 
     public boolean writeRequestToStore(int id,String storeName,String content){
-        return logicManager.addRequest(storeName,content);
+        return logicManager.addRequest(id,storeName,content);
     }
 
     /**
@@ -194,7 +193,7 @@ public class ServiceAPI {
      * @return the purchase list
      */
     public List<Purchase> watchMyPurchaseHistory(int id){
-        return logicManager.watchMyPurchaseHistory();
+        return logicManager.watchMyPurchaseHistory(id);
     }
 
     /**
@@ -205,7 +204,7 @@ public class ServiceAPI {
      * @return if product was added
      */
     public boolean addProductToStore(int id,ProductData productData){
-        return logicManager.addProductToStore(productData);
+        return logicManager.addProductToStore(id,productData);
     }
 
     /**
@@ -217,7 +216,7 @@ public class ServiceAPI {
      * @return if product was removed
      */
     public boolean removeProductFromStore(int id,String storeName,String productName){
-        return logicManager.removeProductFromStore(storeName,productName);
+        return logicManager.removeProductFromStore(id,storeName,productName);
     }
 
     /**
@@ -228,7 +227,7 @@ public class ServiceAPI {
      * @return if product was edited
      */
     public boolean editProductFromStore(int id,ProductData productData){
-        return logicManager.editProductFromStore(productData);
+        return logicManager.editProductFromStore(id,productData);
     }
 
     /**
@@ -240,7 +239,7 @@ public class ServiceAPI {
      * @return if new owner was managed
      */
     public boolean manageOwner(int id,String storeName,String userName){
-        return logicManager.manageOwner(storeName,userName);
+        return logicManager.manageOwner(id,storeName,userName);
     }
 
     /**
@@ -252,7 +251,7 @@ public class ServiceAPI {
      * @return if the manger was added
      */
     public boolean addManagerToStore(int id,String storeName,String userName){
-        return logicManager.addManager(userName,storeName);
+        return logicManager.addManager(id,userName,storeName);
     }
 
     /**
@@ -265,7 +264,7 @@ public class ServiceAPI {
      * @return
      */
     public boolean addPermissions(int id,List<PermissionType> permissions, String storeName, String userName){
-        return logicManager.addPermissions(permissions,storeName,userName);
+        return logicManager.addPermissions(id,permissions,storeName,userName);
     }
 
     /**
@@ -278,7 +277,7 @@ public class ServiceAPI {
      * @return if permissions were removed
      */
     public boolean removePermissions(int id,List<PermissionType> permissions, String storeName, String userName){
-        return logicManager.removePermissions(permissions,storeName,userName);
+        return logicManager.removePermissions(id,permissions,storeName,userName);
     }
 
     /**
@@ -290,7 +289,7 @@ public class ServiceAPI {
      * @return if the manager was removed and also the managers he managed
      */
     public boolean removeManager(int id,String userName,String storeName){
-        return logicManager.removeManager(userName,storeName);
+        return logicManager.removeManager(id,userName,storeName);
     }
 
     /**
@@ -301,7 +300,7 @@ public class ServiceAPI {
      * @return the request of the store to watch
      */
     public List<Request> watchRequestsOfStore(int id,String storeName){
-        return logicManager.viewStoreRequest(storeName);
+        return logicManager.viewStoreRequest(id,storeName);
     }
 
     /**
@@ -314,7 +313,7 @@ public class ServiceAPI {
      * @return the request with the apply
      */
     public Request answerRequest(int id,int requestId,String content, String storeName){
-        return logicManager.replayRequest(storeName,requestId,content);
+        return logicManager.replayRequest(id,storeName,requestId,content);
     }
 
     /**
@@ -324,7 +323,7 @@ public class ServiceAPI {
      * @return the purchase list
      */
     public List<Purchase> watchStoreHistory(int id,String storeName){
-        return logicManager.watchStorePurchasesHistory(storeName);
+        return logicManager.watchStorePurchasesHistory(id,storeName);
     }
 
     /**
@@ -334,7 +333,7 @@ public class ServiceAPI {
      * @return - list of purchases that of the user
      */
     public List<Purchase> AdminWatchUserPurchasesHistory(int id,String userName){
-        return logicManager.watchUserPurchasesHistory(userName);
+        return logicManager.watchUserPurchasesHistory(id,userName);
     }
 
     /**
@@ -344,7 +343,7 @@ public class ServiceAPI {
      * @return - list of purchases that of the store
      */
     public List<Purchase> AdminWatchStoreHistory(int id,String storeName){
-        return logicManager.watchStorePurchasesHistory(storeName);
+        return logicManager.watchStorePurchasesHistory(id, storeName);
     }
 
 

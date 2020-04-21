@@ -23,8 +23,10 @@ public class TestData {
     private List<PermissionType> permissionTypeList;
     private HashMap<Data, PaymentData> paymentData;
     private HashMap<Data, DeliveryData> deliveryData;
+    private HashMap<Data,Integer> ids;
 
     public TestData() {
+        setUpIds();
         setUpUsers();
         setUpDiscountData();
         setUpProductData();
@@ -36,6 +38,13 @@ public class TestData {
         setUpPaymentData();
         setUpDeliveryData();
         setUpPermmisionTypes();
+    }
+
+    private void setUpIds() {
+        ids=new HashMap<>();
+        ids.put(Data.ADMIN,0);
+        ids.put(Data.VALID,1);
+        ids.put(Data.VALID2,2);
     }
 
     private void setUpPermmisionTypes() {
@@ -241,7 +250,7 @@ public class TestData {
         StoreData storeData = getStore(data);
         Permission permission = new Permission(getSubscribe(Data.VALID));
         Store store = new Store(storeData.getName(),storeData.getPurchasePolicy(),
-                storeData.getDiscountPolicy(), permission, new ProxySupply(), new ProxyPayment());
+                storeData.getDiscountPolicy(), permission);
         permission.setStore(store);
         store.addProduct(getProductData(Data.VALID));
         return store;
@@ -281,7 +290,9 @@ public class TestData {
         return this.deliveryData.get(data);
     }
 
-
+    public int getId(Data data){
+        return ids.get(data);
+    }
 
     public Request getRequest(Data data) { return requests.get(data); }
 
