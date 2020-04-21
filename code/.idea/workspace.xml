@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f0366da3-85c5-4ead-a08b-f6642ede6572" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -12,21 +13,48 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+    <leaf>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Basket.java">
+        <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="47" column="38" selection-start-line="47" selection-start-column="38" selection-end-line="47" selection-end-column="38" />
+            <state relative-caret-position="42">
+              <caret line="777" column="8" lean-forward="true" selection-start-line="777" selection-start-column="8" selection-end-line="777" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerUserStubTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="212">
+              <caret line="79" column="26" selection-start-line="79" selection-start-column="26" selection-end-line="79" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerUserAndStoresStubs.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-14">
+              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerRealTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="452" column="27" lean-forward="true" selection-start-line="452" selection-start-column="27" selection-end-line="452" selection-end-column="27" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/LogoutTest.java">
+        <entry file="file://$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="107">
-              <caret line="14" column="11" lean-forward="true" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
+            <state relative-caret-position="111">
+              <caret line="244" column="39" selection-start-line="244" selection-start-column="39" selection-end-line="244" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -34,8 +62,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Domain/LogicManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="10302">
-              <caret line="618" column="9" selection-start-line="615" selection-start-column="5" selection-end-line="618" selection-end-column="9" />
+            <state relative-caret-position="249">
+              <caret line="610" column="9" lean-forward="true" selection-start-line="607" selection-start-column="7" selection-end-line="610" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -51,10 +79,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>appointOwnerToStore</find>
-      <find>appointManager</find>
-      <find>buyCart</find>
-      <find>deleteManager</find>
       <find>getCurrentUsersCart</find>
       <find>deleteFromCurrentUserCart</find>
       <find>changeCurrentUserAmountOfProductInCart</find>
@@ -75,12 +99,16 @@
       <find>open</find>
       <find>permissions</find>
       <find>i</find>
-      <find>openStore</find>
-      <find>3.2</find>
       <find>SubscribeStub</find>
-      <find>get</find>
-      <find>initi</find>
-      <find>before</find>
+      <find>3.2</find>
+      <find>2.4.2</find>
+      <find>openStore</find>
+      <find>addRequ</find>
+      <find>requests</find>
+      <find>addReq</find>
+      <find>testAddRequ</find>
+      <find>3.5</find>
+      <find>testAddRequest</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -88,7 +116,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="master" />
+        <entry key="$PROJECT_DIR$/.." value="use_case_2.3_open_store" />
       </map>
     </option>
   </component>
@@ -108,6 +136,7 @@
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/ApplicationToStoreTestData.java" />
         <option value="$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" />
+        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java" />
         <option value="$PROJECT_DIR$/src/main/java/Domain/Cart.java" />
         <option value="$PROJECT_DIR$/src/main/java/Systems/LoggerSystem.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AddToCartTest.java" />
@@ -123,6 +152,7 @@
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/FilterProductsInStoresTest.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStorePurchaseHistoryTest.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStoresInfo.java" />
+        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/LogoutTest.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/OpenStoreTest.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/RegisterTest.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/ManagerPermissionsTest.java" />
@@ -130,27 +160,25 @@
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/WriteReviewOnProductTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/Domain/UserState.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Domain/User.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Domain/Guest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Domain/Subscribe.java" />
         <option value="$PROJECT_DIR$/src/main/java/Domain/Basket.java" />
         <option value="$PROJECT_DIR$/src/main/java/Domain/Store.java" />
         <option value="$PROJECT_DIR$/src/test/Stubs/SubscribeStub.java" />
         <option value="$PROJECT_DIR$/src/test/Stubs/StoreStub.java" />
-        <option value="$PROJECT_DIR$/src/test/Data/TestData.java" />
-        <option value="$PROJECT_DIR$/src/test/Stubs/UserStub.java" />
         <option value="$PROJECT_DIR$/src/test/Basket/BasketTest.java" />
-        <option value="$PROJECT_DIR$/src/test/Guest/GuestTest.java" />
         <option value="$PROJECT_DIR$/src/test/Store/StoreTestsAllStubs.java" />
         <option value="$PROJECT_DIR$/src/test/Stubs/GuestStub.java" />
-        <option value="$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java" />
         <option value="$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Domain/Guest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Domain/User.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Domain/Subscribe.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" />
+        <option value="$PROJECT_DIR$/src/test/Data/TestData.java" />
+        <option value="$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java" />
+        <option value="$PROJECT_DIR$/src/test/Stubs/UserStub.java" />
+        <option value="$PROJECT_DIR$/src/test/Guest/GuestTest.java" />
         <option value="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java" />
+        <option value="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerRealTest.java" />
         <option value="$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java" />
-        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/InitialStartTest.java" />
-        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java" />
-        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/LogoutTest.java" />
       </list>
     </option>
   </component>
@@ -166,7 +194,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -174,6 +201,11 @@
             <path>
               <item name="code" type="b2602c69:ProjectViewProjectNode" />
               <item name="code" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="code" type="b2602c69:ProjectViewProjectNode" />
+              <item name="code" type="462c0819:PsiDirectoryNode" />
+              <item name=".idea" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="code" type="b2602c69:ProjectViewProjectNode" />
@@ -190,6 +222,21 @@
               <item name="code" type="b2602c69:ProjectViewProjectNode" />
               <item name="code" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="code" type="b2602c69:ProjectViewProjectNode" />
+              <item name="code" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Domain" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="code" type="b2602c69:ProjectViewProjectNode" />
+              <item name="code" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -197,15 +244,21 @@
               <item name="code" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="AcceptanceTests" type="462c0819:PsiDirectoryNode" />
+              <item name="Data" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="code" type="b2602c69:ProjectViewProjectNode" />
               <item name="code" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="AcceptanceTests" type="462c0819:PsiDirectoryNode" />
-              <item name="AcceptanceTests" type="462c0819:PsiDirectoryNode" />
+              <item name="LogicManagerTests" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="code" type="b2602c69:ProjectViewProjectNode" />
+              <item name="code" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="UserTests" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="code" type="b2602c69:ProjectViewProjectNode" />
@@ -215,6 +268,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -225,7 +279,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587485286679" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587485369160" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -244,45 +298,11 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.LogoutTest">
-    <configuration name="EditStore" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.All in code">
+    <configuration name="All in code" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="code" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="AcceptanceTests.AcceptanceTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="AcceptanceTests.AcceptanceTests" />
-      <option name="MAIN_CLASS_NAME" value="AcceptanceTests.AcceptanceTests.EditStore" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="GuestTestReal" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="code" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Guest.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="Guest" />
-      <option name="MAIN_CLASS_NAME" value="Guest.GuestTestReal" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="LogoutTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="code" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="AcceptanceTests.AcceptanceTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="AcceptanceTests.AcceptanceTests" />
-      <option name="MAIN_CLASS_NAME" value="AcceptanceTests.AcceptanceTests.LogoutTest" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -315,13 +335,41 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="UserAllStubsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="code" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="UserTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="UserTests" />
+      <option name="MAIN_CLASS_NAME" value="UserTests.UserAllStubsTest" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserRealTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="code" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="UserTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="UserTests" />
+      <option name="MAIN_CLASS_NAME" value="UserTests.UserRealTest" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.LogoutTest" />
-        <item itemvalue="JUnit.EditStore" />
+        <item itemvalue="JUnit.All in code" />
         <item itemvalue="JUnit.SubscribeRealTest" />
         <item itemvalue="JUnit.SubscribeAllStubsTest" />
-        <item itemvalue="JUnit.GuestTestReal" />
+        <item itemvalue="JUnit.UserRealTest" />
+        <item itemvalue="JUnit.UserAllStubsTest" />
       </list>
     </recent_temporary>
   </component>
@@ -391,7 +439,7 @@
       <workItem from="1586441463667" duration="16306000" />
       <workItem from="1586496304675" duration="6045000" />
       <workItem from="1586509461422" duration="6936000" />
-      <workItem from="1587453312440" duration="4933000" />
+      <workItem from="1587453312440" duration="9216000" />
     </task>
     <task id="LOCAL-00007" summary="get stores info">
       <created>1585903984055</created>
@@ -575,50 +623,64 @@
       <option name="project" value="LOCAL" />
       <updated>1587457798387</updated>
     </task>
-    <task id="LOCAL-00033" summary="yes!!!">
-      <created>1587484818608</created>
+    <task id="LOCAL-00033" summary="All tests use case #33">
+      <created>1587458471131</created>
       <option name="number" value="00033" />
       <option name="presentableId" value="LOCAL-00033" />
       <option name="project" value="LOCAL" />
-      <updated>1587484818608</updated>
+      <updated>1587458471131</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="use case 3.5 #68 starting">
+      <created>1587461621413</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1587461621414</updated>
+    </task>
+    <task id="LOCAL-00035" summary="finish logicManger tests use case 3.5 #68">
+      <created>1587464515168</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1587464515168</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="LogicManagerAllStubsTest - 2020.04.21 at 11h 25m 53s.xml">
+    <history-entry file="LogicManagerAllStubsTest_testAddRequestWrongName - 2020.04.21 at 13h 08m 55s.xml">
+      <configuration name="LogicManagerAllStubsTest.testAddRequestWrongName" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UserAllStubsTest_testAddRequestGuest - 2020.04.21 at 13h 10m 48s.xml">
+      <configuration name="UserAllStubsTest.testAddRequestGuest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UserAllStubsTest_testWatchPurchasesGeust - 2020.04.21 at 13h 10m 58s.xml">
+      <configuration name="UserAllStubsTest.testWatchPurchasesGeust" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UserAllStubsTest_testAddRequestGuest - 2020.04.21 at 13h 11m 08s.xml">
+      <configuration name="UserAllStubsTest.testAddRequestGuest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="LogicManagerAllStubsTest_testAddRequestConentNull - 2020.04.21 at 13h 12m 31s.xml">
+      <configuration name="LogicManagerAllStubsTest.testAddRequestConentNull" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="LogicManagerAllStubsTest - 2020.04.21 at 13h 13m 48s.xml">
       <configuration name="LogicManagerAllStubsTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogicManagerUserStubTest - 2020.04.21 at 11h 27m 44s.xml">
-      <configuration name="LogicManagerUserStubTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="LogicManagerUserAndStoresStubs - 2020.04.21 at 11h 28m 57s.xml">
-      <configuration name="LogicManagerUserAndStoresStubs" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="LogicManagerRealTest - 2020.04.21 at 11h 29m 34s.xml">
+    <history-entry file="LogicManagerRealTest - 2020.04.21 at 13h 20m 19s.xml">
       <configuration name="LogicManagerRealTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserAllStubsTest - 2020.04.21 at 11h 30m 36s.xml">
+    <history-entry file="LogicManagerTests_in_code - 2020.04.21 at 13h 20m 53s.xml">
+      <configuration name="LogicManagerTests in code" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UserAllStubsTest - 2020.04.21 at 13h 25m 01s.xml">
       <configuration name="UserAllStubsTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserAllStubsTest_testOpenStoreSubscribe - 2020.04.21 at 11h 32m 07s.xml">
-      <configuration name="UserAllStubsTest.testOpenStoreSubscribe" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="UserAllStubsTest_testOpenStoreSubscribe - 2020.04.21 at 11h 34m 05s.xml">
-      <configuration name="UserAllStubsTest.testOpenStoreSubscribe" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="UserAllStubsTest_testOpenStoreSubscribe - 2020.04.21 at 11h 35m 51s.xml">
-      <configuration name="UserAllStubsTest.testOpenStoreSubscribe" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="UserAllStubsTest_testOpenStoreSubscribe - 2020.04.21 at 11h 36m 33s.xml">
-      <configuration name="UserAllStubsTest.testOpenStoreSubscribe" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="LogoutTest - 2020.04.21 at 18h 59m 10s.xml">
-      <configuration name="LogoutTest" configurationId="JUnit" />
+    <history-entry file="UserRealTest - 2020.04.21 at 13h 25m 16s.xml">
+      <configuration name="UserRealTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="120312000" />
+    <option name="totallyTimeSpent" value="121672000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -633,27 +695,28 @@
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22267206" />
+      <window_info id="simpleUML" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21538462" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info id="simpleUML" order="7" />
-      <window_info anchor="bottom" id="Messages" order="0" weight="0.32719547" />
+      <window_info anchor="bottom" id="Messages" order="0" weight="0.3285968" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.6639676" visible="true" weight="0.357016" />
-      <window_info anchor="bottom" id="Debug" order="4" weight="0.28774422" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.66477734" visible="true" weight="0.37477797" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.5008881" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3286119" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49959514" weight="0.59147424" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.23090586" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3286119" />
-      <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.3360324" side_tool="true" visible="true" weight="0.357016" />
+      <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" weight="0.3285968" />
+      <window_info anchor="right" id="SciView" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -663,79 +726,43 @@
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info anchor="right" id="Database" order="8" />
-      <window_info anchor="right" id="SciView" order="9" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25349087" />
-      <window_info id="Structure" order="1" weight="0.25" />
-      <window_info id="Capture Tool" order="2" />
-      <window_info id="Designer" order="3" />
-      <window_info id="UI Designer" order="4" />
-      <window_info id="Image Layers" order="5" />
-      <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.32996634" />
-      <window_info anchor="bottom" id="Version Control" order="8" visible="true" weight="0.32996634" />
-      <window_info anchor="bottom" id="Terminal" order="9" />
-      <window_info anchor="right" id="Palette" order="0" />
-      <window_info anchor="right" id="Palette&#9;" order="1" />
-      <window_info anchor="right" id="Capture Analysis" order="2" />
-      <window_info anchor="right" id="Maven Projects" order="3" />
-      <window_info anchor="right" id="Database" order="4" />
+      <window_info id="simpleUML" order="0" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.21538462" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="Designer" order="4" />
+      <window_info id="UI Designer" order="5" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info id="Favorites" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" order="0" weight="0.3285968" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.66477734" visible="true" weight="0.29307282" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.5008881" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="7" weight="0.3286119" />
+      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.23090586" />
+      <window_info anchor="bottom" id="Database Changes" order="10" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3286119" />
+      <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" weight="0.3285968" />
+      <window_info anchor="right" id="SciView" order="0" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="4" />
       <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info anchor="right" id="Commander" order="6" weight="0.4" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="7" weight="0.25" />
-      <window_info anchor="right" id="Ant Build" order="8" weight="0.25" />
+      <window_info anchor="right" id="Maven" order="6" />
+      <window_info anchor="right" id="Capture Analysis" order="7" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
+      <window_info anchor="right" id="Database" order="9" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="RECENTLY_FILTERED_USER_GROUPS">
-                <collection />
-              </option>
-              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
-                <collection />
-              </option>
-              <option name="COLUMN_ORDER">
-                <list>
-                  <option value="0" />
-                  <option value="1" />
-                  <option value="2" />
-                  <option value="3" />
-                </list>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="RECENT_FILTERS">
-      <map>
-        <entry key="Branch">
-          <value>
-            <list />
-          </value>
-        </entry>
-        <entry key="User">
-          <value>
-            <list />
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="." />
@@ -759,8 +786,10 @@
     <MESSAGE value="removed payment system, and purchase system&#10;from store.&#10;use case #33" />
     <MESSAGE value="LogicManger All Stubs test use case #33" />
     <MESSAGE value="LogicManger tests use case #33" />
-    <MESSAGE value="yes!!!" />
-    <option name="LAST_COMMIT_MESSAGE" value="yes!!!" />
+    <MESSAGE value="All tests use case #33" />
+    <MESSAGE value="use case 3.5 #68 starting" />
+    <MESSAGE value="finish logicManger tests use case 3.5 #68" />
+    <option name="LAST_COMMIT_MESSAGE" value="finish logicManger tests use case 3.5 #68" />
   </component>
   <component name="WindowStateProjectService">
     <state x="618" y="301" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" />
@@ -801,7 +830,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java</url>
-          <line>870</line>
+          <line>950</line>
           <properties />
           <option name="timeStamp" value="43" />
         </line-breakpoint>
@@ -821,6 +850,75 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditCartTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1550">
+          <caret line="90" column="44" selection-start-line="90" selection-start-column="44" selection-end-line="90" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditPermissionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="84" selection-start-line="84" selection-end-line="84" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/FilterProductsInStoresTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="17" column="41" selection-start-line="17" selection-start-column="41" selection-end-line="17" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/LoginTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/LogoutTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
+          <folding>
+            <element signature="e#225#226#0" expanded="true" />
+            <element signature="e#268#269#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStoresInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="35" column="58" selection-start-line="35" selection-start-column="58" selection-end-line="35" selection-end-column="58" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditStore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="81" selection-start-line="81" selection-end-line="81" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AppointManagerTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="275">
@@ -853,8 +951,47 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/ManagerPermissionsTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
+        <state relative-caret-position="100">
           <caret line="15" column="38" selection-start-line="15" selection-start-column="38" selection-end-line="15" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="166" column="32" lean-forward="true" selection-start-line="166" selection-start-column="32" selection-end-line="166" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#990#991#0" expanded="true" />
+            <element signature="e#1017#1018#0" expanded="true" />
+            <element signature="e#1309#1310#0" expanded="true" />
+            <element signature="e#1370#1371#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="28">
+          <caret line="138" column="7" lean-forward="true" selection-start-line="138" selection-start-column="7" selection-end-line="138" selection-end-column="34" />
+          <folding>
+            <element signature="e#732#733#0" expanded="true" />
+            <element signature="e#795#796#0" expanded="true" />
+            <element signature="e#1279#1280#0" expanded="true" />
+            <element signature="e#1327#1328#0" expanded="true" />
+            <element signature="e#2206#2207#0" expanded="true" />
+            <element signature="e#2261#2262#0" expanded="true" />
+            <element signature="e#4082#4083#0" expanded="true" />
+            <element signature="e#4126#4127#0" expanded="true" />
+            <element signature="e#4325#4326#0" expanded="true" />
+            <element signature="e#4384#4385#0" expanded="true" />
+            <element signature="e#5145#5146#0" expanded="true" />
+            <element signature="e#5205#5206#0" expanded="true" />
+            <element signature="e#5290#5291#0" expanded="true" />
+            <element signature="e#5356#5357#0" expanded="true" />
+            <element signature="e#6674#6675#0" expanded="true" />
+            <element signature="e#6737#6738#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -867,8 +1004,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStorePurchaseHistoryTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="17" column="23" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="23" />
+        <state relative-caret-position="74">
+          <caret line="10" column="40" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -879,6 +1016,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="475">
           <caret line="43" column="66" selection-start-line="43" selection-start-column="66" selection-end-line="43" selection-end-column="66" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="16" column="41" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -897,8 +1044,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Basket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="47" column="38" selection-start-line="47" selection-start-column="38" selection-end-line="47" selection-end-column="38" />
+        <state relative-caret-position="238">
+          <caret line="163" column="19" selection-start-line="163" selection-start-column="19" selection-end-line="163" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -923,13 +1070,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
-          <caret line="47" column="47" selection-start-line="47" selection-start-column="47" selection-end-line="47" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/Stubs/GuestStub.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
@@ -948,73 +1088,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/Basket/BasketTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="127">
           <caret line="36" column="56" selection-start-line="36" selection-start-column="56" selection-end-line="36" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/Stubs/UserStub.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="27" column="85" selection-start-line="27" selection-start-column="85" selection-end-line="27" selection-end-column="85" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/Data/TestData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="252" column="57" selection-start-line="252" selection-start-column="57" selection-end-line="252" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerUserAndStoresStubs.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerRealTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7718">
-          <caret line="464" column="27" selection-start-line="464" selection-start-column="27" selection-end-line="464" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerUserStubTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="53" selection-start-line="53" selection-end-line="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12512">
-          <caret line="757" column="8" selection-start-line="757" selection-start-column="8" selection-end-line="757" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Guest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="67" column="26" selection-start-line="67" selection-start-column="17" selection-end-line="67" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/UserState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="141" column="26" selection-start-line="141" selection-start-column="26" selection-end-line="141" selection-end-column="26" />
         </state>
       </provider>
     </entry>
@@ -1048,17 +1125,6 @@
           <caret line="32" selection-start-line="32" selection-end-line="32" />
           <folding>
             <element signature="e#894#895#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Subscribe.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="389" selection-start-line="389" selection-end-line="389" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#12552#12553#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1099,23 +1165,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="121" selection-start-line="121" selection-end-line="121" />
-          <folding>
-            <element signature="e#3344#3345#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Store.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="24" column="41" lean-forward="true" selection-start-line="24" selection-start-column="41" selection-end-line="24" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/Stubs/SubscribeStub.java">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1127,141 +1176,124 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/UserState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="31" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
+        <state relative-caret-position="163">
+          <caret line="182" column="28" selection-start-line="182" selection-start-column="28" selection-end-line="182" selection-end-column="28" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Store.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="48" selection-start-line="48" selection-end-line="48" />
+        <state relative-caret-position="455">
+          <caret line="233" column="32" selection-start-line="233" selection-start-column="32" selection-end-line="233" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="160" column="19" selection-start-line="160" selection-start-column="19" selection-end-line="160" selection-end-column="19" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#3292#3293#0" expanded="true" />
+            <element signature="e#3344#3345#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Guest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="23" column="40" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5131#5132#0" expanded="true" />
-            <element signature="e#5175#5176#0" expanded="true" />
-            <element signature="e#12086#12087#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="21" column="30" lean-forward="true" selection-start-line="21" selection-start-column="30" selection-end-line="21" selection-end-column="30" />
-          <folding>
-            <element signature="e#933#934#0" expanded="true" />
-            <element signature="e#986#987#0" expanded="true" />
-            <element signature="e#1286#1287#0" expanded="true" />
-            <element signature="e#1349#1350#0" expanded="true" />
-            <element signature="e#1659#1660#0" expanded="true" />
-            <element signature="e#1723#1724#0" expanded="true" />
-            <element signature="e#1928#1929#0" expanded="true" />
-            <element signature="e#1976#1977#0" expanded="true" />
-            <element signature="e#2963#2964#0" expanded="true" />
-            <element signature="e#3019#3020#0" expanded="true" />
-            <element signature="e#5097#5098#0" expanded="true" />
-            <element signature="e#5143#5144#0" expanded="true" />
-            <element signature="e#5394#5395#0" expanded="true" />
-            <element signature="e#5456#5457#0" expanded="true" />
-            <element signature="e#6643#6644#0" expanded="true" />
-            <element signature="e#6705#6706#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/LogicManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10302">
-          <caret line="618" column="9" selection-start-line="615" selection-start-column="5" selection-end-line="618" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/BuyCartTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="27" selection-start-line="27" selection-end-line="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/WatchUserPurchaseHistoryTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="24" column="23" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/InitialStartTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AcceptanceTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5000">
-          <caret line="239" column="7" selection-start-line="239" selection-start-column="7" selection-end-line="239" selection-end-column="7" />
-          <folding>
-            <element signature="e#2328#2329#0" expanded="true" />
-            <element signature="e#2359#2360#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditStore.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1675">
-          <caret line="81" selection-start-line="81" selection-end-line="81" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        <state relative-caret-position="145">
+          <caret line="101" column="23" selection-start-line="101" selection-start-column="23" selection-end-line="101" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/Data/Data.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="16" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="16" />
+        <state relative-caret-position="187">
+          <caret line="14" column="16" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="16" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/LogoutTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/Data/TestData.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="107">
-          <caret line="14" column="11" lean-forward="true" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
+        <state relative-caret-position="230">
+          <caret line="227" column="38" selection-start-line="227" selection-start-column="26" selection-end-line="227" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Subscribe.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="146" column="30" lean-forward="true" selection-start-line="146" selection-start-column="30" selection-end-line="146" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#12521#12522#0" expanded="true" />
+            <element signature="e#12552#12553#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="175" column="56" selection-start-line="175" selection-start-column="56" selection-end-line="175" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/Stubs/UserStub.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="134">
+          <caret line="134" column="43" selection-start-line="134" selection-start-column="43" selection-end-line="134" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="93" column="51" selection-start-line="93" selection-start-column="51" selection-end-line="93" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/LogicManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="249">
+          <caret line="610" column="9" lean-forward="true" selection-start-line="607" selection-start-column="7" selection-end-line="610" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerUserStubTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="79" column="26" selection-start-line="79" selection-start-column="26" selection-end-line="79" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerUserAndStoresStubs.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-14">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="777" column="8" lean-forward="true" selection-start-line="777" selection-start-column="8" selection-end-line="777" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerRealTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="452" column="27" lean-forward="true" selection-start-line="452" selection-start-column="27" selection-end-line="452" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="111">
+          <caret line="244" column="39" selection-start-line="244" selection-start-column="39" selection-end-line="244" selection-end-column="39" />
         </state>
       </provider>
     </entry>

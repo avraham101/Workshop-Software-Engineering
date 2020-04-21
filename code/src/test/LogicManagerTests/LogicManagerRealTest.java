@@ -283,8 +283,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     public void testEditProductsInCart() {
         setUpProductAddedToCart();
         ProductData productData = data.getProductData(Data.VALID);
-        assertTrue(logicManager.editProductInCart(data.getId(Data.VALID),productData.getProductName(),productData.getStoreName(),1));
-        //TODO check that the product was edited
+        assertTrue(logicManager.editProductInCart(data.getId(Data.VALID),productData.getProductName(),productData.getStoreName(),2));
+        assertEquals(2, logicManager.watchCartDetails(data.getId(Data.VALID)).getProducts().get(0).getAmount());
     }
 
     /**
@@ -306,7 +306,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         ProductData product = data.getProductData(Data.VALID);
         assertTrue(logicManager.addProductToCart(data.getId(Data.VALID),product.getProductName(),
                 product.getStoreName(), product.getAmount()));
-        //TODO check product added to cart
+        assertEquals(1, logicManager.watchCartDetails(data.getId(Data.VALID)).getProducts().size());
     }
 
     /**
