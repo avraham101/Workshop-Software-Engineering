@@ -42,7 +42,7 @@ public class ManagerPermissionsTest extends AcceptanceTests {
         registerAndLogin(manager);
         registerAndLogin(newManager);
         logoutAndLogin(superUser);
-        bridge.appointManager(stores.get(0).getStoreName(), manager.getUsername());
+        bridge.appointManager(superUser.getId(),stores.get(0).getStoreName(), manager.getUsername());
         bridge.addPermissionToManager(stores.get(0).getStoreName(),manager.getUsername(), PermissionsTypeTestData.PRODUCTS_INVENTORY);
        logoutAndLogin(manager);
     }
@@ -59,7 +59,7 @@ public class ManagerPermissionsTest extends AcceptanceTests {
 
     @Test
     public void managerPermissionsTestFailAddNewManager(){
-        boolean isAdded = bridge.appointManager(newProduct.getStoreName(),newManager.getUsername());
+        boolean isAdded = bridge.appointManager(manager.getId(),newProduct.getStoreName(),newManager.getUsername());
         assertFalse(isAdded);
         logoutAndLogin(newManager);
         boolean isAddedProduct = bridge.addProduct(newManager.getId(),newProduct);

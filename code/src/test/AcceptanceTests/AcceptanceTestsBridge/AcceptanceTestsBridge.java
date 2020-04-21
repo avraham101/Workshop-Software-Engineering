@@ -35,7 +35,7 @@ public interface AcceptanceTestsBridge {
     boolean deleteProduct(int id,ProductTestData product);
     StoreTestData getStoreInfoByName(String storeName);
     boolean editProductInStore(int id,ProductTestData product);
-    boolean appointManager(String storeName, String username);
+    boolean appointManager(int id, String storeName, String username);
     boolean deleteManager(String storeName,String username);
     List<PurchaseTestData> getStorePurchasesHistory(String storeName);
     List<PurchaseTestData> getUserPurchaseHistory(String username);

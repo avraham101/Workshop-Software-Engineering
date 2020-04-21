@@ -36,7 +36,7 @@ public class EditStore extends AcceptanceTests {
 
     @Test
     public void addProductToStoreFailProductExist(){
-        bridge.addProduct(superUser.getId(),stores.get(0).getProducts().get(0));
+      //  bridge.addProduct(superUser.getId(),stores.get(0).getProducts().get(0));
         boolean approval = bridge.addProduct(superUser.getId(),stores.get(0).getProducts().get(0));
         assertFalse(approval);
     }

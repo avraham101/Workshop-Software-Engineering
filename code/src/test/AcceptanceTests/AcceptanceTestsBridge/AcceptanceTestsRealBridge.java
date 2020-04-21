@@ -195,7 +195,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-4.5---------------------------------//
     @Override
-    public boolean appointManager(String storeName, String username) {
+    public boolean appointManager(int id,String storeName, String username) {
         return serviceAPI.addManagerToStore(id,storeName,username);
     }
     //---------------------------Use-Case-4.5---------------------------------//
