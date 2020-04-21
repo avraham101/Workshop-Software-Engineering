@@ -40,8 +40,8 @@ public class LogicManager {
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
-            paymentSystem = paymentSystem;
-            supplySystem = supplySystem;
+            this.paymentSystem = paymentSystem;
+            this.supplySystem = supplySystem;
             if(!paymentSystem.connect()) {
                 throw new Exception("Payment System Crashed");
             }
