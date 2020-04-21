@@ -56,9 +56,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean login(String username, String password) {
+    public boolean login(int id, String username, String password) {
         if(realBridge!=null)
-            return realBridge.login(username,password);
+            return realBridge.login(id,username,password);
         return false;
     }
 

@@ -51,7 +51,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-2.3---------------------------------//
     @Override
-    public boolean login(String username, String password) {
+    public boolean login(int id, String username, String password) {
         return serviceAPI.login(id,username,password);
 
     }
@@ -399,15 +399,16 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return new CartTestData(baskets);
     }
 
+    //TODO: fix
     @Override
     public StoreTestData getStoreInfoByName(String storeName) {
 
-        List<StoreData> stores = serviceAPI.viewStores();
-        for (StoreData st: stores) {
-            if(st.getName().equals(storeName)){
-                return new StoreTestData(storeName,currentUser);
-            }
-        }
+//        List<StoreData> stores = serviceAPI.viewStores();
+//        for (StoreData st: stores) {
+//            if(st.getName().equals(storeName)){
+//                return new StoreTestData(storeName,currentUser);
+//            }
+//        }
         return null;
     }
 
