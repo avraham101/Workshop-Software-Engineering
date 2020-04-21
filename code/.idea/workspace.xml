@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f0366da3-85c5-4ead-a08b-f6642ede6572" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -66,11 +65,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="661" column="7" selection-start-line="661" selection-start-column="7" selection-end-line="661" selection-end-column="7" />
+            <state relative-caret-position="2">
+              <caret line="663" column="32" selection-start-line="663" selection-start-column="32" selection-end-line="663" selection-end-column="32" />
               <folding>
                 <element signature="e#968#1516#0" />
                 <element signature="e#1522#2226#0" />
@@ -88,6 +87,24 @@
                 <element signature="e#6959#7243#0" />
                 <element signature="e#7249#7606#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerUserStubTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="91">
+              <caret line="78" column="7" lean-forward="true" selection-start-line="78" selection-start-column="7" selection-end-line="78" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerUserAndStoresStubs.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -128,11 +145,11 @@
       <find>writeReplyToApplication</find>
       <find>getCurrentUserPurchaseHistory</find>
       <find>writeReviewOnProduct</find>
-      <find>3.2</find>
       <find>open</find>
       <find>permissions</find>
       <find>i</find>
       <find>openStore</find>
+      <find>3.2</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -297,7 +314,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587457542055" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587457767839" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -316,7 +333,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.LogicManagerAllStubsTest">
+  <component name="RunManager" selected="JUnit.LogicManagerRealTest">
     <configuration name="LogicManagerAllStubsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="code" />
       <extension name="coverage">
@@ -327,54 +344,6 @@
       </extension>
       <option name="PACKAGE_NAME" value="LogicManagerTests" />
       <option name="MAIN_CLASS_NAME" value="LogicManagerTests.LogicManagerAllStubsTest" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="LogicManagerAllStubsTest.testOpenStoreNullDiscount" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="code" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="LogicManagerTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="LogicManagerTests" />
-      <option name="MAIN_CLASS_NAME" value="LogicManagerTests.LogicManagerAllStubsTest" />
-      <option name="METHOD_NAME" value="testOpenStoreNullDiscount" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="LogicManagerAllStubsTest.testOpenStoreNullName" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="code" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="LogicManagerTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="LogicManagerTests" />
-      <option name="MAIN_CLASS_NAME" value="LogicManagerTests.LogicManagerAllStubsTest" />
-      <option name="METHOD_NAME" value="testOpenStoreNullName" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="LogicManagerAllStubsTest.testOpenStoreNullPurchase" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="code" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="LogicManagerTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="LogicManagerTests" />
-      <option name="MAIN_CLASS_NAME" value="LogicManagerTests.LogicManagerAllStubsTest" />
-      <option name="METHOD_NAME" value="testOpenStoreNullPurchase" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -395,13 +364,55 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="LogicManagerRealTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="code" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="LogicManagerTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="LogicManagerTests" />
+      <option name="MAIN_CLASS_NAME" value="LogicManagerTests.LogicManagerRealTest" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LogicManagerUserAndStoresStubs" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="code" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="LogicManagerTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="LogicManagerTests" />
+      <option name="MAIN_CLASS_NAME" value="LogicManagerTests.LogicManagerUserAndStoresStubs" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LogicManagerUserStubTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="code" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="LogicManagerTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="LogicManagerTests" />
+      <option name="MAIN_CLASS_NAME" value="LogicManagerTests.LogicManagerUserStubTest" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.LogicManagerRealTest" />
+        <item itemvalue="JUnit.LogicManagerUserAndStoresStubs" />
+        <item itemvalue="JUnit.LogicManagerUserStubTest" />
         <item itemvalue="JUnit.LogicManagerAllStubsTest" />
         <item itemvalue="JUnit.LogicManagerAllStubsTest.testOpenStoreReOpen" />
-        <item itemvalue="JUnit.LogicManagerAllStubsTest.testOpenStoreNullName" />
-        <item itemvalue="JUnit.LogicManagerAllStubsTest.testOpenStoreNullDiscount" />
-        <item itemvalue="JUnit.LogicManagerAllStubsTest.testOpenStoreNullPurchase" />
       </list>
     </recent_temporary>
   </component>
@@ -471,7 +482,7 @@
       <workItem from="1586441463667" duration="16306000" />
       <workItem from="1586496304675" duration="6045000" />
       <workItem from="1586509461422" duration="6936000" />
-      <workItem from="1587453312440" duration="4148000" />
+      <workItem from="1587453312440" duration="4404000" />
     </task>
     <task id="LOCAL-00007" summary="get stores info">
       <created>1585903984055</created>
@@ -641,19 +652,17 @@
       <option name="project" value="LOCAL" />
       <updated>1587455985631</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="LogicManger All Stubs test use case #33">
+      <created>1587457593537</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1587457593537</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="AcceptanceTests_AcceptanceTests_in_Workshop - 2020.04.10 at 11h 18m 00s.xml">
-      <configuration name="AcceptanceTests.AcceptanceTests in Workshop" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="AcceptanceTests_AcceptanceTests_in_Workshop - 2020.04.10 at 11h 20m 11s.xml">
-      <configuration name="AcceptanceTests.AcceptanceTests in Workshop" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_in_code - 2020.04.21 at 10h 17m 47s.xml">
-      <configuration name="All in code" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="All_in_code - 2020.04.21 at 10h 55m 54s.xml">
       <configuration name="All in code" configurationId="JUnit" />
     </history-entry>
@@ -675,9 +684,18 @@
     <history-entry file="LogicManagerAllStubsTest_testOpenStoreReOpen - 2020.04.21 at 11h 24m 28s.xml">
       <configuration name="LogicManagerAllStubsTest.testOpenStoreReOpen" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="LogicManagerAllStubsTest - 2020.04.21 at 11h 25m 08s.xml">
+      <configuration name="LogicManagerAllStubsTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="LogicManagerAllStubsTest - 2020.04.21 at 11h 25m 53s.xml">
+      <configuration name="LogicManagerAllStubsTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="LogicManagerUserStubTest - 2020.04.21 at 11h 27m 44s.xml">
+      <configuration name="LogicManagerUserStubTest" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="116604000" />
+    <option name="totallyTimeSpent" value="116860000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -690,10 +708,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="simpleUML" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21538462" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21538462" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -703,7 +720,7 @@
       <window_info anchor="bottom" id="Messages" order="0" weight="0.3285968" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.66477734" visible="true" weight="0.3179396" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.66477734" visible="true" weight="0.1616341" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.39943343" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -776,7 +793,8 @@
     <MESSAGE value="4.1 4.5 4.7" />
     <MESSAGE value="Merge branch 'AcceptanceTests' of https://github.com/avraham101/Workshop-Software-Engineering into AcceptanceTests&#10;&#10;# Conflicts:&#10;#&#9;code/src/test/AcceptanceTests/AcceptanceTestDataObjects/ApplicationToStoreTestData.java" />
     <MESSAGE value="removed payment system, and purchase system&#10;from store.&#10;use case #33" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed payment system, and purchase system&#10;from store.&#10;use case #33" />
+    <MESSAGE value="LogicManger All Stubs test use case #33" />
+    <option name="LAST_COMMIT_MESSAGE" value="LogicManger All Stubs test use case #33" />
   </component>
   <component name="WindowStateProjectService">
     <state x="618" y="301" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" />
@@ -825,26 +843,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/UserTestData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
-          <folding>
-            <element signature="e#706#707#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestDataObjects/StoreTestData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
-          <folding>
-            <element signature="e#783#784#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Cart.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1550">
@@ -1275,8 +1273,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="661" column="7" selection-start-line="661" selection-start-column="7" selection-end-line="661" selection-end-column="7" />
+        <state relative-caret-position="2">
+          <caret line="663" column="32" selection-start-line="663" selection-start-column="32" selection-end-line="663" selection-end-column="32" />
           <folding>
             <element signature="e#968#1516#0" />
             <element signature="e#1522#2226#0" />
@@ -1294,6 +1292,20 @@
             <element signature="e#6959#7243#0" />
             <element signature="e#7249#7606#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerUserStubTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="91">
+          <caret line="78" column="7" lean-forward="true" selection-start-line="78" selection-start-column="7" selection-end-line="78" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerUserAndStoresStubs.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
         </state>
       </provider>
     </entry>
