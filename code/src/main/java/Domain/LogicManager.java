@@ -39,7 +39,6 @@ public class LogicManager {
         this.connectedUsers =connectedUsers;
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
-        requestIdGenerator = new AtomicInteger(0);
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -70,7 +69,6 @@ public class LogicManager {
         subscribes = new ConcurrentHashMap<>();
         this.stores = new ConcurrentHashMap<>();
         usersIdCounter=new AtomicInteger(0);
-        requestIdGenerator = new AtomicInteger(0);
         this.connectedUsers =new ConcurrentHashMap<>();
         try {
             hashSystem = new HashSystem();
@@ -259,13 +257,24 @@ public class LogicManager {
     public List<ProductData> viewProductsInStore(String storeName) {
         loggerSystem.writeEvent("LogicManager","viewProductsInStore",
                 "view the details of the stores in the system", new Object[] {storeName});
-        if(storeName==null)
-            return null;
+        List<ProductData> data = new LinkedList<>();
         Store store = stores.get(storeName);
         if(store!=null) {
-            return store.viewProductInStore();
+            //TODO put inside store
+            //TODO add tests to store
+            Set<String> keys = store.getProducts().keySet();
+            for (String key : keys) {
+                Product product = store.getProducts().get(key);
+                //synchronized product from delete
+                if(product!=null) {
+                    product.getReadLock().lock();
+                    ProductData productData = new ProductData(product, storeName);
+                    data.add(productData);
+                    product.getReadLock().unlock();
+                }
+            }
         }
-        return null;
+        return data;
     }
 
     /**
