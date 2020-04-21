@@ -3,7 +3,6 @@ package AcceptanceTests.AcceptanceTests;
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsBridge;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 
 import java.util.*;
@@ -11,20 +10,20 @@ import java.util.*;
 import static junit.framework.TestCase.assertTrue;
 
 public class AcceptanceTests {
-    protected  AcceptanceTestsBridge bridge;
-    protected  List<UserTestData> users;
-    protected  List<StoreTestData> stores;
-    protected  List<ProductTestData> products;
-    protected  StoreTestData notExistingStore;
-    protected  DeliveryDetailsTestData validDelivery;
-    protected  DeliveryDetailsTestData invalidDelivery;
-    protected  PaymentTestData validPayment;
-    protected  PaymentTestData invalidPayment;
-    protected  UserTestData superUser;
-    protected  UserTestData admin;
+    protected static AcceptanceTestsBridge bridge;
+    protected static List<UserTestData> users;
+    protected static List<StoreTestData> stores;
+    protected static List<ProductTestData> products;
+    protected static StoreTestData notExistingStore;
+    protected static DeliveryDetailsTestData validDelivery;
+    protected static DeliveryDetailsTestData invalidDelivery;
+    protected static PaymentTestData validPayment;
+    protected static PaymentTestData invalidPayment;
+    protected static UserTestData superUser;
+    protected static UserTestData admin;
 
-    @Before
-    public  void setUpAll(){
+    @BeforeClass
+    public static void setUpAll(){
         bridge = AcceptanceTestsDriver.getBridge();
         users = new ArrayList<>();
         stores = new ArrayList<>();
@@ -38,40 +37,35 @@ public class AcceptanceTests {
         setUpCarts();
         setUpPayments();
         setUpDelivery();
-
     }
 
 
-    private  void setUpPayments() {
+    private static void setUpPayments() {
         Date validDate = new Date();
         validPayment = new PaymentTestData("ownerValid","1111","343",validDate);
         invalidPayment = null;
     }
 
-    private  void setUpDelivery() {
+    private static void setUpDelivery() {
         validDelivery = new DeliveryDetailsTestData
                 ("israel","ashdod","valid",7);
         invalidDelivery =null;
     }
 
 
-    private  void setUpUsers() {
-        boolean init = bridge.initialStart("admin","admin");
-        assertTrue(init);
-        admin = new UserTestData(generateUserId(),"admin","admin");
-        UserTestData user0 = new UserTestData(generateUserId(),"testUser0","testUser0Pass");
-        UserTestData user1 = new UserTestData(generateUserId(),"testUser1","testUser1Pass");
-        UserTestData user2 = new UserTestData(generateUserId(),"testUser2","testUser2Pass");
-        UserTestData user3 = new UserTestData(generateUserId(),"testUser3","testUser3Pass");
+    private static void setUpUsers() {
+        admin = new UserTestData("admin","admin");
+        UserTestData user0 = new UserTestData("testUser0","testUser0Pass");
+        UserTestData user1 = new UserTestData("testUser1","testUser1Pass");
+        UserTestData user2 = new UserTestData("testUser2","testUser2Pass");
+        UserTestData user3 = new UserTestData("testUser3","testUser3Pass");
         superUser = user0;
         users.addAll(Arrays.asList(user0, user1,user2,user3));
-
-    }
-    protected  int generateUserId(){
-        return bridge.connect();
+        boolean init = bridge.initialStart(admin.getUsername(),admin.getPassword());
+        assertTrue(init);
     }
 
-    private  void setUpProducts(){
+    private static void setUpProducts(){
         ProductTestData prod0 = new ProductTestData("appleTest",
                                                     "store0Test",
                                                     30,
@@ -140,7 +134,7 @@ public class AcceptanceTests {
 
     }
 
-    private  void setUpStores(){
+    private static void setUpStores(){
 
         UserTestData store0Owner = users.get(0);
         UserTestData store1Owner = users.get(1);
@@ -168,7 +162,7 @@ public class AcceptanceTests {
 
     }
 
-    private  void setUpCarts() {
+    private static void setUpCarts() {
         List<ProductTestData> basket0Products = products.subList(0,2);
         List<ProductTestData> basket1Products = Arrays.asList(products.get(4));
         List<ProductTestData> basket2Products = Arrays.asList(products.get(9));
@@ -190,14 +184,14 @@ public class AcceptanceTests {
 
     }
 
-    private void setUpBasketProductsAndAmounts(BasketTestData basket,
+    private static void setUpBasketProductsAndAmounts(BasketTestData basket,
                                                List<ProductTestData> basketProducts,
                                                int[] amounts) {
         for (int i=0;i<amounts.length;i++)
             basket.addProductToBasket(basketProducts.get(i),amounts[i]);
     }
 
-    private  String getPasswordByUser(String userName){
+    private static String getPasswordByUser(String userName){
         for (UserTestData ud : users) {
             if(ud.getUsername().equals(userName))
                 return ud.getPassword();
@@ -206,9 +200,12 @@ public class AcceptanceTests {
     }
 
 
-    protected  void addStores(List<StoreTestData> stores){
-
-        bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
+    protected static void addStores(List<StoreTestData> stores){
+        String userName = bridge.getCurrentLoggedInUser();
+        if(userName!=null){
+            bridge.logout();
+        }
+        bridge.login(admin.getUsername(),admin.getPassword());
 
         for(StoreTestData store : stores) {
             UserTestData owner = store.getStoreOwner();
@@ -217,54 +214,64 @@ public class AcceptanceTests {
             bridge.appointOwnerToStore(store.getStoreName(),admin.getUsername());
         }
 
-        bridge.logout(admin.getId());
+        bridge.logout();
 
-
-
+        if(userName!=null){
+            bridge.login(userName,getPasswordByUser(userName));
+        }
 
     }
 
 
-    protected  void addProducts(List<ProductTestData> products){
-
-        bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
+    protected static void addProducts(List<ProductTestData> products){
+        String userName = bridge.getCurrentLoggedInUser();
+        if(userName != null){
+            bridge.logout();
+        }
+        bridge.login(admin.getUsername(),admin.getPassword());
         bridge.addProducts(products);
-        bridge.logout(admin.getId());
-
+        bridge.logout();
+        if(userName != null){
+            bridge.login(userName,getPasswordByUser(userName));
+        }
 
     }
 
-    protected  void changeAmountOfProductInStore(ProductTestData product,int amount){
-
-        bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
+    protected static void changeAmountOfProductInStore(ProductTestData product,int amount){
+        String userName = bridge.getCurrentLoggedInUser();
+        if(userName != null){
+            bridge.logout();
+        }
+        bridge.login(admin.getUsername(),admin.getPassword());
         bridge.changeAmountOfProductInStore(product,amount);
-        bridge.logout(admin.getId());
-
+        bridge.logout();
+        if(userName != null){
+            bridge.login(userName,getPasswordByUser(userName));
+        }
     }
 
 
-    protected  void registerAndLogin(UserTestData user){
-        int id = user.getId();
+    protected static void registerAndLogin(UserTestData user){
+        bridge.logout();
         String username = user.getUsername();
         String password = user.getPassword();
         bridge.register(username,password);
-        bridge.login(id,username,password);
+        bridge.login(username,password);
     }
 
-    protected  void logoutAndLogin(UserTestData toLoginUser){
-        //TODO: change name ?
-        //bridge.logout();
-        bridge.login(toLoginUser.getId(),toLoginUser.getUsername(),toLoginUser.getPassword());
+    protected static void logoutAndLogin(UserTestData toLoginUser){
+        bridge.logout();
+        bridge.login(toLoginUser.getUsername(),toLoginUser.getPassword());
     }
 
-    protected  void addUserStoresAndProducts(UserTestData user){
+    protected static void addUserStoresAndProducts(UserTestData user){
         registerAndLogin(user);
         addStores(stores);
         addProducts(products);
     }
 
 
-    protected  void registerUsers(List<UserTestData> usersToRegister){
+    protected static void registerUsers(List<UserTestData> usersToRegister){
         for(UserTestData user : usersToRegister)
             bridge.register(user.getUsername(),user.getPassword());
     }
