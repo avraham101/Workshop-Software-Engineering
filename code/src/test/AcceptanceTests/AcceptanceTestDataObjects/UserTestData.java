@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class UserTestData {
+    private int id;
     private String username;
     private String password;
     private CartTestData cart;
@@ -12,13 +13,19 @@ public class UserTestData {
     private HashMap<ApplicationToStoreTestData,String> applicationAndReply;
 
 
-    public UserTestData(String username, String password) {
+
+    public UserTestData(int id,String username, String password) {
+        this.id =id;
         this.username = username;
         this.password = password;
         this.cart = new CartTestData();
         this.purchases = new ArrayList<>();
         this.applicationAndReply = new HashMap<>();
 
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getUsername() {

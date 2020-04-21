@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
 
 public class LogoutTest extends AcceptanceTests {
 
+    //TODO yessssssssssssssssssssssssssssssssssss
     @Before
     public void setUp(){
         registerAndLogin(superUser);
@@ -18,17 +19,20 @@ public class LogoutTest extends AcceptanceTests {
 
     @Test
     public void logoutTestSuccess(){
-        boolean isLoggedOut = bridge.logout();
+        boolean isLoggedOut = bridge.logout(superUser.getId());
         assertTrue(isLoggedOut);
-        String currentUser = bridge.getCurrentLoggedInUser();
-        assertNull(currentUser);
     }
 
     @Test
     public void logoutTestFailAlreadyLoggedOut(){
-        boolean isLoggedOut = bridge.logout();
+        boolean isLoggedOut = bridge.logout(superUser.getId());
         assertTrue(isLoggedOut);
-        isLoggedOut = bridge.logout();
+        isLoggedOut = bridge.logout(superUser.getId());
         assertFalse(isLoggedOut);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void logoutTestFailInvalidId(){
+        bridge.logout(-1);
     }
 }
