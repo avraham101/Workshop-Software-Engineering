@@ -137,11 +137,9 @@ public abstract class UserState {
     /**
      * use case 3.2 - Open Store
      * @param storeDetails - the details of the the store
-     * @param paymentSystem - the external payment system.
-     * @param supplySystem - the external supply system.
      * @return The Store that we open, otherwise null;
      */
-    public abstract Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem);
+    public abstract Store openStore(StoreData storeDetails);
 
     /**
      * use case 3.3 add review

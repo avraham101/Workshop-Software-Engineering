@@ -45,7 +45,7 @@ public class SubscribeAllStubsTest {
      * set up to open a store
      */
     protected void setUpStoreOpened(){
-        sub.openStore(data.getStore(Data.VALID),paymentSystem,supplySystem);
+        sub.openStore(data.getStore(Data.VALID));
     }
 
     /**
@@ -150,7 +150,7 @@ public class SubscribeAllStubsTest {
      */
     @Test
     public void openStoreTest() {
-        Store store = sub.openStore(data.getStore(Data.VALID),paymentSystem,supplySystem);
+        Store store = sub.openStore(data.getStore(Data.VALID));
         assertNotNull(store);
 
     }

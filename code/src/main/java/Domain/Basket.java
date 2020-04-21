@@ -122,10 +122,13 @@ public class Basket {
      * @return - true if available, false if not
      */
     public boolean available(PaymentData paymentData, String addresToDeliver) {
+        //payment data updated
+        double price = store.getPriceForBasket(products);
+        paymentData = new PaymentData(paymentData.getName(),paymentData.getAddress(),paymentData.getCreditCard());
+        paymentData.setTotalPrise(price);
         if(!store.isAvailableProducts(products))
             return false;
-        if(!isAvailablePaymnet(paymentData))
-            return false;
+        //delivery data
         return isAvailableDelivery(addresToDeliver);
     }
 
@@ -140,7 +143,7 @@ public class Basket {
         double price = store.getPriceForBasket(products);
         paymentData = new PaymentData(general.getName(),general.getAddress(),general.getCreditCard());
         paymentData.setTotalPrise(price);
-        return store.isAvailablePurchese();
+        return true;
     }
 
     /**
@@ -158,7 +161,7 @@ public class Basket {
             list.add(productData);
         }
         deliveryData = new DeliveryData(genral,list);
-        return store.isAvailableDelivery();
+        return true;
     }
 
     /**

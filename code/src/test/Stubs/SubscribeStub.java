@@ -27,9 +27,9 @@ public class SubscribeStub extends Subscribe{
     }
 
     @Override
-    public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
+    public Store openStore(StoreData storeDetails) {
         return new Store(storeDetails.getName(), new PurchasePolicy(), new DiscountPolicy(),
-                new Permission(this), supplySystem, paymentSystem);
+                new Permission(this));
     }
 
     @Override

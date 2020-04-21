@@ -22,7 +22,7 @@ public class GuestStub extends Guest {
     }
 
     @Override
-    public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
+    public Store openStore(StoreData storeDetails) {
         return null;
     }
 

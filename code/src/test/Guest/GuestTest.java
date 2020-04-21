@@ -71,7 +71,7 @@ public class GuestTest {
     @Test
     public void openStoreTest() {
         StoreData storeData = data.getStore(Data.WRONG_STORE);
-        assertNull(guest.openStore(storeData, null, null));
+        assertNull(guest.openStore(storeData));
     }
 
     /**
