@@ -699,6 +699,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertFalse(p.getOwner().getPermissions().containsKey(storeName));
     }
 
+    //TODO remove
+    @Override @Test
+    public void testRemoveManager() {
+        super.testRemoveManager();
+    }
+
     /**
      * use case 4.9.1 - view request
      */
