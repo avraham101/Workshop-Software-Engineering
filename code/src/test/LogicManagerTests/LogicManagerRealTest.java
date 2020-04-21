@@ -492,30 +492,23 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * test use case 4.1.1 -add product to store
      */
     @Override @Test
-    public void testAddProduct() {
-        super.testAddProduct();
+    public void testAddProductSuccess() {
+        super.testAddProductSuccess();
         testAddProductWithSameName();
-    }
-
-    @Override
-    protected void testAddProductFail() {
-        super.testAddProductFail();
-        testAddProductNotManagerOfStore();
-        testAddProductDontHavePermission();
     }
 
     /**
      * test adding product with name that is not unique
      */
-
     private void testAddProductWithSameName() {
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.SAME_NAME)));
     }
 
     /**
      * test try adding product without being owner or manager of the store
-     */
-    private void testAddProductNotManagerOfStore() {
+     */@Test
+    public void testAddProductNotManagerOfStore() {
+         setUpOpenedStore();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
         Subscribe sub = ((Subscribe) currUser.getState());
         Permission permission = sub.getPermissions().get(validStoreName);
@@ -529,7 +522,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * test that user that has no CRUD permission or owner permission cant add products to store
      */
-    private void testAddProductDontHavePermission() {
+    @Test
+    public void testAddProductDontHavePermission() {
+        setUpOpenedStore();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
         Subscribe sub = ((Subscribe) currUser.getState());
         Permission permission = sub.getPermissions().get(validStoreName);
