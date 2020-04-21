@@ -44,6 +44,7 @@ public class LogicManager {
             loggerSystem = new LoggerSystem();
             this.paymentSystem = paymentSystem;
             this.supplySystem = supplySystem;
+            //TODO add write to logger when exception
             if(!paymentSystem.connect()) {
                 throw new Exception("Payment System Crashed");
             }
