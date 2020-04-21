@@ -22,10 +22,11 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
     private Pair<ApplicationToStoreTestData, String> wrongApplication;
     private String storeName;
     private UserTestData asker;
+    private UserTestData responder;
 
     @Before
     public void setUp() {
-        UserTestData responder = superUser;
+        responder = superUser;
         asker = users.get(1);
         storeName = stores.get(0).getStoreName();
         addStores(stores);
@@ -45,7 +46,7 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
 
         int i = 0;
         for(ApplicationToStoreTestData app : applications) {
-            bridge.sendApplicationToStore(storeName, app.getContent());
+            bridge.sendApplicationToStore(asker.getId(),storeName, app.getContent());
             applicationsAndReplies.put(app, "rep" + i);
             i++;
         }
@@ -66,7 +67,7 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
 
     @Test
     public void viewApplicationToStoreTestFailNotLoggedIn(){
-        bridge.logout();
+        bridge.logout(responder.getId());
         HashSet<ApplicationToStoreTestData> actualApplications = bridge.viewApplicationToStore(storeName);
         assertFalse(actualApplications.size() != 0);
     }
@@ -99,7 +100,7 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
 
     @Test
     public void replyApplicationToStoreTestFailNotLoggedIn(){
-        bridge.logout();
+        bridge.logout(responder.getId());
 
         HashMap<ApplicationToStoreTestData,String> emptyAppAndRep = bridge.getUserApplicationsAndReplies(asker.getUsername(),storeName);
         assertTrue(emptyAppAndRep.size()==0);

@@ -1156,15 +1156,13 @@ public class LogicManagerAllStubsTest {
     /**
      * test use case 4.7 - remove manager
      */
-    //@Test
+    @Test
     public void testRemoveManager(){
         setUpManagerAddedSubManagerAdded();
         testRemoveManagerFailStore();
         testRemoveManagerFailUser();
         testRemoveManagerSuccess();
     }
-
-
 
     protected void testRemoveManagerSuccess() {
         assertTrue(logicManager.removeManager(data.getId(Data.VALID),data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()));

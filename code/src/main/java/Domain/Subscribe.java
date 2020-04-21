@@ -289,9 +289,6 @@ public class Subscribe extends UserState{
         for(Permission p: givenByMePermissions) {
             if (p.getStore().getName().equals(storeName) && p.getOwner().getName().equals(userName)) {
                 p.getOwner().removeManagerFromStore(storeName);
-                lock.writeLock().lock();
-                givenByMePermissions.remove(p);
-                lock.writeLock().lock();
                 return true;
             }
         }
@@ -313,7 +310,8 @@ public class Subscribe extends UserState{
                 permission=p;
             }
         }
-        givenByMePermissions.remove(permission);
+        if(permission!=null)
+            givenByMePermissions.remove(permission);
         lock.writeLock().unlock();
         Store store=permissions.get(storeName).getStore();
         //remove the permission from the user
@@ -456,4 +454,6 @@ public class Subscribe extends UserState{
     public AtomicInteger getSessionNumber() {
         return sessionNumber;
     }
+
+
 }

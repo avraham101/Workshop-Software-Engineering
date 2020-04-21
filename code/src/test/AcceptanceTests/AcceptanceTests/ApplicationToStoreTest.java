@@ -27,28 +27,25 @@ public class ApplicationToStoreTest extends AcceptanceTests {
 
     @Test
     public void applicationToStoreTestSuccess(){
-        boolean approval= bridge.sendApplicationToStore(application.getStoreName(),application.getContent());
+        boolean approval= bridge.sendApplicationToStore(user.getId(),application.getStoreName(),application.getContent());
         assertTrue(approval);
-        registerAndLogin(superUser);
-        List<ApplicationToStoreTestData> applications = bridge.getUserApplications(user.getUsername(),application.getStoreName());
-        assertTrue(applications.contains(application));
     }
 
     @Test
     public void applicationToStoreFailInvalidStoreName(){
         application.setStoreName("Invalid");
-        boolean approval= bridge.sendApplicationToStore(application.getStoreName(),application.getContent());
+        boolean approval= bridge.sendApplicationToStore(user.getId(),application.getStoreName(),application.getContent());
         assertFalse(approval);
-        List<ApplicationToStoreTestData> applications = bridge.getUserApplications(user.getUsername(),application.getStoreName());
+        List<ApplicationToStoreTestData> applications = bridge.getUserApplications(user.getId(),user.getUsername(),application.getStoreName());
         assertFalse(applications.contains(application));
     }
 
     @Test
     public void applicationToStoreFailNotSubscribed(){
-        bridge.logout();
-        boolean approval= bridge.sendApplicationToStore(application.getStoreName(),application.getContent());
+        bridge.logout(user.getId());
+        boolean approval= bridge.sendApplicationToStore(user.getId(),application.getStoreName(),application.getContent());
         assertFalse(approval);
-        List<ApplicationToStoreTestData> applications = bridge.getUserApplications(user.getUsername(),application.getStoreName());
+        List<ApplicationToStoreTestData> applications = bridge.getUserApplications(user.getId(),user.getUsername(),application.getStoreName());
         assertFalse(applications.contains(application));
     }
 }
