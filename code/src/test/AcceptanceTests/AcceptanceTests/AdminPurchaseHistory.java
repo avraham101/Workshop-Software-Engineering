@@ -20,7 +20,7 @@ public class AdminPurchaseHistory extends AcceptanceTests {
         bridge.buyCart(validPayment,validDelivery);
 
         bridge.logout();
-        bridge.login(admin.getUsername(),admin.getPassword());
+        bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
     }
 
     /**

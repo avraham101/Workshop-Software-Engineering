@@ -39,10 +39,10 @@ public class DeleteManagerTest extends AcceptanceTests{
                                     PermissionsTypeTestData.ADD_MANAGER);
 
         bridge.logout();
-        bridge.login(firstManager.getUsername(), firstManager.getPassword());
+        bridge.login(firstManager.getId(),firstManager.getUsername(), firstManager.getPassword());
         bridge.appointManager(stores.get(0).getStoreName(), thirdManager.getUsername());
         bridge.logout();
-        bridge.login(superUser.getUsername(),superUser.getPassword());
+        bridge.login(superUser.getId(),superUser.getUsername(),superUser.getPassword());
 
         productToAdd = new ProductTestData("newProductTest",
                                             stores.get(0).getStoreName(),
@@ -87,7 +87,7 @@ public class DeleteManagerTest extends AcceptanceTests{
     @Test
     public void deleteManagerFailNotMyAppointment(){
         bridge.logout();
-        bridge.login(firstManager.getUsername(),firstManager.getPassword());
+        bridge.login(firstManager.getId(),firstManager.getUsername(),firstManager.getPassword());
         boolean approval = bridge.deleteManager(stores.get(0).getStoreName(),secondManager.getUsername());
         assertFalse(approval);
     }

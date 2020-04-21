@@ -49,7 +49,9 @@ public class LoginTest extends AcceptanceTests {
 
     @Test
     public void testLoginFailWrongId(){
-        boolean isLoggedIn = bridge.login(notExistId,username,password);
+        boolean isLoggedIn = bridge.login(id,username,password);
+        assertTrue(isLoggedIn);
+        isLoggedIn = bridge.login(notExistId,username,password);
         assertFalse(isLoggedIn);
     }
 

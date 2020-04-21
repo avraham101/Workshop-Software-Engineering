@@ -54,16 +54,16 @@ public class AcceptanceTests {
 
 
     private static void setUpUsers() {
+        boolean init = bridge.initialStart("admin","admin");
+        assertTrue(init);
         admin = new UserTestData(generateUserId(),"admin","admin");
-
         UserTestData user0 = new UserTestData(generateUserId(),"testUser0","testUser0Pass");
         UserTestData user1 = new UserTestData(generateUserId(),"testUser1","testUser1Pass");
         UserTestData user2 = new UserTestData(generateUserId(),"testUser2","testUser2Pass");
         UserTestData user3 = new UserTestData(generateUserId(),"testUser3","testUser3Pass");
         superUser = user0;
         users.addAll(Arrays.asList(user0, user1,user2,user3));
-        boolean init = bridge.initialStart(admin.getUsername(),admin.getPassword());
-        assertTrue(init);
+
     }
     protected static int generateUserId(){
         return bridge.connect();
@@ -206,7 +206,7 @@ public class AcceptanceTests {
 
     protected static void addStores(List<StoreTestData> stores){
 
-        bridge.login(admin.getUsername(),admin.getPassword());
+        bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
 
         for(StoreTestData store : stores) {
             UserTestData owner = store.getStoreOwner();
@@ -225,7 +225,7 @@ public class AcceptanceTests {
 
     protected static void addProducts(List<ProductTestData> products){
 
-        bridge.login(admin.getUsername(),admin.getPassword());
+        bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
         bridge.addProducts(products);
         bridge.logout();
 
@@ -234,7 +234,7 @@ public class AcceptanceTests {
 
     protected static void changeAmountOfProductInStore(ProductTestData product,int amount){
 
-        bridge.login(admin.getUsername(),admin.getPassword());
+        bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
         bridge.changeAmountOfProductInStore(product,amount);
         bridge.logout();
 
@@ -243,15 +243,16 @@ public class AcceptanceTests {
 
     protected static void registerAndLogin(UserTestData user){
         bridge.logout();
+        int id = user.getId();
         String username = user.getUsername();
         String password = user.getPassword();
         bridge.register(username,password);
-        bridge.login(username,password);
+        bridge.login(id,username,password);
     }
 
     protected static void logoutAndLogin(UserTestData toLoginUser){
         bridge.logout();
-        bridge.login(toLoginUser.getUsername(),toLoginUser.getPassword());
+        bridge.login(toLoginUser.getId(),toLoginUser.getUsername(),toLoginUser.getPassword());
     }
 
     protected static void addUserStoresAndProducts(UserTestData user){
