@@ -70,8 +70,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Basket.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="867">
-              <caret line="58" column="22" selection-start-line="58" selection-start-column="22" selection-end-line="58" selection-end-column="22" />
+            <state relative-caret-position="238">
+              <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
             </state>
           </provider>
         </entry>
@@ -255,7 +255,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587483331252" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587483538068" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -627,7 +627,28 @@
       <option name="project" value="LOCAL" />
       <updated>1587483237259</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="merged">
+      <created>1587483284467</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1587483284467</updated>
+    </task>
+    <task id="LOCAL-00038" summary="merged">
+      <created>1587483338637</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1587483338637</updated>
+    </task>
+    <task id="LOCAL-00039" summary="last xml commit">
+      <created>1587483381048</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1587483381048</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -663,7 +684,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="121805000" />
+    <option name="totallyTimeSpent" value="122057000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -676,8 +697,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22267206" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22267206" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -688,7 +710,7 @@
       <window_info anchor="bottom" id="Messages" order="0" weight="0.3285968" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.66477734" visible="true" weight="0.28774422" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.66477734" weight="0.38898757" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.5008881" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -697,7 +719,7 @@
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.23090586" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3286119" />
-      <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" weight="0.3285968" />
+      <window_info active="true" anchor="bottom" id="Event Log" order="12" side_tool="true" visible="true" weight="0.3285968" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -763,7 +785,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="." />
     <MESSAGE value="Merge branch 'newBranch'&#10;&#10;# Conflicts:&#10;#&#9;code/.idea/workspace.xml&#10;#&#9;code/src/main/java/Domain/Guest.java&#10;#&#9;code/src/main/java/Domain/LogicManager.java&#10;#&#9;code/src/main/java/Domain/Store.java&#10;#&#9;code/src/main/java/Domain/Subscribe.java&#10;#&#9;code/src/main/java/Domain/User.java&#10;#&#9;code/src/main/java/Domain/UserState.java&#10;#&#9;code/src/test/Data/TestData.java&#10;#&#9;code/src/test/Guest/GuestTest.java&#10;#&#9;code/src/test/LogicManagerTests/LogicManagerAllStubsTest.java&#10;#&#9;code/src/test/LogicManagerTests/LogicManagerRealTest.java&#10;#&#9;code/src/test/Subscribe/SubscribeAllStubsTest.java&#10;#&#9;code/src/test/UserTests/UserAllStubsTest.java" />
     <MESSAGE value="get stores info" />
     <MESSAGE value="add isEmpty and getAmount cart&amp;basket&#10;buycart" />
@@ -788,7 +809,8 @@
     <MESSAGE value="use case 3.5 #68 starting" />
     <MESSAGE value="finish logicManger tests use case 3.5 #68" />
     <MESSAGE value="merged" />
-    <option name="LAST_COMMIT_MESSAGE" value="merged" />
+    <MESSAGE value="last xml commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="last xml commit" />
   </component>
   <component name="WindowStateProjectService">
     <state x="618" y="301" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" />
@@ -1043,8 +1065,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Basket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="867">
-          <caret line="58" column="22" selection-start-line="58" selection-start-column="22" selection-end-line="58" selection-end-column="22" />
+        <state relative-caret-position="238">
+          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
         </state>
       </provider>
     </entry>
