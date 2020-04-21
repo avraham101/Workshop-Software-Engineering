@@ -124,8 +124,7 @@ public class TestData {
         stores.put(Data.VALID,new StoreData("Store",new PurchasePolicy(), new DiscountPolicy()));
         stores.put(Data.NULL, null);
         stores.put(Data.NULL_NAME, new StoreData(null,new PurchasePolicy(), new DiscountPolicy()));
-        stores.put(Data.WRONG_STORE, new StoreData("None Store",new PurchasePolicy(), new DiscountPolicy()));
-        stores.put(Data.NULL_STORE, new StoreData(null,new PurchasePolicy(), new DiscountPolicy()));
+        stores.put(Data.WRONG_STORE, new StoreData(null,new PurchasePolicy(), new DiscountPolicy()));
         stores.put(Data.NULL_PURCHASE, new StoreData("Store",null, new DiscountPolicy()));
         stores.put(Data.NULL_DISCOUNT, new StoreData("Store",new PurchasePolicy(), null));
     }

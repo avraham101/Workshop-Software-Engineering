@@ -18,9 +18,9 @@ public class AdminPurchaseHistory extends AcceptanceTests {
 
         bridge.addToCurrentUserCart(products.get(0),1);
         bridge.buyCart(validPayment,validDelivery);
-
-        bridge.logout();
-        bridge.login(admin.getUsername(),admin.getPassword());
+        //TODO: remove line ?
+        bridge.logout(userToCheck.getId());
+        bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
     }
 
     /**
