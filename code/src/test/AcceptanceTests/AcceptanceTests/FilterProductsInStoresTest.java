@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
  */
 public class FilterProductsInStoresTest extends AcceptanceTests {
 
+
     @Before
     public void setUp(){
         addStores(stores);
