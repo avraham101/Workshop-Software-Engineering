@@ -49,9 +49,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
 
 
     @Override
-    public boolean logout() {
+    public boolean logout(int id) {
         if(realBridge!=null)
-            return realBridge.logout();
+            return realBridge.logout(id);
         return false;
     }
 

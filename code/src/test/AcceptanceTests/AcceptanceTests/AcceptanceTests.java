@@ -217,7 +217,7 @@ public class AcceptanceTests {
             bridge.appointOwnerToStore(store.getStoreName(),admin.getUsername());
         }
 
-        bridge.logout();
+        bridge.logout(admin.getId());
 
 
 
@@ -229,7 +229,7 @@ public class AcceptanceTests {
 
         bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
         bridge.addProducts(products);
-        bridge.logout();
+        bridge.logout(admin.getId());
 
 
     }
@@ -238,13 +238,12 @@ public class AcceptanceTests {
 
         bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
         bridge.changeAmountOfProductInStore(product,amount);
-        bridge.logout();
+        bridge.logout(admin.getId());
 
     }
 
 
     protected  void registerAndLogin(UserTestData user){
-        bridge.logout();
         int id = user.getId();
         String username = user.getUsername();
         String password = user.getPassword();
@@ -253,7 +252,8 @@ public class AcceptanceTests {
     }
 
     protected  void logoutAndLogin(UserTestData toLoginUser){
-        bridge.logout();
+        //TODO: change name ?
+        //bridge.logout();
         bridge.login(toLoginUser.getId(),toLoginUser.getUsername(),toLoginUser.getPassword());
     }
 

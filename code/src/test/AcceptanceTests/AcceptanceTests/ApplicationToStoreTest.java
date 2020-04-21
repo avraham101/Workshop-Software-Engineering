@@ -45,7 +45,7 @@ public class ApplicationToStoreTest extends AcceptanceTests {
 
     @Test
     public void applicationToStoreFailNotSubscribed(){
-        bridge.logout();
+        bridge.logout(user.getId());
         boolean approval= bridge.sendApplicationToStore(application.getStoreName(),application.getContent());
         assertFalse(approval);
         List<ApplicationToStoreTestData> applications = bridge.getUserApplications(user.getUsername(),application.getStoreName());

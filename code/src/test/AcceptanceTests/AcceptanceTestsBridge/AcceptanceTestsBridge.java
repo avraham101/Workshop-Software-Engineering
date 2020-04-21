@@ -15,7 +15,7 @@ public interface AcceptanceTestsBridge {
     boolean initialStart(String username, String password);
     void resetSystem();
     boolean register(String username, String password);
-    boolean logout();
+    boolean logout(int id);
     boolean login(int id, String username, String password);
     HashSet<ProductTestData> filterProducts(List<FilterTestData> filters);
     void addStores(List<StoreTestData> stores);

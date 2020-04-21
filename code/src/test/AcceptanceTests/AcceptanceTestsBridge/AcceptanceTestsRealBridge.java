@@ -127,7 +127,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-3.1---------------------------------//
     @Override
-    public boolean logout() {
+    public boolean logout(int id) {
         return serviceAPI.logout(id);
     }
     //---------------------------Use-Case-3.1---------------------------------//
