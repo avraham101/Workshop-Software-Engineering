@@ -47,6 +47,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         User user=new User();
         assertTrue(sub.logout(user));
         assertTrue(user.getState() instanceof Guest);
+        assertEquals(sub.getSessionNumber().get(),-1);
     }
 
     /**

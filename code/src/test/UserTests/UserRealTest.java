@@ -70,7 +70,10 @@ public class UserRealTest extends UserAllStubsTest{
      */
     @Override @Test
     public void testLogoutSubscribe() {
+        setUpSubscribe();
+        Subscribe sub= (Subscribe) user.getState();
         super.testLogoutSubscribe();
+        assertEquals(sub.getSessionNumber().get(),-1);
         assertTrue(user.getState() instanceof Guest);
     }
 
