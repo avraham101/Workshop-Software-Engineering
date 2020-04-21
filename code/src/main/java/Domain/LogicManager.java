@@ -449,8 +449,10 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","addProductToCart",
                 "add a product to the cart", new Object[] {productName, storeName, amount});
         boolean result = false;
+        Store store = null;
         User current=connectedUsers.get(id);
-        Store store = stores.get(storeName);
+        if (storeName != null)
+            store = stores.get(storeName);
         if (store != null) {
             Product product = store.getProduct(productName);
             if (product != null && amount > 0 && amount <= product.getAmount()) {
