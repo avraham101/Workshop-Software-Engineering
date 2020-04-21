@@ -25,7 +25,7 @@ public class UserStub extends User {
     @Override
     public Store openStore(StoreData storeDetails) {
         return new Store(storeDetails.getName(), new PurchasePolicy(), new DiscountPolicy(),
-                new Permission(new Subscribe(this.getUserName(), this.getPassword())));
+                new Permission(new Subscribe("Yuval", this.getPassword())));
     }
 
     @Override
@@ -132,7 +132,7 @@ public class UserStub extends User {
     }
 
     @Override
-    public Request addRequest(String storeName, String content) {
+    public Request addRequest(int requestId,String storeName, String content) {
         return new Request(getUserName(), storeName, "temp", 10);
     }
 

@@ -448,13 +448,15 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 3.5 -add request
      */
-    @Override @Test
+    @Override
     public void testAddRequest(){
-        setUpProductAdded();
+        setUpOpenedStore();
         testSubscribeAddRequestSuccess();
-        testSubscribeAddRequestFail();
     }
 
+    /**
+     * part of use case 3.5 -add request
+     */
     private void testSubscribeAddRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
         assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(), request.getContent()));
@@ -475,14 +477,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(subscribe.getRequests().get(0).getComment(), request.getComment());
     }
 
-    //TODO split to 2 tests and check the request wasnt added
-    private void testSubscribeAddRequestFail() {
-        Request request1 = data.getRequest(Data.NULL_NAME);
-        Request request2 = data.getRequest(Data.NULL);
-        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request1.getStoreName(), request1.getContent()));
-        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request2.getStoreName(), request2.getContent()));
-    }
-
     /**
      * use case 3.7 - watch purchase history
      */
@@ -498,30 +492,23 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * test use case 4.1.1 -add product to store
      */
     @Override @Test
-    public void testAddProduct() {
-        super.testAddProduct();
+    public void testAddProductSuccess() {
+        super.testAddProductSuccess();
         testAddProductWithSameName();
-    }
-
-    @Override
-    protected void testAddProductFail() {
-        super.testAddProductFail();
-        testAddProductNotManagerOfStore();
-        testAddProductDontHavePermission();
     }
 
     /**
      * test adding product with name that is not unique
      */
-
     private void testAddProductWithSameName() {
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.SAME_NAME)));
     }
 
     /**
      * test try adding product without being owner or manager of the store
-     */
-    private void testAddProductNotManagerOfStore() {
+     */@Test
+    public void testAddProductNotManagerOfStore() {
+         setUpOpenedStore();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
         Subscribe sub = ((Subscribe) currUser.getState());
         Permission permission = sub.getPermissions().get(validStoreName);
@@ -535,7 +522,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * test that user that has no CRUD permission or owner permission cant add products to store
      */
-    private void testAddProductDontHavePermission() {
+    @Test
+    public void testAddProductDontHavePermission() {
+        setUpOpenedStore();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
         Subscribe sub = ((Subscribe) currUser.getState());
         Permission permission = sub.getPermissions().get(validStoreName);
@@ -585,8 +574,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 4.1.3 edit product
      */
-    @Override
-    protected void testEditProductSuccess() {
+    @Override @Test
+    public void testEditProductSuccess() {
         super.testEditProductSuccess();
         ProductData product=data.getProductData(Data.EDIT);
         Subscribe sub=(Subscribe) currUser.getState();
@@ -594,6 +583,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
                 .getProducts().get(product.getProductName()).equal(product));
     }
 
+    /**
+     * edit product when not manager
+     */
     @Test
     public void checkEditProductNotManager() {
         setUpProductAdded();
@@ -608,6 +600,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         sub.getPermissions().put(validStoreName,permission);
     }
 
+    /**
+     * edit product when not have crud products permission
+     */
     @Test
     public void checkEditProductHasNoPermission() {
         setUpProductAdded();
@@ -654,10 +649,10 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertNotNull(newManager);
         assertTrue(newManager.getPermissions().containsKey(store.getName()));
     }
+
     /**
      * use case 4.5 - add manager
      */
-
     @Override
     protected void testAddManagerStoreSuccess() {
         super.testAddManagerStoreSuccess();
@@ -667,7 +662,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 4.6.1 -add permission
      */
-
     @Override
     protected void testAddPermissionSuccess() {
         super.testAddPermissionSuccess();

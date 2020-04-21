@@ -21,6 +21,7 @@ public class LogicManager {
     private PaymentSystem paymentSystem;
     private SupplySystem supplySystem;
     private LoggerSystem loggerSystem;
+    private AtomicInteger requestIdGenerator;
     private final Object openStoreLocker=new Object();
 
     /**
@@ -37,6 +38,7 @@ public class LogicManager {
         this.stores = stores;
         this.connectedUsers =connectedUsers;
         usersIdCounter=new AtomicInteger(0);
+        requestIdGenerator = new AtomicInteger(0);
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -589,24 +591,24 @@ public class LogicManager {
                 !content.isEmpty();
     }
 
-
     /**
      * use case 3.5 - write request on store
      * @param storeName name of store to write request to
      * @param content the content of the request
-     * @return
+     * @return true if succeeded to add request to store
      */
-    //TODO add global counter for requests id : atomic integer
     public boolean addRequest(int id,String storeName, String content) {
         loggerSystem.writeEvent("LogicManager","addRequest",
                 "add a request to the store", new Object[] {storeName, content});
-        if (content == null || !stores.containsKey(storeName))
+        if (storeName == null || content == null || !stores.containsKey(storeName))
             return false;
         Store dest = stores.get(storeName);
-        User current=connectedUsers.get(id);
-        Request request = current.addRequest(storeName, content);
-        if (request == null)
+        User current = connectedUsers.get(id);
+        int requestId = requestIdGenerator.incrementAndGet(); // generate request number sync
+        Request request = current.addRequest(requestId, storeName, content);
+        if (request == null) {
             return false;
+        }
         dest.addRequest(request);
         return true;
     }
@@ -634,9 +636,9 @@ public class LogicManager {
         User current=connectedUsers.get(id);
         if(productData==null)
             return false;
-        if(validProduct(productData))
+        if(!validProduct(productData))
             return false;
-        if(!stores.containsKey(productData.getStoreName()))
+        if(stores.containsKey(productData.getStoreName()))
             return current.addProductToStore(productData);
         return false;
     }
@@ -792,7 +794,7 @@ public class LogicManager {
                 "store owner view the requests of the store", new Object[] {storeName});
         User current=connectedUsers.get(id);
         List<Request> requests = new LinkedList<>();
-        if(stores.containsKey(storeName))
+        if(storeName != null && stores.containsKey(storeName))
             requests = current.viewRequest(storeName);
         return requests;
     }

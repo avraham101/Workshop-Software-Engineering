@@ -123,7 +123,7 @@ public class UserRealTest extends UserAllStubsTest{
     }
 
     /**
-     * test 4.1.2 use case -
+     * test 4.1.2 use case - remove product
      */
     @Override @Test
     public void testRemoveProductFromStoreSubscribe() {
@@ -147,7 +147,7 @@ public class UserRealTest extends UserAllStubsTest{
     /**
      * use case 4.5 - add manager
      */
-    @Override
+    @Override @Test
     public void testAddManagerSubscribe() {
         super.testAddManagerSubscribe();
         Subscribe sub=(Subscribe) user.getState();

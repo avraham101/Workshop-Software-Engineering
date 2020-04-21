@@ -371,32 +371,66 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * use case 2.4.2 - view the products in some store test
+     * use case 2.4.2 - view the products in some store with valid data test
      */
-    //TODO split tests
     @Test
     public void testViewProductsInStore() {
         setUpProductAdded();
         List<ProductData> expected = new LinkedList<>();
         String storeName = data.getStore(Data.VALID).getName();
         assertEquals(expected, logicManager.viewProductsInStore(storeName));
+    }
 
+    /**
+     * use case 2.4.2 - view the products in some store with null category test
+     */
+    @Test
+    public void testViewProductsInStoreNullCategory() {
+        setUpProductAdded();
+        List<ProductData> expected = new LinkedList<>();
+        String storeName = data.getStore(Data.VALID).getName();
         expected.add(data.getProductData(Data.NULL_CATEGORY));
         assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
         expected.remove(data.getProductData(Data.NULL_CATEGORY));
+    }
 
+    /**
+     * use case 2.4.2 - view the products in some store with null name test
+     */
+    @Test
+    public void testViewProductsInStoreNullCategoryName() {
+        setUpProductAdded();
+        List<ProductData> expected = new LinkedList<>();
+        String storeName = data.getStore(Data.VALID).getName();
         expected.add(data.getProductData((Data.NULL_NAME)));
         assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.add(data.getProductData((Data.NULL_NAME)));
+        expected.remove(data.getProductData((Data.NULL_NAME)));
+    }
 
+    /**
+     * use case 2.4.2 - view the products in some store with null discount test
+     */
+    @Test
+    public void testViewProductsInStoreNullDiscount() {
+        setUpProductAdded();
+        List<ProductData> expected = new LinkedList<>();
+        String storeName = data.getStore(Data.VALID).getName();
         expected.add(data.getProductData((Data.NULL_DISCOUNT)));
         assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.add(data.getProductData((Data.NULL_DISCOUNT)));
+        expected.remove(data.getProductData((Data.NULL_DISCOUNT)));
+    }
 
+    /**
+     * use case 2.4.2 - view the products in some store with null purchase test
+     */
+    @Test
+    public void testViewProductsInStoreNullPurchase() {
+        setUpProductAdded();
+        List<ProductData> expected = new LinkedList<>();
+        String storeName = data.getStore(Data.VALID).getName();
         expected.add(data.getProductData((Data.NULL_PURCHASE)));
         assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
-        expected.add(data.getProductData((Data.NULL_PURCHASE)));
-        expected.add(data.getProductData((Data.NULL_PURCHASE)));
+        expected.remove(data.getProductData((Data.NULL_PURCHASE)));
     }
 
     /**
@@ -769,27 +803,51 @@ public class LogicManagerAllStubsTest {
 
     /**
      * use case 3.5 -add request
-     * ------
      * in this level we test the:
      * 1. enter null content
      * 2. enter request to invalid store
      */
     @Test
     public void testAddRequest(){
-        setUpProductAdded();
+        setUpOpenedStore();
         testAddRequestSuccess();
-        testAddRequestFail();
     }
 
-    private void testAddRequestSuccess() {
+     /**
+     * part of use case 3.5 -add request
+     */
+     private void testAddRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
         assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(),request.getContent()));
     }
 
-    private void testAddRequestFail() {
+    /**
+     * part of use case 3.5 -add request
+     */
+    @Test
+    public void testAddRequestWrongName() {
+        setUpOpenedStore();
         Request request1 = data.getRequest(Data.WRONG_STORE);
-        Request request2 = data.getRequest(Data.NULL);
         assertFalse(logicManager.addRequest(data.getId(Data.VALID),request1.getStoreName(), request1.getContent()));
+    }
+
+    /**
+     * part of use case 3.5 -add request
+     */
+    @Test
+    public void testAddRequestNullName() {
+        setUpOpenedStore();
+        Request request2 = data.getRequest(Data.NULL_NAME);
+        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request2.getStoreName(), request2.getContent()));
+    }
+
+    /**
+     * part of use case 3.5 -add request
+     */
+    @Test
+    public void testAddRequestContentNull() {
+        setUpOpenedStore();
+        Request request2 = data.getRequest(Data.NULL_CONTENT);
         assertFalse(logicManager.addRequest(data.getId(Data.VALID),request2.getStoreName(), request2.getContent()));
     }
 
@@ -808,30 +866,69 @@ public class LogicManagerAllStubsTest {
      * use case 4.1.1 - add product
      */
     @Test
-    public void testAddProduct(){
+    public void testAddProductSuccess() {
         setUpOpenedStore();
-        testAddProductFail();
-        testProductSuccess();
-    }
-
-    protected void testProductSuccess() {
-
         assertTrue(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.VALID)));
     }
 
-    //TODO split tests and check product wasn't added
-    protected void testAddProductFail(){
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),null));
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_NAME)));
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_STORE)));
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_CATEGORY)));
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_DISCOUNT)));
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_AMOUNT)));
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_PRICE)));
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_PURCHASE)));
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.OVER_100_PERCENTAGE)));
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_DISCOUNT)));
+    @Test
+    public void testAddProductFail(){
+        setUpOpenedStore();
+        testAddProductFailNullProduct();
+        testAddProductFailNullProductName();
+        testAddProductFailNullCategory();
+        testAddProductNullStoreName();
+        testAddProductNullDiscount();
+        testAddProductNegativeAmount();
+        testAddProductNegativePrice();
+        testAddProductNullPurchasePolicy();
+        testAddProductOver100DiscountPercentage();
+        testAddProductDiscountListWithNullValue();
+        testAddProductNegativeDiscountPercentage();
+    }
+
+    private void testAddProductNegativeDiscountPercentage() {
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_PERCENTAGE)));
+    }
+
+    private void testAddProductDiscountListWithNullValue() {
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_DISCOUNT)));
+    }
+
+    private void testAddProductOver100DiscountPercentage() {
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.OVER_100_PERCENTAGE)));
+    }
+
+    private void testAddProductNullPurchasePolicy() {
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_PURCHASE)));
+    }
+
+    private void testAddProductNegativePrice() {
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_PRICE)));
+    }
+
+    private void testAddProductNegativeAmount() {
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_AMOUNT)));
+    }
+
+    private void testAddProductNullDiscount() {
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_DISCOUNT)));
+    }
+
+    private void testAddProductFailNullCategory() {
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_CATEGORY)));
+    }
+
+    private void testAddProductFailNullProductName() {
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_NAME)));
+    }
+
+    private void testAddProductNullStoreName(){
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_STORE)));
+    }
+
+    protected void testAddProductFailNullProduct(){
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),null));
     }
 
     /**
@@ -861,32 +958,69 @@ public class LogicManagerAllStubsTest {
      * test use case 4.1.3 - edit product in store
      */
     @Test
-    public void testEditProduct(){
+    public void testEditProductSuccess() {
         setUpProductAdded();
-        testEditProductFail();
-        testEditProductSuccess();
-    }
-
-    protected void testEditProductSuccess() {
         assertTrue(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.EDIT)));
     }
 
-    /**
-     * test edit product to be illegal fields
-     */
-    //TODO split tests
-    protected void testEditProductFail() {
-        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),null));
-        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NULL_NAME)));
-        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_STORE)));
-        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NULL_CATEGORY)));
-        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NULL_DISCOUNT)));
-        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_AMOUNT)));
-        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_PRICE)));
-        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NULL_PURCHASE)));
-        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.OVER_100_PERCENTAGE)));
-        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_DISCOUNT)));
+    @Test
+    public void testEditProductFail(){
+        setUpOpenedStore();
+        testEditProductFailNullProduct();
+        testEditProductFailNullProductName();
+        testEditProductFailNullCategory();
+        testEditProductNullStoreName();
+        testEditProductNullDiscount();
+        testEditProductNegativeAmount();
+        testEditProductNegativePrice();
+        testEditProductNullPurchasePolicy();
+        testEditProductOver100DiscountPercentage();
+        testEditProductDiscountListWithNullValue();
+        testEditProductNegativeDiscountPercentage();
+    }
+
+    private void testEditProductNegativeDiscountPercentage() {
         assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_PERCENTAGE)));
+    }
+
+    private void testEditProductDiscountListWithNullValue() {
+        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_DISCOUNT)));
+    }
+
+    private void testEditProductOver100DiscountPercentage() {
+        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.OVER_100_PERCENTAGE)));
+    }
+
+    private void testEditProductNullPurchasePolicy() {
+        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NULL_PURCHASE)));
+    }
+
+    private void testEditProductNegativePrice() {
+        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_PRICE)));
+    }
+
+    private void testEditProductNegativeAmount() {
+        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_AMOUNT)));
+    }
+
+    private void testEditProductNullDiscount() {
+        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NULL_DISCOUNT)));
+    }
+
+    private void testEditProductFailNullCategory() {
+        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NULL_CATEGORY)));
+    }
+
+    private void testEditProductFailNullProductName() {
+        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NULL_NAME)));
+    }
+
+    private void testEditProductNullStoreName(){
+        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_STORE)));
+    }
+
+    protected void testEditProductFailNullProduct(){
+        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),null));
     }
 
     /**
@@ -1061,7 +1195,9 @@ public class LogicManagerAllStubsTest {
     public void testStoreViewRequest(){
         setUpRequestAdded();
         testStoreViewRequestSuccess();
-        testStoreViewRequestFail();
+        testStoreViewRequestFailNullName();
+        testStoreViewRequestFailWrongStore();
+
     }
 
     private void testStoreViewRequestSuccess() {
@@ -1069,16 +1205,19 @@ public class LogicManagerAllStubsTest {
         assertFalse(currUser.viewRequest(request.getStoreName()).isEmpty());
     }
 
-    private void testStoreViewRequestFail() {
+    private void testStoreViewRequestFailNullName() {
         Request request1 = data.getRequest(Data.NULL_NAME);
-        Request request2 = data.getRequest(Data.WRONG_STORE);
         assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), request1.getStoreName()).isEmpty());
+    }
+
+    private void testStoreViewRequestFailWrongStore() {
+        Request request2 = data.getRequest(Data.WRONG_STORE);
         assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), request2.getStoreName()).isEmpty());
     }
 
-    /**
-     * use case 4.9.2 -replay request
-     */
+        /**
+         * use case 4.9.2 -replay request
+         */
     @Test
     public void testReplayRequest(){
         setUpRequestAdded();
