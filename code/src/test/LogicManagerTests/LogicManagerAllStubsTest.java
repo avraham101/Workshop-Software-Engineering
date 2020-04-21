@@ -1095,7 +1095,9 @@ public class LogicManagerAllStubsTest {
     public void testStoreViewRequest(){
         setUpRequestAdded();
         testStoreViewRequestSuccess();
-        testStoreViewRequestFail();
+        testStoreViewRequestFailNullName();
+        testStoreViewRequestFailWrongStore();
+
     }
 
     private void testStoreViewRequestSuccess() {
@@ -1103,16 +1105,19 @@ public class LogicManagerAllStubsTest {
         assertFalse(currUser.viewRequest(request.getStoreName()).isEmpty());
     }
 
-    private void testStoreViewRequestFail() {
+    private void testStoreViewRequestFailNullName() {
         Request request1 = data.getRequest(Data.NULL_NAME);
-        Request request2 = data.getRequest(Data.WRONG_STORE);
         assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), request1.getStoreName()).isEmpty());
+    }
+
+    private void testStoreViewRequestFailWrongStore() {
+        Request request2 = data.getRequest(Data.WRONG_STORE);
         assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), request2.getStoreName()).isEmpty());
     }
 
-    /**
-     * use case 4.9.2 -replay request
-     */
+        /**
+         * use case 4.9.2 -replay request
+         */
     @Test
     public void testReplayRequest(){
         setUpRequestAdded();
