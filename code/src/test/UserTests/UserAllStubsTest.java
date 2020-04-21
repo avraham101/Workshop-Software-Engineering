@@ -70,7 +70,7 @@ public class UserAllStubsTest {
         StoreData storeData = new StoreData("Store", new PurchasePolicy(), new DiscountPolicy());
         PaymentSystem paymentSystem = new ProxyPayment();
         SupplySystem supplySystem = new ProxySupply();
-        user.openStore(storeData,paymentSystem, supplySystem);
+        user.openStore(storeData);
     }
 
     /**
@@ -190,7 +190,7 @@ public class UserAllStubsTest {
         StoreData storeData = new StoreData("Store", new PurchasePolicy(), new DiscountPolicy());
         PaymentSystem paymentSystem = new ProxyPayment();
         SupplySystem supplySystem = new ProxySupply();
-        assertNull(user.openStore(storeData,paymentSystem, supplySystem));
+        assertNull(user.openStore(storeData));
     }
 
     /**
@@ -202,7 +202,7 @@ public class UserAllStubsTest {
         StoreData storeData = new StoreData("Store", new PurchasePolicy(), new DiscountPolicy());
         PaymentSystem paymentSystem = new ProxyPayment();
         SupplySystem supplySystem = new ProxySupply();
-        Store store = user.openStore(storeData,paymentSystem, supplySystem);
+        Store store = user.openStore(storeData);
         assertEquals(storeData.getName(), store.getName());
     }
 

@@ -23,7 +23,7 @@ public class StoreTestsAllStubs {
     public void setUp(){
         data=new TestData();
         store=new Store(data.getStore(Data.VALID).getName(), null, null,
-                new Permission(data.getSubscribe(Data.VALID)), new ProxySupply(),new ProxyPayment());
+                new Permission(data.getSubscribe(Data.VALID)));
     }
 
     /**--------------------------------set-ups-------------------------------------------------------------------*/

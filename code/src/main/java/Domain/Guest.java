@@ -62,12 +62,10 @@ public class Guest extends UserState {
     /**
      * use case 3.2
      * @param storeDetails - the details of the store
-     * @param paymentSystem - the payment system
-     * @param supplySystem - the supply system
      * @return always null. guest cant open store.
      */
     @Override
-    public Store openStore(StoreData storeDetails, PaymentSystem paymentSystem, SupplySystem supplySystem) {
+    public Store openStore(StoreData storeDetails) {
         return null;
     }
 

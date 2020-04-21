@@ -10,6 +10,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.Assert.*;
 
@@ -54,12 +55,12 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     @Override @Test
     public void openStoreTest() {
         StoreData storeData=data.getStore(Data.VALID);
-        Store store = sub.openStore(storeData,paymentSystem,supplySystem);
+        Store store = sub.openStore(storeData);
         assertEquals(storeData.getName(), store.getName());
         assertEquals(storeData.getDiscountPolicy(), store.getDiscount());
         assertEquals(storeData.getPurchasePolicy(), store.getPurchasePolicy());
         //test Owner permissions
-        HashMap<String, Permission> permissions = sub.getPermissions();
+        ConcurrentHashMap<String, Permission> permissions = sub.getPermissions();
         assertTrue(permissions.containsKey(store.getName()));
         Permission permission = permissions.get(store.getName());
         assertTrue(permission.getPermissionType().contains(PermissionType.OWNER));
