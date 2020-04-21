@@ -2,21 +2,18 @@ package AcceptanceTests.AcceptanceTestsBridge;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.SupplySystem.SupplySystem;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 public interface AcceptanceTestsBridge {
-    boolean initialStart(String username , String password
-            , PaymentSystem paymentSystem, SupplySystem deliverySystem);
     boolean initialStart(String username, String password);
     void resetSystem();
     boolean register(String username, String password);
-    boolean logout(int id);
-    boolean login(int id, String username, String password);
+    String getCurrentLoggedInUser();
+    boolean logout();
+    boolean login(String username, String password);
     HashSet<ProductTestData> filterProducts(List<FilterTestData> filters);
     void addStores(List<StoreTestData> stores);
     void addProducts(List<ProductTestData> products);
@@ -46,9 +43,10 @@ public interface AcceptanceTestsBridge {
     boolean deletePermission(String storeName, String username, PermissionsTypeTestData productsInventory);
     boolean writeReplyToApplication(int requestId,String storeName, ApplicationToStoreTestData key, String value);
     HashSet<ApplicationToStoreTestData> viewApplicationToStore(String storeName);
-    HashMap<ApplicationToStoreTestData,String> getUserApplicationsAndReplies(String username,String storeName);
-    List<ApplicationToStoreTestData> getUserApplications(String username, String storeName);
-    List<PurchaseTestData> userGetStorePurchasesHistory(String storeName);
-    int connect();
 
+    HashMap<ApplicationToStoreTestData,String> getUserApplicationsAndReplies(String username,String storeName);
+
+    List<ApplicationToStoreTestData> getUserApplications(String username, String storeName);
+
+    List<PurchaseTestData> userGetStorePurchasesHistory(String storeName);
 }

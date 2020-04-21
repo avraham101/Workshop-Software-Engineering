@@ -8,13 +8,12 @@ import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.ProductNameFilte
 import DataAPI.*;
 import Domain.*;
 import Service.ServiceAPI;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.SupplySystem.SupplySystem;
 
 import java.util.*;
 
 public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     private ServiceAPI serviceAPI;
+    private UserTestData currentUser;
     private int id=0;
 
     //---------------------------Use-Case-1.1---------------------------------//
@@ -26,17 +25,6 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         }catch (Exception e){
             return false;
         }
-    }
-    @Override
-    public boolean initialStart(String username , String password
-            , PaymentSystem paymentSystem, SupplySystem deliverySystem){
-        try{
-            this.serviceAPI = new ServiceAPI(username,password,paymentSystem,deliverySystem);
-            return true;
-        }catch (Exception e){
-            return false;
-        }
-
     }
     //---------------------------Use-Case-1.1---------------------------------//
 
@@ -51,9 +39,12 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-2.3---------------------------------//
     @Override
-    public boolean login(int id, String username, String password) {
-        return serviceAPI.login(id,username,password);
-
+    public boolean login(String username, String password) {
+        if(serviceAPI.login(id,username,password)){
+            currentUser = new UserTestData(username,password);
+            return true;
+        }
+        return false;
     }
     //---------------------------Use-Case-2.3---------------------------------//
 
@@ -127,7 +118,8 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-3.1---------------------------------//
     @Override
-    public boolean logout(int id) {
+    public boolean logout() {
+        currentUser = null;
         return serviceAPI.logout(id);
     }
     //---------------------------Use-Case-3.1---------------------------------//
@@ -260,8 +252,6 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     public List<PurchaseTestData> userGetStorePurchasesHistory(String storeName) {
         return buildPurchasesTestData(serviceAPI.watchStoreHistory(id,storeName));
     }
-
-
     //---------------------------Use-Case-4.10---------------------------------//
 
     //---------------------------Use-Case-6.4---------------------------------//
@@ -281,10 +271,12 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //----------------------RealBridge aux functions--------------------------//
     @Override
-    public int connect() {
-        return serviceAPI.connectToSystem();
+    public String getCurrentLoggedInUser() {
+        if(currentUser!=null)
+            return currentUser.getUsername();
+        else
+            return null;
     }
-
 
     @Override
     public void resetSystem() {
@@ -399,16 +391,15 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return new CartTestData(baskets);
     }
 
-    //TODO: fix
     @Override
     public StoreTestData getStoreInfoByName(String storeName) {
 
-//        List<StoreData> stores = serviceAPI.viewStores();
-//        for (StoreData st: stores) {
-//            if(st.getName().equals(storeName)){
-//                return new StoreTestData(storeName,currentUser);
-//            }
-//        }
+        List<StoreData> stores = serviceAPI.viewStores();
+        for (StoreData st: stores) {
+            if(st.getName().equals(storeName)){
+                return new StoreTestData(storeName,currentUser);
+            }
+        }
         return null;
     }
 
