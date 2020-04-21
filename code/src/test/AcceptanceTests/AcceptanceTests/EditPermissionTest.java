@@ -36,7 +36,8 @@ public class EditPermissionTest extends AcceptanceTests {
 
     @Test
     public void addPermissionSuccess(){
-        boolean approval = bridge.addPermissionToManager(stores.get(0).getStoreName(),
+        boolean approval = bridge.addPermissionToManager(superUser.getId(),
+                                                        stores.get(0).getStoreName(),
                                                         userToCheck.getUsername(),
                                                         PermissionsTypeTestData.PRODUCTS_INVENTORY);
         assertTrue(approval);
@@ -47,7 +48,8 @@ public class EditPermissionTest extends AcceptanceTests {
 
     @Test
     public void addPermissionFailStoreNotExist(){
-        boolean approval = bridge.addPermissionToManager("InvalidStore",
+        boolean approval = bridge.addPermissionToManager(superUser.getId(),
+                                                    "InvalidStore",
                                                         userToCheck.getUsername(),
                                                         PermissionsTypeTestData.PRODUCTS_INVENTORY);
         assertFalse(approval);
@@ -55,7 +57,8 @@ public class EditPermissionTest extends AcceptanceTests {
 
     @Test
     public void addPermissionFailNotMyStore(){
-        boolean approval = bridge.addPermissionToManager(stores.get(2).getStoreName(),
+        boolean approval = bridge.addPermissionToManager(superUser.getId(),
+                                                stores.get(2).getStoreName(),
                                                         userToCheck.getUsername(),
                                                         PermissionsTypeTestData.PRODUCTS_INVENTORY);
         assertFalse(approval);
@@ -63,7 +66,8 @@ public class EditPermissionTest extends AcceptanceTests {
 
     @Test
     public void addPermissionFailNotManager(){
-        boolean approval = bridge.addPermissionToManager(stores.get(0).getStoreName(),
+        boolean approval = bridge.addPermissionToManager(superUser.getId(),
+                                                    stores.get(0).getStoreName(),
                                                         users.get(2).getUsername(),
                                                         PermissionsTypeTestData.PRODUCTS_INVENTORY);
         assertFalse(approval);
@@ -71,10 +75,12 @@ public class EditPermissionTest extends AcceptanceTests {
 
     @Test
     public void addPermissionFailAlreadyHasPermission(){
-        bridge.addPermissionToManager(stores.get(0).getStoreName(),
+        bridge.addPermissionToManager(superUser.getId(),
+                                stores.get(0).getStoreName(),
                                     userToCheck.getUsername(),
                                     PermissionsTypeTestData.PRODUCTS_INVENTORY);
-        boolean approval = bridge.addPermissionToManager(stores.get(0).getStoreName(),
+        boolean approval = bridge.addPermissionToManager(superUser.getId(),
+                                                stores.get(0).getStoreName(),
                                                         userToCheck.getUsername(),
                                                         PermissionsTypeTestData.PRODUCTS_INVENTORY);
         assertFalse(approval);
@@ -83,7 +89,8 @@ public class EditPermissionTest extends AcceptanceTests {
      * 4.6.2 - delete permission
      */
     private void addPermission(){
-        bridge.addPermissionToManager(stores.get(0).getStoreName(),
+        bridge.addPermissionToManager(superUser.getId(),
+                stores.get(0).getStoreName(),
                 userToCheck.getUsername(),
                 PermissionsTypeTestData.PRODUCTS_INVENTORY);
     }
@@ -91,7 +98,7 @@ public class EditPermissionTest extends AcceptanceTests {
     @Test
     public void deletePermissionSuccess(){
         addPermission();
-        boolean approval= bridge.deletePermission(stores.get(0).getStoreName(),
+        boolean approval= bridge.deletePermission(superUser.getId(),stores.get(0).getStoreName(),
                  userToCheck.getUsername(),
                     PermissionsTypeTestData.PRODUCTS_INVENTORY);
         assertTrue(approval);
@@ -102,26 +109,29 @@ public class EditPermissionTest extends AcceptanceTests {
     }
     @Test
     public void deletePermissionFailInvalidStore(){
-        boolean approval=bridge.deletePermission("InvalidStore",
+        boolean approval=bridge.deletePermission(superUser.getId(),"InvalidStore",
                                 userToCheck.getUsername(),
                                 PermissionsTypeTestData.PRODUCTS_INVENTORY);
         assertFalse(approval);
     }
     @Test
     public void deletePermissionFailNotMyStore(){
-        boolean approval=bridge.deletePermission(stores.get(2).getStoreName(),userToCheck.getUsername(), PermissionsTypeTestData.PRODUCTS_INVENTORY);
+        boolean approval=bridge.deletePermission(superUser.getId(),
+                stores.get(2).getStoreName(),userToCheck.getUsername(), PermissionsTypeTestData.PRODUCTS_INVENTORY);
         assertFalse(approval);
     }
 
     @Test
     public void deletePermissionFailNotManager(){
-        boolean approval=bridge.deletePermission(stores.get(0).getStoreName(),users.get(2).getUsername(), PermissionsTypeTestData.PRODUCTS_INVENTORY);
+        boolean approval=bridge.deletePermission(superUser.getId(),
+                stores.get(0).getStoreName(),users.get(2).getUsername(), PermissionsTypeTestData.PRODUCTS_INVENTORY);
         assertFalse(approval);
     }
 
     @Test
     public void deletePermissionFailPermissionNotExist(){
-        boolean approval=bridge.deletePermission(stores.get(0).getStoreName(),userToCheck.getUsername(), PermissionsTypeTestData.OWNER);
+        boolean approval=bridge.deletePermission(superUser.getId(),
+                stores.get(0).getStoreName(),userToCheck.getUsername(), PermissionsTypeTestData.OWNER);
         assertFalse(approval);
     }
 

@@ -34,7 +34,7 @@ public class DeleteManagerTest extends AcceptanceTests{
         addUserStoresAndProducts(superUser);
         bridge.appointManager(superUser.getId(),stores.get(0).getStoreName(), firstManager.getUsername());
         bridge.appointManager(superUser.getId(),stores.get(0).getStoreName(), secondManager.getUsername());
-        bridge.addPermissionToManager(stores.get(0).getStoreName(),
+        bridge.addPermissionToManager(superUser.getId(),stores.get(0).getStoreName(),
                                     firstManager.getUsername(),
                                     PermissionsTypeTestData.ADD_MANAGER);
 

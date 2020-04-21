@@ -41,8 +41,8 @@ public interface AcceptanceTestsBridge {
     List<PurchaseTestData> getUserPurchaseHistory(String username);
     List<PurchaseTestData> getCurrentUserPurchaseHistory();
     boolean appointOwnerToStore(String storeName, String username);
-    boolean addPermissionToManager(String storeName, String username, PermissionsTypeTestData productsInventory);
-    boolean deletePermission(String storeName, String username, PermissionsTypeTestData productsInventory);
+    boolean addPermissionToManager(int id,String storeName, String username, PermissionsTypeTestData productsInventory);
+    boolean deletePermission(int id, String storeName, String username, PermissionsTypeTestData productsInventory);
     boolean writeReplyToApplication(int requestId,String storeName, ApplicationToStoreTestData key, String value);
     HashSet<ApplicationToStoreTestData> viewApplicationToStore(String storeName);
     HashMap<ApplicationToStoreTestData,String> getUserApplicationsAndReplies(String username,String storeName);

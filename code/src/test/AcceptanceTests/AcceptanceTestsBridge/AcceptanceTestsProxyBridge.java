@@ -231,16 +231,16 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean addPermissionToManager(String storeName, String username, PermissionsTypeTestData permissionType) {
+    public boolean addPermissionToManager(int id,String storeName, String username, PermissionsTypeTestData permissionType) {
         if(realBridge!=null)
-            return realBridge.addPermissionToManager(storeName,username,permissionType);
+            return realBridge.addPermissionToManager(id,storeName,username,permissionType);
         return false;
     }
 
     @Override
-    public boolean deletePermission(String storeName, String username, PermissionsTypeTestData permissionType) {
+    public boolean deletePermission(int id,String storeName, String username, PermissionsTypeTestData permissionType) {
         if(realBridge!=null)
-            return realBridge.deletePermission(storeName,username,permissionType);
+            return realBridge.deletePermission(id,storeName,username,permissionType);
         return false;
     }
 

@@ -38,12 +38,12 @@ public class ManagerPermissionsTest extends AcceptanceTests {
         manager = users.get(1);
         newManager = users.get(2);
 
-        registerAndLogin(superUser);
+        registerAndLogin(superUser);//TODO not good need to do logout??
         registerAndLogin(manager);
         registerAndLogin(newManager);
         logoutAndLogin(superUser);
         bridge.appointManager(superUser.getId(),stores.get(0).getStoreName(), manager.getUsername());
-        bridge.addPermissionToManager(stores.get(0).getStoreName(),manager.getUsername(), PermissionsTypeTestData.PRODUCTS_INVENTORY);
+        bridge.addPermissionToManager(superUser.getId(),stores.get(0).getStoreName(),manager.getUsername(), PermissionsTypeTestData.PRODUCTS_INVENTORY);
        logoutAndLogin(manager);
     }
     @Test
