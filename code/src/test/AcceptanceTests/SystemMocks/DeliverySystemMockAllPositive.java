@@ -14,8 +14,4 @@ public class DeliverySystemMockAllPositive extends SupplySystem {
         return true;
     }
 
-    @Override
-    public boolean isConnected() {
-        return true;
-    }
 }

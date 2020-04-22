@@ -9,10 +9,6 @@ public class PaymentSystemMockAllPositive extends PaymentSystem {
         return true;
     }
 
-    @Override
-    public boolean isConnected() {
-        return true;
-    }
 
     @Override
     public boolean pay(PaymentData paymentData) {

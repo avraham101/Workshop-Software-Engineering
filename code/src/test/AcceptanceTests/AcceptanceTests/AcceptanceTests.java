@@ -28,14 +28,18 @@ public class AcceptanceTests {
     private PaymentSystem paymentSystem;
     private SupplySystem supplySystem;
 
+    public AcceptanceTests(){
+        this.paymentSystem = new PaymentSystemMockAllPositive();
+        this.supplySystem = new DeliverySystemMockAllPositive();
+    }
+
     @Before
     public  void setUpAll(){
         bridge = AcceptanceTestsDriver.getBridge();
         users = new ArrayList<>();
         stores = new ArrayList<>();
         products = new ArrayList<>();
-        paymentSystem = new PaymentSystemMockAllPositive();
-        supplySystem = new DeliverySystemMockAllPositive();
+
         initSystem();
         setUpUsers();
         setUpDelivery();
@@ -62,7 +66,7 @@ public class AcceptanceTests {
     }
 
     private void initSystem(){
-        boolean init = bridge.initialStart("admin","admin",paymentSystem,supplySystem);
+        bridge.initialStart("admin","admin",paymentSystem,supplySystem);
     }
 
     protected   void setUpUsers() {
@@ -292,6 +296,11 @@ public class AcceptanceTests {
         for(BasketTestData basket : cart.getBaskets())
             for(Map.Entry<ProductTestData,Integer> prodAndAmount : basket.getProductsAndAmountInBasket().entrySet())
                 bridge.addToUserCart(id,prodAndAmount.getKey(),prodAndAmount.getValue());
+    }
+
+    protected void setExternalSystems(PaymentSystem paymentSystem, SupplySystem supplySystem){
+        this.paymentSystem = paymentSystem;
+        this.supplySystem = supplySystem;
     }
 
     @After

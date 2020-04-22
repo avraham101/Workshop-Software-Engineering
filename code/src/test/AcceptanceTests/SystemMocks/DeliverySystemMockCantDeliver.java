@@ -14,8 +14,4 @@ public class DeliverySystemMockCantDeliver extends SupplySystem{
         return false;
     }
 
-    @Override
-    public boolean isConnected() {
-        return true;
-    }
 }
