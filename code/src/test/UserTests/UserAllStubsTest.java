@@ -16,6 +16,7 @@ import Systems.SupplySystem.SupplySystem;
 import org.junit.Before;
 import org.junit.Test;
 //class for Unit test all stubs
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -100,11 +101,11 @@ public class UserAllStubsTest {
     /**
      * set up product added to cart
      */
-    private void setUpProductAddedToCart(){
+    public void setUpProductAddedToCart(){
         setUpProductAdded();
         Store store = data.getRealStore(Data.VALID);
         Product p = data.getRealProduct(Data.VALID);
-        assertTrue(user.addProductToCart(store,p,p.getAmount()));
+        user.addProductToCart(store,p,p.getAmount());
     }
 
     /**
@@ -115,6 +116,24 @@ public class UserAllStubsTest {
         user.reservedCart();
     }
 
+
+    /**
+     * set up the subscribe reserved Cart
+     */
+    protected void setUpReservedCart() {
+        setUpProductAddedToCart();
+        user.reservedCart();
+    }
+
+    /**
+     * set up the subscribe reserved Cart
+     */
+    protected void setUpBuyCart() {
+        setUpReservedCart();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        user.buyCart(paymentData, deliveryData);
+    }
 
     /**--------------------------------set-ups-------------------------------------------------------------------*/
 
@@ -151,14 +170,30 @@ public class UserAllStubsTest {
     /**
      * use case 2.8 - purchase cart
      */
-    //TODO change purchase and change tests also
     @Test
-    public void testPurchase() {
-        fail();
-//        setUpProductAddedToCart();
-//        PaymentData paymentData = data.getPaymentData(Data.VALID);
-//        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-//        assertTrue(user.reservedCart(paymentData,deliveryData.getAddress()));
+    public void testReservedCart() {
+        setUpProductAddedToCart();
+        assertTrue(user.reservedCart());
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     */
+    @Test
+    public void testSavePurchase() {
+        setUpBuyCart();
+        String name = data.getSubscribe(Data.VALID).getName();
+        user.savePurchase(name);
+        assertEquals(0, user.watchMyPurchaseHistory().size());
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     */
+    @Test
+    public void testCancel() {
+        setUpReservedCart();
+        user.cancelCart();
     }
 
     /**

@@ -213,7 +213,7 @@ public class TestData {
     private void setUpDeliveryData() {
         deliveryData = new HashMap<Data, DeliveryData>();
         List<ProductData> product = new LinkedList<>();
-        product.add(this.productsData.get(Data.VALID));
+        //product.add(this.productsData.get(Data.VALID));
         deliveryData.put(Data.VALID, new DeliveryData("Tapoz 3, Nevatim", product));
         deliveryData.put(Data.EMPTY_ADDRESS, new DeliveryData("", product));
         deliveryData.put(Data.NULL_ADDRESS, new DeliveryData(null, product));

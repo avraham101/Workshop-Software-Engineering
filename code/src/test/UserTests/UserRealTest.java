@@ -1,11 +1,14 @@
 package UserTests;
 
 import Data.*;
+import DataAPI.DeliveryData;
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import Domain.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -57,12 +60,38 @@ public class UserRealTest extends UserAllStubsTest{
     /**
      * use case 2.8 - purchase cart
      */
-    //TODO change test because change purchase
-    @Override @Test
-    public void testPurchase() {
-        super.testPurchase();
-        List<Purchase> purchases = user.getState().watchMyPurchaseHistory();
-        assertEquals(1, purchases.size());
+    @Test
+    public void testBuyCart() {
+        setUpReservedCart();
+        Cart cart = user.getState().getCart();
+        int size = 0;
+        double sum =0;
+        for(Basket b:cart.getBaskets().values()) {
+            HashMap<Product,Integer> products = b.getProducts();
+            for(Product p:products.keySet()) {
+                int amount = products.get(p);
+                sum += amount * p.getPrice();
+                size++;
+            }
+        }
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        user.buyCart(paymentData,deliveryData);
+        assertEquals(sum,paymentData.getTotalPrice(),0.001);
+        assertEquals(size,deliveryData.getProducts().size());
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     */
+    @Override
+    @Test
+    public void testSavePurchase() {
+        setUpReservedCart();
+        int number =  user.getState().getCart().getBaskets().keySet().size();
+        String name = data.getSubscribe(Data.VALID).getName();
+        user.savePurchase(name);
+        assertEquals(number, user.watchMyPurchaseHistory().size());
     }
 
     /**
