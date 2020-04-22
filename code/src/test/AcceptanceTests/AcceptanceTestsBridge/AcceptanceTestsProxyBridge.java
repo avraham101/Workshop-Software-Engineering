@@ -217,9 +217,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public List<PurchaseTestData> getCurrentUserPurchaseHistory() {
+    public List<PurchaseTestData> getCurrentUserPurchaseHistory(int id) {
         if(realBridge!=null)
-            return realBridge.getCurrentUserPurchaseHistory();
+            return realBridge.getCurrentUserPurchaseHistory(id);
         return null;
     }
 
