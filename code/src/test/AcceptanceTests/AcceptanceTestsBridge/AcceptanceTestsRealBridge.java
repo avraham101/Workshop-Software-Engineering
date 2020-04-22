@@ -217,7 +217,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-4.7---------------------------------//
     @Override
-    public boolean deleteManager(String storeName, String username) {
+    public boolean deleteManager(int id, String storeName, String username) {
         return serviceAPI.removeManager(id,username,storeName);
     }
     //---------------------------Use-Case-4.7---------------------------------//

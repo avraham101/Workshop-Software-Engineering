@@ -196,9 +196,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean deleteManager(String storeName, String username) {
+    public boolean deleteManager(int id, String storeName, String username) {
         if(realBridge!=null)
-            return realBridge.deleteManager(storeName,username);
+            return realBridge.deleteManager(id,storeName,username);
         return false;
     }
 
