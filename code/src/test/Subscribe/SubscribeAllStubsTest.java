@@ -120,11 +120,8 @@ public class SubscribeAllStubsTest {
      * set up a valid purchase history
      */
     protected void setUpProductBought(){
-        fail();
-//        setUpProductAddedToCart();
-//        PaymentData paymentData = data.getPaymentData(Data.VALID);
-//        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-//        sub.reserveCart(paymentData,deliveryData.getAddress());
+        setUpSave();
+        sub.savePurchase(sub.getName());
     }
 
     /**

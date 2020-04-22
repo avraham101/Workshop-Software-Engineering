@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f0366da3-85c5-4ead-a08b-f6642ede6572" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/Cart/CartTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Cart/CartTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/Guest/GuestTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Guest/GuestTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/Guest/GuestTestReal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Guest/GuestTestReal.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/UserTests/UserRealTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/UserTests/UserRealTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,10 +16,28 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTest.java">
+        <entry file="file://$PROJECT_DIR$/src/test/UserTests/UserRealTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="54" column="19" selection-start-line="54" selection-start-column="19" selection-end-line="54" selection-end-column="19" />
+            <state relative-caret-position="294">
+              <caret line="111" column="8" lean-forward="true" selection-start-line="111" selection-start-column="8" selection-end-line="111" selection-end-column="65" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="142">
+              <caret line="89" column="13" selection-start-line="84" selection-end-line="102" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTestReal.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="256">
+              <caret line="112" column="44" selection-start-line="112" selection-start-column="44" selection-end-line="112" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -25,26 +45,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-136">
-              <caret line="155" column="11" lean-forward="true" selection-start-line="155" selection-start-column="11" selection-end-line="155" selection-end-column="11" />
+            <state relative-caret-position="74">
+              <caret line="105" selection-start-line="105" selection-end-line="116" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTestReal.java">
+        <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="97" column="5" selection-start-line="97" selection-start-column="5" selection-end-line="97" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="92" column="38" selection-start-line="92" selection-start-column="38" selection-end-line="92" selection-end-column="38" />
+            <state relative-caret-position="323">
+              <caret line="61" column="13" selection-start-line="61" selection-start-column="13" selection-end-line="61" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -61,6 +72,9 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>userState</find>
+      <find>2.8</find>
+      <find>cancel</find>
+      <find>save</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -72,11 +86,12 @@
         <option value="$PROJECT_DIR$/.idea/workspace.xml" />
         <option value="$PROJECT_DIR$/src/test/Stubs/CartStub.java" />
         <option value="$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java" />
-        <option value="$PROJECT_DIR$/src/test/UserTests/UserRealTest.java" />
-        <option value="$PROJECT_DIR$/src/test/Guest/GuestTest.java" />
         <option value="$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java" />
-        <option value="$PROJECT_DIR$/src/test/Guest/GuestTestReal.java" />
+        <option value="$PROJECT_DIR$/src/test/Cart/CartTest.java" />
+        <option value="$PROJECT_DIR$/src/test/UserTests/UserRealTest.java" />
         <option value="$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java" />
+        <option value="$PROJECT_DIR$/src/test/Guest/GuestTest.java" />
+        <option value="$PROJECT_DIR$/src/test/Guest/GuestTestReal.java" />
       </list>
     </option>
   </component>
@@ -102,6 +117,19 @@
               <item name="code" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="code" type="2674bda8:ScopeViewTreeModel$GroupNode" />
               <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="code" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="code" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="code" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="code" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="test" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
@@ -109,14 +137,7 @@
               <item name="code" type="2674bda8:ScopeViewTreeModel$GroupNode" />
               <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="test" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="Store" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="code" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="code" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="test" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="Stubs" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Guest" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
               <item name="code" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
@@ -160,7 +181,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587587252572" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587589176867" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -174,34 +195,32 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.SubscribeRealTest.testSavePurchase">
-    <configuration name="SubscribeAllStubsTest.testBuyCart" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.GuestTestReal.testSavePurchase">
+    <configuration name="Cart in code" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="code" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="Subscribe.*" />
+          <option name="PATTERN" value="Cart.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="Subscribe" />
-      <option name="MAIN_CLASS_NAME" value="Subscribe.SubscribeAllStubsTest" />
-      <option name="METHOD_NAME" value="testBuyCart" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="Cart" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SubscribeAllStubsTest.testReservedCart" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="GuestTestReal.testSavePurchase" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="code" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="Subscribe.*" />
+          <option name="PATTERN" value="Guest.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="Subscribe" />
-      <option name="MAIN_CLASS_NAME" value="Subscribe.SubscribeAllStubsTest" />
-      <option name="METHOD_NAME" value="testReservedCart" />
+      <option name="PACKAGE_NAME" value="Guest" />
+      <option name="MAIN_CLASS_NAME" value="Guest.GuestTestReal" />
+      <option name="METHOD_NAME" value="testSavePurchase" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -223,22 +242,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SubscribeRealTest.testReservedCart" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="code" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Subscribe.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="Subscribe" />
-      <option name="MAIN_CLASS_NAME" value="Subscribe.SubscribeRealTest" />
-      <option name="METHOD_NAME" value="testReservedCart" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="SubscribeRealTest.testSavePurchase" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="code" />
       <extension name="coverage">
@@ -255,13 +258,29 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="UserRealTest.testSavePurchase" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="code" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="UserTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="UserTests" />
+      <option name="MAIN_CLASS_NAME" value="UserTests.UserRealTest" />
+      <option name="METHOD_NAME" value="testSavePurchase" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.GuestTestReal.testSavePurchase" />
         <item itemvalue="JUnit.SubscribeRealTest.testSavePurchase" />
         <item itemvalue="JUnit.SubscribeRealTest.testCancelCart" />
-        <item itemvalue="JUnit.SubscribeRealTest.testReservedCart" />
-        <item itemvalue="JUnit.SubscribeAllStubsTest.testBuyCart" />
-        <item itemvalue="JUnit.SubscribeAllStubsTest.testReservedCart" />
+        <item itemvalue="JUnit.UserRealTest.testSavePurchase" />
+        <item itemvalue="JUnit.Cart in code" />
       </list>
     </recent_temporary>
   </component>
@@ -297,12 +316,12 @@
       <option name="project" value="LOCAL" />
       <updated>1587587110050</updated>
     </task>
-    <task id="LOCAL-00005" summary="Merge branch 'newBranch'&#10;&#10;# Conflicts:&#10;#&#9;code/.idea/workspace.xml&#10;#&#9;code/src/main/java/Domain/Guest.java&#10;#&#9;code/src/main/java/Domain/LogicManager.java&#10;#&#9;code/src/main/java/Domain/Store.java&#10;#&#9;code/src/main/java/Domain/Subscribe.java&#10;#&#9;code/src/main/java/Domain/User.java&#10;#&#9;code/src/main/java/Domain/UserState.java&#10;#&#9;code/src/test/Data/TestData.java&#10;#&#9;code/src/test/Guest/GuestTest.java&#10;#&#9;code/src/test/LogicManagerTests/LogicManagerAllStubsTest.java&#10;#&#9;code/src/test/LogicManagerTests/LogicManagerRealTest.java&#10;#&#9;code/src/test/Subscribe/SubscribeAllStubsTest.java&#10;#&#9;code/src/test/UserTests/UserAllStubsTest.java">
-      <created>1585838116858</created>
+    <task id="LOCAL-00005" summary="Finish User State Subscribe and Guest Tests.">
+      <created>1587587267414</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1585838116858</updated>
+      <updated>1587587267414</updated>
     </task>
     <task id="LOCAL-00006" summary="Merge branch 'newBranch'&#10;&#10;# Conflicts:&#10;#&#9;code/.idea/workspace.xml&#10;#&#9;code/src/main/java/Domain/Guest.java&#10;#&#9;code/src/main/java/Domain/LogicManager.java&#10;#&#9;code/src/main/java/Domain/Store.java&#10;#&#9;code/src/main/java/Domain/Subscribe.java&#10;#&#9;code/src/main/java/Domain/User.java&#10;#&#9;code/src/main/java/Domain/UserState.java&#10;#&#9;code/src/test/Data/TestData.java&#10;#&#9;code/src/test/Guest/GuestTest.java&#10;#&#9;code/src/test/LogicManagerTests/LogicManagerAllStubsTest.java&#10;#&#9;code/src/test/LogicManagerTests/LogicManagerRealTest.java&#10;#&#9;code/src/test/Subscribe/SubscribeAllStubsTest.java&#10;#&#9;code/src/test/UserTests/UserAllStubsTest.java">
       <created>1585838519342</created>
@@ -634,43 +653,43 @@
       <option name="project" value="LOCAL" />
       <updated>1587583806768</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="GuestTest_testCancelCart - 2020.04.22 at 23h 17m 38s.xml">
-      <configuration name="GuestTest.testCancelCart" configurationId="JUnit" />
+    <history-entry file="SubscribeRealTest_testSavePurchase - 2020.04.22 at 23h 27m 38s.xml">
+      <configuration name="SubscribeRealTest.testSavePurchase" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="GuestTestReal_testCancelCart - 2020.04.22 at 23h 18m 21s.xml">
-      <configuration name="GuestTestReal.testCancelCart" configurationId="JUnit" />
+    <history-entry file="CartTest_testBuyCart - 2020.04.22 at 23h 38m 15s.xml">
+      <configuration name="CartTest.testBuyCart" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="GuestTestReal_testCancelCart - 2020.04.22 at 23h 19m 06s.xml">
-      <configuration name="GuestTestReal.testCancelCart" configurationId="JUnit" />
+    <history-entry file="CartTest_testSavePurchases - 2020.04.22 at 23h 41m 24s.xml">
+      <configuration name="CartTest.testSavePurchases" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="GuestTestReal_testCancelCart - 2020.04.22 at 23h 19m 47s.xml">
-      <configuration name="GuestTestReal.testCancelCart" configurationId="JUnit" />
+    <history-entry file="CartTest_testCancelCart - 2020.04.22 at 23h 45m 44s.xml">
+      <configuration name="CartTest.testCancelCart" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="GuestTestReal_testCancelCart - 2020.04.22 at 23h 20m 31s.xml">
-      <configuration name="GuestTestReal.testCancelCart" configurationId="JUnit" />
+    <history-entry file="CartTest_testSavePurchases - 2020.04.22 at 23h 46m 46s.xml">
+      <configuration name="CartTest.testSavePurchases" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="Guest_in_code - 2020.04.22 at 23h 20m 37s.xml">
-      <configuration name="Guest in code" configurationId="JUnit" />
+    <history-entry file="UserTests_in_code - 2020.04.22 at 23h 47m 03s.xml">
+      <configuration name="UserTests in code" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="SubscribeAllStubsTest_testReservedCart - 2020.04.22 at 23h 23m 08s.xml">
-      <configuration name="SubscribeAllStubsTest.testReservedCart" configurationId="JUnit" />
+    <history-entry file="Cart_in_code - 2020.04.22 at 23h 47m 19s.xml">
+      <configuration name="Cart in code" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="SubscribeAllStubsTest_testBuyCart - 2020.04.22 at 23h 23m 13s.xml">
-      <configuration name="SubscribeAllStubsTest.testBuyCart" configurationId="JUnit" />
+    <history-entry file="UserRealTest_testSavePurchase - 2020.04.22 at 23h 54m 15s.xml">
+      <configuration name="UserRealTest.testSavePurchase" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="SubscribeRealTest_testReservedCart - 2020.04.22 at 23h 24m 13s.xml">
-      <configuration name="SubscribeRealTest.testReservedCart" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="SubscribeRealTest_testCancelCart - 2020.04.22 at 23h 24m 18s.xml">
+    <history-entry file="SubscribeRealTest_testCancelCart - 2020.04.22 at 23h 55m 13s.xml">
       <configuration name="SubscribeRealTest.testCancelCart" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SubscribeRealTest_testSavePurchase - 2020.04.22 at 23h 56m 04s.xml">
+      <configuration name="SubscribeRealTest.testSavePurchase" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3181000" />
+    <option name="totallyTimeSpent" value="5104000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
@@ -687,13 +706,13 @@
       <window_info anchor="bottom" id="Messages" order="0" weight="0.11900533" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.3285968" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.66477734" visible="true" weight="0.27886322" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.66477734" visible="true" weight="0.19360569" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.38898757" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3286119" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="9" weight="0.2895204" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.28774422" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3285968" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" weight="0.3285968" />
@@ -815,35 +834,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Basket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="89">
-          <caret line="180" column="59" selection-start-line="180" selection-start-column="33" selection-end-line="180" selection-end-column="59" />
-          <folding>
-            <element signature="e#4687#4688#0" expanded="true" />
-            <element signature="e#4741#4742#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Cart.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="106" column="30" lean-forward="true" selection-start-line="106" selection-start-column="30" selection-end-line="106" selection-end-column="30" />
-          <folding>
-            <element signature="e#425#426#0" expanded="true" />
-            <element signature="e#455#456#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/Store/StoreTestsAllStubs.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="48" column="18" selection-start-line="48" selection-start-column="18" selection-end-line="48" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/DataAPI/PaymentData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -855,20 +845,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="672">
           <caret line="247" column="54" selection-start-line="247" selection-start-column="54" selection-end-line="247" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/UserTests/UserRealTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="139" lean-forward="true" selection-start-line="111" selection-start-column="3" selection-end-line="139" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="452">
-          <caret line="72" column="30" selection-start-line="72" selection-start-column="30" selection-end-line="72" selection-end-column="30" />
         </state>
       </provider>
     </entry>
@@ -886,31 +862,84 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/Store/StoreTestsAllStubs.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="54" column="19" selection-start-line="54" selection-start-column="19" selection-end-line="54" selection-end-column="19" />
+        <state relative-caret-position="-477">
+          <caret line="48" column="18" selection-start-line="48" selection-start-column="18" selection-end-line="48" selection-end-column="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Basket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-136">
-          <caret line="155" column="11" lean-forward="true" selection-start-line="155" selection-start-column="11" selection-end-line="155" selection-end-column="11" />
+        <state relative-caret-position="89">
+          <caret line="180" column="33" lean-forward="true" selection-start-line="180" selection-start-column="33" selection-end-line="180" selection-end-column="60" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTestReal.java">
+    <entry file="file://$PROJECT_DIR$/src/test/Basket/BasketTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="97" column="5" selection-start-line="97" selection-start-column="5" selection-end-line="97" selection-end-column="5" />
+        <state relative-caret-position="187">
+          <caret line="21" column="19" selection-start-line="21" selection-start-column="14" selection-end-line="21" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/Cart/CartTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="146" column="28" selection-start-line="146" selection-start-column="28" selection-end-line="146" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Cart.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="110" column="9" lean-forward="true" selection-start-line="110" selection-start-column="9" selection-end-line="110" selection-end-column="9" />
+          <folding>
+            <element signature="e#425#426#0" expanded="true" />
+            <element signature="e#455#456#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="182" column="32" selection-start-line="182" selection-start-column="16" selection-end-line="182" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/UserTests/UserRealTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="111" column="8" lean-forward="true" selection-start-line="111" selection-start-column="8" selection-end-line="111" selection-end-column="65" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="92" column="38" selection-start-line="92" selection-start-column="38" selection-end-line="92" selection-end-column="38" />
+        <state relative-caret-position="142">
+          <caret line="89" column="13" selection-start-line="84" selection-end-line="102" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="74">
+          <caret line="105" selection-start-line="105" selection-end-line="116" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="61" column="13" selection-start-line="61" selection-start-column="13" selection-end-line="61" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTestReal.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="112" column="44" selection-start-line="112" selection-start-column="44" selection-end-line="112" selection-end-column="44" />
         </state>
       </provider>
     </entry>

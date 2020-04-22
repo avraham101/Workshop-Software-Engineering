@@ -97,4 +97,20 @@ public class GuestTestReal extends GuestTest{
         return product.getAmount();
     }
 
+    /**
+     * use case 2.8 - buy cart save test
+     */
+    @Test
+    public void testSavePurchase() {
+        setUpSave();
+        Store store = null;
+        int storeExpected = 0;
+        for(Basket basket: guest.getCart().getBaskets().values()) {
+            store = basket.getStore();
+            storeExpected = store.getPurchases().size() + 1;
+            break;
+        }
+        guest.savePurchase(guest.getName());
+        assertEquals(storeExpected, store.getPurchases().size());
+    }
 }

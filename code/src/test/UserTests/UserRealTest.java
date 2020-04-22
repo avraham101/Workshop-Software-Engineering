@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -97,10 +98,18 @@ public class UserRealTest extends UserAllStubsTest{
     @Test
     public void testSavePurchase() {
         setUpReservedCart();
+        Store store = null;
+        int storeExpected = 0;
+        for(Basket basket: user.getState().getCart().getBaskets().values()) {
+            store = basket.getStore();
+            storeExpected = store.getPurchases().size() + 1;
+            break;
+        }
         int number =  user.getState().getCart().getBaskets().keySet().size();
         String name = data.getSubscribe(Data.VALID).getName();
         user.savePurchase(name);
         assertEquals(number, user.watchMyPurchaseHistory().size());
+        assertEquals(storeExpected, store.getPurchases().size());
     }
 
     /**
