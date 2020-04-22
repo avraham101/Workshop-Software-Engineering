@@ -83,6 +83,18 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     }
 
     /**
+     * use case 2.8 - buy cart save test
+     */
+    @Test
+    public void testSavePurchase() {
+        setUpSave();
+        int expected = sub.getPurchases().size() +1;
+        sub.savePurchase(sub.getName());
+        int result = sub.getPurchases().size();
+        assertEquals(expected, result);
+    }
+
+    /**
      * test: use case 3.1 - Logout
      */
     @Override @Test

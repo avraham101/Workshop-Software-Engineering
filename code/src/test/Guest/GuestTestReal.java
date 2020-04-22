@@ -97,5 +97,4 @@ public class GuestTestReal extends GuestTest{
         return product.getAmount();
     }
 
-
 }
