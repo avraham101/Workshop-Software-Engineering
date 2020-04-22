@@ -104,7 +104,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-2.8---------------------------------//
     @Override
-    public boolean buyCart(PaymentTestData paymentMethod, DeliveryDetailsTestData deliveryDetails) {
+    public boolean buyCart(int id,PaymentTestData paymentMethod, DeliveryDetailsTestData deliveryDetails) {
         PaymentData paymentData;
         String delivery;
         if(deliveryDetails!=null){

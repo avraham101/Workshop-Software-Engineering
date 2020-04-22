@@ -26,7 +26,7 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
         addUserStoresAndProducts(user0);
 
         addCartToUser(superUser.getId(),superUser.getCart());
-        bridge.buyCart(validPayment,validDelivery);
+        bridge.buyCart(superUser.getId(),validPayment,validDelivery);
         notExistingProductInPurchase = products.get(7);
         notExistingProductInPurchaseReview = new ReviewTestData(user0.getUsername(),"notExistingProductInPurchaseReview");
         setUpTestProductsReviews();

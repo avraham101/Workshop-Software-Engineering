@@ -15,7 +15,7 @@ public class GetStorePurchaseHistoryTest extends AcceptanceTests {
     public void setUp(){
         addUserStoresAndProducts(superUser);
         bridge.addToUserCart(superUser.getId(),products.get(0),1);
-        bridge.buyCart(validPayment,validDelivery);
+        bridge.buyCart(superUser.getId(),validPayment,validDelivery);
     }
 
     @Test

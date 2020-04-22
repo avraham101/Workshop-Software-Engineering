@@ -28,7 +28,7 @@ public interface AcceptanceTestsBridge {
     List<ReviewTestData> getProductsReviews(ProductTestData product);
     List<StoreTestData> getStoresInfo();
     List<ProductTestData> getStoreProducts(String storeName);
-    boolean buyCart(PaymentTestData paymentMethod , DeliveryDetailsTestData deliveryDetails);
+    boolean buyCart(int id,PaymentTestData paymentMethod , DeliveryDetailsTestData deliveryDetails);
     void changeAmountOfProductInStore(int id,ProductTestData product, int amount);
     StoreTestData openStore(int id,String storeName);
     boolean sendApplicationToStore(int id, String storeName, String message);

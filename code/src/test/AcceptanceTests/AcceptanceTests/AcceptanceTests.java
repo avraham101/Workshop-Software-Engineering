@@ -36,7 +36,7 @@ public class AcceptanceTests {
         products = new ArrayList<>();
         paymentSystem = new PaymentSystemMockAllPositive();
         supplySystem = new DeliverySystemMockAllPositive();
-
+        initSystem();
         setUpUsers();
         setUpDelivery();
         setUpPayments();
@@ -61,10 +61,12 @@ public class AcceptanceTests {
         invalidDelivery =null;
     }
 
-
-    private  void setUpUsers() {
+    private void initSystem(){
         boolean init = bridge.initialStart("admin","admin",paymentSystem,supplySystem);
-        assertTrue(init);
+    }
+
+    protected   void setUpUsers() {
+
         admin = new UserTestData(generateUserId(),"admin","admin");
         UserTestData user0 = new UserTestData(generateUserId(),"testUser0","testUser0Pass");
         UserTestData user1 = new UserTestData(generateUserId(),"testUser1","testUser1Pass");
@@ -214,8 +216,8 @@ public class AcceptanceTests {
 
 
     protected  void addStores(List<StoreTestData> stores){
-
-        bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
+        bridge.register(admin.getUsername(),admin.getPassword());
+       // bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
 
         for(StoreTestData store : stores) {
             UserTestData owner = store.getStoreOwner();
@@ -242,11 +244,15 @@ public class AcceptanceTests {
     }
 
     protected  void changeAmountOfProductInStore(ProductTestData product,int amount){
-
         bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
         bridge.changeAmountOfProductInStore(admin.getId(),product,amount);
         bridge.logout(admin.getId());
 
+    }
+    protected void deleteProductFromStore(ProductTestData product){
+        bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
+        bridge.deleteProduct(admin.getId(),product);
+        bridge.logout(admin.getId());
     }
 
 
