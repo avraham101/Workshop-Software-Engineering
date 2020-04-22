@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f0366da3-85c5-4ead-a08b-f6642ede6572" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Guest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Guest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,14 +38,26 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Guest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="53" column="62" selection-start-line="53" selection-start-column="62" selection-end-line="53" selection-end-column="62" />
+            <state relative-caret-position="-1156">
+              <caret line="21" column="31" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
               <folding>
                 <element signature="e#1248#1249#0" expanded="true" />
-                <element signature="e#1317#1318#0" expanded="true" />
+                <element signature="e#1294#1295#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Store.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="200">
+              <caret line="212" column="7" lean-forward="true" selection-start-line="212" selection-start-column="7" selection-end-line="212" selection-end-column="7" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -140,6 +151,12 @@
       </list>
     </option>
   </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-15" />
+    <option name="y" value="-15" />
+    <option name="width" value="1947" />
+    <option name="height" value="1047" />
+  </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="Scope" currentSubView="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope" proportions="" version="1">
@@ -175,29 +192,7 @@
               <item name="code" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="code" type="2674bda8:ScopeViewTreeModel$GroupNode" />
               <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="Domain" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="code" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="code" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="test" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="code" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="code" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="test" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="Subscribe" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="code" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="code" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="test" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="UserTests" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
           </expand>
           <select />
@@ -227,7 +222,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587589563440" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587590619770" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -398,12 +393,12 @@
       <workItem from="1586509461422" duration="6936000" />
       <workItem from="1587453312440" duration="9216000" />
     </task>
-    <task id="LOCAL-00007" summary="get stores info">
-      <created>1585903984055</created>
+    <task id="LOCAL-00007" summary="Fixed Guest.">
+      <created>1587589612550</created>
       <option name="number" value="00007" />
       <option name="presentableId" value="LOCAL-00007" />
       <option name="project" value="LOCAL" />
-      <updated>1585903984055</updated>
+      <updated>1587589612550</updated>
     </task>
     <task id="LOCAL-00008" summary="add isEmpty and getAmount cart&amp;basket&#10;buycart">
       <created>1585923098714</created>
@@ -699,13 +694,10 @@
       <option name="project" value="LOCAL" />
       <updated>1587583806768</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="CartTest_testBuyCart - 2020.04.22 at 23h 38m 15s.xml">
-      <configuration name="CartTest.testBuyCart" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="CartTest_testSavePurchases - 2020.04.22 at 23h 41m 24s.xml">
       <configuration name="CartTest.testSavePurchases" configurationId="JUnit" />
     </history-entry>
@@ -733,15 +725,18 @@
     <history-entry file="GuestTestReal_testSavePurchase - 2020.04.22 at 23h 59m 43s.xml">
       <configuration name="GuestTestReal.testSavePurchase" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="GuestTestReal_testSavePurchase - 2020.04.23 at 00h 06m 10s.xml">
+      <configuration name="GuestTestReal.testSavePurchase" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5478000" />
+    <option name="totallyTimeSpent" value="6542000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20080972" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20080972" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -752,7 +747,7 @@
       <window_info anchor="bottom" id="Messages" order="0" weight="0.11900533" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.3285968" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.66477734" visible="true" weight="0.1563055" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.66477734" weight="0.074600354" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.38898757" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -824,7 +819,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="after the meeting" />
     <MESSAGE value="in the middle of buy cart" />
     <MESSAGE value="finish 2.8,3.2,3.5" />
     <MESSAGE value="fixed 2.8 &amp; 3.5" />
@@ -849,7 +843,8 @@
     <MESSAGE value="Merge branch 'use_case_2.8_buy_cart' of https://github.com/avraham101/Workshop-Software-Engineering into use_case_2.8_buy_cart&#10;&#10;# Conflicts:&#10;#&#9;code/.idea/workspace.xml" />
     <MESSAGE value="User Test Finish use case 2.8" />
     <MESSAGE value="Finish User State Subscribe and Guest Tests." />
-    <option name="LAST_COMMIT_MESSAGE" value="Finish User State Subscribe and Guest Tests." />
+    <MESSAGE value="Fixed Guest." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed Guest." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
@@ -1005,11 +1000,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Guest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="53" column="62" selection-start-line="53" selection-start-column="62" selection-end-line="53" selection-end-column="62" />
+        <state relative-caret-position="-1156">
+          <caret line="21" column="31" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
           <folding>
             <element signature="e#1248#1249#0" expanded="true" />
-            <element signature="e#1317#1318#0" expanded="true" />
+            <element signature="e#1294#1295#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Store.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="212" column="7" lean-forward="true" selection-start-line="212" selection-start-column="7" selection-end-line="212" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
