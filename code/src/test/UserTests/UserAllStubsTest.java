@@ -101,20 +101,13 @@ public class UserAllStubsTest {
     /**
      * set up product added to cart
      */
-    public void setUpProductAddedToCart(){
+    protected void setUpProductAddedToCart(){
         setUpProductAdded();
         Store store = data.getRealStore(Data.VALID);
         Product p = data.getRealProduct(Data.VALID);
         user.addProductToCart(store,p,p.getAmount());
     }
 
-    /**
-     * set up the subscribe to purchase a product
-     */
-    protected void setUpProductBought(){
-        setUpProductAddedToCart();
-        user.reservedCart();
-    }
 
 
     /**
@@ -133,6 +126,11 @@ public class UserAllStubsTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
         user.buyCart(paymentData, deliveryData);
+    }
+
+    protected void setUpBougtAndSaved(){
+        setUpBuyCart();
+        user.savePurchase(user.getUserName());
     }
 
     /**--------------------------------set-ups-------------------------------------------------------------------*/
@@ -185,15 +183,6 @@ public class UserAllStubsTest {
         String name = data.getSubscribe(Data.VALID).getName();
         user.savePurchase(name);
         assertEquals(0, user.watchMyPurchaseHistory().size());
-    }
-
-    /**
-     * use case 2.8 - purchase cart
-     */
-    @Test
-    public void testCancel() {
-        setUpReservedCart();
-        user.cancelCart();
     }
 
     /**
@@ -250,7 +239,7 @@ public class UserAllStubsTest {
      */
     @Test
     public void testWriteReviewSubscribe() {
-        setUpProductBought();
+        setUpReservedCart();
         Review review = data.getReview(Data.VALID);
         assertTrue(user.addReview(review));
     }
@@ -272,7 +261,8 @@ public class UserAllStubsTest {
         setUpOpenStore();
         Request request = data.getRequest(Data.VALID);
         assertNotNull(user.addRequest(request.getId(),request.getStoreName(),request.getComment())); }
-    /**
+
+        /**
      * test use case 3.7 - watch purchases
      */
     @Test
@@ -287,7 +277,7 @@ public class UserAllStubsTest {
      */
     @Test
     public void testWatchPurchasesSubscribe() {
-        setUpProductBought();
+       setUpBougtAndSaved();
         List<Purchase> list = user.watchMyPurchaseHistory();
         assertNotNull(list);
         assertTrue(list.isEmpty());

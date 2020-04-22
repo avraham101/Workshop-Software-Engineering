@@ -56,6 +56,62 @@ public class StoreTestsAllStubs {
         }
     }
 
+
+    /**
+     * use case 2.8 - test amount too big:
+     */
+    @Test
+    public void testReserveProductsLargeAmount() {
+        setUpProductAdded();
+        HashMap<Product, Integer> products = new HashMap<>();
+        Product product = data.getRealProduct(Data.VALID);
+        int amount = product.getAmount() + 1;
+        products.put(product, amount);
+        assertFalse(this.store.reserveProducts(products));
+    }
+
+    /**
+     * use case 2.8 - test product not in store:
+     */
+    @Test
+    public void testReserveProductsProductNotInStore() {
+        HashMap<Product, Integer> products = new HashMap<>();
+        Product product = data.getRealProduct(Data.VALID);
+        int amount = product.getAmount();
+        products.put(product, amount);
+        assertFalse(this.store.reserveProducts(products));
+    }
+
+    /**
+     * use case 2.8 - test product valid:
+     */
+    @Test
+    public void testReserveProductsProduct() {
+        setUpProductAdded();
+        HashMap<Product, Integer> products = new HashMap<>();
+        Product product = data.getRealProduct(Data.VALID);
+        int amount = product.getAmount();
+        products.put(product, amount);
+        int amountInStore = store.getProduct(product.getName()).getAmount();
+        assertTrue(this.store.reserveProducts(products));
+        assertEquals(amountInStore - amount, store.getProduct(product.getName()).getAmount());
+    }
+
+    /**
+     * use case 2.8 - check restore products
+     */
+    @Test
+    public void testRestoreAmount() {
+        setUpProductAdded();
+        ProductData p = data.getProductData(Data.VALID);
+        Product product = store.getProduct(p.getProductName());
+        int amount = product.getAmount();
+        this.store.restoreAmount(product,5);
+        assertEquals(amount + 5,product.getAmount());
+        product.setAmount(product.getAmount() - 5);
+
+    }
+
     /**
      * use case 3.3 - add review
      */
@@ -72,29 +128,6 @@ public class StoreTestsAllStubs {
         //TODO check review wasn't added
     }
 
-    /**
-     * test if it is available to purchase from the store
-     */
-    @Test
-    public void testPurchase() {
-        fail();
-//        setUpProductAdded();
-//        PaymentData paymentData = data.getPaymentData(Data.VALID);
-//        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-//        Purchase purchase = store.reserveProducts();
-//        assertNotNull(purchase);
-//        testCheckReduceAmount();
-    }
-
-    /**
-     * test if the amount of product has been change
-     */
-    @Test
-    private void testCheckReduceAmount() {
-        ProductData product = data.getProductData(Data.VALID);
-        int amount = store.getProduct(product.getProductName()).getAmount();
-        assertEquals(amount + 1, product.getAmount());
-    }
 
     /**
      * use case 4.1.1 -add product

@@ -178,7 +178,7 @@ public class Store {
      */
     public boolean reserveProducts(HashMap<Product, Integer> otherProducts) {
         HashMap<Product, Integer> productsReserved = new HashMap<>();
-        Boolean output = true;
+        boolean output = true;
         //TODO add here policy
         for(Product other: otherProducts.keySet()) {
             int amount = otherProducts.get(other);
@@ -198,6 +198,10 @@ public class Store {
                     break;
                 }
             }
+            else {
+                return false;
+            }
+
         }
         if(!output) {
             restoreReservedProducts(productsReserved);
