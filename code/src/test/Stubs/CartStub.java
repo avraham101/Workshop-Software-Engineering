@@ -1,5 +1,6 @@
 package Stubs;
 
+import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import Domain.*;
 
@@ -14,7 +15,6 @@ public class CartStub extends Cart {
     }
 
     @Override
-    public List<Purchase> buy(PaymentData paymentData, String addresToDeliver) {
-        return new LinkedList<>();
+    public void buy(PaymentData paymentData, DeliveryData addresToDeliver) {
     }
 }

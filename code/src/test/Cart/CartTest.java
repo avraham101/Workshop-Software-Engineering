@@ -11,8 +11,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class CartTest {
 
@@ -55,18 +54,19 @@ public class CartTest {
     //TODO each test which failed, check state didn't change
     @Test
     public void testBuy() {
-        setUpProductAdded();
-        PaymentData paymentData = testData.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = testData.getDeliveryData(Data.VALID);
-        List<Purchase> purchases = cart.reserveCart(paymentData,deliveryData.getAddress());
-        assertEquals(1, purchases.size());
-        Purchase purchase = purchases.get(0);
-        assertEquals(paymentData.getName(), purchase.getBuyer());
-        List<ProductData> products =  purchase.getProduct();
-        assertEquals(1, products.size());
-        ProductData result = products.get(0);
-        ProductData expected = deliveryData.getProducts().get(0);
-        assertEquals(expected.getProductName(),result.getProductName());
-        assertEquals(expected.getAmount(), result.getAmount());
+        fail();
+//        setUpProductAdded();
+//        PaymentData paymentData = testData.getPaymentData(Data.VALID);
+//        DeliveryData deliveryData = testData.getDeliveryData(Data.VALID);
+//        List<Purchase> purchases = cart.reserveCart(paymentData,deliveryData.getAddress());
+//        assertEquals(1, purchases.size());
+//        Purchase purchase = purchases.get(0);
+//        assertEquals(paymentData.getName(), purchase.getBuyer());
+//        List<ProductData> products =  purchase.getProduct();
+//        assertEquals(1, products.size());
+//        ProductData result = products.get(0);
+//        ProductData expected = deliveryData.getProducts().get(0);
+//        assertEquals(expected.getProductName(),result.getProductName());
+//        assertEquals(expected.getAmount(), result.getAmount());
     }
 }

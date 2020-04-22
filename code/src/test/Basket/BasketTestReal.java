@@ -32,7 +32,7 @@ public class BasketTestReal extends BasketTest{
         setUpAddedToBasket();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        basket.available(paymentData, address);
+        //basket.available(paymentData, address);
     }
 
     /**------------------------------set-ups------------*/
@@ -53,12 +53,13 @@ public class BasketTestReal extends BasketTest{
      * fail test
      */
     private void testIfBasketAvailableToBuyFails() {
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        String address = data.getDeliveryData(Data.EMPTY_ADDRESS).getAddress();
-        Product product = data.getRealProduct(Data.VALID);
-        basket.addProduct(product,product.getAmount()*2);
-        assertFalse(basket.available(paymentData, address));
-        basket.addProduct(product,product.getAmount());
+        fail();
+//        PaymentData paymentData = data.getPaymentData(Data.VALID);
+//        String address = data.getDeliveryData(Data.EMPTY_ADDRESS).getAddress();
+//        Product product = data.getRealProduct(Data.VALID);
+//        basket.addProduct(product,product.getAmount()*2);
+//        assertFalse(basket.available(paymentData, address));
+//        basket.addProduct(product,product.getAmount());
     }
 
     /**
@@ -66,14 +67,15 @@ public class BasketTestReal extends BasketTest{
      */
     @Override @Test
     public void testBuyBasket() {
-        setUpForBuy();
-        Purchase result = basket.reservedBasket();
-        assertNotNull(result);
-        Product product = data.getRealProduct(Data.VALID);
-        assertEquals(basket.getStore().getName(), result.getStoreName());
-        List<ProductData> productDataList = result.getProduct();
-        assertFalse(productDataList.isEmpty());
-        assertEquals(product.getName(), productDataList.get(0).getProductName());
+        fail();
+//        setUpForBuy();
+//        Purchase result = basket.reservedBasket();
+//        assertNotNull(result);
+//        Product product = data.getRealProduct(Data.VALID);
+//        assertEquals(basket.getStore().getName(), result.getStoreName());
+//        List<ProductData> productDataList = result.getProduct();
+//        assertFalse(productDataList.isEmpty());
+//        assertEquals(product.getName(), productDataList.get(0).getProductName());
     }
 
 

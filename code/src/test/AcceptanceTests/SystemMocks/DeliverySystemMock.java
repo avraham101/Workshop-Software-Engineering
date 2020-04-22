@@ -14,9 +14,4 @@ public class DeliverySystemMock extends SupplySystem {
     public boolean deliver(DeliveryData deliveryData) {
         return false;
     }
-
-    @Override
-    public boolean isConnected() {
-        return false;
-    }
 }

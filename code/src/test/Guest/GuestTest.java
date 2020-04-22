@@ -37,6 +37,7 @@ public class GuestTest {
         Subscribe sub=new Subscribe("yuval","sabag");
         assertTrue(guest.login(user,sub));
         assertSame(user.getState(), sub);
+        System.out.println("V");
     }
 
     /**
@@ -54,9 +55,10 @@ public class GuestTest {
      */
     @Test
     public void testbuyCart() {
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        assertTrue(guest.reserveCart(paymentData,deliveryData.getAddress()));
+        fail();
+//        PaymentData paymentData = data.getPaymentData(Data.VALID);
+//        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+//        assertTrue(guest.reserveCart(paymentData,deliveryData.getAddress()));
     }
 
     /**

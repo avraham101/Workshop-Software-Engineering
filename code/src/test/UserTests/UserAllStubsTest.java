@@ -112,9 +112,7 @@ public class UserAllStubsTest {
      */
     protected void setUpProductBought(){
         setUpProductAddedToCart();
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        user.reservedCart(paymentData,deliveryData.getAddress());
+        user.reservedCart();
     }
 
 
@@ -156,10 +154,11 @@ public class UserAllStubsTest {
     //TODO change purchase and change tests also
     @Test
     public void testPurchase() {
-        setUpProductAddedToCart();
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        assertTrue(user.reservedCart(paymentData,deliveryData.getAddress()));
+        fail();
+//        setUpProductAddedToCart();
+//        PaymentData paymentData = data.getPaymentData(Data.VALID);
+//        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+//        assertTrue(user.reservedCart(paymentData,deliveryData.getAddress()));
     }
 
     /**

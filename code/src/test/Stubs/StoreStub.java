@@ -15,15 +15,6 @@ public class StoreStub extends Store {
         super(name, purchasePolicy, discount, permissions);
     }
 
-    /**
-     * use case 2.8 - reserveCart cart
-     * @param list - the products
-     * @return
-     */
-    @Override
-    public boolean isAvailableProducts(HashMap<Product, Integer> list) {
-        return true;
-    }
 
     /**
      * use case 3.3 write review
@@ -66,10 +57,10 @@ public class StoreStub extends Store {
     }
 
 
-    //TODO add doumentation
-    @Override
-    public Purchase purches(PaymentData paymentData, DeliveryData deliveryData) {
-        return null;
-    }
+//    //TODO add doumentation
+//    @Override
+//    public Purchase purches(PaymentData paymentData, DeliveryData deliveryData) {
+//        return null;
+//    }
 
 }

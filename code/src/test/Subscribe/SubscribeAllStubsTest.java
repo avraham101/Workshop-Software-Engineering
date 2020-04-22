@@ -87,10 +87,11 @@ public class SubscribeAllStubsTest {
      * set up a valid purchase history
      */
     protected void setUpProductBought(){
-        setUpProductAddedToCart();
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        sub.reserveCart(paymentData,deliveryData.getAddress());
+        fail();
+//        setUpProductAddedToCart();
+//        PaymentData paymentData = data.getPaymentData(Data.VALID);
+//        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+//        sub.reserveCart(paymentData,deliveryData.getAddress());
     }
 
     /**
@@ -131,10 +132,11 @@ public class SubscribeAllStubsTest {
     //TODO change test beacuse change imp
     @Test
     public void testBuyCart() {
-        setUpProductAddedToCart();
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        assertTrue(sub.reserveCart(paymentData,deliveryData.getAddress()));
+        fail();
+//        setUpProductAddedToCart();
+//        PaymentData paymentData = data.getPaymentData(Data.VALID);
+//        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+//        assertTrue(sub.reserveCart(paymentData,deliveryData.getAddress()));
     }
 
     /**

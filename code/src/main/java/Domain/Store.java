@@ -135,27 +135,6 @@ public class Store {
     }
 
 
-
-    /**
-     * use case 2.8 - but cart
-     * the function check if product available in the store
-     * @param list - the products
-     * @return true if the products is available, otherwise
-     */
-    public boolean isAvailableProducts(HashMap<Product, Integer> list) {
-        for(Product product: list.keySet()) {
-            int amount = list.get(product);
-            Product real = products.get(product.getName());
-            if(real==null)
-                return false;
-            if(real.getAmount() < amount)
-                return false;
-        }
-        if(!purchasePolicy.stands(list))
-            return false;
-        return true;
-    }
-
     /**
      * use case 2.8 - purchase cart
      * the function calc the price of the products after discount

@@ -115,25 +115,6 @@ public class Basket {
                 Objects.equals(products, basket.products);
     }
 
-
-    /**
-     * check if the basket is available for buying
-     * @param paymentData - the payment data
-     * @param addresToDeliver - the address to deliver to
-     * @return - true if available, false if not
-     */
-    //TODO delete this
-    public boolean available(PaymentData paymentData, String addresToDeliver) {
-        //payment data updated
-        double price = store.getPriceForBasket(products);
-        paymentData = new PaymentData(paymentData.getName(),paymentData.getAddress(),paymentData.getCreditCard());
-        paymentData.setTotalPrice(price);
-        if(!store.isAvailableProducts(products))
-            return false;
-        //delivery data
-        return isAvailableDelivery(addresToDeliver);
-    }
-
     /**
      * use case 2.8 - purchase cart
      * the function check if the payment is available.

@@ -93,10 +93,11 @@ public class BasketTest {
      */
     @Test
     public void testIfBasketAvailableToBuy() {
-        setUpAddedToBasket();
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertTrue(basket.available(paymentData, address));
+        fail();
+//        setUpAddedToBasket();
+//        PaymentData paymentData = data.getPaymentData(Data.VALID);
+//        String address = data.getDeliveryData(Data.VALID).getAddress();
+//        assertTrue(basket.available(paymentData, address));
     }
 
     /**
@@ -104,9 +105,10 @@ public class BasketTest {
      */
     @Test
     public void testBuyBasket() {
-        setUpAddedToBasket();
-       Purchase result = basket.reservedBasket();
-       assertNull(result);
+        fail();
+//        setUpAddedToBasket();
+//        Purchase result = basket.reservedBasket();
+//        assertNull(result);
     }
 
 }
