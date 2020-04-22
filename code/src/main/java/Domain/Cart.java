@@ -51,17 +51,17 @@ public class Cart {
      * use case - 2.8 buy cart
      * the function buy this cart
      * @param paymentData - the payment info
-     * @param addresToDeliver  - the address to shift
+     * @param addressToDeliver  - the address to shift
      * @return ture if the cart bought, otherwise false
      */
-    public List<Purchase> buy(PaymentData paymentData, String addresToDeliver) {
-        if(!availableCart(paymentData,addresToDeliver))
+    public List<Purchase> buy(PaymentData paymentData, String addressToDeliver) {
+        if(!availableCart(paymentData,addressToDeliver))
             return null;
-        List<Purchase> recives = new LinkedList<>();
+        List<Purchase> receives = new LinkedList<>();
         for(Basket basket: baskets.values()) {
             Purchase purchase = basket.buy();
             if(purchase!=null) {
-                recives.add(purchase);
+                receives.add(purchase);
                 //TODO remove this baskets.remove(basket.getStore().getName());
             }
             else {
@@ -69,19 +69,21 @@ public class Cart {
             }
         }
         baskets.clear(); //remove all baskets after buying all
-        return recives;
+        return receives;
     }
 
     /**
      * use case 2.8 - but cart
      * the function check that all products is available
+     * @param paymentData - the payment info
+     * @param addressToDeliver - the address to shift
      * @return true is available, otherwise false
      */
-    private boolean availableCart(PaymentData paymentData, String addresToDeliver) {
+    private boolean availableCart(PaymentData paymentData, String addressToDeliver) {
         if(baskets.values().isEmpty())
             return false;
         for(Basket basket: baskets.values()) {
-            if(!basket.available(paymentData, addresToDeliver))
+            if(!basket.available(paymentData, addressToDeliver))
                 return false;
         }
         return true;

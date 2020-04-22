@@ -35,6 +35,8 @@ public class Store {
         this.purchases = new LinkedList<>();
     }
 
+    // ============================ getters & setters ============================ //
+
     public String getName() {
         return name;
     }
@@ -99,6 +101,8 @@ public class Store {
         return purchaseList;
     }
 
+    // ============================ getters & setters ============================ //
+
     /**
      * use case 2.7.4 - add product to cart
      * use case 3.3 - write review
@@ -128,7 +132,6 @@ public class Store {
     public int hashCode() {
         return Objects.hash(name, purchasePolicy, discount, products, categoryList, requests, permissions);
     }
-
 
 
     /**
@@ -161,7 +164,6 @@ public class Store {
     public double getPriceForBasket(HashMap<Product, Integer> list) {
         return discount.stands(list);
     }
-
 
     /**
      * use case 2.8 - purchase cart
@@ -229,7 +231,7 @@ public class Store {
 
     /**
      * use case 3.5 - add request to store
-     * @param addRequest
+     * @param addRequest - request to be added
      * @return
      */
     public synchronized boolean addRequest(Request addRequest) {
@@ -240,7 +242,7 @@ public class Store {
     }
 
     /**
-     *use case 4.1.1
+     * use case 4.1.1 - add product to store
      * @param productData details of product to add to store
      * @return if the product was added successfully
      */
@@ -256,7 +258,7 @@ public class Store {
     }
 
     /**
-     * use case 4.1.2
+     * use case 4.1.2 - remove product from store
      * remove product from the store
      * @param productName
      * @return  if the product had been removed
@@ -275,7 +277,7 @@ public class Store {
     }
 
     /**
-     * use case 4.1.3
+     * use case 4.1.3 - edit product in store
      * edit product in the store
      * @param productData
      * @return if the product was edited successfully
