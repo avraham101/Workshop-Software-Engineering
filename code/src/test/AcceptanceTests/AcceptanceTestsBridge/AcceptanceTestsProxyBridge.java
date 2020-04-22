@@ -203,16 +203,16 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public List<PurchaseTestData> getStorePurchasesHistory(String storeName) {
+    public List<PurchaseTestData> getStorePurchasesHistory(int id,String storeName) {
         if(realBridge!=null)
-            return realBridge.getStorePurchasesHistory(storeName);
+            return realBridge.getStorePurchasesHistory(id,storeName);
         return null;
     }
 
     @Override
-    public List<PurchaseTestData> getUserPurchaseHistory(String username) {
+    public List<PurchaseTestData> getUserPurchaseHistory(int id,String username) {
         if(realBridge!=null)
-            return realBridge.getUserPurchaseHistory(username);
+            return realBridge.getUserPurchaseHistory(id,username);
         return null;
     }
 

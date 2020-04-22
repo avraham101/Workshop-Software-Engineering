@@ -28,14 +28,15 @@ public class AdminPurchaseHistory extends AcceptanceTests {
      */
     @Test
     public void getUserPurchaseHistorySuccess(){
-        List<PurchaseTestData> history = bridge.getUserPurchaseHistory(userToCheck.getUsername());
+        List<PurchaseTestData> history = bridge.getUserPurchaseHistory(admin.getId(),userToCheck.getUsername());
         assertNotNull(history);
         assertTrue(history.get(0).getProductsAndAmountInPurchase().containsKey(products.get(0)));
     }
 
     @Test
     public void getUserPurchaseHistoryFailInvalidUser(){
-        List<PurchaseTestData> history = bridge.getUserPurchaseHistory("guest");
+        List<PurchaseTestData> history = bridge.getUserPurchaseHistory(admin.getId(),
+                                                                "guest");
         assertNull(history);
     }
 
@@ -45,14 +46,16 @@ public class AdminPurchaseHistory extends AcceptanceTests {
 
     @Test
     public void getStorePurchaseHistorySuccess(){
-        List<PurchaseTestData> history = bridge.getStorePurchasesHistory(stores.get(0).getStoreName());
+        List<PurchaseTestData> history = bridge.getStorePurchasesHistory(admin.getId(),
+                stores.get(0).getStoreName());
         assertNotNull(history);
         assertTrue(history.get(0).getProductsAndAmountInPurchase().containsKey(products.get(0)));
     }
 
     @Test
     public void getStorePurchaseHistoryFailStoreNotExist(){
-        List<PurchaseTestData> history = bridge.getStorePurchasesHistory("notExist");
+        List<PurchaseTestData> history = bridge.getStorePurchasesHistory(admin.getId(),
+                "notExist");
         assertNull(history);
     }
 }

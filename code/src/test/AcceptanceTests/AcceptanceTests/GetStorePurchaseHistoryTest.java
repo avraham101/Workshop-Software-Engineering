@@ -22,7 +22,7 @@ public class GetStorePurchaseHistoryTest extends AcceptanceTests {
     public void getStorePurchaseHistorySuccess(){
        List<PurchaseTestData> history =
                bridge.userGetStorePurchasesHistory(superUser.getId(),stores.get(0).getStoreName());
-       assertTrue(!history.isEmpty());
+       assertNotNull(history);
        assertTrue(history.get(0).getProductsAndAmountInPurchase().containsKey(products.get(0)));
     }
 
