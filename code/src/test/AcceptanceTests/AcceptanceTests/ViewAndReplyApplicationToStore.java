@@ -34,7 +34,7 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
         registerAndLogin(responder);
         registerAndLogin(asker);
         setUpApplicationsAndReplies();
-        registerAndLogin(responder);
+        //registerAndLogin(responder);
     }
 
     private void setUpApplicationsAndReplies() {
@@ -61,20 +61,20 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
 
     @Test
     public void viewApplicationToStoreTestSuccess(){
-        HashSet<ApplicationToStoreTestData> actualApplications = bridge.viewApplicationToStore(storeName);
+        HashSet<ApplicationToStoreTestData> actualApplications = bridge.viewApplicationToStore(responder.getId(),storeName);
         assertEquals(applications,actualApplications);
     }
 
     @Test
     public void viewApplicationToStoreTestFailNotLoggedIn(){
         bridge.logout(responder.getId());
-        HashSet<ApplicationToStoreTestData> actualApplications = bridge.viewApplicationToStore(storeName);
+        HashSet<ApplicationToStoreTestData> actualApplications = bridge.viewApplicationToStore(responder.getId(), storeName);
         assertFalse(actualApplications.size() != 0);
     }
 
     @Test
     public void viewApplicationToStoreTestFailWrongStore(){
-        HashSet<ApplicationToStoreTestData> actualApplications = bridge.viewApplicationToStore(storeName + storeName);
+        HashSet<ApplicationToStoreTestData> actualApplications = bridge.viewApplicationToStore(responder.getId(),storeName + storeName);
         assertFalse(actualApplications.size() != 0);
     }
 
@@ -84,7 +84,7 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
 
     @Test
     public void replyApplicationToStoreTestSuccess(){
-        HashMap<ApplicationToStoreTestData,String> emptyAppAndRep = bridge.getUserApplicationsAndReplies(asker.getUsername(),storeName);
+        HashMap<ApplicationToStoreTestData,String> emptyAppAndRep = bridge.getUserApplicationsAndReplies(responder.getId(),asker.getUsername(),storeName);
         for(ApplicationToStoreTestData app : applications)
             assertFalse(emptyAppAndRep.containsKey(app));
 
@@ -94,7 +94,7 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
             assertTrue(isWritten);
             requestId++;
         }
-        HashMap<ApplicationToStoreTestData,String> actualAppAndRep = bridge.getUserApplicationsAndReplies(asker.getUsername(),storeName);
+        HashMap<ApplicationToStoreTestData,String> actualAppAndRep = bridge.getUserApplicationsAndReplies(responder.getId(), asker.getUsername(),storeName);
         assertEquals(applicationsAndReplies,actualAppAndRep);
     }
 
@@ -102,7 +102,7 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
     public void replyApplicationToStoreTestFailNotLoggedIn(){
         bridge.logout(responder.getId());
 
-        HashMap<ApplicationToStoreTestData,String> emptyAppAndRep = bridge.getUserApplicationsAndReplies(asker.getUsername(),storeName);
+        HashMap<ApplicationToStoreTestData,String> emptyAppAndRep = bridge.getUserApplicationsAndReplies(responder.getId(), asker.getUsername(),storeName);
         assertTrue(emptyAppAndRep.size()==0);
 
         int requestId = 1;
@@ -122,7 +122,7 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
             requestId++;
         }
 
-        HashMap<ApplicationToStoreTestData,String> emptyAppAndRep = bridge.getUserApplicationsAndReplies(asker.getUsername(),storeName + storeName);
+        HashMap<ApplicationToStoreTestData,String> emptyAppAndRep = bridge.getUserApplicationsAndReplies(responder.getId(), asker.getUsername(),storeName + storeName);
         for(ApplicationToStoreTestData app : applications)
             assertFalse(emptyAppAndRep.containsKey(app));
     }
@@ -132,7 +132,7 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
         int requestId = 10;
         boolean isWritten = bridge.writeReplyToApplication(requestId,storeName, wrongApplication.getKey(), wrongApplication.getValue());
         assertFalse(isWritten);
-        HashMap<ApplicationToStoreTestData,String> emptyAppAndRep = bridge.getUserApplicationsAndReplies(asker.getUsername(),storeName + storeName);
+        HashMap<ApplicationToStoreTestData,String> emptyAppAndRep = bridge.getUserApplicationsAndReplies(responder.getId(), asker.getUsername(),storeName + storeName);
         assertFalse(emptyAppAndRep.containsKey(wrongApplication.getKey()));
     }
 

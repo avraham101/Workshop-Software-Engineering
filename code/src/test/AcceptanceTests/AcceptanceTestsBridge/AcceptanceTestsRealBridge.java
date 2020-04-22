@@ -224,14 +224,14 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-4.9---------------------------------//
     @Override
-    public HashSet<ApplicationToStoreTestData> viewApplicationToStore(String storeName) {
+    public HashSet<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName) {
         List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName);
         List<ApplicationToStoreTestData> applications = buildApplicationsToStore(requests);
         return new HashSet<>(applications);
     }
 
     @Override
-    public HashMap<ApplicationToStoreTestData, String> getUserApplicationsAndReplies(String username, String storeName) {
+    public HashMap<ApplicationToStoreTestData, String> getUserApplicationsAndReplies(int id, String username, String storeName) {
         List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName);
         HashMap<ApplicationToStoreTestData,String> appsAndReplies = new HashMap<>();
 
