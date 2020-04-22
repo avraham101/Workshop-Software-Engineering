@@ -638,6 +638,24 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
+     * use case 2.8 - buy Cart
+     */
+    @Test
+    public void testBuyCartPaymentSystemCrashed() {
+        
+    }
+
+    /**
+     * use case 2.8 - buy Cart
+     */
+    @Test
+    public void testBuyCartSupplySystemCrashed() {
+
+    }
+
+
+
+    /**
      * use case 2.8 - test buy Cart
      */
     @Test
