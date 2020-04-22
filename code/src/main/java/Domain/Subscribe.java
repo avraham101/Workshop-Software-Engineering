@@ -245,6 +245,7 @@ public class Subscribe extends UserState{
                 boolean added=false;
                 for(PermissionType type: permissions)
                     added=added|p.addType(type);
+                lock.readLock().unlock();
                 return added;
             }
         }
@@ -268,6 +269,7 @@ public class Subscribe extends UserState{
                 boolean removed=false;
                 for(PermissionType type: permissions)
                     removed=removed|p.removeType(type);
+                lock.readLock().unlock();
                 return removed;
             }
         }
@@ -288,7 +290,10 @@ public class Subscribe extends UserState{
 
         for(Permission p: givenByMePermissions) {
             if (p.getStore().getName().equals(storeName) && p.getOwner().getName().equals(userName)) {
+                lock.writeLock().lock();
                 p.getOwner().removeManagerFromStore(storeName);
+                givenByMePermissions.remove(p);
+                lock.writeLock().unlock();
                 return true;
             }
         }
@@ -328,14 +333,13 @@ public class Subscribe extends UserState{
     @Override
     public List<Request> viewRequest(String storeName) {
         List<Request> output = new LinkedList<>();
-        if(! permissions.containsKey(storeName))
+        if(storeName==null || !permissions.containsKey(storeName))
             return output;
         Permission permission = permissions.get(storeName);
         if(permission != null){
             Store store = permission.getStore();
             //TODO check if concurrent
             output = new LinkedList<>(store.getRequests().values());
-
         }
         return output;
     }
@@ -349,16 +353,16 @@ public class Subscribe extends UserState{
      */
     @Override
     public Request replayToRequest(String storeName, int requestID, String content) {
-        //TODO don't check content is null twice
-        if(! permissions.containsKey(storeName) | content==null)
+        if((storeName==null || !permissions.containsKey(storeName)) | content==null)
             return null;
         Permission permission = permissions.get(storeName);
         if(permission == null)
             return null;
         Store store = permission.getStore();
         //TODO add to use case what happened when has few comments
-        if(store!=null&&store.getRequests().containsKey(requestID)) {
-            store.getRequests().get(requestID).setComment(content);
+        if(store!=null &&
+                store.getRequests().containsKey(requestID) &&
+                store.getRequests().get(requestID).getCommentReference().compareAndSet(null, content)) {
             return store.getRequests().get(requestID);
         }
         return null;

@@ -495,9 +495,17 @@ public class SubscribeAllStubsTest {
     @Test
     public void testViewRequest(){
         setUpRequestAdded();
+        testViewRequestWrongStore();
+        testViewRequestNullName();
+    }
+
+    private void testViewRequestWrongStore() {
         Request request1 = data.getRequest(Data.WRONG_STORE);
-        Request request2 = data.getRequest(Data.NULL_NAME);
         assertTrue(sub.viewRequest(request1.getStoreName()).isEmpty());
+    }
+
+    private void testViewRequestNullName() {
+        Request request2 = data.getRequest(Data.NULL_NAME);
         assertTrue(sub.viewRequest(request2.getStoreName()).isEmpty());
     }
 
@@ -507,13 +515,29 @@ public class SubscribeAllStubsTest {
     @Test
     public void testReplayRequest(){
         setUpRequestAdded();
+        testReplayRequestNullName();
+        testReplayRequestWrongStore();
+        testReplayRequestWrongID();
+        testReplayRequestNullRequest();
+    }
+
+    private void testReplayRequestNullName() {
         Request request1 = data.getRequest(Data.NULL_NAME);
-        Request request2 = data.getRequest(Data.WRONG_STORE);
-        Request request3 = data.getRequest(Data.WRONG_ID);
-        Request request4 = data.getRequest(Data.VALID);
         assertNull(sub.replayToRequest(request1.getStoreName(), request1.getId(), "comment"));
+    }
+
+    private void testReplayRequestWrongStore() {
+        Request request2 = data.getRequest(Data.WRONG_STORE);
         assertNull(sub.replayToRequest(request2.getStoreName(), request2.getId(), "comment"));
+    }
+
+    private void testReplayRequestWrongID() {
+        Request request3 = data.getRequest(Data.WRONG_ID);
         assertNull(sub.replayToRequest(request3.getStoreName(), request3.getId(), "comment"));
+    }
+
+    private void testReplayRequestNullRequest() {
+        Request request4 = data.getRequest(Data.VALID);
         assertNull(sub.replayToRequest(request4.getStoreName(), request4.getId(), null));
     }
 
