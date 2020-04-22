@@ -108,7 +108,7 @@ public class ServiceAPI {
     }
 
     /**
-     * use case 2.7.3 edit amount of product
+     * use case 2.7.3 - edit amount of product
      * acceptance test class : EditCartTest
      * @param productName - the product to edit it's amount
      * @param storeName - the store of the product
@@ -304,7 +304,7 @@ public class ServiceAPI {
     }
 
     /**
-     * use case 4.9.2 -reply request
+     * use case 4.9.2 - reply request
      * acceptance test class : ViewAndReplyApplicationToStore
      * @param id of user
      * @param requestId
@@ -345,6 +345,5 @@ public class ServiceAPI {
     public List<Purchase> AdminWatchStoreHistory(int id,String storeName){
         return logicManager.watchStorePurchasesHistory(id, storeName);
     }
-
 
 }

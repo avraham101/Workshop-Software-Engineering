@@ -15,6 +15,8 @@ public class StoreData {
         this.discountPolicy = discountPolicy;
     }
 
+    // ============================ getters & setters ============================ //
+
     public String getName() {
         return name;
     }
@@ -39,7 +41,8 @@ public class StoreData {
         this.discountPolicy = discountPolicy;
     }
 
-    // Overriding equals() to compare two StoreData objects
+    // ============================ getters & setters ============================ //
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {

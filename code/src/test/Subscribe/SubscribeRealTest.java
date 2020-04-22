@@ -131,12 +131,18 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         testAddPermissionTwiceFail();
     }
 
+    /**
+     * part of test use case 4.6.1 - add permission
+     */
     private void testAddPermissionTwiceFail() {
         assertFalse(sub.addPermissions(data.getPermissionTypeList(),
                 data.getStore(Data.VALID).getName(),data.getSubscribe(Data.VALID).getName()));
     }
 
-    //test the permission was really added
+    /**
+     * part of test use case 4.6.1 - add permissions to manager
+     * test the permission was really added
+     */
     @Override
     protected void testAddPermissionSuccess() {
         super.testAddPermissionSuccess();

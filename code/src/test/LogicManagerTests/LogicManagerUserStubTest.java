@@ -75,8 +75,6 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
         logicManager.deleteFromCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName());
     }
 
-
-
     /**
      * test use case 3.2 - Open Store
      */

@@ -14,6 +14,8 @@ public class PaymentData {
         this.totalPrise = 0;
     }
 
+    // ============================ getters & setters ============================ //
+
     public String getName() {
         return name;
     }
@@ -45,4 +47,6 @@ public class PaymentData {
     public void setTotalPrise(double totalPrise) {
         this.totalPrise = totalPrise;
     }
+
+    // ============================ getters & setters ============================ //
 }

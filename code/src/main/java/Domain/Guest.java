@@ -18,6 +18,7 @@ public class Guest extends UserState {
         this.cart = cart;
     }
 
+    // ============================ getters & setters ============================ //
 
     @Override
     public String getName() {
@@ -28,6 +29,8 @@ public class Guest extends UserState {
     public String getPassword() {
         return null;
     }
+
+    // ============================ getters & setters ============================ //
 
     /**
      * use case 2.3 - Login
@@ -43,7 +46,7 @@ public class Guest extends UserState {
 
     /**
      * use case 2.8 - purchase cart and save
-     * @param receives - the recives
+     * @param receives - the receives
      */
     @Override
     protected void savePurchase(List<Purchase> receives) {
@@ -60,7 +63,7 @@ public class Guest extends UserState {
     }
 
     /**
-     * use case 3.2
+     * use case 3.2 - open store
      * @param storeDetails - the details of the store
      * @return always null. guest cant open store.
      */
@@ -90,10 +93,8 @@ public class Guest extends UserState {
         return false;
     }
 
-
-
     /**
-     * use case 3.5
+     * use case 3.5 - add request
      * @param storeName - The id of the store
      * @param content - The content of the request
      * @return true if success, false else
@@ -112,7 +113,6 @@ public class Guest extends UserState {
     public List<Purchase> watchMyPurchaseHistory() {
         return null;
     }
-
 
     /**
      * use case 4.1.1 -add product
@@ -137,7 +137,7 @@ public class Guest extends UserState {
     }
 
     /**
-     * use case 4.1.3
+     * use case 4.1.3 - edit product details
      * @param productData
      * @return
      */
@@ -148,7 +148,7 @@ public class Guest extends UserState {
 
 
     /**
-     * use case 4.5
+     * use case 4.5 - add manager to store
      * @param youngOwner user to be owner
      * @param storeName
      * @return
@@ -159,7 +159,7 @@ public class Guest extends UserState {
     }
 
     /**
-     * use case 4.6.1
+     * use case 4.6.1 - add permissions
      * @param permissions
      * @param storeName
      * @param userName
@@ -194,7 +194,7 @@ public class Guest extends UserState {
     }
 
     /**
-     * use case 4.9.1
+     * use case 4.9.1 - view request
      * @param storeName
      * @return
      */
@@ -226,7 +226,7 @@ public class Guest extends UserState {
 
 
     /**
-     * use case 6.4.1
+     * use case 6.4.1 - watch user history
      * @return
      */
     @Override
