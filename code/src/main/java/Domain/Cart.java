@@ -1,7 +1,9 @@
 package Domain;
 
+import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,43 +50,65 @@ public class Cart {
     }
 
     /**
-     * use case - 2.8 buy cart
-     * the function buy this cart
-     * @param paymentData - the payment info
-     * @param addresToDeliver  - the address to shift
+     * use case - 2.8 reserveCart cart
+     * the function reserveCart this cart
      * @return ture if the cart bought, otherwise false
      */
-    public List<Purchase> buy(PaymentData paymentData, String addresToDeliver) {
-        if(!availableCart(paymentData,addresToDeliver))
-            return null;
-        List<Purchase> recives = new LinkedList<>();
+    public boolean reserveCart() {
+        List<Basket> reservesBaskets = new LinkedList<>();
         for(Basket basket: baskets.values()) {
-            Purchase purchase = basket.buy();
-            if(purchase!=null) {
-                recives.add(purchase);
-                //TODO remove this baskets.remove(basket.getStore().getName());
-            }
-            else {
-                return null;
-            }
-        }
-        baskets.clear(); //remove all baskets after buying all
-        return recives;
-    }
-
-    /**
-     * use case 2.8 - but cart
-     * the function check that all products is available
-     * @return true is available, otherwise false
-     */
-    private boolean availableCart(PaymentData paymentData, String addresToDeliver) {
-        if(baskets.values().isEmpty())
-            return false;
-        for(Basket basket: baskets.values()) {
-            if(!basket.available(paymentData, addresToDeliver))
+            if(!basket.reservedBasket()) {
+                cancleReserve(reservesBaskets);
                 return false;
+            }
+            reservesBaskets.add(basket);
         }
         return true;
     }
 
+    /**
+     * use case 2.8 reserveCart cart
+     * @param reserved - all the baskets that reservied there items and need to return to the store
+     */
+    private void cancleReserve(List<Basket> reserved)  {
+        for (Basket basket:reserved) {
+            basket.cancel();
+        }
+    }
+
+    /**
+     * use case 2.8 - buy cart
+     * the function updated Delivery Data and Payment Data
+     * @param paymentData the payment data
+     * @param deliveryData the delivery data
+     */
+    public void buy(PaymentData paymentData, DeliveryData deliveryData) {
+        for(Basket b:baskets.values()){
+            b.buy(paymentData,deliveryData);
+        }
+    }
+
+    /**
+     * use case 2.8 - buy cart
+     * the function cancel a cart
+     */
+    public void cancel() {
+        for(Basket b:baskets.values()){
+            b.cancel();
+        }
+    }
+
+    /**
+     * use case 2.8 -buy cart
+     * the function create the purchase
+     * @param buyer - the name of the buyer
+     * @return list of purchase
+     */
+    public List<Purchase> savePurchases(String buyer) {
+        List<Purchase> purchases = new LinkedList<>();
+        for(Basket b:baskets.values()){
+            purchases.add(b.savePurchase(buyer));
+        }
+        return purchases;
+    }
 }

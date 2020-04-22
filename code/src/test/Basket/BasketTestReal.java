@@ -5,12 +5,9 @@ import Data.TestData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import Domain.*;
-import Systems.PaymentSystem.ProxyPayment;
-import Systems.SupplySystem.ProxySupply;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -41,7 +38,7 @@ public class BasketTestReal extends BasketTest{
     /**------------------------------set-ups------------*/
 
     /**
-     * use case 2.8 - buy cart
+     * use case 2.8 - reserveCart cart
      * test if the basket is available for buying
      */
     @Override @Test
@@ -51,7 +48,7 @@ public class BasketTestReal extends BasketTest{
     }
 
     /**
-     * use case 2.8 - buy cart
+     * use case 2.8 - reserveCart cart
      * test if the basket is available for buying
      * fail test
      */
@@ -65,12 +62,12 @@ public class BasketTestReal extends BasketTest{
     }
 
     /**
-     * use case 2.8 - buy cart
+     * use case 2.8 - reserveCart cart
      */
     @Override @Test
     public void testBuyBasket() {
         setUpForBuy();
-        Purchase result = basket.buy();
+        Purchase result = basket.reservedBasket();
         assertNotNull(result);
         Product product = data.getRealProduct(Data.VALID);
         assertEquals(basket.getStore().getName(), result.getStoreName());

@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Store {
 
@@ -91,6 +92,10 @@ public class Store {
         this.discount = discount;
     }
 
+    /**
+     * use case 4.10
+     * @return
+     */
     public List<Purchase> getPurchases() {
         List<Purchase> purchaseList;
         synchronized (purchases){
@@ -155,51 +160,85 @@ public class Store {
      * use case 2.8 - purchase cart
      * the function calc the price of the products after discount
      * pre-condition: all products in list are available.
-     * @param list - the list of products to buy and there amount
+     * @param list - the list of products to reserveCart and there amount
      * @return
      */
+    //TODO check this
     public double getPriceForBasket(HashMap<Product, Integer> list) {
         return discount.stands(list);
     }
 
-
     /**
-     * use case 2.8 - purchase cart
-     * the function check if the external system is connected
-     * @return true if the external system is connected, otherwise false.
+     * use case 2.8 - reserveCart cart
+     * @param otherProducts - the products to remove from store
+     * @return true if succeeded, otherwise false.
      */
-    public Purchase purches(PaymentData paymentData, DeliveryData deliveryData) {
-        reduceAmount(deliveryData.getProducts());
-        return savePurchase(paymentData.getName(),deliveryData.getProducts());
+    public boolean reserveProducts(HashMap<Product, Integer> otherProducts) {
+        HashMap<Product, Integer> productsReserved = new HashMap<>();
+        Boolean output = true;
+        //TODO add here policy
+        for(Product other: otherProducts.keySet()) {
+            int amount = otherProducts.get(other);
+            Product real = products.get(other.getName());
+            if(real!=null) {
+                real.getWriteLock().lock();
+                if(amount<real.getAmount()) {
+                    productsReserved.put(real,amount);
+                    real.setAmount(real.getAmount() - amount);
+                    //TODO call this policy of the product
+                    other.setPrice(real.getDiscountPrice());
+                    real.getWriteLock().unlock();
+                }
+                else {
+                    output = false;
+                    real.getWriteLock().unlock();
+                    break;
+                }
+            }
+        }
+        if(!output) {
+            restoreReservedProducts(productsReserved);
+            return false;
+        }
+        return true;
     }
 
     /**
-     * use case 2.8 - purchase cart
-     * the function reduce products bought from store
-     * reduce the amount of products that someone buy
-     * @param productsToRemove - the products that someone buy
+     * use case 2.8 -reserveCart cart
+     * @param restores - the hashMap of reserved
      */
-    private void reduceAmount(List<ProductData> productsToRemove) {
-        for (ProductData product: productsToRemove) {
-            Product productInStore = this.products.get(product.getProductName());
-            productInStore.setAmount(productInStore.getAmount() - product.getAmount());
+    private void restoreReservedProducts(HashMap<Product, Integer> restores) {
+        for(Product other: restores.keySet()) {
+            int amont = restores.get(other);
+            restoreAmount(other,amont);
+        }
+    }
+
+    /**
+     * use case 2.8 -reserveCart cart
+     * this function restore the amount of the product
+     * @param other - the other product to return to the store
+     * @param amount - the amount to reserve
+     */
+    public void restoreAmount(Product other, int amount) {
+        Product real = products.get(other.getName());
+        if(real!=null) {
+            real.getWriteLock().lock();
+            real.setAmount(real.getAmount() + amount);
+            real.getWriteLock().unlock();
         }
     }
 
     /**
      * use case 2.8 - purchase cart
-     * the function save the
-     * @param buyer - the name of the buyyer
-     * @param products - the products
+     * the function savePurchases the
+     * @param purchase - The purchase to save
      * @return the Purchase that added
      */
-    private Purchase savePurchase(String buyer, List<ProductData> products) {
-        LocalDateTime date = LocalDateTime.now();
-        Purchase purchase = new Purchase(name,buyer,products,date);
+    public void savePurchase(Purchase purchase) {
         synchronized (purchases) {
             this.purchases.add(purchase);
         }
-        return purchase;
     }
 
     /**

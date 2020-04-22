@@ -90,7 +90,7 @@ public class SubscribeAllStubsTest {
         setUpProductAddedToCart();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        sub.buyCart(paymentData,deliveryData.getAddress());
+        sub.reserveCart(paymentData,deliveryData.getAddress());
     }
 
     /**
@@ -126,7 +126,7 @@ public class SubscribeAllStubsTest {
     }
 
     /**
-     * use case - 2.8 buy cart
+     * use case - 2.8 reserveCart cart
      */
     //TODO change test beacuse change imp
     @Test
@@ -134,7 +134,7 @@ public class SubscribeAllStubsTest {
         setUpProductAddedToCart();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        assertTrue(sub.buyCart(paymentData,deliveryData.getAddress()));
+        assertTrue(sub.reserveCart(paymentData,deliveryData.getAddress()));
     }
 
     /**

@@ -49,7 +49,7 @@ public class CartTest {
     }
 
     /**
-     * use case 2.8 - buy
+     * use case 2.8 - reserveCart
      */
     //TODO split to few tests
     //TODO each test which failed, check state didn't change
@@ -58,7 +58,7 @@ public class CartTest {
         setUpProductAdded();
         PaymentData paymentData = testData.getPaymentData(Data.VALID);
         DeliveryData deliveryData = testData.getDeliveryData(Data.VALID);
-        List<Purchase> purchases = cart.buy(paymentData,deliveryData.getAddress());
+        List<Purchase> purchases = cart.reserveCart(paymentData,deliveryData.getAddress());
         assertEquals(1, purchases.size());
         Purchase purchase = purchases.get(0);
         assertEquals(paymentData.getName(), purchase.getBuyer());

@@ -16,7 +16,7 @@ public class StoreStub extends Store {
     }
 
     /**
-     * use case 2.8 - buy cart
+     * use case 2.8 - reserveCart cart
      * @param list - the products
      * @return
      */

@@ -114,7 +114,7 @@ public class UserAllStubsTest {
         setUpProductAddedToCart();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        user.buyCart(paymentData,deliveryData.getAddress());
+        user.reservedCart(paymentData,deliveryData.getAddress());
     }
 
 
@@ -159,7 +159,7 @@ public class UserAllStubsTest {
         setUpProductAddedToCart();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        assertTrue(user.buyCart(paymentData,deliveryData.getAddress()));
+        assertTrue(user.reservedCart(paymentData,deliveryData.getAddress()));
     }
 
     /**
