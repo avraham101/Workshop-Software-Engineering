@@ -24,7 +24,7 @@ public interface AcceptanceTestsBridge {
     boolean deleteFromUserCart(int id, ProductTestData productToDelete);
     boolean changeUserAmountOfProductInCart(int id, ProductTestData productToChangeAmount, int newAmount);
     boolean addToUserCart(int id,ProductTestData productToAdd, int amount);
-    boolean writeReviewOnProduct(ProductTestData product, ReviewTestData review);
+    boolean writeReviewOnProduct(int id,ProductTestData product, ReviewTestData review);
     List<ReviewTestData> getProductsReviews(ProductTestData product);
     List<StoreTestData> getStoresInfo();
     List<ProductTestData> getStoreProducts(String storeName);
@@ -39,7 +39,7 @@ public interface AcceptanceTestsBridge {
     boolean deleteManager(int id, String storeName,String username);
     List<PurchaseTestData> getStorePurchasesHistory(String storeName);
     List<PurchaseTestData> getUserPurchaseHistory(String username);
-    List<PurchaseTestData> getCurrentUserPurchaseHistory();
+    List<PurchaseTestData> getCurrentUserPurchaseHistory(int id);
     boolean appointOwnerToStore(int id,String storeName, String username);
     boolean addPermissionToManager(int id,String storeName, String username, PermissionsTypeTestData productsInventory);
     boolean deletePermission(int id, String storeName, String username, PermissionsTypeTestData productsInventory);

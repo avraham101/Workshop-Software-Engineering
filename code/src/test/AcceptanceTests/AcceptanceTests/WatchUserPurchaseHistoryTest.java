@@ -29,7 +29,7 @@ public class WatchUserPurchaseHistoryTest extends AcceptanceTests {
 
     @Test
     public void watchUserPurchaseHistoryTestSuccess(){
-        HashSet<PurchaseTestData> actualPurchases = new HashSet<>(bridge.getCurrentUserPurchaseHistory());
+        HashSet<PurchaseTestData> actualPurchases = new HashSet<>(bridge.getCurrentUserPurchaseHistory(user0.getId()));
         HashSet<PurchaseTestData> expectedPurchase = new HashSet<>(user0.getPurchases());
 
         assertEquals(expectedPurchase,actualPurchases);
@@ -37,7 +37,7 @@ public class WatchUserPurchaseHistoryTest extends AcceptanceTests {
     @Test
     public void watchUserPurchaseHistoryTestFail(){
         bridge.logout(user0.getId());
-        List<PurchaseTestData> actualPurchases = bridge.getCurrentUserPurchaseHistory();
+        List<PurchaseTestData> actualPurchases = bridge.getCurrentUserPurchaseHistory(user0.getId());
         assertNull(actualPurchases);
     }
 }

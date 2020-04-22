@@ -106,9 +106,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean writeReviewOnProduct(ProductTestData product, ReviewTestData review) {
+    public boolean writeReviewOnProduct(int id,ProductTestData product, ReviewTestData review) {
         if(realBridge!=null)
-            return realBridge.writeReviewOnProduct(product,review);
+            return realBridge.writeReviewOnProduct(id,product,review);
         return false;
     }
 
@@ -217,9 +217,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public List<PurchaseTestData> getCurrentUserPurchaseHistory() {
+    public List<PurchaseTestData> getCurrentUserPurchaseHistory(int id) {
         if(realBridge!=null)
-            return realBridge.getCurrentUserPurchaseHistory();
+            return realBridge.getCurrentUserPurchaseHistory(id);
         return null;
     }
 
