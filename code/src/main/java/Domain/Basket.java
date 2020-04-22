@@ -15,8 +15,6 @@ public class Basket {
 
     private Store store; // the store of the basket
     private HashMap<Product, Integer> products; // key is the product and the value is the amount of the product in thr basket
-    private PaymentData paymentData;
-    private DeliveryData deliveryData;
 
     /**
      * constructor
