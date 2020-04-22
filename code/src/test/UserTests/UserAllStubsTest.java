@@ -101,7 +101,7 @@ public class UserAllStubsTest {
     /**
      * set up product added to cart
      */
-    public void setUpProductAddedToCart(){
+    protected void setUpProductAddedToCart(){
         setUpProductAdded();
         Store store = data.getRealStore(Data.VALID);
         Product p = data.getRealProduct(Data.VALID);
@@ -185,15 +185,6 @@ public class UserAllStubsTest {
         String name = data.getSubscribe(Data.VALID).getName();
         user.savePurchase(name);
         assertEquals(0, user.watchMyPurchaseHistory().size());
-    }
-
-    /**
-     * use case 2.8 - purchase cart
-     */
-    @Test
-    public void testCancel() {
-        setUpReservedCart();
-        user.cancelCart();
     }
 
     /**

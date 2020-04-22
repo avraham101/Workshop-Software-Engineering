@@ -31,4 +31,33 @@ public class CartStub extends Cart {
     @Override
     public void buy(PaymentData paymentData, DeliveryData addresToDeliver) {
     }
+
+    /**
+     * use case 2.8 - buy cart
+     * @return
+     */
+    @Override
+    public boolean reserveCart() {
+        return false;
+    }
+
+
+    /**
+     * use case 2.8 - buy cart
+     * @return
+     */
+    @Override
+    public void cancel() {
+
+    }
+
+
+    /**
+     * use case 2.8 - buy cart
+     * @return
+     */
+    @Override
+    public List<Purchase> savePurchases(String buyer) {
+        return null;
+    }
 }
