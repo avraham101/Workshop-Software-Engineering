@@ -170,7 +170,7 @@ public class Basket {
      * the function buy the basket
      */
     public Purchase buy() {
-        return store.purches(paymentData,deliveryData);
+        return store.purches(paymentData.getName(),deliveryData);
     }
 
 }

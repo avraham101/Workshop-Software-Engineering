@@ -7,12 +7,17 @@ import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import Domain.*;
 import Stubs.ProductStub;
+import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
 import static org.junit.Assert.*;
+
+import Systems.SupplySystem.SupplySystem;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class StoreTestsAllStubs {
@@ -22,7 +27,7 @@ public class StoreTestsAllStubs {
     @Before
     public void setUp(){
         data=new TestData();
-        store=new Store(data.getStore(Data.VALID).getName(), null, null,
+        store=new Store(data.getStore(Data.VALID).getName(), new PurchasePolicy(), null,
                 new Permission(data.getSubscribe(Data.VALID)));
     }
 
@@ -51,6 +56,104 @@ public class StoreTestsAllStubs {
         }
     }
 
+
+    /**
+     * use case 2.8 tests - valid
+     */
+    @Test
+    public void testIsAvailableProducts() {
+        setUpProductAdded();
+        HashMap<Product, Integer> products = new HashMap<>();
+        Product product = new Product(data.getProductData(Data.VALID),new Category("category"));
+        products.put(product, product.getAmount());
+        assertTrue(store.isAvailableProducts(products));
+    }
+
+    /**
+     * use case 2.8 tests - large amount
+     */
+    @Test
+    public void testIsAvailableProductsLargeAmount() {
+        setUpProductAdded();
+        HashMap<Product, Integer> products = new HashMap<>();
+        Product product = new Product(data.getProductData(Data.VALID),new Category("category"));
+        products.put(product, product.getAmount() + 1);
+        assertFalse(store.isAvailableProducts(products));
+    }
+
+    /**
+     * use case 2.8 tests - negative amount
+     */
+    @Test
+    public void testIsAvailableProductsNegativeAmount() {
+        setUpProductAdded();
+        HashMap<Product, Integer> products = new HashMap<>();
+        Product product = new Product(data.getProductData(Data.VALID),new Category("category"));
+        products.put(product, -1);
+        assertFalse(store.isAvailableProducts(products));
+    }
+
+    /**
+     * use case 2.8 tests - zero amount
+     */
+    @Test
+    public void testIsAvailableProductsZeroAmount() {
+        setUpProductAdded();
+        HashMap<Product, Integer> products = new HashMap<>();
+        Product product = new Product(data.getProductData(Data.VALID),new Category("category"));
+        products.put(product, 0);
+        assertFalse(store.isAvailableProducts(products));
+    }
+
+    /**
+     * use case 2.8 tests - zero amount
+     */
+    @Test
+    public void testIsAvailableProductsNullProductName() {
+        setUpProductAdded();
+        HashMap<Product, Integer> products = new HashMap<>();
+        Product product = new Product(data.getProductData(Data.NULL_PRODUCT),new Category("category"));
+        products.put(product, 1);
+        assertFalse(store.isAvailableProducts(products));
+    }
+
+    /**
+     * use case 2.8 tests - zero amount
+     */
+    @Test
+    public void testIsAvailableProductsNullProduct() {
+        setUpProductAdded();
+        HashMap<Product, Integer> products = new HashMap<>();
+        products.put(null, 1);
+        assertFalse(store.isAvailableProducts(products));
+    }
+
+    /**
+     * use case 2.8 - test valid purchase
+     */
+    @Test
+    public void testValidPurchase() {
+        setUpProductAdded();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = new DeliveryData(data.getDeliveryData(Data.VALID).getAddress(), new LinkedList<>());
+        assertNotNull(this.store.purches(paymentData.getName(), deliveryData));
+    }
+
+    /**
+     * use case 2.8 - test purchase
+     */
+    @Test
+    public void testNotValidPurchase() {
+        setUpProductAdded();
+        PaymentData paymentData = data.getPaymentData(Data.NULL_PAYMENT);
+        DeliveryData deliveryData = new DeliveryData(data.getDeliveryData(Data.VALID).getAddress(), new LinkedList<>());
+        assertNotNull(this.store.purches(paymentData.getName(), deliveryData));
+    }
+
+
+
+
+
     /**
      * use case 3.3 - add review
      */
@@ -75,7 +178,7 @@ public class StoreTestsAllStubs {
         setUpProductAdded();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        Purchase purchase = store.purches(paymentData,deliveryData);
+        Purchase purchase = store.purches(paymentData.getName(),deliveryData);
         assertNotNull(purchase);
         testCheckReduceAmount();
     }

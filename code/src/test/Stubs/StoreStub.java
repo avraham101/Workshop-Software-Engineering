@@ -71,7 +71,7 @@ public class StoreStub extends Store {
      * @return
      */
     @Override
-    public Purchase purches(PaymentData paymentData, DeliveryData deliveryData) {
+    public Purchase purches(String paymentDataName, DeliveryData deliveryData) {
         return null;
     }
 
