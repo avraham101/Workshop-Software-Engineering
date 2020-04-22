@@ -78,23 +78,23 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
 
 
     @Override
-    public CartTestData getCurrentUsersCart(int id) {
+    public CartTestData getUsersCart(int id) {
         if(realBridge!=null)
-            return realBridge.getCurrentUsersCart(id);
+            return realBridge.getUsersCart(id);
         return null;
     }
 
     @Override
-    public boolean deleteFromCurrentUserCart(ProductTestData productToDelete) {
+    public boolean deleteFromUserCart(int id, ProductTestData productToDelete) {
         if(realBridge!=null)
-            return realBridge.deleteFromCurrentUserCart(productToDelete);
+            return realBridge.deleteFromUserCart(id, productToDelete);
         return false;
     }
 
     @Override
-    public boolean changeCurrentUserAmountOfProductInCart(ProductTestData productToChangeAmount, int newAmount) {
+    public boolean changeUserAmountOfProductInCart(int id, ProductTestData productToChangeAmount, int newAmount) {
         if(realBridge!=null)
-            return realBridge.changeCurrentUserAmountOfProductInCart(productToChangeAmount,newAmount);
+            return realBridge.changeUserAmountOfProductInCart(id,productToChangeAmount,newAmount);
         return false;
     }
 

@@ -35,7 +35,7 @@ public class EditCartTest extends AcceptanceTests {
 
     @Test
     public void viewCartTestSuccess(){
-        CartTestData actualCart = bridge.getCurrentUsersCart(user0.getId());
+        CartTestData actualCart = bridge.getUsersCart(user0.getId());
         CartTestData expectedCart = cart0;
 
         assertEquals(actualCart,expectedCart);
@@ -51,8 +51,8 @@ public class EditCartTest extends AcceptanceTests {
         ProductTestData productToDelete = products.get(1);
         int oldBasketSize = basketToDeleteFrom.getProductsAndAmountInBasket().size();
 
-        bridge.deleteFromCurrentUserCart(productToDelete);
-        BasketTestData updatedBasket = bridge.getCurrentUsersCart(user0.getId()).getBaskets().get(0);
+        bridge.deleteFromUserCart(user0.getId(),productToDelete);
+        BasketTestData updatedBasket = bridge.getUsersCart(user0.getId()).getBaskets().get(0);
         int newBasketSize = updatedBasket.getProductsAndAmountInBasket().size();
 
         assertEquals(oldBasketSize - 1, newBasketSize);
@@ -63,8 +63,8 @@ public class EditCartTest extends AcceptanceTests {
     public void deleteFromCartTestSuccessDeletedBasket(){
         ProductTestData productToDelete = products.get(4);
 
-        bridge.deleteFromCurrentUserCart(productToDelete);
-        CartTestData actualCart = bridge.getCurrentUsersCart(user0.getId());
+        bridge.deleteFromUserCart(user0.getId(),productToDelete);
+        CartTestData actualCart = bridge.getUsersCart(user0.getId());
 
         int actualCartSize = actualCart.getBaskets().size();
         int expectedCartSize = cart0.getBaskets().size()-1;
@@ -75,7 +75,7 @@ public class EditCartTest extends AcceptanceTests {
     @Test
     public void deleteFromCartTestFailNotExistingBasket(){
 
-        boolean isDeleted = bridge.deleteFromCurrentUserCart(productInNonExistingBaskets);
+        boolean isDeleted = bridge.deleteFromUserCart(user0.getId(),productInNonExistingBaskets);
         assertFalse(isDeleted);
     }
 
@@ -83,7 +83,7 @@ public class EditCartTest extends AcceptanceTests {
     public void deleteFromCartTestFailNotExistingProductInBasket(){
         ProductTestData nonExistingProductInBasket = products.get(2);
 
-        boolean isDeleted = bridge.deleteFromCurrentUserCart(nonExistingProductInBasket);
+        boolean isDeleted = bridge.deleteFromUserCart(user0.getId(),nonExistingProductInBasket);
         assertFalse(isDeleted);
     }
 
@@ -99,11 +99,11 @@ public class EditCartTest extends AcceptanceTests {
                 get(productToChangeAmount);
         int expectedAmount = oldAmountOfProduct * 2;
 
-        boolean isChanged = bridge.changeCurrentUserAmountOfProductInCart
-                (productToChangeAmount, expectedAmount);
+        boolean isChanged = bridge.changeUserAmountOfProductInCart
+                (user0.getId(),productToChangeAmount, expectedAmount);
         assertTrue(isChanged);
 
-        CartTestData testCart = bridge.getCurrentUsersCart(user0.getId());
+        CartTestData testCart = bridge.getUsersCart(user0.getId());
 
         int actualAmount = testCart.getBasket(basketToChangeAmountIn.getStoreName()).
                 getProductsAndAmountInBasket().get(productToChangeAmount);
@@ -116,10 +116,10 @@ public class EditCartTest extends AcceptanceTests {
                 getProductsAndAmountInBasket().get(productInNonExistingBaskets);
         int newAmount = oldAmount * 2;
 
-        boolean isChanged = bridge.changeCurrentUserAmountOfProductInCart
-                (productInNonExistingBaskets, newAmount);
+        boolean isChanged = bridge.changeUserAmountOfProductInCart
+                (user0.getId(),productInNonExistingBaskets, newAmount);
         assertFalse(isChanged);
-        BasketTestData basket = bridge.getCurrentUsersCart(user0.getId()).getBasket(notExistingBasket.getStoreName());
+        BasketTestData basket = bridge.getUsersCart(user0.getId()).getBasket(notExistingBasket.getStoreName());
         assertNull(basket);
     }
 
@@ -129,8 +129,8 @@ public class EditCartTest extends AcceptanceTests {
         BasketTestData basketToChangeAmountFrom = cart0.getBaskets().get(0);
         int newAmount = 50;
 
-        boolean isChanged = bridge.changeCurrentUserAmountOfProductInCart
-                (nonExistingProductInBasket,newAmount);
+        boolean isChanged = bridge.changeUserAmountOfProductInCart
+                (user0.getId(),nonExistingProductInBasket,newAmount);
         assertFalse(isChanged);
         assertFalse(basketToChangeAmountFrom.getProductsAndAmountInBasket().containsKey(nonExistingProductInBasket));
     }
@@ -144,17 +144,17 @@ public class EditCartTest extends AcceptanceTests {
         int expectedAmount = basketToChangedAmountFrom.getProductsAndAmountInBasket().
                 get(productToChangedAmount);
 
-        boolean isChanged0 = bridge.changeCurrentUserAmountOfProductInCart
-                            (productToChangedAmount,newAmount0);
-        int actualAmount0 = bridge.getCurrentUsersCart(user0.getId()).getBasket(basketToChangedAmountFrom.getStoreName()).
+        boolean isChanged0 = bridge.changeUserAmountOfProductInCart
+                            (user0.getId(),productToChangedAmount,newAmount0);
+        int actualAmount0 = bridge.getUsersCart(user0.getId()).getBasket(basketToChangedAmountFrom.getStoreName()).
                             getProductsAndAmountInBasket().get(productToChangedAmount);
 
         assertFalse(isChanged0);
         assertEquals(expectedAmount,actualAmount0);
 
-        boolean isChanged1 = bridge.changeCurrentUserAmountOfProductInCart
-                            (productToChangedAmount,newAmount1);
-        int actualAmount1 = bridge.getCurrentUsersCart(user0.getId()).getBasket(basketToChangedAmountFrom.getStoreName()).
+        boolean isChanged1 = bridge.changeUserAmountOfProductInCart
+                            (user0.getId(),productToChangedAmount,newAmount1);
+        int actualAmount1 = bridge.getUsersCart(user0.getId()).getBasket(basketToChangedAmountFrom.getStoreName()).
                 getProductsAndAmountInBasket().get(productToChangedAmount);
 
         assertFalse(isChanged1);

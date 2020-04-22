@@ -39,7 +39,7 @@ public class AddToCartTest extends AcceptanceTests {
                 assertTrue(isAdded);
             }
         }
-        CartTestData actualCart = bridge.getCurrentUsersCart(user0.getId());
+        CartTestData actualCart = bridge.getUsersCart(user0.getId());
         assertEquals(cart0,actualCart);
     }
 
