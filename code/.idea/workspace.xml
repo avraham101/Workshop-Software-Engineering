@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f0366da3-85c5-4ead-a08b-f6642ede6572" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/UserTests/UserRealTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/UserTests/UserRealTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,8 +58,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Store.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="212" column="7" lean-forward="true" selection-start-line="212" selection-start-column="7" selection-end-line="212" selection-end-column="7" />
+            <state relative-caret-position="132">
+              <caret line="208" column="9" lean-forward="true" selection-start-line="208" selection-start-column="9" selection-end-line="208" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -222,7 +226,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587590781114" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587590950888" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -236,16 +240,24 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.GuestTestReal.testSavePurchase">
-    <configuration name="Cart in code" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.AcceptanceTests in code">
+    <configuration name="AcceptanceTests in code" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="code" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="Cart.*" />
+          <option name="PATTERN" value="AcceptanceTests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="Cart" />
+      <option name="PACKAGE_NAME" value="AcceptanceTests" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in code" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="code" />
+      <option name="PACKAGE_NAME" value="" />
       <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -299,29 +311,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserRealTest.testSavePurchase" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="code" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="UserTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="UserTests" />
-      <option name="MAIN_CLASS_NAME" value="UserTests.UserRealTest" />
-      <option name="METHOD_NAME" value="testSavePurchase" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.AcceptanceTests in code" />
+        <item itemvalue="JUnit.All in code" />
         <item itemvalue="JUnit.GuestTestReal.testSavePurchase" />
         <item itemvalue="JUnit.SubscribeRealTest.testSavePurchase" />
         <item itemvalue="JUnit.SubscribeRealTest.testCancelCart" />
-        <item itemvalue="JUnit.UserRealTest.testSavePurchase" />
-        <item itemvalue="JUnit.Cart in code" />
       </list>
     </recent_temporary>
   </component>
@@ -400,19 +396,19 @@
       <option name="project" value="LOCAL" />
       <updated>1587589612550</updated>
     </task>
-    <task id="LOCAL-00008" summary="add isEmpty and getAmount cart&amp;basket&#10;buycart">
-      <created>1585923098714</created>
+    <task id="LOCAL-00008" summary="Fixed Guest.">
+      <created>1587590626438</created>
       <option name="number" value="00008" />
       <option name="presentableId" value="LOCAL-00008" />
       <option name="project" value="LOCAL" />
-      <updated>1585923098714</updated>
+      <updated>1587590626438</updated>
     </task>
-    <task id="LOCAL-00009" summary="add isEmpty and getAmount cart&amp;basket&#10;buycart">
-      <created>1585923432700</created>
+    <task id="LOCAL-00009" summary="Fixed Guest.">
+      <created>1587590816234</created>
       <option name="number" value="00009" />
       <option name="presentableId" value="LOCAL-00009" />
       <option name="project" value="LOCAL" />
-      <updated>1585923432701</updated>
+      <updated>1587590816234</updated>
     </task>
     <task id="LOCAL-00010" summary="add isEmpty and getAmount cart&amp;basket&#10;buycart">
       <created>1585923468882</created>
@@ -694,7 +690,7 @@
       <option name="project" value="LOCAL" />
       <updated>1587583806768</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -730,11 +726,10 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6542000" />
+    <option name="totallyTimeSpent" value="6800000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20080972" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -753,7 +748,7 @@
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3286119" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="9" weight="0.28774422" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="9" visible="true" weight="0.28774422" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3285968" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" weight="0.3285968" />
@@ -1011,8 +1006,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Store.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="212" column="7" lean-forward="true" selection-start-line="212" selection-start-column="7" selection-end-line="212" selection-end-column="7" />
+        <state relative-caret-position="132">
+          <caret line="208" column="9" lean-forward="true" selection-start-line="208" selection-start-column="9" selection-end-line="208" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
