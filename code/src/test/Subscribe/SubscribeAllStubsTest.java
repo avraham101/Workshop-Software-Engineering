@@ -244,17 +244,6 @@ public class SubscribeAllStubsTest {
     }
 
     /**
-     * test use case 3.7 - watch purchases
-     */
-    @Test
-    public void testWatchPurchases() {
-        setUpProductBought();
-        List<Purchase> list = sub.watchMyPurchaseHistory();
-        assertNotNull(list);
-        assertEquals(0,list.size());
-    }
-
-    /**
      * test use case 4.1.1 - add product
      */
     @Test

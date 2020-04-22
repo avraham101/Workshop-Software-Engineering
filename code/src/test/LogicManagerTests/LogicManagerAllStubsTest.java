@@ -180,8 +180,9 @@ public class LogicManagerAllStubsTest {
      */
     protected void setUpBoughtProductAdminState(){
         setUpBoughtProduct();
-        String adminName=data.getSubscribe(Data.ADMIN).getName();
-        currUser.setState(users.get(adminName));
+        Subscribe admin=data.getSubscribe(Data.ADMIN);
+        logicManager.login(data.getId(Data.ADMIN),admin.getName(),admin.getPassword());
+        //currUser.setState(users.get(admin.getName()));
     }
 
 

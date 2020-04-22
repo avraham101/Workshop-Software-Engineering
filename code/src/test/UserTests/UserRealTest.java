@@ -166,7 +166,7 @@ public class UserRealTest extends UserAllStubsTest{
      */
     @Override @Test
     public void testWriteReviewSubscribe() {
-        setUpProductBought();
+        setUpBougtAndSaved();
         Review review = data.getReview(Data.VALID);
         assertTrue(user.addReview(review));
         List<Review> reviewList = user.getState().getReviews();
@@ -179,7 +179,7 @@ public class UserRealTest extends UserAllStubsTest{
      */
     @Test
     public void testWriteWrongReviewSubscribe(){
-        setUpProductBought();
+        setUpReserved();
         Review review = data.getReview(Data.WRONG_PRODUCT);
         assertFalse(user.addReview(review));
     }
@@ -189,7 +189,7 @@ public class UserRealTest extends UserAllStubsTest{
      */
     @Override @Test
     public void testWatchPurchasesSubscribe() {
-        setUpProductBought();
+        setUpBougtAndSaved();
         List<Purchase> list = user.watchMyPurchaseHistory();
         assertNotNull(list);
         assertEquals(1, list.size());
