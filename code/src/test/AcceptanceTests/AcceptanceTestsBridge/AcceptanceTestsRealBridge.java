@@ -519,7 +519,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean writeReplyToApplication(int requestId,String storeName, ApplicationToStoreTestData application, String reply) {
+    public boolean writeReplyToApplication(int id,int requestId,String storeName, ApplicationToStoreTestData application, String reply) {
         return serviceAPI.answerRequest(id,requestId, reply, storeName) != null;
     }
 
