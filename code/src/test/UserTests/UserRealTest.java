@@ -1,11 +1,15 @@
 package UserTests;
 
 import Data.*;
+import DataAPI.DeliveryData;
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import Domain.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -29,6 +33,16 @@ public class UserRealTest extends UserAllStubsTest{
     protected void setUpSubscribe(){
         setUpGuest();
         user.login(data.getSubscribe(Data.VALID));
+    }
+
+    /**
+     * set up to reserved to cart
+     */
+    public void setUpReserved() {
+        setUpProductAdded();
+        Store store = data.getRealStore(Data.VALID);
+        Product p = data.getRealProduct(Data.VALID);
+        user.addProductToCart(store,p,p.getAmount());
     }
 
     /**
@@ -57,13 +71,83 @@ public class UserRealTest extends UserAllStubsTest{
     /**
      * use case 2.8 - purchase cart
      */
-    //TODO change test because change purchase
-    @Override @Test
-    public void testPurchase() {
-        super.testPurchase();
-        List<Purchase> purchases = user.getState().watchMyPurchaseHistory();
-        assertEquals(1, purchases.size());
+    @Test
+    public void testBuyCart() {
+        setUpReservedCart();
+        Cart cart = user.getState().getCart();
+        int size = 0;
+        double sum =0;
+        for(Basket b:cart.getBaskets().values()) {
+            HashMap<Product,Integer> products = b.getProducts();
+            for(Product p:products.keySet()) {
+                int amount = products.get(p);
+                sum += amount * p.getPrice();
+                size++;
+            }
+        }
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        user.buyCart(paymentData,deliveryData);
+        assertEquals(sum,paymentData.getTotalPrice(),0.001);
+        assertEquals(size,deliveryData.getProducts().size());
     }
+
+    /**
+     * use case 2.8 - purchase cart
+     */
+    @Test
+    public void testSavePurchase() {
+        setUpReservedCart();
+        Store store = null;
+        int storeExpected = 0;
+        for(Basket basket: user.getState().getCart().getBaskets().values()) {
+            store = basket.getStore();
+            storeExpected = store.getPurchases().size() + 1;
+            break;
+        }
+        int number =  user.getState().getCart().getBaskets().keySet().size();
+        String name = data.getSubscribe(Data.VALID).getName();
+        user.savePurchase(name);
+        assertEquals(number, user.watchMyPurchaseHistory().size());
+        assertEquals(storeExpected, store.getPurchases().size());
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     */
+    @Test
+    public void testCancel() {
+        setUpProductAddedToCart();
+        int expected = amountProductInStore();
+        user.reservedCart();
+        user.cancelCart();
+        int result = amountProductInStore();
+        assertEquals(expected,result);
+    }
+
+    /**
+     * use case 2.8
+     * help function for getting the amount
+     * @return
+     */
+    private int amountProductInStore() {
+        Cart cart = user.getState().getCart();
+        Store store = null;
+        for(Basket b: cart.getBaskets().values()) {
+            store = b.getStore();
+            break;
+        }
+        assertNotNull(store);
+        Product product = null;
+        for(Product p :store.getProducts().values()) {
+            product = p;
+            break;
+        }
+        assertNotNull(product);
+        return product.getAmount();
+    }
+
+
 
     /**
      * use case 3.1 - logout
@@ -82,7 +166,7 @@ public class UserRealTest extends UserAllStubsTest{
      */
     @Override @Test
     public void testWriteReviewSubscribe() {
-        setUpProductBought();
+        setUpBougtAndSaved();
         Review review = data.getReview(Data.VALID);
         assertTrue(user.addReview(review));
         List<Review> reviewList = user.getState().getReviews();
@@ -95,7 +179,7 @@ public class UserRealTest extends UserAllStubsTest{
      */
     @Test
     public void testWriteWrongReviewSubscribe(){
-        setUpProductBought();
+        setUpReserved();
         Review review = data.getReview(Data.WRONG_PRODUCT);
         assertFalse(user.addReview(review));
     }
@@ -105,7 +189,7 @@ public class UserRealTest extends UserAllStubsTest{
      */
     @Override @Test
     public void testWatchPurchasesSubscribe() {
-        setUpProductBought();
+        setUpBougtAndSaved();
         List<Purchase> list = user.watchMyPurchaseHistory();
         assertNotNull(list);
         assertEquals(1, list.size());

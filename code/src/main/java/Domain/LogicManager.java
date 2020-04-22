@@ -7,11 +7,13 @@ import Systems.SupplySystem.*;
 import Utils.Utils;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LogicManager {
+    //TODO check all classes
     private ConcurrentHashMap<String, Subscribe> subscribes;
     private ConcurrentHashMap<String, Store> stores;
     private ConcurrentHashMap<Integer,User> connectedUsers;
@@ -43,6 +45,7 @@ public class LogicManager {
             loggerSystem = new LoggerSystem();
             this.paymentSystem = paymentSystem;
             this.supplySystem = supplySystem;
+            //TODO add write to logger when exception
             if(!paymentSystem.connect()) {
                 loggerSystem.writeError("Logic manager", "constructor",
                         "Fail connection to payment system",new Object[]{userName});
@@ -191,6 +194,7 @@ public class LogicManager {
 
     /***
      * use case 2.3 - Login
+     *
      * @param id
      * @param userName - the user Name
      * @param password - the user password
@@ -394,7 +398,7 @@ public class LogicManager {
     public CartData watchCartDetails(int id) {
         loggerSystem.writeEvent("LogicManager","watchCartDetails",
                 "view the user cart data", new Object[] {});
-        User current=connectedUsers.get(id);
+        User current = connectedUsers.get(id);
         return current.watchCartDetatils();
     }
 
@@ -444,6 +448,7 @@ public class LogicManager {
         if (store != null) {
             Product product = store.getProduct(productName);
             if (product != null && amount > 0 && amount <= product.getAmount()) {
+                product = product.clone();
                 result = current.addProductToCart(store, product, amount);
             }
         }
@@ -452,22 +457,36 @@ public class LogicManager {
 
     /**
      * use case 2.8 - purchase cart
-     * @param id
+     * @param id - the id
      * @param paymentData - the payment data of this purchase
      * @param addresToDeliver - the address do Deliver the purchase
      * @return true is the purchase succeeded, otherwise false
      */
-    //TODO change use case and change tests to work with stubs external systems
-    //TODO synchronize product when reduce amount
     public boolean purchaseCart(int id, PaymentData paymentData, String addresToDeliver) {
         loggerSystem.writeEvent("LogicManager","purchaseCart",
-                "buy the products in the cart", new Object[] {paymentData, addresToDeliver});
-        User current=connectedUsers.get(id);
+                "reserveCart the products in the cart", new Object[] {paymentData, addresToDeliver});
+        //1) user get
+        User current = connectedUsers.get(id);
+        //2) validation check
         if (!validPaymentData(paymentData))
             return false;
         if (addresToDeliver == null || addresToDeliver.isEmpty())
             return false;
-        return current.buyCart(paymentData, addresToDeliver);
+        //3) sumUp cart - updated PeymentData, DeliveryData
+        boolean reserved = current.reservedCart();
+        if(!reserved) {
+            return false;
+        }
+        DeliveryData deliveryData = new DeliveryData(addresToDeliver, new LinkedList<>());
+        current.buyCart(paymentData, deliveryData);
+        //4) external systems
+        boolean payedAndDelivered = externalSystemsBuy(id,paymentData,deliveryData);
+        if(!payedAndDelivered) {
+            return false;
+        }
+        //5) update the purchase for both store and user (synchronized)
+        current.savePurchase(paymentData.getName());
+        return true;
     }
 
     /**
@@ -479,9 +498,38 @@ public class LogicManager {
     private boolean validPaymentData(PaymentData paymentData) {
         if(paymentData==null)
             return false;
+        String name = paymentData.getName();
         String address = paymentData.getAddress();
         String card = paymentData.getCreditCard();
-        return paymentData.getName()!=null && !paymentData.getName().isEmpty() && address!=null && !address.isEmpty() && card!=null && !card.isEmpty();
+        return name!=null && !name.isEmpty() && address!=null && !address.isEmpty() && card!=null && !card.isEmpty();
+    }
+
+    /**
+     * use case 2.8 - buy cart from external systems
+     * @param id - the id of user
+     * @param paymentData - the payment data
+     * @param deliveryData - the delivery data
+     * @return true if worked, otherwise false.
+     */
+    private boolean externalSystemsBuy(int id, PaymentData paymentData, DeliveryData deliveryData) {
+        User current = connectedUsers.get(id);
+        if(!paymentSystem.pay(paymentData)) {
+            loggerSystem.writeError("Logic Manger","purchaseCart","Payment System Crashed",
+                    new Object[] {id});
+            current.cancelCart();
+            return false;
+        }
+        if(!supplySystem.deliver(deliveryData)) {
+            loggerSystem.writeError("Logic Manger","purchaseCart","Delivery System Crashed",
+                    new Object[] {id});
+            if(!paymentSystem.cancel(paymentData)) {
+                loggerSystem.writeError("Logic Manger","purchaseCart",
+                        "Payment System Crashed", new Object[] {id});
+            }
+            current.cancelCart();
+            return false;
+        }
+        return true;
     }
 
     /**

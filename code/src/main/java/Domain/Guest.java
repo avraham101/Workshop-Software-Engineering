@@ -5,6 +5,7 @@ import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,11 +46,12 @@ public class Guest extends UserState {
     }
 
     /**
-     * use case 2.8 - purchase cart and save
-     * @param receives - the receives
+     * use case 2.8 - purchase cart and savePurchases
+     * @param buyer - the name of the user
      */
     @Override
-    protected void savePurchase(List<Purchase> receives) {
+    public void savePurchase(String buyer) {
+        this.cart.savePurchases(buyer);
     }
 
     /**
@@ -93,6 +95,8 @@ public class Guest extends UserState {
         return false;
     }
 
+
+
     /**
      * use case 3.5 - add request
      * @param storeName - The id of the store
@@ -113,6 +117,7 @@ public class Guest extends UserState {
     public List<Purchase> watchMyPurchaseHistory() {
         return null;
     }
+
 
     /**
      * use case 4.1.1 -add product

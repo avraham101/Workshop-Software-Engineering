@@ -9,10 +9,10 @@ import Domain.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class CartTest {
 
@@ -36,6 +36,27 @@ public class CartTest {
         cart.addProduct(store,product,product.getAmount());
     }
 
+    /**
+     * set up for But Cart
+     */
+    private void setUpBuy() {
+        setUpProductAdded();
+        cart.reserveCart();
+    }
+
+    /**
+     * set up for But Cart
+     */
+    private void setUpSave() {
+        setUpProductAdded();
+        cart.reserveCart();
+        PaymentData paymentData = testData.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = testData.getDeliveryData(Data.VALID);
+        cart.buy(paymentData, deliveryData);
+    }
+
+
+
     /**-------------------------set-ups------------------------------*/
 
     /**
@@ -49,24 +70,82 @@ public class CartTest {
     }
 
     /**
-     * use case 2.8 - buy
+     * use case 2.8 - reserveCart
      */
-    //TODO split to few tests
-    //TODO each test which failed, check state didn't change
     @Test
-    public void testBuy() {
+    public void testReservedCart() {
         setUpProductAdded();
+        assertTrue(cart.reserveCart());
+    }
+
+    /**
+     * use case 2.8 - reserveCart
+     */
+    @Test
+    public void testBuyCart() {
+        setUpBuy();
+        int size = 0;
+        double sum =0;
+        for(Basket b:cart.getBaskets().values()) {
+            HashMap<Product,Integer> products = b.getProducts();
+            for(Product p:products.keySet()) {
+                int amount = products.get(p);
+                sum += amount * p.getPrice();
+                size++;
+            }
+        }
         PaymentData paymentData = testData.getPaymentData(Data.VALID);
         DeliveryData deliveryData = testData.getDeliveryData(Data.VALID);
-        List<Purchase> purchases = cart.buy(paymentData,deliveryData.getAddress());
-        assertEquals(1, purchases.size());
-        Purchase purchase = purchases.get(0);
-        assertEquals(paymentData.getName(), purchase.getBuyer());
-        List<ProductData> products =  purchase.getProduct();
-        assertEquals(1, products.size());
-        ProductData result = products.get(0);
-        ProductData expected = deliveryData.getProducts().get(0);
-        assertEquals(expected.getProductName(),result.getProductName());
-        assertEquals(expected.getAmount(), result.getAmount());
+        cart.buy(paymentData, deliveryData);
+        assertEquals(sum,paymentData.getTotalPrice(),0.001);
+        assertEquals(size,deliveryData.getProducts().size());
     }
+
+    /**
+     * use case 2.8 - reserveCart
+     */
+    @Test
+    public void testCancelCart() {
+        setUpProductAdded();
+        int expected = amountProductInStore();
+        cart.reserveCart();
+        cart.cancel();
+        int result = amountProductInStore();
+        assertEquals(expected,result);
+    }
+
+    /**
+     * use case 2.8
+     * help function for getting the amount
+     * @return
+     */
+    private int amountProductInStore() {
+        Store store = null;
+        for(Basket b: cart.getBaskets().values()) {
+            store = b.getStore();
+            break;
+        }
+        assertNotNull(store);
+        Product product = null;
+        for(Product p :store.getProducts().values()) {
+            product = p;
+            break;
+        }
+        assertNotNull(product);
+        return product.getAmount();
+    }
+
+    /**
+     * use case 2.8 - reserveCart
+     */
+    @Test
+    public void testSavePurchases() {
+        setUpSave();
+        int size = cart.getBaskets().size();
+        String name = testData.getSubscribe(Data.VALID).getName();
+        List<Purchase> list = cart.savePurchases(name);
+        assertNotNull(list);
+        assertEquals(size, list.size());
+    }
+
 }

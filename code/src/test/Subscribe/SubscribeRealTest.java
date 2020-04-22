@@ -40,6 +40,69 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     }
 
     /**
+     * use case - 2.8 reserveCart cart
+     */
+    @Override @Test
+    public void testReservedCart() {
+        setUpReserved();
+        assertTrue(sub.reserveCart());
+    }
+
+    /**
+     * use case - 2.8 reserveCart cart
+     */
+    @Test
+    public void testCancelCart() {
+        setUpReserved();
+        int expected = amountProductInStore();
+        sub.reserveCart();
+        sub.cancelCart();
+        int result = amountProductInStore();
+        assertEquals(expected,result);
+    }
+
+    /**
+     * use case 2.8
+     * help function for getting the amount
+     * @return
+     */
+    private int amountProductInStore() {
+        Store store = null;
+        for(Basket b: cart.getBaskets().values()) {
+            store = b.getStore();
+            break;
+        }
+        assertNotNull(store);
+        Product product = null;
+        for(Product p :store.getProducts().values()) {
+            product = p;
+            break;
+        }
+        assertNotNull(product);
+        return product.getAmount();
+    }
+
+    /**
+     * use case 2.8 - buy cart save test
+     */
+    @Test
+    public void testSavePurchase() {
+        setUpSave();
+        Store store = null;
+        int storeExpected = 0;
+        for(Basket basket: sub.getCart().getBaskets().values()) {
+            store = basket.getStore();
+            storeExpected = store.getPurchases().size() + 1;
+            break;
+        }
+        int expected = sub.getPurchases().size() +1;
+        sub.savePurchase(sub.getName());
+        int result = sub.getPurchases().size();
+        assertEquals(expected, result);
+        assertEquals(storeExpected, store.getPurchases().size());
+    }
+
+    /**
      * test: use case 3.1 - Logout
      */
     @Override @Test
@@ -70,7 +133,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     /**
      * test use case 3.7 - watch purchases
      */
-    @Override @Test
+    @Test
     public void testWatchPurchases() {
         setUpProductBought();
         List<Purchase> list = sub.watchMyPurchaseHistory();
