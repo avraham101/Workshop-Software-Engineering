@@ -55,49 +55,23 @@ public class GuestTestReal extends GuestTest{
     }
 
     /**
-     * use case 2.8 - purchase cart
+     * use case - 2.8 reserveCart cart
      */
-    @Test
-    public void testBuyCart() {
-        setUpReservedCart();
-        int size = 0;
-        double sum =0;
-        for(Basket b:cart.getBaskets().values()) {
-            HashMap<Product,Integer> products = b.getProducts();
-            for(Product p:products.keySet()) {
-                int amount = products.get(p);
-                sum += amount * p.getPrice();
-                size++;
-            }
-        }
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        guest.buyCart(paymentData,deliveryData);
-        assertEquals(sum,paymentData.getTotalPrice(),0.001);
-        assertEquals(size,deliveryData.getProducts().size());
+    @Override @Test
+    public void testReservedCart() {
+        setUpReserved();
+        assertTrue(guest.reserveCart());
     }
 
     /**
-     * use case 2.8 - purchase cart
+     * use case - 2.8 reserveCart cart
      */
     @Test
-    public void testSavePurchase() {
-        setUpReservedCart();
-        int number =  user.getState().getCart().getBaskets().keySet().size();
-        String name = data.getSubscribe(Data.VALID).getName();
-        user.savePurchase(name);
-        assertEquals(number, user.watchMyPurchaseHistory().size());
-    }
-
-    /**
-     * use case 2.8 - purchase cart
-     */
-    @Test
-    public void testCancel() {
-        setUpProductAddedToCart();
+    public void testCancelCart() {
+        setUpReserved();
         int expected = amountProductInStore();
-        user.reservedCart();
-        user.cancelCart();
+        guest.reserveCart();
+        guest.cancelCart();
         int result = amountProductInStore();
         assertEquals(expected,result);
     }
@@ -108,7 +82,6 @@ public class GuestTestReal extends GuestTest{
      * @return
      */
     private int amountProductInStore() {
-        Cart cart = user.getState().getCart();
         Store store = null;
         for(Basket b: cart.getBaskets().values()) {
             store = b.getStore();
@@ -123,5 +96,6 @@ public class GuestTestReal extends GuestTest{
         assertNotNull(product);
         return product.getAmount();
     }
+
 
 }

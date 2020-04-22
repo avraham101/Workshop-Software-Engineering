@@ -80,16 +80,7 @@ public class GuestTest {
     @Test
     public void testReservedCart() {
         setUpReserved();
-        fail();
-    }
-
-    /**
-     * use case - 2.8 reserveCart cart
-     */
-    @Test
-    public void testCancelCart() {
-        setUpBuy();
-        fail();
+        assertFalse(guest.reserveCart());
     }
 
     /**
@@ -113,10 +104,7 @@ public class GuestTest {
         guest.buyCart(paymentData,deliveryData);
         assertEquals(sum,paymentData.getTotalPrice(),0.001);
         assertEquals(size,deliveryData.getProducts().size());
-        fail();
     }
-
-
 
     /**
      * use case 2.7 add to cart

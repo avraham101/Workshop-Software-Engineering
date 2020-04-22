@@ -14,6 +14,7 @@ import Systems.SupplySystem.SupplySystem;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -84,6 +85,38 @@ public class SubscribeAllStubsTest {
     }
 
     /**
+     * set up for Reserved
+     */
+    protected void setUpReserved() {
+        Store store = data.getRealStore(Data.VALID);
+        Product product = data.getRealProduct(Data.VALID);
+        sub.addProductToCart(store,product,product.getAmount());
+    }
+
+    /**
+     * set up for Buy and Cancel
+     */
+    protected void setUpBuy() {
+        Store store = data.getRealStore(Data.VALID);
+        Product product = data.getRealProduct(Data.VALID);
+        sub.addProductToCart(store,product,product.getAmount());
+        sub.reserveCart();
+    }
+
+    /**
+     * set up for the save
+     */
+    protected void setUpSave() {
+        Store store = data.getRealStore(Data.VALID);
+        Product product = data.getRealProduct(Data.VALID);
+        sub.addProductToCart(store,product,product.getAmount());
+        sub.reserveCart();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        sub.buyCart(paymentData, deliveryData);
+    }
+
+    /**
      * set up a valid purchase history
      */
     protected void setUpProductBought(){
@@ -129,15 +162,35 @@ public class SubscribeAllStubsTest {
     /**
      * use case - 2.8 reserveCart cart
      */
-    //TODO change test beacuse change imp
+    @Test
+    public void testReservedCart() {
+        setUpReserved();
+        assertFalse(sub.reserveCart());
+    }
+
+    /**
+     * use case - 2.8 reserveCart cart
+     */
     @Test
     public void testBuyCart() {
-        fail();
-//        setUpProductAddedToCart();
-//        PaymentData paymentData = data.getPaymentData(Data.VALID);
-//        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-//        assertTrue(sub.reserveCart(paymentData,deliveryData.getAddress()));
+        setUpBuy();
+        int size = 0;
+        double sum =0;
+        for(Basket b:cart.getBaskets().values()) {
+            HashMap<Product,Integer> products = b.getProducts();
+            for(Product p:products.keySet()) {
+                int amount = products.get(p);
+                sum += amount * p.getPrice();
+                size++;
+            }
+        }
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        sub.buyCart(paymentData,deliveryData);
+        assertEquals(sum,paymentData.getTotalPrice(),0.001);
+        assertEquals(size,deliveryData.getProducts().size());
     }
+
 
     /**
      * test: use case 3.1 - Logout

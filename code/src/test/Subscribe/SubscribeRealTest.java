@@ -40,6 +40,49 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     }
 
     /**
+     * use case - 2.8 reserveCart cart
+     */
+    @Override @Test
+    public void testReservedCart() {
+        setUpReserved();
+        assertTrue(sub.reserveCart());
+    }
+
+    /**
+     * use case - 2.8 reserveCart cart
+     */
+    @Test
+    public void testCancelCart() {
+        setUpReserved();
+        int expected = amountProductInStore();
+        sub.reserveCart();
+        sub.cancelCart();
+        int result = amountProductInStore();
+        assertEquals(expected,result);
+    }
+
+    /**
+     * use case 2.8
+     * help function for getting the amount
+     * @return
+     */
+    private int amountProductInStore() {
+        Store store = null;
+        for(Basket b: cart.getBaskets().values()) {
+            store = b.getStore();
+            break;
+        }
+        assertNotNull(store);
+        Product product = null;
+        for(Product p :store.getProducts().values()) {
+            product = p;
+            break;
+        }
+        assertNotNull(product);
+        return product.getAmount();
+    }
+
+    /**
      * test: use case 3.1 - Logout
      */
     @Override @Test
