@@ -24,7 +24,7 @@ public interface AcceptanceTestsBridge {
     boolean deleteFromUserCart(int id, ProductTestData productToDelete);
     boolean changeUserAmountOfProductInCart(int id, ProductTestData productToChangeAmount, int newAmount);
     boolean addToUserCart(int id,ProductTestData productToAdd, int amount);
-    boolean writeReviewOnProduct(ProductTestData product, ReviewTestData review);
+    boolean writeReviewOnProduct(int id,ProductTestData product, ReviewTestData review);
     List<ReviewTestData> getProductsReviews(ProductTestData product);
     List<StoreTestData> getStoresInfo();
     List<ProductTestData> getStoreProducts(String storeName);

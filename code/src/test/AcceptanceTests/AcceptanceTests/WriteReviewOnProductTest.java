@@ -49,7 +49,7 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
         for(Map.Entry<ProductTestData,ReviewTestData> entry : productsAndReviews.entrySet()){
             ProductTestData product = entry.getKey();
             ReviewTestData review = entry.getValue();
-            boolean isWritten = bridge.writeReviewOnProduct(product,review);
+            boolean isWritten = bridge.writeReviewOnProduct(user0.getId(),product,review);
             assertTrue(isWritten);
 
             List<ReviewTestData> actualReviews = bridge.getProductsReviews(product);
@@ -65,7 +65,7 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
         for(Map.Entry<ProductTestData,ReviewTestData> entry : productsAndReviews.entrySet()){
             ProductTestData product = entry.getKey();
             ReviewTestData review = entry.getValue();
-            boolean isWritten = bridge.writeReviewOnProduct(product,review);
+            boolean isWritten = bridge.writeReviewOnProduct(user0.getId(),product,review);
             assertFalse(isWritten);
 
             List<ReviewTestData> actualReviews = bridge.getProductsReviews(product);
@@ -79,7 +79,7 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
         ReviewTestData review = productsAndReviews.get(productToReview);
         productToReview.setStoreName(notExistingStore.getStoreName());
 
-        boolean isWritten = bridge.writeReviewOnProduct(productToReview, review);
+        boolean isWritten = bridge.writeReviewOnProduct(user0.getId(),productToReview, review);
         assertFalse(isWritten);
 
         List<ReviewTestData> actualReviews = bridge.getProductsReviews(productToReview);
@@ -91,7 +91,7 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
         ProductTestData productToReview = notExistingProductInPurchase;
         ReviewTestData review = notExistingProductInPurchaseReview;
 
-        boolean isWritten = bridge.writeReviewOnProduct(productToReview, review);
+        boolean isWritten = bridge.writeReviewOnProduct(user0.getId(),productToReview, review);
         assertFalse(isWritten);
 
         List<ReviewTestData> actualReviews = bridge.getProductsReviews(productToReview);

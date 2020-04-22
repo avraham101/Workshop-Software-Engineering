@@ -148,7 +148,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-3.3---------------------------------//
     @Override
-    public boolean writeReviewOnProduct(ProductTestData product, ReviewTestData review) {
+    public boolean writeReviewOnProduct(int id,ProductTestData product, ReviewTestData review) {
         return serviceAPI.writeReview(id,product.getStoreName(),product.getProductName(),review.getContent());
     }
     //---------------------------Use-Case-3.3---------------------------------//
