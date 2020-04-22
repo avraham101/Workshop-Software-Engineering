@@ -67,7 +67,6 @@ class Loggy {
                 writer.write(printParams(params));
                 writer.write(printDes(msg));
             } catch (Exception e) {
-                //TODO
                 e.printStackTrace();
             }
         }

@@ -3,7 +3,7 @@ package Utils;
 import java.util.HashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-//TODO remove classss
+//TODO remove class after talk to Yuval
 public class OurHashMap<K,V> extends HashMap<K,V> {
     private ReentrantReadWriteLock lock;
 
