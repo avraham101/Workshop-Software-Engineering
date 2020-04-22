@@ -12,7 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LogicManager {
-    //TODO check all classes
     private ConcurrentHashMap<String, Subscribe> subscribes;
     private ConcurrentHashMap<String, Store> stores;
     private ConcurrentHashMap<Integer,User> connectedUsers;
@@ -44,14 +43,19 @@ public class LogicManager {
             loggerSystem = new LoggerSystem();
             this.paymentSystem = paymentSystem;
             this.supplySystem = supplySystem;
-            //TODO add write to logger when exception
             if(!paymentSystem.connect()) {
+                loggerSystem.writeError("Logic manager", "constructor",
+                        "Fail connection to payment system",new Object[]{userName});
                 throw new Exception("Payment System Crashed");
             }
             if(!supplySystem.connect()) {
+                loggerSystem.writeError("Logic manager", "constructor",
+                        "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
             if(subscribes.isEmpty()&&!register(userName,password)) {
+                loggerSystem.writeError("Logic manager", "constructor",
+                        "Fail register",new Object[]{userName});
                 throw new Exception("Admin Register Crashed");
             }
         } catch (Exception e) {
@@ -75,28 +79,28 @@ public class LogicManager {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
             loggerSystem.writeEvent("Logic Manager","constructor",
-                    "Initialize the system", new Object[]{userName, password});
+                    "Initialize the system", new Object[]{userName});
             paymentSystem = new ProxyPayment();
             supplySystem = new ProxySupply();
             if(!paymentSystem.connect()) {
                 loggerSystem.writeError("Logic manager", "constructor",
-                        "Fail connection to payment system",new Object[]{userName, password});
+                        "Fail connection to payment system",new Object[]{userName});
                 throw new Exception("Payment System Crashed");
             }
             if(!supplySystem.connect()) {
                 loggerSystem.writeError("Logic manager", "constructor",
-                        "Fail connection to supply system",new Object[]{userName, password});
+                        "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
             if(subscribes.isEmpty()&&!register(userName,password)) {
                 loggerSystem.writeError("Logic manager", "constructor",
-                        "Fail register",new Object[]{userName, password});
+                        "Fail register",new Object[]{userName});
                 throw new Exception("Admin Register Crashed");
             }
         } catch (Exception e) {
             if (loggerSystem != null){
                 loggerSystem.writeError("Logic manager", "constructor",
-                        "System crashed",new Object[]{userName, password});
+                        "System crashed",new Object[]{userName});
             }
             throw new Exception("System crashed");
         }
@@ -120,28 +124,28 @@ public class LogicManager {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
             loggerSystem.writeEvent("Logic Manager","constructor",
-                    "Initialize the system", new Object[]{userName, password});
+                    "Initialize the system", new Object[]{userName});
             this.paymentSystem = paymentSystem;
             this.supplySystem = supplySystem;
             if(!this.paymentSystem.connect()) {
                 loggerSystem.writeError("Logic manager", "constructor",
-                        "Fail connection to payment system",new Object[]{userName, password});
+                        "Fail connection to payment system",new Object[]{userName});
                 throw new Exception("Payment System Crashed");
             }
             if(!this.supplySystem.connect()) {
                 loggerSystem.writeError("Logic manager", "constructor",
-                        "Fail connection to supply system",new Object[]{userName, password});
+                        "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
             if(subscribes.isEmpty()&&!register(userName,password)) {
                 loggerSystem.writeError("Logic manager", "constructor",
-                        "Fail register",new Object[]{userName, password});
+                        "Fail register",new Object[]{userName});
                 throw new Exception("Admin Register Crashed");
             }
         } catch (Exception e) {
             if (loggerSystem != null){
                 loggerSystem.writeError("Logic manager", "constructor",
-                        "System crashed",new Object[]{userName, password});
+                        "System crashed",new Object[]{userName});
             }
             throw new Exception("System crashed");
         }
@@ -165,7 +169,7 @@ public class LogicManager {
      */
     public boolean register(String userName, String password) {
         loggerSystem.writeEvent("LogicManager","register","the function register user",
-                new Object[] {userName, password});
+                new Object[] {userName});
         if(!validName(userName) || !validPassword(password)) {
             return false;
         }
@@ -195,12 +199,11 @@ public class LogicManager {
      */
     public boolean login(int id, String userName, String password) {
         loggerSystem.writeEvent("LogicManager","login",
-                "login a user", new Object[] {userName, password});
+                "login a user", new Object[] {userName});
         if(!validName(userName) || !validPassword(password)) {
             return false;
         }
         Subscribe subscribe = this.subscribes.get(userName);
-        //TODO test login change session number
         User user= connectedUsers.get(id);
         if(subscribe!=null&&subscribe.getSessionNumber().compareAndSet(-1,id)){
             try {
@@ -390,7 +393,6 @@ public class LogicManager {
      * @return - the cart details
      * @param id
      */
-    //TODO check sequence synchronized
     public CartData watchCartDetails(int id) {
         loggerSystem.writeEvent("LogicManager","watchCartDetails",
                 "view the user cart data", new Object[] {});
@@ -405,7 +407,6 @@ public class LogicManager {
      * @param storeName - the store that sale this product
      * @return - true if the delete work, false if not
      */
-    //TODO check sequence synchronized
     public boolean deleteFromCart(int id,String productName,String storeName){
         loggerSystem.writeEvent("LogicManager","deleteFromCart",
                 "delete product from the user cart", new Object[] {productName, storeName});
@@ -420,7 +421,6 @@ public class LogicManager {
      * @param newAmount - the new amount
      * @return - true if succeeded, false if not
      */
-    //TODO check sequence synchronized
     public boolean editProductInCart(int id,String productName,String storeName,int newAmount) {
         loggerSystem.writeEvent("LogicManager","editProductInCart",
                 "edit the amount of a product in the cart", new Object[] {productName, storeName, newAmount});
@@ -435,7 +435,6 @@ public class LogicManager {
      * @param amount - the amount of the product that need to add to the cart
      * @return - true if added, false if not
      */
-    //TODO check sequence synchronized
     public boolean addProductToCart(int id,String productName, String storeName, int amount) {
         loggerSystem.writeEvent("LogicManager","addProductToCart",
                 "add a product to the cart", new Object[] {productName, storeName, amount});
