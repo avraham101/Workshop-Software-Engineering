@@ -472,7 +472,6 @@ public class LogicManager {
      * @param addresToDeliver - the address do Deliver the purchase
      * @return true is the purchase succeeded, otherwise false
      */
-    //TODO change use case and change tests to work with stubs external systems
     public boolean purchaseCart(int id, PaymentData paymentData, String addresToDeliver) {
         loggerSystem.writeEvent("LogicManager","purchaseCart",
                 "reserveCart the products in the cart", new Object[] {paymentData, addresToDeliver});
@@ -509,9 +508,10 @@ public class LogicManager {
     private boolean validPaymentData(PaymentData paymentData) {
         if(paymentData==null)
             return false;
+        String name = paymentData.getName();
         String address = paymentData.getAddress();
         String card = paymentData.getCreditCard();
-        return paymentData.getName()!=null && !paymentData.getName().isEmpty() && address!=null && !address.isEmpty() && card!=null && !card.isEmpty();
+        return name!=null && !name.isEmpty() && address!=null && !address.isEmpty() && card!=null && !card.isEmpty();
     }
 
     /**
