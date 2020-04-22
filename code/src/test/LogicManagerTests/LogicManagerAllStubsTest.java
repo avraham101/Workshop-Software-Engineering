@@ -365,6 +365,26 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
+     * use case 2.4.2 - view the products in some store with valid data test
+     */
+    @Test
+    public void testViewProductInStoreNotExists() {
+        setUpProductAdded();
+        String storeName = data.getStore(Data.WRONG_STORE).getName();
+        assertNull(logicManager.viewProductsInStore(storeName));
+    }
+
+    /**
+     * use case 2.4.2 - view the products in some store with valid data test
+     */
+    @Test
+    public void testViewProductInStoreNull() {
+        setUpProductAdded();
+        String storeName = data.getStore(Data.NULL_STORE).getName();
+        assertNull(logicManager.viewProductsInStore(storeName));
+    }
+
+    /**
      * use case 2.4.2 - view the products in some store with null category test
      */
     @Test
