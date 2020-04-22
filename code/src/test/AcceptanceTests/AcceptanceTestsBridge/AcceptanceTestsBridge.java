@@ -43,9 +43,9 @@ public interface AcceptanceTestsBridge {
     boolean appointOwnerToStore(int id,String storeName, String username);
     boolean addPermissionToManager(int id,String storeName, String username, PermissionsTypeTestData productsInventory);
     boolean deletePermission(int id, String storeName, String username, PermissionsTypeTestData productsInventory);
-    boolean writeReplyToApplication(int requestId,String storeName, ApplicationToStoreTestData key, String value);
-    HashSet<ApplicationToStoreTestData> viewApplicationToStore(String storeName);
-    HashMap<ApplicationToStoreTestData,String> getUserApplicationsAndReplies(String username,String storeName);
+    boolean writeReplyToApplication(int id, int requestId,String storeName, ApplicationToStoreTestData key, String value);
+    HashSet<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName);
+    HashMap<ApplicationToStoreTestData,String> getUserApplicationsAndReplies(int id, String username,String storeName);
     List<ApplicationToStoreTestData> getUserApplications(int id,String username, String storeName);
     List<PurchaseTestData> userGetStorePurchasesHistory(String storeName);
     int connect();

@@ -15,7 +15,7 @@ public class Request {
         this.storeName=storeName;
         this.content = content;
         this.id=id;
-        comment=null;
+        comment=new AtomicReference<>(null);
     }
 
     public String getSenderName() {
