@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f0366da3-85c5-4ead-a08b-f6642ede6572" name="Default Changelist" comment="deadlock is due to line 217 in AcceptanceTests">
+    <list default="true" id="f0366da3-85c5-4ead-a08b-f6642ede6572" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStorePurchaseHistoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStorePurchaseHistoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -45,15 +41,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Domain/LogicManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="257">
-              <caret line="724" selection-start-line="724" selection-end-line="724" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Subscribe.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="250">
@@ -71,7 +58,7 @@
         <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditStore.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-150">
-              <caret line="18" column="24" lean-forward="true" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
+              <caret line="19" column="24" lean-forward="true" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#548#549#0" expanded="true" />
@@ -105,8 +92,17 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStorePurchaseHistoryTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
+            <state relative-caret-position="431">
               <caret line="24" column="13" lean-forward="true" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="100">
+              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -344,7 +340,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587548449903" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587549510939" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -513,7 +509,7 @@
       <workItem from="1586496304675" duration="6045000" />
       <workItem from="1586509461422" duration="6936000" />
       <workItem from="1587453312440" duration="9216000" />
-      <workItem from="1587546169043" duration="2376000" />
+      <workItem from="1587546169043" duration="3417000" />
     </task>
     <task id="LOCAL-00007" summary="get stores info">
       <created>1585903984055</created>
@@ -760,7 +756,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587503410785</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="4.10 with id - waiting for them">
+      <created>1587548749649</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1587548749649</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -796,7 +799,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="135420000" />
+    <option name="totallyTimeSpent" value="136461000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -809,7 +812,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.28456375" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -822,13 +824,13 @@
       <window_info anchor="bottom" id="Messages" order="0" weight="0.32719547" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.66477734" visible="true" weight="0.30878186" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.66477734" weight="0.30878186" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.3696884" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3286119" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="9" weight="0.23087819" />
+      <window_info anchor="bottom" id="Version Control" order="9" visible="true" weight="0.23087819" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3286119" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" weight="0.3285968" />
@@ -864,7 +866,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="3.2,3.5,4.1.1,4.1.2" />
     <MESSAGE value="add managers" />
     <MESSAGE value="givenby+ 4.5" />
     <MESSAGE value="Merge branch 'AcceptanceTests' of https://github.com/avraham101/Workshop-Software-Engineering into AcceptanceTests&#10;&#10;# Conflicts:&#10;#&#9;code/.idea/workspace.xml&#10;#&#9;code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" />
@@ -889,7 +890,8 @@
     <MESSAGE value="acceptance test - 4.6 - editPermissionsTest" />
     <MESSAGE value="half of 4.3 - there is a deadlock" />
     <MESSAGE value="deadlock is due to line 217 in AcceptanceTests" />
-    <option name="LAST_COMMIT_MESSAGE" value="deadlock is due to line 217 in AcceptanceTests" />
+    <MESSAGE value="4.10 with id - waiting for them" />
+    <option name="LAST_COMMIT_MESSAGE" value="4.10 with id - waiting for them" />
   </component>
   <component name="WindowStateProjectService">
     <state x="618" y="301" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" />
@@ -942,7 +944,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditStore.java</url>
-          <line>18</line>
+          <line>19</line>
           <properties />
           <option name="timeStamp" value="58" />
         </line-breakpoint>
@@ -950,13 +952,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="62" column="25" selection-start-line="62" selection-start-column="25" selection-end-line="62" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/Stubs/GuestStub.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
@@ -1303,7 +1298,7 @@
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditStore.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-150">
-          <caret line="18" column="24" lean-forward="true" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
+          <caret line="19" column="24" lean-forward="true" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#548#549#0" expanded="true" />
@@ -1378,9 +1373,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStorePurchaseHistoryTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
+        <state relative-caret-position="431">
           <caret line="24" column="13" lean-forward="true" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
         </state>
       </provider>
