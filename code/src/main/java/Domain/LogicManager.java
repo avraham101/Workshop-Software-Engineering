@@ -467,7 +467,7 @@ public class LogicManager {
     /**
      * use case 2.8 - purchase cart
      *
-     * @param id
+     * @param id - the id
      * @param paymentData - the payment data of this purchase
      * @param addresToDeliver - the address do Deliver the purchase
      * @return true is the purchase succeeded, otherwise false
@@ -482,8 +482,10 @@ public class LogicManager {
             return false;
         if (addresToDeliver == null || addresToDeliver.isEmpty())
             return false;
+        System.out.println('c');
         return current.buyCart(paymentData, addresToDeliver);
     }
+
 
     /**
      * use case - 2.8
