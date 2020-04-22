@@ -328,6 +328,8 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     private List<ProductTestData> buildProductsTestData(List<ProductData> storeProducts) {
         List<ProductTestData> productsTestData = new ArrayList<>();
+        if(storeProducts == null)
+            return null;
         for(ProductData pd : storeProducts)
             productsTestData.add(buildProductTestData(pd));
 

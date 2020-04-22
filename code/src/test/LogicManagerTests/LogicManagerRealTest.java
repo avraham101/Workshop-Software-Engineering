@@ -68,11 +68,17 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         testLoginFailAlreadySubscribeLogged();
     }
 
+    /**
+     * part of test use case 2.3 - Login
+     */
     private void testLoginFailAlreadySubscribeLogged() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         assertFalse(logicManager.login(data.getId(Data.VALID2), subscribe.getName(),subscribe.getPassword()));
     }
 
+    /**
+     * part of test use case 2.3 - Login
+     */
     public void testLoginFailAlreadyUserLogged() {
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         assertFalse(logicManager.login(data.getId(Data.VALID), subscribe.getName(),subscribe.getPassword()));
@@ -505,7 +511,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
     /**
      * test try adding product without being owner or manager of the store
-     */@Test
+     */
+    @Test
     public void testAddProductNotManagerOfStore() {
          setUpOpenedStore();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
@@ -544,6 +551,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertFalse(sub.getPermissions().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
 
+    /**
+     * part of use case 4.1.2 test
+     */
     @Test
     public void checkRemoveProductNotManager() {
         setUpProductAdded();
@@ -557,6 +567,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertTrue(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
 
+    /**
+     * part of use case 4.1.2 test
+     */
     @Test
     public void checkRemoveProductHasNoPermission() {
         setUpProductAdded();
@@ -617,7 +630,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
-     * use case 4.3 - manage owner
+     * use case 4.3 - manage owner - success
      */
     @Override
     protected void testManageOwnerSuccess() {
@@ -625,6 +638,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         checkPermissions(Data.VALID2);
     }
 
+    /**
+     * use case 4.3 - manage owner - fail
+     */
     @Override
     protected void testManageOwnerFail() {
         super.testManageOwnerFail();
@@ -708,6 +724,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         testStoreViewRequestFail();
     }
 
+    /**
+     * part of use case 4.9.1 - view request
+     */
     private void testStoreViewRequestSuccess() {
         testAddRequest();
         StoreData storeData = data.getStore(Data.VALID);
@@ -716,6 +735,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertTrue(excepted.containsAll(actual));
     }
 
+    /**
+     * part of use case 4.9.1 - view request
+     */
     private void testStoreViewRequestFail() {
         assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), data.getStore(Data.NULL_NAME).getName()).isEmpty());
     }
@@ -729,6 +751,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         testReplayRequestFail();
     }
 
+    /**
+     * part of test use case 4.9.2
+     */
     private void testReplayRequestSuccess() {
         testAddRequest();
         Request request = data.getRequest(Data.VALID);
@@ -740,6 +765,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(excepted.getComment(),actual.getComment());
     }
 
+    /**
+     * part of test use case 4.9.2
+     */
     private void testReplayRequestFail() {
         Request request = data.getRequest(Data.WRONG_ID);
         assertNull(logicManager.replayRequest(data.getId(Data.VALID), request.getStoreName(), request.getId(), request.getContent()));
@@ -787,7 +815,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(purchase.getProduct().get(0).getProductName(),
                 data.getProductData(Data.VALID).getProductName());
     }
-
 
 }
 

@@ -35,6 +35,7 @@ public class GuestTestReal extends GuestTest{
     }
 
     /**------------set-ups-------------------*/
+
     /**
      * use case 2.7 add to cart
      */

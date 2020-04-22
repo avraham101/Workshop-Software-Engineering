@@ -66,7 +66,10 @@ public class StoreStub extends Store {
     }
 
 
-    //TODO add doumentation
+    /**
+     * use case 2.8 - purchase cart
+     * @return
+     */
     @Override
     public Purchase purches(PaymentData paymentData, DeliveryData deliveryData) {
         return null;

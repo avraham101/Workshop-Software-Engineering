@@ -15,23 +15,18 @@ import static org.junit.Assert.*;
 public class BuyCartTest extends AcceptanceTests {
 
     public void setUp(PaymentSystem paymentSystem , SupplySystem deliverySystem){
-        //TODO: complete - commented because compilation
-       // bridge.initialStart(admin.getId(),admin.getUsername(),
-               // admin.getPassword(),paymentSystem,deliverySystem);
-
-        addStores(stores);
-        addProducts(products);
+       bridge.initialStart(admin.getUsername(), admin.getPassword(),paymentSystem,deliverySystem);
+       addStores(stores);
+       addProducts(products);
     }
 
     @Test
     public void buyCartSuccess(){
-        //TODO: who is the user?
-
         addProductToCart();
         boolean approval = bridge.buyCart(validPayment,validDelivery);
         assertTrue(approval);
-        //CartTestData currCart = bridge.getCurrentUsersCart();
-        //assertTrue(currCart.isEmpty());
+        CartTestData currCart = bridge.getUsersCart(superUser.getId());
+        assertTrue(currCart.isEmpty());
     }
 
     @Test
@@ -40,30 +35,26 @@ public class BuyCartTest extends AcceptanceTests {
     }
     @Test
     public void buyCartFailInvalidPayment(){
-        //TODO: who is the user?
-
         addProductToCart();
-        //CartTestData expectedCart = bridge.getCurrentUsersCart();
+        CartTestData expectedCart = bridge.getUsersCart(superUser.getId());
         assertFalse(bridge.buyCart(invalidPayment,validDelivery));
-        //CartTestData actualCart = bridge.getCurrentUsersCart();
-        //assertEquals(expectedCart,actualCart);
+        CartTestData actualCart = bridge.getUsersCart(superUser.getId());
+        assertEquals(expectedCart,actualCart);
     }
     @Test
     public void buyCartFailInvalidDeliveryDetails(){
-        //TODO: who is the user?
-
         addProductToCart();
         assertFalse(bridge.buyCart(validPayment,invalidDelivery));
-        //assertTrue(!bridge.getCurrentUsersCart().isEmpty());
+        assertFalse(bridge.getUsersCart(superUser.getId()).isEmpty());
     }
 
     @Test
     public void buyCartFailProductNotInStore(){
+        //TODO: add delete product from store
         StoreTestData store = stores.get(0);
         ProductTestData product = store.getProducts().get(0);
         product.setStoreName(stores.get(1).getStoreName());
-        //TODO: who is the user?
-        //bridge.addToUserCart(product,1);
+        bridge.addToUserCart(superUser.getId(),product,1);
 
         assertFalse(bridge.buyCart(validPayment,validDelivery));
 

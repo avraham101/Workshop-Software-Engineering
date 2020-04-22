@@ -3,7 +3,7 @@ package AcceptanceTests.SystemMocks;
 import DataAPI.PaymentData;
 import Systems.PaymentSystem.PaymentSystem;
 
-public class PaymenSystemMock extends PaymentSystem {
+public class PaymentSystemMockAllNegative extends PaymentSystem {
     @Override
     public boolean connect() {
         return false;

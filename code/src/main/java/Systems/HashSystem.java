@@ -7,6 +7,13 @@ import java.security.SecureRandom;
 
 public class HashSystem {
 
+    /**
+     * use case 2.2 - Register
+     * use case 2.3 - Login
+     * @param passwordToHash
+     * @return encrypted password
+     * @throws NoSuchAlgorithmException
+     */
     public String encrypt(String passwordToHash) throws NoSuchAlgorithmException {
         // getInstance() method is called with algorithm SHA-512
         MessageDigest md = MessageDigest.getInstance("SHA-512");

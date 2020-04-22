@@ -13,6 +13,8 @@ public class Category {
         products=new ArrayList<>();
     }
 
+    // ============================ getters & setters ============================ //
+
     public String getName() {
         return name;
     }
@@ -24,6 +26,8 @@ public class Category {
     public List<Product> getProducts() {
         return products;
     }
+
+    // ============================ getters & setters ============================ //
 
     /**
      * use case 4.1.1 - add product to store

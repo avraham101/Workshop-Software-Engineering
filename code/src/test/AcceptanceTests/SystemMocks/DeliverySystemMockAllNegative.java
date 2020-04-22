@@ -3,7 +3,7 @@ package AcceptanceTests.SystemMocks;
 import DataAPI.DeliveryData;
 import Systems.SupplySystem.SupplySystem;
 
-public class DeliverySystemMock extends SupplySystem {
+public class DeliverySystemMockAllNegative extends SupplySystem {
 
     @Override
     public boolean connect() {

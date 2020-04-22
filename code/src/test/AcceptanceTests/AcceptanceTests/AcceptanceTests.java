@@ -2,6 +2,10 @@ package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsBridge;
+import AcceptanceTests.SystemMocks.DeliverySystemMockAllPositive;
+import AcceptanceTests.SystemMocks.PaymentSystemMockAllPositive;
+import Systems.PaymentSystem.PaymentSystem;
+import Systems.SupplySystem.SupplySystem;
 import org.junit.After;
 import org.junit.Before;
 
@@ -21,6 +25,8 @@ public class AcceptanceTests {
     protected  PaymentTestData invalidPayment;
     protected  UserTestData superUser;
     protected  UserTestData admin;
+    private PaymentSystem paymentSystem;
+    private SupplySystem supplySystem;
 
     @Before
     public  void setUpAll(){
@@ -28,6 +34,8 @@ public class AcceptanceTests {
         users = new ArrayList<>();
         stores = new ArrayList<>();
         products = new ArrayList<>();
+        paymentSystem = new PaymentSystemMockAllPositive();
+        supplySystem = new DeliverySystemMockAllPositive();
 
         setUpUsers();
         setUpDelivery();
@@ -55,7 +63,7 @@ public class AcceptanceTests {
 
 
     private  void setUpUsers() {
-        boolean init = bridge.initialStart("admin","admin");
+        boolean init = bridge.initialStart("admin","admin",paymentSystem,supplySystem);
         assertTrue(init);
         admin = new UserTestData(generateUserId(),"admin","admin");
         UserTestData user0 = new UserTestData(generateUserId(),"testUser0","testUser0Pass");
@@ -214,7 +222,6 @@ public class AcceptanceTests {
             registerAndLogin(owner);
             bridge.openStore(owner.getId(),store.getStoreName());
             bridge.appointOwnerToStore(owner.getId(),store.getStoreName(),admin.getUsername());
-            bridge.logout(owner.getId());
         }
 
         bridge.logout(admin.getId());

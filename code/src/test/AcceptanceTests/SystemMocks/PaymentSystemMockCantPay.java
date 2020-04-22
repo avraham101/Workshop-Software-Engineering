@@ -1,22 +1,17 @@
-package Stubs;
+package AcceptanceTests.SystemMocks;
 
 import DataAPI.PaymentData;
 import Systems.PaymentSystem.PaymentSystem;
 
-public class PaymentSystemStub extends PaymentSystem {
-
+public class PaymentSystemMockCantPay extends PaymentSystem {
     @Override
     public boolean connect() {
-        return false;
+        return true;
     }
 
-    /**
-     * use case 2.8 - purchase cart
-     * @return
-     */
     @Override
     public boolean isConnected() {
-        return false;
+        return true;
     }
 
     @Override
@@ -24,13 +19,8 @@ public class PaymentSystemStub extends PaymentSystem {
         return false;
     }
 
-    /**
-     * use case 2.8 - purchase cart
-     * @param paymentData - the info
-     * @return
-     */
     @Override
     public boolean cancel(PaymentData paymentData) {
-        return false;
+        return true;
     }
 }

@@ -191,7 +191,6 @@ public class LogicManager {
 
     /***
      * use case 2.3 - Login
-     *
      * @param id
      * @param userName - the user Name
      * @param password - the user password
@@ -272,7 +271,7 @@ public class LogicManager {
     }
 
     /**
-     * check if dicounts of product are valid
+     * check if discounts of product are valid
      * @param discounts of the product
      * @return if the discounts are not null and between 0 to 100
      */
@@ -287,7 +286,7 @@ public class LogicManager {
     }
 
     /**
-     * check if dicounts of product are valid
+     * check if discounts of product are valid
      * @param discount of the product
      * @return if the discount is not null and between 0 to 100
      */
@@ -388,8 +387,7 @@ public class LogicManager {
 
 
     /**
-     * use case 2.7.1 watch cart details
-     * return the details about a cart
+     * use case 2.7.1 - watch cart details
      * @return - the cart details
      * @param id
      */
@@ -401,7 +399,7 @@ public class LogicManager {
     }
 
     /**
-     * use case 2.7.2
+     * use case 2.7.2 - delete product from cart
      * delete product from the cart
      * @param productName - the product to remove
      * @param storeName - the store that sale this product
@@ -415,7 +413,7 @@ public class LogicManager {
     }
 
     /**
-     * use case 2.7.3 edit amount of product
+     * use case 2.7.3 - edit amount of product
      * @param productName - the product to edit it's amount
      * @param storeName - the store of the product
      * @param newAmount - the new amount
@@ -454,7 +452,6 @@ public class LogicManager {
 
     /**
      * use case 2.8 - purchase cart
-     *
      * @param id
      * @param paymentData - the payment data of this purchase
      * @param addresToDeliver - the address do Deliver the purchase
@@ -474,7 +471,7 @@ public class LogicManager {
     }
 
     /**
-     * use case - 2.8
+     * use case 2.8 - purchase cart
      * the function check if payment data is valid
      * @param paymentData - the payment data
      * @return true if the payment is valid, otherwise false
@@ -525,7 +522,7 @@ public class LogicManager {
     }
 
     /**
-     * The fucntion check if storeData is valid
+     * The function check if storeData is valid
      * @param storeData - the store data to check
      * @return true the store data is ok, otherwise false
      */
@@ -618,7 +615,7 @@ public class LogicManager {
     }
 
     /**
-     * use case 4.1.1 add product to store
+     * use case 4.1.1 - add product to store
      * @param productData -the details of the product
      * @return true if the product was added, false otherwise
      */
@@ -647,7 +644,7 @@ public class LogicManager {
     }
 
     /**
-     * use case 4.1.2: remove a product from store if exist
+     * use case 4.1.2 - remove a product from store if exist
      * @param storeName name of the store to remove the product from
      * @param productName name of product to be removed
      * @return if the product was removed
@@ -680,7 +677,7 @@ public class LogicManager {
     }
 
     /**
-     * use case 4.3
+     * use case 4.3 - manage owner
      * @param storeName the name of the store to be manager of
      * @param userName the user to be manager of the store
      * @return
@@ -698,7 +695,7 @@ public class LogicManager {
     }
 
     /**
-     * use case 4.5 -add manager
+     * use case 4.5 - add manager
      * @param storeName name of store to be manager of
      * @param userName
      * @return if the manager was added successfully
@@ -714,9 +711,9 @@ public class LogicManager {
 
     /**
      * use case 4.6.1 - add permissions
-     * @param permissions permmisions to add
+     * @param permissions permissions to add
      * @param storeName -the store to add permissions to
-     * @param userName user to add permmisions to
+     * @param userName user to add permissions to
      * @return
      */
     public boolean addPermissions(int id,List<PermissionType> permissions, String storeName, String userName) {
@@ -775,7 +772,7 @@ public class LogicManager {
     }
 
     /**
-     * use case 4.9.1 -view Store Request
+     * use case 4.9.1 - view Store Request
      *
      * @param id
      * @param storeName name of store to view request.
@@ -792,8 +789,7 @@ public class LogicManager {
     }
 
     /**
-     * use case 4.9.2 -replay to Request
-     *
+     * use case 4.9.2 - replay to Request
      * @param id
      * @param storeName
      * @param requestID
@@ -811,7 +807,6 @@ public class LogicManager {
 
     /**
      * use case 6.4.1 - admin watch history purchases of some user
-     *
      * @param id
      * @param userName - the user that own the purchases
      * @return - list of purchases that of the user
@@ -832,7 +827,6 @@ public class LogicManager {
     /**
      * use case 6.4.2 - admin watch history purchases of some user
      * use case 4.10 - watch Store History by store owner
-     *
      * @param id
      * @param storeName - the name of the store that own the purchases
      * @return - list of purchases that of the store
