@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -32,6 +33,16 @@ public class UserRealTest extends UserAllStubsTest{
     protected void setUpSubscribe(){
         setUpGuest();
         user.login(data.getSubscribe(Data.VALID));
+    }
+
+    /**
+     * set up to reserved to cart
+     */
+    public void setUpReserved() {
+        setUpProductAdded();
+        Store store = data.getRealStore(Data.VALID);
+        Product p = data.getRealProduct(Data.VALID);
+        user.addProductToCart(store,p,p.getAmount());
     }
 
     /**
@@ -84,15 +95,59 @@ public class UserRealTest extends UserAllStubsTest{
     /**
      * use case 2.8 - purchase cart
      */
-    @Override
     @Test
     public void testSavePurchase() {
         setUpReservedCart();
+        Store store = null;
+        int storeExpected = 0;
+        for(Basket basket: user.getState().getCart().getBaskets().values()) {
+            store = basket.getStore();
+            storeExpected = store.getPurchases().size() + 1;
+            break;
+        }
         int number =  user.getState().getCart().getBaskets().keySet().size();
         String name = data.getSubscribe(Data.VALID).getName();
         user.savePurchase(name);
         assertEquals(number, user.watchMyPurchaseHistory().size());
+        assertEquals(storeExpected, store.getPurchases().size());
     }
+
+    /**
+     * use case 2.8 - purchase cart
+     */
+    @Test
+    public void testCancel() {
+        setUpProductAddedToCart();
+        int expected = amountProductInStore();
+        user.reservedCart();
+        user.cancelCart();
+        int result = amountProductInStore();
+        assertEquals(expected,result);
+    }
+
+    /**
+     * use case 2.8
+     * help function for getting the amount
+     * @return
+     */
+    private int amountProductInStore() {
+        Cart cart = user.getState().getCart();
+        Store store = null;
+        for(Basket b: cart.getBaskets().values()) {
+            store = b.getStore();
+            break;
+        }
+        assertNotNull(store);
+        Product product = null;
+        for(Product p :store.getProducts().values()) {
+            product = p;
+            break;
+        }
+        assertNotNull(product);
+        return product.getAmount();
+    }
+
+
 
     /**
      * use case 3.1 - logout
