@@ -272,7 +272,8 @@ public class UserAllStubsTest {
         setUpOpenStore();
         Request request = data.getRequest(Data.VALID);
         assertNotNull(user.addRequest(request.getId(),request.getStoreName(),request.getComment())); }
-    /**
+
+        /**
      * test use case 3.7 - watch purchases
      */
     @Test
