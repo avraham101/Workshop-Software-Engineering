@@ -37,7 +37,7 @@ public class Product {
      */
     public Product(Product other) {
         this.name = other.name;
-        this.amount = new AtomicInteger(amount.get());
+        this.amount = new AtomicInteger(other.getAmount());
         this.price = other.price;
         this.discount = new LinkedList<>();
         this.purchaseType = new PurchaseType();

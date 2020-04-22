@@ -161,7 +161,7 @@ public class Store {
             Product real = products.get(other.getName());
             if(real!=null) {
                 real.getWriteLock().lock();
-                if(amount<real.getAmount()) {
+                if(amount<=real.getAmount()) {
                     productsReserved.put(real,amount);
                     real.setAmount(real.getAmount() - amount);
                     //TODO call this policy of the product

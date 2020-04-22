@@ -39,6 +39,9 @@ public class LogicManagerAllStubsTest {
 
     @Before
     public void setUp() {
+        //External Systems
+        supplySystem=new ProxySupply();
+        paymentSystem=new ProxyPayment();
         init();
         //make sure we are using SubscribeStub
         Subscribe dataSubscribe = data.getSubscribe(Data.ADMIN);
@@ -52,8 +55,6 @@ public class LogicManagerAllStubsTest {
         stores=new ConcurrentHashMap<>();
         connectedUsers =new ConcurrentHashMap<>();
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
-        supplySystem=new ProxySupply();
-        paymentSystem=new ProxyPayment();
         try {
             logicManager = new LogicManager(subscribe.getName(), subscribe.getPassword(), users, stores,
                     connectedUsers,paymentSystem,supplySystem);
@@ -619,7 +620,6 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 2.8 - test reserve Cart Products
      */
-    //TODO change because change implementation
     @Test
     public void testBuyCart() {
         setUpProductAddedToCart();
@@ -630,7 +630,6 @@ public class LogicManagerAllStubsTest {
      * use case 2.8 - test reserveCart Products
      * success tests
      */
-    //TODO change because change implementation
     private void testSuccessBuyProducts() {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
@@ -642,7 +641,12 @@ public class LogicManagerAllStubsTest {
      */
     @Test
     public void testBuyCartPaymentSystemCrashed() {
-        
+        paymentSystem = new PaymentSystemStubPay();
+        init();
+        setUpProductAddedToCart();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
     }
 
     /**
@@ -650,10 +654,27 @@ public class LogicManagerAllStubsTest {
      */
     @Test
     public void testBuyCartSupplySystemCrashed() {
-
+        supplySystem = new SupplySystemStubDeliver();
+        init();
+        setUpProductAddedToCart();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
     }
 
-
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartSupplySystemCrashedAndPaymentCancel() {
+        paymentSystem = new PaymentSystemStubCancel();
+        supplySystem = new SupplySystemStubDeliver();
+        init();
+        setUpProductAddedToCart();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+    }
 
     /**
      * use case 2.8 - test buy Cart

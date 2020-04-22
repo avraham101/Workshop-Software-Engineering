@@ -456,8 +456,9 @@ public class LogicManager {
         if (storeName != null)
             store = stores.get(storeName);
         if (store != null) {
-            Product product = store.getProduct(productName).clone();
+            Product product = store.getProduct(productName);
             if (product != null && amount > 0 && amount <= product.getAmount()) {
+                product = product.clone();
                 result = current.addProductToCart(store, product, amount);
             }
         }

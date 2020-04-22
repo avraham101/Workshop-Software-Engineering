@@ -4,6 +4,8 @@ import DataAPI.*;
 import Data.Data;
 import Domain.*;
 import Systems.HashSystem;
+import Systems.PaymentSystem.ProxyPayment;
+import Systems.SupplySystem.ProxySupply;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,6 +20,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
     @Before
     public void setUp() {
+        supplySystem=new ProxySupply();
+        paymentSystem=new ProxyPayment();
         init();
         currUser=connectedUsers.get(data.getId(Data.VALID));
     }
