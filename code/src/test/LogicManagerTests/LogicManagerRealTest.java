@@ -317,7 +317,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         ProductData product = data.getProductData(Data.WRONG_STORE);
         assertFalse(logicManager.addProductToCart(data.getId(Data.VALID),product.getProductName(),
                 product.getStoreName(), product.getAmount()));
-        //TODO check product wasnt added to cart
     }
 
     /**
@@ -697,12 +696,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         super.testRemoveManagerSuccess();
         assertFalse(niv.getPermissions().containsKey(storeName));
         assertFalse(p.getOwner().getPermissions().containsKey(storeName));
-    }
-
-    //TODO remove
-    @Override @Test
-    public void testRemoveManager() {
-        super.testRemoveManager();
     }
 
     /**
