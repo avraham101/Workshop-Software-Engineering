@@ -41,6 +41,17 @@ public class StoreTestsAllStubs {
     /**--------------------------------set-ups-------------------------------------------------------------------*/
 
     /**
+     * use case 2.4.2 view product in store
+     */
+    @Test
+    public void testViewProductInStore(){
+        List<ProductData> data = store.viewProductInStore();
+        for(ProductData d : data) {
+            assertTrue(store.getProducts().containsKey(d));
+        }
+    }
+
+    /**
      * use case 3.3 - add review
      */
     //TODO split test
