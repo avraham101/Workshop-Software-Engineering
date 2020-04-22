@@ -245,6 +245,7 @@ public class Subscribe extends UserState{
                 boolean added=false;
                 for(PermissionType type: permissions)
                     added=added|p.addType(type);
+                lock.readLock().unlock();
                 return added;
             }
         }
@@ -268,6 +269,7 @@ public class Subscribe extends UserState{
                 boolean removed=false;
                 for(PermissionType type: permissions)
                     removed=removed|p.removeType(type);
+                lock.readLock().unlock();
                 return removed;
             }
         }
@@ -288,7 +290,10 @@ public class Subscribe extends UserState{
 
         for(Permission p: givenByMePermissions) {
             if (p.getStore().getName().equals(storeName) && p.getOwner().getName().equals(userName)) {
+                lock.writeLock().lock();
                 p.getOwner().removeManagerFromStore(storeName);
+                givenByMePermissions.remove(p);
+                lock.writeLock().unlock();
                 return true;
             }
         }
