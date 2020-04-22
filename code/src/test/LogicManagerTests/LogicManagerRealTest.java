@@ -325,8 +325,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     //TODO change test because change implemetation
     @Override @Test
-    public void testBuyProducts() {
-        super.testBuyProducts();
+    public void testBuyCart() {
+        super.testBuyCart();
         List<Purchase> purchaseList = this.currUser.getState().watchMyPurchaseHistory();
         for (Purchase purchase: purchaseList) {
             String storeName = purchase.getStoreName();
