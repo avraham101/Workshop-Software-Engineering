@@ -143,7 +143,7 @@ public class UserStub extends User {
         return requests;
     }
 
-    //@Override
+    @Override
     public Request replayToRequest(String storeName, int requestID, String content) {
         return new Request(getUserName(), storeName, "temp", 10);
     }
