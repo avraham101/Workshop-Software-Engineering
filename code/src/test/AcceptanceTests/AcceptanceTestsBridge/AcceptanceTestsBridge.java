@@ -47,7 +47,7 @@ public interface AcceptanceTestsBridge {
     HashSet<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName);
     HashMap<ApplicationToStoreTestData,String> getUserApplicationsAndReplies(int id, String username,String storeName);
     List<ApplicationToStoreTestData> getUserApplications(int id,String username, String storeName);
-    List<PurchaseTestData> userGetStorePurchasesHistory(String storeName);
+    List<PurchaseTestData> userGetStorePurchasesHistory(int id,String storeName);
     int connect();
 
 }
