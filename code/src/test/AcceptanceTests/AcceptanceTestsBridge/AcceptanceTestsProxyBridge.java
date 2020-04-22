@@ -71,15 +71,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
 
 
     @Override
-    public void addStores(List<StoreTestData> stores) {
+    public void addProducts(int id,List<ProductTestData> products) {
         if(realBridge!=null)
-            realBridge.addStores(stores);
-    }
-
-    @Override
-    public void addProducts(List<ProductTestData> products) {
-        if(realBridge!=null)
-            realBridge.addProducts(products);
+            realBridge.addProducts(id,products);
     }
 
 
@@ -147,36 +141,36 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public void changeAmountOfProductInStore(ProductTestData product, int amount) {
+    public void changeAmountOfProductInStore(int id,ProductTestData product, int amount) {
         if(realBridge!=null)
-            realBridge.changeAmountOfProductInStore(product,amount);
+            realBridge.changeAmountOfProductInStore(id,product,amount);
     }
 
     @Override
-    public StoreTestData openStore(String storeName) {
+    public StoreTestData openStore(int id,String storeName) {
         if(realBridge!=null)
-            return realBridge.openStore(storeName);
+            return realBridge.openStore(id,storeName);
         return null;
     }
 
     @Override
-    public boolean sendApplicationToStore(String storeName, String message) {
+    public boolean sendApplicationToStore(int id, String storeName, String message) {
         if(realBridge!=null)
-            return realBridge.sendApplicationToStore(storeName,message);
+            return realBridge.sendApplicationToStore(id,storeName,message);
         return false;
     }
 
     @Override
-    public boolean addProduct(ProductTestData product) {
+    public boolean addProduct(int id,ProductTestData product) {
         if(realBridge!=null)
-            return realBridge.addProduct(product);
+            return realBridge.addProduct(id,product);
         return false;
     }
 
     @Override
-    public boolean deleteProduct(ProductTestData product) {
+    public boolean deleteProduct(int id,ProductTestData product) {
         if(realBridge!=null)
-            return realBridge.deleteProduct(product);
+            return realBridge.deleteProduct(id,product);
         return false;
     }
 
@@ -188,16 +182,16 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean editProductInStore(ProductTestData product) {
+    public boolean editProductInStore(int id,ProductTestData product) {
         if(realBridge!=null)
-            return realBridge.editProductInStore(product);
+            return realBridge.editProductInStore(id,product);
         return false;
     }
 
     @Override
-    public boolean appointManager(String storeName, String username) {
+    public boolean appointManager(int id, String storeName, String username) {
         if(realBridge!=null)
-            return realBridge.appointManager(storeName,username);
+            return realBridge.appointManager(id,storeName,username);
         return false;
     }
 
@@ -230,23 +224,23 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean appointOwnerToStore(String storeName, String username) {
+    public boolean appointOwnerToStore(int id,String storeName, String username) {
         if(realBridge!=null)
-            return realBridge.appointOwnerToStore(storeName,username);
+            return realBridge.appointOwnerToStore(id,storeName,username);
         return false;
     }
 
     @Override
-    public boolean addPermissionToManager(String storeName, String username, PermissionsTypeTestData permissionType) {
+    public boolean addPermissionToManager(int id,String storeName, String username, PermissionsTypeTestData permissionType) {
         if(realBridge!=null)
-            return realBridge.addPermissionToManager(storeName,username,permissionType);
+            return realBridge.addPermissionToManager(id,storeName,username,permissionType);
         return false;
     }
 
     @Override
-    public boolean deletePermission(String storeName, String username, PermissionsTypeTestData permissionType) {
+    public boolean deletePermission(int id,String storeName, String username, PermissionsTypeTestData permissionType) {
         if(realBridge!=null)
-            return realBridge.deletePermission(storeName,username,permissionType);
+            return realBridge.deletePermission(id,storeName,username,permissionType);
         return false;
     }
 
@@ -272,9 +266,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public List<ApplicationToStoreTestData> getUserApplications(String username, String storeName) {
+    public List<ApplicationToStoreTestData> getUserApplications(int id, String username, String storeName) {
         if(realBridge!=null)
-            return realBridge.getUserApplications(username,storeName);
+            return realBridge.getUserApplications(id,username,storeName);
         return null;
     }
 

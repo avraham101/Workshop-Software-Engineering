@@ -3,14 +3,14 @@ package AcceptanceTests.AcceptanceTests;
 import AcceptanceTests.AcceptanceTestDataObjects.ApplicationToStoreTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import javafx.util.Pair;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+
+import static org.junit.Assert.*;
 
 /**
  * 4.9 - view and replay user's applications
@@ -46,7 +46,7 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
 
         int i = 0;
         for(ApplicationToStoreTestData app : applications) {
-            bridge.sendApplicationToStore(storeName, app.getContent());
+            bridge.sendApplicationToStore(asker.getId(),storeName, app.getContent());
             applicationsAndReplies.put(app, "rep" + i);
             i++;
         }

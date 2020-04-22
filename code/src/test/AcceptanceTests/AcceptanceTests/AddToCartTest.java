@@ -69,7 +69,7 @@ public class AddToCartTest extends AcceptanceTests {
 
     private void logoutAndDeleteProduct(ProductTestData productToDelete){
         logoutAndLogin(admin);
-        bridge.deleteProduct(productToDelete);
+        bridge.deleteProduct(admin.getId(),productToDelete);
         logoutAndLogin(user0);
     }
 

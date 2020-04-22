@@ -28,15 +28,15 @@ public class AppointManagerTest extends AcceptanceTests  {
     @Test
     public void appointManagerSuccess() {
         StoreTestData store = stores.get(0);
-        boolean approval = bridge.appointManager(store.getStoreName(), userToAdd.getUsername());
+        boolean approval = bridge.appointManager(superUser.getId(),store.getStoreName(), userToAdd.getUsername());
         assertTrue(approval);
     }
 
     @Test
     public void appointMangerFailManagerAlreadyExist(){
         StoreTestData store = stores.get(0);
-        bridge.appointManager(store.getStoreName(),userToAdd.getUsername());
-        boolean approval = bridge.appointManager(store.getStoreName(),userToAdd.getUsername());
+        bridge.appointManager(superUser.getId(),store.getStoreName(),userToAdd.getUsername());
+        boolean approval = bridge.appointManager(superUser.getId(),store.getStoreName(),userToAdd.getUsername());
         assertFalse(approval);
 
     }
@@ -44,7 +44,7 @@ public class AppointManagerTest extends AcceptanceTests  {
     @Test
     public void appointManagerFailInvalidUserName(){
         StoreTestData store = stores.get(0);
-        boolean approval = bridge.appointManager(store.getStoreName(),"guest");
+        boolean approval = bridge.appointManager(superUser.getId(),store.getStoreName(),"guest");
         assertFalse(approval);
     }
 
@@ -52,7 +52,7 @@ public class AppointManagerTest extends AcceptanceTests  {
     public void appointManagerFailNotMyStore(){
         StoreTestData store = stores.get(2);
 
-        boolean approval = bridge.appointManager(store.getStoreName(),userToAdd.getUsername());
+        boolean approval = bridge.appointManager(superUser.getId(),store.getStoreName(),userToAdd.getUsername());
         assertFalse(approval);
     }
 }

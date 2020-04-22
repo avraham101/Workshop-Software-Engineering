@@ -134,7 +134,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-3.2---------------------------------//
     @Override
-    public StoreTestData openStore(String storeName) {
+    public StoreTestData openStore(int id,String storeName) {
         StoreData store = new StoreData(storeName,new PurchasePolicy(),new DiscountPolicy());
         boolean approval = serviceAPI.openStore(id,store);
         if(!approval) {
@@ -155,7 +155,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-3.5---------------------------------//
     @Override
-    public boolean sendApplicationToStore(String storeName, String message) {
+    public boolean sendApplicationToStore(int id, String storeName, String message) {
         return serviceAPI.writeRequestToStore(id,storeName,message);
     }
     //---------------------------Use-Case-3.5---------------------------------//
@@ -170,17 +170,17 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-4.1---------------------------------//
     @Override
-    public boolean addProduct(ProductTestData product) {
+    public boolean addProduct(int id,ProductTestData product) {
         return serviceAPI.addProductToStore(id,buildProductData(product));
     }
 
     @Override
-    public boolean deleteProduct(ProductTestData product) {
+    public boolean deleteProduct(int id,ProductTestData product) {
         return serviceAPI.removeProductFromStore(id,product.getStoreName(),product.getProductName());
     }
 
     @Override
-    public boolean editProductInStore(ProductTestData product) {
+    public boolean editProductInStore(int id,ProductTestData product) {
         ProductData productData = buildProductData(product);
         return serviceAPI.editProductFromStore(id,productData);
     }
@@ -188,28 +188,28 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-4.3---------------------------------//
     @Override
-    public boolean appointOwnerToStore(String storeName, String username) {
+    public boolean appointOwnerToStore(int id,String storeName, String username) {
         return serviceAPI.manageOwner(id,storeName,username);
     }
     //---------------------------Use-Case-4.3---------------------------------//
 
     //---------------------------Use-Case-4.5---------------------------------//
     @Override
-    public boolean appointManager(String storeName, String username) {
+    public boolean appointManager(int id,String storeName, String username) {
         return serviceAPI.addManagerToStore(id,storeName,username);
     }
     //---------------------------Use-Case-4.5---------------------------------//
 
     //---------------------------Use-Case-4.6---------------------------------//
     @Override
-    public boolean addPermissionToManager(String storeName, String username, PermissionsTypeTestData permissionsTypeTestData) {
+    public boolean addPermissionToManager(int id,String storeName, String username, PermissionsTypeTestData permissionsTypeTestData) {
         PermissionType permissionType = buildPermissionType(permissionsTypeTestData);
         List<PermissionType> permissions = new ArrayList<>(Collections.singletonList(permissionType));
         return serviceAPI.addPermissions(id,permissions,storeName,username);
     }
 
     @Override
-    public boolean deletePermission(String storeName, String username, PermissionsTypeTestData permissionsTypeTestData) {
+    public boolean deletePermission(int id,String storeName, String username, PermissionsTypeTestData permissionsTypeTestData) {
         List<PermissionType> permissionType = new ArrayList<>(Arrays.asList(buildPermissionType(permissionsTypeTestData)));
         return serviceAPI.removePermissions(id,permissionType,storeName,username);
     }
@@ -247,7 +247,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public List<ApplicationToStoreTestData> getUserApplications(String username, String storeName) {
+    public List<ApplicationToStoreTestData> getUserApplications(int id,String username, String storeName) {
         List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName);
         return buildApplicationsToStore(requests);
     }
@@ -296,17 +296,13 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         }
     }
 
-    @Override
-    public void addStores(List<StoreTestData> stores) {
-        for (StoreTestData storeTestData : stores)
-            openStore(storeTestData.getStoreName());
-    }
 
     @Override
-    public void addProducts(List<ProductTestData> products) {
+    public void addProducts(int id,List<ProductTestData> products) {
         for(ProductTestData productTestData : products){
             ProductData productData = buildProductData(productTestData);
-            serviceAPI.addProductToStore(id,productData);
+            boolean test=serviceAPI.addProductToStore(id,productData);
+            int t =3;
         }
     }
 
@@ -403,12 +399,12 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public StoreTestData getStoreInfoByName(String storeName) {
 
-//        List<StoreData> stores = serviceAPI.viewStores();
-//        for (StoreData st: stores) {
-//            if(st.getName().equals(storeName)){
-//                return new StoreTestData(storeName,currentUser);
-//            }
-//        }
+        List<StoreData> stores = serviceAPI.viewStores();
+        for (StoreData st: stores) {
+            if(st.getName().equals(storeName)){
+                return new StoreTestData(storeName,null);
+            }
+        }
         return null;
     }
 
@@ -502,9 +498,9 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public void changeAmountOfProductInStore(ProductTestData product, int amount) {
+    public void changeAmountOfProductInStore(int id,ProductTestData product, int amount) {
         product.setAmountInStore(amount);
-        editProductInStore(product);
+        editProductInStore(id,product);
     }
 
     private PermissionType buildPermissionType(PermissionsTypeTestData permissionsTypeTestData) {
