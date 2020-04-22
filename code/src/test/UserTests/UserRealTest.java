@@ -99,15 +99,34 @@ public class UserRealTest extends UserAllStubsTest{
      */
     @Test
     public void testCancel() {
-        Cart cart = user.getState().getCart();
-        for(Basket b:cart.getBaskets()) {
-
-        }
-        Store store =
-        int size
-        setUpReservedCart();
-
+        setUpProductAddedToCart();
+        int expected = amountProductInStore();
+        user.reservedCart();
         user.cancelCart();
+        int result = amountProductInStore();
+        assertEquals(expected,result);
+    }
+
+    /**
+     * use case 2.8
+     * help function for getting the amount
+     * @return
+     */
+    private int amountProductInStore() {
+        Cart cart = user.getState().getCart();
+        Store store = null;
+        for(Basket b: cart.getBaskets().values()) {
+            store = b.getStore();
+            break;
+        }
+        assertNotNull(store);
+        Product product = null;
+        for(Product p :store.getProducts().values()) {
+            product = p;
+            break;
+        }
+        assertNotNull(product);
+        return product.getAmount();
     }
 
     /**
