@@ -1,5 +1,6 @@
 package Stubs;
 
+import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
@@ -163,8 +164,8 @@ public class SubscribeStub extends Subscribe{
      * @return
      */
     @Override
-    public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
-        return true;
+    public void buyCart(PaymentData paymentData, DeliveryData addresToDeliver) {
+
     }
 
     /**

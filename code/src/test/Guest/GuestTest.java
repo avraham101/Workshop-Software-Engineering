@@ -3,7 +3,6 @@ package Guest;
 import Data.Data;
 import Data.TestData;
 import DataAPI.DeliveryData;
-import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
@@ -38,6 +37,7 @@ public class GuestTest {
         Subscribe sub=new Subscribe("yuval","sabag");
         assertTrue(guest.login(user,sub));
         assertSame(user.getState(), sub);
+        System.out.println("V");
     }
 
     /**
@@ -51,13 +51,14 @@ public class GuestTest {
     }
 
     /**
-     * use case - 2.8 buy cart
+     * use case - 2.8 reserveCart cart
      */
     @Test
     public void testbuyCart() {
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        assertTrue(guest.buyCart(paymentData,deliveryData.getAddress()));
+        fail();
+//        PaymentData paymentData = data.getPaymentData(Data.VALID);
+//        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+//        assertTrue(guest.reserveCart(paymentData,deliveryData.getAddress()));
     }
 
     /**

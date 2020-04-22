@@ -39,6 +39,9 @@ public class LogicManagerAllStubsTest {
 
     @Before
     public void setUp() {
+        //External Systems
+        supplySystem=new ProxySupply();
+        paymentSystem=new ProxyPayment();
         init();
         //make sure we are using SubscribeStub
         Subscribe dataSubscribe = data.getSubscribe(Data.ADMIN);
@@ -52,8 +55,6 @@ public class LogicManagerAllStubsTest {
         stores=new ConcurrentHashMap<>();
         connectedUsers =new ConcurrentHashMap<>();
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
-        supplySystem=new ProxySupply();
-        paymentSystem=new ProxyPayment();
         try {
             logicManager = new LogicManager(subscribe.getName(), subscribe.getPassword(), users, stores,
                     connectedUsers,paymentSystem,supplySystem);
@@ -619,21 +620,18 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * use case 2.8 - test buy Products
+     * use case 2.8 - test reserve Cart Products
      */
-    //TODO change because change implementation
     @Test
-    public void testBuyProducts() {
+    public void testBuyCart() {
         setUpProductAddedToCart();
-        testFailBuyProducts();
         testSuccessBuyProducts();
     }
 
     /**
-     * use case 2.8 - test buy Products
+     * use case 2.8 - test reserveCart Products
      * success tests
      */
-    //TODO change because change implementation
     private void testSuccessBuyProducts() {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
@@ -641,48 +639,140 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * use case 2.8 - test buy Products
-     * fails tests
+     * use case 2.8 - buy Cart
      */
-    //TODO change because change implementation
-    //TODO split tests
-    private void testFailBuyProducts() {
+    @Test
+    public void testBuyCartPaymentSystemCrashed() {
+        paymentSystem = new PaymentSystemStubPay();
+        init();
+        setUpProductAddedToCart();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+    }
+
+    /**
+     * use case 2.8 - buy Cart
+     */
+    @Test
+    public void testBuyCartSupplySystemCrashed() {
+        supplySystem = new SupplySystemStubDeliver();
+        init();
+        setUpProductAddedToCart();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartSupplySystemCrashedAndPaymentCancel() {
+        paymentSystem = new PaymentSystemStubCancel();
+        supplySystem = new SupplySystemStubDeliver();
+        init();
+        setUpProductAddedToCart();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartNullPayment(){
+        setUpProductAddedToCart();
         // null data payment
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), null, null));
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), null, address));
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartNullAddressPayment() {
+        setUpProductAddedToCart();
         // null address in payment
         PaymentData paymentData = data.getPaymentData(Data.NULL_ADDRESS);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartEmptyAddressPayment() {
+        setUpProductAddedToCart();
         // empty address in payment
-        paymentData = data.getPaymentData(Data.EMPTY_ADDRESS);
-        address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
-        // null payment
-        paymentData = data.getPaymentData(Data.NULL_PAYMENT);
-        address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
-        // empty payment
-        paymentData = data.getPaymentData(Data.EMPTY_PAYMENT);
-        address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
-        // null name in payment
-        paymentData = data.getPaymentData(Data.NULL_NAME);
-        address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
-        // empty name in payment
-        paymentData = data.getPaymentData(Data.EMPTY_NAME);
-        address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
-        // null address
-        paymentData = data.getPaymentData(Data.VALID);
-        address = data.getDeliveryData(Data.NULL_ADDRESS).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
-        // empty address
-        paymentData = data.getPaymentData(Data.VALID);
-        address = data.getDeliveryData(Data.EMPTY_ADDRESS).getAddress();
+        PaymentData paymentData = data.getPaymentData(Data.EMPTY_ADDRESS);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
     }
 
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartEmptyPayment() {
+        setUpProductAddedToCart();
+        // empty payment
+        PaymentData paymentData = data.getPaymentData(Data.EMPTY_PAYMENT);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartPaymentNullName() {
+        // null name in payment
+        PaymentData paymentData = data.getPaymentData(Data.NULL_NAME);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartPaymentEmptyName(){
+        setUpProductAddedToCart();
+        // empty name in payment
+        PaymentData paymentData = data.getPaymentData(Data.EMPTY_NAME);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartNullAddress() {
+        setUpProductAddedToCart();
+        // null address
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.NULL_ADDRESS).getAddress();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartEmptyAddress() {
+        setUpProductAddedToCart();
+        // empty address
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.EMPTY_ADDRESS).getAddress();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+
+    }
 
     /**
      * test: use case 3.1 - Logout

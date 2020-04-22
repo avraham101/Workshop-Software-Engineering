@@ -1,10 +1,8 @@
 package Domain;
 
-import DataAPI.CartData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
-import DataAPI.StoreData;
+import DataAPI.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -105,26 +103,36 @@ public abstract class UserState {
     }
 
     /**
-     * use case 2.8 - buy cart
-     * @param paymentData - the payment info
-     * @param addressToDeliver  - the address to shift
+     * use case - 2.8 reserveCart cart
      * @return true if the cart bought, otherwise false
      */
-    public boolean buyCart(PaymentData paymentData, String addressToDeliver) {
-        List<Purchase> receives = cart.buy(paymentData, addressToDeliver);
-        if(receives!=null) {
-            savePurchase(receives);
-            return true;
-        }
-        return false;
+    public boolean reserveCart() {
+        return cart.reserveCart();
     }
 
     /**
      * use case 2.8 - buy cart
-     * the function save the receives form the buy
-     * @param receives - the recives
+     * the function updated Delivery Data and Payment Data
+     * @param paymentData the payment data
+     * @param deliveryData the delivery data
      */
-    protected abstract void savePurchase(List<Purchase> receives);
+    public void buyCart(PaymentData paymentData, DeliveryData deliveryData) {
+        cart.buy(paymentData,deliveryData);
+    }
+
+    /**
+     * use case 2.8 - use case 2.8 - buy cart
+     * the function Cancel Cart
+     */
+    public void cancelCart() {
+        cart.cancel();
+    }
+
+    /**
+     * use case 2.8 reserveCart cart
+     * the function savePurchases the basket
+     */
+    public abstract void savePurchase(String buyer);
 
     /**
      * use case 3.1 - Logout
@@ -273,4 +281,5 @@ public abstract class UserState {
      * @return
      */
     public abstract boolean canWatchUserHistory();
+
 }

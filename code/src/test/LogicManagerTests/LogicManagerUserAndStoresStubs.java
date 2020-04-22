@@ -5,6 +5,8 @@ import Domain.Admin;
 import Domain.Subscribe;
 import Stubs.UserStub;
 import Systems.HashSystem;
+import Systems.PaymentSystem.ProxyPayment;
+import Systems.SupplySystem.ProxySupply;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,6 +21,8 @@ public class LogicManagerUserAndStoresStubs extends LogicManagerAllStubsTest {
     @Before
     public void setUp() {
         currUser=new UserStub();
+        supplySystem=new ProxySupply();
+        paymentSystem=new ProxyPayment();
         init();
     }
 

@@ -7,8 +7,6 @@ import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
 import Stubs.StoreStub;
-import Systems.PaymentSystem.ProxyPayment;
-import Systems.SupplySystem.ProxySupply;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.HashMap;
@@ -90,25 +88,27 @@ public class BasketTest {
     }
 
     /**
-     * use case 2.8 - buy cart
+     * use case 2.8 - reserveCart cart
      * test if the basket is available for buying
      */
     @Test
     public void testIfBasketAvailableToBuy() {
-        setUpAddedToBasket();
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertTrue(basket.available(paymentData, address));
+        fail();
+//        setUpAddedToBasket();
+//        PaymentData paymentData = data.getPaymentData(Data.VALID);
+//        String address = data.getDeliveryData(Data.VALID).getAddress();
+//        assertTrue(basket.available(paymentData, address));
     }
 
     /**
-     * use case 2.8 - buy cart
+     * use case 2.8 - reserveCart cart
      */
     @Test
     public void testBuyBasket() {
-        setUpAddedToBasket();
-       Purchase result = basket.buy();
-       assertNull(result);
+        fail();
+//        setUpAddedToBasket();
+//        Purchase result = basket.reservedBasket();
+//        assertNull(result);
     }
 
 }
