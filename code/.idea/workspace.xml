@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f0366da3-85c5-4ead-a08b-f6642ede6572" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/Data/TestData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Data/TestData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/UserTests/UserRealTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/UserTests/UserRealTest.java" afterDir="false" />
     </list>
@@ -66,20 +65,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="183" column="8" lean-forward="true" selection-start-line="183" selection-start-column="8" selection-end-line="183" selection-end-column="23" />
+            <state relative-caret-position="101">
+              <caret line="187" column="5" selection-start-line="187" selection-start-column="5" selection-end-line="187" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/UserTests/UserRealTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="58">
-              <caret line="92" column="32" lean-forward="true" selection-start-line="92" selection-start-column="32" selection-end-line="92" selection-end-column="32" />
+            <state relative-caret-position="214">
+              <caret line="103" column="12" lean-forward="true" selection-start-line="103" selection-start-column="12" selection-end-line="103" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -163,8 +162,8 @@
       <find>2.4</find>
       <find>getPurchases</find>
       <find>testBuyCart()</find>
-      <find>userState</find>
       <find>PaymentData</find>
+      <find>userState</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -233,8 +232,8 @@
         <option value="$PROJECT_DIR$/src/main/java/Domain/Product.java" />
         <option value="$PROJECT_DIR$/src/main/java/Domain/Store.java" />
         <option value="$PROJECT_DIR$/src/test/Data/TestData.java" />
-        <option value="$PROJECT_DIR$/src/test/UserTests/UserRealTest.java" />
         <option value="$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java" />
+        <option value="$PROJECT_DIR$/src/test/UserTests/UserRealTest.java" />
       </list>
     </option>
   </component>
@@ -336,7 +335,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587581860583" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587582236720" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -798,7 +797,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587578987157</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="LogicManger tests finish">
+      <created>1587582075077</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1587582075077</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -834,7 +840,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="154754000" />
+    <option name="totallyTimeSpent" value="155720000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -860,7 +866,7 @@
       <window_info anchor="bottom" id="Messages" order="0" weight="0.31616342" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.3285968" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.66477734" visible="true" weight="0.40852576" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.66477734" visible="true" weight="0.29307282" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.38898757" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -1007,7 +1013,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java</url>
-          <line>234</line>
+          <line>224</line>
           <properties />
           <option name="timeStamp" value="45" />
         </line-breakpoint>
@@ -1517,17 +1523,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/UserTests/UserRealTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="58">
-          <caret line="92" column="32" lean-forward="true" selection-start-line="92" selection-start-column="32" selection-end-line="92" selection-end-column="32" />
+        <state relative-caret-position="101">
+          <caret line="187" column="5" selection-start-line="187" selection-start-column="5" selection-end-line="187" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/UserTests/UserRealTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="183" column="8" lean-forward="true" selection-start-line="183" selection-start-column="8" selection-end-line="183" selection-end-column="23" />
+        <state relative-caret-position="214">
+          <caret line="103" column="12" lean-forward="true" selection-start-line="103" selection-start-column="12" selection-end-line="103" selection-end-column="12" />
         </state>
       </provider>
     </entry>

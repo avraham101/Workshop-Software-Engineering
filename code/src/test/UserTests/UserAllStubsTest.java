@@ -188,15 +188,6 @@ public class UserAllStubsTest {
     }
 
     /**
-     * use case 2.8 - purchase cart
-     */
-    @Test
-    public void testCancel() {
-        setUpReservedCart();
-        user.cancelCart();
-    }
-
-    /**
      * test: use case 3.1 - Logout
      */
     @Test

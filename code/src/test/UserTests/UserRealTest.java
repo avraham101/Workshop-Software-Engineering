@@ -95,6 +95,22 @@ public class UserRealTest extends UserAllStubsTest{
     }
 
     /**
+     * use case 2.8 - purchase cart
+     */
+    @Test
+    public void testCancel() {
+        Cart cart = user.getState().getCart();
+        for(Basket b:cart.getBaskets()) {
+            
+        }
+        Store store =
+        int size
+        setUpReservedCart();
+
+        user.cancelCart();
+    }
+
+    /**
      * use case 3.1 - logout
      */
     @Override @Test
