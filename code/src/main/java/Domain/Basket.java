@@ -4,6 +4,7 @@ import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,7 +61,7 @@ public class Basket {
     }
 
     /**
-     * use case 2.7.1
+     * use case 2.7.4
      * add product to the basket
      * @param product - the product to add
      * @param amount - the amount to add
@@ -114,24 +115,6 @@ public class Basket {
                 Objects.equals(products, basket.products);
     }
 
-
-    /**
-     * check if the basket is available for buying
-     * @param paymentData - the payment data
-     * @param addresToDeliver - the address to deliver to
-     * @return - true if available, false if not
-     */
-    public boolean available(PaymentData paymentData, String addresToDeliver) {
-        //payment data updated
-        double price = store.getPriceForBasket(products);
-        paymentData = new PaymentData(paymentData.getName(),paymentData.getAddress(),paymentData.getCreditCard());
-        paymentData.setTotalPrise(price);
-        if(!store.isAvailableProducts(products))
-            return false;
-        //delivery data
-        return isAvailableDelivery(addresToDeliver);
-    }
-
     /**
      * use case 2.8 - purchase cart
      * the function check if the payment is available.
@@ -139,10 +122,11 @@ public class Basket {
      * @param general - the general Payment Data
      * @return ture if the payment is available.
      */
+    //TODO delete this
     private boolean isAvailablePaymnet(PaymentData general) {
         double price = store.getPriceForBasket(products);
         paymentData = new PaymentData(general.getName(),general.getAddress(),general.getCreditCard());
-        paymentData.setTotalPrise(price);
+        paymentData.setTotalPrice(price);
         return true;
     }
 
@@ -153,6 +137,7 @@ public class Basket {
      * @param genral - the general address
      * @return true if the deliver is available.
      */
+    //TODO delete this
     private boolean isAvailableDelivery(String genral) {
         List<ProductData> list = new LinkedList<>();
         for(Product p: products.keySet()) {
@@ -166,12 +151,59 @@ public class Basket {
 
     /**
      * use case 2.8 - purchase cart
-     * the function buy the basket
+     * the function reserveCart the basket
      */
-    public Purchase buy() {
-        return store.purches(paymentData,deliveryData);
+    public boolean reservedBasket() {
+        return store.reserveProducts(products);
     }
 
+    /**
+     * use case 2.8 - cancel purchase cart
+     * the function return all basket product to the store
+     * assumption:  can't call this function with out calling reserveCart first.
+     */
+    public void cancel() {
+        for(Product p: products.keySet()) {
+            int amount = products.get(p);
+            store.restoreAmount(p, amount);
+        }
+    }
+
+    /**
+     * use case 2.8 - buy cart
+     * the function updated Delivery Data and Payment Data
+     * @param paymentData the payment data
+     * @param deliveryData the delivery data
+     */
+    public void buy(PaymentData paymentData, DeliveryData deliveryData) {
+        double price = paymentData.getTotalPrice();
+        List<ProductData> list = deliveryData.getProducts();
+        for(Product p: products.keySet()) {
+            int amount =  products.get(p);
+            price += amount * p.getPrice();
+            list.add(new ProductData(p, store.getName()));
+        }
+        paymentData.setTotalPrice(price);
+    }
+
+    /**
+     * use case 2.8 - buy cart
+     * @param buyer - the name of the buyer
+     * @return the purchase bought
+     */
+    public Purchase savePurchase(String buyer) {
+        String storeName = this.store.getName();
+        List<ProductData> list = new LinkedList<>();
+        for(Product p:products.keySet()) {
+            int amount =  products.get(p);
+            ProductData temp = new ProductData(p,storeName);
+            temp.setAmount(amount);
+            list.add(temp);
+        }
+        Purchase purchase = new Purchase(storeName,buyer,list);
+        store.savePurchase(purchase);
+        return purchase;
+    }
 }
 
 

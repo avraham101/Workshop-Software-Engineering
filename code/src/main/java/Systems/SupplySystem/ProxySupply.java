@@ -30,8 +30,4 @@ public class ProxySupply extends SupplySystem{
         return true;
     }
 
-    @Override
-    public boolean isConnected() {
-        return true;
-    }
 }

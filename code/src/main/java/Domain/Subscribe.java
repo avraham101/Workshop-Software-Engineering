@@ -3,6 +3,7 @@ package Domain;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,6 +56,17 @@ public class Subscribe extends UserState{
         return false;
     }
 
+
+    /**
+     * use case 2.8 - purchase cart and savePurchases
+     * @param buyer - the name of the user
+     */
+    @Override
+    public void savePurchase(String buyer) {
+        this.purchases.addAll(this.cart.savePurchases(buyer));
+        this.cart = new Cart();
+    }
+
     /**
      * use case 3.1 - Logout
      * @param user - the user who using the system
@@ -82,14 +94,6 @@ public class Subscribe extends UserState{
         permission.addType(PermissionType.OWNER); //Always true, store just created.
         permissions.put(store.getName(),permission);
         return store;
-    }
-
-
-    @Override
-    protected void savePurchase(List<Purchase> receives) {
-        lock.writeLock().lock();
-        purchases.addAll(receives);
-        lock.writeLock().unlock();
     }
 
     /**

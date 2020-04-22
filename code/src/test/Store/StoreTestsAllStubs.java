@@ -57,14 +57,21 @@ public class StoreTestsAllStubs {
     }
 
     /**
+     * use case 2.8 - test available products
+     */
+    @Test
+    public void testIsAvailableProducts() {
+
+    }
+
+
+    /**
      * test if it is available to purchase from the store
      */
     @Test
     public void testPurchase() {
         setUpProductAdded();
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        Purchase purchase = store.purches(paymentData,deliveryData);
+        List<Purchase> purchase = store.getPurchases();
         assertNotNull(purchase);
         testCheckReduceAmount();
     }
@@ -72,7 +79,7 @@ public class StoreTestsAllStubs {
     /**
      * test if the amount of product has been change
      */
-
+    @Test
     private void testCheckReduceAmount() {
         ProductData product = data.getProductData(Data.VALID);
         int amount = store.getProduct(product.getProductName()).getAmount();

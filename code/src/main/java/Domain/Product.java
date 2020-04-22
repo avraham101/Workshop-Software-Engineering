@@ -4,6 +4,7 @@ import DataAPI.ProductData;
 import DataAPI.PurchaseTypeData;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -28,6 +29,21 @@ public class Product {
         this.discount=productData.getDiscount();
         this.reviews=new ArrayList<>();
         lock=new ReentrantReadWriteLock();
+    }
+
+    /**
+     * only copy the primitives
+     * @param other - the other product we copy
+     */
+    public Product(Product other) {
+        this.name = other.name;
+        this.amount = new AtomicInteger(amount.get());
+        this.price = other.price;
+        this.discount = new LinkedList<>();
+        this.purchaseType = new PurchaseType();
+        this.category = new Category(other.category.getName());
+        this.reviews = new LinkedList<>();
+        this.lock = new ReentrantReadWriteLock();
     }
 
     /**
@@ -131,6 +147,11 @@ public class Product {
                 product.getPrice()==price &&
                 name.equals(product.getProductName()) &&
                 category.getName().equals(product.getCategory());
+    }
+
+    public Product clone() {
+        Product temp = new Product(this);
+        return temp;
     }
 
     /**

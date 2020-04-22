@@ -7,6 +7,7 @@ import Systems.SupplySystem.*;
 import Utils.Utils;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -405,7 +406,7 @@ public class LogicManager {
     public CartData watchCartDetails(int id) {
         loggerSystem.writeEvent("LogicManager","watchCartDetails",
                 "view the user cart data", new Object[] {});
-        User current=connectedUsers.get(id);
+        User current = connectedUsers.get(id);
         return current.watchCartDetatils();
     }
 
@@ -446,7 +447,6 @@ public class LogicManager {
      * @param amount - the amount of the product that need to add to the cart
      * @return - true if added, false if not
      */
-    //TODO check sequence synchronized
     public boolean addProductToCart(int id,String productName, String storeName, int amount) {
         loggerSystem.writeEvent("LogicManager","addProductToCart",
                 "add a product to the cart", new Object[] {productName, storeName, amount});
@@ -456,7 +456,7 @@ public class LogicManager {
         if (storeName != null)
             store = stores.get(storeName);
         if (store != null) {
-            Product product = store.getProduct(productName);
+            Product product = store.getProduct(productName).clone();
             if (product != null && amount > 0 && amount <= product.getAmount()) {
                 result = current.addProductToCart(store, product, amount);
             }
@@ -473,18 +473,32 @@ public class LogicManager {
      * @return true is the purchase succeeded, otherwise false
      */
     //TODO change use case and change tests to work with stubs external systems
-    //TODO synchronize product when reduce amount
     public boolean purchaseCart(int id, PaymentData paymentData, String addresToDeliver) {
         loggerSystem.writeEvent("LogicManager","purchaseCart",
-                "buy the products in the cart", new Object[] {paymentData, addresToDeliver});
-        User current=connectedUsers.get(id);
+                "reserveCart the products in the cart", new Object[] {paymentData, addresToDeliver});
+        //1) user get
+        User current = connectedUsers.get(id);
+        //2) validation check
         if (!validPaymentData(paymentData))
             return false;
         if (addresToDeliver == null || addresToDeliver.isEmpty())
             return false;
-        return current.buyCart(paymentData, addresToDeliver);
+        //3) sumUp cart - updated PeymentData, DeliveryData
+        boolean reserved = current.reservedCart();
+        if(!reserved) {
+            return false;
+        }
+        DeliveryData deliveryData = new DeliveryData(addresToDeliver, new LinkedList<>());
+        current.buyCart(paymentData, deliveryData);
+        //4) external systems
+        boolean payedAndDelivered = externalSystemsBuy(id,paymentData,deliveryData);
+        if(!payedAndDelivered) {
+            return false;
+        }
+        //5) update the purchase for both store and user (synchronized)
+        current.savePurchase(paymentData.getName());
+        return true;
     }
-
 
     /**
      * use case - 2.8
@@ -498,6 +512,34 @@ public class LogicManager {
         String address = paymentData.getAddress();
         String card = paymentData.getCreditCard();
         return paymentData.getName()!=null && !paymentData.getName().isEmpty() && address!=null && !address.isEmpty() && card!=null && !card.isEmpty();
+    }
+
+    /**
+     * use case 2.8 - buy cart from external systems
+     * @param id - the id of user
+     * @param paymentData - the payment data
+     * @param deliveryData - the delivery data
+     * @return true if worked, otherwise false.
+     */
+    private boolean externalSystemsBuy(int id, PaymentData paymentData, DeliveryData deliveryData) {
+        User current = connectedUsers.get(id);
+        if(!paymentSystem.pay(paymentData)) {
+            loggerSystem.writeError("Logic Manger","purchaseCart","Payment System Crashed",
+                    new Object[] {id});
+            current.cancelCart();
+            return false;
+        }
+        if(!supplySystem.deliver(deliveryData)) {
+            loggerSystem.writeError("Logic Manger","purchaseCart","Delivery System Crashed",
+                    new Object[] {id});
+            if(!paymentSystem.cancel(paymentData)) {
+                loggerSystem.writeError("Logic Manger","purchaseCart",
+                        "Payment System Crashed", new Object[] {id});
+            }
+            current.cancelCart();
+            return false;
+        }
+        return true;
     }
 
     /**

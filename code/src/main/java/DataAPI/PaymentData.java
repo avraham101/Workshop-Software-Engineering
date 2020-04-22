@@ -5,13 +5,13 @@ public class PaymentData {
     private String name;
     private String address;
     private String creditCard;
-    private double totalPrise;
+    private double totalPrice;
 
     public PaymentData(String name, String address, String creditCard) {
         this.name = name;
         this.address = address;
         this.creditCard = creditCard;
-        this.totalPrise = 0;
+        this.totalPrice = 0;
     }
 
     public String getName() {
@@ -38,11 +38,11 @@ public class PaymentData {
         this.creditCard = creditCard;
     }
 
-    public double getTotalPrise() {
-        return totalPrise;
+    public double getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setTotalPrise(double totalPrise) {
-        this.totalPrise = totalPrise;
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

@@ -321,7 +321,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
-     * use case 2.8 - test buy Products
+     * use case 2.8 - test reserveCart Products
      */
     //TODO change test because change implemetation
     @Override @Test
@@ -739,7 +739,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     private void testReplayRequestSuccess() {
         testAddRequest();
         Request request = data.getRequest(Data.VALID);
-        //check the comment save
+        //check the comment savePurchases
         StoreData storeData = data.getStore(Data.VALID);
         Request actual = currUser.replayToRequest(request.getStoreName(), request.getId(), "The milk is there, open your eyes!");
         Request excepted = stores.get(storeData.getName()).getRequests().get(request.getId());

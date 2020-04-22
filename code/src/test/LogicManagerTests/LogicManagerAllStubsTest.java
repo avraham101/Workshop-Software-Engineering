@@ -620,7 +620,7 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * use case 2.8 - test buy Products
+     * use case 2.8 - test reserveCart Products
      */
     //TODO change because change implementation
     @Test
@@ -631,7 +631,7 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * use case 2.8 - test buy Products
+     * use case 2.8 - test reserveCart Products
      * success tests
      */
     //TODO change because change implementation
@@ -642,7 +642,7 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * use case 2.8 - test buy Products
+     * use case 2.8 - test reserveCart Products
      * fails tests
      */
     //TODO change because change implementation

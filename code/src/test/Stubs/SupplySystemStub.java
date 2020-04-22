@@ -15,8 +15,4 @@ public class SupplySystemStub extends SupplySystem {
         return false;
     }
 
-    @Override
-    public boolean isConnected() {
-        return false;
-    }
 }
