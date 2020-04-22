@@ -8,11 +8,19 @@ public class AdminStub extends SubscribeStub {
         super(userName, password);
     }
 
+    /**
+     * use case 6.4.1
+     * @return
+     */
     @Override
     public boolean canWatchStoreHistory(String storeName) {
         return true;
     }
 
+    /**
+     * use case 6.4.2
+     * @return
+     */
     @Override
     public boolean canWatchUserHistory() {
         return true;

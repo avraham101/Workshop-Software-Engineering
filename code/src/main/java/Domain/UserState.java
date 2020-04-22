@@ -256,7 +256,7 @@ public abstract class UserState {
      * @param storeName
      * @param requestID
      * @param content
-     * @return true if replay, false else
+     * @return Request if replay, null else
      */
     public abstract Request replayToRequest(String storeName, int requestID, String content);
 

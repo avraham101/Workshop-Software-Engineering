@@ -254,7 +254,7 @@ public class User {
      * @param storeName
      * @param requestID
      * @param content
-     * @return true if replay, false else
+     * @return request if replay, null else
      */
     public Request replayToRequest(String storeName, int requestID, String content) {
         return state.replayToRequest(storeName, requestID, content);

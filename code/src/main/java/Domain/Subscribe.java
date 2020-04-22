@@ -149,6 +149,7 @@ public class Subscribe extends UserState{
         requests.add(request);
         return request;
     }
+
     /**
      * use case 3.7 - watch purchase history
      * the function return the purchase list

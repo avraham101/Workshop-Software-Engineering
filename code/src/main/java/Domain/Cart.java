@@ -32,7 +32,7 @@ public class Cart {
     }
 
     /**
-     * use case 2.7
+     * use case 2.7 - add product
      * @param store - the store to add to cart
      * @param product - the product to add
      * @param amount - the amount of the prduct
