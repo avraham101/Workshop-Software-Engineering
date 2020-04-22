@@ -116,39 +116,6 @@ public class Basket {
                 Objects.equals(products, basket.products);
     }
 
-    /**
-     * use case 2.8 - purchase cart
-     * the function check if the payment is available.
-     * think of this like a receive for each purchase to store.
-     * @param general - the general Payment Data
-     * @return ture if the payment is available.
-     */
-    //TODO delete this
-    private boolean isAvailablePaymnet(PaymentData general) {
-        double price = store.getPriceForBasket(products);
-        paymentData = new PaymentData(general.getName(),general.getAddress(),general.getCreditCard());
-        paymentData.setTotalPrice(price);
-        return true;
-    }
-
-    /**
-     * use case 2.8 - purchase cart
-     * the function check if deliver is available.
-     * think of this like a receive for each purchase to store.
-     * @param genral - the general address
-     * @return true if the deliver is available.
-     */
-    //TODO delete this
-    private boolean isAvailableDelivery(String genral) {
-        List<ProductData> list = new LinkedList<>();
-        for(Product p: products.keySet()) {
-            ProductData productData = new ProductData(p,store.getName());
-            productData.setAmount(products.get(p));
-            list.add(productData);
-        }
-        deliveryData = new DeliveryData(genral,list);
-        return true;
-    }
 
     /**
      * use case 2.8 - purchase cart

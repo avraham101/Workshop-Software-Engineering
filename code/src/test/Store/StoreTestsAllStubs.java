@@ -92,7 +92,9 @@ public class StoreTestsAllStubs {
         Product product = data.getRealProduct(Data.VALID);
         int amount = product.getAmount();
         products.put(product, amount);
+        int amountInStore = store.getProduct(product.getName()).getAmount();
         assertTrue(this.store.reserveProducts(products));
+        assertEquals(amountInStore - amount, store.getProduct(product.getName()).getAmount());
     }
 
     /**
@@ -126,29 +128,6 @@ public class StoreTestsAllStubs {
         //TODO check review wasn't added
     }
 
-    /**
-     * test if it is available to purchase from the store
-     */
-    @Test
-    public void testPurchase() {
-        fail();
-//        setUpProductAdded();
-//        PaymentData paymentData = data.getPaymentData(Data.VALID);
-//        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-//        Purchase purchase = store.reserveProducts();
-//        assertNotNull(purchase);
-//        testCheckReduceAmount();
-    }
-
-    /**
-     * test if the amount of product has been change
-     */
-    @Test
-    public void testCheckReduceAmount() {
-        ProductData product = data.getProductData(Data.VALID);
-        int amount = store.getProduct(product.getProductName()).getAmount();
-        assertEquals(amount + 1, product.getAmount());
-    }
 
     /**
      * use case 4.1.1 -add product

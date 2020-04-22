@@ -2,14 +2,19 @@ package Basket;
 
 import Data.Data;
 import Data.TestData;
+import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
 import Stubs.StoreStub;
+import Systems.PaymentSystem.ProxyPayment;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
@@ -39,10 +44,8 @@ public class BasketTest {
     /**--------------set-ups----------------------*/
     protected void setUpAddedToBasket(){
         HashMap<ProductData, Integer> products = data.getProductsInBasket(Data.VALID);
-        for (ProductData productData: products.keySet()) {
-            Product product = data.getRealProduct(Data.VALID);
-            basket.addProduct(product, product.getAmount());
-        }
+        Product product = data.getRealProduct(Data.VALID);
+        basket.addProduct(product, product.getAmount());
     }
 
     /**
@@ -87,28 +90,58 @@ public class BasketTest {
         assertFalse(basket.editAmount(null,5));
     }
 
-    /**
-     * use case 2.8 - reserveCart cart
-     * test if the basket is available for buying
-     */
-    @Test
-    public void testIfBasketAvailableToBuy() {
-        fail();
-//        setUpAddedToBasket();
-//        PaymentData paymentData = data.getPaymentData(Data.VALID);
-//        String address = data.getDeliveryData(Data.VALID).getAddress();
-//        assertTrue(basket.available(paymentData, address));
-    }
+
 
     /**
      * use case 2.8 - reserveCart cart
      */
     @Test
     public void testBuyBasket() {
-        fail();
-//        setUpAddedToBasket();
-//        Purchase result = basket.reservedBasket();
-//        assertNull(result);
+        setUpAddedToBasket();
+        Purchase result = basket.savePurchase(data.getSubscribe(Data.VALID).getName());
+        assertNotNull(result);
     }
 
+    /**
+     * use case 2.8 cancel basket
+     */
+    @Test
+    public void testCancelBasket() {
+        List<Integer> amountInBasket = new LinkedList<>();
+        List<Integer> amountInStore = new LinkedList<>();
+        for (Product product : basket.getProducts().keySet()) {
+            amountInBasket.add(product.getAmount());
+        }
+        for (Product product : basket.getProducts().keySet()) {
+            Product productInStore = this.store.getProduct(product.getName());
+            amountInStore.add(productInStore.getAmount());
+        }
+        int i = 0;
+        this.basket.cancel();
+        for (Product product : basket.getProducts().keySet()) {
+            Product productInStore = this.store.getProduct(product.getName());
+            assertEquals(productInStore.getAmount(), amountInBasket.get(i) + amountInStore.get(i));
+            i += 1;
+        }
+    }
+
+
+    /**
+     * use case 2.8 buy basket
+     */
+    @Test
+    public void testBuy() {
+        setUpAddedToBasket();
+        int price = 0;
+        List<ProductData> productDataList = new LinkedList<>();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        basket.buy(paymentData, deliveryData);
+        for (Product product: basket.getProducts().keySet()) {
+            price += product.getPrice();
+            productDataList.add(new ProductData(product, store.getName()));
+        }
+        assertTrue(deliveryData.getProducts().containsAll(productDataList));
+        assertEquals(price, paymentData.getTotalPrice(),0.01);
+    }
 }
