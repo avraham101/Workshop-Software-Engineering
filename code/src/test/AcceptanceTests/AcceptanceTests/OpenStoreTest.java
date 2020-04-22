@@ -22,19 +22,25 @@ public class OpenStoreTest extends AcceptanceTests {
 
     @Test
     public void openStoreSuccess(){
-       StoreTestData store = bridge.openStore(newStoreName);
+       StoreTestData store = bridge.openStore(user.getId(),newStoreName);
        assertNotNull(store);
-       products.get(0).setStoreName(newStoreName);
-       boolean isOwner = bridge.addProduct(products.get(0));
-       assertTrue(isOwner);
+
     }
 
     @Test
     public void openStoreFailNameAlreadyExist(){
-        StoreTestData store1= bridge.openStore(newStoreName);
-        StoreTestData store2= bridge.openStore(newStoreName);
+        StoreTestData store1= bridge.openStore(user.getId(),newStoreName);
+        StoreTestData store2= bridge.openStore(user.getId(),newStoreName);
         assertNull(store2);
     }
+
+    @Test
+    public void openStoreFailUserNotLoggedIn(){
+        bridge.logout(user.getId());
+        StoreTestData store= bridge.openStore(user.getId(),newStoreName);
+        assertNull(store);
+    }
+
 
 
 }

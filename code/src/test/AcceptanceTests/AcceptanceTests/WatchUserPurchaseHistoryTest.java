@@ -21,7 +21,7 @@ public class WatchUserPurchaseHistoryTest extends AcceptanceTests {
     public void setUp(){
         user0 = superUser;
         addUserStoresAndProducts(user0);
-        addCartToUser(user0.getCart());
+        addCartToUser(user0.getId(),user0.getCart());
         bridge.buyCart(validPayment,validDelivery);
         List<PurchaseTestData> purchase0 = user0.getCart().makePurchasesTestData();
         user0.getPurchases().addAll(purchase0);

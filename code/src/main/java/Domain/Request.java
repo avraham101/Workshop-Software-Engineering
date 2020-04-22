@@ -1,11 +1,13 @@
 package Domain;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class Request {
 
     private String senderName;
     private String storeName;
     private String content;
-    private String comment;
+    private AtomicReference<String> comment;
     private int id;
 
     public Request(String senderName, String storeName, String content,int id) {
@@ -13,7 +15,7 @@ public class Request {
         this.storeName=storeName;
         this.content = content;
         this.id=id;
-        comment=null;
+        comment=new AtomicReference<>(null);
     }
 
     public String getSenderName() {
@@ -40,11 +42,13 @@ public class Request {
         this.content = content;
     }
 
-    public String getComment() {
+    public String getComment() {if(comment==null) return null; return comment.get();}
+
+    public AtomicReference<String> getCommentReference() {
         return comment;
     }
 
-    public void setComment(String comment) {
+    public void setComment(AtomicReference<String> comment) {
         this.comment = comment;
     }
 

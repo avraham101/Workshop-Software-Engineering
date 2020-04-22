@@ -69,6 +69,7 @@ public class LogicManager {
         subscribes = new ConcurrentHashMap<>();
         this.stores = new ConcurrentHashMap<>();
         usersIdCounter=new AtomicInteger(0);
+        requestIdGenerator = new AtomicInteger(0);
         this.connectedUsers =new ConcurrentHashMap<>();
         try {
             hashSystem = new HashSystem();
@@ -114,6 +115,7 @@ public class LogicManager {
         stores = new ConcurrentHashMap<>();
         this.connectedUsers =new ConcurrentHashMap<>();
         usersIdCounter=new AtomicInteger(0);
+        requestIdGenerator = new AtomicInteger(0);
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -803,7 +805,7 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","viewStoreRequest",
                 "store owner view the requests of the store", new Object[] {storeName});
         User current=connectedUsers.get(id);
-        if (content!=null && stores.containsKey(storeName))
+        if (storeName!=null && stores.containsKey(storeName))
             return (current.replayToRequest(storeName, requestID, content)) ;
         return null;
     }
