@@ -47,12 +47,12 @@ public class Product {
     }
 
     /**
+     * use case 4.1.3 - edit product
      * clone function for edit product
      * @param productData
      * @param category
      * parameters to get data from
      */
-
     public void edit(ProductData productData, Category category) {
         getWriteLock().lock();
         this.purchaseType = createPurchaseType(productData.getPurchaseType());
@@ -65,13 +65,17 @@ public class Product {
         getWriteLock().unlock();
     }
 
-
-
+    /**
+     * @param purchaseType
+     * @return
+     */
     private PurchaseType createPurchaseType(PurchaseTypeData purchaseType) {
         if(purchaseType==PurchaseTypeData.IMMEDDIATE)
             return new PurchaseType();//immediate purchase type we have only one type
         return null;
     }
+
+    // ============================ getters & setters ============================ //
 
     public String getName() {
         return name;
@@ -93,14 +97,11 @@ public class Product {
         return purchaseType;
     }
 
-    public void setPurches(PurchaseType purchases) {
+    public void setPurchases(PurchaseType purchases) {
         this.purchaseType = purchases;
     }
 
-    public Category getCategory() {
-
-        return category;
-    }
+    public Category getCategory() { return category; }
 
     public void setCategory(Category category) {
         this.category = category;
@@ -141,6 +142,8 @@ public class Product {
     public ReentrantReadWriteLock.WriteLock getWriteLock(){
         return lock.writeLock();
     }
+
+    // ============================ getters & setters ============================ //
 
     public boolean equal(ProductData product) {
         return amount.get() == product.getAmount() &&

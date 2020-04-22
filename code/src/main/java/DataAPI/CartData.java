@@ -7,7 +7,6 @@ import java.util.Objects;
 
 public class CartData {
 
-    //
     private double priceBeforeDiscount;
     private double priceAfterDiscount;
     private List<ProductData> products;
@@ -17,6 +16,8 @@ public class CartData {
         this.priceAfterDiscount = priceAfterDiscount;
         this.products = products;
     }
+
+    // ============================ getters & setters ============================ //
 
     public double getPriceBeforeDiscount() {
         return priceBeforeDiscount;
@@ -30,6 +31,12 @@ public class CartData {
         return products;
     }
 
+    public void setPriceBeforeDiscount(double priceBeforeDiscount) {
+        this.priceBeforeDiscount = priceBeforeDiscount;
+    }
+
+    // ============================ getters & setters ============================ //
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -38,9 +45,5 @@ public class CartData {
         return Double.compare(cartData.priceBeforeDiscount, priceBeforeDiscount) == 0 &&
                 Double.compare(cartData.priceAfterDiscount, priceAfterDiscount) == 0 &&
                 Objects.equals(products, cartData.products);
-    }
-
-    public void setPriceBeforeDiscount(double priceBeforeDiscount) {
-        this.priceBeforeDiscount = priceBeforeDiscount;
     }
 }

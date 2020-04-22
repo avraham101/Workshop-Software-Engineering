@@ -187,22 +187,6 @@ public class LogicManagerAllStubsTest {
 
     /**--------------------------------set-ups-------------------------------------------------------------------*/
 
-    //TODO add test when cant connect systems supply and payment
-    /**
-     * test: use case 1.1 - Init System
-     */
-    @Test
-    public void testExternalSystems() {
-        assertTrue(this.paymentSystem.connect());
-        assertTrue(this.supplySystem.connect());
-        try {
-            HashSystem hashSystem = new HashSystem();
-            hashSystem.encrypt("testExternalSystems");
-        } catch (Exception e) {
-            fail();
-        }
-    }
-
     /**
      * test: use case 1.1 - Init System
      * checking for exception due to false connection from the payment external system
@@ -316,7 +300,6 @@ public class LogicManagerAllStubsTest {
     /**
      * test use case 2.3 - Login
      */
-    //TODO check when failed that the user is not logged in
     @Test
     public void testLogin() {
         setUpRegisteredUser();
@@ -380,6 +363,26 @@ public class LogicManagerAllStubsTest {
         List<ProductData> expected = new LinkedList<>();
         String storeName = data.getStore(Data.VALID).getName();
         assertEquals(expected, logicManager.viewProductsInStore(storeName));
+    }
+
+    /**
+     * use case 2.4.2 - view the products in some store with valid data test
+     */
+    @Test
+    public void testViewProductInStoreNotExists() {
+        setUpProductAdded();
+        String storeName = data.getStore(Data.WRONG_STORE).getName();
+        assertNull(logicManager.viewProductsInStore(storeName));
+    }
+
+    /**
+     * use case 2.4.2 - view the products in some store with valid data test
+     */
+    @Test
+    public void testViewProductInStoreNull() {
+        setUpProductAdded();
+        String storeName = data.getStore(Data.NULL_STORE).getName();
+        assertNull(logicManager.viewProductsInStore(storeName));
     }
 
     /**
@@ -534,7 +537,6 @@ public class LogicManagerAllStubsTest {
         CartData cartData = logicManager.watchCartDetails(data.getId(Data.VALID));
         assertFalse(cartData.getProducts().contains(productData));
     }
-
 
     /**
      * use case 2.7.2 delete product from cart
@@ -790,6 +792,7 @@ public class LogicManagerAllStubsTest {
         setUpLogedInUser();
         testOpenStoreSucces();
     }
+
     /**
      * part of test use case 3.2 - Open Store
      */
@@ -950,7 +953,7 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * use case 4.1.1 - add product
+     * use case 4.1.1 - add product success
      */
     @Test
     public void testAddProductSuccess() {
@@ -958,6 +961,9 @@ public class LogicManagerAllStubsTest {
         assertTrue(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.VALID)));
     }
 
+    /**
+     * use case 4.1.1 - add product fail
+     */
     @Test
     public void testAddProductFail(){
         setUpOpenedStore();
@@ -974,46 +980,79 @@ public class LogicManagerAllStubsTest {
         testAddProductNegativeDiscountPercentage();
     }
 
+    /**
+     * part of use case 4.1.1 - add product
+     */
     private void testAddProductNegativeDiscountPercentage() {
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_PERCENTAGE)));
     }
 
+    /**
+     * part of use case 4.1.1 - add product
+     */
     private void testAddProductDiscountListWithNullValue() {
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_DISCOUNT)));
     }
 
+    /**
+     * part of use case 4.1.1 - add product
+     */
     private void testAddProductOver100DiscountPercentage() {
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.OVER_100_PERCENTAGE)));
     }
 
+    /**
+     * part of use case 4.1.1 - add product
+     */
     private void testAddProductNullPurchasePolicy() {
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_PURCHASE)));
     }
 
+    /**
+     * part of use case 4.1.1 - add product
+     */
     private void testAddProductNegativePrice() {
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_PRICE)));
     }
 
+    /**
+     * part of use case 4.1.1 - add product
+     */
     private void testAddProductNegativeAmount() {
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_AMOUNT)));
     }
 
+    /**
+     * part of use case 4.1.1 - add product
+     */
     private void testAddProductNullDiscount() {
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_DISCOUNT)));
     }
 
+    /**
+     * part of use case 4.1.1 - add product
+     */
     private void testAddProductFailNullCategory() {
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_CATEGORY)));
     }
 
+    /**
+     * part of use case 4.1.1 - add product
+     */
     private void testAddProductFailNullProductName() {
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_NAME)));
     }
 
+    /**
+     * part of use case 4.1.1 - add product
+     */
     private void testAddProductNullStoreName(){
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_STORE)));
     }
 
+    /**
+     * part of use case 4.1.1 - add product
+     */
     protected void testAddProductFailNullProduct(){
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),null));
     }
@@ -1029,6 +1068,7 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
+     * part of use case 4.1.2 -delete product
      * test remove with no exist store
      */
     private void testRemoveProductTwiceFail() {
@@ -1036,6 +1076,9 @@ public class LogicManagerAllStubsTest {
                 ,data.getProductData(Data.VALID).getProductName()));
     }
 
+    /**
+     * part of use case 4.1.2 -delete product
+     */
     protected void testRemoveProductSuccess() {
         ProductData p=data.getProductData(Data.VALID);
         assertTrue(logicManager.removeProductFromStore(data.getId(Data.VALID),p.getStoreName(),p.getProductName()));
@@ -1050,6 +1093,9 @@ public class LogicManagerAllStubsTest {
         assertTrue(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.EDIT)));
     }
 
+    /**
+     * test use case 4.1.3 - edit product in store
+     */
     @Test
     public void testEditProductFail(){
         setUpOpenedStore();
@@ -1066,52 +1112,85 @@ public class LogicManagerAllStubsTest {
         testEditProductNegativeDiscountPercentage();
     }
 
+    /**
+     * part of test use case 4.1.3 - edit product in store
+     */
     private void testEditProductNegativeDiscountPercentage() {
         assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_PERCENTAGE)));
     }
 
+    /**
+     * part of test use case 4.1.3 - edit product in store
+     */
     private void testEditProductDiscountListWithNullValue() {
         assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_DISCOUNT)));
     }
 
+    /**
+     * part of test use case 4.1.3 - edit product in store
+     */
     private void testEditProductOver100DiscountPercentage() {
         assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.OVER_100_PERCENTAGE)));
     }
 
+    /**
+     * part of test use case 4.1.3 - edit product in store
+     */
     private void testEditProductNullPurchasePolicy() {
         assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NULL_PURCHASE)));
     }
 
+    /**
+     * part of test use case 4.1.3 - edit product in store
+     */
     private void testEditProductNegativePrice() {
         assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_PRICE)));
     }
 
+    /**
+     * part of test use case 4.1.3 - edit product in store
+     */
     private void testEditProductNegativeAmount() {
         assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_AMOUNT)));
     }
 
+    /**
+     * part of test use case 4.1.3 - edit product in store
+     */
     private void testEditProductNullDiscount() {
         assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NULL_DISCOUNT)));
     }
 
+    /**
+     * part of test use case 4.1.3 - edit product in store
+     */
     private void testEditProductFailNullCategory() {
         assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NULL_CATEGORY)));
     }
 
+    /**
+     * part of test use case 4.1.3 - edit product in store
+     */
     private void testEditProductFailNullProductName() {
         assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NULL_NAME)));
     }
 
+    /**
+     * part of test use case 4.1.3 - edit product in store
+     */
     private void testEditProductNullStoreName(){
         assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_STORE)));
     }
 
+    /**
+     * part of test use case 4.1.3 - edit product in store
+     */
     protected void testEditProductFailNullProduct(){
         assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),null));
     }
 
     /**
-     * test : use case 4.3 add owner
+     * test use case 4.3 - add owner
      */
     @Test
     public void testManageOwner(){
@@ -1121,16 +1200,25 @@ public class LogicManagerAllStubsTest {
         testManageOwnerSuccess();
     }
 
+    /**
+     * part of test use case 4.3 - add owner
+     */
     private void testManageOwnerFailAgain() {
         assertFalse(logicManager.manageOwner(data.getId(Data.VALID),data.getSubscribe(Data.VALID).getName(),
                 data.getSubscribe(Data.VALID2).getName()));
     }
 
+    /**
+     * part of test use case 4.3 - add owner
+     */
     protected void testManageOwnerSuccess() {
         assertTrue(logicManager.manageOwner(data.getId(Data.VALID),data.getStore(Data.VALID).getName(),
                 data.getSubscribe(Data.VALID2).getName()));
     }
 
+    /**
+     * part of test use case 4.3 - add owner
+     */
     protected void testManageOwnerFail() {
         assertFalse(logicManager.manageOwner(data.getId(Data.VALID),data.getStore(Data.VALID).getName()
                 ,data.getStore(Data.VALID).getName()));
@@ -1147,6 +1235,9 @@ public class LogicManagerAllStubsTest {
         testAddManagerStoreSuccess();
     }
 
+    /**
+     * part of use case 4.5 add manager
+     */
     protected void testAddManagerStoreSuccess() {
         assertTrue(logicManager.addManager(data.getId(Data.VALID),data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()));
     }
@@ -1182,25 +1273,66 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * test:
+     * part of test use case 4.6.1 - add permission
+     * test fail:
      * 1. wrong user name
      * 2. wrong store name
      * 3. null list
      * 4. list with null
      */
-    //TODO split tests
     private void testAddPermissionFail() {
-        String user=data.getSubscribe(Data.ADMIN).getName();
+       testAddPermissionFailWrongUserName();
+       testAddPermissionFailWrongStoreName();
+       testAddPermissionFailWrongNullPermissions();
+       testAddPermissionFailWrongPermissionListWithNull();
+    }
+
+    /**
+     * part of test use case 4.6.1 - add permission
+     * 1. wrong user name
+     */
+    private void testAddPermissionFailWrongUserName(){
         String store=data.getStore(Data.VALID).getName();
         List<PermissionType> types=data.getPermissionTypeList();
         assertFalse(logicManager.addPermissions(data.getId(Data.VALID),types,store,store));
+    }
+
+    /**
+     * part of test use case 4.6.1 - add permission
+     * 2. wrong store name
+     */
+    private void testAddPermissionFailWrongStoreName(){
+        String user=data.getSubscribe(Data.ADMIN).getName();
+        List<PermissionType> types=data.getPermissionTypeList();
         assertFalse(logicManager.addPermissions(data.getId(Data.VALID),types,user,user));
+    }
+
+    /**
+     * part of test use case 4.6.1 - add permission
+     * 3. null list
+     */
+    private void testAddPermissionFailWrongNullPermissions(){
+        String user=data.getSubscribe(Data.ADMIN).getName();
+        String store=data.getStore(Data.VALID).getName();
         assertFalse(logicManager.addPermissions(data.getId(Data.VALID),null,store,user));
+    }
+
+    /**
+     * part of test use case 4.6.1 - add permission
+     * 4. list with null
+     */
+    private void testAddPermissionFailWrongPermissionListWithNull(){
+        String user=data.getSubscribe(Data.ADMIN).getName();
+        String store=data.getStore(Data.VALID).getName();
+        List<PermissionType> types=data.getPermissionTypeList();
         types.add(null);
         assertFalse(logicManager.addPermissions(data.getId(Data.VALID),types,store,user));
         types.remove(null);
     }
 
+    /**
+     * part of test use case 4.6.1 - add permission - success
+     */
     protected void testAddPermissionSuccess() {
         assertTrue(currUser.addPermissions(data.getPermissionTypeList(),
                 data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
@@ -1217,7 +1349,8 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * test:
+     * part of test use case 4.6.2 - remove permissions
+     * test fail:
      * 1. wrong user name
      * 2. wrong store name
      * 3. null list
@@ -1235,6 +1368,9 @@ public class LogicManagerAllStubsTest {
         types.remove(null);
     }
 
+    /**
+     * part of test use case 4.6.2 - remove permissions - success
+     */
     protected void testRemovePermissionSuccess() {
         assertTrue(currUser.removePermissions(data.getPermissionTypeList(),
                 data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
@@ -1251,6 +1387,9 @@ public class LogicManagerAllStubsTest {
         testRemoveManagerSuccess();
     }
 
+    /**
+     * part of test use case 4.7 - remove manager
+     */
     protected void testRemoveManagerSuccess() {
         assertTrue(logicManager.removeManager(data.getId(Data.VALID),data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()));
     }
@@ -1285,24 +1424,33 @@ public class LogicManagerAllStubsTest {
 
     }
 
+    /**
+     * part of use case 4.9.1 -view request
+     */
     private void testStoreViewRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
         assertFalse(currUser.viewRequest(request.getStoreName()).isEmpty());
     }
 
+    /**
+     * part of use case 4.9.1 -view request
+     */
     private void testStoreViewRequestFailNullName() {
         Request request1 = data.getRequest(Data.NULL_NAME);
         assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), request1.getStoreName()).isEmpty());
     }
 
+    /**
+     * part of use case 4.9.1 -view request
+     */
     private void testStoreViewRequestFailWrongStore() {
         Request request2 = data.getRequest(Data.WRONG_STORE);
         assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), request2.getStoreName()).isEmpty());
     }
 
-        /**
-         * use case 4.9.2 -replay request
-         */
+    /**
+     * use case 4.9.2 -replay request
+     */
     @Test
     public void testReplayRequest(){
         setUpRequestAdded();
@@ -1310,11 +1458,17 @@ public class LogicManagerAllStubsTest {
         testReplayRequestFailWrongStore();
     }
 
+    /**
+     * part of use case 4.9.2 -replay request
+     */
     private void testReplayRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
         assertNotNull(currUser.replayToRequest(request.getStoreName(),request.getId(), request.getContent()));
     }
 
+    /**
+     * part of use case 4.9.2 -replay request
+     */
     private void testReplayRequestFailWrongStore() {
         Request request1 = data.getRequest(Data.WRONG_STORE);
         assertNull(logicManager.replayRequest(data.getId(Data.VALID), request1.getStoreName(), request1.getId(), request1.getContent()));

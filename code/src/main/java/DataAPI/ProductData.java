@@ -57,6 +57,8 @@ public class ProductData {
         this.priceAfterDiscount = product.getDiscountPrice();
     }
 
+    // ============================ getters & setters ============================ //
+
     public String getProductName() {
         return productName;
     }
@@ -129,6 +131,7 @@ public class ProductData {
         this.priceAfterDiscount = priceAfterDiscount;
     }
 
+    // ============================ getters & setters ============================ //
 
     @Override
     public boolean equals(Object o) {

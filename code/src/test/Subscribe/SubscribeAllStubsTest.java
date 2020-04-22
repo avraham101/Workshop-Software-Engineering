@@ -213,6 +213,9 @@ public class SubscribeAllStubsTest {
         assertTrue(sub.addProductToStore(data.getProductData(Data.VALID)));
     }
 
+    /**
+     * test use case 4.1.1 - add product
+     */
     @Test
     public void addProductToStoreTestFail() {
         setUpStoreOpened();
@@ -220,6 +223,9 @@ public class SubscribeAllStubsTest {
         testAddProductDontHavePermission();
     }
 
+    /**
+     * part of test use case 4.1.1 - add product
+     */
     private void testAddProductDontHavePermission() {
         String validStoreName=data.getProductData(Data.VALID).getStoreName();
         Permission permission=sub.getPermissions().get(validStoreName);
@@ -230,6 +236,9 @@ public class SubscribeAllStubsTest {
         assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
 
+    /**
+     * part of test use case 4.1.1 - add product
+     */
     private void testAddProductNotManagerOfStore() {
         String validStoreName=data.getProductData(Data.VALID).getStoreName();
         Permission permission=sub.getPermissions().get(validStoreName);
@@ -250,6 +259,9 @@ public class SubscribeAllStubsTest {
         checkRemoveProductSuccess();
     }
 
+    /**
+     * part of test 4.1.2 - remove product
+     */
     protected void checkRemoveProductSuccess() {
         String storeName=data.getProductData(Data.VALID).getStoreName();
         String productName=data.getProductData(Data.VALID).getProductName();
@@ -257,11 +269,17 @@ public class SubscribeAllStubsTest {
         assertFalse(sub.getPermissions().get(storeName).getStore().getProducts().containsKey(productName));
     }
 
+    /**
+     * part of test 4.1.2 - remove product
+     */
     private void checkRemoveProductFail() {
         checkRemoveProductHasNoPermission();
         checkRemoveProductNotManager();
     }
 
+    /**
+     * part of test 4.1.2 - remove product
+     */
     private void checkRemoveProductNotManager() {
         String validStoreName=data.getProductData(Data.VALID).getStoreName();
         Permission permission=sub.getPermissions().get(validStoreName);
@@ -272,6 +290,9 @@ public class SubscribeAllStubsTest {
         assertTrue(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
 
+    /**
+     * part of test 4.1.2 - remove product
+     */
     private void checkRemoveProductHasNoPermission() {
         String validStoreName=data.getProductData(Data.VALID).getStoreName();
         Permission permission=sub.getPermissions().get(validStoreName);
@@ -292,11 +313,17 @@ public class SubscribeAllStubsTest {
         testSuccessEditProduct();
     }
 
+    /**
+     * part of test use case 4.1.3 - edit product
+     */
     private void testFailEditProduct() {
         checkEditProductHasNoPermission();
         checkEditProductNotManager();
     }
 
+    /**
+     * part of test use case 4.1.3 - edit product
+     */
     private void checkEditProductNotManager() {
         String validStoreName=data.getProductData(Data.VALID).getStoreName();
         Permission permission=sub.getPermissions().get(validStoreName);
@@ -308,6 +335,9 @@ public class SubscribeAllStubsTest {
         sub.getPermissions().put(validStoreName,permission);
     }
 
+    /**
+     * part of test use case 4.1.3 - edit product
+     */
     private void checkEditProductHasNoPermission() {
         String validStoreName=data.getProductData(Data.VALID).getStoreName();
         Permission permission=sub.getPermissions().get(validStoreName);
@@ -319,6 +349,9 @@ public class SubscribeAllStubsTest {
         permission.addType(PermissionType.OWNER);
     }
 
+    /**
+     * part of test use case 4.1.3 - edit product
+     */
     protected void testSuccessEditProduct(){
         assertTrue(sub.editProductFromStore(data.getProductData(Data.EDIT)));
     }
@@ -336,16 +369,23 @@ public class SubscribeAllStubsTest {
     }
 
     /**
+     * part of use case 4.5 add manager
      * test we cant add manager twice
      */
     private void testAlreadyManager() {
         assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()));
     }
 
+    /**
+     * part of use case 4.5 add manager
+     */
     protected void testAddManagerStoreSuccess() {
         assertTrue(sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()));
     }
 
+    /**
+     * part of use case 4.5 add manager
+     */
     private void testAddManagerToStoreFail() {
         checkAddManagerHasNoPermission();
         checkAddManagerNotOwner();
@@ -368,7 +408,6 @@ public class SubscribeAllStubsTest {
     /**
      * check cant add manager without permission
      */
-
     private void checkAddManagerHasNoPermission() {
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
         Permission permission = sub.getPermissions().get(validStoreName);
@@ -390,6 +429,9 @@ public class SubscribeAllStubsTest {
         testAddPermissionSuccess();
     }
 
+    /**
+     * part of test use case 4.6.1 - add permissions to manager
+     */
     private void testAddPermissionDontHavePermission() {
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
         Permission permission = sub.getPermissions().get(validStoreName);
@@ -402,6 +444,9 @@ public class SubscribeAllStubsTest {
         permission.addType(PermissionType.OWNER);
     }
 
+    /**
+     * part of test use case 4.6.1 - add permissions to manager
+     */
     private void testAddPermissionNotManager() {
         String validStoreName=data.getProductData(Data.VALID).getStoreName();
         Permission permission=sub.getPermissions().get(validStoreName);
@@ -414,6 +459,9 @@ public class SubscribeAllStubsTest {
         sub.getPermissions().put(validStoreName,permission);
     }
 
+    /**
+     * part of test use case 4.6.1 - add permissions to manager
+     */
     protected void testAddPermissionSuccess() {
         assertTrue(sub.addPermissions(data.getPermissionTypeList(),
                 data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
@@ -430,6 +478,9 @@ public class SubscribeAllStubsTest {
         testRemovePermissionSuccess();
     }
 
+    /**
+     * part of test use case 4.6.2 - remove permission
+     */
     private void testRemovePermissionNotManager() {
         String validStoreName=data.getProductData(Data.VALID).getStoreName();
         Permission permission=sub.getPermissions().get(validStoreName);
@@ -442,6 +493,9 @@ public class SubscribeAllStubsTest {
         sub.getPermissions().put(validStoreName,permission);
     }
 
+    /**
+     * part of test use case 4.6.2 - remove permission
+     */
     private void testRemovePermissionDontHavePermission() {
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
         Permission permission = sub.getPermissions().get(validStoreName);
@@ -454,6 +508,9 @@ public class SubscribeAllStubsTest {
         permission.addType(PermissionType.OWNER);
     }
 
+    /**
+     * part of test use case 4.6.2 - remove permission
+     */
     protected void testRemovePermissionSuccess() {
         assertTrue(sub.removePermissions(data.getPermissionTypeList(),
                 data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
@@ -469,12 +526,16 @@ public class SubscribeAllStubsTest {
         testRemoveManagerStoreSuccess();
     }
 
-
+    /**
+     * part of test use case 4.7 - remove manager
+     */
     protected void testRemoveManagerStoreSuccess() {
         assertTrue(sub.removeManager(data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()));
     }
 
-
+    /**
+     * part of test use case 4.7 - remove manager
+     */
     private void testRemoveManagerFromStoreFail() {
         checkRemoveManagerNotManager();
     }
@@ -482,7 +543,6 @@ public class SubscribeAllStubsTest {
     /**
      * check cant add manager without being owner
      */
-
     private void checkRemoveManagerNotManager() {
         String validStoreName=data.getProductData(Data.VALID).getStoreName();
         Permission permission=sub.getPermissions().get(validStoreName);
@@ -501,11 +561,17 @@ public class SubscribeAllStubsTest {
         testViewRequestNullName();
     }
 
+    /**
+     * part of use case 4.9.1 - view request
+     */
     private void testViewRequestWrongStore() {
         Request request1 = data.getRequest(Data.WRONG_STORE);
         assertTrue(sub.viewRequest(request1.getStoreName()).isEmpty());
     }
 
+    /**
+     * part of use case 4.9.1 - view request
+     */
     private void testViewRequestNullName() {
         Request request2 = data.getRequest(Data.NULL_NAME);
         assertTrue(sub.viewRequest(request2.getStoreName()).isEmpty());
@@ -523,21 +589,33 @@ public class SubscribeAllStubsTest {
         testReplayRequestNullRequest();
     }
 
+    /**
+     * part of test use case 4.9.2 - reply request
+     */
     private void testReplayRequestNullName() {
         Request request1 = data.getRequest(Data.NULL_NAME);
         assertNull(sub.replayToRequest(request1.getStoreName(), request1.getId(), "comment"));
     }
 
+    /**
+     * part of test use case 4.9.2 - reply request
+     */
     private void testReplayRequestWrongStore() {
         Request request2 = data.getRequest(Data.WRONG_STORE);
         assertNull(sub.replayToRequest(request2.getStoreName(), request2.getId(), "comment"));
     }
 
+    /**
+     * part of test use case 4.9.2 - reply request
+     */
     private void testReplayRequestWrongID() {
         Request request3 = data.getRequest(Data.WRONG_ID);
         assertNull(sub.replayToRequest(request3.getStoreName(), request3.getId(), "comment"));
     }
 
+    /**
+     * part of test use case 4.9.2 - reply request
+     */
     private void testReplayRequestNullRequest() {
         Request request4 = data.getRequest(Data.VALID);
         assertNull(sub.replayToRequest(request4.getStoreName(), request4.getId(), null));
@@ -562,6 +640,7 @@ public class SubscribeAllStubsTest {
     }
 
     /**
+     * part of test use case 6.4.2 and 4.10 - watch store history
      * test that cannot watch store history when not manager
      */
     private void testWatchStoreHistoryNotManger() {
@@ -572,6 +651,9 @@ public class SubscribeAllStubsTest {
         sub.getPermissions().put(validStoreName,permission);
     }
 
+    /**
+     * part of test use case 6.4.2 and 4.10 - watch store history
+     */
     private void testWatchStoreHistorySuccess() {
         assertTrue(sub.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
     }

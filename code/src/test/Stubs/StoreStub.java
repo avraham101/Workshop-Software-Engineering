@@ -55,12 +55,4 @@ public class StoreStub extends Store {
     public boolean editProduct(ProductData productData) {
         return true;
     }
-
-
-//    //TODO add doumentation
-//    @Override
-//    public Purchase purches(PaymentData paymentData, DeliveryData deliveryData) {
-//        return null;
-//    }
-
 }

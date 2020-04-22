@@ -9,13 +9,14 @@ public class Review {
     private String productName;
     private String content;
 
-
     public Review(String writer, String store, String productName, String content) {
         this.writer = writer;
         this.store = store;
         this.productName = productName;
         this.content = content;
     }
+
+    // ============================ getters & setters ============================ //
 
     public String getStore() {
         return store;
@@ -48,6 +49,8 @@ public class Review {
     public void setContent(String content) {
         this.content = content;
     }
+
+    // ============================ getters & setters ============================ //
 
     @Override
     public boolean equals(Object o) {

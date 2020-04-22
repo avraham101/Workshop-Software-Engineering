@@ -47,12 +47,18 @@ public class LogicManager {
             this.supplySystem = supplySystem;
             //TODO add write to logger when exception
             if(!paymentSystem.connect()) {
+                loggerSystem.writeError("Logic manager", "constructor",
+                        "Fail connection to payment system",new Object[]{userName});
                 throw new Exception("Payment System Crashed");
             }
             if(!supplySystem.connect()) {
+                loggerSystem.writeError("Logic manager", "constructor",
+                        "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
             if(subscribes.isEmpty()&&!register(userName,password)) {
+                loggerSystem.writeError("Logic manager", "constructor",
+                        "Fail register",new Object[]{userName});
                 throw new Exception("Admin Register Crashed");
             }
         } catch (Exception e) {
@@ -76,28 +82,28 @@ public class LogicManager {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
             loggerSystem.writeEvent("Logic Manager","constructor",
-                    "Initialize the system", new Object[]{userName, password});
+                    "Initialize the system", new Object[]{userName});
             paymentSystem = new ProxyPayment();
             supplySystem = new ProxySupply();
             if(!paymentSystem.connect()) {
                 loggerSystem.writeError("Logic manager", "constructor",
-                        "Fail connection to payment system",new Object[]{userName, password});
+                        "Fail connection to payment system",new Object[]{userName});
                 throw new Exception("Payment System Crashed");
             }
             if(!supplySystem.connect()) {
                 loggerSystem.writeError("Logic manager", "constructor",
-                        "Fail connection to supply system",new Object[]{userName, password});
+                        "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
             if(subscribes.isEmpty()&&!register(userName,password)) {
                 loggerSystem.writeError("Logic manager", "constructor",
-                        "Fail register",new Object[]{userName, password});
+                        "Fail register",new Object[]{userName});
                 throw new Exception("Admin Register Crashed");
             }
         } catch (Exception e) {
             if (loggerSystem != null){
                 loggerSystem.writeError("Logic manager", "constructor",
-                        "System crashed",new Object[]{userName, password});
+                        "System crashed",new Object[]{userName});
             }
             throw new Exception("System crashed");
         }
@@ -121,28 +127,28 @@ public class LogicManager {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
             loggerSystem.writeEvent("Logic Manager","constructor",
-                    "Initialize the system", new Object[]{userName, password});
+                    "Initialize the system", new Object[]{userName});
             this.paymentSystem = paymentSystem;
             this.supplySystem = supplySystem;
             if(!this.paymentSystem.connect()) {
                 loggerSystem.writeError("Logic manager", "constructor",
-                        "Fail connection to payment system",new Object[]{userName, password});
+                        "Fail connection to payment system",new Object[]{userName});
                 throw new Exception("Payment System Crashed");
             }
             if(!this.supplySystem.connect()) {
                 loggerSystem.writeError("Logic manager", "constructor",
-                        "Fail connection to supply system",new Object[]{userName, password});
+                        "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
             if(subscribes.isEmpty()&&!register(userName,password)) {
                 loggerSystem.writeError("Logic manager", "constructor",
-                        "Fail register",new Object[]{userName, password});
+                        "Fail register",new Object[]{userName});
                 throw new Exception("Admin Register Crashed");
             }
         } catch (Exception e) {
             if (loggerSystem != null){
                 loggerSystem.writeError("Logic manager", "constructor",
-                        "System crashed",new Object[]{userName, password});
+                        "System crashed",new Object[]{userName});
             }
             throw new Exception("System crashed");
         }
@@ -166,7 +172,7 @@ public class LogicManager {
      */
     public boolean register(String userName, String password) {
         loggerSystem.writeEvent("LogicManager","register","the function register user",
-                new Object[] {userName, password});
+                new Object[] {userName});
         if(!validName(userName) || !validPassword(password)) {
             return false;
         }
@@ -196,12 +202,11 @@ public class LogicManager {
      */
     public boolean login(int id, String userName, String password) {
         loggerSystem.writeEvent("LogicManager","login",
-                "login a user", new Object[] {userName, password});
+                "login a user", new Object[] {userName});
         if(!validName(userName) || !validPassword(password)) {
             return false;
         }
         Subscribe subscribe = this.subscribes.get(userName);
-        //TODO test login change session number
         User user= connectedUsers.get(id);
         if(subscribe!=null&&subscribe.getSessionNumber().compareAndSet(-1,id)){
             try {
@@ -260,28 +265,17 @@ public class LogicManager {
     public List<ProductData> viewProductsInStore(String storeName) {
         loggerSystem.writeEvent("LogicManager","viewProductsInStore",
                 "view the details of the stores in the system", new Object[] {storeName});
-        List<ProductData> data = new LinkedList<>();
+        if(storeName==null)
+            return null;
         Store store = stores.get(storeName);
         if(store!=null) {
-            //TODO put inside store
-            //TODO add tests to store
-            Set<String> keys = store.getProducts().keySet();
-            for (String key : keys) {
-                Product product = store.getProducts().get(key);
-                //synchronized product from delete
-                if(product!=null) {
-                    product.getReadLock().lock();
-                    ProductData productData = new ProductData(product, storeName);
-                    data.add(productData);
-                    product.getReadLock().unlock();
-                }
-            }
+            return store.viewProductInStore();
         }
-        return data;
+        return null;
     }
 
     /**
-     * check if dicounts of product are valid
+     * check if discounts of product are valid
      * @param discounts of the product
      * @return if the discounts are not null and between 0 to 100
      */
@@ -296,7 +290,7 @@ public class LogicManager {
     }
 
     /**
-     * check if dicounts of product are valid
+     * check if discounts of product are valid
      * @param discount of the product
      * @return if the discount is not null and between 0 to 100
      */
@@ -397,12 +391,10 @@ public class LogicManager {
 
 
     /**
-     * use case 2.7.1 watch cart details
-     * return the details about a cart
+     * use case 2.7.1 - watch cart details
      * @return - the cart details
      * @param id
      */
-    //TODO check sequence synchronized
     public CartData watchCartDetails(int id) {
         loggerSystem.writeEvent("LogicManager","watchCartDetails",
                 "view the user cart data", new Object[] {});
@@ -411,13 +403,12 @@ public class LogicManager {
     }
 
     /**
-     * use case 2.7.2
+     * use case 2.7.2 - delete product from cart
      * delete product from the cart
      * @param productName - the product to remove
      * @param storeName - the store that sale this product
      * @return - true if the delete work, false if not
      */
-    //TODO check sequence synchronized
     public boolean deleteFromCart(int id,String productName,String storeName){
         loggerSystem.writeEvent("LogicManager","deleteFromCart",
                 "delete product from the user cart", new Object[] {productName, storeName});
@@ -426,13 +417,12 @@ public class LogicManager {
     }
 
     /**
-     * use case 2.7.3 edit amount of product
+     * use case 2.7.3 - edit amount of product
      * @param productName - the product to edit it's amount
      * @param storeName - the store of the product
      * @param newAmount - the new amount
      * @return - true if succeeded, false if not
      */
-    //TODO check sequence synchronized
     public boolean editProductInCart(int id,String productName,String storeName,int newAmount) {
         loggerSystem.writeEvent("LogicManager","editProductInCart",
                 "edit the amount of a product in the cart", new Object[] {productName, storeName, newAmount});
@@ -467,7 +457,6 @@ public class LogicManager {
 
     /**
      * use case 2.8 - purchase cart
-     *
      * @param id - the id
      * @param paymentData - the payment data of this purchase
      * @param addresToDeliver - the address do Deliver the purchase
@@ -501,7 +490,7 @@ public class LogicManager {
     }
 
     /**
-     * use case - 2.8
+     * use case 2.8 - purchase cart
      * the function check if payment data is valid
      * @param paymentData - the payment data
      * @return true if the payment is valid, otherwise false
@@ -581,7 +570,7 @@ public class LogicManager {
     }
 
     /**
-     * The fucntion check if storeData is valid
+     * The function check if storeData is valid
      * @param storeData - the store data to check
      * @return true the store data is ok, otherwise false
      */
@@ -593,7 +582,6 @@ public class LogicManager {
 
     /**
      * use case 3.3 - write review
-     *
      * @param id
      * @param storeName - the store name
      * @param productName - the product name
@@ -675,7 +663,7 @@ public class LogicManager {
     }
 
     /**
-     * use case 4.1.1 add product to store
+     * use case 4.1.1 - add product to store
      * @param productData -the details of the product
      * @return true if the product was added, false otherwise
      */
@@ -704,7 +692,7 @@ public class LogicManager {
     }
 
     /**
-     * use case 4.1.2: remove a product from store if exist
+     * use case 4.1.2 - remove a product from store if exist
      * @param storeName name of the store to remove the product from
      * @param productName name of product to be removed
      * @return if the product was removed
@@ -737,7 +725,7 @@ public class LogicManager {
     }
 
     /**
-     * use case 4.3
+     * use case 4.3 - manage owner
      * @param storeName the name of the store to be manager of
      * @param userName the user to be manager of the store
      * @return
@@ -755,7 +743,7 @@ public class LogicManager {
     }
 
     /**
-     * use case 4.5 -add manager
+     * use case 4.5 - add manager
      * @param storeName name of store to be manager of
      * @param userName
      * @return if the manager was added successfully
@@ -771,9 +759,9 @@ public class LogicManager {
 
     /**
      * use case 4.6.1 - add permissions
-     * @param permissions permmisions to add
+     * @param permissions permissions to add
      * @param storeName -the store to add permissions to
-     * @param userName user to add permmisions to
+     * @param userName user to add permissions to
      * @return
      */
     public boolean addPermissions(int id,List<PermissionType> permissions, String storeName, String userName) {
@@ -832,7 +820,7 @@ public class LogicManager {
     }
 
     /**
-     * use case 4.9.1 -view Store Request
+     * use case 4.9.1 - view Store Request
      *
      * @param id
      * @param storeName name of store to view request.
@@ -849,8 +837,7 @@ public class LogicManager {
     }
 
     /**
-     * use case 4.9.2 -replay to Request
-     *
+     * use case 4.9.2 - replay to Request
      * @param id
      * @param storeName
      * @param requestID
@@ -868,7 +855,6 @@ public class LogicManager {
 
     /**
      * use case 6.4.1 - admin watch history purchases of some user
-     *
      * @param id
      * @param userName - the user that own the purchases
      * @return - list of purchases that of the user
@@ -889,7 +875,6 @@ public class LogicManager {
     /**
      * use case 6.4.2 - admin watch history purchases of some user
      * use case 4.10 - watch Store History by store owner
-     *
      * @param id
      * @param storeName - the name of the store that own the purchases
      * @return - list of purchases that of the store

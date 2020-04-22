@@ -10,11 +10,20 @@ public class PaymentSystemStub extends PaymentSystem {
         return false;
     }
 
+    /**
+     * use case 2.8 - purchase cart
+     * @return
+     */
     @Override
     public boolean pay(PaymentData paymentData) {
         return false;
     }
 
+    /**
+     * use case 2.8 - purchase cart
+     * @param paymentData - the info
+     * @return
+     */
     @Override
     public boolean cancel(PaymentData paymentData) {
         return false;

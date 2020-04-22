@@ -80,7 +80,7 @@ public class Subscribe extends UserState{
     }
 
     /**
-     * use case 3.2
+     * use case 3.2 - open store
      * @param storeDetails - the details of the store
      * @return The store that we opened.
      * this function is synchronized because of the locker in logic manger open store function.
@@ -95,6 +95,7 @@ public class Subscribe extends UserState{
         permissions.put(store.getName(),permission);
         return store;
     }
+
 
     /**
      * use case 3.3 - add review
@@ -138,8 +139,7 @@ public class Subscribe extends UserState{
     }
 
     /**
-     * use case 3.5
-     *
+     * use case 3.5 - add request
      * @param requestId
      * @param storeName - The id of the store
      * @param content - The content of the request
@@ -151,6 +151,7 @@ public class Subscribe extends UserState{
         requests.add(request);
         return request;
     }
+
     /**
      * use case 3.7 - watch purchase history
      * the function return the purchase list
@@ -163,7 +164,7 @@ public class Subscribe extends UserState{
 
 
     /**
-     * use case 4.1.1
+     * use case 4.1.1 - add product
      * @param productData product details to be added
      * @return if the product was added
      */
@@ -179,7 +180,7 @@ public class Subscribe extends UserState{
     }
 
     /**
-     * use case 4.1.2
+     * use case 4.1.2 - remove product
      * @param storeName name of store to remove the product from
      * @param productName name of the product to be removed
      * @return if the product was removed
@@ -194,8 +195,8 @@ public class Subscribe extends UserState{
     }
 
     /**
-     *use case 4.1.3
-     * @param productData product to be added
+     * use case 4.1.3 - edit product
+     * @param productData product to edit
      * @return
      */
     @Override
@@ -208,7 +209,7 @@ public class Subscribe extends UserState{
     }
 
     /**
-     * use case 4.5
+     * use case 4.5 - add manager to store
      * @param youngOwner the new manager
      * @param storeName the store to add manager to
      * @return
@@ -264,7 +265,6 @@ public class Subscribe extends UserState{
      * @param userName user to remove permissions from
      * @return
      */
-
     @Override
     public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
         lock.readLock().lock();
@@ -330,7 +330,7 @@ public class Subscribe extends UserState{
 
     }
     /**
-     * use case 4.9.1
+     * use case 4.9.1 - view request
      * @param storeName
      * @return
      */
@@ -349,7 +349,7 @@ public class Subscribe extends UserState{
     }
 
     /**
-     * use case 4.9.2
+     * use case 4.9.2 - replay to request
      * @param storeName
      * @param requestID
      * @param content
@@ -363,7 +363,6 @@ public class Subscribe extends UserState{
         if(permission == null)
             return null;
         Store store = permission.getStore();
-        //TODO add to use case what happened when has few comments
         if(store!=null &&
                 store.getRequests().containsKey(requestID) &&
                 store.getRequests().get(requestID).getCommentReference().compareAndSet(null, content)) {
@@ -391,6 +390,7 @@ public class Subscribe extends UserState{
         return false;
     }
 
+    // ============================ getters & setters ============================ //
 
     @Override
     public String getName() {
@@ -401,7 +401,6 @@ public class Subscribe extends UserState{
     public String getPassword() {
         return password;
     }
-
 
     public void setUserName(String userName) {
         this.userName = userName;

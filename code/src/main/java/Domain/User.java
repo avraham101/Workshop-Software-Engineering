@@ -16,6 +16,8 @@ public class User {
         state = userState;
     }
 
+    // ============================ getters & setters ============================ //
+
     public UserState getState() {
         return state;
     }
@@ -29,15 +31,6 @@ public class User {
         this.state = state;
     }
 
-    /**
-     * use case 2.3 - Login
-     * @param subscribe - The new Subscribe State
-     * @return true if succeed to change state, otherwise false.
-     */
-    public boolean login(Subscribe subscribe) {
-        return state.login(this, subscribe);
-    }
-
     public String getUserName() {
         return this.state.getName();
     }
@@ -46,6 +39,16 @@ public class User {
         return this.state.getPassword();
     }
 
+    // ============================ getters & setters ============================ //
+
+    /**
+     * use case 2.3 - Login
+     * @param subscribe - The new Subscribe State
+     * @return true if succeed to change state, otherwise false.
+     */
+    public boolean login(Subscribe subscribe) {
+        return state.login(this, subscribe);
+    }
 
     /**
      * use case 2.7.1 watch cart details
@@ -57,8 +60,7 @@ public class User {
     }
 
     /**
-     * use case 2.7.2
-     * delete product from the cart
+     * use case 2.7.2 - delete product from the cart
      * @param productName - the product to remove
      * @param storeName - the store that sale this product
      * @return - true if the delete work, false if not
@@ -68,7 +70,7 @@ public class User {
     }
 
     /**
-     * use case 2.7.3 edit amount of product
+     * use case 2.7.3 - edit amount of product
      * @param productName - the product to edit it's amount
      * @param storeName - the store of the product
      * @param newAmount - the new amount
@@ -79,8 +81,7 @@ public class User {
     }
 
     /**
-     * use case 2.7.4
-     * user add a product to his cart
+     * use case 2.7.4 - add a product to his cart
      * @param store - the store of the product
      * @param product - the product to add
      * @param amount - the amount of the product
@@ -192,7 +193,6 @@ public class User {
         return state.watchMyPurchaseHistory();
     }
 
-
     /**
      * use case 4.1.1 - add product to store
      * @param productData
@@ -222,7 +222,7 @@ public class User {
     }
 
     /**
-     * use case 4.5
+     * use case 4.5 - add manager
      * @param subscribe
      * @param storeName
      * @return
@@ -230,7 +230,6 @@ public class User {
     public boolean addManager(Subscribe subscribe, String storeName) {
         return state.addManager(subscribe,storeName);
     }
-
 
     /**
      * use case 4.6.1 - add permissions
@@ -260,13 +259,12 @@ public class User {
      * @param storeName
      * @return
      */
-
     public boolean removeManager(String userName, String storeName) {
         return state.removeManager(userName,storeName);
     }
 
     /**
-     * use case 4.9.1
+     * use case 4.9.1 - view request
      * @param storeName
      */
     public List<Request> viewRequest(String storeName) {
@@ -274,16 +272,15 @@ public class User {
     }
 
     /**
-     * use case 4.9.2 -replay to Request
+     * use case 4.9.2 - replay to Request
      * @param storeName
      * @param requestID
      * @param content
-     * @return true if replay, false else
+     * @return request if replay, null else
      */
     public Request replayToRequest(String storeName, int requestID, String content) {
         return state.replayToRequest(storeName, requestID, content);
     }
-
 
     /**
      * use case 4.10 - watch Store History by store owner
@@ -298,7 +295,6 @@ public class User {
      * use case 6.4.1 - watch user history
      * @return
      */
-
     public boolean canWatchUserHistory() {
         return state.canWatchUserHistory();
     }

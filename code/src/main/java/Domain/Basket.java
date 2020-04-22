@@ -87,9 +87,8 @@ public class Basket {
         return productToReturn;
     }
 
-    /**
-     * getters and setters
-     */
+    // ============================ getters & setters ============================ //
+
     public Store getStore() {
         return store;
     }
@@ -105,6 +104,8 @@ public class Basket {
     public void setProducts(HashMap<Product, Integer> products) {
         this.products = products;
     }
+
+    // ============================ getters & setters ============================ //
 
     @Override
     public boolean equals(Object o) {
