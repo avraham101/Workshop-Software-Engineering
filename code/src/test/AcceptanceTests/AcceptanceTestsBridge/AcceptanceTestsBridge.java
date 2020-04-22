@@ -20,10 +20,10 @@ public interface AcceptanceTestsBridge {
     HashSet<ProductTestData> filterProducts(List<FilterTestData> filters);
     void addProducts(int id,List<ProductTestData> products);
     boolean addProduct(int id, ProductTestData product);
-    CartTestData getCurrentUsersCart();
+    CartTestData getCurrentUsersCart(int id);
     boolean deleteFromCurrentUserCart(ProductTestData productToDelete);
     boolean changeCurrentUserAmountOfProductInCart(ProductTestData productToChangeAmount, int newAmount);
-    boolean addToCurrentUserCart( ProductTestData productToAdd, int amount);
+    boolean addToUserCart(int id,ProductTestData productToAdd, int amount);
     boolean writeReviewOnProduct(ProductTestData product, ReviewTestData review);
     List<ReviewTestData> getProductsReviews(ProductTestData product);
     List<StoreTestData> getStoresInfo();

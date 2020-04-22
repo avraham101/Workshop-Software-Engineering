@@ -4,7 +4,6 @@ import AcceptanceTests.AcceptanceTestDataObjects.BasketTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.CartTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -26,7 +25,7 @@ public class AddToCartTest extends AcceptanceTests {
         user0 = superUser;
         addUserStoresAndProducts(user0);
         cart0 = user0.getCart();
-        addCartToUser(cart0);
+        addCartToUser(user0.getId(),cart0);
     }
     @Test
     public void addToCartTestSuccessExistingBasket(){
@@ -36,11 +35,11 @@ public class AddToCartTest extends AcceptanceTests {
             for(Map.Entry<ProductTestData,Integer> entry : basket.getProductsAndAmountInBasket().entrySet()){
                 ProductTestData productToAdd = entry.getKey();
                 Integer amount = entry.getValue();
-                boolean isAdded = bridge.addToCurrentUserCart(productToAdd,amount);
+                boolean isAdded = bridge.addToUserCart(user0.getId(),productToAdd,amount);
                 assertTrue(isAdded);
             }
         }
-        CartTestData actualCart = bridge.getCurrentUsersCart();
+        CartTestData actualCart = bridge.getCurrentUsersCart(user0.getId());
         assertEquals(cart0,actualCart);
     }
 
@@ -51,7 +50,7 @@ public class AddToCartTest extends AcceptanceTests {
         String storeName = productToAdd.getStoreName();
         productToAdd.setStoreName(notExistingStore.getStoreName());
 
-        boolean isAdded = bridge.addToCurrentUserCart(productToAdd,amount);
+        boolean isAdded = bridge.addToUserCart(user0.getId(),productToAdd,amount);
         assertFalse(isAdded);
 
         productToAdd.setStoreName(storeName);
@@ -63,7 +62,7 @@ public class AddToCartTest extends AcceptanceTests {
         int amount = 10;
 
         logoutAndDeleteProduct(productToAdd);
-        boolean isAdded = bridge.addToCurrentUserCart(productToAdd,amount);
+        boolean isAdded = bridge.addToUserCart(user0.getId(),productToAdd,amount);
         assertFalse(isAdded);
     }
 
@@ -78,11 +77,11 @@ public class AddToCartTest extends AcceptanceTests {
         ProductTestData productToAdd = products.get(8);
         int amount = Integer.MIN_VALUE;
 
-        boolean isAdded = bridge.addToCurrentUserCart(productToAdd,amount);
+        boolean isAdded = bridge.addToUserCart(user0.getId(),productToAdd,amount);
         assertFalse(isAdded);
 
         amount = 0;
-        isAdded = bridge.addToCurrentUserCart(productToAdd,amount);
+        isAdded = bridge.addToUserCart(user0.getId(),productToAdd,amount);
         assertFalse(isAdded);
     }
 

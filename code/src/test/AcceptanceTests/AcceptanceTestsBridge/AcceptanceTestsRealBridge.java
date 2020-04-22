@@ -81,7 +81,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-2.7---------------------------------//
     @Override
-    public CartTestData getCurrentUsersCart() {
+    public CartTestData getCurrentUsersCart(int id) {
         CartData cartData = serviceAPI.watchCartDetatils(id);
         return buildCartTestData(cartData);
     }
@@ -97,7 +97,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean addToCurrentUserCart(ProductTestData productToAdd, int amount) {
+    public boolean addToUserCart(int id, ProductTestData productToAdd, int amount) {
         return serviceAPI.addProductToCart(id,productToAdd.getProductName(),productToAdd.getStoreName(),amount);
     }
     //---------------------------Use-Case-2.7---------------------------------//

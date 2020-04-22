@@ -78,9 +78,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
 
 
     @Override
-    public CartTestData getCurrentUsersCart() {
+    public CartTestData getCurrentUsersCart(int id) {
         if(realBridge!=null)
-            return realBridge.getCurrentUsersCart();
+            return realBridge.getCurrentUsersCart(id);
         return null;
     }
 
@@ -99,9 +99,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean addToCurrentUserCart(ProductTestData productToAdd, int amount) {
+    public boolean addToUserCart(int id, ProductTestData productToAdd, int amount) {
         if(realBridge!=null)
-            return realBridge.addToCurrentUserCart(productToAdd,amount);
+            return realBridge.addToUserCart(id,productToAdd,amount);
         return false;
     }
 
