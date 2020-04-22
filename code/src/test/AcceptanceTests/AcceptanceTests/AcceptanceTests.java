@@ -4,7 +4,6 @@ import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsBridge;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 
 import java.util.*;
 
@@ -213,8 +212,9 @@ public class AcceptanceTests {
         for(StoreTestData store : stores) {
             UserTestData owner = store.getStoreOwner();
             registerAndLogin(owner);
-            bridge.openStore(store.getStoreName());
-            bridge.appointOwnerToStore(store.getStoreName(),admin.getUsername());
+            bridge.openStore(owner.getId(),store.getStoreName());
+            bridge.appointOwnerToStore(owner.getId(),store.getStoreName(),admin.getUsername());
+            bridge.logout(owner.getId());
         }
 
         bridge.logout(admin.getId());
@@ -228,7 +228,7 @@ public class AcceptanceTests {
     protected  void addProducts(List<ProductTestData> products){
 
         bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
-        bridge.addProducts(products);
+        bridge.addProducts(admin.getId(),products);
         bridge.logout(admin.getId());
 
 
@@ -237,7 +237,7 @@ public class AcceptanceTests {
     protected  void changeAmountOfProductInStore(ProductTestData product,int amount){
 
         bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
-        bridge.changeAmountOfProductInStore(product,amount);
+        bridge.changeAmountOfProductInStore(admin.getId(),product,amount);
         bridge.logout(admin.getId());
 
     }
@@ -258,9 +258,15 @@ public class AcceptanceTests {
     }
 
     protected  void addUserStoresAndProducts(UserTestData user){
-        registerAndLogin(user);
+
         addStores(stores);
         addProducts(products);
+        registerAndLogin(user);
+    }
+    protected  void addUserAndStores(UserTestData user){
+        registerAndLogin(user);
+        addStores(stores);
+
     }
 
 
@@ -269,10 +275,10 @@ public class AcceptanceTests {
             bridge.register(user.getUsername(),user.getPassword());
     }
 
-    protected void addCartToUser(CartTestData cart) {
+    protected void addCartToUser(int id, CartTestData cart) {
         for(BasketTestData basket : cart.getBaskets())
             for(Map.Entry<ProductTestData,Integer> prodAndAmount : basket.getProductsAndAmountInBasket().entrySet())
-                bridge.addToCurrentUserCart(prodAndAmount.getKey(),prodAndAmount.getValue());
+                bridge.addToUserCart(id,prodAndAmount.getKey(),prodAndAmount.getValue());
     }
 
     @After
