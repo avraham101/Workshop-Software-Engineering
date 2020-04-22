@@ -257,7 +257,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-4.10---------------------------------//
     @Override
-    public List<PurchaseTestData> userGetStorePurchasesHistory(String storeName) {
+    public List<PurchaseTestData> userGetStorePurchasesHistory(int id ,String storeName) {
         return buildPurchasesTestData(serviceAPI.watchStoreHistory(id,storeName));
     }
 

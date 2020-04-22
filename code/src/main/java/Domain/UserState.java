@@ -73,7 +73,6 @@ public abstract class UserState {
         Basket basket = cart.getBasket(storeName);
         if (basket != null) {
             result = basket.deleteProduct(productName);
-            // TODO add the amount to the store
         }
         return result;
     }

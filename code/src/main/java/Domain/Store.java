@@ -104,6 +104,26 @@ public class Store {
     // ============================ getters & setters ============================ //
 
     /**
+     * use case 2.4.2 - show the products of a given store
+     * @return the list of products in store.
+     */
+    public List<ProductData> viewProductInStore() {
+        List<ProductData> data = new LinkedList<>();
+        Set<String> keys = products.keySet();
+        for (String key : keys) {
+            Product product = products.get(key);
+            //synchronized product from delete
+            if(product!=null) {
+                product.getReadLock().lock();
+                ProductData productData = new ProductData(product, name);
+                data.add(productData);
+                product.getReadLock().unlock();
+            }
+        }
+        return data;
+    }
+
+    /**
      * use case 2.7.4 - add product to cart
      * use case 3.3 - write review
      * return a product of the store
