@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f0366da3-85c5-4ead-a08b-f6642ede6572" name="Default Changelist" comment="">
+    <list default="true" id="f0366da3-85c5-4ead-a08b-f6642ede6572" name="Default Changelist" comment="6.4 with id - waiting for buyCart (little fix)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStorePurchaseHistoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStorePurchaseHistoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,7 +16,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
+            <state relative-caret-position="7575">
               <caret line="324" column="26" selection-start-line="324" selection-start-column="26" selection-end-line="324" selection-end-column="26" />
               <folding>
                 <element signature="e#933#934#0" expanded="true" />
@@ -45,11 +40,29 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="57" column="16" lean-forward="true" selection-start-line="57" selection-start-column="16" selection-end-line="57" selection-end-column="16" />
+            <state relative-caret-position="1325">
+              <caret line="60" column="1" selection-start-line="60" selection-start-column="1" selection-end-line="60" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/BuyCartTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/DeleteManagerTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1100">
+              <caret line="54" column="49" selection-start-line="54" selection-start-column="49" selection-end-line="54" selection-end-column="49" />
             </state>
           </provider>
         </entry>
@@ -57,7 +70,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStorePurchaseHistoryTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
+            <state relative-caret-position="475">
               <caret line="24" column="28" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="28" />
             </state>
           </provider>
@@ -66,7 +79,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
+            <state relative-caret-position="4900">
               <caret line="207" column="58" selection-start-line="207" selection-start-column="58" selection-end-line="207" selection-end-column="58" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -78,7 +91,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
+            <state relative-caret-position="800">
               <caret line="39" column="59" selection-start-line="39" selection-start-column="59" selection-end-line="39" selection-end-column="59" />
             </state>
           </provider>
@@ -87,7 +100,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
+            <state relative-caret-position="6475">
               <caret line="274" column="66" selection-start-line="274" selection-start-column="66" selection-end-line="274" selection-end-column="66" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -197,7 +210,6 @@
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/OpenStoreTest.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AddToCartTest.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditStore.java" />
-        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/DeleteManagerTest.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditPermissionTest.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/ManagerPermissionsTest.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AppointAnotherOwnerToStoreTest.java" />
@@ -207,14 +219,15 @@
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java" />
         <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java" />
+        <option value="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/DeleteManagerTest.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-15" />
     <option name="y" value="-15" />
-    <option name="width" value="1947" />
-    <option name="height" value="1048" />
+    <option name="width" value="1948" />
+    <option name="height" value="1049" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -222,7 +235,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -288,6 +300,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -299,7 +312,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587551089044" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587551166658" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -470,6 +483,7 @@
       <workItem from="1586496304675" duration="6045000" />
       <workItem from="1586509461422" duration="6936000" />
       <workItem from="1587453312440" duration="9216000" />
+      <workItem from="1587559854843" duration="3976000" />
     </task>
     <task id="LOCAL-00007" summary="get stores info">
       <created>1585903984055</created>
@@ -716,13 +730,24 @@
       <option name="project" value="LOCAL" />
       <updated>1587549928417</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="6.4 with id - waiting for buyCart">
+      <created>1587550990610</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1587550990610</updated>
+    </task>
+    <task id="LOCAL-00043" summary="6.4 with id - waiting for buyCart (little fix)">
+      <created>1587551132689</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1587551132689</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="AppointAnotherOwnerToStoreTest_appointAnotherOwnerToStoreTestSuccess - 2020.04.21 at 23h 43m 42s.xml">
-      <configuration name="AppointAnotherOwnerToStoreTest.appointAnotherOwnerToStoreTestSuccess" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="AppointAnotherOwnerToStoreTest_appointAnotherOwnerToStoreTestSuccess - 2020.04.21 at 23h 44m 35s.xml">
       <configuration name="AppointAnotherOwnerToStoreTest.appointAnotherOwnerToStoreTestSuccess" configurationId="JUnit" />
     </history-entry>
@@ -750,9 +775,12 @@
     <history-entry file="AppointManagerTest_appointManagerSuccess - 2020.04.22 at 00h 07m 21s.xml">
       <configuration name="AppointManagerTest.appointManagerSuccess" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="AdminPurchaseHistory - 2020.04.22 at 13h 24m 53s.xml">
+      <configuration name="AdminPurchaseHistory" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="133872000" />
+    <option name="totallyTimeSpent" value="138650000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -767,7 +795,7 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.28456375" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2885906" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -778,13 +806,13 @@
       <window_info anchor="bottom" id="Messages" order="0" weight="0.32719547" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.66477734" weight="0.0" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.66477734" weight="0.3286119" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.3696884" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3286119" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="9" visible="true" weight="0.02549575" />
+      <window_info anchor="bottom" id="Version Control" order="9" visible="true" weight="0.22804533" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3286119" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" weight="0.3285968" />
@@ -820,8 +848,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="3.2,3.5,4.1.1,4.1.2" />
-    <MESSAGE value="add managers" />
     <MESSAGE value="givenby+ 4.5" />
     <MESSAGE value="Merge branch 'AcceptanceTests' of https://github.com/avraham101/Workshop-Software-Engineering into AcceptanceTests&#10;&#10;# Conflicts:&#10;#&#9;code/.idea/workspace.xml&#10;#&#9;code/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java" />
     <MESSAGE value="4.6" />
@@ -845,7 +871,9 @@
     <MESSAGE value="acceptance test - 4.6 - editPermissionsTest" />
     <MESSAGE value="half of 4.3 - there is a deadlock" />
     <MESSAGE value="Merge branch 'AcceptanceTests' of https://github.com/avraham101/Workshop-Software-Engineering into AcceptanceTests&#10;&#10;# Conflicts:&#10;#&#9;code/.idea/workspace.xml" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'AcceptanceTests' of https://github.com/avraham101/Workshop-Software-Engineering into AcceptanceTests&#10;&#10;# Conflicts:&#10;#&#9;code/.idea/workspace.xml" />
+    <MESSAGE value="6.4 with id - waiting for buyCart" />
+    <MESSAGE value="6.4 with id - waiting for buyCart (little fix)" />
+    <option name="LAST_COMMIT_MESSAGE" value="6.4 with id - waiting for buyCart (little fix)" />
   </component>
   <component name="WindowStateProjectService">
     <state x="618" y="301" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" />
@@ -1087,13 +1115,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/DeleteManagerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="60" column="19" lean-forward="true" selection-start-line="60" selection-start-column="19" selection-end-line="60" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/ManagerPermissionsTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-49">
@@ -1105,13 +1126,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
           <caret line="222" column="28" selection-start-line="222" selection-start-column="28" selection-end-line="222" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/BuyCartTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -1251,9 +1265,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditCartTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/WriteReviewOnProductTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-550">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_151/src.zip!/java/lang/String.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="110" column="19" selection-start-line="110" selection-start-column="19" selection-end-line="110" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
+        <state relative-caret-position="7575">
           <caret line="324" column="26" selection-start-line="324" selection-start-column="26" selection-end-line="324" selection-end-column="26" />
           <folding>
             <element signature="e#933#934#0" expanded="true" />
@@ -1276,38 +1311,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/EditCartTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/DeleteManagerTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/WriteReviewOnProductTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-550">
-          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_151/src.zip!/java/lang/String.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="110" column="19" selection-start-line="110" selection-start-column="19" selection-end-line="110" selection-end-column="19" />
+        <state relative-caret-position="1100">
+          <caret line="54" column="49" selection-start-line="54" selection-start-column="49" selection-end-line="54" selection-end-column="49" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/GetStorePurchaseHistoryTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
+        <state relative-caret-position="475">
           <caret line="24" column="28" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="28" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java">
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="274" column="66" selection-start-line="274" selection-start-column="66" selection-end-line="274" selection-end-column="66" />
+        <state relative-caret-position="4900">
+          <caret line="207" column="58" selection-start-line="207" selection-start-column="58" selection-end-line="207" selection-end-column="58" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1316,15 +1337,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsBridge.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
+        <state relative-caret-position="800">
           <caret line="39" column="59" selection-start-line="39" selection-start-column="59" selection-end-line="39" selection-end-column="59" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsProxyBridge.java">
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="207" column="58" selection-start-line="207" selection-start-column="58" selection-end-line="207" selection-end-column="58" />
+        <state relative-caret-position="6475">
+          <caret line="274" column="66" selection-start-line="274" selection-start-column="66" selection-end-line="274" selection-end-column="66" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1333,8 +1354,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/AdminPurchaseHistory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="57" column="16" lean-forward="true" selection-start-line="57" selection-start-column="16" selection-end-line="57" selection-end-column="16" />
+        <state relative-caret-position="1325">
+          <caret line="60" column="1" selection-start-line="60" selection-start-column="1" selection-end-line="60" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/BuyCartTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
         </state>
       </provider>
     </entry>
