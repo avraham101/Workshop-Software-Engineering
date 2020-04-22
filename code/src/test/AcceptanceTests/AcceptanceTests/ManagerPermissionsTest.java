@@ -38,17 +38,17 @@ public class ManagerPermissionsTest extends AcceptanceTests {
         manager = users.get(1);
         newManager = users.get(2);
 
-        registerAndLogin(superUser);
+        registerAndLogin(superUser);//TODO not good need to do logout??
         registerAndLogin(manager);
         registerAndLogin(newManager);
         logoutAndLogin(superUser);
-        bridge.appointManager(stores.get(0).getStoreName(), manager.getUsername());
-        bridge.addPermissionToManager(stores.get(0).getStoreName(),manager.getUsername(), PermissionsTypeTestData.PRODUCTS_INVENTORY);
+        bridge.appointManager(superUser.getId(),stores.get(0).getStoreName(), manager.getUsername());
+        bridge.addPermissionToManager(superUser.getId(),stores.get(0).getStoreName(),manager.getUsername(), PermissionsTypeTestData.PRODUCTS_INVENTORY);
        logoutAndLogin(manager);
     }
     @Test
     public void managerPermissionsTestSuccess(){
-        boolean isAdded = bridge.addProduct(newProduct);
+        boolean isAdded = bridge.addProduct(manager.getId(),newProduct);
         assertTrue(isAdded);
         HashSet<ProductTestData> actualProducts = new HashSet<>(bridge.getStoreProducts(newProduct.getStoreName()));
         List<ProductTestData> expectedProductsList = products.subList(0,3);
@@ -59,16 +59,17 @@ public class ManagerPermissionsTest extends AcceptanceTests {
 
     @Test
     public void managerPermissionsTestFailAddNewManager(){
-        boolean isAdded = bridge.appointManager(newProduct.getStoreName(),newManager.getUsername());
+        boolean isAdded = bridge.appointManager(manager.getId(),newProduct.getStoreName(),newManager.getUsername());
         assertFalse(isAdded);
         logoutAndLogin(newManager);
-        boolean isAddedProduct = bridge.addProduct(newProduct);
+        boolean isAddedProduct = bridge.addProduct(newManager.getId(),newProduct);
         assertFalse(isAddedProduct);
     }
 
     @Test
     public void managerPermissionsTestFailAddNewOwner(){
-        boolean isAdded = bridge.appointOwnerToStore(newProduct.getStoreName(),newManager.getUsername());
+        boolean isAdded = bridge.appointOwnerToStore(manager.getId(),
+                newProduct.getStoreName(),newManager.getUsername());
         assertFalse(isAdded);
     }
 }

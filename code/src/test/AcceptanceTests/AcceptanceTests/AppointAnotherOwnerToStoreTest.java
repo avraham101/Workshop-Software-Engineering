@@ -41,41 +41,36 @@ public class AppointAnotherOwnerToStoreTest extends AcceptanceTests {
 
     @Test
     public void appointAnotherOwnerToStoreTestSuccess(){
-        boolean isOwner = bridge.appointOwnerToStore(shareOwnershipStore.getStoreName(),newOwner.getUsername());
+        boolean isOwner = bridge.appointOwnerToStore(owner.getId(),
+                shareOwnershipStore.getStoreName(),newOwner.getUsername());
         assertTrue(isOwner);
-        isOwner = bridge.addProduct(productToAdd);
-        assertTrue(isOwner);
+
     }
 
     @Test
     public void appointAnotherOwnerToStoreTestFailAlreadyOwner(){
         appointAnotherOwnerToStoreTestSuccess();
-        boolean isOwner = bridge.appointOwnerToStore(shareOwnershipStore.getStoreName(),newOwner.getUsername());
+        boolean isOwner = bridge.appointOwnerToStore(owner.getId(),
+                shareOwnershipStore.getStoreName(),newOwner.getUsername());
         assertFalse(isOwner);
-        logoutAndLogin(newOwner);
-        bridge.deleteProduct(productToAdd);
-        isOwner = bridge.addProduct(productToAdd);
-        assertTrue(isOwner);
+
     }
 
     @Test
     public void appointAnotherOwnerToStoreTestFailWrongUsername(){
         String wrongUsername = newOwner.getUsername() + newOwner.getUsername();
-        boolean isOwner = bridge.appointOwnerToStore(shareOwnershipStore.getStoreName(),wrongUsername);
+        boolean isOwner = bridge.appointOwnerToStore(owner.getId(),
+                shareOwnershipStore.getStoreName(),wrongUsername);
         assertFalse(isOwner);
-        logoutAndLogin(new UserTestData(newOwner.getId(),wrongUsername,wrongUsername));
-        isOwner = bridge.addProduct(productToAdd);
-        assertFalse(isOwner);
+
     }
 
     @Test
     public void appointAnotherOwnerToStoreTestFailWrongStoreName(){
         String wrongStoreName = shareOwnershipStore.getStoreName() + shareOwnershipStore.getStoreName();
-        boolean isOwner = bridge.appointOwnerToStore(wrongStoreName,newOwner.getUsername());
+        boolean isOwner = bridge.appointOwnerToStore(owner.getId(),
+                wrongStoreName,newOwner.getUsername());
         assertFalse(isOwner);
-        logoutAndLogin(newOwner);
-        productToAdd.setStoreName(wrongStoreName);
-        isOwner = bridge.addProduct(productToAdd);
-        assertFalse(isOwner);
+
     }
 }
