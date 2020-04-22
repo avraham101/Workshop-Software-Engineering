@@ -101,7 +101,7 @@ public class UserAllStubsTest {
     /**
      * set up product added to cart
      */
-    public void setUpProductAddedToCart(){
+    protected void setUpProductAddedToCart(){
         setUpProductAdded();
         Store store = data.getRealStore(Data.VALID);
         Product p = data.getRealProduct(Data.VALID);

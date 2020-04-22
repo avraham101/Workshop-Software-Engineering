@@ -35,6 +35,16 @@ public class UserRealTest extends UserAllStubsTest{
     }
 
     /**
+     * set up to reserved to cart
+     */
+    public void setUpReserved() {
+        setUpProductAdded();
+        Store store = data.getRealStore(Data.VALID);
+        Product p = data.getRealProduct(Data.VALID);
+        user.addProductToCart(store,p,p.getAmount());
+    }
+
+    /**
      * test use case 2.3 - Login
      * user: Yuval Sabag
      */
@@ -84,7 +94,6 @@ public class UserRealTest extends UserAllStubsTest{
     /**
      * use case 2.8 - purchase cart
      */
-    @Override
     @Test
     public void testSavePurchase() {
         setUpReservedCart();
@@ -128,6 +137,8 @@ public class UserRealTest extends UserAllStubsTest{
         assertNotNull(product);
         return product.getAmount();
     }
+
+
 
     /**
      * use case 3.1 - logout
