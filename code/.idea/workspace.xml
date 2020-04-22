@@ -299,7 +299,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587550961350" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587551089044" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -318,7 +318,21 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.AppointManagerTest">
+  <component name="RunManager" selected="JUnit.AdminPurchaseHistory">
+    <configuration name="AdminPurchaseHistory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="code" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="AcceptanceTests.AcceptanceTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="AcceptanceTests.AcceptanceTests" />
+      <option name="MAIN_CLASS_NAME" value="AcceptanceTests.AcceptanceTests.AdminPurchaseHistory" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="AppointAnotherOwnerToStoreTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="code" />
       <extension name="coverage">
@@ -329,22 +343,6 @@
       </extension>
       <option name="PACKAGE_NAME" value="AcceptanceTests.AcceptanceTests" />
       <option name="MAIN_CLASS_NAME" value="AcceptanceTests.AcceptanceTests.AppointAnotherOwnerToStoreTest" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="AppointAnotherOwnerToStoreTest.appointAnotherOwnerToStoreTestSuccess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="code" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="AcceptanceTests.AcceptanceTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="AcceptanceTests.AcceptanceTests" />
-      <option name="MAIN_CLASS_NAME" value="AcceptanceTests.AcceptanceTests.AppointAnotherOwnerToStoreTest" />
-      <option name="METHOD_NAME" value="appointAnotherOwnerToStoreTestSuccess" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -397,11 +395,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.AdminPurchaseHistory" />
         <item itemvalue="JUnit.AppointManagerTest" />
         <item itemvalue="JUnit.AppointAnotherOwnerToStoreTest" />
         <item itemvalue="JUnit.AppointManagerTest.appointManagerSuccess" />
         <item itemvalue="JUnit.EditPermissionTest.addPermissionSuccess" />
-        <item itemvalue="JUnit.AppointAnotherOwnerToStoreTest.appointAnotherOwnerToStoreTestSuccess" />
       </list>
     </recent_temporary>
   </component>
