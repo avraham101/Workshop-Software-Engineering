@@ -101,7 +101,7 @@ public class UserRealTest extends UserAllStubsTest{
     public void testCancel() {
         Cart cart = user.getState().getCart();
         for(Basket b:cart.getBaskets()) {
-            
+
         }
         Store store =
         int size
