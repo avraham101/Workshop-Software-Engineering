@@ -186,22 +186,6 @@ public class LogicManagerAllStubsTest {
 
     /**--------------------------------set-ups-------------------------------------------------------------------*/
 
-    //TODO add test when cant connect systems supply and payment
-    /**
-     * test: use case 1.1 - Init System
-     */
-    @Test
-    public void testExternalSystems() {
-        assertTrue(this.paymentSystem.connect());
-        assertTrue(this.supplySystem.connect());
-        try {
-            HashSystem hashSystem = new HashSystem();
-            hashSystem.encrypt("testExternalSystems");
-        } catch (Exception e) {
-            fail();
-        }
-    }
-
     /**
      * test: use case 1.1 - Init System
      * checking for exception due to false connection from the payment external system
@@ -315,7 +299,6 @@ public class LogicManagerAllStubsTest {
     /**
      * test use case 2.3 - Login
      */
-    //TODO check when failed that the user is not logged in
     @Test
     public void testLogin() {
         setUpRegisteredUser();
@@ -379,6 +362,26 @@ public class LogicManagerAllStubsTest {
         List<ProductData> expected = new LinkedList<>();
         String storeName = data.getStore(Data.VALID).getName();
         assertEquals(expected, logicManager.viewProductsInStore(storeName));
+    }
+
+    /**
+     * use case 2.4.2 - view the products in some store with valid data test
+     */
+    @Test
+    public void testViewProductInStoreNotExists() {
+        setUpProductAdded();
+        String storeName = data.getStore(Data.WRONG_STORE).getName();
+        assertNull(logicManager.viewProductsInStore(storeName));
+    }
+
+    /**
+     * use case 2.4.2 - view the products in some store with valid data test
+     */
+    @Test
+    public void testViewProductInStoreNull() {
+        setUpProductAdded();
+        String storeName = data.getStore(Data.NULL_STORE).getName();
+        assertNull(logicManager.viewProductsInStore(storeName));
     }
 
     /**
@@ -1101,14 +1104,35 @@ public class LogicManagerAllStubsTest {
      * 3. null list
      * 4. list with null
      */
-    //TODO split tests
     private void testAddPermissionFail() {
-        String user=data.getSubscribe(Data.ADMIN).getName();
+       testAddPermissionFailWrongUserName();
+       testAddPermissionFailWrongStoreName();
+       testAddPermissionFailWrongNullPermissions();
+       testAddPermissionFailWrongPermissionListWithNull();
+    }
+
+    private void testAddPermissionFailWrongUserName(){
         String store=data.getStore(Data.VALID).getName();
         List<PermissionType> types=data.getPermissionTypeList();
         assertFalse(logicManager.addPermissions(data.getId(Data.VALID),types,store,store));
+    }
+
+    private void testAddPermissionFailWrongStoreName(){
+        String user=data.getSubscribe(Data.ADMIN).getName();
+        List<PermissionType> types=data.getPermissionTypeList();
         assertFalse(logicManager.addPermissions(data.getId(Data.VALID),types,user,user));
+    }
+
+    private void testAddPermissionFailWrongNullPermissions(){
+        String user=data.getSubscribe(Data.ADMIN).getName();
+        String store=data.getStore(Data.VALID).getName();
         assertFalse(logicManager.addPermissions(data.getId(Data.VALID),null,store,user));
+    }
+
+    private void testAddPermissionFailWrongPermissionListWithNull(){
+        String user=data.getSubscribe(Data.ADMIN).getName();
+        String store=data.getStore(Data.VALID).getName();
+        List<PermissionType> types=data.getPermissionTypeList();
         types.add(null);
         assertFalse(logicManager.addPermissions(data.getId(Data.VALID),types,store,user));
         types.remove(null);
