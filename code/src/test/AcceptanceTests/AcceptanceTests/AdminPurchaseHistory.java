@@ -16,7 +16,7 @@ public class AdminPurchaseHistory extends AcceptanceTests {
         userToCheck = users.get(1);
         addUserStoresAndProducts(userToCheck);
 
-        bridge.addToCurrentUserCart(products.get(0),1);
+        bridge.addToUserCart(userToCheck.getId(),products.get(0),1);
         bridge.buyCart(validPayment,validDelivery);
         //TODO: remove line ?
         bridge.logout(userToCheck.getId());

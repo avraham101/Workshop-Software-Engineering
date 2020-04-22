@@ -81,23 +81,23 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-2.7---------------------------------//
     @Override
-    public CartTestData getCurrentUsersCart() {
+    public CartTestData getUsersCart(int id) {
         CartData cartData = serviceAPI.watchCartDetatils(id);
         return buildCartTestData(cartData);
     }
 
     @Override
-    public boolean deleteFromCurrentUserCart(ProductTestData productToDelete) {
+    public boolean deleteFromUserCart(int id, ProductTestData productToDelete) {
         return serviceAPI.deleteFromCart(id,productToDelete.getProductName(),productToDelete.getStoreName());
     }
 
     @Override
-    public boolean changeCurrentUserAmountOfProductInCart(ProductTestData productToChangeAmount, int newAmount) {
+    public boolean changeUserAmountOfProductInCart(int id, ProductTestData productToChangeAmount, int newAmount) {
         return serviceAPI.editProductInCart(id,productToChangeAmount.getProductName(),productToChangeAmount.getStoreName(),newAmount);
     }
 
     @Override
-    public boolean addToCurrentUserCart(ProductTestData productToAdd, int amount) {
+    public boolean addToUserCart(int id, ProductTestData productToAdd, int amount) {
         return serviceAPI.addProductToCart(id,productToAdd.getProductName(),productToAdd.getStoreName(),amount);
     }
     //---------------------------Use-Case-2.7---------------------------------//
@@ -217,7 +217,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-4.7---------------------------------//
     @Override
-    public boolean deleteManager(String storeName, String username) {
+    public boolean deleteManager(int id, String storeName, String username) {
         return serviceAPI.removeManager(id,username,storeName);
     }
     //---------------------------Use-Case-4.7---------------------------------//

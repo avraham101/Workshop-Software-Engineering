@@ -78,30 +78,30 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
 
 
     @Override
-    public CartTestData getCurrentUsersCart() {
+    public CartTestData getUsersCart(int id) {
         if(realBridge!=null)
-            return realBridge.getCurrentUsersCart();
+            return realBridge.getUsersCart(id);
         return null;
     }
 
     @Override
-    public boolean deleteFromCurrentUserCart(ProductTestData productToDelete) {
+    public boolean deleteFromUserCart(int id, ProductTestData productToDelete) {
         if(realBridge!=null)
-            return realBridge.deleteFromCurrentUserCart(productToDelete);
+            return realBridge.deleteFromUserCart(id, productToDelete);
         return false;
     }
 
     @Override
-    public boolean changeCurrentUserAmountOfProductInCart(ProductTestData productToChangeAmount, int newAmount) {
+    public boolean changeUserAmountOfProductInCart(int id, ProductTestData productToChangeAmount, int newAmount) {
         if(realBridge!=null)
-            return realBridge.changeCurrentUserAmountOfProductInCart(productToChangeAmount,newAmount);
+            return realBridge.changeUserAmountOfProductInCart(id,productToChangeAmount,newAmount);
         return false;
     }
 
     @Override
-    public boolean addToCurrentUserCart(ProductTestData productToAdd, int amount) {
+    public boolean addToUserCart(int id, ProductTestData productToAdd, int amount) {
         if(realBridge!=null)
-            return realBridge.addToCurrentUserCart(productToAdd,amount);
+            return realBridge.addToUserCart(id,productToAdd,amount);
         return false;
     }
 
@@ -196,9 +196,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean deleteManager(String storeName, String username) {
+    public boolean deleteManager(int id, String storeName, String username) {
         if(realBridge!=null)
-            return realBridge.deleteManager(storeName,username);
+            return realBridge.deleteManager(id,storeName,username);
         return false;
     }
 

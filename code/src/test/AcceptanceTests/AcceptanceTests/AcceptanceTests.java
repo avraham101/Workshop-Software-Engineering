@@ -4,7 +4,6 @@ import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestsBridge.AcceptanceTestsBridge;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 
 import java.util.*;
 
@@ -214,8 +213,8 @@ public class AcceptanceTests {
             UserTestData owner = store.getStoreOwner();
             registerAndLogin(owner);
             bridge.openStore(owner.getId(),store.getStoreName());
-          //  bridge.appointOwnerToStore(owner.getId(),store.getStoreName(),admin.getUsername());
-          //  bridge.logout(owner.getId());
+            bridge.appointOwnerToStore(owner.getId(),store.getStoreName(),admin.getUsername());
+            bridge.logout(owner.getId());
         }
 
         bridge.logout(admin.getId());
@@ -276,10 +275,10 @@ public class AcceptanceTests {
             bridge.register(user.getUsername(),user.getPassword());
     }
 
-    protected void addCartToUser(CartTestData cart) {
+    protected void addCartToUser(int id, CartTestData cart) {
         for(BasketTestData basket : cart.getBaskets())
             for(Map.Entry<ProductTestData,Integer> prodAndAmount : basket.getProductsAndAmountInBasket().entrySet())
-                bridge.addToCurrentUserCart(prodAndAmount.getKey(),prodAndAmount.getValue());
+                bridge.addToUserCart(id,prodAndAmount.getKey(),prodAndAmount.getValue());
     }
 
     @After

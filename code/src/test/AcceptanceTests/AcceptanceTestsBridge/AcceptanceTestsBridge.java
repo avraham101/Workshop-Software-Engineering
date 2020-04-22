@@ -20,10 +20,10 @@ public interface AcceptanceTestsBridge {
     HashSet<ProductTestData> filterProducts(List<FilterTestData> filters);
     void addProducts(int id,List<ProductTestData> products);
     boolean addProduct(int id, ProductTestData product);
-    CartTestData getCurrentUsersCart();
-    boolean deleteFromCurrentUserCart(ProductTestData productToDelete);
-    boolean changeCurrentUserAmountOfProductInCart(ProductTestData productToChangeAmount, int newAmount);
-    boolean addToCurrentUserCart( ProductTestData productToAdd, int amount);
+    CartTestData getUsersCart(int id);
+    boolean deleteFromUserCart(int id, ProductTestData productToDelete);
+    boolean changeUserAmountOfProductInCart(int id, ProductTestData productToChangeAmount, int newAmount);
+    boolean addToUserCart(int id,ProductTestData productToAdd, int amount);
     boolean writeReviewOnProduct(ProductTestData product, ReviewTestData review);
     List<ReviewTestData> getProductsReviews(ProductTestData product);
     List<StoreTestData> getStoresInfo();
@@ -36,7 +36,7 @@ public interface AcceptanceTestsBridge {
     StoreTestData getStoreInfoByName(String storeName);
     boolean editProductInStore(int id,ProductTestData product);
     boolean appointManager(int id, String storeName, String username);
-    boolean deleteManager(String storeName,String username);
+    boolean deleteManager(int id, String storeName,String username);
     List<PurchaseTestData> getStorePurchasesHistory(String storeName);
     List<PurchaseTestData> getUserPurchaseHistory(String username);
     List<PurchaseTestData> getCurrentUserPurchaseHistory();
