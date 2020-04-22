@@ -16,7 +16,6 @@ public class LogicManagerUserAndStoresStubs extends LogicManagerAllStubsTest {
      * Adding Stores must be in type StoreStub
      * example: stores.put(Key,new StoreStub(...))
      */
-
     @Before
     public void setUp() {
         currUser=new UserStub();

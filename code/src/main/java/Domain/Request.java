@@ -18,6 +18,8 @@ public class Request {
         comment=new AtomicReference<>(null);
     }
 
+    // ============================ getters & setters ============================ //
+
     public String getSenderName() {
         return senderName;
     }
@@ -42,7 +44,7 @@ public class Request {
         this.content = content;
     }
 
-    public String getComment() {if(comment==null) return null; return comment.get();}
+    public String getComment() {return comment.get();}
 
     public AtomicReference<String> getCommentReference() {
         return comment;
@@ -60,5 +62,6 @@ public class Request {
         this.id = id;
     }
 
+    // ============================ getters & setters ============================ //
 
 }

@@ -9,7 +9,7 @@ public class Filter {
     private double maxPrice;
     private String category;
 
-    /***
+    /**
      * use case 2.5 - search Products in Stores
      * @param search - the search to do
      * @param value - the value of the chosen search
@@ -24,6 +24,8 @@ public class Filter {
         this.maxPrice = maxPrice;
         this.category = category;
     }
+
+    // ============================ getters & setters ============================ //
 
     public Search getSearch() {
         return search;
@@ -64,4 +66,6 @@ public class Filter {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    // ============================ getters & setters ============================ //
 }

@@ -12,13 +12,13 @@ public class DeliveryData {
         this.products = products;
     }
 
+    // ============================ getters & setters ============================ //
+
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    public void setAddress(String address) { this.address = address; }
 
     public List<ProductData> getProducts() {
         return products;
@@ -27,4 +27,6 @@ public class DeliveryData {
     public void setProducts(List<ProductData> products) {
         this.products = products;
     }
+
+    // ============================ getters & setters ============================ //
 }

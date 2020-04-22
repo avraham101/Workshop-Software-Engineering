@@ -83,7 +83,6 @@ public class StoreTestsAllStubs {
     /**
      * test if the amount of product has been change
      */
-
     private void testCheckReduceAmount() {
         ProductData product = data.getProductData(Data.VALID);
         int amount = store.getProduct(product.getProductName()).getAmount();
@@ -133,6 +132,9 @@ public class StoreTestsAllStubs {
         testFailRemoveProduct();
     }
 
+    /**
+     * test use case 4.1.2 remove product from store
+     */
     protected void testSuccessRemoveProduct() {
         assertTrue(store.removeProduct(data.getProductData(Data.VALID).getProductName()));
     }
@@ -155,6 +157,7 @@ public class StoreTestsAllStubs {
     }
 
     /**
+     * part of test use case 4.1.3
      * test product that not in the store
      */
     protected void testFailEditProduct() {
@@ -162,6 +165,10 @@ public class StoreTestsAllStubs {
         assertFalse(store.editProduct(p));
     }
 
+    /**
+     * part of test use case 4.1.3
+     * test success
+     */
     protected void testSuccessEditProduct(){
         assertTrue(store.editProduct(data.getProductData(Data.EDIT)));
     }

@@ -309,6 +309,9 @@ public class UserAllStubsTest {
         assertFalse(user.editProductFromStore(data.getProductData(Data.EDIT)));
     }
 
+    /**
+     * test use case 4.1.3 - edit product from store
+     */
     @Test
     public void testEditProductFromStoreSubscribe() {
         setUpProductAdded();
@@ -343,6 +346,9 @@ public class UserAllStubsTest {
                 data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()));
     }
 
+    /**
+     * test se case 4.6.1 - add permissions
+     */
     @Test
     public void testAddPermissionsSubscribe(){
         setUpAddedManager();
@@ -360,6 +366,9 @@ public class UserAllStubsTest {
                 data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()));
     }
 
+    /**
+     * test use case 4.6.2 - remove permissions
+     */
     @Test
     public void testRemovePermissionsSubscribe(){
         setUpPermissionAdded();
@@ -376,6 +385,9 @@ public class UserAllStubsTest {
         assertFalse(user.removeManager(data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()));
     }
 
+    /**
+     * test use case 4.7 -remove manager
+     */
     @Test
     public void testRemoveManagerSubscribe(){
         setUpAddedManager();

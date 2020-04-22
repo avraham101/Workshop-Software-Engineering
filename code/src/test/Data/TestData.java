@@ -25,6 +25,9 @@ public class TestData {
     private HashMap<Data, DeliveryData> deliveryData;
     private HashMap<Data,Integer> ids;
 
+    /**
+     * create data for tests
+     */
     public TestData() {
         setUpIds();
         setUpUsers();
@@ -40,6 +43,9 @@ public class TestData {
         setUpPermmisionTypes();
     }
 
+    /**
+     * set up data of ids
+     */
     private void setUpIds() {
         ids=new HashMap<>();
         ids.put(Data.ADMIN,0);
@@ -47,12 +53,18 @@ public class TestData {
         ids.put(Data.VALID2,2);
     }
 
+    /**
+     * set up data of permissions
+     */
     private void setUpPermmisionTypes() {
         permissionTypeList=new ArrayList<>();
         permissionTypeList.add(PermissionType.ADD_MANAGER);
         permissionTypeList.add(PermissionType.ADD_OWNER);
     }
 
+    /**
+     * set up data of users
+     */
     private void setUpUsers() {
         users = new HashMap<>();
         users.put(Data.NULL, new Subscribe(null, null));
@@ -65,6 +77,9 @@ public class TestData {
         users.put(Data.VALID2,new Subscribe("Niv","Shirazi"));
     }
 
+    /**
+     * set up data of discount
+     */
     private void setUpDiscountData() {
         discounts=new HashMap<>();
         List<Discount> discountsListHasNull=new ArrayList<>();
@@ -78,6 +93,9 @@ public class TestData {
         discounts.put(Data.OVER_100_PERCENTAGE,discountListOver100Percentage);
     }
 
+    /**
+     * set up data of products
+     */
     private void setUpProductData(){
         productsData = new HashMap<>();
         //change data type to enum
@@ -119,6 +137,9 @@ public class TestData {
 
     }
 
+    /**
+     * set up data of stores
+     */
     private void setUpStoreData() {
         stores = new HashMap<>();
         stores.put(Data.VALID,new StoreData("Store",new PurchasePolicy(), new DiscountPolicy()));
@@ -130,6 +151,9 @@ public class TestData {
         stores.put(Data.NULL_DISCOUNT, new StoreData("Store",new PurchasePolicy(), null));
     }
 
+    /**
+     * set up data of baskets
+     */
     private void setUpBasketData() {
         basket = new HashMap<Data, HashMap<ProductData, Integer>>();
         HashMap <ProductData, Integer> productsInBasket = new HashMap<>();
@@ -141,6 +165,9 @@ public class TestData {
         return basket.get(data);
     }
 
+    /**
+     * set up data of filters
+     */
     private void setUpFilters() {
         filters = new HashMap<>();
         ProductData p = getProductData(Data.VALID);
@@ -168,6 +195,9 @@ public class TestData {
 
     }
 
+    /**
+     * set up data of reviews
+     */
     private void setUpReviews() {
         reviwes = new HashMap<>();
         Subscribe subscribe = getSubscribe(Data.VALID);
@@ -220,6 +250,9 @@ public class TestData {
         deliveryData.put(Data.NULL_ADDRESS, new DeliveryData(null, product));
     }
 
+    /**
+     * set up data of requests
+     */
     private void setUpRequests(){
         requests = new HashMap<>();
         requests.put(Data.VALID, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), "where is the milk in this store?", 1));
@@ -229,6 +262,8 @@ public class TestData {
         requests.put(Data.NULL_CONTENT, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), null, 1));
         requests.put(Data.WRONG_ID, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), "where is the milk in this store?", -1));
     }
+
+    // ============================ getters ============================ //
 
     public Subscribe getSubscribe(Data data) {
         return users.get(data);
@@ -273,20 +308,10 @@ public class TestData {
         return permissionTypeList;
     }
 
-    /**
-     * get payment data
-     * @param data - the type of the payment data
-     * @return - the payment data
-     */
     public PaymentData getPaymentData(Data data) {
         return this.paymentData.get(data);
     }
 
-    /**
-     * get delivery data
-     * @param data - the type of the delivery data
-     * @return - the delivery data
-     */
     public DeliveryData getDeliveryData(Data data) {
         return this.deliveryData.get(data);
     }
@@ -296,6 +321,8 @@ public class TestData {
     }
 
     public Request getRequest(Data data) { return requests.get(data); }
+
+    // ============================ getters ============================ //
 
     /**
      * use case 2.5 - search Products

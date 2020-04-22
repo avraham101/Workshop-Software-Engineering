@@ -20,6 +20,8 @@ public class Purchase {
         this.date = date;
     }
 
+    // ============================ getters & setters ============================ //
+
     public String getStoreName() {
         return storeName;
     }
@@ -51,4 +53,7 @@ public class Purchase {
     public void setProduct(List<ProductData> product) {
         this.product = product;
     }
+
+    // ============================ getters & setters ============================ //
+
 }

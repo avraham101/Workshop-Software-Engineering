@@ -9,6 +9,8 @@ public class Discount {
         this.percentage = percentage;
     }
 
+    // ============================ getters & setters ============================ //
+
     public double getPercentage() {
         return percentage;
     }
@@ -16,6 +18,8 @@ public class Discount {
     public void setPercentage(double percentage) {
         this.percentage = percentage;
     }
+
+    // ============================ getters & setters ============================ //
 
     @Override
     public boolean equals(Object o) {

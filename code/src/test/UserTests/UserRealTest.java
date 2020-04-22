@@ -91,7 +91,7 @@ public class UserRealTest extends UserAllStubsTest{
     }
 
     /**
-     * use case 3.3
+     * use case 3.3 - write review
      */
     @Test
     public void testWriteWrongReviewSubscribe(){
