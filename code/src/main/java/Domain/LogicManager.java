@@ -482,7 +482,6 @@ public class LogicManager {
             return false;
         if (addresToDeliver == null || addresToDeliver.isEmpty())
             return false;
-        System.out.println('c');
         return current.buyCart(paymentData, addresToDeliver);
     }
 
