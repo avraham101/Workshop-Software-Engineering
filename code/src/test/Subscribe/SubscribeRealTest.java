@@ -133,7 +133,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     /**
      * test use case 3.7 - watch purchases
      */
-    @Override @Test
+    @Test
     public void testWatchPurchases() {
         setUpProductBought();
         List<Purchase> list = sub.watchMyPurchaseHistory();
