@@ -52,6 +52,7 @@ public class Guest extends UserState {
     @Override
     public void savePurchase(String buyer) {
         this.cart.savePurchases(buyer);
+        this.cart = new Cart();
     }
 
     /**
