@@ -2,6 +2,9 @@ package Guest;
 
 import Data.Data;
 import Data.TestData;
+import DataAPI.DeliveryData;
+import DataAPI.PaymentData;
+import Domain.Basket;
 import Domain.Cart;
 import Domain.Product;
 import Domain.Store;
@@ -18,9 +21,9 @@ public class GuestTestReal extends GuestTest{
     @Override
     @Before
     public void setUp(){
-        data=new TestData();
+        data = new TestData();
         cart = new Cart();
-        guest=new Domain.Guest(cart);
+        guest = new Domain.Guest(cart);
     }
 
     /**------------set-ups-------------------*/
@@ -52,11 +55,62 @@ public class GuestTestReal extends GuestTest{
     }
 
     /**
-     * use case 2.8
+     * use case - 2.8 reserveCart cart
      */
     @Override @Test
-    public void testbuyCart() {
-        setUpProductAddedToCart();
-        super.testbuyCart();
+    public void testReservedCart() {
+        setUpReserved();
+        assertTrue(guest.reserveCart());
+    }
+
+    /**
+     * use case - 2.8 reserveCart cart
+     */
+    @Test
+    public void testCancelCart() {
+        setUpReserved();
+        int expected = amountProductInStore();
+        guest.reserveCart();
+        guest.cancelCart();
+        int result = amountProductInStore();
+        assertEquals(expected,result);
+    }
+
+    /**
+     * use case 2.8
+     * help function for getting the amount
+     * @return
+     */
+    private int amountProductInStore() {
+        Store store = null;
+        for(Basket b: cart.getBaskets().values()) {
+            store = b.getStore();
+            break;
+        }
+        assertNotNull(store);
+        Product product = null;
+        for(Product p :store.getProducts().values()) {
+            product = p;
+            break;
+        }
+        assertNotNull(product);
+        return product.getAmount();
+    }
+
+    /**
+     * use case 2.8 - buy cart save test
+     */
+    @Test
+    public void testSavePurchase() {
+        setUpSave();
+        Store store = null;
+        int storeExpected = 0;
+        for(Basket basket: guest.getCart().getBaskets().values()) {
+            store = basket.getStore();
+            storeExpected = store.getPurchases().size() + 1;
+            break;
+        }
+        guest.savePurchase(guest.getName());
+        assertEquals(storeExpected, store.getPurchases().size());
     }
 }

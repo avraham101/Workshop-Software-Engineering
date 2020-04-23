@@ -10,11 +10,6 @@ public class ExternalPayment extends PaymentSystem{
     }
 
     @Override
-    public boolean isConnected() {
-        return false;
-    }
-
-    @Override
     public boolean pay(PaymentData paymentData) {
         return false;
     }

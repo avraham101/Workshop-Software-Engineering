@@ -13,11 +13,11 @@ public class Purchase {
     private List<ProductData> product;
     private LocalDateTime date;
 
-    public Purchase(String storeName, String buyer, List<ProductData> product, LocalDateTime date) {
+    public Purchase(String storeName, String buyer, List<ProductData> product) {
         this.storeName = storeName;
         this.buyer = buyer;
         this.product = product;
-        this.date = date;
+        this.date = LocalDateTime.now();
     }
 
     // ============================ getters & setters ============================ //

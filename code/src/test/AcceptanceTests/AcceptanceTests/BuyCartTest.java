@@ -14,17 +14,20 @@ import static org.junit.Assert.*;
  */
 
 public class BuyCartTest extends AcceptanceTests {
-    int userId;
+    private int userId;
+
     public void setUp(PaymentSystem paymentSystem , SupplySystem deliverySystem){
-       bridge.initialStart(admin.getUsername(), admin.getPassword(),paymentSystem,deliverySystem);
-       setUpUsers();
-       addStores(stores);
-       addProducts(products);
-       userId= bridge.connect();
+        //bridge.initialStart(admin.getUsername(), admin.getPassword(),paymentSystem,deliverySystem);
+        //setUpUsers();
+        setExternalSystems(paymentSystem,deliverySystem);
+        super.setUpAll();
+        addStores(stores);
+        addProducts(products);
+        userId = bridge.connect();
     }
 
     public void positiveSetUp(){
-        PaymentSystem paymentSystem= new PaymentSystemMockAllPositive();
+        PaymentSystem paymentSystem = new PaymentSystemMockAllPositive();
         SupplySystem deliverySystem = new DeliverySystemMockAllPositive();
         setUp(paymentSystem,deliverySystem);
     }
@@ -32,22 +35,24 @@ public class BuyCartTest extends AcceptanceTests {
     @Test
     public void buyCartSuccess(){
         positiveSetUp();
-        addProductToCart();
+        addProductToCart(1);
         boolean approval = bridge.buyCart(userId,validPayment,validDelivery);
         assertTrue(approval);
+        //TODO: won't pass because logic won't empty cart
         CartTestData currCart = bridge.getUsersCart(userId);
         assertTrue(currCart.isEmpty());
     }
 
     @Test
     public void buyCartFailEmptyCart(){
-        positiveSetUp();
+        buyCartSuccess();
+        //TODO: won't pass because logic won't empty cart
         assertFalse(bridge.buyCart(userId,validPayment,validDelivery));
     }
     @Test
     public void buyCartFailInvalidPayment(){
         positiveSetUp();
-        addProductToCart();
+        addProductToCart(1);
         CartTestData expectedCart = bridge.getUsersCart(userId);
         assertFalse(bridge.buyCart(userId,invalidPayment,validDelivery));
         CartTestData actualCart = bridge.getUsersCart(userId);
@@ -56,9 +61,9 @@ public class BuyCartTest extends AcceptanceTests {
     @Test
     public void buyCartFailInvalidDeliveryDetails(){
         positiveSetUp();
-        addProductToCart();
+        addProductToCart(1);
         assertFalse(bridge.buyCart(userId,validPayment,invalidDelivery));
-        assertFalse(bridge.getUsersCart(superUser.getId()).isEmpty());
+        assertFalse(bridge.getUsersCart(userId).isEmpty());
     }
 
     @Test
@@ -74,19 +79,17 @@ public class BuyCartTest extends AcceptanceTests {
     @Test
     public void buyCartFailInvalidAmount(){
         positiveSetUp();
-        addProductToCart();
-        changeAmountOfProductInStore(stores.get(0).getProducts().get(0),0);
+        addProductToCart(2);
+            changeAmountOfProductInStore(stores.get(0).getProducts().get(0),1);
         assertFalse(bridge.buyCart(userId,validPayment,validDelivery));
-
-
     }
 
     @Test
     public void buyCartFailPaymentSystemFail() {
-        PaymentSystem paymentSystem= new PaymentSystemMockCantPay();
+        PaymentSystem paymentSystem = new PaymentSystemMockCantPay();
         SupplySystem deliverySystem = new DeliverySystemMockAllPositive();
         setUp(paymentSystem,deliverySystem);
-        addProductToCart();
+        addProductToCart(1);
         assertFalse(bridge.buyCart(userId,validPayment,validDelivery));
     }
     @Test
@@ -94,13 +97,11 @@ public class BuyCartTest extends AcceptanceTests {
         PaymentSystem paymentSystem= new PaymentSystemMockAllPositive();
         SupplySystem deliverySystem = new DeliverySystemMockCantDeliver();
         setUp(paymentSystem,deliverySystem);
-        addProductToCart();
+        addProductToCart(1);
         assertFalse(bridge.buyCart(userId,validPayment,validDelivery));
     }
-    private void addProductToCart(){
+    private void addProductToCart(int amount){
         bridge.addToUserCart(userId,
-                stores.get(0).getProducts().get(0),1);
+                stores.get(0).getProducts().get(0),amount);
     }
-
-
 }

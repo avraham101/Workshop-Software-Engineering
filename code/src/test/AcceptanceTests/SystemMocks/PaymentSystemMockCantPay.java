@@ -10,11 +10,6 @@ public class PaymentSystemMockCantPay extends PaymentSystem {
     }
 
     @Override
-    public boolean isConnected() {
-        return true;
-    }
-
-    @Override
     public boolean pay(PaymentData paymentData) {
         return false;
     }

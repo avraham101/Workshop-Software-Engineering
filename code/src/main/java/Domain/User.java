@@ -1,12 +1,8 @@
 package Domain;
 
-import DataAPI.CartData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
-import DataAPI.StoreData;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.SupplySystem.SupplySystem;
+import DataAPI.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class User {
@@ -98,12 +94,38 @@ public class User {
 
     /**
      * use case 2.8 - purchase cart
-     * @param paymentData - the payment details
-     * @param addresToDeliver - the address to shift
+     * the function reserved Products from cart
      * @return true if the cart bought, otherwise false
      */
-    public boolean buyCart(PaymentData paymentData, String addresToDeliver) {
-        return state.buyCart(paymentData, addresToDeliver);
+    public boolean reservedCart() {
+        return state.reserveCart();
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     * the function updated Delivery Data and Payment Data
+     * @param paymentData - the payment data
+     * @param deliveryData - the delivery data
+     */
+    public void buyCart(PaymentData paymentData, DeliveryData deliveryData) {
+        state.buyCart(paymentData, deliveryData);
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     * the function cancel the cart
+     */
+    public void cancelCart() {
+        state.cancelCart();
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     * the function savePurchases the purchase
+     * @param buyer - the buyer
+     */
+    public void savePurchase(String buyer) {
+        state.savePurchase(buyer);
     }
 
     /**
@@ -276,4 +298,5 @@ public class User {
     public boolean canWatchUserHistory() {
         return state.canWatchUserHistory();
     }
+
 }

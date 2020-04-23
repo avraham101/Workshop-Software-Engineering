@@ -3,15 +3,16 @@ package Guest;
 import Data.Data;
 import Data.TestData;
 import DataAPI.DeliveryData;
-import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
 import Stubs.CartStub;
+import Stubs.SubscribeStub;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -30,6 +31,38 @@ public class GuestTest {
     }
 
     /**
+     * set up for Reserved
+     */
+    protected void setUpReserved() {
+        Store store = data.getRealStore(Data.VALID);
+        Product product = data.getRealProduct(Data.VALID);
+        guest.addProductToCart(store,product,product.getAmount());
+    }
+
+    /**
+     * set up for Buy and Cancel
+     */
+    protected void setUpBuy() {
+        Store store = data.getRealStore(Data.VALID);
+        Product product = data.getRealProduct(Data.VALID);
+        guest.addProductToCart(store,product,product.getAmount());
+        guest.reserveCart();
+    }
+
+    /**
+     * set up for the save
+     */
+    protected void setUpSave() {
+        Store store = data.getRealStore(Data.VALID);
+        Product product = data.getRealProduct(Data.VALID);
+        guest.addProductToCart(store,product,product.getAmount());
+        guest.reserveCart();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        guest.buyCart(paymentData, deliveryData);
+    }
+
+    /**
      * test use case 2.3 - Login
      */
     @Test
@@ -38,6 +71,39 @@ public class GuestTest {
         Subscribe sub=new Subscribe("yuval","sabag");
         assertTrue(guest.login(user,sub));
         assertSame(user.getState(), sub);
+        System.out.println("V");
+    }
+
+    /**
+     * use case - 2.8 reserveCart cart
+     */
+    @Test
+    public void testReservedCart() {
+        setUpReserved();
+        assertFalse(guest.reserveCart());
+    }
+
+    /**
+     * use case - 2.8 reserveCart cart
+     */
+    @Test
+    public void testBuyCart() {
+        setUpBuy();
+        int size = 0;
+        double sum =0;
+        for(Basket b:cart.getBaskets().values()) {
+            HashMap<Product,Integer> products = b.getProducts();
+            for(Product p:products.keySet()) {
+                int amount = products.get(p);
+                sum += amount * p.getPrice();
+                size++;
+            }
+        }
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        guest.buyCart(paymentData,deliveryData);
+        assertEquals(sum,paymentData.getTotalPrice(),0.001);
+        assertEquals(size,deliveryData.getProducts().size());
     }
 
     /**
@@ -48,16 +114,6 @@ public class GuestTest {
         Store store = data.getRealStore(Data.VALID);
         Product product = data.getRealProduct(Data.VALID);
         assertTrue(guest.addProductToCart(store,product,product.getAmount()));
-    }
-
-    /**
-     * use case - 2.8 buy cart
-     */
-    @Test
-    public void testbuyCart() {
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        assertTrue(guest.buyCart(paymentData,deliveryData.getAddress()));
     }
 
     /**

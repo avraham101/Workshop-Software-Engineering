@@ -26,13 +26,4 @@ public class SupplySystemStub extends SupplySystem {
         return false;
     }
 
-    /**
-     * use case 2.8 - purchase cart
-     * the function check if the system is on
-     * @return
-     */
-    @Override
-    public boolean isConnected() {
-        return false;
-    }
 }

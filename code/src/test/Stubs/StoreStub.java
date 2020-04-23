@@ -15,15 +15,6 @@ public class StoreStub extends Store {
         super(name, purchasePolicy, discount, permissions);
     }
 
-    /**
-     * use case 2.8 - buy cart
-     * @param list - the products
-     * @return
-     */
-    @Override
-    public boolean isAvailableProducts(HashMap<Product, Integer> list) {
-        return true;
-    }
 
     /**
      * use case 3.3 write review
@@ -64,15 +55,4 @@ public class StoreStub extends Store {
     public boolean editProduct(ProductData productData) {
         return true;
     }
-
-
-    /**
-     * use case 2.8 - purchase cart
-     * @return
-     */
-    @Override
-    public Purchase purches(PaymentData paymentData, DeliveryData deliveryData) {
-        return null;
-    }
-
 }

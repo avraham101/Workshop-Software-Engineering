@@ -1,9 +1,10 @@
-package AcceptanceTests.SystemMocks;
+package Stubs;
 
 import DataAPI.DeliveryData;
 import Systems.SupplySystem.SupplySystem;
 
-public class DeliverySystemMockCantDeliver extends SupplySystem{
+public class SupplySystemStubDeliver extends SupplySystem {
+
     @Override
     public boolean connect() {
         return true;
