@@ -104,7 +104,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-2.8---------------------------------//
     @Override
-    public boolean buyCart(PaymentTestData paymentMethod, DeliveryDetailsTestData deliveryDetails) {
+    public boolean buyCart(int id,PaymentTestData paymentMethod, DeliveryDetailsTestData deliveryDetails) {
         PaymentData paymentData;
         String delivery;
         if(deliveryDetails!=null){
@@ -148,7 +148,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-3.3---------------------------------//
     @Override
-    public boolean writeReviewOnProduct(ProductTestData product, ReviewTestData review) {
+    public boolean writeReviewOnProduct(int id,ProductTestData product, ReviewTestData review) {
         return serviceAPI.writeReview(id,product.getStoreName(),product.getProductName(),review.getContent());
     }
     //---------------------------Use-Case-3.3---------------------------------//
@@ -162,7 +162,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-3.7---------------------------------//
     @Override
-    public List<PurchaseTestData> getCurrentUserPurchaseHistory() {
+    public List<PurchaseTestData> getCurrentUserPurchaseHistory(int id) {
         List<Purchase> purchaseHistory = serviceAPI.watchMyPurchaseHistory(id);
         return buildPurchasesTestData(purchaseHistory);
     }
@@ -266,13 +266,13 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-6.4---------------------------------//
     @Override
-    public List<PurchaseTestData> getUserPurchaseHistory(String username) {
+    public List<PurchaseTestData> getUserPurchaseHistory(int id,String username) {
         List<Purchase> purchases = serviceAPI.AdminWatchUserPurchasesHistory(id,username);
         return buildPurchasesTestData(purchases);
     }
 
     @Override
-    public List<PurchaseTestData> getStorePurchasesHistory(String storeName) {
+    public List<PurchaseTestData> getStorePurchasesHistory(int id,String storeName) {
         List<Purchase> purchases = serviceAPI.AdminWatchStoreHistory(id,storeName);
         return buildPurchasesTestData(purchases);
     }
@@ -328,6 +328,8 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     private List<ProductTestData> buildProductsTestData(List<ProductData> storeProducts) {
         List<ProductTestData> productsTestData = new ArrayList<>();
+        if(storeProducts == null)
+            return null;
         for(ProductData pd : storeProducts)
             productsTestData.add(buildProductTestData(pd));
 

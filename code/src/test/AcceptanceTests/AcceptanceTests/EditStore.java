@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 
 public class EditStore extends AcceptanceTests {
 
-    
+
     @Before
     public void setUp(){
         addUserStoresAndProducts(superUser);

@@ -106,9 +106,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean writeReviewOnProduct(ProductTestData product, ReviewTestData review) {
+    public boolean writeReviewOnProduct(int id,ProductTestData product, ReviewTestData review) {
         if(realBridge!=null)
-            return realBridge.writeReviewOnProduct(product,review);
+            return realBridge.writeReviewOnProduct(id,product,review);
         return false;
     }
 
@@ -134,9 +134,9 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean buyCart(PaymentTestData paymentMethod, DeliveryDetailsTestData deliveryDetails) {
+    public boolean buyCart(int id,PaymentTestData paymentMethod, DeliveryDetailsTestData deliveryDetails) {
         if(realBridge!=null)
-            return realBridge.buyCart(paymentMethod,deliveryDetails);
+            return realBridge.buyCart(id,paymentMethod,deliveryDetails);
         return true;
     }
 
@@ -203,23 +203,23 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public List<PurchaseTestData> getStorePurchasesHistory(String storeName) {
+    public List<PurchaseTestData> getStorePurchasesHistory(int id,String storeName) {
         if(realBridge!=null)
-            return realBridge.getStorePurchasesHistory(storeName);
+            return realBridge.getStorePurchasesHistory(id,storeName);
         return null;
     }
 
     @Override
-    public List<PurchaseTestData> getUserPurchaseHistory(String username) {
+    public List<PurchaseTestData> getUserPurchaseHistory(int id,String username) {
         if(realBridge!=null)
-            return realBridge.getUserPurchaseHistory(username);
+            return realBridge.getUserPurchaseHistory(id,username);
         return null;
     }
 
     @Override
-    public List<PurchaseTestData> getCurrentUserPurchaseHistory() {
+    public List<PurchaseTestData> getCurrentUserPurchaseHistory(int id) {
         if(realBridge!=null)
-            return realBridge.getCurrentUserPurchaseHistory();
+            return realBridge.getCurrentUserPurchaseHistory(id);
         return null;
     }
 
