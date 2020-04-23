@@ -470,6 +470,8 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public List<ReviewTestData> getProductsReviews(ProductTestData product) {
         List<ProductData> products = serviceAPI.viewProductsInStore(product.getStoreName());
+        if(products==null )
+            return null;
         for(ProductData pd : products)
             if(pd.getProductName().equals(product.getProductName()))
                 return buildReviewsTestData(pd.getReviews());
