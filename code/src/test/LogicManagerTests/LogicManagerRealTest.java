@@ -131,20 +131,46 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
-     * use case 2.5 - view specific product
+     * part of use case 2.5 - view spesific products
      */
-    @Override @Test
-    public void testViewSpecificProduct() {
+    @Override
+    @Test
+    public void testViewSpecificProducFilterProductName() {
         setUpProductAdded();
-        testViewSpecificProductWrongSearch();
-        testViewSpecificProductWrongFilter();
-        testViewSpecificProductSearchNone();
-        testViewSpecificProductSearchByName();
-        testViewSpecificProductSearchByCategory();
-        testViewSpecificProductSearchByKeyWord();
-        testViewSpecificProductFillterMin();
-        testViewSpecificProductFillterMax();
-        testViewSpecificProductFillterCategory();
+        Filter filter = data.getFilter(Data.VALID);
+        filter.setSearch(Search.PRODUCT_NAME);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        assertNotNull(products);
+        assertEquals(1,products.size());
+    }
+
+
+    /**
+     * part of use case 2.5 - view spesific products
+     */
+    @Test
+    @Override
+    public void testViewSpecificProductFilterKeyWord() {
+        setUpProductAdded();
+        Filter filter = data.getFilter(Data.VALID);
+        filter.setSearch(Search.KEY_WORD);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        assertNotNull(products);
+        assertEquals(1,products.size());
+    }
+
+    /**
+     * part of use case 2.5 - view spesific products
+     */
+    @Test
+    @Override
+    public void testViewSpecificProductFilterNone() {
+        setUpProductAdded();
+        Filter filter = data.getFilter(Data.VALID);
+        filter.setSearch(Search.NONE);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        assertNotNull(products);
+        assertEquals(1,products.size());
     }
 
     /**
@@ -166,7 +192,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * part of use case 2.5 - view specific product
      */
-    private void testViewSpecificProductSearchNone() {
+    @Test
+    public void testViewSpecificProductSearchNone() {
+        setUpProductAdded();
         //SUCCESS ALWAYS
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.NONE);
@@ -181,7 +209,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * part of use case 2.5 - view specific product
      */
-    protected void testViewSpecificProductSearchByName() {
+    @Test
+    public void testViewSpecificProductSearchByName() {
+        setUpProductAdded();
         Filter correct = data.getFilter(Data.VALID);
         correct.setSearch(Search.PRODUCT_NAME);
         Filter wrong = data.getFilter(Data.WRONG_NAME);
@@ -191,7 +221,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * part of use case 2.5 - view specific product
      */
-    private void testViewSpecificProductSearchByCategory() {
+    @Test
+    public void testViewSpecificProductSearchByCategory() {
+        setUpProductAdded();
         ProductData productData = data.getProductData(Data.VALID);
         Filter correct = data.getFilter(Data.VALID);
         correct.setSearch(Search.CATEGORY);
@@ -203,7 +235,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * part of use case 2.5 - view specific product
      */
-    private void testViewSpecificProductSearchByKeyWord() {
+    @Test
+    public void testViewSpecificProductSearchByKeyWord() {
+        setUpProductAdded();
         ProductData productData = data.getProductData(Data.VALID);
         Filter correct = data.getFilter(Data.VALID);
         correct.setSearch(Search.KEY_WORD);
@@ -232,7 +266,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * part of use case 2.5 - view specific product
      */
-    private void testViewSpecificProductFillterMin() {
+    @Test
+    public void testViewSpecificProductFillterMin() {
+        setUpProductAdded();
         Filter correct = data.getFilter(Data.FILTER_MIN);
         Filter wrong = data.getFilter(Data.NEGATIVE_MIN);
         testViewSpecificProductFillter(correct, wrong);
@@ -241,7 +277,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * part of use case 2.5 - view specific product
      */
-    private void testViewSpecificProductFillterMax() {
+    @Test
+    public void testViewSpecificProductFillterMax() {
+        setUpProductAdded();
         Filter correct = data.getFilter(Data.FILTER_MAX);
         Filter wrong = data.getFilter(Data.NEGATIVE_MAX);
         testViewSpecificProductFillter(correct, wrong);
@@ -250,7 +288,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * part of use case 2.5 - view specific product
      */
-    private void testViewSpecificProductFillterCategory() {
+    @Test
+    public void testViewSpecificProductFillterCategory() {
+        setUpProductAdded();
         Filter correct = data.getFilter(Data.FILTER_ALL_CATEGORIES);
         Filter wrong = data.getFilter(Data.WRONG_CATEGORY);
         testViewSpecificProductFillter(correct, wrong);
