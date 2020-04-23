@@ -331,8 +331,18 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
     /**
      * use case 2.8 - test reserveCart Products
+     * success tests
      */
-    //TODO change test because change implemetation
+    @Override
+    protected void testSuccessBuyProducts() {
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+    }
+
+    /**
+     * use case 2.8 - test reserveCart Products
+     */
     @Override @Test
     public void testBuyCart() {
         super.testBuyCart();

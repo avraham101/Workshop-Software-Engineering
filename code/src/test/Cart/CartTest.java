@@ -55,8 +55,6 @@ public class CartTest {
         cart.buy(paymentData, deliveryData);
     }
 
-
-
     /**-------------------------set-ups------------------------------*/
 
     /**
@@ -99,6 +97,14 @@ public class CartTest {
         cart.buy(paymentData, deliveryData);
         assertEquals(sum,paymentData.getTotalPrice(),0.001);
         assertEquals(size,deliveryData.getProducts().size());
+    }
+
+    /**
+     * use case 2.8 - reserved Cart Empty
+     */
+    @Test
+    public void testReservedEmptyCart() {
+        assertFalse(cart.reserveCart());
     }
 
     /**
