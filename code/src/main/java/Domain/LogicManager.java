@@ -304,7 +304,6 @@ public class LogicManager {
      * @return - list of products after filer and sorter.
      */
     public List<ProductData> viewSpecificProducts(Filter filter) {
-        System.out.println("hi avraham");
         loggerSystem.writeEvent("LogicManager","viewSpecificProducts",
                 "view products after a filter", new Object[] {filter});
         if(!validFilter(filter))
@@ -599,7 +598,6 @@ public class LogicManager {
         if(store==null) {
             return false;
         }
-
         Review review = new Review(current.getUserName(),storeName,productName,content);
         boolean resultStore = store.addReview(review);
         boolean resultUser = current.addReview(review);
@@ -615,6 +613,7 @@ public class LogicManager {
         }
         return true;
     }
+
 
     /**
      * use case 3.3 - write review
