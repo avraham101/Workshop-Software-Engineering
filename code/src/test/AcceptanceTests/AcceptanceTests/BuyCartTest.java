@@ -104,4 +104,5 @@ public class BuyCartTest extends AcceptanceTests {
         bridge.addToUserCart(userId,
                 stores.get(0).getProducts().get(0),amount);
     }
+
 }
