@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f0366da3-85c5-4ead-a08b-f6642ede6572" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Guest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Guest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -41,20 +40,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTestReal.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1581">
-              <caret line="107" column="34" selection-start-line="107" selection-start-column="34" selection-end-line="107" selection-end-column="34" />
+            <state relative-caret-position="226">
+              <caret line="112" column="44" lean-forward="true" selection-start-line="112" selection-start-column="44" selection-end-line="112" selection-end-column="44" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Guest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="52" column="25" lean-forward="true" selection-start-line="52" selection-start-column="25" selection-end-line="52" selection-end-column="25" />
+            <state relative-caret-position="33">
+              <caret line="52" column="25" selection-start-line="52" selection-start-column="25" selection-end-line="52" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -75,7 +74,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Subscribe.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="234">
-              <caret line="66" column="7" lean-forward="true" selection-start-line="66" selection-start-column="7" selection-end-line="66" selection-end-column="31" />
+              <caret line="66" column="7" selection-start-line="66" selection-start-column="7" selection-end-line="66" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -87,7 +86,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/Domain/User.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="167">
-              <caret line="127" column="17" lean-forward="true" selection-start-line="127" selection-start-column="17" selection-end-line="127" selection-end-column="17" />
+              <caret line="127" column="17" selection-start-line="127" selection-start-column="17" selection-end-line="127" selection-end-column="17" />
               <folding>
                 <element signature="e#3466#3467#0" expanded="true" />
                 <element signature="e#3507#3508#0" expanded="true" />
@@ -129,6 +128,7 @@
       <find>cancel</find>
       <find>save</find>
       <find>2.8</find>
+      <find>sa</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -149,9 +149,9 @@
         <option value="$PROJECT_DIR$/src/test/UserTests/UserRealTest.java" />
         <option value="$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java" />
         <option value="$PROJECT_DIR$/src/test/Guest/GuestTest.java" />
-        <option value="$PROJECT_DIR$/src/test/Guest/GuestTestReal.java" />
         <option value="$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/Domain/Guest.java" />
+        <option value="$PROJECT_DIR$/src/test/Guest/GuestTestReal.java" />
       </list>
     </option>
   </component>
@@ -195,6 +195,24 @@
               <item name="code" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="code" type="2674bda8:ScopeViewTreeModel$GroupNode" />
             </path>
+            <path>
+              <item name="code" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="code" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="code" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="code" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="test" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="code" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="code" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="test" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Guest" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -225,7 +243,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587627750475" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587628039911" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -387,7 +405,7 @@
       <workItem from="1586496304675" duration="6045000" />
       <workItem from="1586509461422" duration="6936000" />
       <workItem from="1587453312440" duration="9216000" />
-      <workItem from="1587627368185" duration="253000" />
+      <workItem from="1587627368185" duration="1071000" />
     </task>
     <task id="LOCAL-00007" summary="Fixed Guest.">
       <created>1587589612550</created>
@@ -424,12 +442,12 @@
       <option name="project" value="LOCAL" />
       <updated>1587591013048</updated>
     </task>
-    <task id="LOCAL-00012" summary="3.2,3.5,4.1.1,4.1.2">
-      <created>1585948054484</created>
+    <task id="LOCAL-00012" summary="finish use case 2.8 fixed guest test , tal noticed.">
+      <created>1587627815178</created>
       <option name="number" value="00012" />
       <option name="presentableId" value="LOCAL-00012" />
       <option name="project" value="LOCAL" />
-      <updated>1585948054484</updated>
+      <updated>1587627815178</updated>
     </task>
     <task id="LOCAL-00013" summary="add managers">
       <created>1585989805159</created>
@@ -690,19 +708,10 @@
       <option name="project" value="LOCAL" />
       <updated>1587583806768</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="CartTest_testSavePurchases - 2020.04.22 at 23h 46m 46s.xml">
-      <configuration name="CartTest.testSavePurchases" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="UserTests_in_code - 2020.04.22 at 23h 47m 03s.xml">
-      <configuration name="UserTests in code" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="Cart_in_code - 2020.04.22 at 23h 47m 19s.xml">
-      <configuration name="Cart in code" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="UserRealTest_testSavePurchase - 2020.04.22 at 23h 54m 15s.xml">
       <configuration name="UserRealTest.testSavePurchase" configurationId="JUnit" />
     </history-entry>
@@ -724,15 +733,24 @@
     <history-entry file="AcceptanceTests_in_code - 2020.04.23 at 00h 29m 27s.xml">
       <configuration name="AcceptanceTests in code" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="AcceptanceTests_in_code - 2020.04.23 at 10h 41m 11s.xml">
+      <configuration name="AcceptanceTests in code" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="All_in_code - 2020.04.23 at 10h 41m 53s.xml">
+      <configuration name="All in code" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="GuestTestReal_testSavePurchase - 2020.04.23 at 10h 42m 37s.xml">
+      <configuration name="GuestTestReal.testSavePurchase" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7871000" />
+    <option name="totallyTimeSpent" value="8689000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20404859" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20404859" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -743,7 +761,7 @@
       <window_info anchor="bottom" id="Messages" order="0" weight="0.11900533" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.3285968" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.66477734" weight="0.6820604" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.66477734" visible="true" weight="0.3374778" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.38898757" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -818,7 +836,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed 2.8 &amp; 3.5" />
     <MESSAGE value="comm" />
     <MESSAGE value="4.1 4.5 4.7" />
     <MESSAGE value="Merge branch 'AcceptanceTests' of https://github.com/avraham101/Workshop-Software-Engineering into AcceptanceTests&#10;&#10;# Conflicts:&#10;#&#9;code/src/test/AcceptanceTests/AcceptanceTestDataObjects/ApplicationToStoreTestData.java" />
@@ -843,7 +860,8 @@
     <MESSAGE value="Fixed Guest." />
     <MESSAGE value="Merge branch 'use_case_6.4_4.10_3.7_watch_purchases' of https://github.com/avraham101/Workshop-Software-Engineering into use_case_2.8_buy_cart&#10;&#10;# Conflicts:&#10;#&#9;code/src/test/Store/StoreTestsAllStubs.java" />
     <MESSAGE value="finish use case 2.8 #96 #50 OMG!!!" />
-    <option name="LAST_COMMIT_MESSAGE" value="finish use case 2.8 #96 #50 OMG!!!" />
+    <MESSAGE value="finish use case 2.8 fixed guest test , tal noticed." />
+    <option name="LAST_COMMIT_MESSAGE" value="finish use case 2.8 fixed guest test , tal noticed." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
@@ -955,13 +973,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTestReal.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1581">
-          <caret line="107" column="34" selection-start-line="107" selection-start-column="34" selection-end-line="107" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Store.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2941">
@@ -989,7 +1000,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/Domain/User.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="167">
-          <caret line="127" column="17" lean-forward="true" selection-start-line="127" selection-start-column="17" selection-end-line="127" selection-end-column="17" />
+          <caret line="127" column="17" selection-start-line="127" selection-start-column="17" selection-end-line="127" selection-end-column="17" />
           <folding>
             <element signature="e#3466#3467#0" expanded="true" />
             <element signature="e#3507#3508#0" expanded="true" />
@@ -1007,7 +1018,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Subscribe.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="234">
-          <caret line="66" column="7" lean-forward="true" selection-start-line="66" selection-start-column="7" selection-end-line="66" selection-end-column="31" />
+          <caret line="66" column="7" selection-start-line="66" selection-start-column="7" selection-end-line="66" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1016,8 +1027,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Guest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="52" column="25" lean-forward="true" selection-start-line="52" selection-start-column="25" selection-end-line="52" selection-end-column="25" />
+        <state relative-caret-position="33">
+          <caret line="52" column="25" selection-start-line="52" selection-start-column="25" selection-end-line="52" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/Guest/GuestTestReal.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="112" column="44" lean-forward="true" selection-start-line="112" selection-start-column="44" selection-end-line="112" selection-end-column="44" />
         </state>
       </provider>
     </entry>
