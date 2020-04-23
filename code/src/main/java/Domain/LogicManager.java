@@ -304,16 +304,11 @@ public class LogicManager {
      * @return - list of products after filer and sorter.
      */
     public List<ProductData> viewSpecificProducts(Filter filter) {
-        System.out.println("hi avraham");
         loggerSystem.writeEvent("LogicManager","viewSpecificProducts",
                 "view products after a filter", new Object[] {filter});
         if(!validFilter(filter))
             return new LinkedList<>();
-        List<ProductData> productsData = new LinkedList<>();
-        for(String storeName: stores.keySet()) {
-            productsData.addAll(viewProductsInStore(storeName)); //use case 2.4.2
-        }
-        productsData = searchProducts(productsData,filter.getSearch(),filter.getValue());
+        List<ProductData> productsData = searchProducts(filter.getSearch(),filter.getValue());
         productsData = filterProducts(productsData,filter);
         return productsData;
     }
@@ -334,34 +329,100 @@ public class LogicManager {
      * @param search - the search chosen
      * @return - list of products after filer and sorter.
      */
-    private List<ProductData> searchProducts(List<ProductData> products, Search search, String value) {
+    private List<ProductData> searchProducts(Search search, String value) {
         loggerSystem.writeEvent("LogicManager","searchProducts",
-                "search products in store after filter and sorter", new Object[] {products, search, value});
-        if(search == Search.NONE) {
-            return products;
-        }
+                "search products in store after filter and sorter", new Object[] {search, value});
         List<ProductData> output = new LinkedList<>();
         int distance = 2;
-        for(ProductData product:products) {
-            switch (search) {
-                case CATEGORY:
-                    if(product.getCategory().compareTo(value)==0)
-                        output.add(product);
-                    break;
-                case PRODUCT_NAME:
-                    if(product.getProductName().compareTo(value)==0)
-                        output.add(product);
-                    break;
-                case KEY_WORD:
-                    String productName = product.getProductName();
-                    if(Utils.editDistDP(productName,value,productName.length(),value.length())<= distance)
-                        output.add(product);
-                    break;
+        switch (search) {
+            case NONE:
+                output.addAll(searchNone());
+                break;
+            case CATEGORY:
+                output.addAll(searchCategory(value,distance));
+                break;
+            case PRODUCT_NAME:
+                output.addAll(searchProductName(value,distance));
+                break;
+            case KEY_WORD:
+                output.addAll(searchKeyWord(value, distance));
+                break;
+        }
+        return output;
+    }
+
+    /**
+     * use case 2.5 - Search products in Store
+     * Search None
+     * @return the List of the products
+     */
+    private List<ProductData> searchNone() {
+        List<ProductData> output = new LinkedList<>();
+        for(Store store: stores.values()) {
+            output.addAll(store.viewProductInStore());
+        }
+        return output;
+    }
+
+    /**
+     * use case 2.5 - Search products in Store
+     * Search Category
+     * @return the List of the products
+     */
+    private List<ProductData> searchCategory(String value, int distance) {
+        List<ProductData> output = new LinkedList<>();
+        for(Store store: stores.values()) {
+            for(Category category: store.getCategoryList().values()) {
+                String categoryName = category.getName();
+                if(Utils.editDistDP(categoryName,value,categoryName.length(),value.length())<= distance) {
+                    for(Product p : category.getProducts()) {
+                        output.add(new ProductData(p,store.getName()));
+                    }
+                }
             }
         }
         return output;
     }
 
+    /**
+     * use case 2.5 - Search products in Store
+     * Search Product Name
+     * @return the List of the products
+     */
+    private List<ProductData> searchProductName(String value, int distance) {
+        List<ProductData> output = new LinkedList<>();
+        for(Store store: stores.values()) {
+            for(ProductData product: store.viewProductInStore()) {
+                String productName = product.getProductName();
+                if(Utils.editDistDP(productName,value,productName.length(),value.length())<= distance) {
+                    output.add(product);
+                }
+            }
+        }
+        return output;
+    }
+
+    /**
+     * use case 2.5 - Search products in Store
+     * Search KeyWord
+     * @return the List of the products
+     */
+    private List<ProductData> searchKeyWord(String value, int distance) {
+        List<ProductData> output = searchCategory(value, distance);
+        List<ProductData> list = searchProductName(value,distance);
+        for(ProductData other: list) {
+            boolean found = false;
+            for(ProductData product: output) {
+                if(product.equals(other)) {
+                    found = true;
+                    break;
+                }
+            }
+            if(!found)
+                output.add(other);
+        }
+        return output;
+    }
     /**
      * use case 2.5 - Search product in store
      * pre-conditions: the products, search, value is Valid
@@ -372,17 +433,22 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","filterProducts",
                 "search products in store after filter", new Object[] {products, filter});
         List<ProductData> productData = new LinkedList<>();
+        int distance = 2;
         for(ProductData p: products) {
             //filter by min price
             if(filter.getMinPrice() <= p.getPrice()) {
                 //filter by max price
                 if(filter.getMaxPrice() >= p.getPrice()) {
                     //filter by category
-                    if(filter.getCategory().isEmpty()) { //empty means dont filter by categroy
+                    if(filter.getCategory().isEmpty()) { //empty means dont filter by category
                         productData.add(p);
                     }
-                    else if(filter.getCategory().compareTo(p.getCategory())==0) {
-                        productData.add(p);
+                    else {
+                        String value = p.getCategory();
+                        String categoryName = filter.getCategory();
+                        if(Utils.editDistDP(categoryName,value,categoryName.length(),value.length())<= distance) {
+                            productData.add(p);
+                        }
                     }
                 }
             }
