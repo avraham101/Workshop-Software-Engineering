@@ -304,6 +304,7 @@ public class LogicManager {
      * @return - list of products after filer and sorter.
      */
     public List<ProductData> viewSpecificProducts(Filter filter) {
+        System.out.println("hi avraham");
         loggerSystem.writeEvent("LogicManager","viewSpecificProducts",
                 "view products after a filter", new Object[] {filter});
         if(!validFilter(filter))
