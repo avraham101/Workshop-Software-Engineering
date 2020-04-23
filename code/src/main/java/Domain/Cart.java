@@ -55,6 +55,10 @@ public class Cart {
      * @return ture if the cart bought, otherwise false
      */
     public boolean reserveCart() {
+        //check if cart is not empty
+        if(baskets.values().isEmpty()) {
+            return false;
+        }
         List<Basket> reservesBaskets = new LinkedList<>();
         for(Basket basket: baskets.values()) {
             if(!basket.reservedBasket()) {
