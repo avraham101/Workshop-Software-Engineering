@@ -470,8 +470,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public List<ReviewTestData> getProductsReviews(ProductTestData product) {
         List<ProductData> products = serviceAPI.viewProductsInStore(product.getStoreName());
-        // TODO - we added the if because you got null from your test
-        if (products == null)
+        if(products==null )
             return null;
         for(ProductData pd : products)
             if(pd.getProductName().equals(product.getProductName()))
