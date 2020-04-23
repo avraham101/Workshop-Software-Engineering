@@ -665,7 +665,6 @@ public class LogicManager {
         if(store==null) {
             return false;
         }
-
         Review review = new Review(current.getUserName(),storeName,productName,content);
         boolean resultStore = store.addReview(review);
         boolean resultUser = current.addReview(review);
@@ -681,6 +680,7 @@ public class LogicManager {
         }
         return true;
     }
+
 
     /**
      * use case 3.3 - write review

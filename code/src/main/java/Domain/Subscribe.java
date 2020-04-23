@@ -123,14 +123,16 @@ public class Subscribe extends UserState{
      * @return true if the product is purchased
      */
     @Override
-    public boolean isItPurchased(String storeName, String productName) {
+    public boolean isItPurchased(String storeName, String other) {
         lock.readLock().lock();
         for(Purchase p: purchases) {
             if(p.getStoreName().compareTo(storeName)==0) {
                 for(ProductData productData: p.getProduct()) {
-                    if(productData.getProductName().compareTo(productName)==0)
+                    String productName = productData.getProductName();
+                    if(productName.compareTo(other)==0) {
                         lock.readLock().unlock();
                         return true;
+                    }
                 }
             }
         }
