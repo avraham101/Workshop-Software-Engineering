@@ -24,11 +24,11 @@ public interface AcceptanceTestsBridge {
     boolean deleteFromUserCart(int id, ProductTestData productToDelete);
     boolean changeUserAmountOfProductInCart(int id, ProductTestData productToChangeAmount, int newAmount);
     boolean addToUserCart(int id,ProductTestData productToAdd, int amount);
-    boolean writeReviewOnProduct(ProductTestData product, ReviewTestData review);
+    boolean writeReviewOnProduct(int id,ProductTestData product, ReviewTestData review);
     List<ReviewTestData> getProductsReviews(ProductTestData product);
     List<StoreTestData> getStoresInfo();
     List<ProductTestData> getStoreProducts(String storeName);
-    boolean buyCart(PaymentTestData paymentMethod , DeliveryDetailsTestData deliveryDetails);
+    boolean buyCart(int id,PaymentTestData paymentMethod , DeliveryDetailsTestData deliveryDetails);
     void changeAmountOfProductInStore(int id,ProductTestData product, int amount);
     StoreTestData openStore(int id,String storeName);
     boolean sendApplicationToStore(int id, String storeName, String message);
@@ -37,9 +37,9 @@ public interface AcceptanceTestsBridge {
     boolean editProductInStore(int id,ProductTestData product);
     boolean appointManager(int id, String storeName, String username);
     boolean deleteManager(int id, String storeName,String username);
-    List<PurchaseTestData> getStorePurchasesHistory(String storeName);
-    List<PurchaseTestData> getUserPurchaseHistory(String username);
-    List<PurchaseTestData> getCurrentUserPurchaseHistory();
+    List<PurchaseTestData> getStorePurchasesHistory(int id,String storeName);
+    List<PurchaseTestData> getUserPurchaseHistory(int id,String username);
+    List<PurchaseTestData> getCurrentUserPurchaseHistory(int id);
     boolean appointOwnerToStore(int id,String storeName, String username);
     boolean addPermissionToManager(int id,String storeName, String username, PermissionsTypeTestData productsInventory);
     boolean deletePermission(int id, String storeName, String username, PermissionsTypeTestData productsInventory);

@@ -52,10 +52,12 @@ public class DeleteManagerTest extends AcceptanceTests{
         boolean approval = bridge.deleteManager(superUser.getId(),stores.get(0).getStoreName(), firstManager.getUsername());
         assertTrue(approval);
         logoutAndLogin(firstManager);
-        List<PurchaseTestData> isManager = bridge.getStorePurchasesHistory(stores.get(0).getStoreName());
+        List<PurchaseTestData> isManager = bridge.getStorePurchasesHistory(firstManager.getId(),
+                stores.get(0).getStoreName());
         assertNull(isManager);
         logoutAndLogin(thirdManager);
-        isManager = bridge.getStorePurchasesHistory(stores.get(0).getStoreName());
+        isManager = bridge.getStorePurchasesHistory(thirdManager.getId(),
+                stores.get(0).getStoreName());
         assertNull(isManager);
     }
 

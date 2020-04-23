@@ -2,14 +2,15 @@ package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class GetStoresInfo extends AcceptanceTests {
     /**
@@ -41,12 +42,10 @@ public class GetStoresInfo extends AcceptanceTests {
         Set<ProductTestData> insertedProducts = new HashSet<>(stores.get(0).getProducts());
         assertEquals(productsInStoreSystem,insertedProducts);
     }
-
     @Test
     public void getProductOfStoreFail(){
-        Set<ProductTestData> productsInStoreSystem = new HashSet<>
-                (bridge.getStoreProducts(notExistingStore.getStoreName()));
-        assertEquals(0,productsInStoreSystem.size());
+        List<ProductTestData> productsInStore = bridge.getStoreProducts(notExistingStore.getStoreName());
+        assertNull(productsInStore);
     }
 
 }
