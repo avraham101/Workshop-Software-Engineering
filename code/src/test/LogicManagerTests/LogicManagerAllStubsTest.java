@@ -633,10 +633,10 @@ public class LogicManagerAllStubsTest {
      * use case 2.8 - test reserveCart Products
      * success tests
      */
-    private void testSuccessBuyProducts() {
+    protected void testSuccessBuyProducts() {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
     }
 
     /**
