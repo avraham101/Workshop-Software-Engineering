@@ -35,7 +35,7 @@ public class BuyCartTest extends AcceptanceTests {
     @Test
     public void buyCartSuccess(){
         positiveSetUp();
-        addProductToCart();
+        addProductToCart(1);
         boolean approval = bridge.buyCart(userId,validPayment,validDelivery);
         assertTrue(approval);
         //TODO: won't pass because logic won't empty cart
@@ -52,7 +52,7 @@ public class BuyCartTest extends AcceptanceTests {
     @Test
     public void buyCartFailInvalidPayment(){
         positiveSetUp();
-        addProductToCart();
+        addProductToCart(1);
         CartTestData expectedCart = bridge.getUsersCart(userId);
         assertFalse(bridge.buyCart(userId,invalidPayment,validDelivery));
         CartTestData actualCart = bridge.getUsersCart(userId);
@@ -61,7 +61,7 @@ public class BuyCartTest extends AcceptanceTests {
     @Test
     public void buyCartFailInvalidDeliveryDetails(){
         positiveSetUp();
-        addProductToCart();
+        addProductToCart(1);
         assertFalse(bridge.buyCart(userId,validPayment,invalidDelivery));
         assertFalse(bridge.getUsersCart(userId).isEmpty());
     }
@@ -79,10 +79,8 @@ public class BuyCartTest extends AcceptanceTests {
     @Test
     public void buyCartFailInvalidAmount(){
         positiveSetUp();
-        addProductToCart();
-        //TODO: won't pass because logic does not allow to change amount in store to 0
-        //TODO: see LogicManager line 690
-        changeAmountOfProductInStore(stores.get(0).getProducts().get(0),0);
+        addProductToCart(2);
+            changeAmountOfProductInStore(stores.get(0).getProducts().get(0),1);
         assertFalse(bridge.buyCart(userId,validPayment,validDelivery));
     }
 
@@ -91,7 +89,7 @@ public class BuyCartTest extends AcceptanceTests {
         PaymentSystem paymentSystem = new PaymentSystemMockCantPay();
         SupplySystem deliverySystem = new DeliverySystemMockAllPositive();
         setUp(paymentSystem,deliverySystem);
-        addProductToCart();
+        addProductToCart(1);
         assertFalse(bridge.buyCart(userId,validPayment,validDelivery));
     }
     @Test
@@ -99,11 +97,11 @@ public class BuyCartTest extends AcceptanceTests {
         PaymentSystem paymentSystem= new PaymentSystemMockAllPositive();
         SupplySystem deliverySystem = new DeliverySystemMockCantDeliver();
         setUp(paymentSystem,deliverySystem);
-        addProductToCart();
+        addProductToCart(1);
         assertFalse(bridge.buyCart(userId,validPayment,validDelivery));
     }
-    private void addProductToCart(){
+    private void addProductToCart(int amount){
         bridge.addToUserCart(userId,
-                stores.get(0).getProducts().get(0),1);
+                stores.get(0).getProducts().get(0),amount);
     }
 }
