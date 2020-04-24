@@ -304,7 +304,7 @@ public class SubscribeAllStubsTest {
     protected void checkRemoveProductSuccess() {
         String storeName=data.getProductData(Data.VALID).getStoreName();
         String productName=data.getProductData(Data.VALID).getProductName();
-        assertTrue(sub.removeProductFromStore(storeName, productName));
+        assertTrue(sub.removeProductFromStore(storeName, productName).getValue());
         assertFalse(sub.getPermissions().get(storeName).getStore().getProducts().containsKey(productName));
     }
 
@@ -324,7 +324,7 @@ public class SubscribeAllStubsTest {
         Permission permission=sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         sub.getPermissions().clear();
-        assertFalse(sub.removeProductFromStore(data.getProductData(Data.VALID).getProductName(),validStoreName));
+        assertFalse(sub.removeProductFromStore(data.getProductData(Data.VALID).getProductName(),validStoreName).getValue());
         sub.getPermissions().put(validStoreName,permission);
         assertTrue(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
@@ -337,7 +337,7 @@ public class SubscribeAllStubsTest {
         Permission permission=sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.removeProductFromStore(data.getProductData(Data.VALID).getProductName(),validStoreName));
+        assertFalse(sub.removeProductFromStore(data.getProductData(Data.VALID).getProductName(),validStoreName).getValue());
         permission.addType(PermissionType.OWNER);
         assertTrue(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }

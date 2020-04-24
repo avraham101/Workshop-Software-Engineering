@@ -63,8 +63,8 @@ public class SubscribeStub extends Subscribe{
      * @return false always
      */
     @Override
-    public boolean removeProductFromStore(String storeName, String productName) {
-        return true;
+    public Response<Boolean> removeProductFromStore(String storeName, String productName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**

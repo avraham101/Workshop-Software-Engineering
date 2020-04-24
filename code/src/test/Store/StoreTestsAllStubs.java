@@ -176,14 +176,14 @@ public class StoreTestsAllStubs {
      * test use case 4.1.2 remove product from store
      */
     protected void testSuccessRemoveProduct() {
-        assertTrue(store.removeProduct(data.getProductData(Data.VALID).getProductName()));
+        assertTrue(store.removeProduct(data.getProductData(Data.VALID).getProductName()).getValue());
     }
 
     /**
      * test cant remove product twice
      */
     private void testFailRemoveProduct() {
-        assertFalse(store.removeProduct(data.getProductData(Data.VALID).getProductName()));
+        assertFalse(store.removeProduct(data.getProductData(Data.VALID).getProductName()).getValue());
     }
 
     /**

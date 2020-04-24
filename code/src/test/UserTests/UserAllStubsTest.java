@@ -310,7 +310,7 @@ public class UserAllStubsTest {
     public void testRemoveProductFromStoreGuest(){
         setUpGuest();
         ProductData product= data.getProductData(Data.VALID);
-        assertFalse(user.removeProductFromStore(product.getStoreName(),product.getProductName()));
+        assertFalse(user.removeProductFromStore(product.getStoreName(),product.getProductName()).getValue());
     }
 
     /**
@@ -321,7 +321,7 @@ public class UserAllStubsTest {
     public void testRemoveProductFromStoreSubscribe(){
         setUpProductAdded();
         ProductData product= data.getProductData(Data.VALID);
-        assertTrue(user.removeProductFromStore(product.getStoreName(),product.getProductName()));
+        assertTrue(user.removeProductFromStore(product.getStoreName(),product.getProductName()).getValue());
     }
 
     /**

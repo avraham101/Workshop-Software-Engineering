@@ -40,8 +40,8 @@ public class StoreStub extends Store {
      * @return
      */
     @Override
-    public boolean removeProduct(String productName) {
-        return true;
+    public Response<Boolean> removeProduct(String productName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**

@@ -178,7 +178,7 @@ public class GuestTest {
     @Test
     public void testRemoveProductInStore() {
         ProductData productData = data.getProductData(Data.VALID);
-        assertFalse(guest.removeProductFromStore(productData.getStoreName(),productData.getProductName()));
+        assertFalse(guest.removeProductFromStore(productData.getStoreName(),productData.getProductName()).getValue());
     }
 
     /**

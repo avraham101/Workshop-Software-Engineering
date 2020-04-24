@@ -176,7 +176,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public boolean deleteProduct(int id,ProductTestData product) {
-        return serviceAPI.removeProductFromStore(id,product.getStoreName(),product.getProductName());
+        return serviceAPI.removeProductFromStore(id,product.getStoreName(),product.getProductName()).getValue();
     }
 
     @Override

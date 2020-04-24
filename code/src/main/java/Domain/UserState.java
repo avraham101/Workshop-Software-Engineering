@@ -210,7 +210,7 @@ public abstract class UserState {
      * @param productName
      * @return
      */
-    public abstract boolean removeProductFromStore(String storeName, String productName);
+    public abstract Response<Boolean> removeProductFromStore(String storeName, String productName);
 
     /**
      * use case 4.1.3 - edit product
