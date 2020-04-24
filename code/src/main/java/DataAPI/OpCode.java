@@ -22,6 +22,10 @@ public enum OpCode implements Serializable {
     Fail_Buy_Cart,
     Payment_Reject,
     Supply_Reject,
+    Invalid_Store_Details,
+    Store_Doesnt_Exist,
+    Invalid_Review,
+    Cant_Add_Review,
 
 
 }

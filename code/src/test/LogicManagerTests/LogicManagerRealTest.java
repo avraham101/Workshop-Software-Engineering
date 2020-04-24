@@ -489,7 +489,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override
     protected void testWriteReviewValid() {
         Review review = data.getReview(Data.VALID);
-        assertTrue(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()));
+        assertTrue(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()).getValue());
         List<Review> reviews = currUser.getState().getReviews();
         assertNotNull(reviews);
         assertEquals(1, reviews.size());
@@ -501,7 +501,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     private void testWriteReviewProductDidntPurchased() {
         Review review = data.getReview(Data.WRONG_PRODUCT);
-        assertFalse(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()));
+        assertFalse(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()).getValue());
     }
 
     /**
