@@ -252,7 +252,7 @@ public class LogicManagerAllStubsTest {
     public void testRegisterSuccess() {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        assertTrue(logicManager.register(subscribe.getName(),subscribe.getPassword()));
+        assertTrue(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
     }
 
     /**
@@ -262,7 +262,7 @@ public class LogicManagerAllStubsTest {
     public void testRegisterFailWrongName() {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.WRONG_NAME);
-        assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()));
+        assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
         assertFalse(users.containsKey(subscribe.getName()));
     }
 
@@ -273,7 +273,7 @@ public class LogicManagerAllStubsTest {
     public void testRegisterFailWrongPassword() {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.WRONG_PASSWORD);
-        assertFalse(logicManager.register(subscribe.getName(), subscribe.getPassword()));
+        assertFalse(logicManager.register(subscribe.getName(), subscribe.getPassword()).getValue());
         assertFalse(users.containsKey(subscribe.getName()));
     }
 
@@ -284,7 +284,7 @@ public class LogicManagerAllStubsTest {
     public void testRegisterFailNull() {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.NULL);
-        assertFalse(logicManager.register(subscribe.getName(), subscribe.getName()));
+        assertFalse(logicManager.register(subscribe.getName(), subscribe.getName()).getValue());
     }
 
     /**
@@ -295,7 +295,7 @@ public class LogicManagerAllStubsTest {
         setUpConnect();
         setUpRegisteredUser();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()));
+        assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
     }
 
     /**
@@ -315,7 +315,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testLoginFailNull() {
         Subscribe subscribe = data.getSubscribe(Data.NULL);
-        assertFalse(logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword()));
+        assertFalse((logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword())).getValue());
     }
 
     /**
@@ -323,7 +323,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testLoginFailWrongName() {
         Subscribe subscribe = data.getSubscribe(Data.WRONG_NAME);
-        assertFalse(logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword()));
+        assertFalse((logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword())).getValue());
     }
 
     /**
@@ -331,7 +331,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testLoginFailWrongPassword() {
         Subscribe subscribe = data.getSubscribe(Data.WRONG_PASSWORD);
-        assertFalse(logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword()));
+        assertFalse((logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword())).getValue());
     }
 
     /**
@@ -339,7 +339,7 @@ public class LogicManagerAllStubsTest {
      */
     protected void testLoginSuccess() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        assertTrue(logicManager.login(data.getId(Data.VALID), subscribe.getName(),subscribe.getPassword()));
+        assertTrue((logicManager.login(data.getId(Data.VALID), subscribe.getName(),subscribe.getPassword())).getValue());
     }
 
 
@@ -1005,7 +1005,7 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testAddProductSuccess() {
         setUpOpenedStore();
-        assertTrue(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.VALID)));
+        assertTrue(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.VALID)).getValue());
     }
 
     /**
@@ -1031,77 +1031,77 @@ public class LogicManagerAllStubsTest {
      * part of use case 4.1.1 - add product
      */
     private void testAddProductNegativeDiscountPercentage() {
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_PERCENTAGE)));
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_PERCENTAGE)).getValue());
     }
 
     /**
      * part of use case 4.1.1 - add product
      */
     private void testAddProductDiscountListWithNullValue() {
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_DISCOUNT)));
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_DISCOUNT)).getValue());
     }
 
     /**
      * part of use case 4.1.1 - add product
      */
     private void testAddProductOver100DiscountPercentage() {
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.OVER_100_PERCENTAGE)));
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.OVER_100_PERCENTAGE)).getValue());
     }
 
     /**
      * part of use case 4.1.1 - add product
      */
     private void testAddProductNullPurchasePolicy() {
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_PURCHASE)));
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_PURCHASE)).getValue());
     }
 
     /**
      * part of use case 4.1.1 - add product
      */
     private void testAddProductNegativePrice() {
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_PRICE)));
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_PRICE)).getValue());
     }
 
     /**
      * part of use case 4.1.1 - add product
      */
     private void testAddProductNegativeAmount() {
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_AMOUNT)));
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_AMOUNT)).getValue());
     }
 
     /**
      * part of use case 4.1.1 - add product
      */
     private void testAddProductNullDiscount() {
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_DISCOUNT)));
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_DISCOUNT)).getValue());
     }
 
     /**
      * part of use case 4.1.1 - add product
      */
     private void testAddProductFailNullCategory() {
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_CATEGORY)));
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_CATEGORY)).getValue());
     }
 
     /**
      * part of use case 4.1.1 - add product
      */
     private void testAddProductFailNullProductName() {
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_NAME)));
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NULL_NAME)).getValue());
     }
 
     /**
      * part of use case 4.1.1 - add product
      */
     private void testAddProductNullStoreName(){
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_STORE)));
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_STORE)).getValue());
     }
 
     /**
      * part of use case 4.1.1 - add product
      */
     protected void testAddProductFailNullProduct(){
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),null));
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),null).getValue());
     }
 
     /**

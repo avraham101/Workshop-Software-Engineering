@@ -44,7 +44,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-2.2---------------------------------//
     @Override
     public boolean register(String username, String password) {
-        return serviceAPI.register(username,password);
+        return serviceAPI.register(username,password).getValue();
     }
     //---------------------------Use-Case-2.2---------------------------------//
 
@@ -52,7 +52,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-2.3---------------------------------//
     @Override
     public boolean login(int id, String username, String password) {
-        return serviceAPI.login(id,username,password);
+        return serviceAPI.login(id,username,password).getValue();
 
     }
     //---------------------------Use-Case-2.3---------------------------------//
@@ -171,7 +171,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-4.1---------------------------------//
     @Override
     public boolean addProduct(int id,ProductTestData product) {
-        return serviceAPI.addProductToStore(id,buildProductData(product));
+        return serviceAPI.addProductToStore(id,buildProductData(product)).getValue();
     }
 
     @Override
@@ -301,7 +301,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     public void addProducts(int id,List<ProductTestData> products) {
         for(ProductTestData productTestData : products){
             ProductData productData = buildProductData(productTestData);
-            boolean test=serviceAPI.addProductToStore(id,productData);
+            boolean test=serviceAPI.addProductToStore(id,productData).getValue();
             int t =3;
         }
     }

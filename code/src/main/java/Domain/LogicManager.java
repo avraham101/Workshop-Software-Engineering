@@ -57,7 +57,7 @@ public class LogicManager {
                         "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
-            if(subscribes.isEmpty()&&!register(userName,password)) {
+            if(subscribes.isEmpty()&&!register(userName,password).getValue()) {
                 loggerSystem.writeError("Logic manager", "constructor",
                         "Fail register",new Object[]{userName});
                 throw new Exception("Admin Register Crashed");
@@ -96,7 +96,7 @@ public class LogicManager {
                         "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
-            if(subscribes.isEmpty()&&!register(userName,password)) {
+            if(subscribes.isEmpty()&&!register(userName,password).getValue()) {
                 loggerSystem.writeError("Logic manager", "constructor",
                         "Fail register",new Object[]{userName});
                 throw new Exception("Admin Register Crashed");
@@ -141,7 +141,7 @@ public class LogicManager {
                         "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
-            if(subscribes.isEmpty()&&!register(userName,password)) {
+            if(subscribes.isEmpty()&&!register(userName,password).getValue()) {
                 loggerSystem.writeError("Logic manager", "constructor",
                         "Fail register",new Object[]{userName});
                 throw new Exception("Admin Register Crashed");
@@ -746,8 +746,7 @@ public class LogicManager {
         if(!validProduct(productData))
             return new Response<>(false,OpCode.Invalid_Product);
         if(stores.containsKey(productData.getStoreName()))
-            return new Response<>(false,OpCode.Store_Not_Found);
-            //return current.addProductToStore(productData);
+            return current.addProductToStore(productData);
         return new Response<>(false,OpCode.Store_Not_Found);
     }
 

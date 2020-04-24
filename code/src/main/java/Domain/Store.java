@@ -1,8 +1,6 @@
 package Domain;
 
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
+import DataAPI.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
@@ -290,15 +288,18 @@ public class Store {
      * @param productData details of product to add to store
      * @return if the product was added successfully
      */
-    public boolean addProduct(ProductData productData) {
+    public Response<Boolean> addProduct(ProductData productData) {
         String categoryName=productData.getCategory();
         if(categoryName==null)
-            return false;
+            return new Response<>(false, OpCode.Invalid_Product);
         if(!categoryList.containsKey(categoryName)){
             categoryList.put(categoryName,new Category(categoryName));
         }
         Product product=new Product(productData,categoryList.get(categoryName));
-        return products.putIfAbsent(productData.getProductName(),product)==null;
+        boolean result=products.putIfAbsent(productData.getProductName(),product)==null;
+        if(result)
+            return new Response<>(true,OpCode.Success);
+        return new Response<>(false,OpCode.Already_Exists);
     }
 
     /**

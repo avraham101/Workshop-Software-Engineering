@@ -39,9 +39,9 @@ public class ServiceAPI {
      * acceptance test class : RegisterTest
      * @param userName - the user Name
      * @param password - the user password
-     * @return true if the register complete, otherwise false
+     * @return Response with true value if the register complete, otherwise false
      */
-    public boolean register(String userName, String password) {
+    public Response<Boolean> register(String userName, String password) {
         return logicManager.register(userName,password);
     }
 
@@ -50,9 +50,9 @@ public class ServiceAPI {
      * acceptance test class : LoginTest
      * @param userName - the user Name
      * @param password - the user password
-     * @return true if the user is logged to the system, otherwise false
+     * @return Response with true value if the user is logged to the system, otherwise false
      */
-    public boolean login(int id,String userName, String password) {
+    public Response<Boolean> login(int id,String userName, String password) {
         return logicManager.login(id,userName, password);
     }
 

@@ -145,21 +145,21 @@ public class StoreTestsAllStubs {
     private void testAddProductHasCategory() {
         ProductData p=data.getProductData(Data.VALID);
         store.getProducts().remove(p.getProductName());
-        assertTrue(store.addProduct(data.getProductData(Data.VALID)));
+        assertTrue(store.addProduct(data.getProductData(Data.VALID)).getValue());
     }
 
     /**
      * test product with duplicate name
      */
     private void testAddProductSameName() {
-        assertFalse(store.addProduct(data.getProductData(Data.VALID)));
+        assertFalse(store.addProduct(data.getProductData(Data.VALID)).getValue());
     }
 
     /**
      * test success add product
      */
     protected void testAddProductSuccess() {
-        assertTrue(store.addProduct(data.getProductData(Data.VALID)));
+        assertTrue(store.addProduct(data.getProductData(Data.VALID)).getValue());
     }
 
     /**

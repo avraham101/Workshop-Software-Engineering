@@ -1,6 +1,8 @@
 package Domain;
 
+import DataAPI.OpCode;
 import DataAPI.ProductData;
+import DataAPI.Response;
 import DataAPI.StoreData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
@@ -126,8 +128,8 @@ public class Guest extends UserState {
      * @return false for guest
      */
     @Override
-    public boolean addProductToStore(ProductData productData) {
-        return false;
+    public Response<Boolean> addProductToStore(ProductData productData) {
+        return new Response<>(false, OpCode.Not_Login);
     }
 
 

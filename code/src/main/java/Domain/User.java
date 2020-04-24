@@ -198,7 +198,7 @@ public class User {
      * @param productData
      * @return
      */
-    public boolean addProductToStore(ProductData productData) {
+    public Response<Boolean> addProductToStore(ProductData productData) {
         return state.addProductToStore(productData);
     }
 
