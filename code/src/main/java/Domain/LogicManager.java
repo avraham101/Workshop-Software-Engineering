@@ -990,6 +990,34 @@ public class LogicManager {
         return new Response<>(null,OpCode.Dont_Have_Permission);
     }
 
+    /**
+     *
+     * @param id user's id
+     * @return list of stores managed by user,
+     * if user does not manage store return null
+     */
+    public Response<List<StoreData>> getStoresManagedByUser(int id){
+        User user = connectedUsers.get(id);
+        Response<List<StoreData>> response = new Response<>(null,OpCode.No_Stores_To_Manage);
+        if(user==null)
+            return response;
+        List<Store> managedStores = user.getMyManagedStores();
+        List<StoreData> storesData = new ArrayList<>();
+        if(managedStores ==null){
+            return response;
+        }
+        else{
+            for (Store store: managedStores) {
+                storesData.add(new StoreData(store.getName(),
+                        store.getPurchasePolicy(),store.getDiscount()));
+
+            }
+            response.setReason(OpCode.Success);
+            response.setValue(storesData);
+
+        }
+        return response;
+    }
 
 
 }

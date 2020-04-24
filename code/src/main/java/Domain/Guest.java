@@ -241,4 +241,9 @@ public class Guest extends UserState {
     public boolean canWatchUserHistory() {
         return false;
     }
+
+    @Override
+    public List<Store> getMyManagedStores() {
+        return null;
+    }
 }

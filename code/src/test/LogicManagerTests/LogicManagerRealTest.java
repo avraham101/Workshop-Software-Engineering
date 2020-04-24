@@ -871,5 +871,17 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
                 data.getProductData(Data.VALID).getProductName());
     }
 
+    /**
+     * tests for GetStoresManagedByUsers
+     */
+    @Test
+    public void testGetStoresManagedByUsersGuestSuccess(){
+        //TODO
+        Response<List<StoreData>> response= logicManager.getStoresManagedByUser(data.getId(Data.VALID));
+        assertNull(response.getValue());
+        assertEquals(response.getReason(),OpCode.No_Stores_To_Manage);
+
+    }
+
 }
 

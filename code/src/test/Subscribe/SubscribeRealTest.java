@@ -8,6 +8,7 @@ import Domain.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -253,5 +254,24 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         sub.openStore(data.getStore(Data.VALID));
         assertEquals(StatusTypeData.MANAGER,sub.getStatus());
     }
+
+    @Test
+    public void testGetMyManagedStoresNoStoresSuccess(){
+        assertNull(sub.getMyManagedStores());
+    }
+
+    @Test
+    public void testGetMyManagedStoresHasStoresSuccess(){
+        StoreData myStore = data.getStore(Data.VALID);
+        sub.openStore(data.getStore(Data.VALID));
+        List<Store> managedStores = sub.getMyManagedStores();
+        assertNotNull(managedStores);
+        assertTrue(!managedStores.isEmpty());
+        Store managedStore = managedStores.get(0);
+        StoreData managedStoreData = new StoreData(managedStore.getName(),managedStore.getPurchasePolicy(),managedStore.getDiscount());
+        assertEquals(myStore,managedStoreData);
+
+    }
+
 
 }
