@@ -225,14 +225,14 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-4.9---------------------------------//
     @Override
     public HashSet<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName) {
-        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName);
+        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
         List<ApplicationToStoreTestData> applications = buildApplicationsToStore(requests);
         return new HashSet<>(applications);
     }
 
     @Override
     public HashMap<ApplicationToStoreTestData, String> getUserApplicationsAndReplies(int id, String username, String storeName) {
-        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName);
+        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
         HashMap<ApplicationToStoreTestData,String> appsAndReplies = new HashMap<>();
 
         for(Request request : requests){
@@ -248,7 +248,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public List<ApplicationToStoreTestData> getUserApplications(int id,String username, String storeName) {
-        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName);
+        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
         return buildApplicationsToStore(requests);
     }
 
@@ -524,7 +524,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public boolean writeReplyToApplication(int id,int requestId,String storeName, ApplicationToStoreTestData application, String reply) {
-        return serviceAPI.answerRequest(id,requestId, reply, storeName) != null;
+        return serviceAPI.answerRequest(id,requestId, reply, storeName).getValue() != null;
     }
 
     private List<ApplicationToStoreTestData> buildApplicationsToStore(List<Request> requests) {

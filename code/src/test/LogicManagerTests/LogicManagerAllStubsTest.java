@@ -1485,7 +1485,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testStoreViewRequestFailNullName() {
         Request request1 = data.getRequest(Data.NULL_NAME);
-        assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), request1.getStoreName()).isEmpty());
+        assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), request1.getStoreName()).getValue().isEmpty());
     }
 
     /**
@@ -1493,7 +1493,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testStoreViewRequestFailWrongStore() {
         Request request2 = data.getRequest(Data.WRONG_STORE);
-        assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), request2.getStoreName()).isEmpty());
+        assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), request2.getStoreName()).getValue().isEmpty());
     }
 
     /**
@@ -1511,7 +1511,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testReplayRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
-        assertNotNull(currUser.replayToRequest(request.getStoreName(),request.getId(), request.getContent()));
+        assertNotNull(currUser.replayToRequest(request.getStoreName(),request.getId(), request.getContent()).getValue());
     }
 
     /**
@@ -1519,7 +1519,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testReplayRequestFailWrongStore() {
         Request request1 = data.getRequest(Data.WRONG_STORE);
-        assertNull(logicManager.replayRequest(data.getId(Data.VALID), request1.getStoreName(), request1.getId(), request1.getContent()));
+        assertNull(logicManager.replayRequest(data.getId(Data.VALID), request1.getStoreName(), request1.getId(), request1.getContent()).getValue());
     }
 
     /**

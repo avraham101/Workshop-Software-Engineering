@@ -18,5 +18,6 @@ public enum OpCode implements Serializable {
     Already_Exists,
     Invalid_Permissions,
     Not_Found,
+    InvalidRequest,
 
 }

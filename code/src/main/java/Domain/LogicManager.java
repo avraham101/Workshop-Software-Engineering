@@ -922,14 +922,16 @@ public class LogicManager {
      * @param storeName name of store to view request.
      * @return if the current user is manager or owner of the store the list , else empty list.
      */
-    public List<Request> viewStoreRequest(int id, String storeName) {
+    public Response<List<Request>> viewStoreRequest(int id, String storeName) {
         loggerSystem.writeEvent("LogicManager","viewStoreRequest",
                 "store owner view the requests of the store", new Object[] {storeName});
         User current=connectedUsers.get(id);
         List<Request> requests = new LinkedList<>();
-        if(storeName != null && stores.containsKey(storeName))
+        if(storeName != null && stores.containsKey(storeName)) {
             requests = current.viewRequest(storeName);
-        return requests;
+            return new Response<>(requests,OpCode.Success);
+        }
+        return new Response<>(requests,OpCode.Store_Not_Found);
     }
 
     /**
@@ -940,13 +942,13 @@ public class LogicManager {
      * @param content
      * @return true if replay, false else
      */
-    public Request replayRequest(int id, String storeName, int requestID, String content) {
+    public Response<Request> replayRequest(int id, String storeName, int requestID, String content) {
         loggerSystem.writeEvent("LogicManager","viewStoreRequest",
                 "store owner view the requests of the store", new Object[] {storeName});
         User current=connectedUsers.get(id);
         if (storeName!=null && stores.containsKey(storeName))
-            return (current.replayToRequest(storeName, requestID, content)) ;
-        return null;
+            return current.replayToRequest(storeName, requestID, content) ;
+        return new Response<>(null,OpCode.Store_Not_Found);
     }
 
     /**

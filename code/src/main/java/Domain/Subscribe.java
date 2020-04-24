@@ -4,6 +4,7 @@ import DataAPI.OpCode;
 import DataAPI.ProductData;
 import DataAPI.Response;
 import DataAPI.StoreData;
+import jdk.internal.org.objectweb.asm.Opcodes;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -365,19 +366,19 @@ public class Subscribe extends UserState{
      * @return
      */
     @Override
-    public Request replayToRequest(String storeName, int requestID, String content) {
-        if((storeName==null || !permissions.containsKey(storeName)) | content==null)
-            return null;
+    public Response<Request> replayToRequest(String storeName, int requestID, String content) {
+        if((storeName==null || content==null))
+            return new Response<>(null, OpCode.InvalidRequest);
         Permission permission = permissions.get(storeName);
         if(permission == null)
-            return null;
+            return new Response<>(null, OpCode.Dont_Have_Permission);
         Store store = permission.getStore();
         if(store!=null &&
                 store.getRequests().containsKey(requestID) &&
                 store.getRequests().get(requestID).getCommentReference().compareAndSet(null, content)) {
-            return store.getRequests().get(requestID);
+            return new Response<>(store.getRequests().get(requestID),OpCode.Success);
         }
-        return null;
+        return new Response<>(null, OpCode.Dont_Have_Permission);
     }
 
     /**
