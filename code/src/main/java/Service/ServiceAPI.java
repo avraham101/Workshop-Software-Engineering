@@ -80,7 +80,7 @@ public class ServiceAPI {
      * @param filter - the filter chosen
      * @return - list of products after filer and sorter.
      */
-    public List<ProductData> viewSpasificProducts(Filter filter) {
+    public Response<List<ProductData>> viewSpasificProducts(Filter filter) {
         //filters -> price range, category ,*product rating, *store rating,
         return logicManager.viewSpecificProducts(filter);
     }

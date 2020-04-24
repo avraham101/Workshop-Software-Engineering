@@ -74,7 +74,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public HashSet<ProductTestData> filterProducts(List<FilterTestData> filters) {
         Filter productsFilter = buildFilterFromTestFilters(filters);
-        List<ProductData> filteredProducts =  serviceAPI.viewSpasificProducts(productsFilter);
+        List<ProductData> filteredProducts =  serviceAPI.viewSpasificProducts(productsFilter).getValue();
         return new HashSet<>(buildProductsTestData(filteredProducts));
     }
     //---------------------------Use-Case-2.5---------------------------------//

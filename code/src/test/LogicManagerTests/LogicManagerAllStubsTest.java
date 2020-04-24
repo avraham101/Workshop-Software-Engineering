@@ -445,7 +445,7 @@ public class LogicManagerAllStubsTest {
     public void testViewSpecificProductWrongSearch() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NULL_SEARCH);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
     }
 
@@ -456,7 +456,7 @@ public class LogicManagerAllStubsTest {
     public void testViewSpecificProductWrongFilterNullValue() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NULL_VALUE);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
     }
 
@@ -467,7 +467,7 @@ public class LogicManagerAllStubsTest {
     public void testViewSpecificProductWrongFilterNegativeMin() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NEGATIVE_MIN);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
     }
 
@@ -478,7 +478,7 @@ public class LogicManagerAllStubsTest {
     public void testViewSpecificProductWrongFilterNegativeMax() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NEGATIVE_MAX);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
     }
 
@@ -489,7 +489,7 @@ public class LogicManagerAllStubsTest {
     public void testViewSpecificProductWrongFilterNullCategory() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NULL_CATEGORY);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
 
     }
@@ -501,7 +501,7 @@ public class LogicManagerAllStubsTest {
     public void testViewSpecificProductWrongFilterNull() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NULL);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
     }
 
@@ -513,7 +513,7 @@ public class LogicManagerAllStubsTest {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.NONE);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertTrue(products.isEmpty());
     }
@@ -526,7 +526,7 @@ public class LogicManagerAllStubsTest {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.PRODUCT_NAME);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertTrue(products.isEmpty());
     }
@@ -539,7 +539,7 @@ public class LogicManagerAllStubsTest {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.KEY_WORD);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertTrue(products.isEmpty());
     }
@@ -552,7 +552,7 @@ public class LogicManagerAllStubsTest {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.CATEGORY);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertTrue(products.isEmpty());
     }

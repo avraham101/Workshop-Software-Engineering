@@ -139,7 +139,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.PRODUCT_NAME);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertEquals(1,products.size());
     }
@@ -154,7 +154,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.KEY_WORD);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertEquals(1,products.size());
     }
@@ -168,7 +168,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.NONE);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertEquals(1,products.size());
     }
@@ -178,14 +178,14 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     private void testViewSpecificProductSearch(Filter correct, int listSize, Filter wrong) {
         //SUCCESS
-        List<ProductData> products = logicManager.viewSpecificProducts(correct);
+        List<ProductData> products = logicManager.viewSpecificProducts(correct).getValue();
         assertFalse(products.isEmpty()); //sepose to be 1 product valid
         assertEquals(listSize, products.size());
         ProductData result = products.get(0);
         ProductData expected = data.getProductData(Data.VALID);
         assertTrue(data.compareProductData(expected, result));
         //FAIL
-        products = logicManager.viewSpecificProducts(wrong);
+        products = logicManager.viewSpecificProducts(wrong).getValue();
         assertTrue(products.isEmpty());
     }
 
@@ -198,7 +198,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         //SUCCESS ALWAYS
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.NONE);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertFalse(products.isEmpty()); //sepose to be 1 product valid
         assertEquals(1, products.size());
         ProductData result = products.get(0);
@@ -251,7 +251,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     private void testViewSpecificProductFillter(Filter correct, Filter wrong) {
         //SUCCESS
-        List<ProductData> products = logicManager.viewSpecificProducts(correct);
+        List<ProductData> products = logicManager.viewSpecificProducts(correct).getValue();
         assertFalse(products.isEmpty());
         int size = 0;
         for(Store s: stores.values()) {
@@ -259,7 +259,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         }
         assertEquals(size, products.size());
         //FAIL
-        products = logicManager.viewSpecificProducts(wrong);
+        products = logicManager.viewSpecificProducts(wrong).getValue();
         assertTrue(products.isEmpty());
     }
 

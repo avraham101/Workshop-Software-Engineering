@@ -12,7 +12,9 @@ public enum OpCode implements Serializable {
     Invalid_Register_Details,
     Hash_Fail,
     Invalid_Login_Details,
-
-    Not_Login, Dont_Have_Permission, Already_Exists,
+    Not_Valid_Filter,
+    Not_Login,
+    Dont_Have_Permission,
+    Already_Exists,
 
 }
