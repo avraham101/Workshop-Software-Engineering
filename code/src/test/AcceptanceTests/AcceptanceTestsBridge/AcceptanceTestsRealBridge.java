@@ -211,28 +211,28 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public boolean deletePermission(int id,String storeName, String username, PermissionsTypeTestData permissionsTypeTestData) {
         List<PermissionType> permissionType = new ArrayList<>(Arrays.asList(buildPermissionType(permissionsTypeTestData)));
-        return serviceAPI.removePermissions(id,permissionType,storeName,username);
+        return serviceAPI.removePermissions(id,permissionType,storeName,username).getValue();
     }
     //---------------------------Use-Case-4.6---------------------------------//
 
     //---------------------------Use-Case-4.7---------------------------------//
     @Override
     public boolean deleteManager(int id, String storeName, String username) {
-        return serviceAPI.removeManager(id,username,storeName);
+        return serviceAPI.removeManager(id,username,storeName).getValue();
     }
     //---------------------------Use-Case-4.7---------------------------------//
 
     //---------------------------Use-Case-4.9---------------------------------//
     @Override
     public HashSet<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName) {
-        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName);
+        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
         List<ApplicationToStoreTestData> applications = buildApplicationsToStore(requests);
         return new HashSet<>(applications);
     }
 
     @Override
     public HashMap<ApplicationToStoreTestData, String> getUserApplicationsAndReplies(int id, String username, String storeName) {
-        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName);
+        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
         HashMap<ApplicationToStoreTestData,String> appsAndReplies = new HashMap<>();
 
         for(Request request : requests){
@@ -248,7 +248,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public List<ApplicationToStoreTestData> getUserApplications(int id,String username, String storeName) {
-        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName);
+        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
         return buildApplicationsToStore(requests);
     }
 
@@ -258,7 +258,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-4.10---------------------------------//
     @Override
     public List<PurchaseTestData> userGetStorePurchasesHistory(int id ,String storeName) {
-        return buildPurchasesTestData(serviceAPI.watchStoreHistory(id,storeName));
+        return buildPurchasesTestData(serviceAPI.watchStoreHistory(id,storeName).getValue());
     }
 
 
@@ -267,13 +267,13 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-6.4---------------------------------//
     @Override
     public List<PurchaseTestData> getUserPurchaseHistory(int id,String username) {
-        List<Purchase> purchases = serviceAPI.AdminWatchUserPurchasesHistory(id,username);
+        List<Purchase> purchases = serviceAPI.AdminWatchUserPurchasesHistory(id,username).getValue();
         return buildPurchasesTestData(purchases);
     }
 
     @Override
     public List<PurchaseTestData> getStorePurchasesHistory(int id,String storeName) {
-        List<Purchase> purchases = serviceAPI.AdminWatchStoreHistory(id,storeName);
+        List<Purchase> purchases = serviceAPI.AdminWatchStoreHistory(id,storeName).getValue();
         return buildPurchasesTestData(purchases);
     }
     //---------------------------Use-Case-6.4---------------------------------//
@@ -524,7 +524,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public boolean writeReplyToApplication(int id,int requestId,String storeName, ApplicationToStoreTestData application, String reply) {
-        return serviceAPI.answerRequest(id,requestId, reply, storeName) != null;
+        return serviceAPI.answerRequest(id,requestId, reply, storeName).getValue() != null;
     }
 
     private List<ApplicationToStoreTestData> buildApplicationsToStore(List<Request> requests) {

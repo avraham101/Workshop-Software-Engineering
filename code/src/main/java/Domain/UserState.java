@@ -243,7 +243,7 @@ public abstract class UserState {
      * @param userName
      * @return
      */
-    public abstract boolean removePermissions(List<PermissionType> permissions, String storeName, String userName);
+    public abstract Response<Boolean> removePermissions(List<PermissionType> permissions, String storeName, String userName);
 
     /**
      * use case 4.7 - remove manager
@@ -251,7 +251,7 @@ public abstract class UserState {
      * @param storeName
      * @return
      */
-    public abstract boolean removeManager(String userName, String storeName);
+    public abstract Response<Boolean> removeManager(String userName, String storeName);
 
     /**
      * use case 4.9.1 - view request
@@ -266,7 +266,7 @@ public abstract class UserState {
      * @param content
      * @return Request if replay, null else
      */
-    public abstract Request replayToRequest(String storeName, int requestID, String content);
+    public abstract Response<Request> replayToRequest(String storeName, int requestID, String content);
 
 
     /**

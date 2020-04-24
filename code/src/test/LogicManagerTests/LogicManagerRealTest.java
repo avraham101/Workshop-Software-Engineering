@@ -785,7 +785,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         testAddRequest();
         StoreData storeData = data.getStore(Data.VALID);
         List<Request> excepted = new LinkedList<>(stores.get(storeData.getName()).getRequests().values());
-        List<Request> actual = logicManager.viewStoreRequest(data.getId(Data.VALID), storeData.getName());
+        List<Request> actual = logicManager.viewStoreRequest(data.getId(Data.VALID), storeData.getName()).getValue();
         assertTrue(excepted.containsAll(actual));
     }
 
@@ -793,7 +793,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * part of use case 4.9.1 - view request
      */
     private void testStoreViewRequestFail() {
-        assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), data.getStore(Data.NULL_NAME).getName()).isEmpty());
+        assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), data.getStore(Data.NULL_NAME).getName()).getValue().isEmpty());
     }
 
     /**
@@ -813,7 +813,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Request request = data.getRequest(Data.VALID);
         //check the comment savePurchases
         StoreData storeData = data.getStore(Data.VALID);
-        Request actual = currUser.replayToRequest(request.getStoreName(), request.getId(), "The milk is there, open your eyes!");
+        Request actual = currUser.replayToRequest(request.getStoreName(), request.getId(),
+                "The milk is there, open your eyes!").getValue();
         Request excepted = stores.get(storeData.getName()).getRequests().get(request.getId());
         assertEquals(excepted.getId(),actual.getId());
         assertEquals(excepted.getComment(),actual.getComment());
@@ -824,7 +825,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     private void testReplayRequestFail() {
         Request request = data.getRequest(Data.WRONG_ID);
-        assertNull(logicManager.replayRequest(data.getId(Data.VALID), request.getStoreName(), request.getId(), request.getContent()));
+        assertNull(logicManager.replayRequest(data.getId(Data.VALID), request.getStoreName(), request.getId(), request.getContent()).getValue());
     }
 
     /**
@@ -840,7 +841,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * test use case 4.10 - watch store history from the owner of the store
      */
     protected void testWatchStoreHistorySuccessNotAdmin(){
-        checkValidPurchase(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getStore(Data.VALID).getName()));
+        checkValidPurchase(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -848,14 +849,14 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override
     protected void testWatchUserHistorySuccess() {
-        checkValidPurchase(logicManager.watchUserPurchasesHistory(data.getId(Data.ADMIN), data.getSubscribe(Data.VALID).getName()));
+        checkValidPurchase(logicManager.watchUserPurchasesHistory(data.getId(Data.ADMIN), data.getSubscribe(Data.VALID).getName()).getValue());
     }
 
     /**
      * test use case 6.4.2 user watch history when admin
      */
     protected void testWatchStoreHistorySuccessWhenAdmin() {
-        checkValidPurchase(logicManager.watchStorePurchasesHistory(data.getId(Data.ADMIN), data.getStore(Data.VALID).getName()));
+        checkValidPurchase(logicManager.watchStorePurchasesHistory(data.getId(Data.ADMIN), data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**

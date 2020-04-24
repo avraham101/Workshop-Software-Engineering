@@ -276,7 +276,7 @@ public class ServiceAPI {
      * @param userName
      * @return if permissions were removed
      */
-    public boolean removePermissions(int id,List<PermissionType> permissions, String storeName, String userName){
+    public Response<Boolean> removePermissions(int id,List<PermissionType> permissions, String storeName, String userName){
         return logicManager.removePermissions(id,permissions,storeName,userName);
     }
 
@@ -288,7 +288,7 @@ public class ServiceAPI {
      * @param storeName
      * @return if the manager was removed and also the managers he managed
      */
-    public boolean removeManager(int id,String userName,String storeName){
+    public Response<Boolean> removeManager(int id,String userName,String storeName){
         return logicManager.removeManager(id,userName,storeName);
     }
 
@@ -299,7 +299,7 @@ public class ServiceAPI {
      * @param storeName
      * @return the request of the store to watch
      */
-    public List<Request> watchRequestsOfStore(int id,String storeName){
+    public Response<List<Request>> watchRequestsOfStore(int id,String storeName){
         return logicManager.viewStoreRequest(id,storeName);
     }
 
@@ -312,7 +312,7 @@ public class ServiceAPI {
      * @param storeName
      * @return the request with the apply
      */
-    public Request answerRequest(int id,int requestId,String content, String storeName){
+    public Response<Request> answerRequest(int id,int requestId,String content, String storeName){
         return logicManager.replayRequest(id,storeName,requestId,content);
     }
 
@@ -322,7 +322,7 @@ public class ServiceAPI {
      * @param storeName - the store name to watch history
      * @return the purchase list
      */
-    public List<Purchase> watchStoreHistory(int id,String storeName){
+    public Response<List<Purchase>> watchStoreHistory(int id,String storeName){
         return logicManager.watchStorePurchasesHistory(id,storeName);
     }
 
@@ -332,7 +332,7 @@ public class ServiceAPI {
      * @param userName - the user that own the purchases
      * @return - list of purchases that of the user
      */
-    public List<Purchase> AdminWatchUserPurchasesHistory(int id,String userName){
+    public Response<List<Purchase>> AdminWatchUserPurchasesHistory(int id,String userName){
         return logicManager.watchUserPurchasesHistory(id,userName);
     }
 
@@ -342,7 +342,7 @@ public class ServiceAPI {
      * @param storeName - the name of the store that own the purchases
      * @return - list of purchases that of the store
      */
-    public List<Purchase> AdminWatchStoreHistory(int id,String storeName){
+    public Response<List<Purchase>> AdminWatchStoreHistory(int id,String storeName){
         return logicManager.watchStorePurchasesHistory(id, storeName);
     }
 

@@ -885,13 +885,15 @@ public class LogicManager {
      * @param userName of the user to remove his permissions
      * @return if the permission were removed
      */
-    public boolean removePermissions(int id,List<PermissionType> permissions, String storeName, String userName) {
+    public Response<Boolean> removePermissions(int id,List<PermissionType> permissions, String storeName, String userName) {
         loggerSystem.writeEvent("LogicManager","removePermissions",
                 "store owner remove manager's permission", new Object[] {permissions, storeName, userName});
         if(!validList(permissions))
-            return false;
-        if (!subscribes.containsKey(userName) || !stores.containsKey(storeName))
-            return false;
+            return new Response<>(false,OpCode.Invalid_Permissions);
+        if(!subscribes.containsKey(userName))
+            return new Response<>(false,OpCode.User_Not_Found);
+        if(!stores.containsKey(storeName))
+            return new Response<>(false,OpCode.Store_Not_Found);
         User current=connectedUsers.get(id);
         return current.removePermissions(permissions, storeName, userName);
     }
@@ -903,11 +905,13 @@ public class LogicManager {
      * @param storeName of the store to remove the manager from
      * @return if the manager was removed
      */
-    public boolean removeManager(int id,String userName, String storeName) {
+    public Response<Boolean> removeManager(int id,String userName, String storeName) {
         loggerSystem.writeEvent("LogicManager","removeManager",
                 "store owner remove manager", new Object[] {storeName, userName});
-        if (!subscribes.containsKey(userName) || !stores.containsKey(storeName))
-            return false;
+        if(!subscribes.containsKey(userName))
+            return new Response<>(false,OpCode.User_Not_Found);
+        if(!stores.containsKey(storeName))
+            return new Response<>(false,OpCode.Store_Not_Found);
         User current=connectedUsers.get(id);
         return current.removeManager(userName,storeName);
     }
@@ -919,14 +923,16 @@ public class LogicManager {
      * @param storeName name of store to view request.
      * @return if the current user is manager or owner of the store the list , else empty list.
      */
-    public List<Request> viewStoreRequest(int id, String storeName) {
+    public Response<List<Request>> viewStoreRequest(int id, String storeName) {
         loggerSystem.writeEvent("LogicManager","viewStoreRequest",
                 "store owner view the requests of the store", new Object[] {storeName});
         User current=connectedUsers.get(id);
         List<Request> requests = new LinkedList<>();
-        if(storeName != null && stores.containsKey(storeName))
+        if(storeName != null && stores.containsKey(storeName)) {
             requests = current.viewRequest(storeName);
-        return requests;
+            return new Response<>(requests,OpCode.Success);
+        }
+        return new Response<>(requests,OpCode.Store_Not_Found);
     }
 
     /**
@@ -937,13 +943,13 @@ public class LogicManager {
      * @param content
      * @return true if replay, false else
      */
-    public Request replayRequest(int id, String storeName, int requestID, String content) {
+    public Response<Request> replayRequest(int id, String storeName, int requestID, String content) {
         loggerSystem.writeEvent("LogicManager","viewStoreRequest",
                 "store owner view the requests of the store", new Object[] {storeName});
         User current=connectedUsers.get(id);
         if (storeName!=null && stores.containsKey(storeName))
-            return (current.replayToRequest(storeName, requestID, content)) ;
-        return null;
+            return current.replayToRequest(storeName, requestID, content) ;
+        return new Response<>(null,OpCode.Store_Not_Found);
     }
 
     /**
@@ -952,17 +958,17 @@ public class LogicManager {
      * @param userName - the user that own the purchases
      * @return - list of purchases that of the user
      */
-    public List<Purchase> watchUserPurchasesHistory(int id, String userName) {
+    public Response<List<Purchase>> watchUserPurchasesHistory(int id, String userName) {
         loggerSystem.writeEvent("LogicManager","watchUserPurchasesHistory",
                 "admin watch a user purchase history", new Object[] {userName});
         User current=connectedUsers.get(id);
         Subscribe sub = this.subscribes.get(userName);
         if(sub==null)
-            return null;
+            return new Response<>(null,OpCode.User_Not_Found);
         if (current.canWatchUserHistory()) {
-            return sub.getPurchases();
+            return new Response<>(sub.getPurchases(),OpCode.Success);
         }
-        return null;
+        return new Response<>(null,OpCode.Dont_Have_Permission);
     }
 
     /**
@@ -972,17 +978,16 @@ public class LogicManager {
      * @param storeName - the name of the store that own the purchases
      * @return - list of purchases that of the store
      */
-    public List<Purchase> watchStorePurchasesHistory(int id, String storeName) {
+    public Response<List<Purchase>> watchStorePurchasesHistory(int id, String storeName) {
         loggerSystem.writeEvent("LogicManager","watchStorePurchasesHistory",
                 "admin watch a store purchase history", new Object[] {storeName});
         User current=connectedUsers.get(id);
-        if(!stores.containsKey(storeName))
-            return null;
-        if (current.canWatchStoreHistory(storeName)) {
-            Store store = this.stores.get(storeName);
-            return store.getPurchases();
-        }
-        return null;
+        Store store = this.stores.get(storeName);
+        if(store==null)
+            return new Response<>(null,OpCode.Store_Not_Found);
+        if (current.canWatchStoreHistory(storeName))
+            return new Response<>(store.getPurchases(),OpCode.Success);
+        return new Response<>(null,OpCode.Dont_Have_Permission);
     }
 
 }

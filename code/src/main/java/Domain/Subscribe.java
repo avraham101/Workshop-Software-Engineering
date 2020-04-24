@@ -4,6 +4,7 @@ import DataAPI.OpCode;
 import DataAPI.ProductData;
 import DataAPI.Response;
 import DataAPI.StoreData;
+import jdk.internal.org.objectweb.asm.Opcodes;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -273,7 +274,7 @@ public class Subscribe extends UserState{
      * @return
      */
     @Override
-    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+    public Response<Boolean>  removePermissions(List<PermissionType> permissions, String storeName, String userName) {
         lock.readLock().lock();
         for(Permission p: givenByMePermissions){
             if(p.getStore().getName().equals(storeName)&&p.getOwner().getName().equals(userName)){
@@ -281,11 +282,13 @@ public class Subscribe extends UserState{
                 for(PermissionType type: permissions)
                     removed=removed|p.removeType(type);
                 lock.readLock().unlock();
-                return removed;
+                if(removed)
+                    return new Response<>(true,OpCode.Success);
+                return new Response<>(false,OpCode.Invalid_Permissions);
             }
         }
         lock.readLock().unlock();
-        return false;
+        return new Response<>(false,OpCode.Not_Found);
     }
 
     /**
@@ -295,9 +298,9 @@ public class Subscribe extends UserState{
      * @return
      */
     @Override
-    public boolean removeManager(String userName, String storeName) {
+    public Response<Boolean>  removeManager(String userName, String storeName) {
         if(!permissions.containsKey(storeName))
-            return false;
+            return new Response<>(false,OpCode.Dont_Have_Permission);
 
         for(Permission p: givenByMePermissions) {
             if (p.getStore().getName().equals(storeName) && p.getOwner().getName().equals(userName)) {
@@ -305,10 +308,10 @@ public class Subscribe extends UserState{
                 p.getOwner().removeManagerFromStore(storeName);
                 givenByMePermissions.remove(p);
                 lock.writeLock().unlock();
-                return true;
+                return new Response<>(true,OpCode.Success);
             }
         }
-        return false;
+        return new Response<>(false,OpCode.Not_Found);
     }
 
     /**
@@ -363,19 +366,19 @@ public class Subscribe extends UserState{
      * @return
      */
     @Override
-    public Request replayToRequest(String storeName, int requestID, String content) {
-        if((storeName==null || !permissions.containsKey(storeName)) | content==null)
-            return null;
+    public Response<Request> replayToRequest(String storeName, int requestID, String content) {
+        if((storeName==null || content==null))
+            return new Response<>(null, OpCode.InvalidRequest);
         Permission permission = permissions.get(storeName);
         if(permission == null)
-            return null;
+            return new Response<>(null, OpCode.Dont_Have_Permission);
         Store store = permission.getStore();
         if(store!=null &&
                 store.getRequests().containsKey(requestID) &&
                 store.getRequests().get(requestID).getCommentReference().compareAndSet(null, content)) {
-            return store.getRequests().get(requestID);
+            return new Response<>(store.getRequests().get(requestID),OpCode.Success);
         }
-        return null;
+        return new Response<>(null, OpCode.Dont_Have_Permission);
     }
 
     /**

@@ -283,7 +283,7 @@ public class UserRealTest extends UserAllStubsTest{
         String storeName=p.getStore().getName();
         //add another manager
         p.getOwner().addManager(niv,storeName);
-        assertTrue(user.removeManager(data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()));
+        assertTrue(user.removeManager(data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()).getValue());
         assertFalse(niv.getPermissions().containsKey(storeName));
         assertFalse(p.getOwner().getPermissions().containsKey(storeName));
     }

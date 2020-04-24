@@ -1435,11 +1435,11 @@ public class LogicManagerAllStubsTest {
         String user=data.getSubscribe(Data.ADMIN).getName();
         String store=data.getStore(Data.VALID).getName();
         List<PermissionType> types=data.getPermissionTypeList();
-        assertFalse(logicManager.removePermissions(data.getId(Data.VALID),types,store,store));
-        assertFalse(logicManager.removePermissions(data.getId(Data.VALID),types,user,user));
-        assertFalse(logicManager.removePermissions(data.getId(Data.VALID),null,store,user));
+        assertFalse(logicManager.removePermissions(data.getId(Data.VALID),types,store,store).getValue());
+        assertFalse(logicManager.removePermissions(data.getId(Data.VALID),types,user,user).getValue());
+        assertFalse(logicManager.removePermissions(data.getId(Data.VALID),null,store,user).getValue());
         types.add(null);
-        assertFalse(logicManager.removePermissions(data.getId(Data.VALID),types,store,user));
+        assertFalse(logicManager.removePermissions(data.getId(Data.VALID),types,store,user).getValue());
         types.remove(null);
     }
 
@@ -1448,7 +1448,7 @@ public class LogicManagerAllStubsTest {
      */
     protected void testRemovePermissionSuccess() {
         assertTrue(currUser.removePermissions(data.getPermissionTypeList(),
-                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()).getValue());
     }
 
     /**
@@ -1466,7 +1466,7 @@ public class LogicManagerAllStubsTest {
      * part of test use case 4.7 - remove manager
      */
     protected void testRemoveManagerSuccess() {
-        assertTrue(logicManager.removeManager(data.getId(Data.VALID),data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()));
+        assertTrue(logicManager.removeManager(data.getId(Data.VALID),data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -1475,7 +1475,7 @@ public class LogicManagerAllStubsTest {
     private void testRemoveManagerFailStore() {
         String storeName=data.getStore(Data.VALID).getName();
         //invalid username
-        assertFalse(logicManager.removeManager(data.getId(Data.VALID),storeName,storeName));
+        assertFalse(logicManager.removeManager(data.getId(Data.VALID),storeName,storeName).getValue());
     }
 
     /**
@@ -1484,7 +1484,7 @@ public class LogicManagerAllStubsTest {
     private void testRemoveManagerFailUser() {
         String userName=data.getSubscribe(Data.ADMIN).getName();
         //invalid storeName
-        assertFalse(logicManager.removeManager(data.getId(Data.VALID),userName,userName));
+        assertFalse(logicManager.removeManager(data.getId(Data.VALID),userName,userName).getValue());
     }
 
     /**
@@ -1512,7 +1512,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testStoreViewRequestFailNullName() {
         Request request1 = data.getRequest(Data.NULL_NAME);
-        assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), request1.getStoreName()).isEmpty());
+        assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), request1.getStoreName()).getValue().isEmpty());
     }
 
     /**
@@ -1520,7 +1520,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testStoreViewRequestFailWrongStore() {
         Request request2 = data.getRequest(Data.WRONG_STORE);
-        assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), request2.getStoreName()).isEmpty());
+        assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), request2.getStoreName()).getValue().isEmpty());
     }
 
     /**
@@ -1538,7 +1538,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testReplayRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
-        assertNotNull(currUser.replayToRequest(request.getStoreName(),request.getId(), request.getContent()));
+        assertNotNull(currUser.replayToRequest(request.getStoreName(),request.getId(), request.getContent()).getValue());
     }
 
     /**
@@ -1546,7 +1546,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testReplayRequestFailWrongStore() {
         Request request1 = data.getRequest(Data.WRONG_STORE);
-        assertNull(logicManager.replayRequest(data.getId(Data.VALID), request1.getStoreName(), request1.getId(), request1.getContent()));
+        assertNull(logicManager.replayRequest(data.getId(Data.VALID), request1.getStoreName(), request1.getId(), request1.getContent()).getValue());
     }
 
     /**
@@ -1563,14 +1563,14 @@ public class LogicManagerAllStubsTest {
      * test user that not exist on users map
      */
     private void testWatchUserHistoryUserNotExist() {
-        assertNull(logicManager.watchUserPurchasesHistory(data.getId(Data.VALID), data.getStore(Data.VALID).getName()));
+        assertNull(logicManager.watchUserPurchasesHistory(data.getId(Data.VALID), data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
      * test success
      */
     protected void testWatchUserHistorySuccess() {
-        assertNotNull(logicManager.watchUserPurchasesHistory(data.getId(Data.ADMIN),data.getSubscribe(Data.VALID).getName()));
+        assertNotNull(logicManager.watchUserPurchasesHistory(data.getId(Data.ADMIN),data.getSubscribe(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -1587,14 +1587,14 @@ public class LogicManagerAllStubsTest {
      * test store that not exist on users map
      */
     private void testWatchStoreHistoryStoreNotExist() {
-        assertNull(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getSubscribe(Data.VALID).getName()));
+        assertNull(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getSubscribe(Data.VALID).getName()).getValue());
     }
 
     /**
      * test success
      */
     protected void testWatchStoreHistorySuccess() {
-        assertNotNull(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getStore(Data.VALID).getName()));
+        assertNotNull(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getStore(Data.VALID).getName()).getValue());
     }
 
 }

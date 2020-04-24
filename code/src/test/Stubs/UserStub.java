@@ -143,8 +143,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return true;
+    public Response<Boolean> removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -154,8 +154,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public boolean removeManager(String userName, String storeName) {
-        return true;
+    public Response<Boolean> removeManager(String userName, String storeName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -207,8 +207,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public Request replayToRequest(String storeName, int requestID, String content) {
-        return new Request(getUserName(), storeName, "temp", 10);
+    public Response<Request> replayToRequest(String storeName, int requestID, String content) {
+        return new Response<>(new Request(getUserName(), storeName, "temp", 10),OpCode.Success);
     }
 
     /**

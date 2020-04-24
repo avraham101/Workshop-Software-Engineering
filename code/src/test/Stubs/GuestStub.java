@@ -103,8 +103,8 @@ public class GuestStub extends Guest {
      * @return
      */
     @Override
-    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return false;
+    public Response<Boolean> removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**
@@ -114,8 +114,8 @@ public class GuestStub extends Guest {
      * @return
      */
     @Override
-    public boolean removeManager(String userName, String storeName) {
-        return false;
+    public Response<Boolean> removeManager(String userName, String storeName) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**

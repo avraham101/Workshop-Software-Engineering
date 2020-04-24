@@ -108,8 +108,8 @@ public class SubscribeStub extends Subscribe{
      * @return
      */
     @Override
-    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return true;
+    public Response<Boolean> removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -119,8 +119,8 @@ public class SubscribeStub extends Subscribe{
      * @return
      */
     @Override
-    public boolean removeManager(String userName, String storeName) {
-        return true;
+    public Response<Boolean> removeManager(String userName, String storeName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**

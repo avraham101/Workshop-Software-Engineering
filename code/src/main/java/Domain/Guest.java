@@ -186,8 +186,8 @@ public class Guest extends UserState {
      * @return
      */
     @Override
-    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return false;
+    public Response<Boolean> removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**
@@ -197,8 +197,8 @@ public class Guest extends UserState {
      * @return
      */
     @Override
-    public boolean removeManager(String userName, String storeName) {
-        return false;
+    public Response<Boolean>  removeManager(String userName, String storeName) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**
@@ -219,8 +219,8 @@ public class Guest extends UserState {
      * @return
      */
     @Override
-    public Request replayToRequest(String storeName, int requestID, String content) {
-        return null;
+    public Response<Request> replayToRequest(String storeName, int requestID, String content) {
+        return new Response<>(null,OpCode.Not_Login);
     }
 
     /**
