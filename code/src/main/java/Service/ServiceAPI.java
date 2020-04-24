@@ -61,7 +61,7 @@ public class ServiceAPI {
      * acceptance test class : GetStoreInfo
      * @return - details of all the stores data
      */
-    public List<StoreData> viewStores() {
+    public Response<List<StoreData>> viewStores() {
         return logicManager.viewStores();
     }
 
@@ -70,7 +70,7 @@ public class ServiceAPI {
      * @param storeName - the store that owns the products
      * @return - list of ProductData of the products in the store
      */
-    public List<ProductData> viewProductsInStore(String storeName) {
+    public Response<List<ProductData>> viewProductsInStore(String storeName) {
         return logicManager.viewProductsInStore(storeName);
     }
 

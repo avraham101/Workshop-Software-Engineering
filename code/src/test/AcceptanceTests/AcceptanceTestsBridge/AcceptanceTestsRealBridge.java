@@ -60,13 +60,13 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-2.4---------------------------------//
     @Override
     public List<StoreTestData> getStoresInfo() {
-        List<StoreData> storeData = serviceAPI.viewStores();
+        List<StoreData> storeData = serviceAPI.viewStores().getValue();
         return buildStoresTestData(storeData);
     }
 
     @Override
     public List<ProductTestData> getStoreProducts(String storeName) {
-        return buildProductsTestData(serviceAPI.viewProductsInStore(storeName));
+        return buildProductsTestData(serviceAPI.viewProductsInStore(storeName).getValue());
     }
     //---------------------------Use-Case-2.4---------------------------------//
 
@@ -316,7 +316,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     private StoreTestData buildStoreTestData(StoreData storeData) {
         try {
             String storeName = storeData.getName();
-            List<ProductData> storeProducts = serviceAPI.viewProductsInStore(storeName);
+            List<ProductData> storeProducts = serviceAPI.viewProductsInStore(storeName).getValue();
             List<ProductTestData> storeTestProducts = buildProductsTestData(storeProducts);
             StoreTestData storeToReturn = new StoreTestData(storeName, null);
             storeToReturn.setProducts(storeTestProducts);
@@ -401,7 +401,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public StoreTestData getStoreInfoByName(String storeName) {
 
-        List<StoreData> stores = serviceAPI.viewStores();
+        List<StoreData> stores = serviceAPI.viewStores().getValue();
         for (StoreData st: stores) {
             if(st.getName().equals(storeName)){
                 return new StoreTestData(storeName,null);
@@ -469,7 +469,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public List<ReviewTestData> getProductsReviews(ProductTestData product) {
-        List<ProductData> products = serviceAPI.viewProductsInStore(product.getStoreName());
+        List<ProductData> products = serviceAPI.viewProductsInStore(product.getStoreName()).getValue();
         if(products==null )
             return null;
         for(ProductData pd : products)

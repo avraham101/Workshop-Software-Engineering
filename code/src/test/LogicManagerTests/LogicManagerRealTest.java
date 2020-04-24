@@ -113,7 +113,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override @Test
     public void testViewDataStores() {
         super.testViewDataStores();
-        for (StoreData storeData : logicManager.viewStores()) {
+        for (StoreData storeData : logicManager.viewStores().getValue()) {
             assertTrue(stores.containsKey(storeData.getName()));
         }
     }
@@ -125,7 +125,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     public void testViewProductsInStore() {
         setUpProductAdded();
         String storeName = data.getStore(Data.VALID).getName();
-        for (ProductData productData: logicManager.viewProductsInStore(storeName)) {
+        for (ProductData productData: logicManager.viewProductsInStore(storeName).getValue()) {
             assertTrue(stores.get(storeName).getProducts().containsKey(productData.getProductName()));
         }
     }

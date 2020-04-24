@@ -351,8 +351,8 @@ public class LogicManagerAllStubsTest {
         setUpOpenedStore();
         List<StoreData> expected = new LinkedList<>();
         expected.add(data.getStore(Data.VALID));
-        assertEquals(expected, logicManager.viewStores());
-        assertNotEquals(null, logicManager.viewStores());
+        assertEquals(expected, logicManager.viewStores().getValue());
+        assertNotEquals(null, logicManager.viewStores().getValue());
     }
 
     /**
@@ -363,7 +363,7 @@ public class LogicManagerAllStubsTest {
         setUpProductAdded();
         List<ProductData> expected = new LinkedList<>();
         String storeName = data.getStore(Data.VALID).getName();
-        assertEquals(expected, logicManager.viewProductsInStore(storeName));
+        assertEquals(expected, logicManager.viewProductsInStore(storeName).getValue());
     }
 
     /**
@@ -373,7 +373,7 @@ public class LogicManagerAllStubsTest {
     public void testViewProductInStoreNotExists() {
         setUpProductAdded();
         String storeName = data.getStore(Data.WRONG_STORE).getName();
-        assertNull(logicManager.viewProductsInStore(storeName));
+        assertNull(logicManager.viewProductsInStore(storeName).getValue());
     }
 
     /**
@@ -383,7 +383,7 @@ public class LogicManagerAllStubsTest {
     public void testViewProductInStoreNull() {
         setUpProductAdded();
         String storeName = data.getStore(Data.NULL_STORE).getName();
-        assertNull(logicManager.viewProductsInStore(storeName));
+        assertNull(logicManager.viewProductsInStore(storeName).getValue());
     }
 
     /**
@@ -395,7 +395,7 @@ public class LogicManagerAllStubsTest {
         List<ProductData> expected = new LinkedList<>();
         String storeName = data.getStore(Data.VALID).getName();
         expected.add(data.getProductData(Data.NULL_CATEGORY));
-        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
+        assertNotEquals(expected, logicManager.viewProductsInStore(storeName).getValue());
         expected.remove(data.getProductData(Data.NULL_CATEGORY));
     }
 
@@ -408,7 +408,7 @@ public class LogicManagerAllStubsTest {
         List<ProductData> expected = new LinkedList<>();
         String storeName = data.getStore(Data.VALID).getName();
         expected.add(data.getProductData((Data.NULL_NAME)));
-        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
+        assertNotEquals(expected, logicManager.viewProductsInStore(storeName).getValue());
         expected.remove(data.getProductData((Data.NULL_NAME)));
     }
 
@@ -421,7 +421,7 @@ public class LogicManagerAllStubsTest {
         List<ProductData> expected = new LinkedList<>();
         String storeName = data.getStore(Data.VALID).getName();
         expected.add(data.getProductData((Data.NULL_DISCOUNT)));
-        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
+        assertNotEquals(expected, logicManager.viewProductsInStore(storeName).getValue());
         expected.remove(data.getProductData((Data.NULL_DISCOUNT)));
     }
 
@@ -434,7 +434,7 @@ public class LogicManagerAllStubsTest {
         List<ProductData> expected = new LinkedList<>();
         String storeName = data.getStore(Data.VALID).getName();
         expected.add(data.getProductData((Data.NULL_PURCHASE)));
-        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
+        assertNotEquals(expected, logicManager.viewProductsInStore(storeName).getValue());
         expected.remove(data.getProductData((Data.NULL_PURCHASE)));
     }
 

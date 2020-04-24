@@ -247,7 +247,7 @@ public class LogicManager {
      * use 2.4.1 - show the details about every store
      * @return - details of all the stores data
      */
-    public List<StoreData> viewStores() {
+    public Response<List<StoreData>> viewStores() {
         loggerSystem.writeEvent("LogicManager","viewStores",
                 "view the details of the stores in the system", new Object[] {});
         List<StoreData> data = new LinkedList<>();
@@ -257,7 +257,7 @@ public class LogicManager {
                     store.getDiscount());
             data.add(storeData);
         }
-        return data;
+        return new Response<>(data,OpCode.Success);
     }
 
     /**
@@ -265,16 +265,17 @@ public class LogicManager {
      * @param storeName - the store that owns the products
      * @return - list of ProductData of the products in the store
      */
-    public List<ProductData> viewProductsInStore(String storeName) {
+    public Response<List<ProductData>> viewProductsInStore(String storeName) {
         loggerSystem.writeEvent("LogicManager","viewProductsInStore",
                 "view the details of the stores in the system", new Object[] {storeName});
         if(storeName==null)
-            return null;
+            return new Response<>(null,OpCode.Store_Not_Found);
         Store store = stores.get(storeName);
         if(store!=null) {
-            return store.viewProductInStore();
+            List<ProductData> output = store.viewProductInStore();
+            return new Response<>(output,OpCode.Success);
         }
-        return null;
+        return new Response<>(null,OpCode.Store_Not_Found);
     }
 
     /**
