@@ -767,12 +767,12 @@ public class LogicManager {
      * @param productName name of product to be removed
      * @return if the product was removed
      */
-    public boolean removeProductFromStore(int id,String storeName, String productName) {
+    public Response<Boolean> removeProductFromStore(int id,String storeName, String productName) {
         loggerSystem.writeEvent("LogicManager","addProductToStore",
                 "remove a product to store", new Object[] {storeName, productName});
         User current=connectedUsers.get(id);
         if(!stores.containsKey(storeName))
-            return false;
+            return new Response<>(false,OpCode.Store_Not_Found);
         return current.removeProductFromStore(storeName,productName);
     }
 

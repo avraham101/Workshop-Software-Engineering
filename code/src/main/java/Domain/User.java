@@ -208,7 +208,7 @@ public class User {
      * @param productName
      * @return
      */
-    public boolean removeProductFromStore(String storeName, String productName) {
+    public Response<Boolean> removeProductFromStore(String storeName, String productName) {
         return state.removeProductFromStore(storeName,productName);
     }
 

@@ -215,7 +215,7 @@ public class ServiceAPI {
      * @param storeName - the store name
      * @return if product was removed
      */
-    public boolean removeProductFromStore(int id,String storeName,String productName){
+    public Response<Boolean> removeProductFromStore(int id,String storeName,String productName){
         return logicManager.removeProductFromStore(id,storeName,productName);
     }
 

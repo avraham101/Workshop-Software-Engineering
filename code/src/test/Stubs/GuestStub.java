@@ -48,8 +48,8 @@ public class GuestStub extends Guest {
      * @return false always
      */
     @Override
-    public boolean removeProductFromStore(String storeName, String productName) {
-        return false;
+    public Response<Boolean> removeProductFromStore(String storeName, String productName) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**

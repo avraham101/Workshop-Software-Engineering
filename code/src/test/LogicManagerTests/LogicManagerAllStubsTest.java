@@ -1120,7 +1120,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testRemoveProductTwiceFail() {
         assertFalse(logicManager.removeProductFromStore(data.getId(Data.VALID),data.getSubscribe(Data.VALID).getName()
-                ,data.getProductData(Data.VALID).getProductName()));
+                ,data.getProductData(Data.VALID).getProductName()).getValue());
     }
 
     /**
@@ -1128,7 +1128,7 @@ public class LogicManagerAllStubsTest {
      */
     protected void testRemoveProductSuccess() {
         ProductData p=data.getProductData(Data.VALID);
-        assertTrue(logicManager.removeProductFromStore(data.getId(Data.VALID),p.getStoreName(),p.getProductName()));
+        assertTrue(logicManager.removeProductFromStore(data.getId(Data.VALID),p.getStoreName(),p.getProductName()).getValue());
     }
 
     /**

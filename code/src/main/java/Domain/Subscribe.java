@@ -121,7 +121,6 @@ public class Subscribe extends UserState{
      * use case 3.3 - write review
      * the function check if the product is purchased
      * @param storeName - the store name
-     * @param productName - the product name
      * @return true if the product is purchased
      */
     @Override
@@ -190,11 +189,11 @@ public class Subscribe extends UserState{
      * @return if the product was removed
      */
     @Override
-    public boolean removeProductFromStore(String storeName, String productName) {
+    public Response<Boolean> removeProductFromStore(String storeName, String productName) {
         if(!permissions.containsKey(storeName))
-            return false;
+            return new Response<>(false,OpCode.Dont_Have_Permission);
         if(!permissions.get(storeName).canAddProduct())
-            return false;
+            return new Response<>(false,OpCode.Dont_Have_Permission);
         return permissions.get(storeName).getStore().removeProduct(productName);
     }
 

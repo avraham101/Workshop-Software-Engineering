@@ -308,17 +308,16 @@ public class Store {
      * @param productName
      * @return  if the product had been removed
      */
-    public boolean removeProduct(String productName) {
-        if(!products.containsKey(productName))
-            return false;
+    public Response<Boolean> removeProduct(String productName) {
         Product product=products.get(productName);
         if(product!=null) {
             product.getWriteLock().lock();
             product.getCategory().removeProduct(productName);
             products.remove(productName);
             product.getWriteLock().unlock();
+            return new Response<>(true,OpCode.Success);
         }
-        return true;
+        return new Response<>(false,OpCode.Invalid_Product);
     }
 
     /**
