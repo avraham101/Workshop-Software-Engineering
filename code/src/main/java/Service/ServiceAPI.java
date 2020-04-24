@@ -238,7 +238,7 @@ public class ServiceAPI {
      * @param userName - name of user
      * @return if new owner was managed
      */
-    public boolean manageOwner(int id,String storeName,String userName){
+    public Response<Boolean> manageOwner(int id,String storeName,String userName){
         return logicManager.manageOwner(id,storeName,userName);
     }
 
@@ -250,7 +250,7 @@ public class ServiceAPI {
      * @param userName - name of user
      * @return if the manger was added
      */
-    public boolean addManagerToStore(int id,String storeName,String userName){
+    public Response<Boolean> addManagerToStore(int id,String storeName,String userName){
         return logicManager.addManager(id,userName,storeName);
     }
 
@@ -263,7 +263,7 @@ public class ServiceAPI {
      * @param userName of user
      * @return
      */
-    public boolean addPermissions(int id,List<PermissionType> permissions, String storeName, String userName){
+    public Response<Boolean> addPermissions(int id,List<PermissionType> permissions, String storeName, String userName){
         return logicManager.addPermissions(id,permissions,storeName,userName);
     }
 

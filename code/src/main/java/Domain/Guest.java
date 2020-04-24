@@ -162,8 +162,8 @@ public class Guest extends UserState {
      * @return
      */
     @Override
-    public boolean addManager(Subscribe youngOwner, String storeName) {
-        return false;
+    public Response<Boolean> addManager(Subscribe youngOwner, String storeName) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**
@@ -174,8 +174,8 @@ public class Guest extends UserState {
      * @return
      */
     @Override
-    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return false;
+    public Response<Boolean> addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**

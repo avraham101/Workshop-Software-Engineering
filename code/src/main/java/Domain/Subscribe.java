@@ -220,13 +220,13 @@ public class Subscribe extends UserState{
      * @return
      */
     @Override
-    public boolean addManager(Subscribe youngOwner, String storeName) {
-        if(!permissions.containsKey(storeName))
-            return false;
+    public Response<Boolean> addManager(Subscribe youngOwner, String storeName) {
         Permission permission=permissions.get(storeName);
+        if(permission==null)
+            return new Response<>(false,OpCode.Dont_Have_Permission);
         Store store=permission.getStore();
         if(store==null||!permission.canAddOwner())
-            return false;
+            return new Response<>(false,OpCode.Dont_Have_Permission);
         //create new permission process
         Permission newPermission=new Permission(youngOwner,store);
         if(store.getPermissions().putIfAbsent(youngOwner.getName(),newPermission)==null) {
@@ -234,9 +234,9 @@ public class Subscribe extends UserState{
             lock.writeLock().lock();
             givenByMePermissions.add(newPermission);
             lock.writeLock().unlock();
-            return true;
+            return new Response<>(true,OpCode.Success);
         }
-        return false;
+        return new Response<>(false,OpCode.Already_Exists);
 
     }
 
@@ -248,7 +248,7 @@ public class Subscribe extends UserState{
      * @return if the permissions were added
      */
     @Override
-    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+    public Response<Boolean> addPermissions(List<PermissionType> permissions, String storeName, String userName) {
         lock.readLock().lock();
         for(Permission p: givenByMePermissions){
             if(p.getStore().getName().equals(storeName)&&p.getOwner().getName().equals(userName)){
@@ -256,11 +256,13 @@ public class Subscribe extends UserState{
                 for(PermissionType type: permissions)
                     added=added|p.addType(type);
                 lock.readLock().unlock();
-                return added;
+                if(added)
+                    return new Response<>(true,OpCode.Success);
+                return new Response<>(false,OpCode.Already_Exists);
             }
         }
         lock.readLock().unlock();
-        return false;
+        return new Response<>(false,OpCode.Dont_Have_Permission);
     }
 
     /**

@@ -199,7 +199,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      */
     private void testAddPermissionTwiceFail() {
         assertFalse(sub.addPermissions(data.getPermissionTypeList(),
-                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.VALID).getName()));
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.VALID).getName()).getValue());
     }
 
     /**

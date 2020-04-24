@@ -227,7 +227,7 @@ public class User {
      * @param storeName
      * @return
      */
-    public boolean addManager(Subscribe subscribe, String storeName) {
+    public Response<Boolean> addManager(Subscribe subscribe, String storeName) {
         return state.addManager(subscribe,storeName);
     }
 
@@ -238,7 +238,7 @@ public class User {
      * @param userName
      * @return
      */
-    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+    public Response<Boolean> addPermissions(List<PermissionType> permissions, String storeName, String userName) {
         return state.addPermissions(permissions,storeName,userName);
     }
 

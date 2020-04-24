@@ -412,14 +412,14 @@ public class SubscribeAllStubsTest {
      * test we cant add manager twice
      */
     private void testAlreadyManager() {
-        assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()));
+        assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
      * part of use case 4.5 add manager
      */
     protected void testAddManagerStoreSuccess() {
-        assertTrue(sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()));
+        assertTrue(sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -439,7 +439,7 @@ public class SubscribeAllStubsTest {
         Permission permission=sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         sub.getPermissions().clear();
-        assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),validStoreName));
+        assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),validStoreName).getValue());
         assertFalse(store.getPermissions().containsKey(data.getSubscribe(Data.ADMIN).getName()));
         sub.getPermissions().put(validStoreName,permission);
     }
@@ -452,7 +452,7 @@ public class SubscribeAllStubsTest {
         Permission permission = sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),validStoreName));
+        assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),validStoreName).getValue());
         assertFalse(store.getPermissions().containsKey(data.getSubscribe(Data.ADMIN).getName()));
         permission.addType(PermissionType.OWNER);
     }
@@ -477,7 +477,7 @@ public class SubscribeAllStubsTest {
         Store store=permission.getStore();
         permission.removeType(PermissionType.OWNER);
         assertFalse(sub.addPermissions(data.getPermissionTypeList(),
-                data.getSubscribe(Data.ADMIN).getName(),validStoreName));
+                data.getSubscribe(Data.ADMIN).getName(),validStoreName).getValue());
         assertFalse(store.getPermissions().get(data.getSubscribe(Data.ADMIN).getName()).getPermissionType().
                 containsAll(data.getPermissionTypeList()));
         permission.addType(PermissionType.OWNER);
@@ -492,7 +492,7 @@ public class SubscribeAllStubsTest {
         Store store=permission.getStore();
         sub.getPermissions().clear();
         assertFalse(sub.addPermissions(data.getPermissionTypeList(),
-                data.getSubscribe(Data.ADMIN).getName(),validStoreName));
+                data.getSubscribe(Data.ADMIN).getName(),validStoreName).getValue());
         assertFalse(store.getPermissions().get(data.getSubscribe(Data.ADMIN).getName()).getPermissionType().
                 containsAll(data.getPermissionTypeList()));
         sub.getPermissions().put(validStoreName,permission);
@@ -503,7 +503,7 @@ public class SubscribeAllStubsTest {
      */
     protected void testAddPermissionSuccess() {
         assertTrue(sub.addPermissions(data.getPermissionTypeList(),
-                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()).getValue());
     }
 
     /**
@@ -541,7 +541,7 @@ public class SubscribeAllStubsTest {
         Store store=permission.getStore();
         permission.removeType(PermissionType.OWNER);
         assertFalse(sub.addPermissions(data.getPermissionTypeList(),
-                data.getSubscribe(Data.ADMIN).getName(),validStoreName));
+                data.getSubscribe(Data.ADMIN).getName(),validStoreName).getValue());
         assertTrue(store.getPermissions().get(data.getSubscribe(Data.ADMIN).getName()).getPermissionType().
                 containsAll(data.getPermissionTypeList()));
         permission.addType(PermissionType.OWNER);

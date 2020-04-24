@@ -699,7 +699,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     protected void testManageOwnerFail() {
         super.testManageOwnerFail();
         String sName=data.getStore(Data.VALID).getName();
-        assertFalse(logicManager.manageOwner(data.getId(Data.VALID),sName,sName));
+        assertFalse(logicManager.manageOwner(data.getId(Data.VALID),sName,sName).getValue());
         assertFalse(stores.get(sName).getPermissions().containsKey(sName));
     }
 
