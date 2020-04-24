@@ -377,7 +377,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     protected void testSuccessBuyProducts() {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address).getValue());
     }
 
     /**

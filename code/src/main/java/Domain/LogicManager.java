@@ -221,7 +221,7 @@ public class LogicManager {
                         "Fail to login the user",new Object[]{userName, password});
             }
         }
-        return new Response<>(false,OpCode.User_NorFound);
+        return new Response<>(false,OpCode.User_Not_Found);
     }
 
     /**
@@ -548,31 +548,31 @@ public class LogicManager {
      * @param addresToDeliver - the address do Deliver the purchase
      * @return true is the purchase succeeded, otherwise false
      */
-    public boolean purchaseCart(int id, PaymentData paymentData, String addresToDeliver) {
+    public Response<Boolean> purchaseCart(int id, PaymentData paymentData, String addresToDeliver) {
         loggerSystem.writeEvent("LogicManager","purchaseCart",
                 "reserveCart the products in the cart", new Object[] {paymentData, addresToDeliver});
         //1) user get
         User current = connectedUsers.get(id);
         //2) validation check
         if (!validPaymentData(paymentData))
-            return false;
+            return new Response<>(false, OpCode.Invalid_Payment_Data);
         if (addresToDeliver == null || addresToDeliver.isEmpty())
-            return false;
-        //3) sumUp cart - updated PeymentData, DeliveryData
+            return new Response<>(false, OpCode.Invalid_Delivery_Data);
+        //3) sumUp cart - updated PaymentData, DeliveryData
         boolean reserved = current.reservedCart();
         if(!reserved) {
-            return false;
+            return new Response<>(false, OpCode.Fail_Buy_Cart);
         }
         DeliveryData deliveryData = new DeliveryData(addresToDeliver, new LinkedList<>());
         current.buyCart(paymentData, deliveryData);
         //4) external systems
-        boolean payedAndDelivered = externalSystemsBuy(id,paymentData,deliveryData);
-        if(!payedAndDelivered) {
-            return false;
+        Response<Boolean> payedAndDelivered = externalSystemsBuy(id,paymentData,deliveryData);
+        if(!payedAndDelivered.getValue()) {
+            return payedAndDelivered;
         }
         //5) update the purchase for both store and user (synchronized)
         current.savePurchase(paymentData.getName());
-        return true;
+        return new Response<>(true, OpCode.Success);
     }
 
     /**
@@ -597,13 +597,13 @@ public class LogicManager {
      * @param deliveryData - the delivery data
      * @return true if worked, otherwise false.
      */
-    private boolean externalSystemsBuy(int id, PaymentData paymentData, DeliveryData deliveryData) {
+    private Response<Boolean> externalSystemsBuy(int id, PaymentData paymentData, DeliveryData deliveryData) {
         User current = connectedUsers.get(id);
         if(!paymentSystem.pay(paymentData)) {
             loggerSystem.writeError("Logic Manger","purchaseCart","Payment System Crashed",
                     new Object[] {id});
             current.cancelCart();
-            return false;
+            return new Response<>(false, OpCode.Payment_Reject);
         }
         if(!supplySystem.deliver(deliveryData)) {
             loggerSystem.writeError("Logic Manger","purchaseCart","Delivery System Crashed",
@@ -613,9 +613,9 @@ public class LogicManager {
                         "Payment System Crashed", new Object[] {id});
             }
             current.cancelCart();
-            return false;
+            return new Response<>(false, OpCode.Supply_Reject);
         }
-        return true;
+        return new Response<>(true,OpCode.Success);
     }
 
     /**

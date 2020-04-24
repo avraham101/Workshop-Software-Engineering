@@ -138,7 +138,7 @@ public class ServiceAPI {
      * @param addressToDeliver - the addressToDiliver
      * @return true is the purchase succeeded, otherwise false
      */
-    public boolean purchaseCart(int id,PaymentData paymentData, String addressToDeliver){
+    public Response<Boolean> purchaseCart(int id,PaymentData paymentData, String addressToDeliver){
         return logicManager.purchaseCart(id,paymentData,addressToDeliver);
     }
 

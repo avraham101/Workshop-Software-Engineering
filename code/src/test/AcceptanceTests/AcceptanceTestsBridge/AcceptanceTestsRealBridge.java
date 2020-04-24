@@ -120,7 +120,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
             paymentData=null;
         }
 
-        boolean approval = serviceAPI.purchaseCart(id,paymentData,delivery);
+        boolean approval = serviceAPI.purchaseCart(id,paymentData,delivery).getValue();
         return approval;
     }
     //---------------------------Use-Case-2.8---------------------------------//
