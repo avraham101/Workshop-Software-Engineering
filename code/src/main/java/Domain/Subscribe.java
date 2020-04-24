@@ -1,6 +1,7 @@
 package Domain;
 
 import DataAPI.ProductData;
+import DataAPI.StatusTypeData;
 import DataAPI.StoreData;
 
 import java.time.LocalDateTime;
@@ -463,6 +464,23 @@ public class Subscribe extends UserState{
 
     public AtomicInteger getSessionNumber() {
         return sessionNumber;
+    }
+
+    /**
+     * gets given user Status
+     * @return the user status
+     */
+    public StatusTypeData getStatus(){
+        if(this.canWatchUserHistory()) {
+            return StatusTypeData.ADMIN;
+        }
+        else if(!permissions.isEmpty()){
+            return StatusTypeData.MANAGER;
+        }
+        else{
+            return StatusTypeData.REGULAR;
+        }
+
     }
 
 

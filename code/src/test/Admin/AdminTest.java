@@ -2,6 +2,7 @@ package Admin;
 
 import Data.Data;
 import Data.TestData;
+import DataAPI.StatusTypeData;
 import Domain.Admin;
 import Domain.Subscribe;
 import org.junit.Before;
@@ -37,6 +38,11 @@ public class AdminTest  {
     @Test
     public void testStoreHistory(){
         assertTrue(admin.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
+    }
+
+    @Test
+    public void  testGetStatusRegularSuccess(){
+        assertEquals(StatusTypeData.ADMIN,admin.getStatus());
     }
 
 }
