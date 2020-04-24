@@ -994,7 +994,7 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testWatchPurchaseHistory() {
         setUpBoughtProduct();
-        List<Purchase> purchases = logicManager.watchMyPurchaseHistory(data.getId(Data.VALID));
+        List<Purchase> purchases = logicManager.watchMyPurchaseHistory(data.getId(Data.VALID)).getValue();
         assertNotNull(purchases);
         assertTrue(purchases.isEmpty());
     }

@@ -386,7 +386,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override @Test
     public void testBuyCart() {
         super.testBuyCart();
-        List<Purchase> purchaseList = this.currUser.getState().watchMyPurchaseHistory();
+        List<Purchase> purchaseList = this.currUser.getState().watchMyPurchaseHistory().getValue();
         for (Purchase purchase: purchaseList) {
             String storeName = purchase.getStoreName();
             Store store = this.stores.get(storeName);
@@ -542,7 +542,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override @Test
     public void testWatchPurchaseHistory() {
         setUpBoughtProduct();
-        List<Purchase> purchases = logicManager.watchMyPurchaseHistory(data.getId(Data.VALID));
+        List<Purchase> purchases = logicManager.watchMyPurchaseHistory(data.getId(Data.VALID)).getValue();
         assertNotNull(purchases);
         assertEquals(1,purchases.size());
     }

@@ -741,7 +741,7 @@ public class LogicManager {
      * the function return the purchase list
      * @return the purchase list
      */
-    public List<Purchase> watchMyPurchaseHistory(int id) {
+    public Response<List<Purchase>> watchMyPurchaseHistory(int id) {
         loggerSystem.writeEvent("LogicManager","watchMyPurchaseHistory",
                 "user view his purchase history", new Object[] {});
         User current=connectedUsers.get(id);

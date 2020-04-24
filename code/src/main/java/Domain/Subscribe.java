@@ -162,8 +162,8 @@ public class Subscribe extends UserState{
      * @return the purchase list
      */
     @Override
-    public List<Purchase> watchMyPurchaseHistory() {
-        return purchases;
+    public Response<List<Purchase>> watchMyPurchaseHistory() {
+        return new Response<>(purchases,OpCode.Success);
     }
 
 

@@ -216,8 +216,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public List<Purchase> watchMyPurchaseHistory() {
-        return new LinkedList<>();
+    public Response<List<Purchase>> watchMyPurchaseHistory() {
+        return new Response<>(new LinkedList<>(),OpCode.Success);
     }
 
 

@@ -192,7 +192,7 @@ public class ServiceAPI {
      * the function return the purchase list
      * @return the purchase list
      */
-    public List<Purchase> watchMyPurchaseHistory(int id){
+    public Response<List<Purchase>> watchMyPurchaseHistory(int id){
         return logicManager.watchMyPurchaseHistory(id);
     }
 

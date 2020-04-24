@@ -132,7 +132,7 @@ public class GuestStub extends Guest {
      * ues case 3.7 - watch my purchase history
      */
     @Override
-    public List<Purchase> watchMyPurchaseHistory() {
-        return null;
+    public Response<List<Purchase>> watchMyPurchaseHistory() {
+        return new Response<>(null,OpCode.Not_Login);
     }
 }

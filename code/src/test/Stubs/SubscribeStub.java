@@ -171,8 +171,8 @@ public class SubscribeStub extends Subscribe{
      * @return
      */
     @Override
-    public List<Purchase> watchMyPurchaseHistory() {
-        return new LinkedList<>();
+    public Response<List<Purchase>> watchMyPurchaseHistory() {
+        return new Response<>(new LinkedList<>(),OpCode.Success);
     }
 
     /**
