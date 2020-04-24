@@ -439,20 +439,11 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * use case 2.5 - view specific product
+     * part of use case 2.5 - view specific product
      */
     @Test
-    public void testViewSpecificProduct() {
+    public void testViewSpecificProductWrongSearch() {
         setUpProductAdded();
-        testViewSpecificProductWrongSearch();
-        testViewSpecificProductWrongFilter();
-        testViewSpecificProductSearchAndFilter();
-    }
-
-    /**
-     * part of use case 2.5 - view spesific products
-     */
-    protected void testViewSpecificProductWrongSearch() {
         Filter filter = data.getFilter(Data.NULL_SEARCH);
         List<ProductData> products = logicManager.viewSpecificProducts(filter);
         assertTrue(products.isEmpty());
@@ -461,52 +452,107 @@ public class LogicManagerAllStubsTest {
     /**
      * part of use case 2.5 - view spesific products
      */
-    //TODO split tests
-    protected void testViewSpecificProductWrongFilter() {
-        Filter filter = data.getFilter(Data.NULL);
+    @Test
+    public void testViewSpecificProductWrongFilterNullValue() {
+        setUpProductAdded();
+        Filter filter = data.getFilter(Data.NULL_VALUE);
         List<ProductData> products = logicManager.viewSpecificProducts(filter);
-        assertTrue(products.isEmpty());
-
-        filter = data.getFilter(Data.NULL_VALUE);
-        products = logicManager.viewSpecificProducts(filter);
-        assertTrue(products.isEmpty());
-
-        filter = data.getFilter(Data.NEGATIVE_MIN);
-        products = logicManager.viewSpecificProducts(filter);
-        assertTrue(products.isEmpty());
-
-        filter = data.getFilter(Data.NEGATIVE_MAX);
-        products = logicManager.viewSpecificProducts(filter);
-        assertTrue(products.isEmpty());
-
-        filter = data.getFilter(Data.NULL_CATEGORY);
-        products = logicManager.viewSpecificProducts(filter);
         assertTrue(products.isEmpty());
     }
 
     /**
      * part of use case 2.5 - view spesific products
      */
-    //TODO split tests
-    private void testViewSpecificProductSearchAndFilter() {
+    @Test
+    public void testViewSpecificProductWrongFilterNegativeMin() {
+        setUpProductAdded();
+        Filter filter = data.getFilter(Data.NEGATIVE_MIN);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        assertTrue(products.isEmpty());
+    }
+
+    /**
+     * part of use case 2.5 - view spesific products
+     */
+    @Test
+    public void testViewSpecificProductWrongFilterNegativeMax() {
+        setUpProductAdded();
+        Filter filter = data.getFilter(Data.NEGATIVE_MAX);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        assertTrue(products.isEmpty());
+    }
+
+    /**
+     * part of use case 2.5 - view spesific products
+     */
+    @Test
+    public void testViewSpecificProductWrongFilterNullCategory() {
+        setUpProductAdded();
+        Filter filter = data.getFilter(Data.NULL_CATEGORY);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        assertTrue(products.isEmpty());
+
+    }
+
+    /**
+     * part of use case 2.5 - view spesific products
+     */
+    @Test
+    public void testViewSpecificProductWrongFilterNull() {
+        setUpProductAdded();
+        Filter filter = data.getFilter(Data.NULL);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        assertTrue(products.isEmpty());
+    }
+
+    /**
+     * part of use case 2.5 - view spesific products
+     */
+    @Test
+    public void testViewSpecificProductFilterNone() {
+        setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.NONE);
         List<ProductData> products = logicManager.viewSpecificProducts(filter);
         assertNotNull(products);
         assertTrue(products.isEmpty());
+    }
 
+    /**
+     * part of use case 2.5 - view spesific products
+     */
+    @Test
+    public void testViewSpecificProducFilterProductName() {
+        setUpProductAdded();
+        Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.PRODUCT_NAME);
-        products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
         assertNotNull(products);
         assertTrue(products.isEmpty());
+    }
 
+    /**
+     * part of use case 2.5 - view spesific products
+     */
+    @Test
+    public void testViewSpecificProductFilterKeyWord() {
+        setUpProductAdded();
+        Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.KEY_WORD);
-        products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
         assertNotNull(products);
         assertTrue(products.isEmpty());
+    }
 
+    /**
+     * part of use case 2.5 - view spesific products
+     */
+    @Test
+    public void testViewSpecificProductFilterCategory() {
+        setUpProductAdded();
+        Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.CATEGORY);
-        products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter);
         assertNotNull(products);
         assertTrue(products.isEmpty());
     }
@@ -633,10 +679,10 @@ public class LogicManagerAllStubsTest {
      * use case 2.8 - test reserveCart Products
      * success tests
      */
-    private void testSuccessBuyProducts() {
+    protected void testSuccessBuyProducts() {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
     }
 
     /**

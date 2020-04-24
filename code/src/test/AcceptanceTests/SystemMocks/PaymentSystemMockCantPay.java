@@ -3,10 +3,10 @@ package AcceptanceTests.SystemMocks;
 import DataAPI.PaymentData;
 import Systems.PaymentSystem.PaymentSystem;
 
-public class PaymenSystemMock extends PaymentSystem {
+public class PaymentSystemMockCantPay extends PaymentSystem {
     @Override
     public boolean connect() {
-        return false;
+        return true;
     }
 
     @Override
@@ -16,6 +16,6 @@ public class PaymenSystemMock extends PaymentSystem {
 
     @Override
     public boolean cancel(PaymentData paymentData) {
-        return false;
+        return true;
     }
 }

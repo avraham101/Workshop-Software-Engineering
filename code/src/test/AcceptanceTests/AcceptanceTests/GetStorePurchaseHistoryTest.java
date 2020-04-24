@@ -15,14 +15,14 @@ public class GetStorePurchaseHistoryTest extends AcceptanceTests {
     public void setUp(){
         addUserStoresAndProducts(superUser);
         bridge.addToUserCart(superUser.getId(),products.get(0),1);
-        bridge.buyCart(validPayment,validDelivery);
+        bridge.buyCart(superUser.getId(),validPayment,validDelivery);
     }
 
     @Test
     public void getStorePurchaseHistorySuccess(){
        List<PurchaseTestData> history =
                bridge.userGetStorePurchasesHistory(superUser.getId(),stores.get(0).getStoreName());
-       assertTrue(!history.isEmpty());
+       assertNotNull(history);
        assertTrue(history.get(0).getProductsAndAmountInPurchase().containsKey(products.get(0)));
     }
 

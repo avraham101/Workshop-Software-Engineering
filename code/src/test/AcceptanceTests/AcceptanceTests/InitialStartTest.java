@@ -1,6 +1,9 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.SystemMocks.PaymenSystemMock;
+import AcceptanceTests.SystemMocks.DeliverySystemMockAllNegative;
+import AcceptanceTests.SystemMocks.DeliverySystemMockAllPositive;
+import AcceptanceTests.SystemMocks.PaymentSystemMockAllNegative;
+import AcceptanceTests.SystemMocks.PaymentSystemMockAllPositive;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 import org.junit.Test;
@@ -10,16 +13,31 @@ import static org.junit.Assert.*;
 public class InitialStartTest extends AcceptanceTests {
     private PaymentSystem paymentSystem;
     private SupplySystem deliverySystem;
+
     @Test
     public void initialStartTestSuccess(){
-        boolean init = bridge.initialStart(admin.getUsername(),admin.getPassword());
+        paymentSystem = new PaymentSystemMockAllPositive();
+        deliverySystem = new DeliverySystemMockAllPositive();
+        boolean init = bridge.initialStart(admin.getUsername(),admin.getPassword(),paymentSystem,deliverySystem);
         assertTrue(init);
     }
 
     @Test
     public void initialStartTestFailConnectPayment(){
-        paymentSystem = new PaymenSystemMock();
+        paymentSystem = new PaymentSystemMockAllNegative();
+        deliverySystem = new DeliverySystemMockAllPositive();
 
+        boolean init = bridge.initialStart(admin.getUsername(),admin.getPassword(),paymentSystem,deliverySystem);
+        assertFalse(init);
+    }
+
+    @Test
+    public void initialStartTestFailConnectSupply(){
+        paymentSystem = new PaymentSystemMockAllPositive();
+        deliverySystem = new DeliverySystemMockAllNegative();
+
+        boolean init = bridge.initialStart(admin.getUsername(),admin.getPassword(),paymentSystem,deliverySystem);
+        assertFalse(init);
     }
 
 }

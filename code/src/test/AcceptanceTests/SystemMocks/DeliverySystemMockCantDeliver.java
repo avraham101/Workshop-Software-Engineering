@@ -3,15 +3,15 @@ package AcceptanceTests.SystemMocks;
 import DataAPI.DeliveryData;
 import Systems.SupplySystem.SupplySystem;
 
-public class DeliverySystemMock extends SupplySystem {
-
+public class DeliverySystemMockCantDeliver extends SupplySystem{
     @Override
     public boolean connect() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean deliver(DeliveryData deliveryData) {
         return false;
     }
+
 }

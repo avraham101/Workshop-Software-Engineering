@@ -3,6 +3,7 @@ package AcceptanceTests.AcceptanceTests;
 import AcceptanceTests.AcceptanceTestDataObjects.CartTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
+import AcceptanceTests.SystemMocks.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 import org.junit.Test;
@@ -13,72 +14,95 @@ import static org.junit.Assert.*;
  */
 
 public class BuyCartTest extends AcceptanceTests {
+    private int userId;
 
     public void setUp(PaymentSystem paymentSystem , SupplySystem deliverySystem){
-        //TODO: complete - commented because compilation
-       // bridge.initialStart(admin.getId(),admin.getUsername(),
-               // admin.getPassword(),paymentSystem,deliverySystem);
-
+        //bridge.initialStart(admin.getUsername(), admin.getPassword(),paymentSystem,deliverySystem);
+        //setUpUsers();
+        setExternalSystems(paymentSystem,deliverySystem);
+        super.setUpAll();
         addStores(stores);
         addProducts(products);
+        userId = bridge.connect();
+    }
+
+    public void positiveSetUp(){
+        PaymentSystem paymentSystem = new PaymentSystemMockAllPositive();
+        SupplySystem deliverySystem = new DeliverySystemMockAllPositive();
+        setUp(paymentSystem,deliverySystem);
     }
 
     @Test
     public void buyCartSuccess(){
-        //TODO: who is the user?
-
-        addProductToCart();
-        boolean approval = bridge.buyCart(validPayment,validDelivery);
+        positiveSetUp();
+        addProductToCart(1);
+        boolean approval = bridge.buyCart(userId,validPayment,validDelivery);
         assertTrue(approval);
-        //CartTestData currCart = bridge.getCurrentUsersCart();
-        //assertTrue(currCart.isEmpty());
+        //TODO: won't pass because logic won't empty cart
+        CartTestData currCart = bridge.getUsersCart(userId);
+        assertTrue(currCart.isEmpty());
     }
 
     @Test
     public void buyCartFailEmptyCart(){
-        assertFalse(bridge.buyCart(validPayment,validDelivery));
+        buyCartSuccess();
+        //TODO: won't pass because logic won't empty cart
+        assertFalse(bridge.buyCart(userId,validPayment,validDelivery));
     }
     @Test
     public void buyCartFailInvalidPayment(){
-        //TODO: who is the user?
-
-        addProductToCart();
-        //CartTestData expectedCart = bridge.getCurrentUsersCart();
-        assertFalse(bridge.buyCart(invalidPayment,validDelivery));
-        //CartTestData actualCart = bridge.getCurrentUsersCart();
-        //assertEquals(expectedCart,actualCart);
+        positiveSetUp();
+        addProductToCart(1);
+        CartTestData expectedCart = bridge.getUsersCart(userId);
+        assertFalse(bridge.buyCart(userId,invalidPayment,validDelivery));
+        CartTestData actualCart = bridge.getUsersCart(userId);
+        assertEquals(expectedCart,actualCart);
     }
     @Test
     public void buyCartFailInvalidDeliveryDetails(){
-        //TODO: who is the user?
-
-        addProductToCart();
-        assertFalse(bridge.buyCart(validPayment,invalidDelivery));
-        //assertTrue(!bridge.getCurrentUsersCart().isEmpty());
+        positiveSetUp();
+        addProductToCart(1);
+        assertFalse(bridge.buyCart(userId,validPayment,invalidDelivery));
+        assertFalse(bridge.getUsersCart(userId).isEmpty());
     }
 
     @Test
     public void buyCartFailProductNotInStore(){
+        positiveSetUp();
         StoreTestData store = stores.get(0);
         ProductTestData product = store.getProducts().get(0);
-        product.setStoreName(stores.get(1).getStoreName());
-        //TODO: who is the user?
-        //bridge.addToUserCart(product,1);
-
-        assertFalse(bridge.buyCart(validPayment,validDelivery));
+        bridge.addToUserCart(userId,product,1);
+        deleteProductFromStore(product);
+        assertFalse(bridge.buyCart(userId,validPayment,validDelivery));
 
     }
     @Test
     public void buyCartFailInvalidAmount(){
-        addProductToCart();
-        changeAmountOfProductInStore(stores.get(0).getProducts().get(0),0);
-        assertFalse(bridge.buyCart(validPayment,validDelivery));
-
-
+        positiveSetUp();
+        addProductToCart(2);
+            changeAmountOfProductInStore(stores.get(0).getProducts().get(0),1);
+        assertFalse(bridge.buyCart(userId,validPayment,validDelivery));
     }
-    private void addProductToCart(){
-        //TODO: who is the user?
-        //bridge.addToUserCart(stores.get(0).getProducts().get(0),1);
+
+    @Test
+    public void buyCartFailPaymentSystemFail() {
+        PaymentSystem paymentSystem = new PaymentSystemMockCantPay();
+        SupplySystem deliverySystem = new DeliverySystemMockAllPositive();
+        setUp(paymentSystem,deliverySystem);
+        addProductToCart(1);
+        assertFalse(bridge.buyCart(userId,validPayment,validDelivery));
+    }
+    @Test
+    public void buyCartFailDeliverySystemFail() {
+        PaymentSystem paymentSystem= new PaymentSystemMockAllPositive();
+        SupplySystem deliverySystem = new DeliverySystemMockCantDeliver();
+        setUp(paymentSystem,deliverySystem);
+        addProductToCart(1);
+        assertFalse(bridge.buyCart(userId,validPayment,validDelivery));
+    }
+    private void addProductToCart(int amount){
+        bridge.addToUserCart(userId,
+                stores.get(0).getProducts().get(0),amount);
     }
 
 }

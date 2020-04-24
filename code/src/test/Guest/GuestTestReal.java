@@ -112,5 +112,6 @@ public class GuestTestReal extends GuestTest{
         }
         guest.savePurchase(guest.getName());
         assertEquals(storeExpected, store.getPurchases().size());
+        assertTrue(guest.getCart().getBaskets().isEmpty());
     }
 }
