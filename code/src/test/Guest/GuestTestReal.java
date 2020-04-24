@@ -118,7 +118,13 @@ public class GuestTestReal extends GuestTest{
 
     @Test
     public void testGetMyManagedStoresNoStoresSuccess(){
+
         assertNull(guest.getMyManagedStores());
+    }
+
+    @Test
+    public void testGetPermissionsForStoreSuccess(){
+        assertNull(guest.getPermissionsForStore(data.getStore(Data.VALID).getName()));
     }
 
 }

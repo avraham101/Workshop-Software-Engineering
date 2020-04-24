@@ -6,6 +6,7 @@ import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
 import java.util.List;
+import java.util.Set;
 
 public class ServiceAPI {
 
@@ -353,5 +354,10 @@ public class ServiceAPI {
      */
     public Response<List<StoreData>> getStoresManagedByUser(int id){
         return logicManager.getStoresManagedByUser(id);
+    }
+
+    public Response<Set<StorePermissionType>> getPermissionsForStore(int id, String storeName){
+        return logicManager.getPermissionsForStore(id,storeName);
+
     }
 }
