@@ -5,6 +5,7 @@ import Systems.*;
 import Systems.PaymentSystem.*;
 import Systems.SupplySystem.*;
 import Utils.Utils;
+import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
@@ -170,11 +171,11 @@ public class LogicManager {
      * @param password - the user password
      * @return true if the register complete,otherwise false
      */
-    public boolean register(String userName, String password) {
+    public Response<Boolean> register(String userName, String password) {
         loggerSystem.writeEvent("LogicManager","register","the function register user",
                 new Object[] {userName});
         if(!validName(userName) || !validPassword(password)) {
-            return false;
+            return new Response<>(false, OpCode.Invalid_Register_Details);
         }
         Subscribe subscribe =null;
         try {
@@ -182,14 +183,15 @@ public class LogicManager {
         } catch (NoSuchAlgorithmException e) {
             loggerSystem.writeError("Logic manager", "register",
                     "Fail register the user",new Object[]{userName, password});
-            return false;
+            return new Response<>(false, OpCode.Hash_Fail);
         }
 
         if(this.subscribes.isEmpty())
             subscribe = new Admin(userName, password);
         else
             subscribe = new Subscribe(userName, password);
-        return this.subscribes.putIfAbsent(userName,subscribe)==null;
+        boolean output = this.subscribes.putIfAbsent(userName,subscribe)==null;
+        return new Response<>(output, OpCode.Success);
     }
 
     /***
@@ -200,11 +202,11 @@ public class LogicManager {
      * @param password - the user password
      * @return true if the user is logged to the system, otherwise false
      */
-    public boolean login(int id, String userName, String password) {
+    public Response<Boolean> login(int id, String userName, String password) {
         loggerSystem.writeEvent("LogicManager","login",
                 "login a user", new Object[] {userName});
         if(!validName(userName) || !validPassword(password)) {
-            return false;
+            return new Response<>(false, OpCode.Invalid_Login_Details);
         }
         Subscribe subscribe = this.subscribes.get(userName);
         User user= connectedUsers.get(id);
@@ -212,14 +214,15 @@ public class LogicManager {
             try {
                 password = hashSystem.encrypt(password);
                 if (subscribe.getPassword().compareTo(password) == 0) {
-                    return user.login(subscribe);
+                    boolean output = user.login(subscribe);
+                    return new Response<>(output, OpCode.Success);
                 }
             } catch (NoSuchAlgorithmException e) {
                 loggerSystem.writeError("Logic manager", "login",
                         "Fail to login the user",new Object[]{userName, password});
             }
         }
-        return false;
+        return new Response<>(false,OpCode.User_NorFound);
     }
 
     /**
