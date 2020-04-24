@@ -137,7 +137,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     @Test
     public void testWatchPurchases() {
         setUpProductBought();
-        List<Purchase> list = sub.watchMyPurchaseHistory();
+        List<Purchase> list = sub.watchMyPurchaseHistory().getValue();
         assertNotNull(list);
         assertEquals(1,list.size());
     }
@@ -200,7 +200,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      */
     private void testAddPermissionTwiceFail() {
         assertFalse(sub.addPermissions(data.getPermissionTypeList(),
-                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.VALID).getName()));
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -237,7 +237,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         String storeName=p.getStore().getName();
         //add another manager
         p.getOwner().addManager(niv,storeName);
-        assertTrue(sub.removeManager(data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()));
+        assertTrue(sub.removeManager(data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()).getValue());
         assertFalse(niv.getPermissions().containsKey(storeName));
         assertFalse(p.getOwner().getPermissions().containsKey(storeName));
 

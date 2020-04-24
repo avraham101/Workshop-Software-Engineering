@@ -77,7 +77,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     private void testLoginFailAlreadySubscribeLogged() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        assertFalse(logicManager.login(data.getId(Data.VALID2), subscribe.getName(),subscribe.getPassword()));
+        assertFalse(logicManager.login(data.getId(Data.VALID2), subscribe.getName(),subscribe.getPassword()).getValue());
     }
 
     /**
@@ -85,7 +85,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     public void testLoginFailAlreadyUserLogged() {
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
-        assertFalse(logicManager.login(data.getId(Data.VALID), subscribe.getName(),subscribe.getPassword()));
+        assertFalse(logicManager.login(data.getId(Data.VALID), subscribe.getName(),subscribe.getPassword()).getValue());
     }
 
     /**
@@ -113,7 +113,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override @Test
     public void testViewDataStores() {
         super.testViewDataStores();
-        for (StoreData storeData : logicManager.viewStores()) {
+        for (StoreData storeData : logicManager.viewStores().getValue()) {
             assertTrue(stores.containsKey(storeData.getName()));
         }
     }
@@ -125,7 +125,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     public void testViewProductsInStore() {
         setUpProductAdded();
         String storeName = data.getStore(Data.VALID).getName();
-        for (ProductData productData: logicManager.viewProductsInStore(storeName)) {
+        for (ProductData productData: logicManager.viewProductsInStore(storeName).getValue()) {
             assertTrue(stores.get(storeName).getProducts().containsKey(productData.getProductName()));
         }
     }
@@ -139,7 +139,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.PRODUCT_NAME);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertEquals(1,products.size());
     }
@@ -154,7 +154,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.KEY_WORD);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertEquals(1,products.size());
     }
@@ -168,7 +168,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.NONE);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertEquals(1,products.size());
     }
@@ -178,14 +178,14 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     private void testViewSpecificProductSearch(Filter correct, int listSize, Filter wrong) {
         //SUCCESS
-        List<ProductData> products = logicManager.viewSpecificProducts(correct);
+        List<ProductData> products = logicManager.viewSpecificProducts(correct).getValue();
         assertFalse(products.isEmpty()); //sepose to be 1 product valid
         assertEquals(listSize, products.size());
         ProductData result = products.get(0);
         ProductData expected = data.getProductData(Data.VALID);
         assertTrue(data.compareProductData(expected, result));
         //FAIL
-        products = logicManager.viewSpecificProducts(wrong);
+        products = logicManager.viewSpecificProducts(wrong).getValue();
         assertTrue(products.isEmpty());
     }
 
@@ -198,7 +198,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         //SUCCESS ALWAYS
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.NONE);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertFalse(products.isEmpty()); //sepose to be 1 product valid
         assertEquals(1, products.size());
         ProductData result = products.get(0);
@@ -251,7 +251,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     private void testViewSpecificProductFillter(Filter correct, Filter wrong) {
         //SUCCESS
-        List<ProductData> products = logicManager.viewSpecificProducts(correct);
+        List<ProductData> products = logicManager.viewSpecificProducts(correct).getValue();
         assertFalse(products.isEmpty());
         int size = 0;
         for(Store s: stores.values()) {
@@ -259,7 +259,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         }
         assertEquals(size, products.size());
         //FAIL
-        products = logicManager.viewSpecificProducts(wrong);
+        products = logicManager.viewSpecificProducts(wrong).getValue();
         assertTrue(products.isEmpty());
     }
 
@@ -305,7 +305,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     public void testWatchCartDetails() {
         super.testWatchCartDetails();
         ProductData productData = data.getProductData(Data.VALID);
-        CartData cartData = logicManager.watchCartDetails(data.getId(Data.VALID));
+        CartData cartData = logicManager.watchCartDetails(data.getId(Data.VALID)).getValue();
         List<ProductData> list = cartData.getProducts();
         assertEquals(1, list.size());
         assertEquals(list.get(0).getProductName(), productData.getProductName());
@@ -319,7 +319,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     public void testDeleteProductFromCart() {
         setUpProductAddedToCart();
         ProductData productData = data.getProductData(Data.VALID);
-        assertTrue(logicManager.deleteFromCart(data.getId(Data.VALID),productData.getProductName(),productData.getStoreName()));
+        assertTrue(logicManager.deleteFromCart(data.getId(Data.VALID),productData.getProductName(),productData.getStoreName()).getValue());
         Basket basket=currUser.getState().getCart().getBasket(productData.getStoreName());
         for(Product p:basket.getProducts().keySet())
             assertFalse(p.equal(productData));
@@ -333,8 +333,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     public void testEditProductsInCart() {
         setUpProductAddedToCart();
         ProductData productData = data.getProductData(Data.VALID);
-        assertTrue(logicManager.editProductInCart(data.getId(Data.VALID),productData.getProductName(),productData.getStoreName(),2));
-        assertEquals(2, logicManager.watchCartDetails(data.getId(Data.VALID)).getProducts().get(0).getAmount());
+        assertTrue(logicManager.editProductInCart(data.getId(Data.VALID),productData.getProductName(),productData.getStoreName(),2).getValue());
+        assertEquals(2, logicManager.watchCartDetails(data.getId(Data.VALID)).getValue().getProducts().get(0).getAmount());
     }
 
     /**
@@ -355,8 +355,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     private void testAddProductToCartValid() {
         ProductData product = data.getProductData(Data.VALID);
         assertTrue(logicManager.addProductToCart(data.getId(Data.VALID),product.getProductName(),
-                product.getStoreName(), product.getAmount()));
-        assertEquals(1, logicManager.watchCartDetails(data.getId(Data.VALID)).getProducts().size());
+                product.getStoreName(), product.getAmount()).getValue());
+        assertEquals(1, logicManager.watchCartDetails(data.getId(Data.VALID)).getValue().getProducts().size());
     }
 
     /**
@@ -366,7 +366,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     private void testAddProductToCartBasketNull() {
         ProductData product = data.getProductData(Data.WRONG_STORE);
         assertFalse(logicManager.addProductToCart(data.getId(Data.VALID),product.getProductName(),
-                product.getStoreName(), product.getAmount()));
+                product.getStoreName(), product.getAmount()).getValue());
     }
 
     /**
@@ -377,7 +377,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     protected void testSuccessBuyProducts() {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address).getValue());
     }
 
     /**
@@ -386,7 +386,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override @Test
     public void testBuyCart() {
         super.testBuyCart();
-        List<Purchase> purchaseList = this.currUser.getState().watchMyPurchaseHistory();
+        List<Purchase> purchaseList = this.currUser.getState().watchMyPurchaseHistory().getValue();
         for (Purchase purchase: purchaseList) {
             String storeName = purchase.getStoreName();
             Store store = this.stores.get(storeName);
@@ -489,7 +489,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override
     protected void testWriteReviewValid() {
         Review review = data.getReview(Data.VALID);
-        assertTrue(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()));
+        assertTrue(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()).getValue());
         List<Review> reviews = currUser.getState().getReviews();
         assertNotNull(reviews);
         assertEquals(1, reviews.size());
@@ -501,7 +501,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     private void testWriteReviewProductDidntPurchased() {
         Review review = data.getReview(Data.WRONG_PRODUCT);
-        assertFalse(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()));
+        assertFalse(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()).getValue());
     }
 
     /**
@@ -518,7 +518,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     private void testSubscribeAddRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
-        assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(), request.getContent()));
+        assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(), request.getContent()).getValue());
 
         // check request saved in the store and user.
         StoreData storeData = data.getStore(Data.VALID);
@@ -542,7 +542,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override @Test
     public void testWatchPurchaseHistory() {
         setUpBoughtProduct();
-        List<Purchase> purchases = logicManager.watchMyPurchaseHistory(data.getId(Data.VALID));
+        List<Purchase> purchases = logicManager.watchMyPurchaseHistory(data.getId(Data.VALID)).getValue();
         assertNotNull(purchases);
         assertEquals(1,purchases.size());
     }
@@ -560,7 +560,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * test adding product with name that is not unique
      */
     private void testAddProductWithSameName() {
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.SAME_NAME)));
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.SAME_NAME)).getValue());
     }
 
     /**
@@ -574,7 +574,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Permission permission = sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         sub.getPermissions().clear();
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.VALID)));
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.VALID)).getValue());
         sub.getPermissions().put(validStoreName,permission);
         assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
@@ -590,7 +590,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Permission permission = sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         permission.removeType(PermissionType.OWNER);
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.VALID)));
+        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.VALID)).getValue());
         permission.addType(PermissionType.OWNER);
         assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
@@ -616,7 +616,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Permission permission = sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         sub.getPermissions().clear();
-        assertFalse(sub.removeProductFromStore(data.getProductData(Data.VALID).getProductName(),validStoreName));
+        assertFalse(sub.removeProductFromStore(data.getProductData(Data.VALID).getProductName(),validStoreName).getValue());
         sub.getPermissions().put(validStoreName,permission);
         assertTrue(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
@@ -632,7 +632,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Permission permission = sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.removeProductFromStore(data.getProductData(Data.VALID).getProductName(),validStoreName));
+        assertFalse(sub.removeProductFromStore(data.getProductData(Data.VALID).getProductName(),validStoreName).getValue());
         permission.addType(PermissionType.OWNER);
         assertTrue(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
@@ -661,7 +661,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         ProductData pData=data.getProductData(Data.EDIT);
         Store store=permission.getStore();
         sub.getPermissions().clear();
-        assertFalse(sub.editProductFromStore(pData));
+        assertFalse(sub.editProductFromStore(pData).getValue());
         assertFalse(store.getProducts().get(pData.getProductName()).equal(pData));
         sub.getPermissions().put(validStoreName,permission);
     }
@@ -678,7 +678,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         ProductData pData=data.getProductData(Data.EDIT);
         Store store=permission.getStore();
         permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.editProductFromStore(data.getProductData(Data.VALID)));
+        assertFalse(sub.editProductFromStore(data.getProductData(Data.VALID)).getValue());
         assertFalse(store.getProducts().get(pData.getProductName()).equal(pData));
         permission.addType(PermissionType.OWNER);
     }
@@ -699,7 +699,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     protected void testManageOwnerFail() {
         super.testManageOwnerFail();
         String sName=data.getStore(Data.VALID).getName();
-        assertFalse(logicManager.manageOwner(data.getId(Data.VALID),sName,sName));
+        assertFalse(logicManager.manageOwner(data.getId(Data.VALID),sName,sName).getValue());
         assertFalse(stores.get(sName).getPermissions().containsKey(sName));
     }
 
@@ -785,7 +785,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         testAddRequest();
         StoreData storeData = data.getStore(Data.VALID);
         List<Request> excepted = new LinkedList<>(stores.get(storeData.getName()).getRequests().values());
-        List<Request> actual = logicManager.viewStoreRequest(data.getId(Data.VALID), storeData.getName());
+        List<Request> actual = logicManager.viewStoreRequest(data.getId(Data.VALID), storeData.getName()).getValue();
         assertTrue(excepted.containsAll(actual));
     }
 
@@ -793,7 +793,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * part of use case 4.9.1 - view request
      */
     private void testStoreViewRequestFail() {
-        assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), data.getStore(Data.NULL_NAME).getName()).isEmpty());
+        assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), data.getStore(Data.NULL_NAME).getName()).getValue().isEmpty());
     }
 
     /**
@@ -813,7 +813,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Request request = data.getRequest(Data.VALID);
         //check the comment savePurchases
         StoreData storeData = data.getStore(Data.VALID);
-        Request actual = currUser.replayToRequest(request.getStoreName(), request.getId(), "The milk is there, open your eyes!");
+        Request actual = currUser.replayToRequest(request.getStoreName(), request.getId(),
+                "The milk is there, open your eyes!").getValue();
         Request excepted = stores.get(storeData.getName()).getRequests().get(request.getId());
         assertEquals(excepted.getId(),actual.getId());
         assertEquals(excepted.getComment(),actual.getComment());
@@ -824,7 +825,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     private void testReplayRequestFail() {
         Request request = data.getRequest(Data.WRONG_ID);
-        assertNull(logicManager.replayRequest(data.getId(Data.VALID), request.getStoreName(), request.getId(), request.getContent()));
+        assertNull(logicManager.replayRequest(data.getId(Data.VALID), request.getStoreName(), request.getId(), request.getContent()).getValue());
     }
 
     /**
@@ -840,7 +841,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * test use case 4.10 - watch store history from the owner of the store
      */
     protected void testWatchStoreHistorySuccessNotAdmin(){
-        checkValidPurchase(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getStore(Data.VALID).getName()));
+        checkValidPurchase(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -848,14 +849,14 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override
     protected void testWatchUserHistorySuccess() {
-        checkValidPurchase(logicManager.watchUserPurchasesHistory(data.getId(Data.ADMIN), data.getSubscribe(Data.VALID).getName()));
+        checkValidPurchase(logicManager.watchUserPurchasesHistory(data.getId(Data.ADMIN), data.getSubscribe(Data.VALID).getName()).getValue());
     }
 
     /**
      * test use case 6.4.2 user watch history when admin
      */
     protected void testWatchStoreHistorySuccessWhenAdmin() {
-        checkValidPurchase(logicManager.watchStorePurchasesHistory(data.getId(Data.ADMIN), data.getStore(Data.VALID).getName()));
+        checkValidPurchase(logicManager.watchStorePurchasesHistory(data.getId(Data.ADMIN), data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**

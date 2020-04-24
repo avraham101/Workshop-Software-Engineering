@@ -39,9 +39,9 @@ public class ServiceAPI {
      * acceptance test class : RegisterTest
      * @param userName - the user Name
      * @param password - the user password
-     * @return true if the register complete, otherwise false
+     * @return Response with true value if the register complete, otherwise false
      */
-    public boolean register(String userName, String password) {
+    public Response<Boolean> register(String userName, String password) {
         return logicManager.register(userName,password);
     }
 
@@ -50,9 +50,9 @@ public class ServiceAPI {
      * acceptance test class : LoginTest
      * @param userName - the user Name
      * @param password - the user password
-     * @return true if the user is logged to the system, otherwise false
+     * @return Response with true value if the user is logged to the system, otherwise false
      */
-    public boolean login(int id,String userName, String password) {
+    public Response<Boolean> login(int id,String userName, String password) {
         return logicManager.login(id,userName, password);
     }
 
@@ -61,7 +61,7 @@ public class ServiceAPI {
      * acceptance test class : GetStoreInfo
      * @return - details of all the stores data
      */
-    public List<StoreData> viewStores() {
+    public Response<List<StoreData>> viewStores() {
         return logicManager.viewStores();
     }
 
@@ -70,7 +70,7 @@ public class ServiceAPI {
      * @param storeName - the store that owns the products
      * @return - list of ProductData of the products in the store
      */
-    public List<ProductData> viewProductsInStore(String storeName) {
+    public Response<List<ProductData>> viewProductsInStore(String storeName) {
         return logicManager.viewProductsInStore(storeName);
     }
 
@@ -80,7 +80,7 @@ public class ServiceAPI {
      * @param filter - the filter chosen
      * @return - list of products after filer and sorter.
      */
-    public List<ProductData> viewSpasificProducts(Filter filter) {
+    public Response<List<ProductData>> viewSpasificProducts(Filter filter) {
         //filters -> price range, category ,*product rating, *store rating,
         return logicManager.viewSpecificProducts(filter);
     }
@@ -91,7 +91,7 @@ public class ServiceAPI {
      * return the details about a cart
      * @return - the cart details
      */
-    public CartData watchCartDetatils(int id){
+    public Response<CartData> watchCartDetatils(int id){
         return logicManager.watchCartDetails(id);
     }
 
@@ -103,7 +103,7 @@ public class ServiceAPI {
      * @param storeName - the store that sale this product
      * @return - true if the delete work, false if not
      */
-    public boolean deleteFromCart(int id,String productName,String storeName){
+    public Response<Boolean> deleteFromCart(int id,String productName,String storeName){
         return logicManager.deleteFromCart(id,productName, storeName);
     }
 
@@ -115,7 +115,7 @@ public class ServiceAPI {
      * @param newAmount - the new amount
      * @return - true if succeeded, false if not
      */
-    public boolean editProductInCart(int id,String productName,String storeName,int newAmount){
+    public Response<Boolean> editProductInCart(int id,String productName,String storeName,int newAmount){
         return logicManager.editProductInCart(id,productName, storeName, newAmount);
     }
 
@@ -127,7 +127,7 @@ public class ServiceAPI {
      * @param amount - the amount of the product that need to add to the cart
      * @return - true if added, false if not
      */
-    public boolean addProductToCart(int id,String productName,String storeName,int amount){
+    public Response<Boolean> addProductToCart(int id,String productName,String storeName,int amount){
         return logicManager.addProductToCart(id,productName, storeName, amount);
     }
 
@@ -138,7 +138,7 @@ public class ServiceAPI {
      * @param addressToDeliver - the addressToDiliver
      * @return true is the purchase succeeded, otherwise false
      */
-    public boolean purchaseCart(int id,PaymentData paymentData, String addressToDeliver){
+    public Response<Boolean> purchaseCart(int id,PaymentData paymentData, String addressToDeliver){
         return logicManager.purchaseCart(id,paymentData,addressToDeliver);
     }
 
@@ -147,7 +147,7 @@ public class ServiceAPI {
      * acceptance test class : LogoutTest
      * @return true if the user logout
      */
-    public boolean logout(int id){
+    public Response<Boolean> logout(int id){
         return logicManager.logout(id);
     }
 
@@ -157,7 +157,7 @@ public class ServiceAPI {
      * @param storeDetails - the details of the store
      * @return true if store is created
      */
-    public boolean openStore(int id,StoreData storeDetails){
+    public Response<Boolean> openStore(int id,StoreData storeDetails){
         return logicManager.openStore(id,storeDetails);
     }
 
@@ -169,7 +169,7 @@ public class ServiceAPI {
      * @param content - the content name
      * @return true if the review added, otherwise false
      */
-    public boolean writeReview(int id,String storeName,String productName, String content){
+    public Response<Boolean> writeReview(int id,String storeName,String productName, String content){
         return logicManager.addReview(id,storeName,productName, content);
     }
 
@@ -182,7 +182,7 @@ public class ServiceAPI {
      * @return true if the review added, otherwise false
      */
 
-    public boolean writeRequestToStore(int id,String storeName,String content){
+    public Response<Boolean> writeRequestToStore(int id,String storeName,String content){
         return logicManager.addRequest(id,storeName,content);
     }
 
@@ -192,7 +192,7 @@ public class ServiceAPI {
      * the function return the purchase list
      * @return the purchase list
      */
-    public List<Purchase> watchMyPurchaseHistory(int id){
+    public Response<List<Purchase>> watchMyPurchaseHistory(int id){
         return logicManager.watchMyPurchaseHistory(id);
     }
 
@@ -203,7 +203,7 @@ public class ServiceAPI {
      * @param productData - data of product
      * @return if product was added
      */
-    public boolean addProductToStore(int id,ProductData productData){
+    public Response<Boolean> addProductToStore(int id,ProductData productData){
         return logicManager.addProductToStore(id,productData);
     }
 
@@ -215,7 +215,7 @@ public class ServiceAPI {
      * @param storeName - the store name
      * @return if product was removed
      */
-    public boolean removeProductFromStore(int id,String storeName,String productName){
+    public Response<Boolean> removeProductFromStore(int id,String storeName,String productName){
         return logicManager.removeProductFromStore(id,storeName,productName);
     }
 
@@ -226,7 +226,7 @@ public class ServiceAPI {
      * @param productData - data of product
      * @return if product was edited
      */
-    public boolean editProductFromStore(int id,ProductData productData){
+    public Response<Boolean> editProductFromStore(int id,ProductData productData){
         return logicManager.editProductFromStore(id,productData);
     }
 
@@ -238,7 +238,7 @@ public class ServiceAPI {
      * @param userName - name of user
      * @return if new owner was managed
      */
-    public boolean manageOwner(int id,String storeName,String userName){
+    public Response<Boolean> manageOwner(int id,String storeName,String userName){
         return logicManager.manageOwner(id,storeName,userName);
     }
 
@@ -250,7 +250,7 @@ public class ServiceAPI {
      * @param userName - name of user
      * @return if the manger was added
      */
-    public boolean addManagerToStore(int id,String storeName,String userName){
+    public Response<Boolean> addManagerToStore(int id,String storeName,String userName){
         return logicManager.addManager(id,userName,storeName);
     }
 
@@ -263,7 +263,7 @@ public class ServiceAPI {
      * @param userName of user
      * @return
      */
-    public boolean addPermissions(int id,List<PermissionType> permissions, String storeName, String userName){
+    public Response<Boolean> addPermissions(int id,List<PermissionType> permissions, String storeName, String userName){
         return logicManager.addPermissions(id,permissions,storeName,userName);
     }
 
@@ -276,7 +276,7 @@ public class ServiceAPI {
      * @param userName
      * @return if permissions were removed
      */
-    public boolean removePermissions(int id,List<PermissionType> permissions, String storeName, String userName){
+    public Response<Boolean> removePermissions(int id,List<PermissionType> permissions, String storeName, String userName){
         return logicManager.removePermissions(id,permissions,storeName,userName);
     }
 
@@ -288,7 +288,7 @@ public class ServiceAPI {
      * @param storeName
      * @return if the manager was removed and also the managers he managed
      */
-    public boolean removeManager(int id,String userName,String storeName){
+    public Response<Boolean> removeManager(int id,String userName,String storeName){
         return logicManager.removeManager(id,userName,storeName);
     }
 
@@ -299,7 +299,7 @@ public class ServiceAPI {
      * @param storeName
      * @return the request of the store to watch
      */
-    public List<Request> watchRequestsOfStore(int id,String storeName){
+    public Response<List<Request>> watchRequestsOfStore(int id,String storeName){
         return logicManager.viewStoreRequest(id,storeName);
     }
 
@@ -312,7 +312,7 @@ public class ServiceAPI {
      * @param storeName
      * @return the request with the apply
      */
-    public Request answerRequest(int id,int requestId,String content, String storeName){
+    public Response<Request> answerRequest(int id,int requestId,String content, String storeName){
         return logicManager.replayRequest(id,storeName,requestId,content);
     }
 
@@ -322,7 +322,7 @@ public class ServiceAPI {
      * @param storeName - the store name to watch history
      * @return the purchase list
      */
-    public List<Purchase> watchStoreHistory(int id,String storeName){
+    public Response<List<Purchase>> watchStoreHistory(int id,String storeName){
         return logicManager.watchStorePurchasesHistory(id,storeName);
     }
 
@@ -332,7 +332,7 @@ public class ServiceAPI {
      * @param userName - the user that own the purchases
      * @return - list of purchases that of the user
      */
-    public List<Purchase> AdminWatchUserPurchasesHistory(int id,String userName){
+    public Response<List<Purchase>> AdminWatchUserPurchasesHistory(int id,String userName){
         return logicManager.watchUserPurchasesHistory(id,userName);
     }
 
@@ -342,7 +342,7 @@ public class ServiceAPI {
      * @param storeName - the name of the store that own the purchases
      * @return - list of purchases that of the store
      */
-    public List<Purchase> AdminWatchStoreHistory(int id,String storeName){
+    public Response<List<Purchase>> AdminWatchStoreHistory(int id,String storeName){
         return logicManager.watchStorePurchasesHistory(id, storeName);
     }
 

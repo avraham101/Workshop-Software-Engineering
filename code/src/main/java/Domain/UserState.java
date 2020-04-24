@@ -195,14 +195,14 @@ public abstract class UserState {
      * the function return the purchase list
      * @return the purchase list
      */
-    public abstract List<Purchase> watchMyPurchaseHistory();
+    public abstract Response<List<Purchase>> watchMyPurchaseHistory();
 
     /**
      * use case 4.1.1 - add product
      * @param productData
      * @return
      */
-    public abstract boolean addProductToStore(ProductData productData);
+    public abstract Response<Boolean> addProductToStore(ProductData productData);
 
     /**
      * use case 4.1.2 - remove product
@@ -210,22 +210,22 @@ public abstract class UserState {
      * @param productName
      * @return
      */
-    public abstract boolean removeProductFromStore(String storeName, String productName);
+    public abstract Response<Boolean> removeProductFromStore(String storeName, String productName);
 
     /**
      * use case 4.1.3 - edit product
      * @param productData
      * @return
      */
-    public abstract boolean editProductFromStore(ProductData productData);
+    public abstract Response<Boolean> editProductFromStore(ProductData productData);
 
     /**
-     * use case 4.3 - add manager
+     * use case 4.5 - add manager
      * @param subscribe
      * @param storeName
      * @return
      */
-    public abstract boolean addManager(Subscribe subscribe, String storeName);
+    public abstract Response<Boolean> addManager(Subscribe subscribe, String storeName);
 
     /**
      * use case 4.6.1 - add permissions
@@ -234,7 +234,7 @@ public abstract class UserState {
      * @param userName
      * @return
      */
-    public abstract boolean addPermissions(List<PermissionType> permissions, String storeName, String userName);
+    public abstract Response<Boolean> addPermissions(List<PermissionType> permissions, String storeName, String userName);
 
     /**
      * use case 4.6.2 - remove permissions
@@ -243,7 +243,7 @@ public abstract class UserState {
      * @param userName
      * @return
      */
-    public abstract boolean removePermissions(List<PermissionType> permissions, String storeName, String userName);
+    public abstract Response<Boolean> removePermissions(List<PermissionType> permissions, String storeName, String userName);
 
     /**
      * use case 4.7 - remove manager
@@ -251,7 +251,7 @@ public abstract class UserState {
      * @param storeName
      * @return
      */
-    public abstract boolean removeManager(String userName, String storeName);
+    public abstract Response<Boolean> removeManager(String userName, String storeName);
 
     /**
      * use case 4.9.1 - view request
@@ -266,7 +266,7 @@ public abstract class UserState {
      * @param content
      * @return Request if replay, null else
      */
-    public abstract Request replayToRequest(String storeName, int requestID, String content);
+    public abstract Response<Request> replayToRequest(String storeName, int requestID, String content);
 
 
     /**
