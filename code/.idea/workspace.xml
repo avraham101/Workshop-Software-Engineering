@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f0366da3-85c5-4ead-a08b-f6642ede6572" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/DataAPI/StatusTypeData.java" afterDir="false" />
+    <list default="true" id="f0366da3-85c5-4ead-a08b-f6642ede6572" name="Default Changelist" comment="get my status code+test #152">
+      <change afterPath="$PROJECT_DIR$/src/main/java/DataAPI/OpCode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/DataAPI/Response.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Guest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Guest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/LogicManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Store.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Subscribe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Subscribe.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/BuyCartTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTests/BuyCartTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/Admin/AdminTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Admin/AdminTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/UserState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/UserState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AcceptanceTests/AcceptanceTestsBridge/AcceptanceTestsRealBridge.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/Guest/GuestTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Guest/GuestTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerAllStubsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerRealTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerRealTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerUserStubTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/LogicManagerTests/LogicManagerUserStubTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/Store/StoreTestsAllStubs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Store/StoreTestsAllStubs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/Stubs/GuestStub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Stubs/GuestStub.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/Stubs/StoreStub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Stubs/StoreStub.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/Stubs/SubscribeStub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Stubs/SubscribeStub.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/Stubs/UserStub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Stubs/UserStub.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/UserTests/UserAllStubsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/UserTests/UserRealTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/UserTests/UserRealTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,8 +39,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Domain/LogicManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="419">
-              <caret line="961" selection-start-line="961" selection-end-line="961" />
+            <state relative-caret-position="24450">
+              <caret line="992" selection-start-line="992" selection-end-line="992" />
             </state>
           </provider>
         </entry>
@@ -37,26 +54,78 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Subscribe.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1560">
-              <caret line="476" column="17" selection-start-line="476" selection-start-column="17" selection-end-line="476" selection-end-column="17" />
+            <state relative-caret-position="475">
+              <caret line="492" lean-forward="true" selection-start-line="492" selection-end-line="492" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1016#1017#0" expanded="true" />
+                <element signature="e#1064#1065#0" expanded="true" />
+                <element signature="e#2000#2001#0" expanded="true" />
+                <element signature="e#2028#2029#0" expanded="true" />
+                <element signature="e#3692#3693#0" expanded="true" />
+                <element signature="e#3730#3731#0" expanded="true" />
+                <element signature="e#5195#5196#0" expanded="true" />
+                <element signature="e#5227#5228#0" expanded="true" />
+                <element signature="e#13762#13763#0" expanded="true" />
+                <element signature="e#13819#13820#0" expanded="true" />
+                <element signature="e#13997#13998#0" expanded="true" />
+                <element signature="e#14025#14026#0" expanded="true" />
+                <element signature="e#14157#14158#0" expanded="true" />
+                <element signature="e#14188#14189#0" expanded="true" />
+                <element signature="e#14237#14238#0" expanded="true" />
+                <element signature="e#14268#14269#0" expanded="true" />
+                <element signature="e#14316#14317#0" expanded="true" />
+                <element signature="e#14356#14357#0" expanded="true" />
+                <element signature="e#14404#14405#0" expanded="true" />
+                <element signature="e#14444#14445#0" expanded="true" />
+                <element signature="e#14513#14514#0" expanded="true" />
+                <element signature="e#14547#14548#0" expanded="true" />
+                <element signature="e#14632#14633#0" expanded="true" />
+                <element signature="e#14678#14679#0" expanded="true" />
+                <element signature="e#14735#14736#0" expanded="true" />
+                <element signature="e#14778#14779#0" expanded="true" />
+                <element signature="e#14967#14968#0" expanded="true" />
+                <element signature="e#14999#15000#0" expanded="true" />
+                <element signature="e#15056#15057#0" expanded="true" />
+                <element signature="e#15098#15099#0" expanded="true" />
+                <element signature="e#15140#15141#0" expanded="true" />
+                <element signature="e#15171#15172#0" expanded="true" />
+                <element signature="e#15226#15227#0" expanded="true" />
+                <element signature="e#15266#15267#0" expanded="true" />
+                <element signature="e#15310#15311#0" expanded="true" />
+                <element signature="e#15342#15343#0" expanded="true" />
+                <element signature="e#15400#15401#0" expanded="true" />
+                <element signature="e#15442#15443#0" expanded="true" />
+                <element signature="e#15496#15497#0" expanded="true" />
+                <element signature="e#15526#15527#0" expanded="true" />
+                <element signature="e#15578#15579#0" expanded="true" />
+                <element signature="e#15616#15617#0" expanded="true" />
+                <element signature="e#15663#15664#0" expanded="true" />
+                <element signature="e#15699#15700#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="93">
-              <caret line="245" column="2" lean-forward="true" selection-start-line="245" selection-start-column="2" selection-end-line="248" selection-end-column="5" />
+            <state relative-caret-position="8300">
+              <caret line="347" selection-start-line="347" selection-end-line="347" />
               <folding>
-                <element signature="e#7786#7787#0" expanded="true" />
-                <element signature="e#7854#7855#0" expanded="true" />
+                <element signature="e#933#934#0" expanded="true" />
+                <element signature="e#986#987#0" expanded="true" />
+                <element signature="e#1998#1999#0" expanded="true" />
+                <element signature="e#2046#2047#0" expanded="true" />
+                <element signature="e#3063#3064#0" expanded="true" />
+                <element signature="e#3119#3120#0" expanded="true" />
+                <element signature="e#5249#5250#0" expanded="true" />
+                <element signature="e#5295#5296#0" expanded="true" />
+                <element signature="e#6815#6816#0" expanded="true" />
+                <element signature="e#6877#6878#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -71,14 +140,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/Admin/AdminTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="499">
-              <caret line="44" column="41" selection-start-line="44" selection-start-column="41" selection-end-line="44" selection-end-column="41" />
+            <state relative-caret-position="800">
+              <caret line="48" selection-start-line="48" selection-end-line="48" />
               <folding>
                 <element signature="e#966#967#0" expanded="true" />
-                <element signature="e#1036#1037#0" expanded="true" />
+                <element signature="e#1034#1035#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -100,7 +169,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
+            <state relative-caret-position="875">
               <caret line="54" column="19" selection-start-line="54" selection-start-column="19" selection-end-line="54" selection-end-column="19" />
             </state>
           </provider>
@@ -145,7 +214,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="AcceptanceTests" />
+        <entry key="$PROJECT_DIR$/.." value="GetMyPermission" />
       </map>
     </option>
   </component>
@@ -177,6 +246,7 @@
         <option value="$PROJECT_DIR$/src/main/java/Domain/Subscribe.java" />
         <option value="$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java" />
         <option value="$PROJECT_DIR$/src/test/Admin/AdminTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java" />
       </list>
     </option>
   </component>
@@ -198,6 +268,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -228,7 +299,7 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="Domain" type="462c0819:PsiDirectoryNode" />
+              <item name="Service" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="code" type="b2602c69:ProjectViewProjectNode" />
@@ -298,13 +369,12 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587741978762" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587743218839" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
@@ -470,7 +540,8 @@
       <workItem from="1587627368185" duration="2906000" />
       <workItem from="1587649534031" duration="113000" />
       <workItem from="1587649697303" duration="586000" />
-      <workItem from="1587733989801" duration="5518000" />
+      <workItem from="1587733989801" duration="6858000" />
+      <workItem from="1587743530865" duration="389000" />
     </task>
     <task id="LOCAL-00007" summary="Fixed Guest.">
       <created>1587589612550</created>
@@ -542,12 +613,12 @@
       <option name="project" value="LOCAL" />
       <updated>1587637937950</updated>
     </task>
-    <task id="LOCAL-00017" summary="commit for pull">
-      <created>1586203224120</created>
+    <task id="LOCAL-00017" summary="get my status code+test #152">
+      <created>1587742135112</created>
       <option name="number" value="00017" />
       <option name="presentableId" value="LOCAL-00017" />
       <option name="project" value="LOCAL" />
-      <updated>1586203224120</updated>
+      <updated>1587742135113</updated>
     </task>
     <task id="LOCAL-00018" summary="after the meeting">
       <created>1586205869783</created>
@@ -773,19 +844,10 @@
       <option name="project" value="LOCAL" />
       <updated>1587583806768</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="LogicManagerRealTest - 2020.04.23 at 12h 59m 35s.xml">
-      <configuration name="LogicManagerRealTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="AcceptanceTests_AcceptanceTests_in_code - 2020.04.23 at 13h 30m 20s.xml">
-      <configuration name="AcceptanceTests.AcceptanceTests in code" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_in_code - 2020.04.23 at 13h 30m 35s.xml">
-      <configuration name="All in code" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="SubscribeRealTest_testGetStatusRegularSuccess - 2020.04.24 at 18h 11m 05s.xml">
       <configuration name="SubscribeRealTest.testGetStatusRegularSuccess" configurationId="JUnit" />
     </history-entry>
@@ -807,9 +869,18 @@
     <history-entry file="SubscribeRealTest_testGetStatusManagerSuccess - 2020.04.24 at 18h 15m 38s.xml">
       <configuration name="SubscribeRealTest.testGetStatusManagerSuccess" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="AdminTest_testGetStatusRegularSuccess - 2020.04.24 at 18h 24m 35s.xml">
+      <configuration name="AdminTest.testGetStatusRegularSuccess" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="All_in_code - 2020.04.24 at 18h 26m 31s.xml">
+      <configuration name="All in code" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="All_in_code - 2020.04.24 at 18h 45m 34s.xml">
+      <configuration name="All in code" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21301000" />
+    <option name="totallyTimeSpent" value="23030000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -824,7 +895,7 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.30939597" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.31409395" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -835,13 +906,13 @@
       <window_info anchor="bottom" id="Messages" order="0" weight="0.031161472" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.3285968" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.66477734" visible="true" weight="0.11898017" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.66477734" weight="0.11898017" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.388102" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3286119" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="9" weight="0.0" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.3286119" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3285968" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" weight="0.3285968" />
@@ -910,7 +981,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Merge branch 'AcceptanceTests' of https://github.com/avraham101/Workshop-Software-Engineering into AcceptanceTests&#10;&#10;# Conflicts:&#10;#&#9;code/src/test/AcceptanceTests/AcceptanceTestDataObjects/ApplicationToStoreTestData.java" />
     <MESSAGE value="removed payment system, and purchase system&#10;from store.&#10;use case #33" />
     <MESSAGE value="LogicManger All Stubs test use case #33" />
     <MESSAGE value="LogicManger tests use case #33" />
@@ -935,12 +1005,13 @@
     <MESSAGE value="finish use case 2.8 fixed guest test , tal noticed." />
     <MESSAGE value="fixed code 2.5" />
     <MESSAGE value="merge commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="merge commit" />
+    <MESSAGE value="get my status code+test #152" />
+    <option name="LAST_COMMIT_MESSAGE" value="get my status code+test #152" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="595" height="374" key="Git.Branch.Popup" />
-    <state width="595" height="374" key="Git.Branch.Popup/1920.1080" />
-    <state width="595" height="374" key="Git.Branch.Popup@1920.1080@120dpi" />
+    <state width="605" height="385" key="Git.Branch.Popup" />
+    <state width="605" height="385" key="Git.Branch.Popup/1920.1080" />
+    <state width="605" height="385" key="Git.Branch.Popup@1920.1080@120dpi" />
     <state width="474" height="297" key="Git.Branch.Popup@1920.1080@144dpi" />
   </component>
   <component name="editorHistoryManager">
@@ -1049,25 +1120,6 @@
             <element signature="method#testCancelCart#0;class#CartTest#0" />
             <element signature="method#amountProductInStore#0;class#CartTest#0" />
             <element signature="method#testSavePurchases#0;class#CartTest#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="141" column="34" selection-start-line="141" selection-start-column="34" selection-end-line="141" selection-end-column="34" />
-          <folding>
-            <element signature="e#933#934#0" expanded="true" />
-            <element signature="e#986#987#0" expanded="true" />
-            <element signature="e#1286#1287#0" expanded="true" />
-            <element signature="e#1349#1350#0" expanded="true" />
-            <element signature="e#1659#1660#0" expanded="true" />
-            <element signature="e#1723#1724#0" expanded="true" />
-            <element signature="e#1928#1929#0" expanded="true" />
-            <element signature="e#1976#1977#0" expanded="true" />
-            <element signature="e#2963#2964#0" expanded="true" />
-            <element signature="e#3019#3020#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1226,24 +1278,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="25" column="4" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="4" />
+          <folding>
+            <element signature="e#7786#7787#0" expanded="true" />
+            <element signature="e#7854#7855#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Domain/LogicManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="419">
-          <caret line="961" selection-start-line="961" selection-end-line="961" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/DataAPI/StatusTypeData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="2" column="21" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="54" column="19" selection-start-line="54" selection-start-column="19" selection-end-line="54" selection-end-column="19" />
+        <state relative-caret-position="24450">
+          <caret line="992" selection-start-line="992" selection-end-line="992" />
         </state>
       </provider>
     </entry>
@@ -1254,10 +1303,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Service/ServiceAPI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8300">
+          <caret line="347" selection-start-line="347" selection-end-line="347" />
+          <folding>
+            <element signature="e#933#934#0" expanded="true" />
+            <element signature="e#986#987#0" expanded="true" />
+            <element signature="e#1998#1999#0" expanded="true" />
+            <element signature="e#2046#2047#0" expanded="true" />
+            <element signature="e#3063#3064#0" expanded="true" />
+            <element signature="e#3119#3120#0" expanded="true" />
+            <element signature="e#5249#5250#0" expanded="true" />
+            <element signature="e#5295#5296#0" expanded="true" />
+            <element signature="e#6815#6816#0" expanded="true" />
+            <element signature="e#6877#6878#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/Data/TestData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="525">
           <caret line="30" column="11" selection-start-line="30" selection-start-column="11" selection-end-line="30" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/Admin/AdminTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="800">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
+          <folding>
+            <element signature="e#966#967#0" expanded="true" />
+            <element signature="e#1034#1035#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1272,34 +1351,70 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeAllStubsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="875">
+          <caret line="54" column="19" selection-start-line="54" selection-start-column="19" selection-end-line="54" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/DataAPI/StatusTypeData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="2" column="21" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Domain/Subscribe.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1560">
-          <caret line="476" column="17" selection-start-line="476" selection-start-column="17" selection-end-line="476" selection-end-column="17" />
+        <state relative-caret-position="475">
+          <caret line="492" lean-forward="true" selection-start-line="492" selection-end-line="492" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/Subscribe/SubscribeRealTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="93">
-          <caret line="245" column="2" lean-forward="true" selection-start-line="245" selection-start-column="2" selection-end-line="248" selection-end-column="5" />
-          <folding>
-            <element signature="e#7786#7787#0" expanded="true" />
-            <element signature="e#7854#7855#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/Admin/AdminTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="499">
-          <caret line="44" column="41" selection-start-line="44" selection-start-column="41" selection-end-line="44" selection-end-column="41" />
-          <folding>
-            <element signature="e#966#967#0" expanded="true" />
-            <element signature="e#1036#1037#0" expanded="true" />
+            <element signature="e#1016#1017#0" expanded="true" />
+            <element signature="e#1064#1065#0" expanded="true" />
+            <element signature="e#2000#2001#0" expanded="true" />
+            <element signature="e#2028#2029#0" expanded="true" />
+            <element signature="e#3692#3693#0" expanded="true" />
+            <element signature="e#3730#3731#0" expanded="true" />
+            <element signature="e#5195#5196#0" expanded="true" />
+            <element signature="e#5227#5228#0" expanded="true" />
+            <element signature="e#13762#13763#0" expanded="true" />
+            <element signature="e#13819#13820#0" expanded="true" />
+            <element signature="e#13997#13998#0" expanded="true" />
+            <element signature="e#14025#14026#0" expanded="true" />
+            <element signature="e#14157#14158#0" expanded="true" />
+            <element signature="e#14188#14189#0" expanded="true" />
+            <element signature="e#14237#14238#0" expanded="true" />
+            <element signature="e#14268#14269#0" expanded="true" />
+            <element signature="e#14316#14317#0" expanded="true" />
+            <element signature="e#14356#14357#0" expanded="true" />
+            <element signature="e#14404#14405#0" expanded="true" />
+            <element signature="e#14444#14445#0" expanded="true" />
+            <element signature="e#14513#14514#0" expanded="true" />
+            <element signature="e#14547#14548#0" expanded="true" />
+            <element signature="e#14632#14633#0" expanded="true" />
+            <element signature="e#14678#14679#0" expanded="true" />
+            <element signature="e#14735#14736#0" expanded="true" />
+            <element signature="e#14778#14779#0" expanded="true" />
+            <element signature="e#14967#14968#0" expanded="true" />
+            <element signature="e#14999#15000#0" expanded="true" />
+            <element signature="e#15056#15057#0" expanded="true" />
+            <element signature="e#15098#15099#0" expanded="true" />
+            <element signature="e#15140#15141#0" expanded="true" />
+            <element signature="e#15171#15172#0" expanded="true" />
+            <element signature="e#15226#15227#0" expanded="true" />
+            <element signature="e#15266#15267#0" expanded="true" />
+            <element signature="e#15310#15311#0" expanded="true" />
+            <element signature="e#15342#15343#0" expanded="true" />
+            <element signature="e#15400#15401#0" expanded="true" />
+            <element signature="e#15442#15443#0" expanded="true" />
+            <element signature="e#15496#15497#0" expanded="true" />
+            <element signature="e#15526#15527#0" expanded="true" />
+            <element signature="e#15578#15579#0" expanded="true" />
+            <element signature="e#15616#15617#0" expanded="true" />
+            <element signature="e#15663#15664#0" expanded="true" />
+            <element signature="e#15699#15700#0" expanded="true" />
           </folding>
         </state>
       </provider>

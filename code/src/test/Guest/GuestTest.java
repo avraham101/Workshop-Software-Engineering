@@ -2,10 +2,7 @@ package Guest;
 
 import Data.Data;
 import Data.TestData;
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Domain.*;
 import Stubs.CartStub;
 import Stubs.SubscribeStub;
@@ -164,7 +161,7 @@ public class GuestTest {
      */
     @Test
     public void testAddProductToStore(){
-        assertFalse(guest.addProductToStore(data.getProductData(Data.VALID)));
+        assertFalse(guest.addProductToStore(data.getProductData(Data.VALID)).getValue());
     }
 
     /**
@@ -172,7 +169,7 @@ public class GuestTest {
      */
     @Test
     public void testEditProductInStore() {
-        assertFalse(guest.editProductFromStore(data.getProductData(Data.VALID)));
+        assertFalse(guest.editProductFromStore(data.getProductData(Data.VALID)).getValue());
     }
 
     /**
@@ -181,7 +178,7 @@ public class GuestTest {
     @Test
     public void testRemoveProductInStore() {
         ProductData productData = data.getProductData(Data.VALID);
-        assertFalse(guest.removeProductFromStore(productData.getStoreName(),productData.getProductName()));
+        assertFalse(guest.removeProductFromStore(productData.getStoreName(),productData.getProductName()).getValue());
     }
 
     /**
@@ -191,7 +188,7 @@ public class GuestTest {
     public void testAddManager() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         StoreData storeData = data.getStore(Data.VALID);
-        assertFalse(guest.addManager(subscribe, storeData.getName()));
+        assertFalse(guest.addManager(subscribe, storeData.getName()).getValue());
     }
 
     /**
@@ -201,6 +198,6 @@ public class GuestTest {
     public void testAddPermission() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         StoreData storeData = data.getStore(Data.VALID);
-        assertFalse(guest.addPermissions(data.getPermissionTypeList(),storeData.getName(),subscribe.getName()));
+        assertFalse(guest.addPermissions(data.getPermissionTypeList(),storeData.getName(),subscribe.getName()).getValue());
     }
 }
