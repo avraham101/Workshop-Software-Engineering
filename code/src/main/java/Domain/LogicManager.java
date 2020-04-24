@@ -721,20 +721,20 @@ public class LogicManager {
      * @param content the content of the request
      * @return true if succeeded to add request to store
      */
-    public boolean addRequest(int id,String storeName, String content) {
+    public Response<Boolean> addRequest(int id,String storeName, String content) {
         loggerSystem.writeEvent("LogicManager","addRequest",
                 "add a request to the store", new Object[] {storeName, content});
         if (storeName == null || content == null || !stores.containsKey(storeName))
-            return false;
+            return new Response<>(false,OpCode.Invalid_Request);
         Store dest = stores.get(storeName);
         User current = connectedUsers.get(id);
         int requestId = requestIdGenerator.incrementAndGet(); // generate request number sync
         Request request = current.addRequest(requestId, storeName, content);
         if (request == null) {
-            return false;
+            return new Response<>(false,OpCode.Null_Request);
         }
         dest.addRequest(request);
-        return true;
+        return new Response<>(true,OpCode.Success);
     }
 
     /**

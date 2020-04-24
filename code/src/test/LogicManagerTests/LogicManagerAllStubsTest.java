@@ -982,7 +982,7 @@ public class LogicManagerAllStubsTest {
      */
      private void testAddRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
-        assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(),request.getContent()));
+        assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(),request.getContent()).getValue());
     }
 
     /**
@@ -992,7 +992,7 @@ public class LogicManagerAllStubsTest {
     public void testAddRequestWrongName() {
         setUpOpenedStore();
         Request request1 = data.getRequest(Data.WRONG_STORE);
-        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request1.getStoreName(), request1.getContent()));
+        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request1.getStoreName(), request1.getContent()).getValue());
     }
 
     /**
@@ -1002,7 +1002,7 @@ public class LogicManagerAllStubsTest {
     public void testAddRequestNullName() {
         setUpOpenedStore();
         Request request2 = data.getRequest(Data.NULL_NAME);
-        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request2.getStoreName(), request2.getContent()));
+        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request2.getStoreName(), request2.getContent()).getValue());
     }
 
     /**
@@ -1012,7 +1012,7 @@ public class LogicManagerAllStubsTest {
     public void testAddRequestContentNull() {
         setUpOpenedStore();
         Request request2 = data.getRequest(Data.NULL_CONTENT);
-        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request2.getStoreName(), request2.getContent()));
+        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request2.getStoreName(), request2.getContent()).getValue());
     }
 
     /**

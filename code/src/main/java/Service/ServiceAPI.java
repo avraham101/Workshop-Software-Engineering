@@ -182,7 +182,7 @@ public class ServiceAPI {
      * @return true if the review added, otherwise false
      */
 
-    public boolean writeRequestToStore(int id,String storeName,String content){
+    public Response<Boolean> writeRequestToStore(int id,String storeName,String content){
         return logicManager.addRequest(id,storeName,content);
     }
 

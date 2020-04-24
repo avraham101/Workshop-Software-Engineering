@@ -156,7 +156,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-3.5---------------------------------//
     @Override
     public boolean sendApplicationToStore(int id, String storeName, String message) {
-        return serviceAPI.writeRequestToStore(id,storeName,message);
+        return serviceAPI.writeRequestToStore(id,storeName,message).getValue();
     }
     //---------------------------Use-Case-3.5---------------------------------//
 

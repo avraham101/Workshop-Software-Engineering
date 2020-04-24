@@ -518,7 +518,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     private void testSubscribeAddRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
-        assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(), request.getContent()));
+        assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(), request.getContent()).getValue());
 
         // check request saved in the store and user.
         StoreData storeData = data.getStore(Data.VALID);
