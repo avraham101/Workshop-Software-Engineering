@@ -91,7 +91,7 @@ public class ServiceAPI {
      * return the details about a cart
      * @return - the cart details
      */
-    public CartData watchCartDetatils(int id){
+    public Response<CartData> watchCartDetatils(int id){
         return logicManager.watchCartDetails(id);
     }
 
@@ -103,7 +103,7 @@ public class ServiceAPI {
      * @param storeName - the store that sale this product
      * @return - true if the delete work, false if not
      */
-    public boolean deleteFromCart(int id,String productName,String storeName){
+    public Response<Boolean> deleteFromCart(int id,String productName,String storeName){
         return logicManager.deleteFromCart(id,productName, storeName);
     }
 
@@ -115,7 +115,7 @@ public class ServiceAPI {
      * @param newAmount - the new amount
      * @return - true if succeeded, false if not
      */
-    public boolean editProductInCart(int id,String productName,String storeName,int newAmount){
+    public Response<Boolean> editProductInCart(int id,String productName,String storeName,int newAmount){
         return logicManager.editProductInCart(id,productName, storeName, newAmount);
     }
 
@@ -127,7 +127,7 @@ public class ServiceAPI {
      * @param amount - the amount of the product that need to add to the cart
      * @return - true if added, false if not
      */
-    public boolean addProductToCart(int id,String productName,String storeName,int amount){
+    public Response<Boolean> addProductToCart(int id,String productName,String storeName,int amount){
         return logicManager.addProductToCart(id,productName, storeName, amount);
     }
 

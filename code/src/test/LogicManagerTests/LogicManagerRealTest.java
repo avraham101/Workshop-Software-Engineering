@@ -305,7 +305,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     public void testWatchCartDetails() {
         super.testWatchCartDetails();
         ProductData productData = data.getProductData(Data.VALID);
-        CartData cartData = logicManager.watchCartDetails(data.getId(Data.VALID));
+        CartData cartData = logicManager.watchCartDetails(data.getId(Data.VALID)).getValue();
         List<ProductData> list = cartData.getProducts();
         assertEquals(1, list.size());
         assertEquals(list.get(0).getProductName(), productData.getProductName());
@@ -319,7 +319,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     public void testDeleteProductFromCart() {
         setUpProductAddedToCart();
         ProductData productData = data.getProductData(Data.VALID);
-        assertTrue(logicManager.deleteFromCart(data.getId(Data.VALID),productData.getProductName(),productData.getStoreName()));
+        assertTrue(logicManager.deleteFromCart(data.getId(Data.VALID),productData.getProductName(),productData.getStoreName()).getValue());
         Basket basket=currUser.getState().getCart().getBasket(productData.getStoreName());
         for(Product p:basket.getProducts().keySet())
             assertFalse(p.equal(productData));
@@ -333,8 +333,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     public void testEditProductsInCart() {
         setUpProductAddedToCart();
         ProductData productData = data.getProductData(Data.VALID);
-        assertTrue(logicManager.editProductInCart(data.getId(Data.VALID),productData.getProductName(),productData.getStoreName(),2));
-        assertEquals(2, logicManager.watchCartDetails(data.getId(Data.VALID)).getProducts().get(0).getAmount());
+        assertTrue(logicManager.editProductInCart(data.getId(Data.VALID),productData.getProductName(),productData.getStoreName(),2).getValue());
+        assertEquals(2, logicManager.watchCartDetails(data.getId(Data.VALID)).getValue().getProducts().get(0).getAmount());
     }
 
     /**
@@ -355,8 +355,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     private void testAddProductToCartValid() {
         ProductData product = data.getProductData(Data.VALID);
         assertTrue(logicManager.addProductToCart(data.getId(Data.VALID),product.getProductName(),
-                product.getStoreName(), product.getAmount()));
-        assertEquals(1, logicManager.watchCartDetails(data.getId(Data.VALID)).getProducts().size());
+                product.getStoreName(), product.getAmount()).getValue());
+        assertEquals(1, logicManager.watchCartDetails(data.getId(Data.VALID)).getValue().getProducts().size());
     }
 
     /**
@@ -366,7 +366,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     private void testAddProductToCartBasketNull() {
         ProductData product = data.getProductData(Data.WRONG_STORE);
         assertFalse(logicManager.addProductToCart(data.getId(Data.VALID),product.getProductName(),
-                product.getStoreName(), product.getAmount()));
+                product.getStoreName(), product.getAmount()).getValue());
     }
 
     /**

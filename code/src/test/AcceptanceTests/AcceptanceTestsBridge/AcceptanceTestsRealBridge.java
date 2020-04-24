@@ -82,23 +82,23 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-2.7---------------------------------//
     @Override
     public CartTestData getUsersCart(int id) {
-        CartData cartData = serviceAPI.watchCartDetatils(id);
+        CartData cartData = serviceAPI.watchCartDetatils(id).getValue();
         return buildCartTestData(cartData);
     }
 
     @Override
     public boolean deleteFromUserCart(int id, ProductTestData productToDelete) {
-        return serviceAPI.deleteFromCart(id,productToDelete.getProductName(),productToDelete.getStoreName());
+        return serviceAPI.deleteFromCart(id,productToDelete.getProductName(),productToDelete.getStoreName()).getValue();
     }
 
     @Override
     public boolean changeUserAmountOfProductInCart(int id, ProductTestData productToChangeAmount, int newAmount) {
-        return serviceAPI.editProductInCart(id,productToChangeAmount.getProductName(),productToChangeAmount.getStoreName(),newAmount);
+        return serviceAPI.editProductInCart(id,productToChangeAmount.getProductName(),productToChangeAmount.getStoreName(),newAmount).getValue();
     }
 
     @Override
     public boolean addToUserCart(int id, ProductTestData productToAdd, int amount) {
-        return serviceAPI.addProductToCart(id,productToAdd.getProductName(),productToAdd.getStoreName(),amount);
+        return serviceAPI.addProductToCart(id,productToAdd.getProductName(),productToAdd.getStoreName(),amount).getValue();
     }
     //---------------------------Use-Case-2.7---------------------------------//
 
