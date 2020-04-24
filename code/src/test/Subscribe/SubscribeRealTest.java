@@ -2,6 +2,7 @@ package Subscribe;
 
 import Data.*;
 import DataAPI.ProductData;
+import DataAPI.StatusTypeData;
 import DataAPI.StoreData;
 import Domain.*;
 import org.junit.Before;
@@ -240,6 +241,17 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         assertFalse(niv.getPermissions().containsKey(storeName));
         assertFalse(p.getOwner().getPermissions().containsKey(storeName));
 
+    }
+
+    @Test
+    public void  testGetStatusRegularSuccess(){
+        assertEquals(StatusTypeData.REGULAR,sub.getStatus());
+    }
+
+    @Test
+    public void testGetStatusManagerSuccess(){
+        sub.openStore(data.getStore(Data.VALID));
+        assertEquals(StatusTypeData.MANAGER,sub.getStatus());
     }
 
 }
