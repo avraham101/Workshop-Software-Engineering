@@ -322,7 +322,7 @@ public class ServiceAPI {
      * @param storeName - the store name to watch history
      * @return the purchase list
      */
-    public List<Purchase> watchStoreHistory(int id,String storeName){
+    public Response<List<Purchase>> watchStoreHistory(int id,String storeName){
         return logicManager.watchStorePurchasesHistory(id,storeName);
     }
 
@@ -332,7 +332,7 @@ public class ServiceAPI {
      * @param userName - the user that own the purchases
      * @return - list of purchases that of the user
      */
-    public List<Purchase> AdminWatchUserPurchasesHistory(int id,String userName){
+    public Response<List<Purchase>> AdminWatchUserPurchasesHistory(int id,String userName){
         return logicManager.watchUserPurchasesHistory(id,userName);
     }
 
@@ -342,7 +342,7 @@ public class ServiceAPI {
      * @param storeName - the name of the store that own the purchases
      * @return - list of purchases that of the store
      */
-    public List<Purchase> AdminWatchStoreHistory(int id,String storeName){
+    public Response<List<Purchase>> AdminWatchStoreHistory(int id,String storeName){
         return logicManager.watchStorePurchasesHistory(id, storeName);
     }
 

@@ -1536,14 +1536,14 @@ public class LogicManagerAllStubsTest {
      * test user that not exist on users map
      */
     private void testWatchUserHistoryUserNotExist() {
-        assertNull(logicManager.watchUserPurchasesHistory(data.getId(Data.VALID), data.getStore(Data.VALID).getName()));
+        assertNull(logicManager.watchUserPurchasesHistory(data.getId(Data.VALID), data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
      * test success
      */
     protected void testWatchUserHistorySuccess() {
-        assertNotNull(logicManager.watchUserPurchasesHistory(data.getId(Data.ADMIN),data.getSubscribe(Data.VALID).getName()));
+        assertNotNull(logicManager.watchUserPurchasesHistory(data.getId(Data.ADMIN),data.getSubscribe(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -1560,14 +1560,14 @@ public class LogicManagerAllStubsTest {
      * test store that not exist on users map
      */
     private void testWatchStoreHistoryStoreNotExist() {
-        assertNull(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getSubscribe(Data.VALID).getName()));
+        assertNull(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getSubscribe(Data.VALID).getName()).getValue());
     }
 
     /**
      * test success
      */
     protected void testWatchStoreHistorySuccess() {
-        assertNotNull(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getStore(Data.VALID).getName()));
+        assertNotNull(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getStore(Data.VALID).getName()).getValue());
     }
 
 }

@@ -957,17 +957,17 @@ public class LogicManager {
      * @param userName - the user that own the purchases
      * @return - list of purchases that of the user
      */
-    public List<Purchase> watchUserPurchasesHistory(int id, String userName) {
+    public Response<List<Purchase>> watchUserPurchasesHistory(int id, String userName) {
         loggerSystem.writeEvent("LogicManager","watchUserPurchasesHistory",
                 "admin watch a user purchase history", new Object[] {userName});
         User current=connectedUsers.get(id);
         Subscribe sub = this.subscribes.get(userName);
         if(sub==null)
-            return null;
+            return new Response<>(null,OpCode.User_Not_Found);
         if (current.canWatchUserHistory()) {
-            return sub.getPurchases();
+            return new Response<>(sub.getPurchases(),OpCode.Success);
         }
-        return null;
+        return new Response<>(null,OpCode.Dont_Have_Permission);
     }
 
     /**
@@ -977,17 +977,16 @@ public class LogicManager {
      * @param storeName - the name of the store that own the purchases
      * @return - list of purchases that of the store
      */
-    public List<Purchase> watchStorePurchasesHistory(int id, String storeName) {
+    public Response<List<Purchase>> watchStorePurchasesHistory(int id, String storeName) {
         loggerSystem.writeEvent("LogicManager","watchStorePurchasesHistory",
                 "admin watch a store purchase history", new Object[] {storeName});
         User current=connectedUsers.get(id);
-        if(!stores.containsKey(storeName))
-            return null;
-        if (current.canWatchStoreHistory(storeName)) {
-            Store store = this.stores.get(storeName);
-            return store.getPurchases();
-        }
-        return null;
+        Store store = this.stores.get(storeName);
+        if(store==null)
+            return new Response<>(null,OpCode.Store_Not_Found);
+        if (current.canWatchStoreHistory(storeName))
+            return new Response<>(store.getPurchases(),OpCode.Success);
+        return new Response<>(null,OpCode.Dont_Have_Permission);
     }
 
 }

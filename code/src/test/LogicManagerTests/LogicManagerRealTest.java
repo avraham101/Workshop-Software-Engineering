@@ -841,7 +841,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * test use case 4.10 - watch store history from the owner of the store
      */
     protected void testWatchStoreHistorySuccessNotAdmin(){
-        checkValidPurchase(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getStore(Data.VALID).getName()));
+        checkValidPurchase(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -849,14 +849,14 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override
     protected void testWatchUserHistorySuccess() {
-        checkValidPurchase(logicManager.watchUserPurchasesHistory(data.getId(Data.ADMIN), data.getSubscribe(Data.VALID).getName()));
+        checkValidPurchase(logicManager.watchUserPurchasesHistory(data.getId(Data.ADMIN), data.getSubscribe(Data.VALID).getName()).getValue());
     }
 
     /**
      * test use case 6.4.2 user watch history when admin
      */
     protected void testWatchStoreHistorySuccessWhenAdmin() {
-        checkValidPurchase(logicManager.watchStorePurchasesHistory(data.getId(Data.ADMIN), data.getStore(Data.VALID).getName()));
+        checkValidPurchase(logicManager.watchStorePurchasesHistory(data.getId(Data.ADMIN), data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
