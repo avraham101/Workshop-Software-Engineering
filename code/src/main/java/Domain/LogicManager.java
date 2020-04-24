@@ -8,7 +8,6 @@ import Utils.Utils;
 import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -798,17 +797,17 @@ public class LogicManager {
      * @param productData the product to be edited to
      * @return if the product was edited successfully
      */
-    public boolean editProductFromStore(int id,ProductData productData) {
+    public Response<Boolean> editProductFromStore(int id,ProductData productData) {
         loggerSystem.writeEvent("LogicManager","editProductFromStore",
                 "edit the product amount in the store", new Object[] {productData});
         User current=connectedUsers.get(id);
         if(productData==null)
-            return false;
+            return new Response<>(false,OpCode.Invalid_Product);
         if(!stores.containsKey(productData.getStoreName()))
-            return false;
+            return new Response<>(false,OpCode.Store_Not_Found);
         if(validProduct(productData))
             return current.editProductFromStore(productData);
-        return false;
+        return new Response<>(false,OpCode.Invalid_Product);
     }
 
     /**
@@ -817,11 +816,13 @@ public class LogicManager {
      * @param userName the user to be manager of the store
      * @return
      */
-    public boolean manageOwner(int id,String storeName, String userName) {
+    public Response<Boolean> manageOwner(int id,String storeName, String userName) {
         loggerSystem.writeEvent("LogicManager","manageOwner",
                 "store owner add a owner to the store", new Object[] {storeName, userName});
-        if(!subscribes.containsKey(userName)||!stores.containsKey(storeName))
-            return false;
+        if(!subscribes.containsKey(userName))
+            return new Response<>(false,OpCode.User_Not_Found);
+        if(!stores.containsKey(storeName))
+            return new Response<>(false,OpCode.Store_Not_Found);
         User current=connectedUsers.get(id);
         addManager(id,userName,storeName);
         List<PermissionType> types=new ArrayList<>();
@@ -835,11 +836,13 @@ public class LogicManager {
      * @param userName
      * @return if the manager was added successfully
      */
-    public boolean addManager(int id,String userName, String storeName) {
+    public Response<Boolean> addManager(int id,String userName, String storeName) {
         loggerSystem.writeEvent("LogicManager","addManager",
                 "store owner add a manager to the store", new Object[] {storeName, userName});
-        if(!subscribes.containsKey(userName)||!stores.containsKey(storeName))
-            return false;
+        if(!subscribes.containsKey(userName))
+            return new Response<>(false,OpCode.User_Not_Found);
+        if(!stores.containsKey(storeName))
+            return new Response<>(false,OpCode.Store_Not_Found);
         User current=connectedUsers.get(id);
         return current.addManager(subscribes.get(userName),storeName);
     }
@@ -851,13 +854,15 @@ public class LogicManager {
      * @param userName user to add permissions to
      * @return
      */
-    public boolean addPermissions(int id,List<PermissionType> permissions, String storeName, String userName) {
+    public Response<Boolean> addPermissions(int id,List<PermissionType> permissions, String storeName, String userName) {
         loggerSystem.writeEvent("LogicManager","addPermissions",
                 "store owner add a manager's permissions", new Object[] {permissions, storeName, userName});
         if(!validList(permissions))
-            return false;
-        if (!subscribes.containsKey(userName) || !stores.containsKey(storeName))
-            return false;
+            return new Response<>(false,OpCode.Invalid_Permissions);
+        if(!subscribes.containsKey(userName))
+            return new Response<>(false,OpCode.User_Not_Found);
+        if(!stores.containsKey(storeName))
+            return new Response<>(false,OpCode.Store_Not_Found);
         User current=connectedUsers.get(id);
         return current.addPermissions(permissions, storeName, userName);
     }

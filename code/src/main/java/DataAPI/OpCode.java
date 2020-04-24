@@ -7,7 +7,7 @@ public enum OpCode implements Serializable {
 
     Success,
     Store_Not_Found,
-    User_NorFound,
+    User_Not_Found,
     Invalid_Product,
     Invalid_Register_Details,
     Hash_Fail,
@@ -16,5 +16,6 @@ public enum OpCode implements Serializable {
     Not_Login,
     Dont_Have_Permission,
     Already_Exists,
+    Invalid_Permissions,
 
 }

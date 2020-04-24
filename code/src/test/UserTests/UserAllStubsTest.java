@@ -330,7 +330,7 @@ public class UserAllStubsTest {
     @Test
     public void testEditProductFromStoreGuest(){
         setUpGuest();
-        assertFalse(user.editProductFromStore(data.getProductData(Data.EDIT)));
+        assertFalse(user.editProductFromStore(data.getProductData(Data.EDIT)).getValue());
     }
 
     /**
@@ -339,7 +339,7 @@ public class UserAllStubsTest {
     @Test
     public void testEditProductFromStoreSubscribe() {
         setUpProductAdded();
-        assertTrue(user.editProductFromStore(data.getProductData(Data.EDIT)));
+        assertTrue(user.editProductFromStore(data.getProductData(Data.EDIT)).getValue());
     }
 
     /**
@@ -348,7 +348,7 @@ public class UserAllStubsTest {
     @Test
     public void testAddManagerGuest(){
         setUpGuest();
-        assertFalse(user.addManager(data.getSubscribe(Data.ADMIN), data.getStore(Data.VALID).getName()));
+        assertFalse(user.addManager(data.getSubscribe(Data.ADMIN), data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -357,7 +357,7 @@ public class UserAllStubsTest {
     @Test
     public void testAddManagerSubscribe(){
         setUpOpenStore();
-        assertTrue(user.addManager(data.getSubscribe(Data.ADMIN), data.getStore(Data.VALID).getName()));
+        assertTrue(user.addManager(data.getSubscribe(Data.ADMIN), data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -367,7 +367,7 @@ public class UserAllStubsTest {
     public void testAddPermissionsGuest(){
         setUpGuest();
         assertFalse(user.addPermissions(data.getPermissionTypeList(),
-                data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()));
+                data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -377,7 +377,7 @@ public class UserAllStubsTest {
     public void testAddPermissionsSubscribe(){
         setUpAddedManager();
         assertTrue(user.addPermissions(data.getPermissionTypeList(),
-                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()).getValue());
     }
 
     /**

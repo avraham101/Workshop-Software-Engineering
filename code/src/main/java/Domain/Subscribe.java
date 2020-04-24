@@ -190,9 +190,10 @@ public class Subscribe extends UserState{
      */
     @Override
     public Response<Boolean> removeProductFromStore(String storeName, String productName) {
-        if(!permissions.containsKey(storeName))
+        Permission permission=permissions.get(storeName);
+        if(permission==null)
             return new Response<>(false,OpCode.Dont_Have_Permission);
-        if(!permissions.get(storeName).canAddProduct())
+        if(!permission.canAddProduct())
             return new Response<>(false,OpCode.Dont_Have_Permission);
         return permissions.get(storeName).getStore().removeProduct(productName);
     }
@@ -203,12 +204,13 @@ public class Subscribe extends UserState{
      * @return
      */
     @Override
-    public boolean editProductFromStore(ProductData productData) {
-        if(!permissions.containsKey(productData.getStoreName()))
-            return false;
-        if(!permissions.get(productData.getStoreName()).canAddProduct())
-            return false;
-        return permissions.get(productData.getStoreName()).getStore().editProduct(productData);
+    public Response<Boolean> editProductFromStore(ProductData productData) {
+        Permission permission=permissions.get(productData.getStoreName());
+        if(permission==null)
+            return new Response<>(false, OpCode.Dont_Have_Permission);
+        if(!permission.canAddProduct())
+            return new Response<>(false, OpCode.Dont_Have_Permission);
+        return permission.getStore().editProduct(productData);
     }
 
     /**
@@ -218,13 +220,13 @@ public class Subscribe extends UserState{
      * @return
      */
     @Override
-    public boolean addManager(Subscribe youngOwner, String storeName) {
-        if(!permissions.containsKey(storeName))
-            return false;
+    public Response<Boolean> addManager(Subscribe youngOwner, String storeName) {
         Permission permission=permissions.get(storeName);
+        if(permission==null)
+            return new Response<>(false,OpCode.Dont_Have_Permission);
         Store store=permission.getStore();
         if(store==null||!permission.canAddOwner())
-            return false;
+            return new Response<>(false,OpCode.Dont_Have_Permission);
         //create new permission process
         Permission newPermission=new Permission(youngOwner,store);
         if(store.getPermissions().putIfAbsent(youngOwner.getName(),newPermission)==null) {
@@ -232,9 +234,9 @@ public class Subscribe extends UserState{
             lock.writeLock().lock();
             givenByMePermissions.add(newPermission);
             lock.writeLock().unlock();
-            return true;
+            return new Response<>(true,OpCode.Success);
         }
-        return false;
+        return new Response<>(false,OpCode.Already_Exists);
 
     }
 
@@ -246,7 +248,7 @@ public class Subscribe extends UserState{
      * @return if the permissions were added
      */
     @Override
-    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+    public Response<Boolean> addPermissions(List<PermissionType> permissions, String storeName, String userName) {
         lock.readLock().lock();
         for(Permission p: givenByMePermissions){
             if(p.getStore().getName().equals(storeName)&&p.getOwner().getName().equals(userName)){
@@ -254,11 +256,13 @@ public class Subscribe extends UserState{
                 for(PermissionType type: permissions)
                     added=added|p.addType(type);
                 lock.readLock().unlock();
-                return added;
+                if(added)
+                    return new Response<>(true,OpCode.Success);
+                return new Response<>(false,OpCode.Already_Exists);
             }
         }
         lock.readLock().unlock();
-        return false;
+        return new Response<>(false,OpCode.Dont_Have_Permission);
     }
 
     /**

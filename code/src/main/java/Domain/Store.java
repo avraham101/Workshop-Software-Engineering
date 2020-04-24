@@ -326,16 +326,16 @@ public class Store {
      * @param productData
      * @return if the product was edited successfully
      */
-    public boolean editProduct(ProductData productData) {
-        if(!products.containsKey(productData.getProductName()))
-            return false;
+    public Response<Boolean> editProduct(ProductData productData) {
         Product old=products.get(productData.getProductName());
+        if(old==null)
+            return new Response<>(false,OpCode.Invalid_Product);
         String categoryName=productData.getCategory();
         if(!categoryList.containsKey(categoryName)){
             categoryList.put(categoryName,new Category(categoryName));
         }
         old.edit(productData,categoryList.get(categoryName));
-        return true;
+        return new Response<>(true,OpCode.Success);
     }
 
 }

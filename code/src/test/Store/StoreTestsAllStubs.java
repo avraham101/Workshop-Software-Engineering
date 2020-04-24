@@ -202,7 +202,7 @@ public class StoreTestsAllStubs {
      */
     protected void testFailEditProduct() {
         ProductData p=data.getProductData(Data.WRONG_NAME);
-        assertFalse(store.editProduct(p));
+        assertFalse(store.editProduct(p).getValue());
     }
 
     /**
@@ -210,7 +210,7 @@ public class StoreTestsAllStubs {
      * test success
      */
     protected void testSuccessEditProduct(){
-        assertTrue(store.editProduct(data.getProductData(Data.EDIT)));
+        assertTrue(store.editProduct(data.getProductData(Data.EDIT)).getValue());
     }
 
 }

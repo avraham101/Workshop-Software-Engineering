@@ -67,8 +67,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public boolean editProductFromStore(ProductData productData) {
-        return true;
+    public Response<Boolean> editProductFromStore(ProductData productData) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -78,8 +78,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public boolean addManager(Subscribe subscribe, String storeName) {
-        return true;
+    public Response<Boolean> addManager(Subscribe subscribe, String storeName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -131,8 +131,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return true;
+    public Response<Boolean> addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**

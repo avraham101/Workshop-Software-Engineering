@@ -73,8 +73,8 @@ public class SubscribeStub extends Subscribe{
      * @return
      */
     @Override
-    public boolean editProductFromStore(ProductData productData) {
-        return true;
+    public Response<Boolean> editProductFromStore(ProductData productData) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -84,8 +84,8 @@ public class SubscribeStub extends Subscribe{
      * @return
      */
     @Override
-    public boolean addManager(Subscribe youngOwner, String storeName) {
-        return true;
+    public Response<Boolean> addManager(Subscribe youngOwner, String storeName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -96,8 +96,8 @@ public class SubscribeStub extends Subscribe{
      * @return
      */
     @Override
-    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return true;
+    public Response<Boolean> addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**

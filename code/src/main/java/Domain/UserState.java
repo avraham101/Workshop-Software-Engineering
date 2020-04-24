@@ -217,15 +217,15 @@ public abstract class UserState {
      * @param productData
      * @return
      */
-    public abstract boolean editProductFromStore(ProductData productData);
+    public abstract Response<Boolean> editProductFromStore(ProductData productData);
 
     /**
-     * use case 4.3 - add manager
+     * use case 4.5 - add manager
      * @param subscribe
      * @param storeName
      * @return
      */
-    public abstract boolean addManager(Subscribe subscribe, String storeName);
+    public abstract Response<Boolean> addManager(Subscribe subscribe, String storeName);
 
     /**
      * use case 4.6.1 - add permissions
@@ -234,7 +234,7 @@ public abstract class UserState {
      * @param userName
      * @return
      */
-    public abstract boolean addPermissions(List<PermissionType> permissions, String storeName, String userName);
+    public abstract Response<Boolean> addPermissions(List<PermissionType> permissions, String storeName, String userName);
 
     /**
      * use case 4.6.2 - remove permissions

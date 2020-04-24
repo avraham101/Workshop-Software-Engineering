@@ -661,7 +661,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         ProductData pData=data.getProductData(Data.EDIT);
         Store store=permission.getStore();
         sub.getPermissions().clear();
-        assertFalse(sub.editProductFromStore(pData));
+        assertFalse(sub.editProductFromStore(pData).getValue());
         assertFalse(store.getProducts().get(pData.getProductName()).equal(pData));
         sub.getPermissions().put(validStoreName,permission);
     }
@@ -678,7 +678,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         ProductData pData=data.getProductData(Data.EDIT);
         Store store=permission.getStore();
         permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.editProductFromStore(data.getProductData(Data.VALID)));
+        assertFalse(sub.editProductFromStore(data.getProductData(Data.VALID)).getValue());
         assertFalse(store.getProducts().get(pData.getProductName()).equal(pData));
         permission.addType(PermissionType.OWNER);
     }
@@ -699,7 +699,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     protected void testManageOwnerFail() {
         super.testManageOwnerFail();
         String sName=data.getStore(Data.VALID).getName();
-        assertFalse(logicManager.manageOwner(data.getId(Data.VALID),sName,sName));
+        assertFalse(logicManager.manageOwner(data.getId(Data.VALID),sName,sName).getValue());
         assertFalse(stores.get(sName).getPermissions().containsKey(sName));
     }
 

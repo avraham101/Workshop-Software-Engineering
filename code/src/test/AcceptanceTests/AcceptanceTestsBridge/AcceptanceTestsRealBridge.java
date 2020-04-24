@@ -182,21 +182,21 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public boolean editProductInStore(int id,ProductTestData product) {
         ProductData productData = buildProductData(product);
-        return serviceAPI.editProductFromStore(id,productData);
+        return serviceAPI.editProductFromStore(id,productData).getValue();
     }
     //---------------------------Use-Case-4.1---------------------------------//
 
     //---------------------------Use-Case-4.3---------------------------------//
     @Override
     public boolean appointOwnerToStore(int id,String storeName, String username) {
-        return serviceAPI.manageOwner(id,storeName,username);
+        return serviceAPI.manageOwner(id,storeName,username).getValue();
     }
     //---------------------------Use-Case-4.3---------------------------------//
 
     //---------------------------Use-Case-4.5---------------------------------//
     @Override
     public boolean appointManager(int id,String storeName, String username) {
-        return serviceAPI.addManagerToStore(id,storeName,username);
+        return serviceAPI.addManagerToStore(id,storeName,username).getValue();
     }
     //---------------------------Use-Case-4.5---------------------------------//
 
@@ -205,7 +205,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     public boolean addPermissionToManager(int id,String storeName, String username, PermissionsTypeTestData permissionsTypeTestData) {
         PermissionType permissionType = buildPermissionType(permissionsTypeTestData);
         List<PermissionType> permissions = new ArrayList<>(Collections.singletonList(permissionType));
-        return serviceAPI.addPermissions(id,permissions,storeName,username);
+        return serviceAPI.addPermissions(id,permissions,storeName,username).getValue();
     }
 
     @Override
