@@ -38,7 +38,6 @@ public class BuyCartTest extends AcceptanceTests {
         addProductToCart(1);
         boolean approval = bridge.buyCart(userId,validPayment,validDelivery);
         assertTrue(approval);
-        //TODO: won't pass because logic won't empty cart
         CartTestData currCart = bridge.getUsersCart(userId);
         assertTrue(currCart.isEmpty());
     }
@@ -46,7 +45,6 @@ public class BuyCartTest extends AcceptanceTests {
     @Test
     public void buyCartFailEmptyCart(){
         buyCartSuccess();
-        //TODO: won't pass because logic won't empty cart
         assertFalse(bridge.buyCart(userId,validPayment,validDelivery));
     }
     @Test
