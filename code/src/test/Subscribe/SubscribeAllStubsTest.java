@@ -249,7 +249,7 @@ public class SubscribeAllStubsTest {
     @Test
     public void addProductToStoreTestSuccess(){
         setUpStoreOpened();
-        assertTrue(sub.addProductToStore(data.getProductData(Data.VALID)));
+        assertTrue(sub.addProductToStore(data.getProductData(Data.VALID)).getValue());
     }
 
     /**
@@ -270,7 +270,7 @@ public class SubscribeAllStubsTest {
         Permission permission=sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.addProductToStore(data.getProductData(Data.VALID)));
+        assertFalse(sub.addProductToStore(data.getProductData(Data.VALID)).getValue());
         permission.addType(PermissionType.OWNER);
         assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
@@ -283,7 +283,7 @@ public class SubscribeAllStubsTest {
         Permission permission=sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         sub.getPermissions().clear();
-        assertFalse(sub.addProductToStore(data.getProductData(Data.VALID)));
+        assertFalse(sub.addProductToStore(data.getProductData(Data.VALID)).getValue());
         sub.getPermissions().put(validStoreName,permission);
         assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }

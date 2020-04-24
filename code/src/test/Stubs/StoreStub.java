@@ -1,8 +1,6 @@
 package Stubs;
 
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
+import DataAPI.*;
 import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
@@ -32,8 +30,8 @@ public class StoreStub extends Store {
      * @return
      */
     @Override
-    public boolean addProduct(ProductData productData) {
-        return true;
+    public Response<Boolean> addProduct(ProductData productData) {
+        return new Response<>(true, OpCode.Success);
     }
 
     /**

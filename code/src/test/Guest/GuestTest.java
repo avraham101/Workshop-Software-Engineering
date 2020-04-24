@@ -161,7 +161,7 @@ public class GuestTest {
      */
     @Test
     public void testAddProductToStore(){
-        assertFalse(guest.addProductToStore(data.getProductData(Data.VALID)));
+        assertFalse(guest.addProductToStore(data.getProductData(Data.VALID)).getValue());
     }
 
     /**

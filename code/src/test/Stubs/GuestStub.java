@@ -1,9 +1,6 @@
 package Stubs;
 
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
@@ -61,8 +58,8 @@ public class GuestStub extends Guest {
      * @return false for guest
      */
     @Override
-    public boolean addProductToStore(ProductData productData){
-        return false;
+    public Response<Boolean> addProductToStore(ProductData productData){
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**

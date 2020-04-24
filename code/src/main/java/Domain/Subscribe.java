@@ -1,6 +1,8 @@
 package Domain;
 
+import DataAPI.OpCode;
 import DataAPI.ProductData;
+import DataAPI.Response;
 import DataAPI.StoreData;
 
 import java.time.LocalDateTime;
@@ -172,12 +174,12 @@ public class Subscribe extends UserState{
      */
 
     @Override
-    public boolean addProductToStore(ProductData productData) {
+    public Response<Boolean> addProductToStore(ProductData productData) {
         Permission permission=permissions.get(productData.getStoreName());
         if(permission==null)
-            return false;
+            return new Response<>(false, OpCode.Dont_Have_Permission);
         if(!permission.canAddProduct())
-            return false;
+            return new Response<>(false, OpCode.Dont_Have_Permission);
         return permission.getStore().addProduct(productData);
     }
 

@@ -290,7 +290,7 @@ public class UserAllStubsTest {
     @Test
     public void testAddProductToStoreGuest(){
         setUpGuest();
-        assertFalse(user.addProductToStore(data.getProductData(Data.VALID)));
+        assertFalse(user.addProductToStore(data.getProductData(Data.VALID)).getValue());
     }
 
     /**
@@ -299,7 +299,7 @@ public class UserAllStubsTest {
     @Test
     public void testAddProductToStoreSubscribe(){
         setUpOpenStore();
-        assertTrue(user.addProductToStore(data.getProductData(Data.VALID)));
+        assertTrue(user.addProductToStore(data.getProductData(Data.VALID)).getValue());
     }
 
     /**
