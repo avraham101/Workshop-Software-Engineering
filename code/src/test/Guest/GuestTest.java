@@ -2,10 +2,7 @@ package Guest;
 
 import Data.Data;
 import Data.TestData;
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Domain.*;
 import Stubs.CartStub;
 import Stubs.SubscribeStub;
