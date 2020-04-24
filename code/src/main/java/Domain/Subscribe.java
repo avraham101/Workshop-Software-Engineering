@@ -273,7 +273,7 @@ public class Subscribe extends UserState{
      * @return
      */
     @Override
-    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+    public Response<Boolean>  removePermissions(List<PermissionType> permissions, String storeName, String userName) {
         lock.readLock().lock();
         for(Permission p: givenByMePermissions){
             if(p.getStore().getName().equals(storeName)&&p.getOwner().getName().equals(userName)){
@@ -281,11 +281,13 @@ public class Subscribe extends UserState{
                 for(PermissionType type: permissions)
                     removed=removed|p.removeType(type);
                 lock.readLock().unlock();
-                return removed;
+                if(removed)
+                    return new Response<>(true,OpCode.Success);
+                return new Response<>(false,OpCode.Invalid_Permissions);
             }
         }
         lock.readLock().unlock();
-        return false;
+        return new Response<>(false,OpCode.Not_Found);
     }
 
     /**
@@ -295,9 +297,9 @@ public class Subscribe extends UserState{
      * @return
      */
     @Override
-    public boolean removeManager(String userName, String storeName) {
+    public Response<Boolean>  removeManager(String userName, String storeName) {
         if(!permissions.containsKey(storeName))
-            return false;
+            return new Response<>(false,OpCode.Dont_Have_Permission);
 
         for(Permission p: givenByMePermissions) {
             if (p.getStore().getName().equals(storeName) && p.getOwner().getName().equals(userName)) {
@@ -305,10 +307,10 @@ public class Subscribe extends UserState{
                 p.getOwner().removeManagerFromStore(storeName);
                 givenByMePermissions.remove(p);
                 lock.writeLock().unlock();
-                return true;
+                return new Response<>(true,OpCode.Success);
             }
         }
-        return false;
+        return new Response<>(false,OpCode.Not_Found);
     }
 
     /**
