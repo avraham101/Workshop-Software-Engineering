@@ -623,11 +623,12 @@ public class LogicManager {
      * @return true if the user logout
      * @param id
      */
-    public boolean logout(int id) {
+    public Response<Boolean> logout(int id) {
         loggerSystem.writeEvent("LogicManager","logout",
                 "a user logout from the system", new Object[] {});
         User current=connectedUsers.get(id);
-        return current.logout();
+        boolean output = current.logout();
+        return new Response<>(output, OpCode.Success);
     }
 
     /**
@@ -636,23 +637,23 @@ public class LogicManager {
      * @param storeDetails - the details of the the store
      * @return true if can open store, otherwise false.
      */
-    public boolean openStore(int id, StoreData storeDetails) {
+    public Response<Boolean> openStore(int id, StoreData storeDetails) {
         loggerSystem.writeEvent("LogicManager","openStore",
                 "open new store", new Object[] {storeDetails});
         if(!validStoreDetails(storeDetails))
-            return false;
+            return new Response<>(false, OpCode.Invalid_Store_Details);
         User current=connectedUsers.get(id);
         //prevent making two stores with the same name
         synchronized (openStoreLocker) {
             if (stores.containsKey(storeDetails.getName()))
-                return false;
+                return new Response<>(false, OpCode.Store_Not_Found);
             Store store = current.openStore(storeDetails);
             if(store != null) {
                 stores.put(store.getName(),store);
-                return true;
+                return new Response<>(true, OpCode.Success);
             }
         }
-        return false;
+        return new Response<>(false, OpCode.Store_Doesnt_Exist);
     }
 
     /**
@@ -674,30 +675,30 @@ public class LogicManager {
      * @param content - the content name
      * @return true if the review added, otherwise false.
      */
-    public boolean addReview(int id, String storeName, String productName, String content) {
+    public Response<Boolean> addReview(int id, String storeName, String productName, String content) {
         loggerSystem.writeEvent("LogicManager","addReview",
                 "add a review for the product", new Object[] {storeName, productName, content});
         if(!validReview(storeName,productName,content))
-            return false;
+            return new Response<>(false,OpCode.Invalid_Review);
         User current=connectedUsers.get(id);
         Store store = stores.get(storeName);
         if(store==null) {
-            return false;
+            return new Response<>(false,OpCode.Store_Not_Found);
         }
         Review review = new Review(current.getUserName(),storeName,productName,content);
         boolean resultStore = store.addReview(review);
         boolean resultUser = current.addReview(review);
         if(!resultStore && !resultUser)
-            return false;
+            return new Response<>(false,OpCode.Cant_Add_Review);
         else if(!resultStore) {
             current.removeReview(review);
-            return false;
+            return new Response<>(false,OpCode.Cant_Add_Review);
         }
         else if(!resultUser) {
             store.removeReview(review);
-            return false;
+            return new Response<>(false,OpCode.Cant_Add_Review);
         }
-        return true;
+        return new Response<>(true,OpCode.Success);
     }
 
 
@@ -720,20 +721,20 @@ public class LogicManager {
      * @param content the content of the request
      * @return true if succeeded to add request to store
      */
-    public boolean addRequest(int id,String storeName, String content) {
+    public Response<Boolean> addRequest(int id,String storeName, String content) {
         loggerSystem.writeEvent("LogicManager","addRequest",
                 "add a request to the store", new Object[] {storeName, content});
         if (storeName == null || content == null || !stores.containsKey(storeName))
-            return false;
+            return new Response<>(false,OpCode.Invalid_Request);
         Store dest = stores.get(storeName);
         User current = connectedUsers.get(id);
         int requestId = requestIdGenerator.incrementAndGet(); // generate request number sync
         Request request = current.addRequest(requestId, storeName, content);
         if (request == null) {
-            return false;
+            return new Response<>(false,OpCode.Null_Request);
         }
         dest.addRequest(request);
-        return true;
+        return new Response<>(true,OpCode.Success);
     }
 
     /**

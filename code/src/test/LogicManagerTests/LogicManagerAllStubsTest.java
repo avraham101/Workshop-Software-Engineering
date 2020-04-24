@@ -846,7 +846,7 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testOpenStoreNull() {
         setUpLogedInUser();
-        assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL)));
+        assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL)).getValue());
     }
 
     /**
@@ -855,7 +855,7 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testOpenStoreNullName() {
         setUpLogedInUser();
-        assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_NAME)));
+        assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_NAME)).getValue());
     }
 
     /**
@@ -864,7 +864,7 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testOpenStoreNullPurchase() {
         setUpLogedInUser();
-        assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_PURCHASE)));
+        assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_PURCHASE)).getValue());
     }
 
     /**
@@ -873,7 +873,7 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testOpenStoreNullDiscount() {
         setUpLogedInUser();
-        assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_DISCOUNT)));
+        assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_DISCOUNT)).getValue());
     }
 
     /**
@@ -881,7 +881,7 @@ public class LogicManagerAllStubsTest {
      */
     protected void testOpenStoreSucces(){
         StoreData storeData = data.getStore(Data.VALID);
-        assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData));
+        assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
     }
 
     /**
@@ -892,7 +892,7 @@ public class LogicManagerAllStubsTest {
         setUpLogedInUser();
         testOpenStoreSucces();
         StoreData storeData = data.getStore(Data.VALID);
-        assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData));
+        assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
     }
 
     /**
@@ -906,36 +906,63 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * part of use case 3.3 - write review
+     * part of use case 3.3 - invalid tests
      */
-    //TODO split tests
     private void testWriteReviewInvalid() {
-        Review review = data.getReview(Data.NULL_STORE);
-        assertFalse(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()));
-
-        review = data.getReview(Data.NULL_PRODUCT);
-        assertFalse(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()));
-
-        review = data.getReview(Data.NULL_CONTENT);
-        assertFalse(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()));
-
-        review = data.getReview(Data.EMPTY_CONTENT);
-        assertFalse(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()));
-
-        review = data.getReview(Data.WRONG_STORE);
-        assertFalse(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()));
-
-        review = data.getReview(Data.NULL_PRODUCT);
-        assertFalse(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()));
-
+        testWriteReviewInvalidNullStore();
+        testWriteReviewInvalidNullPoduct();
+        testWriteReviewInvalidNullContent();
+        testWriteReviewInvalidEmptyContent();
     }
+
+
+    /**
+     * part of use case 3.3 - write review with null store
+     */
+    private void testWriteReviewInvalidNullStore() {
+        Review review = data.getReview(Data.NULL_STORE);
+        assertFalse(logicManager.addReview(data.getId(Data.VALID), review.getStore(), review.getProductName(), review.getContent()).getValue());
+    }
+
+    /**
+     * part of use case 3.3 - write review with null product
+     */
+    private void testWriteReviewInvalidNullPoduct() {
+        Review review = data.getReview(Data.NULL_PRODUCT);
+        assertFalse(logicManager.addReview(data.getId(Data.VALID), review.getStore(), review.getProductName(), review.getContent()).getValue());
+    }
+
+    /**
+     * part of use case 3.3 - write review with null content
+     */
+    private void testWriteReviewInvalidNullContent() {
+        Review review = data.getReview(Data.NULL_CONTENT);
+        assertFalse(logicManager.addReview(data.getId(Data.VALID), review.getStore(), review.getProductName(), review.getContent()).getValue());
+    }
+
+    /**
+     * part of use case 3.3 - write review with empty content
+     */
+    private void testWriteReviewInvalidEmptyContent() {
+        Review review = data.getReview(Data.EMPTY_CONTENT);
+        assertFalse(logicManager.addReview(data.getId(Data.VALID), review.getStore(), review.getProductName(), review.getContent()).getValue());
+    }
+
+    /**
+     * part of use case 3.3 - write review with wrong store
+     */
+    private void testWriteReviewInvalidWrongStore() {
+    Review review = data.getReview(Data.WRONG_STORE);
+        assertFalse(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()).getValue());
+    }
+
 
     /**
      * part of use case 3.3 - write review
      */
     protected void testWriteReviewValid() {
         Review review = data.getReview(Data.VALID);
-        assertTrue(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()));
+        assertTrue(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()).getValue());
     }
 
     /**
@@ -955,7 +982,7 @@ public class LogicManagerAllStubsTest {
      */
      private void testAddRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
-        assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(),request.getContent()));
+        assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(),request.getContent()).getValue());
     }
 
     /**
@@ -965,7 +992,7 @@ public class LogicManagerAllStubsTest {
     public void testAddRequestWrongName() {
         setUpOpenedStore();
         Request request1 = data.getRequest(Data.WRONG_STORE);
-        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request1.getStoreName(), request1.getContent()));
+        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request1.getStoreName(), request1.getContent()).getValue());
     }
 
     /**
@@ -975,7 +1002,7 @@ public class LogicManagerAllStubsTest {
     public void testAddRequestNullName() {
         setUpOpenedStore();
         Request request2 = data.getRequest(Data.NULL_NAME);
-        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request2.getStoreName(), request2.getContent()));
+        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request2.getStoreName(), request2.getContent()).getValue());
     }
 
     /**
@@ -985,7 +1012,7 @@ public class LogicManagerAllStubsTest {
     public void testAddRequestContentNull() {
         setUpOpenedStore();
         Request request2 = data.getRequest(Data.NULL_CONTENT);
-        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request2.getStoreName(), request2.getContent()));
+        assertFalse(logicManager.addRequest(data.getId(Data.VALID),request2.getStoreName(), request2.getContent()).getValue());
     }
 
     /**

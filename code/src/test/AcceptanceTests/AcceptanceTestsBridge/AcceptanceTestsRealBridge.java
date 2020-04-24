@@ -128,7 +128,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-3.1---------------------------------//
     @Override
     public boolean logout(int id) {
-        return serviceAPI.logout(id);
+        return serviceAPI.logout(id).getValue();
     }
     //---------------------------Use-Case-3.1---------------------------------//
 
@@ -136,7 +136,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public StoreTestData openStore(int id,String storeName) {
         StoreData store = new StoreData(storeName,new PurchasePolicy(),new DiscountPolicy());
-        boolean approval = serviceAPI.openStore(id,store);
+        boolean approval = serviceAPI.openStore(id,store).getValue();
         if(!approval) {
             return null;
         }
@@ -149,14 +149,14 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-3.3---------------------------------//
     @Override
     public boolean writeReviewOnProduct(int id,ProductTestData product, ReviewTestData review) {
-        return serviceAPI.writeReview(id,product.getStoreName(),product.getProductName(),review.getContent());
+        return serviceAPI.writeReview(id,product.getStoreName(),product.getProductName(),review.getContent()).getValue();
     }
     //---------------------------Use-Case-3.3---------------------------------//
 
     //---------------------------Use-Case-3.5---------------------------------//
     @Override
     public boolean sendApplicationToStore(int id, String storeName, String message) {
-        return serviceAPI.writeRequestToStore(id,storeName,message);
+        return serviceAPI.writeRequestToStore(id,storeName,message).getValue();
     }
     //---------------------------Use-Case-3.5---------------------------------//
 

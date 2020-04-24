@@ -147,7 +147,7 @@ public class ServiceAPI {
      * acceptance test class : LogoutTest
      * @return true if the user logout
      */
-    public boolean logout(int id){
+    public Response<Boolean> logout(int id){
         return logicManager.logout(id);
     }
 
@@ -157,7 +157,7 @@ public class ServiceAPI {
      * @param storeDetails - the details of the store
      * @return true if store is created
      */
-    public boolean openStore(int id,StoreData storeDetails){
+    public Response<Boolean> openStore(int id,StoreData storeDetails){
         return logicManager.openStore(id,storeDetails);
     }
 
@@ -169,7 +169,7 @@ public class ServiceAPI {
      * @param content - the content name
      * @return true if the review added, otherwise false
      */
-    public boolean writeReview(int id,String storeName,String productName, String content){
+    public Response<Boolean> writeReview(int id,String storeName,String productName, String content){
         return logicManager.addReview(id,storeName,productName, content);
     }
 
@@ -182,7 +182,7 @@ public class ServiceAPI {
      * @return true if the review added, otherwise false
      */
 
-    public boolean writeRequestToStore(int id,String storeName,String content){
+    public Response<Boolean> writeRequestToStore(int id,String storeName,String content){
         return logicManager.addRequest(id,storeName,content);
     }
 

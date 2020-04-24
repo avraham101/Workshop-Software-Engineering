@@ -24,5 +24,12 @@ public enum OpCode implements Serializable {
     Supply_Reject,
     Not_Found,
     InvalidRequest,
+    Invalid_Store_Details,
+    Store_Doesnt_Exist,
+    Invalid_Review,
+    Cant_Add_Review,
+    Invalid_Request,
+    Null_Request,
+
 
 }
