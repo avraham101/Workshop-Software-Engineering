@@ -249,7 +249,7 @@ public class User {
      * @param userName
      * @return
      */
-    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+    public Response<Boolean> removePermissions(List<PermissionType> permissions, String storeName, String userName) {
         return state.removePermissions(permissions,storeName,userName);
     }
 
@@ -259,7 +259,7 @@ public class User {
      * @param storeName
      * @return
      */
-    public boolean removeManager(String userName, String storeName) {
+    public Response<Boolean> removeManager(String userName, String storeName) {
         return state.removeManager(userName,storeName);
     }
 

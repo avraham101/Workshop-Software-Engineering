@@ -276,7 +276,7 @@ public class ServiceAPI {
      * @param userName
      * @return if permissions were removed
      */
-    public boolean removePermissions(int id,List<PermissionType> permissions, String storeName, String userName){
+    public Response<Boolean> removePermissions(int id,List<PermissionType> permissions, String storeName, String userName){
         return logicManager.removePermissions(id,permissions,storeName,userName);
     }
 
@@ -288,7 +288,7 @@ public class ServiceAPI {
      * @param storeName
      * @return if the manager was removed and also the managers he managed
      */
-    public boolean removeManager(int id,String userName,String storeName){
+    public Response<Boolean> removeManager(int id,String userName,String storeName){
         return logicManager.removeManager(id,userName,storeName);
     }
 

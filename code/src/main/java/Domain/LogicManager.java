@@ -868,13 +868,15 @@ public class LogicManager {
      * @param userName of the user to remove his permissions
      * @return if the permission were removed
      */
-    public boolean removePermissions(int id,List<PermissionType> permissions, String storeName, String userName) {
+    public Response<Boolean> removePermissions(int id,List<PermissionType> permissions, String storeName, String userName) {
         loggerSystem.writeEvent("LogicManager","removePermissions",
                 "store owner remove manager's permission", new Object[] {permissions, storeName, userName});
         if(!validList(permissions))
-            return false;
-        if (!subscribes.containsKey(userName) || !stores.containsKey(storeName))
-            return false;
+            return new Response<>(false,OpCode.Invalid_Permissions);
+        if(!subscribes.containsKey(userName))
+            return new Response<>(false,OpCode.User_Not_Found);
+        if(!stores.containsKey(storeName))
+            return new Response<>(false,OpCode.Store_Not_Found);
         User current=connectedUsers.get(id);
         return current.removePermissions(permissions, storeName, userName);
     }
@@ -886,11 +888,13 @@ public class LogicManager {
      * @param storeName of the store to remove the manager from
      * @return if the manager was removed
      */
-    public boolean removeManager(int id,String userName, String storeName) {
+    public Response<Boolean> removeManager(int id,String userName, String storeName) {
         loggerSystem.writeEvent("LogicManager","removeManager",
                 "store owner remove manager", new Object[] {storeName, userName});
-        if (!subscribes.containsKey(userName) || !stores.containsKey(storeName))
-            return false;
+        if(!subscribes.containsKey(userName))
+            return new Response<>(false,OpCode.User_Not_Found);
+        if(!stores.containsKey(storeName))
+            return new Response<>(false,OpCode.Store_Not_Found);
         User current=connectedUsers.get(id);
         return current.removeManager(userName,storeName);
     }
