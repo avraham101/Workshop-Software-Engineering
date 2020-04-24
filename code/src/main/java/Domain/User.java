@@ -217,7 +217,7 @@ public class User {
      * @param productData
      * @return
      */
-    public boolean editProductFromStore(ProductData productData) {
+    public Response<Boolean> editProductFromStore(ProductData productData) {
         return state.editProductFromStore(productData);
     }
 

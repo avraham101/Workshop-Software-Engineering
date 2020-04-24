@@ -150,8 +150,8 @@ public class Guest extends UserState {
      * @return
      */
     @Override
-    public boolean editProductFromStore(ProductData productData) {
-        return false;
+    public Response<Boolean> editProductFromStore(ProductData productData) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
 

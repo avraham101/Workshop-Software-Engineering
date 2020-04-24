@@ -67,8 +67,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public boolean editProductFromStore(ProductData productData) {
-        return true;
+    public Response<Boolean> editProductFromStore(ProductData productData) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**

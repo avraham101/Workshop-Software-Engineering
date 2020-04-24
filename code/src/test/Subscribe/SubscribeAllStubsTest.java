@@ -369,7 +369,7 @@ public class SubscribeAllStubsTest {
         ProductData pData=data.getProductData(Data.EDIT);
         Store store=permission.getStore();
         sub.getPermissions().clear();
-        assertFalse(sub.editProductFromStore(pData));
+        assertFalse(sub.editProductFromStore(pData).getValue());
         assertFalse(store.getProducts().get(pData.getProductName()).equal(pData));
         sub.getPermissions().put(validStoreName,permission);
     }
@@ -383,7 +383,7 @@ public class SubscribeAllStubsTest {
         ProductData pData=data.getProductData(Data.EDIT);
         Store store=permission.getStore();
         permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.editProductFromStore(data.getProductData(Data.VALID)));
+        assertFalse(sub.editProductFromStore(data.getProductData(Data.VALID)).getValue());
         assertFalse(store.getProducts().get(pData.getProductName()).equal(pData));
         permission.addType(PermissionType.OWNER);
     }
@@ -392,7 +392,7 @@ public class SubscribeAllStubsTest {
      * part of test use case 4.1.3 - edit product
      */
     protected void testSuccessEditProduct(){
-        assertTrue(sub.editProductFromStore(data.getProductData(Data.EDIT)));
+        assertTrue(sub.editProductFromStore(data.getProductData(Data.EDIT)).getValue());
     }
 
 

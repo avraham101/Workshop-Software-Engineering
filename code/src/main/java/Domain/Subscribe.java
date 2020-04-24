@@ -190,9 +190,10 @@ public class Subscribe extends UserState{
      */
     @Override
     public Response<Boolean> removeProductFromStore(String storeName, String productName) {
-        if(!permissions.containsKey(storeName))
+        Permission permission=permissions.get(storeName);
+        if(permission==null)
             return new Response<>(false,OpCode.Dont_Have_Permission);
-        if(!permissions.get(storeName).canAddProduct())
+        if(!permission.canAddProduct())
             return new Response<>(false,OpCode.Dont_Have_Permission);
         return permissions.get(storeName).getStore().removeProduct(productName);
     }
@@ -203,12 +204,13 @@ public class Subscribe extends UserState{
      * @return
      */
     @Override
-    public boolean editProductFromStore(ProductData productData) {
-        if(!permissions.containsKey(productData.getStoreName()))
-            return false;
-        if(!permissions.get(productData.getStoreName()).canAddProduct())
-            return false;
-        return permissions.get(productData.getStoreName()).getStore().editProduct(productData);
+    public Response<Boolean> editProductFromStore(ProductData productData) {
+        Permission permission=permissions.get(productData.getStoreName());
+        if(permission==null)
+            return new Response<>(false, OpCode.Dont_Have_Permission);
+        if(!permission.canAddProduct())
+            return new Response<>(false, OpCode.Dont_Have_Permission);
+        return permission.getStore().editProduct(productData);
     }
 
     /**

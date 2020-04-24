@@ -226,7 +226,7 @@ public class ServiceAPI {
      * @param productData - data of product
      * @return if product was edited
      */
-    public boolean editProductFromStore(int id,ProductData productData){
+    public Response<Boolean> editProductFromStore(int id,ProductData productData){
         return logicManager.editProductFromStore(id,productData);
     }
 

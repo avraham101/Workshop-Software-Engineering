@@ -217,7 +217,7 @@ public abstract class UserState {
      * @param productData
      * @return
      */
-    public abstract boolean editProductFromStore(ProductData productData);
+    public abstract Response<Boolean> editProductFromStore(ProductData productData);
 
     /**
      * use case 4.3 - add manager

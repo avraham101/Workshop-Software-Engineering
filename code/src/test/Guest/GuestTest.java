@@ -169,7 +169,7 @@ public class GuestTest {
      */
     @Test
     public void testEditProductInStore() {
-        assertFalse(guest.editProductFromStore(data.getProductData(Data.VALID)));
+        assertFalse(guest.editProductFromStore(data.getProductData(Data.VALID)).getValue());
     }
 
     /**

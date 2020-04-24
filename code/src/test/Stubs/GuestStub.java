@@ -68,7 +68,7 @@ public class GuestStub extends Guest {
      * @return
      */
     @Override
-    public boolean editProductFromStore(ProductData productData) {
+    public Response<Boolean> editProductFromStore(ProductData productData) {
         return super.editProductFromStore(productData);
     }
 

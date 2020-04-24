@@ -182,7 +182,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public boolean editProductInStore(int id,ProductTestData product) {
         ProductData productData = buildProductData(product);
-        return serviceAPI.editProductFromStore(id,productData);
+        return serviceAPI.editProductFromStore(id,productData).getValue();
     }
     //---------------------------Use-Case-4.1---------------------------------//
 

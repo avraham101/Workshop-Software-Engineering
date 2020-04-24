@@ -778,17 +778,17 @@ public class LogicManager {
      * @param productData the product to be edited to
      * @return if the product was edited successfully
      */
-    public boolean editProductFromStore(int id,ProductData productData) {
+    public Response<Boolean> editProductFromStore(int id,ProductData productData) {
         loggerSystem.writeEvent("LogicManager","editProductFromStore",
                 "edit the product amount in the store", new Object[] {productData});
         User current=connectedUsers.get(id);
         if(productData==null)
-            return false;
+            return new Response<>(false,OpCode.Invalid_Product);
         if(!stores.containsKey(productData.getStoreName()))
-            return false;
+            return new Response<>(false,OpCode.Store_Not_Found);
         if(validProduct(productData))
             return current.editProductFromStore(productData);
-        return false;
+        return new Response<>(false,OpCode.Invalid_Product);
     }
 
     /**

@@ -50,7 +50,7 @@ public class StoreStub extends Store {
      * @return
      */
     @Override
-    public boolean editProduct(ProductData productData) {
-        return true;
+    public Response<Boolean> editProduct(ProductData productData) {
+        return new Response<>(true,OpCode.Success);
     }
 }

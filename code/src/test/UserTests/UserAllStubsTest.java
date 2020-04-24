@@ -330,7 +330,7 @@ public class UserAllStubsTest {
     @Test
     public void testEditProductFromStoreGuest(){
         setUpGuest();
-        assertFalse(user.editProductFromStore(data.getProductData(Data.EDIT)));
+        assertFalse(user.editProductFromStore(data.getProductData(Data.EDIT)).getValue());
     }
 
     /**
@@ -339,7 +339,7 @@ public class UserAllStubsTest {
     @Test
     public void testEditProductFromStoreSubscribe() {
         setUpProductAdded();
-        assertTrue(user.editProductFromStore(data.getProductData(Data.EDIT)));
+        assertTrue(user.editProductFromStore(data.getProductData(Data.EDIT)).getValue());
     }
 
     /**
