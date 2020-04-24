@@ -203,7 +203,7 @@ public class ServiceAPI {
      * @param productData - data of product
      * @return if product was added
      */
-    public boolean addProductToStore(int id,ProductData productData){
+    public Response<Boolean> addProductToStore(int id,ProductData productData){
         return logicManager.addProductToStore(id,productData);
     }
 

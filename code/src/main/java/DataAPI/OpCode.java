@@ -7,6 +7,7 @@ public enum OpCode implements Serializable {
 
     Success,
     Store_Not_Found,
-    User_NorFound
+    User_NorFound,
+    Invalid_Product,
 
 }

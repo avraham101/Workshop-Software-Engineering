@@ -734,17 +734,18 @@ public class LogicManager {
      * @param productData -the details of the product
      * @return true if the product was added, false otherwise
      */
-    public boolean addProductToStore(int id,ProductData productData) {
+    public Response<Boolean> addProductToStore(int id,ProductData productData) {
         loggerSystem.writeEvent("LogicManager","addProductToStore",
                 "add a product to store", new Object[] {productData});
         User current=connectedUsers.get(id);
         if(productData==null)
-            return false;
+            return new Response<>(false,OpCode.Invalid_Product);
         if(!validProduct(productData))
-            return false;
+            return new Response<>(false,OpCode.Invalid_Product);
         if(stores.containsKey(productData.getStoreName()))
-            return current.addProductToStore(productData);
-        return false;
+            return new Response<>(false,OpCode.Store_Not_Found);
+            //return current.addProductToStore(productData);
+        return new Response<>(false,OpCode.Store_Not_Found);
     }
 
     /**
