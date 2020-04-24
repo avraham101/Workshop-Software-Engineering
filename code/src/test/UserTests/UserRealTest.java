@@ -108,7 +108,7 @@ public class UserRealTest extends UserAllStubsTest{
         int number =  user.getState().getCart().getBaskets().keySet().size();
         String name = data.getSubscribe(Data.VALID).getName();
         user.savePurchase(name);
-        assertEquals(number, user.watchMyPurchaseHistory().size());
+        assertEquals(number, user.watchMyPurchaseHistory().getValue().size());
         assertEquals(storeExpected, store.getPurchases().size());
     }
 
@@ -190,7 +190,7 @@ public class UserRealTest extends UserAllStubsTest{
     @Override @Test
     public void testWatchPurchasesSubscribe() {
         setUpBougtAndSaved();
-        List<Purchase> list = user.watchMyPurchaseHistory();
+        List<Purchase> list = user.watchMyPurchaseHistory().getValue();
         assertNotNull(list);
         assertEquals(1, list.size());
     }

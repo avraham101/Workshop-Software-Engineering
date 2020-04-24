@@ -189,7 +189,7 @@ public class User {
      * the function return the purchase list
      * @return the purchase list
      */
-    public List<Purchase> watchMyPurchaseHistory() {
+    public Response<List<Purchase>> watchMyPurchaseHistory() {
         return state.watchMyPurchaseHistory();
     }
 

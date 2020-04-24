@@ -182,7 +182,7 @@ public class UserAllStubsTest {
         setUpBuyCart();
         String name = data.getSubscribe(Data.VALID).getName();
         user.savePurchase(name);
-        assertEquals(0, user.watchMyPurchaseHistory().size());
+        assertEquals(0, user.watchMyPurchaseHistory().getValue().size());
     }
 
     /**
@@ -268,7 +268,7 @@ public class UserAllStubsTest {
     @Test
     public void testWatchPurchasesGuest() {
         setUpGuest();
-        List<Purchase> list = user.watchMyPurchaseHistory();
+        List<Purchase> list = user.watchMyPurchaseHistory().getValue();
         assertNull(list);
     }
 
@@ -278,7 +278,7 @@ public class UserAllStubsTest {
     @Test
     public void testWatchPurchasesSubscribe() {
        setUpBougtAndSaved();
-        List<Purchase> list = user.watchMyPurchaseHistory();
+        List<Purchase> list = user.watchMyPurchaseHistory().getValue();
         assertNotNull(list);
         assertTrue(list.isEmpty());
     }

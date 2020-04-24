@@ -152,7 +152,7 @@ public class GuestTest {
      */
     @Test
     public void testWatchPurchases() {
-        List<Purchase> list = guest.watchMyPurchaseHistory();
+        List<Purchase> list = guest.watchMyPurchaseHistory().getValue();
         assertNull(list);
     }
 

@@ -195,7 +195,7 @@ public abstract class UserState {
      * the function return the purchase list
      * @return the purchase list
      */
-    public abstract List<Purchase> watchMyPurchaseHistory();
+    public abstract Response<List<Purchase>> watchMyPurchaseHistory();
 
     /**
      * use case 4.1.1 - add product

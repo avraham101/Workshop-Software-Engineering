@@ -137,7 +137,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     @Test
     public void testWatchPurchases() {
         setUpProductBought();
-        List<Purchase> list = sub.watchMyPurchaseHistory();
+        List<Purchase> list = sub.watchMyPurchaseHistory().getValue();
         assertNotNull(list);
         assertEquals(1,list.size());
     }

@@ -156,14 +156,14 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-3.5---------------------------------//
     @Override
     public boolean sendApplicationToStore(int id, String storeName, String message) {
-        return serviceAPI.writeRequestToStore(id,storeName,message);
+        return serviceAPI.writeRequestToStore(id,storeName,message).getValue();
     }
     //---------------------------Use-Case-3.5---------------------------------//
 
     //---------------------------Use-Case-3.7---------------------------------//
     @Override
     public List<PurchaseTestData> getCurrentUserPurchaseHistory(int id) {
-        List<Purchase> purchaseHistory = serviceAPI.watchMyPurchaseHistory(id);
+        List<Purchase> purchaseHistory = serviceAPI.watchMyPurchaseHistory(id).getValue();
         return buildPurchasesTestData(purchaseHistory);
     }
     //---------------------------Use-Case-3.7---------------------------------//

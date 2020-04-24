@@ -117,8 +117,8 @@ public class Guest extends UserState {
      * @return the purchase list
      */
     @Override
-    public List<Purchase> watchMyPurchaseHistory() {
-        return null;
+    public Response<List<Purchase>> watchMyPurchaseHistory() {
+        return new Response<>(null,OpCode.Not_Login);
     }
 
 
