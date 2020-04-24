@@ -252,7 +252,7 @@ public class LogicManagerAllStubsTest {
     public void testRegisterSuccess() {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        assertTrue(logicManager.register(subscribe.getName(),subscribe.getPassword()));
+        assertTrue(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
     }
 
     /**
@@ -262,7 +262,7 @@ public class LogicManagerAllStubsTest {
     public void testRegisterFailWrongName() {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.WRONG_NAME);
-        assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()));
+        assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
         assertFalse(users.containsKey(subscribe.getName()));
     }
 
@@ -273,7 +273,7 @@ public class LogicManagerAllStubsTest {
     public void testRegisterFailWrongPassword() {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.WRONG_PASSWORD);
-        assertFalse(logicManager.register(subscribe.getName(), subscribe.getPassword()));
+        assertFalse(logicManager.register(subscribe.getName(), subscribe.getPassword()).getValue());
         assertFalse(users.containsKey(subscribe.getName()));
     }
 
@@ -284,7 +284,7 @@ public class LogicManagerAllStubsTest {
     public void testRegisterFailNull() {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.NULL);
-        assertFalse(logicManager.register(subscribe.getName(), subscribe.getName()));
+        assertFalse(logicManager.register(subscribe.getName(), subscribe.getName()).getValue());
     }
 
     /**
@@ -295,7 +295,7 @@ public class LogicManagerAllStubsTest {
         setUpConnect();
         setUpRegisteredUser();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()));
+        assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
     }
 
     /**
@@ -315,7 +315,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testLoginFailNull() {
         Subscribe subscribe = data.getSubscribe(Data.NULL);
-        assertFalse(logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword()));
+        assertFalse((logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword())).getValue());
     }
 
     /**
@@ -323,7 +323,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testLoginFailWrongName() {
         Subscribe subscribe = data.getSubscribe(Data.WRONG_NAME);
-        assertFalse(logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword()));
+        assertFalse((logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword())).getValue());
     }
 
     /**
@@ -331,7 +331,7 @@ public class LogicManagerAllStubsTest {
      */
     private void testLoginFailWrongPassword() {
         Subscribe subscribe = data.getSubscribe(Data.WRONG_PASSWORD);
-        assertFalse(logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword()));
+        assertFalse((logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword())).getValue());
     }
 
     /**
@@ -339,7 +339,7 @@ public class LogicManagerAllStubsTest {
      */
     protected void testLoginSuccess() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        assertTrue(logicManager.login(data.getId(Data.VALID), subscribe.getName(),subscribe.getPassword()));
+        assertTrue((logicManager.login(data.getId(Data.VALID), subscribe.getName(),subscribe.getPassword())).getValue());
     }
 
 
@@ -351,8 +351,8 @@ public class LogicManagerAllStubsTest {
         setUpOpenedStore();
         List<StoreData> expected = new LinkedList<>();
         expected.add(data.getStore(Data.VALID));
-        assertEquals(expected, logicManager.viewStores());
-        assertNotEquals(null, logicManager.viewStores());
+        assertEquals(expected, logicManager.viewStores().getValue());
+        assertNotEquals(null, logicManager.viewStores().getValue());
     }
 
     /**
@@ -363,7 +363,7 @@ public class LogicManagerAllStubsTest {
         setUpProductAdded();
         List<ProductData> expected = new LinkedList<>();
         String storeName = data.getStore(Data.VALID).getName();
-        assertEquals(expected, logicManager.viewProductsInStore(storeName));
+        assertEquals(expected, logicManager.viewProductsInStore(storeName).getValue());
     }
 
     /**
@@ -373,7 +373,7 @@ public class LogicManagerAllStubsTest {
     public void testViewProductInStoreNotExists() {
         setUpProductAdded();
         String storeName = data.getStore(Data.WRONG_STORE).getName();
-        assertNull(logicManager.viewProductsInStore(storeName));
+        assertNull(logicManager.viewProductsInStore(storeName).getValue());
     }
 
     /**
@@ -383,7 +383,7 @@ public class LogicManagerAllStubsTest {
     public void testViewProductInStoreNull() {
         setUpProductAdded();
         String storeName = data.getStore(Data.NULL_STORE).getName();
-        assertNull(logicManager.viewProductsInStore(storeName));
+        assertNull(logicManager.viewProductsInStore(storeName).getValue());
     }
 
     /**
@@ -395,7 +395,7 @@ public class LogicManagerAllStubsTest {
         List<ProductData> expected = new LinkedList<>();
         String storeName = data.getStore(Data.VALID).getName();
         expected.add(data.getProductData(Data.NULL_CATEGORY));
-        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
+        assertNotEquals(expected, logicManager.viewProductsInStore(storeName).getValue());
         expected.remove(data.getProductData(Data.NULL_CATEGORY));
     }
 
@@ -408,7 +408,7 @@ public class LogicManagerAllStubsTest {
         List<ProductData> expected = new LinkedList<>();
         String storeName = data.getStore(Data.VALID).getName();
         expected.add(data.getProductData((Data.NULL_NAME)));
-        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
+        assertNotEquals(expected, logicManager.viewProductsInStore(storeName).getValue());
         expected.remove(data.getProductData((Data.NULL_NAME)));
     }
 
@@ -421,7 +421,7 @@ public class LogicManagerAllStubsTest {
         List<ProductData> expected = new LinkedList<>();
         String storeName = data.getStore(Data.VALID).getName();
         expected.add(data.getProductData((Data.NULL_DISCOUNT)));
-        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
+        assertNotEquals(expected, logicManager.viewProductsInStore(storeName).getValue());
         expected.remove(data.getProductData((Data.NULL_DISCOUNT)));
     }
 
@@ -434,7 +434,7 @@ public class LogicManagerAllStubsTest {
         List<ProductData> expected = new LinkedList<>();
         String storeName = data.getStore(Data.VALID).getName();
         expected.add(data.getProductData((Data.NULL_PURCHASE)));
-        assertNotEquals(expected, logicManager.viewProductsInStore(storeName));
+        assertNotEquals(expected, logicManager.viewProductsInStore(storeName).getValue());
         expected.remove(data.getProductData((Data.NULL_PURCHASE)));
     }
 
@@ -445,7 +445,7 @@ public class LogicManagerAllStubsTest {
     public void testViewSpecificProductWrongSearch() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NULL_SEARCH);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
     }
 
@@ -456,7 +456,7 @@ public class LogicManagerAllStubsTest {
     public void testViewSpecificProductWrongFilterNullValue() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NULL_VALUE);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
     }
 
@@ -467,7 +467,7 @@ public class LogicManagerAllStubsTest {
     public void testViewSpecificProductWrongFilterNegativeMin() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NEGATIVE_MIN);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
     }
 
@@ -478,7 +478,7 @@ public class LogicManagerAllStubsTest {
     public void testViewSpecificProductWrongFilterNegativeMax() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NEGATIVE_MAX);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
     }
 
@@ -489,7 +489,7 @@ public class LogicManagerAllStubsTest {
     public void testViewSpecificProductWrongFilterNullCategory() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NULL_CATEGORY);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
 
     }
@@ -501,7 +501,7 @@ public class LogicManagerAllStubsTest {
     public void testViewSpecificProductWrongFilterNull() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NULL);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
     }
 
@@ -513,7 +513,7 @@ public class LogicManagerAllStubsTest {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.NONE);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertTrue(products.isEmpty());
     }
@@ -526,7 +526,7 @@ public class LogicManagerAllStubsTest {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.PRODUCT_NAME);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertTrue(products.isEmpty());
     }
@@ -539,7 +539,7 @@ public class LogicManagerAllStubsTest {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.KEY_WORD);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertTrue(products.isEmpty());
     }
@@ -552,7 +552,7 @@ public class LogicManagerAllStubsTest {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.CATEGORY);
-        List<ProductData> products = logicManager.viewSpecificProducts(filter);
+        List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertTrue(products.isEmpty());
     }

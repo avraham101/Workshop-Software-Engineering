@@ -9,6 +9,13 @@ public enum OpCode implements Serializable {
     Store_Not_Found,
     User_Not_Found,
     Invalid_Product,
-    Not_Login, Dont_Have_Permission, Already_Exists, Invalid_Permissions,
+    Invalid_Register_Details,
+    Hash_Fail,
+    Invalid_Login_Details,
+    Not_Valid_Filter,
+    Not_Login,
+    Dont_Have_Permission,
+    Already_Exists,
+    Invalid_Permissions,
 
 }

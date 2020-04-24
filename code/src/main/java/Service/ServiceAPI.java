@@ -39,9 +39,9 @@ public class ServiceAPI {
      * acceptance test class : RegisterTest
      * @param userName - the user Name
      * @param password - the user password
-     * @return true if the register complete, otherwise false
+     * @return Response with true value if the register complete, otherwise false
      */
-    public boolean register(String userName, String password) {
+    public Response<Boolean> register(String userName, String password) {
         return logicManager.register(userName,password);
     }
 
@@ -50,9 +50,9 @@ public class ServiceAPI {
      * acceptance test class : LoginTest
      * @param userName - the user Name
      * @param password - the user password
-     * @return true if the user is logged to the system, otherwise false
+     * @return Response with true value if the user is logged to the system, otherwise false
      */
-    public boolean login(int id,String userName, String password) {
+    public Response<Boolean> login(int id,String userName, String password) {
         return logicManager.login(id,userName, password);
     }
 
@@ -61,7 +61,7 @@ public class ServiceAPI {
      * acceptance test class : GetStoreInfo
      * @return - details of all the stores data
      */
-    public List<StoreData> viewStores() {
+    public Response<List<StoreData>> viewStores() {
         return logicManager.viewStores();
     }
 
@@ -70,7 +70,7 @@ public class ServiceAPI {
      * @param storeName - the store that owns the products
      * @return - list of ProductData of the products in the store
      */
-    public List<ProductData> viewProductsInStore(String storeName) {
+    public Response<List<ProductData>> viewProductsInStore(String storeName) {
         return logicManager.viewProductsInStore(storeName);
     }
 
@@ -80,7 +80,7 @@ public class ServiceAPI {
      * @param filter - the filter chosen
      * @return - list of products after filer and sorter.
      */
-    public List<ProductData> viewSpasificProducts(Filter filter) {
+    public Response<List<ProductData>> viewSpasificProducts(Filter filter) {
         //filters -> price range, category ,*product rating, *store rating,
         return logicManager.viewSpecificProducts(filter);
     }
