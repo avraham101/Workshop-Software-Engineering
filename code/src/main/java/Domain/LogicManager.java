@@ -307,14 +307,16 @@ public class LogicManager {
      * @param filter - the filter chosen
      * @return - list of products after filer and sorter.
      */
-    public List<ProductData> viewSpecificProducts(Filter filter) {
+    public Response<List<ProductData>> viewSpecificProducts(Filter filter) {
         loggerSystem.writeEvent("LogicManager","viewSpecificProducts",
                 "view products after a filter", new Object[] {filter});
-        if(!validFilter(filter))
-            return new LinkedList<>();
+        if(!validFilter(filter)) {
+            List<ProductData> output = new LinkedList<>();
+            return new Response<>(output,OpCode.Not_Valid_Filter);
+        }
         List<ProductData> productsData = searchProducts(filter.getSearch(),filter.getValue());
         productsData = filterProducts(productsData,filter);
-        return productsData;
+        return new Response<>(productsData, OpCode.Success);
     }
 
     /**
@@ -427,6 +429,7 @@ public class LogicManager {
         }
         return output;
     }
+
     /**
      * use case 2.5 - Search product in store
      * pre-conditions: the products, search, value is Valid
@@ -466,11 +469,12 @@ public class LogicManager {
      * @return - the cart details
      * @param id
      */
-    public CartData watchCartDetails(int id) {
+    public Response<CartData> watchCartDetails(int id) {
         loggerSystem.writeEvent("LogicManager","watchCartDetails",
                 "view the user cart data", new Object[] {});
         User current = connectedUsers.get(id);
-        return current.watchCartDetatils();
+        CartData output = current.watchCartDetatils();
+        return new Response<>(output,OpCode.Success);
     }
 
     /**
@@ -480,11 +484,15 @@ public class LogicManager {
      * @param storeName - the store that sale this product
      * @return - true if the delete work, false if not
      */
-    public boolean deleteFromCart(int id,String productName,String storeName){
+    public Response<Boolean> deleteFromCart(int id,String productName,String storeName){
         loggerSystem.writeEvent("LogicManager","deleteFromCart",
                 "delete product from the user cart", new Object[] {productName, storeName});
         User current=connectedUsers.get(id);
-        return current.deleteFromCart(productName,storeName);
+        boolean output = current.deleteFromCart(productName,storeName);
+        if (output) {
+            return new Response<>(true, OpCode.Success);
+        }
+        return new Response<>(false, OpCode.Invalid_Product);
     }
 
     /**
@@ -494,11 +502,16 @@ public class LogicManager {
      * @param newAmount - the new amount
      * @return - true if succeeded, false if not
      */
-    public boolean editProductInCart(int id,String productName,String storeName,int newAmount) {
+    public Response<Boolean> editProductInCart(int id,String productName,String storeName,int newAmount) {
         loggerSystem.writeEvent("LogicManager","editProductInCart",
                 "edit the amount of a product in the cart", new Object[] {productName, storeName, newAmount});
         User current=connectedUsers.get(id);
-        return current.editProductInCart(productName,storeName, newAmount);
+        boolean output = current.editProductInCart(productName,storeName, newAmount);
+
+        if (output) {
+            return new Response<>(true,OpCode.Success);
+        }
+        return new Response<>(false,OpCode.Invalid_Product);
     }
 
     /**
@@ -508,7 +521,7 @@ public class LogicManager {
      * @param amount - the amount of the product that need to add to the cart
      * @return - true if added, false if not
      */
-    public boolean addProductToCart(int id,String productName, String storeName, int amount) {
+    public Response<Boolean> addProductToCart(int id,String productName, String storeName, int amount) {
         loggerSystem.writeEvent("LogicManager","addProductToCart",
                 "add a product to the cart", new Object[] {productName, storeName, amount});
         boolean result = false;
@@ -523,7 +536,10 @@ public class LogicManager {
                 result = current.addProductToCart(store, product, amount);
             }
         }
-        return result;
+        if (result) {
+            return new Response<>(true, OpCode.Success);
+        }
+        return new Response<>(false, OpCode.Invalid_Product);
     }
 
     /**
