@@ -17,6 +17,11 @@ public enum OpCode implements Serializable {
     Dont_Have_Permission,
     Already_Exists,
     Invalid_Permissions,
+    Invalid_Payment_Data,
+    Invalid_Delivery_Data,
+    Fail_Buy_Cart,
+    Payment_Reject,
+    Supply_Reject,
     Not_Found,
     InvalidRequest,
 

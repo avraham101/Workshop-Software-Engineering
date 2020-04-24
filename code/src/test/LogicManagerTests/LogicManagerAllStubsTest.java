@@ -682,7 +682,7 @@ public class LogicManagerAllStubsTest {
     protected void testSuccessBuyProducts() {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address).getValue());
     }
 
     /**
@@ -695,7 +695,7 @@ public class LogicManagerAllStubsTest {
         setUpProductAddedToCart();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address).getValue());
     }
 
     /**
@@ -708,7 +708,7 @@ public class LogicManagerAllStubsTest {
         setUpProductAddedToCart();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address).getValue());
     }
 
     /**
@@ -722,7 +722,7 @@ public class LogicManagerAllStubsTest {
         setUpProductAddedToCart();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address).getValue());
     }
 
     /**
@@ -733,7 +733,7 @@ public class LogicManagerAllStubsTest {
         setUpProductAddedToCart();
         // null data payment
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), null, address));
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), null, address).getValue());
     }
 
     /**
@@ -745,7 +745,7 @@ public class LogicManagerAllStubsTest {
         // null address in payment
         PaymentData paymentData = data.getPaymentData(Data.NULL_ADDRESS);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address).getValue());
     }
 
     /**
@@ -757,7 +757,7 @@ public class LogicManagerAllStubsTest {
         // empty address in payment
         PaymentData paymentData = data.getPaymentData(Data.EMPTY_ADDRESS);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address).getValue());
     }
 
     /**
@@ -769,7 +769,7 @@ public class LogicManagerAllStubsTest {
         // empty payment
         PaymentData paymentData = data.getPaymentData(Data.EMPTY_PAYMENT);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address).getValue());
     }
 
     /**
@@ -780,7 +780,7 @@ public class LogicManagerAllStubsTest {
         // null name in payment
         PaymentData paymentData = data.getPaymentData(Data.NULL_NAME);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address).getValue());
     }
 
     /**
@@ -792,7 +792,7 @@ public class LogicManagerAllStubsTest {
         // empty name in payment
         PaymentData paymentData = data.getPaymentData(Data.EMPTY_NAME);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address).getValue());
 
     }
 
@@ -805,7 +805,7 @@ public class LogicManagerAllStubsTest {
         // null address
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.NULL_ADDRESS).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address).getValue());
     }
 
     /**
@@ -817,7 +817,7 @@ public class LogicManagerAllStubsTest {
         // empty address
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.EMPTY_ADDRESS).getAddress();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address).getValue());
 
     }
 
