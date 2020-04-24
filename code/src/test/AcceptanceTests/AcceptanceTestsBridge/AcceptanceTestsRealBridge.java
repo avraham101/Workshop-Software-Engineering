@@ -211,14 +211,14 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public boolean deletePermission(int id,String storeName, String username, PermissionsTypeTestData permissionsTypeTestData) {
         List<PermissionType> permissionType = new ArrayList<>(Arrays.asList(buildPermissionType(permissionsTypeTestData)));
-        return serviceAPI.removePermissions(id,permissionType,storeName,username);
+        return serviceAPI.removePermissions(id,permissionType,storeName,username).getValue();
     }
     //---------------------------Use-Case-4.6---------------------------------//
 
     //---------------------------Use-Case-4.7---------------------------------//
     @Override
     public boolean deleteManager(int id, String storeName, String username) {
-        return serviceAPI.removeManager(id,username,storeName);
+        return serviceAPI.removeManager(id,username,storeName).getValue();
     }
     //---------------------------Use-Case-4.7---------------------------------//
 

@@ -221,7 +221,7 @@ public class LogicManager {
                         "Fail to login the user",new Object[]{userName, password});
             }
         }
-        return new Response<>(false,OpCode.User_NorFound);
+        return new Response<>(false,OpCode.User_Not_Found);
     }
 
     /**

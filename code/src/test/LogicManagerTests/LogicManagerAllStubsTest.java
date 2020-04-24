@@ -1408,11 +1408,11 @@ public class LogicManagerAllStubsTest {
         String user=data.getSubscribe(Data.ADMIN).getName();
         String store=data.getStore(Data.VALID).getName();
         List<PermissionType> types=data.getPermissionTypeList();
-        assertFalse(logicManager.removePermissions(data.getId(Data.VALID),types,store,store));
-        assertFalse(logicManager.removePermissions(data.getId(Data.VALID),types,user,user));
-        assertFalse(logicManager.removePermissions(data.getId(Data.VALID),null,store,user));
+        assertFalse(logicManager.removePermissions(data.getId(Data.VALID),types,store,store).getValue());
+        assertFalse(logicManager.removePermissions(data.getId(Data.VALID),types,user,user).getValue());
+        assertFalse(logicManager.removePermissions(data.getId(Data.VALID),null,store,user).getValue());
         types.add(null);
-        assertFalse(logicManager.removePermissions(data.getId(Data.VALID),types,store,user));
+        assertFalse(logicManager.removePermissions(data.getId(Data.VALID),types,store,user).getValue());
         types.remove(null);
     }
 
@@ -1421,7 +1421,7 @@ public class LogicManagerAllStubsTest {
      */
     protected void testRemovePermissionSuccess() {
         assertTrue(currUser.removePermissions(data.getPermissionTypeList(),
-                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()).getValue());
     }
 
     /**
@@ -1439,7 +1439,7 @@ public class LogicManagerAllStubsTest {
      * part of test use case 4.7 - remove manager
      */
     protected void testRemoveManagerSuccess() {
-        assertTrue(logicManager.removeManager(data.getId(Data.VALID),data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()));
+        assertTrue(logicManager.removeManager(data.getId(Data.VALID),data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -1448,7 +1448,7 @@ public class LogicManagerAllStubsTest {
     private void testRemoveManagerFailStore() {
         String storeName=data.getStore(Data.VALID).getName();
         //invalid username
-        assertFalse(logicManager.removeManager(data.getId(Data.VALID),storeName,storeName));
+        assertFalse(logicManager.removeManager(data.getId(Data.VALID),storeName,storeName).getValue());
     }
 
     /**
@@ -1457,7 +1457,7 @@ public class LogicManagerAllStubsTest {
     private void testRemoveManagerFailUser() {
         String userName=data.getSubscribe(Data.ADMIN).getName();
         //invalid storeName
-        assertFalse(logicManager.removeManager(data.getId(Data.VALID),userName,userName));
+        assertFalse(logicManager.removeManager(data.getId(Data.VALID),userName,userName).getValue());
     }
 
     /**
