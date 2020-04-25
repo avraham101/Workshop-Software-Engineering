@@ -244,6 +244,9 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
 
     }
 
+    /**
+     * tests for getStatus
+     */
     @Test
     public void  testGetStatusRegularSuccess(){
         assertEquals(StatusTypeData.REGULAR,sub.getStatus());
@@ -254,6 +257,10 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         sub.openStore(data.getStore(Data.VALID));
         assertEquals(StatusTypeData.MANAGER,sub.getStatus());
     }
+
+    /**
+     * tests for getMyManagedStores
+     */
 
     @Test
     public void testGetMyManagedStoresNoStoresSuccess(){

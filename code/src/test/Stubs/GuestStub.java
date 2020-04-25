@@ -5,6 +5,7 @@ import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -134,5 +135,10 @@ public class GuestStub extends Guest {
     @Override
     public Response<List<Purchase>> watchMyPurchaseHistory() {
         return new Response<>(null,OpCode.Not_Login);
+    }
+
+    @Override
+    public List<Store> getMyManagedStores(){
+        return null;
     }
 }

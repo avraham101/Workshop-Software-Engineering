@@ -5,6 +5,7 @@ import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -182,5 +183,11 @@ public class SubscribeStub extends Subscribe{
     @Override
     public boolean addReview(Review review) {
         return true;
+    }
+
+    @Override
+    public List<Store> getMyManagedStores(){
+        return new ArrayList<>();
+
     }
 }

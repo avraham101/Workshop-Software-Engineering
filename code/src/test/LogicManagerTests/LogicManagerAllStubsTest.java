@@ -1597,4 +1597,25 @@ public class LogicManagerAllStubsTest {
         assertNotNull(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getStore(Data.VALID).getName()).getValue());
     }
 
+    /**
+     * tests for getStoresManagedByUser
+     */
+    @Test
+    public void testGetMyStoresFailNoStores(){
+        setUpLogedInUser();
+       Response<List<StoreData>> response =  logicManager.getStoresManagedByUser(data.getId(Data.VALID));
+       assertNull(response.getValue());
+       assertEquals(response.getReason(),OpCode.No_Stores_To_Manage);
+
+    }
+
+    @Test
+    public void testGetMyStoreFailUserNoExits(){
+        Response<List<StoreData>> response =logicManager.getStoresManagedByUser(-1);
+        assertNull(response.getValue());
+        assertEquals(response.getReason(),OpCode.No_Stores_To_Manage);
+
+
+    }
+
 }

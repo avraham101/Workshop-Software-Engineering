@@ -874,12 +874,33 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * tests for GetStoresManagedByUsers
      */
+
     @Test
-    public void testGetStoresManagedByUsersGuestSuccess(){
-        //TODO
+    public void testGetStoresManagedByUsersOwnerSuccess(){
+        setUpOpenedStore();
+        Response<List<StoreData>> response= logicManager.getStoresManagedByUser(data.getId(Data.VALID));
+        assertNotNull(response.getValue());
+        assertEquals(response.getReason(),OpCode.Success);
+
+
+    }
+
+    @Test
+    public void testGetStoresManagedByUsersGuestFail(){
+        setUpConnect();
         Response<List<StoreData>> response= logicManager.getStoresManagedByUser(data.getId(Data.VALID));
         assertNull(response.getValue());
         assertEquals(response.getReason(),OpCode.No_Stores_To_Manage);
+
+    }
+
+    @Test
+    public void testGetStoresManagedByUsersNotManagerFail(){
+        setUpLogedInUser();
+        Response<List<StoreData>> response= logicManager.getStoresManagedByUser(data.getId(Data.VALID));
+        assertNull(response.getValue());
+        assertEquals(response.getReason(),OpCode.No_Stores_To_Manage);
+
 
     }
 
