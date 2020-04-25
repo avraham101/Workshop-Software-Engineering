@@ -1024,6 +1024,8 @@ public class LogicManager {
      * @param id user's id
      * @param storeName store name
      * @return list of user's permissions for given store
+     * if regular manager -> empty list
+     * not a manager -> null
      */
     public Response<Set<StorePermissionType>> getPermissionsForStore(int id, String storeName) {
         User user = connectedUsers.get(id);
