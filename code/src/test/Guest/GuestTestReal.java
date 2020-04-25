@@ -114,4 +114,11 @@ public class GuestTestReal extends GuestTest{
         assertEquals(storeExpected, store.getPurchases().size());
         assertTrue(guest.getCart().getBaskets().isEmpty());
     }
+
+
+    @Test
+    public void testGetMyManagedStoresNoStoresSuccess(){
+        assertNull(guest.getMyManagedStores());
+    }
+
 }

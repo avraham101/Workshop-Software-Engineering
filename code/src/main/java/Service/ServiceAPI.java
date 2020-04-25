@@ -13,7 +13,7 @@ public class ServiceAPI {
 
     /**
      * use case 1.1 - Init Trading System
-     * //TODO : ACCEPTANCE TEST
+     * acceptance test class : initialStartTest
      * @param userName - the user name
      * @param password - the user password
      * @throws Exception - system crashed exception
@@ -346,4 +346,12 @@ public class ServiceAPI {
         return logicManager.watchStorePurchasesHistory(id, storeName);
     }
 
+    /**
+     * returns all the stores managed by user
+     * @param id user id
+     * @return the stores managed by user
+     */
+    public Response<List<StoreData>> getStoresManagedByUser(int id){
+        return logicManager.getStoresManagedByUser(id);
+    }
 }

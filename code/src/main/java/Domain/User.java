@@ -299,4 +299,8 @@ public class User {
         return state.canWatchUserHistory();
     }
 
+    public List<Store> getMyManagedStores(){
+       return state.getMyManagedStores();
+    }
+
 }

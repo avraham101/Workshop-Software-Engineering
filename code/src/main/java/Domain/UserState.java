@@ -282,4 +282,5 @@ public abstract class UserState {
      */
     public abstract boolean canWatchUserHistory();
 
+    public abstract List<Store> getMyManagedStores();
 }

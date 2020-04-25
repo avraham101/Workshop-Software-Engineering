@@ -475,7 +475,7 @@ public class Subscribe extends UserState{
     }
 
     /**
-     * gets given user Status
+     * gets given user Status: admin/manager/regular
      * @return the user status
      */
     public StatusTypeData getStatus(){
@@ -491,5 +491,21 @@ public class Subscribe extends UserState{
 
     }
 
+    /**
+     *
+     * @return list of stores managed by the user
+     */
+    @Override
+    public List<Store> getMyManagedStores(){
+        List<Permission> storesPermissions = new ArrayList<Permission>(permissions.values());
+        List<Store> myStores = new ArrayList<>();
+        for (Permission p: storesPermissions ) {
+            myStores.add(p.getStore());
+
+        }
+        if(myStores.isEmpty())
+            return null;
+        return myStores;
+    }
 
 }

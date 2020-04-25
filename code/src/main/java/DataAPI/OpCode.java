@@ -30,6 +30,7 @@ public enum OpCode implements Serializable {
     Cant_Add_Review,
     Invalid_Request,
     Null_Request,
+    No_Stores_To_Manage
 
 
 }
