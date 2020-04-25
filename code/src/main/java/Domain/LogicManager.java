@@ -1029,8 +1029,10 @@ public class LogicManager {
      */
     public Response<Set<StorePermissionType>> getPermissionsForStore(int id, String storeName) {
         User user = connectedUsers.get(id);
-        Set<StorePermissionType> userStorePermissions = user.getPermissionsForStore(storeName);
         Response<Set<StorePermissionType>> response = new Response<>(null,OpCode.Dont_Have_Permission);
+        if(user==null)
+            return response;
+        Set<StorePermissionType> userStorePermissions = user.getPermissionsForStore(storeName);
         if(userStorePermissions!=null){
             response.setValue(userStorePermissions);
             response.setReason(OpCode.Success);

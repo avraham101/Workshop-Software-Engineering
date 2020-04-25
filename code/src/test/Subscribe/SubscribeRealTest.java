@@ -243,7 +243,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     }
 
     /**
-     * test for getStatus
+     * tests for getStatus
      */
     @Test
     public void  testGetStatusRegularSuccess(){
@@ -257,8 +257,9 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     }
 
     /**
-     * test for getMyManagedStores
+     * tests for getMyManagedStores
      */
+
     @Test
     public void testGetMyManagedStoresNoStoresSuccess(){
         assertNull(sub.getMyManagedStores());

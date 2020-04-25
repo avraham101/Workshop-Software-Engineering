@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 //class for Unit test all stubs
@@ -1595,6 +1596,50 @@ public class LogicManagerAllStubsTest {
      */
     protected void testWatchStoreHistorySuccess() {
         assertNotNull(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getStore(Data.VALID).getName()).getValue());
+    }
+
+    /**
+     * tests for getStoresManagedByUser
+     */
+    @Test
+    public void testGetMyStoresFailNoStores(){
+        setUpLogedInUser();
+       Response<List<StoreData>> response =  logicManager.getStoresManagedByUser(data.getId(Data.VALID));
+       assertNull(response.getValue());
+       assertEquals(response.getReason(),OpCode.No_Stores_To_Manage);
+
+    }
+
+    @Test
+    public void testGetMyStoreFailUserNoExits(){
+        Response<List<StoreData>> response =logicManager.getStoresManagedByUser(-1);
+        assertNull(response.getValue());
+        assertEquals(response.getReason(),OpCode.No_Stores_To_Manage);
+
+
+    }
+    /**
+     * tests for getPermissionsForStore
+     */
+    @Test
+    public void testGetPermissionsForStoreFailInvalidStore(){
+        setUpLogedInUser();
+        Response<Set<StorePermissionType>> response=
+                logicManager.getPermissionsForStore(data.getId(Data.VALID),
+                        "InvalidStore");
+        assertNull(response.getValue());
+        assertEquals(response.getReason(),OpCode.Dont_Have_Permission);
+    }
+
+    @Test
+    public void testGetPermissionsForStoreFailNotManager(){
+        StoreData storeData = data.getStore(Data.VALID);
+        Response<Set<StorePermissionType>> response=
+                logicManager.getPermissionsForStore(data.getId(Data.VALID),
+                        storeData.getName());
+        assertNull(response.getValue());
+        assertEquals(response.getReason(),OpCode.Dont_Have_Permission);
+
     }
 
 }

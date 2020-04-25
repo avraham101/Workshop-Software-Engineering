@@ -5,8 +5,7 @@ import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class SubscribeStub extends Subscribe{
 
@@ -182,5 +181,16 @@ public class SubscribeStub extends Subscribe{
     @Override
     public boolean addReview(Review review) {
         return true;
+    }
+
+    @Override
+    public List<Store> getMyManagedStores(){
+        return new ArrayList<>();
+
+    }
+
+    @Override
+    public Set<StorePermissionType> getPermissionsForStore(String storeName) {
+      return new HashSet<>();
     }
 }

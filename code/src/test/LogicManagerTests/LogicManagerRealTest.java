@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -874,12 +875,68 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * tests for GetStoresManagedByUsers
      */
+
     @Test
-    public void testGetStoresManagedByUsersGuestSuccess(){
-        //TODO
+    public void testGetStoresManagedByUsersOwnerSuccess(){
+        setUpOpenedStore();
+        Response<List<StoreData>> response= logicManager.getStoresManagedByUser(data.getId(Data.VALID));
+        assertNotNull(response.getValue());
+        assertEquals(response.getReason(),OpCode.Success);
+
+
+    }
+
+    @Test
+    public void testGetStoresManagedByUsersGuestFail(){
+        setUpConnect();
         Response<List<StoreData>> response= logicManager.getStoresManagedByUser(data.getId(Data.VALID));
         assertNull(response.getValue());
         assertEquals(response.getReason(),OpCode.No_Stores_To_Manage);
+
+    }
+
+    @Test
+    public void testGetStoresManagedByUsersNotManagerFail(){
+        setUpLogedInUser();
+        Response<List<StoreData>> response= logicManager.getStoresManagedByUser(data.getId(Data.VALID));
+        assertNull(response.getValue());
+        assertEquals(response.getReason(),OpCode.No_Stores_To_Manage);
+
+
+    }
+
+    /**
+     *  tests for getPermissionsForStore
+     */
+
+    @Test
+    public void  testGetPermissionsForStoreOwnerSuccess(){
+        setUpOpenedStore();
+        StoreData storeData = data.getStore(Data.VALID);
+        Response<Set<StorePermissionType>> response=
+                logicManager.getPermissionsForStore(data.getId(Data.VALID),
+                        storeData.getName());
+        assertTrue(response.getValue().contains(StorePermissionType.OWNER));
+        assertEquals(response.getReason(),OpCode.Success);
+
+    }
+    @Test
+    public void testGetPermissionsForStoreFailUserNotExist(){
+        StoreData storeData = data.getStore(Data.VALID);
+        Response<Set<StorePermissionType>> response=
+                logicManager.getPermissionsForStore(-1,
+                        storeData.getName());
+        assertNull(response.getValue());
+        assertEquals(response.getReason(),OpCode.Dont_Have_Permission);
+    }
+
+    @Test
+    public void testGetPermissionsForStoreFailStoreNotExist(){
+        Response<Set<StorePermissionType>> response=
+                logicManager.getPermissionsForStore(data.getId(Data.VALID),
+                        "invalidStore");
+        assertNull(response.getValue());
+        assertEquals(response.getReason(),OpCode.Dont_Have_Permission);
 
     }
 
