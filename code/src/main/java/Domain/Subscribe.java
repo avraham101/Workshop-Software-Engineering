@@ -1,16 +1,10 @@
 package Domain;
 
-import DataAPI.OpCode;
-import DataAPI.ProductData;
-import DataAPI.StatusTypeData;
-import DataAPI.Response;
-import DataAPI.StoreData;
+import DataAPI.*;
 import jdk.internal.org.objectweb.asm.Opcodes;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -506,6 +500,34 @@ public class Subscribe extends UserState{
         if(myStores.isEmpty())
             return null;
         return myStores;
+    }
+
+    /**
+     *
+     * @param storeName
+     * @return list of permission for store
+     */
+    @Override
+    public Set<StorePermissionType> getPermissionsForStore(String storeName) {
+     Permission permission = permissions.get(storeName);
+     if(permission==null)
+         return null;
+     Set<StorePermissionType> permissionsForStore = new HashSet<>();
+     HashSet<PermissionType> permissionTypes= permission.getPermissionType();
+     if(permissionTypes.contains(PermissionType.OWNER)){
+         permissionsForStore.add(StorePermissionType.OWNER);
+         return permissionsForStore;
+     }
+     if(permission.canAddProduct())
+         permissionsForStore.add(StorePermissionType.PRODUCTS_INVENTORY);
+     if(permission.canAddOwner())
+         permissionsForStore.add(StorePermissionType.ADD_OWNER);
+     if(permission.canAddManager())
+         permissionsForStore.add(StorePermissionType.ADD_MANAGER);
+     if(!givenByMePermissions.isEmpty())
+         permissionsForStore.add(StorePermissionType.DELETE_MANAGER);
+     return permissionsForStore;
+
     }
 
 }

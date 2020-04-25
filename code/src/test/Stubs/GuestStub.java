@@ -5,9 +5,7 @@ import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class GuestStub extends Guest {
 
@@ -140,5 +138,11 @@ public class GuestStub extends Guest {
     @Override
     public List<Store> getMyManagedStores(){
         return null;
+    }
+
+    @Override
+    public Set<StorePermissionType> getPermissionsForStore(String storeName) {
+        return null;
+
     }
 }

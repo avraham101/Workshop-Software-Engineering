@@ -4,6 +4,7 @@ import DataAPI.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public class User {
     private UserState state;
@@ -303,4 +304,7 @@ public class User {
        return state.getMyManagedStores();
     }
 
+    public Set<StorePermissionType> getPermissionsForStore(String storeName) {
+        return state.getPermissionsForStore(storeName);
+    }
 }

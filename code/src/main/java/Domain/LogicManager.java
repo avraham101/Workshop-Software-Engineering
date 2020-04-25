@@ -1019,5 +1019,26 @@ public class LogicManager {
         return response;
     }
 
+    /**
+     *
+     * @param id user's id
+     * @param storeName store name
+     * @return list of user's permissions for given store
+     * if regular manager -> empty list
+     * not a manager -> null
+     */
+    public Response<Set<StorePermissionType>> getPermissionsForStore(int id, String storeName) {
+        User user = connectedUsers.get(id);
+        Response<Set<StorePermissionType>> response = new Response<>(null,OpCode.Dont_Have_Permission);
+        if(user==null)
+            return response;
+        Set<StorePermissionType> userStorePermissions = user.getPermissionsForStore(storeName);
+        if(userStorePermissions!=null){
+            response.setValue(userStorePermissions);
+            response.setReason(OpCode.Success);
+        }
+        return response;
 
+
+    }
 }

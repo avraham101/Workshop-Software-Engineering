@@ -110,5 +110,13 @@ public class Permission {
         lock.readLock().unlock();
         return result;
     }
+
+    public boolean canAddManager() {
+        lock.readLock().lock();
+        boolean result=permissionType.contains(PermissionType.ADD_MANAGER)||
+                permissionType.contains(PermissionType.OWNER);
+        lock.readLock().unlock();
+        return result;
+    }
 }
 

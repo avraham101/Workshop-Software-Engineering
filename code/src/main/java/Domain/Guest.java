@@ -1,15 +1,13 @@
 package Domain;
 
-import DataAPI.OpCode;
-import DataAPI.ProductData;
-import DataAPI.Response;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class Guest extends UserState {
 
@@ -244,6 +242,11 @@ public class Guest extends UserState {
 
     @Override
     public List<Store> getMyManagedStores() {
+        return null;
+    }
+
+    @Override
+    public Set<StorePermissionType> getPermissionsForStore(String storeName) {
         return null;
     }
 }

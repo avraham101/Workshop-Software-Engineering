@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public abstract class UserState {
     protected Cart cart;
@@ -283,4 +284,6 @@ public abstract class UserState {
     public abstract boolean canWatchUserHistory();
 
     public abstract List<Store> getMyManagedStores();
+
+    public abstract Set<StorePermissionType> getPermissionsForStore(String storeName);
 }
