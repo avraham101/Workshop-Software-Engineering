@@ -2,22 +2,16 @@ package Store;
 
 import Data.Data;
 import Data.TestData;
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import Domain.*;
 import Stubs.ProductStub;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.PaymentSystem.ProxyPayment;
-import Systems.SupplySystem.ProxySupply;
+
 import static org.junit.Assert.*;
 
-import Systems.SupplySystem.SupplySystem;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 public class StoreTestsAllStubs {
@@ -27,7 +21,7 @@ public class StoreTestsAllStubs {
     @Before
     public void setUp(){
         data=new TestData();
-        store=new Store(data.getStore(Data.VALID).getName(), new PurchasePolicy(), null,
+        store=new Store(data.getStore(Data.VALID).getName(), new PurchasePolicy1(), null,
                 new Permission(data.getSubscribe(Data.VALID)));
     }
 

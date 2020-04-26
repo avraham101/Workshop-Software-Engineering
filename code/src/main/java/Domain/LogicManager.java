@@ -7,7 +7,6 @@ import Systems.SupplySystem.*;
 import Utils.Utils;
 
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -250,7 +249,7 @@ public class LogicManager {
         List<StoreData> data = new LinkedList<>();
         for (String storeName: stores.keySet()) {
             Store store = stores.get(storeName);
-            StoreData storeData = new StoreData(store.getName(),store.getPurchasePolicy(),
+            StoreData storeData = new StoreData(store.getName(),store.getPurchasePolicy1(),
                     store.getDiscount());
             data.add(storeData);
         }
@@ -516,6 +515,7 @@ public class LogicManager {
             Product product = store.getProduct(productName);
             if (product != null && amount > 0 && amount <= product.getAmount()) {
                 product = product.clone();
+                //TODO check that the product is not in the basket
                 result = current.addProductToCart(store, product, amount);
             }
         }
@@ -529,7 +529,7 @@ public class LogicManager {
      * @param addresToDeliver - the address do Deliver the purchase
      * @return true is the purchase succeeded, otherwise false
      */
-    public boolean purchaseCart(int id, PaymentData paymentData, String addresToDeliver) {
+    public boolean purchaseCart(int id, String country, PaymentData paymentData, String addresToDeliver) {
         loggerSystem.writeEvent("LogicManager","purchaseCart",
                 "reserveCart the products in the cart", new Object[] {paymentData, addresToDeliver});
         //1) user get
@@ -544,7 +544,7 @@ public class LogicManager {
         if(!reserved) {
             return false;
         }
-        DeliveryData deliveryData = new DeliveryData(addresToDeliver, new LinkedList<>());
+        DeliveryData deliveryData = new DeliveryData(addresToDeliver, country, new LinkedList<>());
         current.buyCart(paymentData, deliveryData);
         //4) external systems
         boolean payedAndDelivered = externalSystemsBuy(id,paymentData,deliveryData);
@@ -643,7 +643,7 @@ public class LogicManager {
      */
     private boolean validStoreDetails(StoreData storeData) {
         return storeData!=null && storeData.getName() != null && storeData.getDiscountPolicy()!=null &&
-                storeData.getPurchasePolicy()!=null;
+                storeData.getPurchasePolicy1()!=null;
     }
 
 

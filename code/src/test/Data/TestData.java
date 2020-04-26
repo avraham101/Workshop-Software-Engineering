@@ -2,8 +2,6 @@ package Data;
 
 import DataAPI.*;
 import Domain.*;
-import Systems.PaymentSystem.ProxyPayment;
-import Systems.SupplySystem.ProxySupply;
 
 import java.util.*;
 
@@ -140,13 +138,13 @@ public class TestData {
      */
     private void setUpStoreData() {
         stores = new HashMap<>();
-        stores.put(Data.VALID,new StoreData("Store",new PurchasePolicy(), new DiscountPolicy()));
+        stores.put(Data.VALID,new StoreData("Store",new PurchasePolicy1(), new DiscountPolicy()));
         stores.put(Data.NULL, null);
-        stores.put(Data.NULL_NAME, new StoreData(null,new PurchasePolicy(), new DiscountPolicy()));
-        stores.put(Data.WRONG_STORE, new StoreData("None Store",new PurchasePolicy(), new DiscountPolicy()));
-        stores.put(Data.NULL_STORE, new StoreData(null,new PurchasePolicy(), new DiscountPolicy()));
+        stores.put(Data.NULL_NAME, new StoreData(null,new PurchasePolicy1(), new DiscountPolicy()));
+        stores.put(Data.WRONG_STORE, new StoreData("None Store",new PurchasePolicy1(), new DiscountPolicy()));
+        stores.put(Data.NULL_STORE, new StoreData(null,new PurchasePolicy1(), new DiscountPolicy()));
         stores.put(Data.NULL_PURCHASE, new StoreData("Store",null, new DiscountPolicy()));
-        stores.put(Data.NULL_DISCOUNT, new StoreData("Store",new PurchasePolicy(), null));
+        stores.put(Data.NULL_DISCOUNT, new StoreData("Store",new PurchasePolicy1(), null));
     }
 
     /**
@@ -226,14 +224,17 @@ public class TestData {
     private void setUpPaymentData() {
         paymentData = new HashMap<Data, PaymentData>();
         String userName = users.get(Data.VALID).getName();
-        paymentData.put(Data.VALID, new PaymentData(userName, "Tapoz 3, Nevatim", "4580"));
+        paymentData.put(Data.VALID, new PaymentData(userName, "Tapoz 3, Nevatim", 30, "4580"));
         paymentData.put(Data.NULL , null);
-        paymentData.put(Data.NULL_ADDRESS ,new PaymentData(userName,null,"4580"));
-        paymentData.put(Data.EMPTY_ADDRESS ,new PaymentData(userName,"","4580"));
-        paymentData.put(Data.NULL_PAYMENT ,new PaymentData(userName,"Tapoz 3, Nevatim",null));
-        paymentData.put(Data.EMPTY_PAYMENT ,new PaymentData(userName,"Tapoz 3, Nevatim",""));
-        paymentData.put(Data.NULL_NAME ,new PaymentData(null,"Tapoz 3, Nevatim","4580"));
-        paymentData.put(Data.EMPTY_NAME,new PaymentData("","Tapoz 3, Nevatim","4580"));
+        paymentData.put(Data.NULL_ADDRESS ,new PaymentData(userName,null, 22, "4580"));
+        paymentData.put(Data.EMPTY_ADDRESS ,new PaymentData(userName,"", 23, "4580"));
+        paymentData.put(Data.NULL_PAYMENT ,new PaymentData(userName,"Tapoz 3, Nevatim", 24, null));
+        paymentData.put(Data.EMPTY_PAYMENT ,new PaymentData(userName,"Tapoz 3, Nevatim", 25, ""));
+        paymentData.put(Data.NULL_NAME ,new PaymentData(null,"Tapoz 3, Nevatim", 26, "4580"));
+        paymentData.put(Data.EMPTY_NAME,new PaymentData("","Tapoz 3, Nevatim", 27, "4580"));
+        paymentData.put(Data.UNDER_AGE,new PaymentData(userName,"Tapoz 3, Nevatim", 3, "4580"));
+
+
     }
 
     /**
@@ -243,9 +244,13 @@ public class TestData {
         deliveryData = new HashMap<Data, DeliveryData>();
         List<ProductData> product = new LinkedList<>();
         //product.add(this.productsData.get(Data.VALID));
-        deliveryData.put(Data.VALID, new DeliveryData("Tapoz 3, Nevatim", product));
-        deliveryData.put(Data.EMPTY_ADDRESS, new DeliveryData("", product));
-        deliveryData.put(Data.NULL_ADDRESS, new DeliveryData(null, product));
+        deliveryData.put(Data.VALID, new DeliveryData("Tapoz 3, Nevatim", "Israel", product));
+        deliveryData.put(Data.EMPTY_ADDRESS, new DeliveryData("", "Israel", product));
+        deliveryData.put(Data.NULL_ADDRESS, new DeliveryData(null, "Israel", product));
+        deliveryData.put(Data.EMPTY_COUNTRY, new DeliveryData("Tapoz 3, Nevatim", "", product));
+        deliveryData.put(Data.NULL_COUNTRY, new DeliveryData("Tapoz 3, Nevatim", null, product));
+        deliveryData.put(Data.INVALID_COUNTRY, new DeliveryData("Tapoz 3, Nevatim", "Italy", product));
+
     }
 
     /**
@@ -283,7 +288,7 @@ public class TestData {
     public Store getRealStore(Data data) {
         StoreData storeData = getStore(data);
         Permission permission = new Permission(getSubscribe(Data.VALID));
-        Store store = new Store(storeData.getName(),storeData.getPurchasePolicy(),
+        Store store = new Store(storeData.getName(),storeData.getPurchasePolicy1(),
                 storeData.getDiscountPolicy(), permission);
         permission.setStore(store);
         store.addProduct(getProductData(Data.VALID));

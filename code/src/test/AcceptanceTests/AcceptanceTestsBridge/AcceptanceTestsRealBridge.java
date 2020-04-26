@@ -114,13 +114,13 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
             delivery=null;
         }
         if(paymentMethod!=null){
-            paymentData = new PaymentData(paymentMethod.getCreditCardOwner(),"addr",paymentMethod.getCreditCardNumber());
+            paymentData = new PaymentData(paymentMethod.getCreditCardOwner(),"addr", 30, paymentMethod.getCreditCardNumber());
         }
         else{
             paymentData=null;
         }
 
-        boolean approval = serviceAPI.purchaseCart(id,paymentData,delivery);
+        boolean approval = serviceAPI.purchaseCart(id,"Israel",paymentData,delivery);
         return approval;
     }
     //---------------------------Use-Case-2.8---------------------------------//
@@ -135,7 +135,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-3.2---------------------------------//
     @Override
     public StoreTestData openStore(int id,String storeName) {
-        StoreData store = new StoreData(storeName,new PurchasePolicy(),new DiscountPolicy());
+        StoreData store = new StoreData(storeName,new PurchasePolicy1(),new DiscountPolicy());
         boolean approval = serviceAPI.openStore(id,store);
         if(!approval) {
             return null;

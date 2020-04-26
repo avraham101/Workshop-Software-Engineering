@@ -1,7 +1,7 @@
 package Domain;
 
 import java.util.HashMap;
-public class PurchasePolicy {
+public class PurchasePolicy1 {
 
     /**
      * use case 2.8 - purchase cart

@@ -41,4 +41,8 @@ public enum Data {
     EMPTY_PAYMENT,
     EMPTY_NAME,
     VALID2,
+    UNDER_AGE,
+    EMPTY_COUNTRY,
+    NULL_COUNTRY,
+    INVALID_COUNTRY,
 }

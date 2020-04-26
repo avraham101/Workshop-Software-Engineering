@@ -1,21 +1,14 @@
 package Domain;
 
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
 import DataAPI.ProductData;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.SupplySystem.SupplySystem;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Store {
 
     private String name; //unique
-    private PurchasePolicy purchasePolicy;
+    private PurchasePolicy1 purchasePolicy1;
     private DiscountPolicy discount;
     private ConcurrentHashMap<String, Product> products;
     private ConcurrentHashMap<String, Category> categoryList;
@@ -23,10 +16,10 @@ public class Store {
     private ConcurrentHashMap<String, Permission> permissions;
     private List<Purchase> purchases;
 
-    public Store(String name, PurchasePolicy purchasePolicy, DiscountPolicy discount,
+    public Store(String name, PurchasePolicy1 purchasePolicy1, DiscountPolicy discount,
                  Permission permission) {
         this.name = name;
-        this.purchasePolicy = purchasePolicy;
+        this.purchasePolicy1 = purchasePolicy1;
         this.discount = discount;
         this.permissions = new ConcurrentHashMap<>();
         this.permissions.put(permission.getOwner().getName(), permission);
@@ -46,12 +39,12 @@ public class Store {
         this.name = name;
     }
 
-    public PurchasePolicy getPurchasePolicy() {
-        return purchasePolicy;
+    public PurchasePolicy1 getPurchasePolicy1() {
+        return purchasePolicy1;
     }
 
-    public void setPurchasePolicy(PurchasePolicy purchasePolicy) {
-        this.purchasePolicy = purchasePolicy;
+    public void setPurchasePolicy1(PurchasePolicy1 purchasePolicy1) {
+        this.purchasePolicy1 = purchasePolicy1;
     }
 
     public DiscountPolicy getDiscount() {
@@ -145,7 +138,7 @@ public class Store {
         if (o == null || getClass() != o.getClass()) return false;
         Store store = (Store) o;
         return Objects.equals(name, store.name) &&
-                Objects.equals(purchasePolicy, store.purchasePolicy) &&
+                Objects.equals(purchasePolicy1, store.purchasePolicy1) &&
                 Objects.equals(discount, store.discount) &&
                 Objects.equals(products, store.products) &&
                 Objects.equals(categoryList, store.categoryList) &&
@@ -155,7 +148,7 @@ public class Store {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, purchasePolicy, discount, products, categoryList, requests, permissions);
+        return Objects.hash(name, purchasePolicy1, discount, products, categoryList, requests, permissions);
     }
 
 
