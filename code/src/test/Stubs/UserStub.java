@@ -5,8 +5,6 @@ import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.SupplySystem.SupplySystem;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -39,7 +37,7 @@ public class UserStub extends User {
      */
     @Override
     public Store openStore(StoreData storeDetails) {
-        return new Store(storeDetails.getName(), new PurchasePolicy(), new DiscountPolicy(),
+        return new Store(storeDetails.getName(), new PurchasePolicy1(), new DiscountPolicy(),
                 new Permission(new Subscribe("Yuval", this.getPassword())));
     }
 

@@ -1,17 +1,17 @@
 package DataAPI;
 
 import Domain.DiscountPolicy;
-import Domain.PurchasePolicy;
+import Domain.PurchasePolicy1;
 
 public class StoreData {
 
     private String name;
-    private PurchasePolicy purchasePolicy;
+    private PurchasePolicy1 purchasePolicy1;
     private DiscountPolicy discountPolicy;
 
-    public StoreData(String name, PurchasePolicy purchasePolicy, DiscountPolicy discountPolicy) {
+    public StoreData(String name, PurchasePolicy1 purchasePolicy1, DiscountPolicy discountPolicy) {
         this.name = name;
-        this.purchasePolicy = purchasePolicy;
+        this.purchasePolicy1 = purchasePolicy1;
         this.discountPolicy = discountPolicy;
     }
 
@@ -25,12 +25,12 @@ public class StoreData {
         this.name = name;
     }
 
-    public PurchasePolicy getPurchasePolicy() {
-        return purchasePolicy;
+    public PurchasePolicy1 getPurchasePolicy1() {
+        return purchasePolicy1;
     }
 
-    public void setPurchasePolicy(PurchasePolicy purchasePolicy) {
-        this.purchasePolicy = purchasePolicy;
+    public void setPurchasePolicy1(PurchasePolicy1 purchasePolicy1) {
+        this.purchasePolicy1 = purchasePolicy1;
     }
 
     public DiscountPolicy getDiscountPolicy() {

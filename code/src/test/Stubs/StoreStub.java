@@ -1,18 +1,12 @@
 package Stubs;
 
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import Domain.*;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.SupplySystem.SupplySystem;
-
-import java.util.HashMap;
 
 public class StoreStub extends Store {
 
-    public StoreStub(String name, PurchasePolicy purchasePolicy, DiscountPolicy discount, Permission permissions) {
-        super(name, purchasePolicy, discount, permissions);
+    public StoreStub(String name, PurchasePolicy1 purchasePolicy1, DiscountPolicy discount, Permission permissions) {
+        super(name, purchasePolicy1, discount, permissions);
     }
 
 

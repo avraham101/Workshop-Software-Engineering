@@ -4,7 +4,6 @@ import DataAPI.ProductData;
 import DataAPI.StatusTypeData;
 import DataAPI.StoreData;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -89,7 +88,7 @@ public class Subscribe extends UserState{
     @Override
     public Store openStore(StoreData storeDetails) {
         Permission permission = new Permission(this);
-        Store store = new Store(storeDetails.getName(),storeDetails.getPurchasePolicy(),
+        Store store = new Store(storeDetails.getName(),storeDetails.getPurchasePolicy1(),
                 storeDetails.getDiscountPolicy(), permission);
         permission.setStore(store);
         permission.addType(PermissionType.OWNER); //Always true, store just created.

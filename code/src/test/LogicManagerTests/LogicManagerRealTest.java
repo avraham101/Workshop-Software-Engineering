@@ -377,7 +377,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     protected void testSuccessBuyProducts() {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
-        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), paymentData, address));
+        String country = data.getDeliveryData(Data.VALID).getCountry();
+        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address));
     }
 
     /**
@@ -431,7 +432,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     private void testOpenStorePurchesAndDiscontPolicy() {
         StoreData storeData = data.getStore(Data.VALID);
         Store store = stores.get(storeData.getName());
-        assertEquals(storeData.getPurchasePolicy(), store.getPurchasePolicy());
+        assertEquals(storeData.getPurchasePolicy1(), store.getPurchasePolicy1());
         assertEquals(storeData.getDiscountPolicy(), store.getDiscount());
     }
 
