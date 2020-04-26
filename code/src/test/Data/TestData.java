@@ -2,6 +2,7 @@ package Data;
 
 import DataAPI.*;
 import Domain.*;
+import Domain.PurchasePolicy.*;
 
 import java.util.*;
 
@@ -21,7 +22,8 @@ public class TestData {
     private List<PermissionType> permissionTypeList;
     private HashMap<Data, PaymentData> paymentData;
     private HashMap<Data, DeliveryData> deliveryData;
-    private HashMap<Data,Integer> ids;
+    private HashMap<Data, Integer> ids;
+    private HashMap<Data, PurchasePolicy> purchasePolicy;
 
     /**
      * create data for tests
@@ -39,6 +41,7 @@ public class TestData {
         setUpPaymentData();
         setUpDeliveryData();
         setUpPermmisionTypes();
+        setUpPurchasePolicy();
     }
 
     /**
@@ -130,6 +133,8 @@ public class TestData {
                 ,null,3,11, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.WRONG_NAME,new ProductData("peanuts1","Store","category"
                 ,null,1,10, PurchaseTypeData.IMMEDDIATE));
+        productsData.put(Data.LARGE_AMOUNT,new ProductData("peanuts","Store","category"
+                ,null,100,10, PurchaseTypeData.IMMEDDIATE));
 
     }
 
@@ -243,14 +248,16 @@ public class TestData {
     private void setUpDeliveryData() {
         deliveryData = new HashMap<Data, DeliveryData>();
         List<ProductData> product = new LinkedList<>();
-        //product.add(this.productsData.get(Data.VALID));
+        List<ProductData> tooMuchProduct = new LinkedList<>();
+        product.add(this.productsData.get(Data.VALID));
+        tooMuchProduct.add((this.productsData.get(Data.LARGE_AMOUNT)));
         deliveryData.put(Data.VALID, new DeliveryData("Tapoz 3, Nevatim", "Israel", product));
         deliveryData.put(Data.EMPTY_ADDRESS, new DeliveryData("", "Israel", product));
         deliveryData.put(Data.NULL_ADDRESS, new DeliveryData(null, "Israel", product));
         deliveryData.put(Data.EMPTY_COUNTRY, new DeliveryData("Tapoz 3, Nevatim", "", product));
         deliveryData.put(Data.NULL_COUNTRY, new DeliveryData("Tapoz 3, Nevatim", null, product));
         deliveryData.put(Data.INVALID_COUNTRY, new DeliveryData("Tapoz 3, Nevatim", "Italy", product));
-
+        deliveryData.put(Data.LARGE_AMOUNT, new DeliveryData("Tapoz 3, Nevatim", "Israel", tooMuchProduct));
     }
 
     /**
@@ -264,6 +271,21 @@ public class TestData {
         requests.put(Data.NULL_NAME, new Request(users.get(Data.VALID).getName(), stores.get(Data.NULL_NAME).getName(), "where is the milk in this store?", 1));
         requests.put(Data.NULL_CONTENT, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), null, 1));
         requests.put(Data.WRONG_ID, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), "where is the milk in this store?", -1));
+    }
+
+    /**
+     * set up data of purchase policy
+     */
+    private void setUpPurchasePolicy() {
+        purchasePolicy = new HashMap<>();
+        HashMap<String, Integer> amountPerProduct = new HashMap<>();
+        List<String> countries = new LinkedList<>();
+        countries.add("Israel");
+        amountPerProduct.put(this.getProductData(Data.VALID).getProductName(),3);
+        purchasePolicy.put(Data.VALID_BASKET_PURCHASE_POLICY, new BasketPurchasePolicy(10));
+        purchasePolicy.put(Data.VALID_PRODUCT_PURCHASE_POLICY, new ProductPurchasePolicy(amountPerProduct));
+        purchasePolicy.put(Data.VALID_SYSTEM_PURCHASE_POLICY, new SystemPurchasePolicy(18));
+        purchasePolicy.put(Data.VALID_USER_PURCHASE_POLICY, new UserPurchasePolicy(countries));
     }
 
     // ============================ getters ============================ //
@@ -324,6 +346,10 @@ public class TestData {
     }
 
     public Request getRequest(Data data) { return requests.get(data); }
+
+    public PurchasePolicy getPurchasePolicy(Data data) {
+        return purchasePolicy.get(data);
+    }
 
     // ============================ getters ============================ //
 

@@ -14,6 +14,6 @@ public class SystemPurchasePolicy implements PurchasePolicy {
 
     @Override
     public boolean standInPolicy(PaymentData paymentData, DeliveryData deliveryData) {
-        return (paymentData.getAge() <= age);
+        return (paymentData.getAge() >= age);
     }
 }
