@@ -1,7 +1,5 @@
 package AcceptanceTests.AcceptanceTestDataObjects;
 
-import Domain.Discount;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -2,10 +2,10 @@ package Domain;
 
 import java.util.Objects;
 
-public class Discount {
+public class Discount1 {
     private double percentage;
 
-    public Discount(double percentage) {
+    public Discount1(double percentage) {
         this.percentage = percentage;
     }
 
@@ -25,8 +25,8 @@ public class Discount {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Discount discount = (Discount) o;
-        return Double.compare(discount.percentage, percentage) == 0;
+        Discount1 discount1 = (Discount1) o;
+        return Double.compare(discount1.percentage, percentage) == 0;
     }
 
     @Override

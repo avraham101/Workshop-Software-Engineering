@@ -1,6 +1,5 @@
 package DataAPI;
 
-import Domain.Discount;
 import Domain.Product;
 import Domain.Review;
 
