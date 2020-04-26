@@ -4,6 +4,9 @@ import DataAPI.*;
 import Domain.*;
 import Domain.PurchasePolicy.*;
 
+import Systems.PaymentSystem.ProxyPayment;
+import Systems.SupplySystem.ProxySupply;
+import Domain.Discount.Term.BaseTerm;
 import java.util.*;
 
 import java.util.ArrayList;
@@ -14,7 +17,7 @@ public class TestData {
     private HashMap<Data, Subscribe> users;
     private HashMap<Data, ProductData> productsData;
     private HashMap<Data, StoreData> stores;
-    private HashMap<Data, List<Discount>> discounts;
+    private HashMap<Data, List<Discount1>> discounts;
     private HashMap<Data, HashMap<ProductData, Integer>> basket;
     private HashMap<Data, Filter> filters;
     private HashMap<Data, Request> requests;
@@ -24,6 +27,8 @@ public class TestData {
     private HashMap<Data, DeliveryData> deliveryData;
     private HashMap<Data, Integer> ids;
     private HashMap<Data, PurchasePolicy> purchasePolicy;
+    private HashMap<Data, HashMap<Product, Integer>> productsAndAmount;
+    private HashMap<Data, BaseTerm> terms;
 
     /**
      * create data for tests
@@ -42,6 +47,8 @@ public class TestData {
         setUpDeliveryData();
         setUpPermmisionTypes();
         setUpPurchasePolicy();
+        setUpProductsAndAmountsData();
+        setUpTerms();
     }
 
     /**
@@ -83,15 +90,15 @@ public class TestData {
      */
     private void setUpDiscountData() {
         discounts=new HashMap<>();
-        List<Discount> discountsListHasNull=new ArrayList<>();
+        List<Discount1> discountsListHasNull=new ArrayList<>();
         discountsListHasNull.add(null);
-        List<Discount> discountListNegPercentage=new ArrayList<>();
-        discountListNegPercentage.add(new Discount(-1));
-        List<Discount> discountListOver100Percentage=new ArrayList<>();
-        discountListOver100Percentage.add(new Discount(101));
+        List<Discount1> discount1ListNegPercentage =new ArrayList<>();
+        discount1ListNegPercentage.add(new Discount1(-1));
+        List<Discount1> discount1ListOver100Percentage =new ArrayList<>();
+        discount1ListOver100Percentage.add(new Discount1(101));
         discounts.put(Data.NULL_DISCOUNT,discountsListHasNull);
-        discounts.put(Data.NEGATIVE_PERCENTAGE,discountListNegPercentage);
-        discounts.put(Data.OVER_100_PERCENTAGE,discountListOver100Percentage);
+        discounts.put(Data.NEGATIVE_PERCENTAGE, discount1ListNegPercentage);
+        discounts.put(Data.OVER_100_PERCENTAGE, discount1ListOver100Percentage);
     }
 
     /**
@@ -102,6 +109,8 @@ public class TestData {
         //change data type to enum
         productsData.put(Data.VALID,new ProductData("peanuts","Store","category"
                 ,null,1,10, PurchaseTypeData.IMMEDDIATE));
+        productsData.put(Data.VALID2,new ProductData("bamba","Store","category"
+                ,null,10,10, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.NULL, null);
         productsData.put(Data.NULL_STORE,new ProductData("peanuts",null,"category"
                 ,null,1,10, PurchaseTypeData.IMMEDDIATE));
@@ -164,6 +173,35 @@ public class TestData {
 
     public HashMap<ProductData, Integer> getProductsInBasket(Data data) {
         return basket.get(data);
+    }
+
+
+    /**
+     * set up data for discounts tests
+     */
+    private void setUpProductsAndAmountsData() {
+        productsAndAmount = new HashMap<Data, HashMap<Product, Integer>>();
+        HashMap <Product, Integer> productsAmount = new HashMap<>();
+        productsAmount.put(getRealProduct(Data.VALID), 100);
+        productsAmount.put(getRealProduct(Data.VALID2), 100);
+        productsAndAmount.put(Data.VALID, productsAmount);
+    }
+
+    public HashMap<Product,Integer> getProductsAndAmount(){
+        return productsAndAmount.get(Data.VALID);
+    }
+
+    /**
+     * set up data of terms
+     */
+    private void setUpTerms(){
+        terms=new HashMap<Data, BaseTerm>();
+        terms.put(Data.VALID,new BaseTerm(getRealProduct(Data.VALID).getName(),1));
+        terms.put(Data.VALID2,new BaseTerm(getRealProduct(Data.VALID2).getName(),3));
+    }
+
+    public BaseTerm getTerm(Data data){
+        return terms.get(data);
     }
 
     /**
@@ -258,6 +296,8 @@ public class TestData {
         deliveryData.put(Data.NULL_COUNTRY, new DeliveryData("Tapoz 3, Nevatim", null, product));
         deliveryData.put(Data.INVALID_COUNTRY, new DeliveryData("Tapoz 3, Nevatim", "Italy", product));
         deliveryData.put(Data.LARGE_AMOUNT, new DeliveryData("Tapoz 3, Nevatim", "Israel", tooMuchProduct));
+        deliveryData.put(Data.FAIL_POLICY, new DeliveryData("Tapoz 3, Nevatim", "Italy", tooMuchProduct));
+
     }
 
     /**
@@ -317,7 +357,7 @@ public class TestData {
         return store;
     }
 
-    public List<Discount> getDiscounts(Data data){
+    public List<Discount1> getDiscounts(Data data){
         return  discounts.get(data);
     }
 

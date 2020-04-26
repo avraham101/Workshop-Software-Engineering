@@ -448,11 +448,11 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     }
 
-    private List<Discount> buildDiscounts(List<DiscountTestData> discountTestData){
-        List<Discount> discounts = new ArrayList<>();
+    private List<Discount1> buildDiscounts(List<DiscountTestData> discountTestData){
+        List<Discount1> discount1s = new ArrayList<>();
         for(DiscountTestData dst : discountTestData)
-            discounts.add(new Discount(dst.getPercentage()));
-        return discounts;
+            discount1s.add(new Discount1(dst.getPercentage()));
+        return discount1s;
     }
 
     private List<Review> buildReviews(List<ReviewTestData> reviewTestData, String storeName, String productName){
@@ -488,16 +488,16 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return new ReviewTestData(review.getWriter(),review.getContent());
     }
 
-    private List<DiscountTestData> buildDiscountsTestData(List<Discount> discounts) {
+    private List<DiscountTestData> buildDiscountsTestData(List<Discount1> discount1s) {
         List<DiscountTestData> discountsTestData = new ArrayList<>();
-        for(Discount discount : discounts )
-            discountsTestData.add(buildDiscountTestData(discount));
+        for(Discount1 discount1 : discount1s)
+            discountsTestData.add(buildDiscountTestData(discount1));
 
         return discountsTestData;
     }
 
-    private DiscountTestData buildDiscountTestData(Discount discount) {
-        return new DiscountTestData(discount.getPercentage(),null);
+    private DiscountTestData buildDiscountTestData(Discount1 discount1) {
+        return new DiscountTestData(discount1.getPercentage(),null);
     }
 
     @Override

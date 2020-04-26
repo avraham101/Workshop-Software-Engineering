@@ -275,14 +275,14 @@ public class LogicManager {
 
     /**
      * check if discounts of product are valid
-     * @param discounts of the product
+     * @param discount1s of the product
      * @return if the discounts are not null and between 0 to 100
      */
-    private boolean validDiscounts(List<Discount> discounts) {
-        if(discounts==null)
+    private boolean validDiscounts(List<Discount1> discount1s) {
+        if(discount1s ==null)
             return false;
-        for(Discount discount :discounts ){
-            if(!validDiscount(discount))
+        for(Discount1 discount1 : discount1s){
+            if(!validDiscount(discount1))
                 return false;
         }
         return true;
@@ -290,11 +290,11 @@ public class LogicManager {
 
     /**
      * check if discounts of product are valid
-     * @param discount of the product
+     * @param discount1 of the product
      * @return if the discount is not null and between 0 to 100
      */
-    private boolean validDiscount(Discount discount) {
-        return discount!=null&&discount.getPercentage()>0&&discount.getPercentage()<100;
+    private boolean validDiscount(Discount1 discount1) {
+        return discount1 !=null&& discount1.getPercentage()>0&& discount1.getPercentage()<100;
     }
 
     /**

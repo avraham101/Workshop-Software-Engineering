@@ -42,8 +42,8 @@ public class BasketPurchasePolicyTest {
      */
     @Test
     public void testBasketPurchasePolicyFail() {
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.LARGE_AMOUNT);
+        PaymentData paymentData = data.getPaymentData(Data.UNDER_AGE);
+        DeliveryData deliveryData = data.getDeliveryData(Data.FAIL_POLICY);
         assertFalse(policy.standInPolicy(paymentData, deliveryData));
     }
 
