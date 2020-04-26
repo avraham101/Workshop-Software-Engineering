@@ -12,33 +12,29 @@ public class ProductData {
     private String storeName;
     private String category;
     private List<Review> reviews;
-    private List<Discount> discount;
     private int amount;
     private double price;
     private double priceAfterDiscount;
     private PurchaseTypeData purchaseType;
 
-    public ProductData(String productName, String storeName, String category, List<Review> reviews,
-                       List<Discount> discount, int amount, double price, double priceAfterDiscount,
+    public ProductData(String productName, String storeName, String category, List<Review> reviews, int amount, double price, double priceAfterDiscount,
                        PurchaseTypeData purchaseType) {
         this.productName = productName;
         this.storeName = storeName;
         this.category = category;
         this.reviews = reviews;
-        this.discount = discount;
         this.amount = amount;
         this.price = price;
         this.priceAfterDiscount = priceAfterDiscount;
         this.purchaseType = purchaseType;
     }
 
-    public ProductData(String productName, String storeName, String category, List<Review> reviews,
-                       List<Discount> discount, int amount, double price, PurchaseTypeData purchaseType) {
+    public ProductData(String productName, String storeName, String category, List<Review> reviews
+            , int amount, double price, PurchaseTypeData purchaseType) {
         this.productName = productName;
         this.storeName = storeName;
         this.category = category;
         this.reviews = reviews;
-        this.discount = discount;
         this.price=price;
         this.priceAfterDiscount = this.price;
         this.amount=amount;
@@ -50,11 +46,9 @@ public class ProductData {
         this.storeName = storeName;
         this.category = product.getCategory().getName();
         this.reviews = product.getReviews();
-        this.discount = product.getDiscount();
         this.price = product.getPrice();
         this.amount = product.getAmount();
         this.purchaseType = product.getPurchaseType().getPurchaseTypeData();
-        this.priceAfterDiscount = product.getDiscountPrice();
     }
 
     // ============================ getters & setters ============================ //
@@ -89,14 +83,6 @@ public class ProductData {
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
-    }
-
-    public List<Discount> getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(List<Discount> discount) {
-        this.discount = discount;
     }
 
     public int getAmount() {
@@ -144,12 +130,11 @@ public class ProductData {
                 purchaseType == that.purchaseType &&
                 Objects.equals(storeName, that.storeName) &&
                 Objects.equals(category, that.category) &&
-                Objects.equals(reviews, that.reviews) &&
-                Objects.equals(discount, that.discount);
+                Objects.equals(reviews, that.reviews);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productName, amount, price, purchaseType, storeName, category, reviews, discount);
+        return Objects.hash(productName, amount, price, purchaseType, storeName, category, reviews);
     }
 }

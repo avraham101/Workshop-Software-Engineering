@@ -5,6 +5,7 @@ import java.util.List;
 public class DeliveryData {
 
     private String address;
+    //TODO add country
     private List<ProductData> products;
 
     public DeliveryData(String address, List<ProductData> products) {

@@ -753,8 +753,7 @@ public class LogicManager {
      * @return true if the details of the product are valid
      */
     private boolean validProduct(ProductData productData) {
-        return productData.getProductName()!=null &&productData.getCategory()!=null
-                && validDiscounts(productData.getDiscount()) && productData.getPrice()>0
+        return productData.getProductName()!=null &&productData.getCategory()!=null && productData.getPrice()>0
                 && productData.getAmount()>0 && productData.getPurchaseType()!=null;
     }
 

@@ -100,40 +100,38 @@ public class TestData {
         productsData = new HashMap<>();
         //change data type to enum
         productsData.put(Data.VALID,new ProductData("peanuts","Store","category"
-                ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
+                ,null,1,10, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.NULL, null);
         productsData.put(Data.NULL_STORE,new ProductData("peanuts",null,"category"
-                ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
+                ,null,1,10, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.NULL_NAME,new ProductData(null,"Store","category"
-                ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
+                ,null,1,10, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.WRONG_STORE,new ProductData("peanuts","$storeBBB$","category"
-                ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
+                ,null,1,10, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.NULL_CATEGORY,new ProductData("peanuts","Store",null
-                ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
-        productsData.put(Data.NULL_DISCOUNT, new ProductData("peanuts","Store","category"
-                ,null,null,1,10, PurchaseTypeData.IMMEDDIATE));
+                ,null,1,10, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.ZERO,new ProductData("peanuts","Store","category"
-                ,null,new ArrayList<Discount>(),0,10, PurchaseTypeData.IMMEDDIATE));
+                ,null,0,10, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.NEGATIVE_AMOUNT,new ProductData("peanuts","Store","category"
-                ,null,new ArrayList<Discount>(),-1,10, PurchaseTypeData.IMMEDDIATE));
+                ,null,-1,10, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.NEGATIVE_PRICE,new ProductData("peanuts","Store","category"
-                ,null,new ArrayList<Discount>(),1,-10, PurchaseTypeData.IMMEDDIATE));
+                ,null,1,-10, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.NULL_PURCHASE,new ProductData("peanuts","Store","category"
-                ,null,new ArrayList<Discount>(),1,10, null));
+                ,null,1,10, null));
         productsData.put(Data.WRONG_DISCOUNT,new ProductData("peanuts","Store","category"
-                ,null,discounts.get(Data.NULL_DISCOUNT),1,10, PurchaseTypeData.IMMEDDIATE));
+                ,null,1,10, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.NEGATIVE_PERCENTAGE,new ProductData("peanuts","Store","category"
-                ,null,discounts.get(Data.NEGATIVE_PERCENTAGE),1,10, PurchaseTypeData.IMMEDDIATE));
+                ,null,1,10, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.OVER_100_PERCENTAGE,new ProductData("peanuts","Store","category"
-                ,null,discounts.get(Data.OVER_100_PERCENTAGE),1,10, PurchaseTypeData.IMMEDDIATE));
+                ,null,1,10, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.SAME_NAME,new ProductData("peanuts","store","category1"
-                ,null,new ArrayList<Discount>(),12,101, PurchaseTypeData.IMMEDDIATE));
+                ,null,12,101, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.NULL_PRODUCT,new ProductData(null,null,null
-                ,null,null,1,10, null));
+                ,null,1,10, null));
         productsData.put(Data.EDIT,new ProductData("peanuts","Store","categoryYuval"
-                ,null,new ArrayList<Discount>(),3,11, PurchaseTypeData.IMMEDDIATE));
+                ,null,3,11, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.WRONG_NAME,new ProductData("peanuts1","Store","category"
-                ,null,new ArrayList<Discount>(),1,10, PurchaseTypeData.IMMEDDIATE));
+                ,null,1,10, PurchaseTypeData.IMMEDDIATE));
 
     }
 

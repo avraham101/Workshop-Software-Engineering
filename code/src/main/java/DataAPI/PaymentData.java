@@ -4,6 +4,7 @@ public class PaymentData {
 
     private String name;
     private String address;
+    //TODO add age
     private String creditCard;
     private double totalPrice;
 

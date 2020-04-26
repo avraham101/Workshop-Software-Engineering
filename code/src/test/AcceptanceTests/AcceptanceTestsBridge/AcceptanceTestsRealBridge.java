@@ -342,7 +342,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         int amountInStore = productData.getAmount();
         double price = productData.getPrice();
         String category = productData.getCategory();
-        List<DiscountTestData> discounts = buildDiscountsTestData(productData.getDiscount());
+        List<DiscountTestData> discounts = null;//buildDiscountsTestData(productData.getDiscount());
         List<ReviewTestData> reviews = buildReviewsTestData(productData.getReviews());
 
         return new ProductTestData(productName,storeName,amountInStore,price,category,reviews,discounts);
@@ -442,7 +442,6 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
                 storeName,
                 product.getCategory(),
                 buildReviews(product.getReviews(),storeName,productName),
-                buildDiscounts(product.getDiscounts()),
                 product.getAmountInStore(),
                 product.getPrice(),
                 PurchaseTypeData.IMMEDDIATE);
