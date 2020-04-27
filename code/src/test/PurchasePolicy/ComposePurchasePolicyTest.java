@@ -8,6 +8,8 @@ import Domain.PurchasePolicy.*;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.ComposePolicys.OrPolicy;
 import Domain.PurchasePolicy.ComposePolicys.XorPolicy;
+import com.sun.org.apache.xpath.internal.operations.Or;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,6 +35,15 @@ public class ComposePurchasePolicyTest {
         xorPolicy = new XorPolicy(policies);
     }
 
+    @After
+    public void tearDown() {
+        List<PurchasePolicy> empty = new LinkedList<>();
+        orPolicy = new OrPolicy(empty);
+        andPolicy = new AndPolicy(empty);
+        xorPolicy = new XorPolicy(empty);
+    }
+
+
     /**
      * set up list of or with and
      */
@@ -45,8 +56,8 @@ public class ComposePurchasePolicyTest {
         policiesAnd.add(basketPurchasePolicy);
         policiesAnd.add(productPurchasePolicy);
         policiesOr.add(systemPurchasePolicy);
-        policiesOr.add(andPolicy);
         andPolicy = new AndPolicy(policiesAnd);
+        policiesOr.add(andPolicy);
         orPolicy = new OrPolicy(policiesOr);
     }
 
@@ -62,9 +73,77 @@ public class ComposePurchasePolicyTest {
         policiesOr.add(basketPurchasePolicy);
         policiesOr.add(productPurchasePolicy);
         policiesAnd.add(systemPurchasePolicy);
-        policiesAnd.add(orPolicy);
         orPolicy = new OrPolicy(policiesOr);
+        policiesAnd.add(orPolicy);
         andPolicy = new AndPolicy(policiesAnd);
+    }
+
+    /**
+     * set up list of or with xor
+     */
+    private void setUpOrWithXor() {
+        List<PurchasePolicy> policiesOr = new LinkedList<>();
+        List<PurchasePolicy> policiesXor = new LinkedList<>();
+        BasketPurchasePolicy basketPurchasePolicy = (BasketPurchasePolicy)data.getPurchasePolicy(Data.VALID_BASKET_PURCHASE_POLICY);
+        ProductPurchasePolicy productPurchasePolicy = (ProductPurchasePolicy)data.getPurchasePolicy(Data.VALID_PRODUCT_PURCHASE_POLICY);
+        SystemPurchasePolicy systemPurchasePolicy = (SystemPurchasePolicy)data.getPurchasePolicy(Data.VALID_SYSTEM_PURCHASE_POLICY);
+        policiesXor.add(basketPurchasePolicy);
+        policiesXor.add(systemPurchasePolicy);
+        policiesOr.add(productPurchasePolicy);
+        xorPolicy = new XorPolicy(policiesXor);
+        policiesOr.add(xorPolicy);
+        orPolicy = new OrPolicy(policiesOr);
+    }
+
+    /**
+     * set up list of and with xor
+     */
+    private void setUpAndWithXor() {
+        List<PurchasePolicy> policiesAnd = new LinkedList<>();
+        List<PurchasePolicy> policiesXor = new LinkedList<>();
+        BasketPurchasePolicy basketPurchasePolicy = (BasketPurchasePolicy)data.getPurchasePolicy(Data.VALID_BASKET_PURCHASE_POLICY);
+        ProductPurchasePolicy productPurchasePolicy = (ProductPurchasePolicy)data.getPurchasePolicy(Data.VALID_PRODUCT_PURCHASE_POLICY);
+        SystemPurchasePolicy systemPurchasePolicy = (SystemPurchasePolicy)data.getPurchasePolicy(Data.VALID_SYSTEM_PURCHASE_POLICY);
+        policiesXor.add(basketPurchasePolicy);
+        policiesXor.add(systemPurchasePolicy);
+        policiesAnd.add(productPurchasePolicy);
+        xorPolicy = new XorPolicy(policiesXor);
+        policiesAnd.add(xorPolicy);
+        andPolicy = new AndPolicy(policiesAnd);
+    }
+
+    /**
+     * set up list of xor with and
+     */
+    private void setUpXorWithAnd() {
+        List<PurchasePolicy> policiesXor = new LinkedList<>();
+        List<PurchasePolicy> policiesAnd = new LinkedList<>();
+        UserPurchasePolicy userPurchasePolicy = (UserPurchasePolicy) data.getPurchasePolicy(Data.VALID_USER_PURCHASE_POLICY);
+        ProductPurchasePolicy productPurchasePolicy = (ProductPurchasePolicy)data.getPurchasePolicy(Data.VALID_PRODUCT_PURCHASE_POLICY);
+        SystemPurchasePolicy systemPurchasePolicy = (SystemPurchasePolicy)data.getPurchasePolicy(Data.VALID_SYSTEM_PURCHASE_POLICY);
+        policiesAnd.add(userPurchasePolicy);
+        policiesAnd.add(systemPurchasePolicy);
+        policiesXor.add(productPurchasePolicy);
+        andPolicy = new AndPolicy(policiesAnd);
+        policiesXor.add(andPolicy);
+        xorPolicy = new XorPolicy(policiesXor);
+    }
+
+    /**
+     * set up list of xor with or
+     */
+    private void setUpXorWithOr() {
+        List<PurchasePolicy> policiesXor = new LinkedList<>();
+        List<PurchasePolicy> policiesOr = new LinkedList<>();
+        UserPurchasePolicy userPurchasePolicy = (UserPurchasePolicy) data.getPurchasePolicy(Data.VALID_USER_PURCHASE_POLICY);
+        ProductPurchasePolicy productPurchasePolicy = (ProductPurchasePolicy)data.getPurchasePolicy(Data.VALID_PRODUCT_PURCHASE_POLICY);
+        SystemPurchasePolicy systemPurchasePolicy = (SystemPurchasePolicy)data.getPurchasePolicy(Data.VALID_SYSTEM_PURCHASE_POLICY);
+        policiesOr.add(userPurchasePolicy);
+        policiesOr.add(systemPurchasePolicy);
+        policiesXor.add(productPurchasePolicy);
+        andPolicy = new AndPolicy(policiesOr);
+        policiesXor.add(andPolicy);
+        xorPolicy = new XorPolicy(policiesXor);
     }
 
     /**
@@ -228,5 +307,93 @@ public class ComposePurchasePolicyTest {
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
         assertFalse(andPolicy.standInPolicy(paymentData, deliveryData));
     }
+
+    /**
+     * check xor policies with or between them
+     */
+    @Test
+    public void testOrWithXor() {
+        setUpOrWithXor();
+        PaymentData paymentData = data.getPaymentData(Data.UNDER_AGE);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        assertTrue(orPolicy.standInPolicy(paymentData, deliveryData));
+    }
+
+    /**
+     * check xor policies with or between them with One side fail
+     */
+    @Test
+    public void testOrWithXorOneSideFail() {
+        setUpOrWithXor();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.LARGE_AMOUNT);
+        assertTrue(orPolicy.standInPolicy(paymentData, deliveryData));
+    }
+
+    /**
+     * check xor policies with or between them with both sides fail
+     */
+    @Test
+    public void testOrWithXorAllSidesFail() {
+        setUpOrWithXor();
+        PaymentData paymentData = data.getPaymentData(Data.UNDER_AGE);
+        DeliveryData deliveryData = data.getDeliveryData(Data.FAIL_POLICY);
+        assertFalse(orPolicy.standInPolicy(paymentData, deliveryData));
+    }
+
+    /**
+     * check xor policies with and between them
+     */
+    @Test
+    public void testAndWithXor() {
+        setUpAndWithXor();
+        PaymentData paymentData = data.getPaymentData(Data.UNDER_AGE);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        assertTrue(andPolicy.standInPolicy(paymentData, deliveryData));
+    }
+
+    /**
+     * check xor policies with and between them with one side fail
+     */
+    @Test
+    public void testAndWithXorOneSideFail() {
+        setUpAndWithXor();
+        PaymentData paymentData = data.getPaymentData(Data.UNDER_AGE);
+        DeliveryData deliveryData = data.getDeliveryData(Data.LARGE_AMOUNT);
+        assertFalse(andPolicy.standInPolicy(paymentData, deliveryData));
+    }
+
+    @Test
+    public void testXorWithAnd() {
+        setUpXorWithAnd();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.LARGE_AMOUNT);
+        assertTrue(xorPolicy.standInPolicy(paymentData, deliveryData));
+    }
+
+    @Test
+    public void testXorWithAndFail() {
+        setUpXorWithAnd();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        assertFalse(xorPolicy.standInPolicy(paymentData, deliveryData));
+    }
+
+    @Test
+    public void testXorWithOr() {
+        setUpXorWithOr();
+        PaymentData paymentData = data.getPaymentData(Data.UNDER_AGE);
+        DeliveryData deliveryData = data.getDeliveryData(Data.INVALID_COUNTRY);
+        assertTrue(xorPolicy.standInPolicy(paymentData, deliveryData));
+    }
+
+    @Test
+    public void testXorWithOrFail() {
+        setUpXorWithOr();
+        PaymentData paymentData = data.getPaymentData(Data.UNDER_AGE);
+        DeliveryData deliveryData = data.getDeliveryData(Data.FAIL_POLICY);
+        assertFalse(xorPolicy.standInPolicy(paymentData, deliveryData));
+    }
+
 
 }
