@@ -17,11 +17,10 @@ public class OrPolicy implements PurchasePolicy {
 
     @Override
     public boolean standInPolicy(PaymentData paymentData, DeliveryData deliveryData) {
+        boolean output = false;
         for (PurchasePolicy policy: policyList) {
-            if(! policy.standInPolicy(paymentData, deliveryData)) {
-                return false;
-            }
+            output = output | policy.standInPolicy(paymentData, deliveryData);
         }
-        return true;
+        return output;
     }
 }
