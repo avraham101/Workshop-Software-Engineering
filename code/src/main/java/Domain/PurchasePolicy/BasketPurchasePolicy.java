@@ -3,9 +3,7 @@ package Domain.PurchasePolicy;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
-import Domain.Product;
 
-import java.util.HashMap;
 
 public class BasketPurchasePolicy implements PurchasePolicy {
 
