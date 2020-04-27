@@ -1,13 +1,13 @@
 package Domain;
 
-import DataAPI.ProductData;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class Guest extends UserState {
 
@@ -115,8 +115,8 @@ public class Guest extends UserState {
      * @return the purchase list
      */
     @Override
-    public List<Purchase> watchMyPurchaseHistory() {
-        return null;
+    public Response<List<Purchase>> watchMyPurchaseHistory() {
+        return new Response<>(null,OpCode.Not_Login);
     }
 
 
@@ -126,8 +126,8 @@ public class Guest extends UserState {
      * @return false for guest
      */
     @Override
-    public boolean addProductToStore(ProductData productData) {
-        return false;
+    public Response<Boolean> addProductToStore(ProductData productData) {
+        return new Response<>(false, OpCode.Not_Login);
     }
 
 
@@ -138,8 +138,8 @@ public class Guest extends UserState {
      * @return false always
      */
     @Override
-    public boolean removeProductFromStore(String storeName, String productName) {
-        return false;
+    public Response<Boolean> removeProductFromStore(String storeName, String productName) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**
@@ -148,8 +148,8 @@ public class Guest extends UserState {
      * @return
      */
     @Override
-    public boolean editProductFromStore(ProductData productData) {
-        return false;
+    public Response<Boolean> editProductFromStore(ProductData productData) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
 
@@ -160,8 +160,8 @@ public class Guest extends UserState {
      * @return
      */
     @Override
-    public boolean addManager(Subscribe youngOwner, String storeName) {
-        return false;
+    public Response<Boolean> addManager(Subscribe youngOwner, String storeName) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**
@@ -172,8 +172,8 @@ public class Guest extends UserState {
      * @return
      */
     @Override
-    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return false;
+    public Response<Boolean> addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**
@@ -184,8 +184,8 @@ public class Guest extends UserState {
      * @return
      */
     @Override
-    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return false;
+    public Response<Boolean> removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**
@@ -195,8 +195,8 @@ public class Guest extends UserState {
      * @return
      */
     @Override
-    public boolean removeManager(String userName, String storeName) {
-        return false;
+    public Response<Boolean>  removeManager(String userName, String storeName) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**
@@ -217,8 +217,8 @@ public class Guest extends UserState {
      * @return
      */
     @Override
-    public Request replayToRequest(String storeName, int requestID, String content) {
-        return null;
+    public Response<Request> replayToRequest(String storeName, int requestID, String content) {
+        return new Response<>(null,OpCode.Not_Login);
     }
 
     /**
@@ -238,5 +238,15 @@ public class Guest extends UserState {
     @Override
     public boolean canWatchUserHistory() {
         return false;
+    }
+
+    @Override
+    public List<Store> getMyManagedStores() {
+        return null;
+    }
+
+    @Override
+    public Set<StorePermissionType> getPermissionsForStore(String storeName) {
+        return null;
     }
 }

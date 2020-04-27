@@ -1,13 +1,9 @@
 package Stubs;
 
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Domain.*;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class SubscribeStub extends Subscribe{
 
@@ -52,8 +48,8 @@ public class SubscribeStub extends Subscribe{
      * @return false for guest
      */
     @Override
-    public boolean addProductToStore(ProductData productData){
-        return true;
+    public Response<Boolean> addProductToStore(ProductData productData){
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -63,8 +59,8 @@ public class SubscribeStub extends Subscribe{
      * @return false always
      */
     @Override
-    public boolean removeProductFromStore(String storeName, String productName) {
-        return true;
+    public Response<Boolean> removeProductFromStore(String storeName, String productName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -73,8 +69,8 @@ public class SubscribeStub extends Subscribe{
      * @return
      */
     @Override
-    public boolean editProductFromStore(ProductData productData) {
-        return true;
+    public Response<Boolean> editProductFromStore(ProductData productData) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -84,8 +80,8 @@ public class SubscribeStub extends Subscribe{
      * @return
      */
     @Override
-    public boolean addManager(Subscribe youngOwner, String storeName) {
-        return true;
+    public Response<Boolean> addManager(Subscribe youngOwner, String storeName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -96,8 +92,8 @@ public class SubscribeStub extends Subscribe{
      * @return
      */
     @Override
-    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return true;
+    public Response<Boolean> addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -108,8 +104,8 @@ public class SubscribeStub extends Subscribe{
      * @return
      */
     @Override
-    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return true;
+    public Response<Boolean> removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -119,8 +115,8 @@ public class SubscribeStub extends Subscribe{
      * @return
      */
     @Override
-    public boolean removeManager(String userName, String storeName) {
-        return true;
+    public Response<Boolean> removeManager(String userName, String storeName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -171,8 +167,8 @@ public class SubscribeStub extends Subscribe{
      * @return
      */
     @Override
-    public List<Purchase> watchMyPurchaseHistory() {
-        return new LinkedList<>();
+    public Response<List<Purchase>> watchMyPurchaseHistory() {
+        return new Response<>(new LinkedList<>(),OpCode.Success);
     }
 
     /**
@@ -182,5 +178,16 @@ public class SubscribeStub extends Subscribe{
     @Override
     public boolean addReview(Review review) {
         return true;
+    }
+
+    @Override
+    public List<Store> getMyManagedStores(){
+        return new ArrayList<>();
+
+    }
+
+    @Override
+    public Set<StorePermissionType> getPermissionsForStore(String storeName) {
+      return new HashSet<>();
     }
 }

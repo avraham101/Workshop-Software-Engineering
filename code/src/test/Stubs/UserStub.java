@@ -1,9 +1,6 @@
 package Stubs;
 
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Domain.*;
 
 import java.util.LinkedList;
@@ -47,8 +44,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public boolean addProductToStore(ProductData productData) {
-        return true;
+    public Response<Boolean> addProductToStore(ProductData productData) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -58,8 +55,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public boolean removeProductFromStore(String storeName, String productName) {
-        return true;
+    public Response<Boolean> removeProductFromStore(String storeName, String productName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -68,8 +65,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public boolean editProductFromStore(ProductData productData) {
-        return true;
+    public Response<Boolean> editProductFromStore(ProductData productData) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -79,8 +76,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public boolean addManager(Subscribe subscribe, String storeName) {
-        return true;
+    public Response<Boolean> addManager(Subscribe subscribe, String storeName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -132,8 +129,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return true;
+    public Response<Boolean> addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -144,8 +141,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return true;
+    public Response<Boolean> removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -155,8 +152,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public boolean removeManager(String userName, String storeName) {
-        return true;
+    public Response<Boolean> removeManager(String userName, String storeName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -208,8 +205,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public Request replayToRequest(String storeName, int requestID, String content) {
-        return new Request(getUserName(), storeName, "temp", 10);
+    public Response<Request> replayToRequest(String storeName, int requestID, String content) {
+        return new Response<>(new Request(getUserName(), storeName, "temp", 10),OpCode.Success);
     }
 
     /**
@@ -217,8 +214,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public List<Purchase> watchMyPurchaseHistory() {
-        return new LinkedList<>();
+    public Response<List<Purchase>> watchMyPurchaseHistory() {
+        return new Response<>(new LinkedList<>(),OpCode.Success);
     }
 
 

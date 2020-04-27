@@ -4,6 +4,9 @@ import DataAPI.ProductData;
 import Domain.Discount.Discount;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
+import DataAPI.*;
+import Systems.PaymentSystem.PaymentSystem;
+import Systems.SupplySystem.SupplySystem;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -298,15 +301,18 @@ public class Store {
      * @param productData details of product to add to store
      * @return if the product was added successfully
      */
-    public boolean addProduct(ProductData productData) {
+    public Response<Boolean> addProduct(ProductData productData) {
         String categoryName=productData.getCategory();
         if(categoryName==null)
-            return false;
+            return new Response<>(false, OpCode.Invalid_Product);
         if(!categoryList.containsKey(categoryName)){
             categoryList.put(categoryName,new Category(categoryName));
         }
         Product product=new Product(productData,categoryList.get(categoryName));
-        return products.putIfAbsent(productData.getProductName(),product)==null;
+        boolean result=products.putIfAbsent(productData.getProductName(),product)==null;
+        if(result)
+            return new Response<>(true,OpCode.Success);
+        return new Response<>(false,OpCode.Already_Exists);
     }
 
     /**
@@ -315,17 +321,16 @@ public class Store {
      * @param productName
      * @return  if the product had been removed
      */
-    public boolean removeProduct(String productName) {
-        if(!products.containsKey(productName))
-            return false;
+    public Response<Boolean> removeProduct(String productName) {
         Product product=products.get(productName);
         if(product!=null) {
             product.getWriteLock().lock();
             product.getCategory().removeProduct(productName);
             products.remove(productName);
             product.getWriteLock().unlock();
+            return new Response<>(true,OpCode.Success);
         }
-        return true;
+        return new Response<>(false,OpCode.Invalid_Product);
     }
 
     /**
@@ -334,16 +339,16 @@ public class Store {
      * @param productData
      * @return if the product was edited successfully
      */
-    public boolean editProduct(ProductData productData) {
-        if(!products.containsKey(productData.getProductName()))
-            return false;
+    public Response<Boolean> editProduct(ProductData productData) {
         Product old=products.get(productData.getProductName());
+        if(old==null)
+            return new Response<>(false,OpCode.Invalid_Product);
         String categoryName=productData.getCategory();
         if(!categoryList.containsKey(categoryName)){
             categoryList.put(categoryName,new Category(categoryName));
         }
         old.edit(productData,categoryList.get(categoryName));
-        return true;
+        return new Response<>(true,OpCode.Success);
     }
 
 }

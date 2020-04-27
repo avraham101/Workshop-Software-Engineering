@@ -4,13 +4,12 @@ import Data.*;
 import DataAPI.ProductData;
 import DataAPI.StatusTypeData;
 import DataAPI.StoreData;
+import DataAPI.StorePermissionType;
 import Domain.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.Assert.*;
@@ -136,7 +135,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     @Test
     public void testWatchPurchases() {
         setUpProductBought();
-        List<Purchase> list = sub.watchMyPurchaseHistory();
+        List<Purchase> list = sub.watchMyPurchaseHistory().getValue();
         assertNotNull(list);
         assertEquals(1,list.size());
     }
@@ -199,7 +198,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      */
     private void testAddPermissionTwiceFail() {
         assertFalse(sub.addPermissions(data.getPermissionTypeList(),
-                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.VALID).getName()));
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -236,12 +235,15 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         String storeName=p.getStore().getName();
         //add another manager
         p.getOwner().addManager(niv,storeName);
-        assertTrue(sub.removeManager(data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()));
+        assertTrue(sub.removeManager(data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()).getValue());
         assertFalse(niv.getPermissions().containsKey(storeName));
         assertFalse(p.getOwner().getPermissions().containsKey(storeName));
 
     }
 
+    /**
+     * tests for getStatus
+     */
     @Test
     public void  testGetStatusRegularSuccess(){
         assertEquals(StatusTypeData.REGULAR,sub.getStatus());
@@ -252,5 +254,79 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         sub.openStore(data.getStore(Data.VALID));
         assertEquals(StatusTypeData.MANAGER,sub.getStatus());
     }
+
+    /**
+     * tests for getMyManagedStores
+     */
+
+    @Test
+    public void testGetMyManagedStoresNoStoresSuccess(){
+        assertNull(sub.getMyManagedStores());
+    }
+
+    @Test
+    public void testGetMyManagedStoresHasStoresSuccess(){
+        StoreData myStore = data.getStore(Data.VALID);
+        sub.openStore(data.getStore(Data.VALID));
+        List<Store> managedStores = sub.getMyManagedStores();
+        assertNotNull(managedStores);
+        assertTrue(!managedStores.isEmpty());
+        Store managedStore = managedStores.get(0);
+        StoreData managedStoreData = new StoreData(managedStore.getName(),managedStore.getDescription());
+        assertEquals(myStore,managedStoreData);
+
+    }
+
+    /**
+     * test for getPermissionsForStore
+     */
+    @Test
+    public void testGetPermissionsForStoreSuccessOwner(){
+        sub.openStore(data.getStore(Data.VALID));
+       Set <StorePermissionType> permissionTypes=
+               sub.getPermissionsForStore(data.getStore(Data.VALID).getName());
+       assertNotNull(permissionTypes);
+       assertTrue(permissionTypes.contains(StorePermissionType.OWNER));
+
+    }
+
+    @Test
+    public void testGetPermissionsForStoreSuccessManagerNoPermissions(){
+        Subscribe niv=data.getSubscribe(Data.VALID2);
+        niv.openStore(data.getStore(Data.VALID));
+        niv.addManager(sub,data.getStore(Data.VALID).getName());
+        Set <StorePermissionType> permissionTypes=
+                sub.getPermissionsForStore(data.getStore(Data.VALID).getName());
+        assertNotNull(permissionTypes);
+        assertTrue(permissionTypes.isEmpty());
+
+    }
+
+    @Test
+    public void testGetPermissionsForSuccessManagerWithPermissions(){
+        testGetPermissionsForStoreSuccessManagerNoPermissions();
+        StoreData store = data.getStore(Data.VALID);
+        Subscribe niv=data.getSubscribe(Data.VALID2);
+        List<PermissionType> permissions = new ArrayList<>();
+        permissions.add(PermissionType.ADD_MANAGER);
+        permissions.add(PermissionType.PRODUCTS_INVENTORY);
+        niv.addPermissions(permissions,store.getName(),sub.getName());
+        Set<StorePermissionType> expected = new HashSet<>();
+        expected.add(StorePermissionType.ADD_MANAGER);
+        expected.add(StorePermissionType.PRODUCTS_INVENTORY);
+        assertEquals(expected,sub.getPermissionsForStore(store.getName()));
+    }
+
+    @Test
+    public void testGetPermissionsForStoreFailNoPermissions(){
+        assertNull( sub.getPermissionsForStore(data.getStore(Data.VALID).getName()));
+
+    }
+    @Test
+    public void testGetPermissionsForStoreFailStoreNotExist(){
+        assertNull( sub.getPermissionsForStore("InvalidStore"));
+
+    }
+
 
 }

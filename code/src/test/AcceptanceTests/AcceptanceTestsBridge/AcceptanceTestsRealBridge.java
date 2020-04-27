@@ -44,7 +44,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-2.2---------------------------------//
     @Override
     public boolean register(String username, String password) {
-        return serviceAPI.register(username,password);
+        return serviceAPI.register(username,password).getValue();
     }
     //---------------------------Use-Case-2.2---------------------------------//
 
@@ -52,7 +52,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-2.3---------------------------------//
     @Override
     public boolean login(int id, String username, String password) {
-        return serviceAPI.login(id,username,password);
+        return serviceAPI.login(id,username,password).getValue();
 
     }
     //---------------------------Use-Case-2.3---------------------------------//
@@ -60,13 +60,13 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-2.4---------------------------------//
     @Override
     public List<StoreTestData> getStoresInfo() {
-        List<StoreData> storeData = serviceAPI.viewStores();
+        List<StoreData> storeData = serviceAPI.viewStores().getValue();
         return buildStoresTestData(storeData);
     }
 
     @Override
     public List<ProductTestData> getStoreProducts(String storeName) {
-        return buildProductsTestData(serviceAPI.viewProductsInStore(storeName));
+        return buildProductsTestData(serviceAPI.viewProductsInStore(storeName).getValue());
     }
     //---------------------------Use-Case-2.4---------------------------------//
 
@@ -74,7 +74,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public HashSet<ProductTestData> filterProducts(List<FilterTestData> filters) {
         Filter productsFilter = buildFilterFromTestFilters(filters);
-        List<ProductData> filteredProducts =  serviceAPI.viewSpasificProducts(productsFilter);
+        List<ProductData> filteredProducts =  serviceAPI.viewSpasificProducts(productsFilter).getValue();
         return new HashSet<>(buildProductsTestData(filteredProducts));
     }
     //---------------------------Use-Case-2.5---------------------------------//
@@ -82,23 +82,23 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-2.7---------------------------------//
     @Override
     public CartTestData getUsersCart(int id) {
-        CartData cartData = serviceAPI.watchCartDetatils(id);
+        CartData cartData = serviceAPI.watchCartDetatils(id).getValue();
         return buildCartTestData(cartData);
     }
 
     @Override
     public boolean deleteFromUserCart(int id, ProductTestData productToDelete) {
-        return serviceAPI.deleteFromCart(id,productToDelete.getProductName(),productToDelete.getStoreName());
+        return serviceAPI.deleteFromCart(id,productToDelete.getProductName(),productToDelete.getStoreName()).getValue();
     }
 
     @Override
     public boolean changeUserAmountOfProductInCart(int id, ProductTestData productToChangeAmount, int newAmount) {
-        return serviceAPI.editProductInCart(id,productToChangeAmount.getProductName(),productToChangeAmount.getStoreName(),newAmount);
+        return serviceAPI.editProductInCart(id,productToChangeAmount.getProductName(),productToChangeAmount.getStoreName(),newAmount).getValue();
     }
 
     @Override
     public boolean addToUserCart(int id, ProductTestData productToAdd, int amount) {
-        return serviceAPI.addProductToCart(id,productToAdd.getProductName(),productToAdd.getStoreName(),amount);
+        return serviceAPI.addProductToCart(id,productToAdd.getProductName(),productToAdd.getStoreName(),amount).getValue();
     }
     //---------------------------Use-Case-2.7---------------------------------//
 
@@ -120,7 +120,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
             paymentData=null;
         }
 
-        boolean approval = serviceAPI.purchaseCart(id,"Israel",paymentData,delivery);
+        boolean approval = serviceAPI.purchaseCart(id,"Israel",paymentData,delivery).getValue();
         return approval;
     }
     //---------------------------Use-Case-2.8---------------------------------//
@@ -128,7 +128,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-3.1---------------------------------//
     @Override
     public boolean logout(int id) {
-        return serviceAPI.logout(id);
+        return serviceAPI.logout(id).getValue();
     }
     //---------------------------Use-Case-3.1---------------------------------//
 
@@ -136,7 +136,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public StoreTestData openStore(int id,String storeName) {
         StoreData store = new StoreData(storeName,"description");
-        boolean approval = serviceAPI.openStore(id,store);
+        boolean approval = serviceAPI.openStore(id,store).getValue();
         if(!approval) {
             return null;
         }
@@ -149,21 +149,21 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-3.3---------------------------------//
     @Override
     public boolean writeReviewOnProduct(int id,ProductTestData product, ReviewTestData review) {
-        return serviceAPI.writeReview(id,product.getStoreName(),product.getProductName(),review.getContent());
+        return serviceAPI.writeReview(id,product.getStoreName(),product.getProductName(),review.getContent()).getValue();
     }
     //---------------------------Use-Case-3.3---------------------------------//
 
     //---------------------------Use-Case-3.5---------------------------------//
     @Override
     public boolean sendApplicationToStore(int id, String storeName, String message) {
-        return serviceAPI.writeRequestToStore(id,storeName,message);
+        return serviceAPI.writeRequestToStore(id,storeName,message).getValue();
     }
     //---------------------------Use-Case-3.5---------------------------------//
 
     //---------------------------Use-Case-3.7---------------------------------//
     @Override
     public List<PurchaseTestData> getCurrentUserPurchaseHistory(int id) {
-        List<Purchase> purchaseHistory = serviceAPI.watchMyPurchaseHistory(id);
+        List<Purchase> purchaseHistory = serviceAPI.watchMyPurchaseHistory(id).getValue();
         return buildPurchasesTestData(purchaseHistory);
     }
     //---------------------------Use-Case-3.7---------------------------------//
@@ -171,32 +171,32 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-4.1---------------------------------//
     @Override
     public boolean addProduct(int id,ProductTestData product) {
-        return serviceAPI.addProductToStore(id,buildProductData(product));
+        return serviceAPI.addProductToStore(id,buildProductData(product)).getValue();
     }
 
     @Override
     public boolean deleteProduct(int id,ProductTestData product) {
-        return serviceAPI.removeProductFromStore(id,product.getStoreName(),product.getProductName());
+        return serviceAPI.removeProductFromStore(id,product.getStoreName(),product.getProductName()).getValue();
     }
 
     @Override
     public boolean editProductInStore(int id,ProductTestData product) {
         ProductData productData = buildProductData(product);
-        return serviceAPI.editProductFromStore(id,productData);
+        return serviceAPI.editProductFromStore(id,productData).getValue();
     }
     //---------------------------Use-Case-4.1---------------------------------//
 
     //---------------------------Use-Case-4.3---------------------------------//
     @Override
     public boolean appointOwnerToStore(int id,String storeName, String username) {
-        return serviceAPI.manageOwner(id,storeName,username);
+        return serviceAPI.manageOwner(id,storeName,username).getValue();
     }
     //---------------------------Use-Case-4.3---------------------------------//
 
     //---------------------------Use-Case-4.5---------------------------------//
     @Override
     public boolean appointManager(int id,String storeName, String username) {
-        return serviceAPI.addManagerToStore(id,storeName,username);
+        return serviceAPI.addManagerToStore(id,storeName,username).getValue();
     }
     //---------------------------Use-Case-4.5---------------------------------//
 
@@ -205,34 +205,34 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     public boolean addPermissionToManager(int id,String storeName, String username, PermissionsTypeTestData permissionsTypeTestData) {
         PermissionType permissionType = buildPermissionType(permissionsTypeTestData);
         List<PermissionType> permissions = new ArrayList<>(Collections.singletonList(permissionType));
-        return serviceAPI.addPermissions(id,permissions,storeName,username);
+        return serviceAPI.addPermissions(id,permissions,storeName,username).getValue();
     }
 
     @Override
     public boolean deletePermission(int id,String storeName, String username, PermissionsTypeTestData permissionsTypeTestData) {
         List<PermissionType> permissionType = new ArrayList<>(Arrays.asList(buildPermissionType(permissionsTypeTestData)));
-        return serviceAPI.removePermissions(id,permissionType,storeName,username);
+        return serviceAPI.removePermissions(id,permissionType,storeName,username).getValue();
     }
     //---------------------------Use-Case-4.6---------------------------------//
 
     //---------------------------Use-Case-4.7---------------------------------//
     @Override
     public boolean deleteManager(int id, String storeName, String username) {
-        return serviceAPI.removeManager(id,username,storeName);
+        return serviceAPI.removeManager(id,username,storeName).getValue();
     }
     //---------------------------Use-Case-4.7---------------------------------//
 
     //---------------------------Use-Case-4.9---------------------------------//
     @Override
     public HashSet<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName) {
-        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName);
+        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
         List<ApplicationToStoreTestData> applications = buildApplicationsToStore(requests);
         return new HashSet<>(applications);
     }
 
     @Override
     public HashMap<ApplicationToStoreTestData, String> getUserApplicationsAndReplies(int id, String username, String storeName) {
-        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName);
+        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
         HashMap<ApplicationToStoreTestData,String> appsAndReplies = new HashMap<>();
 
         for(Request request : requests){
@@ -248,7 +248,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public List<ApplicationToStoreTestData> getUserApplications(int id,String username, String storeName) {
-        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName);
+        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
         return buildApplicationsToStore(requests);
     }
 
@@ -258,7 +258,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-4.10---------------------------------//
     @Override
     public List<PurchaseTestData> userGetStorePurchasesHistory(int id ,String storeName) {
-        return buildPurchasesTestData(serviceAPI.watchStoreHistory(id,storeName));
+        return buildPurchasesTestData(serviceAPI.watchStoreHistory(id,storeName).getValue());
     }
 
 
@@ -267,13 +267,13 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-6.4---------------------------------//
     @Override
     public List<PurchaseTestData> getUserPurchaseHistory(int id,String username) {
-        List<Purchase> purchases = serviceAPI.AdminWatchUserPurchasesHistory(id,username);
+        List<Purchase> purchases = serviceAPI.AdminWatchUserPurchasesHistory(id,username).getValue();
         return buildPurchasesTestData(purchases);
     }
 
     @Override
     public List<PurchaseTestData> getStorePurchasesHistory(int id,String storeName) {
-        List<Purchase> purchases = serviceAPI.AdminWatchStoreHistory(id,storeName);
+        List<Purchase> purchases = serviceAPI.AdminWatchStoreHistory(id,storeName).getValue();
         return buildPurchasesTestData(purchases);
     }
     //---------------------------Use-Case-6.4---------------------------------//
@@ -301,7 +301,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     public void addProducts(int id,List<ProductTestData> products) {
         for(ProductTestData productTestData : products){
             ProductData productData = buildProductData(productTestData);
-            boolean test=serviceAPI.addProductToStore(id,productData);
+            boolean test=serviceAPI.addProductToStore(id,productData).getValue();
             int t =3;
         }
     }
@@ -316,7 +316,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     private StoreTestData buildStoreTestData(StoreData storeData) {
         try {
             String storeName = storeData.getName();
-            List<ProductData> storeProducts = serviceAPI.viewProductsInStore(storeName);
+            List<ProductData> storeProducts = serviceAPI.viewProductsInStore(storeName).getValue();
             List<ProductTestData> storeTestProducts = buildProductsTestData(storeProducts);
             StoreTestData storeToReturn = new StoreTestData(storeName, null);
             storeToReturn.setProducts(storeTestProducts);
@@ -401,7 +401,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public StoreTestData getStoreInfoByName(String storeName) {
 
-        List<StoreData> stores = serviceAPI.viewStores();
+        List<StoreData> stores = serviceAPI.viewStores().getValue();
         for (StoreData st: stores) {
             if(st.getName().equals(storeName)){
                 return new StoreTestData(storeName,null);
@@ -468,7 +468,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public List<ReviewTestData> getProductsReviews(ProductTestData product) {
-        List<ProductData> products = serviceAPI.viewProductsInStore(product.getStoreName());
+        List<ProductData> products = serviceAPI.viewProductsInStore(product.getStoreName()).getValue();
         if(products==null )
             return null;
         for(ProductData pd : products)
@@ -487,6 +487,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     private ReviewTestData buildReviewTestData(Review review) {
         return new ReviewTestData(review.getWriter(),review.getContent());
     }
+//TODO take care of discounts
 
 //    private List<DiscountTestData> buildDiscountsTestData(List<Discount1> discount1s) {
 //        List<DiscountTestData> discountsTestData = new ArrayList<>();
@@ -523,7 +524,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public boolean writeReplyToApplication(int id,int requestId,String storeName, ApplicationToStoreTestData application, String reply) {
-        return serviceAPI.answerRequest(id,requestId, reply, storeName) != null;
+        return serviceAPI.answerRequest(id,requestId, reply, storeName).getValue() != null;
     }
 
     private List<ApplicationToStoreTestData> buildApplicationsToStore(List<Request> requests) {

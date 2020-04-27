@@ -4,6 +4,7 @@ import DataAPI.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public class User {
     private UserState state;
@@ -189,7 +190,7 @@ public class User {
      * the function return the purchase list
      * @return the purchase list
      */
-    public List<Purchase> watchMyPurchaseHistory() {
+    public Response<List<Purchase>> watchMyPurchaseHistory() {
         return state.watchMyPurchaseHistory();
     }
 
@@ -198,7 +199,7 @@ public class User {
      * @param productData
      * @return
      */
-    public boolean addProductToStore(ProductData productData) {
+    public Response<Boolean> addProductToStore(ProductData productData) {
         return state.addProductToStore(productData);
     }
 
@@ -208,7 +209,7 @@ public class User {
      * @param productName
      * @return
      */
-    public boolean removeProductFromStore(String storeName, String productName) {
+    public Response<Boolean> removeProductFromStore(String storeName, String productName) {
         return state.removeProductFromStore(storeName,productName);
     }
 
@@ -217,7 +218,7 @@ public class User {
      * @param productData
      * @return
      */
-    public boolean editProductFromStore(ProductData productData) {
+    public Response<Boolean> editProductFromStore(ProductData productData) {
         return state.editProductFromStore(productData);
     }
 
@@ -227,7 +228,7 @@ public class User {
      * @param storeName
      * @return
      */
-    public boolean addManager(Subscribe subscribe, String storeName) {
+    public Response<Boolean> addManager(Subscribe subscribe, String storeName) {
         return state.addManager(subscribe,storeName);
     }
 
@@ -238,7 +239,7 @@ public class User {
      * @param userName
      * @return
      */
-    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+    public Response<Boolean> addPermissions(List<PermissionType> permissions, String storeName, String userName) {
         return state.addPermissions(permissions,storeName,userName);
     }
 
@@ -249,7 +250,7 @@ public class User {
      * @param userName
      * @return
      */
-    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+    public Response<Boolean> removePermissions(List<PermissionType> permissions, String storeName, String userName) {
         return state.removePermissions(permissions,storeName,userName);
     }
 
@@ -259,7 +260,7 @@ public class User {
      * @param storeName
      * @return
      */
-    public boolean removeManager(String userName, String storeName) {
+    public Response<Boolean> removeManager(String userName, String storeName) {
         return state.removeManager(userName,storeName);
     }
 
@@ -278,7 +279,7 @@ public class User {
      * @param content
      * @return request if replay, null else
      */
-    public Request replayToRequest(String storeName, int requestID, String content) {
+    public Response<Request> replayToRequest(String storeName, int requestID, String content) {
         return state.replayToRequest(storeName, requestID, content);
     }
 
@@ -299,4 +300,11 @@ public class User {
         return state.canWatchUserHistory();
     }
 
+    public List<Store> getMyManagedStores(){
+       return state.getMyManagedStores();
+    }
+
+    public Set<StorePermissionType> getPermissionsForStore(String storeName) {
+        return state.getPermissionsForStore(storeName);
+    }
 }

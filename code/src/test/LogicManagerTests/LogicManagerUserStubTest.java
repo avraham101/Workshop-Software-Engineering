@@ -44,7 +44,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
      */
     private void testAddProductToCartNullProduct() {
         ProductData product = data.getProductData(Data.NULL_PRODUCT);
-        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName(), product.getAmount()));
+        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName(), product.getAmount()).getValue());
         logicManager.deleteFromCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName());
     }
 
@@ -53,7 +53,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
      */
     private void testAddProductToCartNegativeAmount() {
         ProductData product = data.getProductData(Data.NEGATIVE_AMOUNT);
-        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName(), product.getAmount()));
+        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName(), product.getAmount()).getValue());
         logicManager.deleteFromCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName());
     }
 
@@ -62,7 +62,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
      */
     private void testAddProductToCartZeroAmount() {
         ProductData product = data.getProductData(Data.ZERO);
-        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName(), product.getAmount()));
+        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName(), product.getAmount()).getValue());
         logicManager.deleteFromCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName());
     }
 
@@ -71,7 +71,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
      */
     private void testAddProductToCartNullStore() {
         ProductData product = data.getProductData(Data.NULL_STORE);
-        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName(), product.getAmount()));
+        assertFalse(logicManager.addProductToCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName(), product.getAmount()).getValue());
         logicManager.deleteFromCart(data.getId(Data.VALID), product.getProductName(), product.getStoreName());
     }
 
@@ -87,7 +87,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
         assertNotNull(store);
         assertEquals(storeData.getName(),store.getName());
         //This test check if can add store twiced
-        assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.VALID)));
+        assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.VALID)).getValue());
     }
 
     /**
@@ -96,7 +96,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
     @Override
     protected void testOpenStoreSucces(){
         StoreData storeData = data.getStore(Data.VALID);
-        assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData));
+        assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
     }
 
     /**

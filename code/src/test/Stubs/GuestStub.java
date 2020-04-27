@@ -1,15 +1,11 @@
 package Stubs;
 
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class GuestStub extends Guest {
 
@@ -51,8 +47,8 @@ public class GuestStub extends Guest {
      * @return false always
      */
     @Override
-    public boolean removeProductFromStore(String storeName, String productName) {
-        return false;
+    public Response<Boolean> removeProductFromStore(String storeName, String productName) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**
@@ -61,8 +57,8 @@ public class GuestStub extends Guest {
      * @return false for guest
      */
     @Override
-    public boolean addProductToStore(ProductData productData){
-        return false;
+    public Response<Boolean> addProductToStore(ProductData productData){
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**
@@ -71,7 +67,7 @@ public class GuestStub extends Guest {
      * @return
      */
     @Override
-    public boolean editProductFromStore(ProductData productData) {
+    public Response<Boolean> editProductFromStore(ProductData productData) {
         return super.editProductFromStore(productData);
     }
 
@@ -82,8 +78,8 @@ public class GuestStub extends Guest {
      * @return
      */
     @Override
-    public boolean addManager(Subscribe youngOwner, String storeName) {
-        return false;
+    public Response<Boolean> addManager(Subscribe youngOwner, String storeName) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**
@@ -94,8 +90,8 @@ public class GuestStub extends Guest {
      * @return
      */
     @Override
-    public boolean addPermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return false;
+    public Response<Boolean> addPermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**
@@ -106,8 +102,8 @@ public class GuestStub extends Guest {
      * @return
      */
     @Override
-    public boolean removePermissions(List<PermissionType> permissions, String storeName, String userName) {
-        return false;
+    public Response<Boolean> removePermissions(List<PermissionType> permissions, String storeName, String userName) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**
@@ -117,8 +113,8 @@ public class GuestStub extends Guest {
      * @return
      */
     @Override
-    public boolean removeManager(String userName, String storeName) {
-        return false;
+    public Response<Boolean> removeManager(String userName, String storeName) {
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     /**
@@ -135,7 +131,18 @@ public class GuestStub extends Guest {
      * ues case 3.7 - watch my purchase history
      */
     @Override
-    public List<Purchase> watchMyPurchaseHistory() {
+    public Response<List<Purchase>> watchMyPurchaseHistory() {
+        return new Response<>(null,OpCode.Not_Login);
+    }
+
+    @Override
+    public List<Store> getMyManagedStores(){
         return null;
+    }
+
+    @Override
+    public Set<StorePermissionType> getPermissionsForStore(String storeName) {
+        return null;
+
     }
 }

@@ -181,7 +181,7 @@ public class UserAllStubsTest {
         setUpBuyCart();
         String name = data.getSubscribe(Data.VALID).getName();
         user.savePurchase(name);
-        assertEquals(0, user.watchMyPurchaseHistory().size());
+        assertEquals(0, user.watchMyPurchaseHistory().getValue().size());
     }
 
     /**
@@ -267,7 +267,7 @@ public class UserAllStubsTest {
     @Test
     public void testWatchPurchasesGuest() {
         setUpGuest();
-        List<Purchase> list = user.watchMyPurchaseHistory();
+        List<Purchase> list = user.watchMyPurchaseHistory().getValue();
         assertNull(list);
     }
 
@@ -277,7 +277,7 @@ public class UserAllStubsTest {
     @Test
     public void testWatchPurchasesSubscribe() {
        setUpBougtAndSaved();
-        List<Purchase> list = user.watchMyPurchaseHistory();
+        List<Purchase> list = user.watchMyPurchaseHistory().getValue();
         assertNotNull(list);
         assertTrue(list.isEmpty());
     }
@@ -289,7 +289,7 @@ public class UserAllStubsTest {
     @Test
     public void testAddProductToStoreGuest(){
         setUpGuest();
-        assertFalse(user.addProductToStore(data.getProductData(Data.VALID)));
+        assertFalse(user.addProductToStore(data.getProductData(Data.VALID)).getValue());
     }
 
     /**
@@ -298,7 +298,7 @@ public class UserAllStubsTest {
     @Test
     public void testAddProductToStoreSubscribe(){
         setUpOpenStore();
-        assertTrue(user.addProductToStore(data.getProductData(Data.VALID)));
+        assertTrue(user.addProductToStore(data.getProductData(Data.VALID)).getValue());
     }
 
     /**
@@ -309,7 +309,7 @@ public class UserAllStubsTest {
     public void testRemoveProductFromStoreGuest(){
         setUpGuest();
         ProductData product= data.getProductData(Data.VALID);
-        assertFalse(user.removeProductFromStore(product.getStoreName(),product.getProductName()));
+        assertFalse(user.removeProductFromStore(product.getStoreName(),product.getProductName()).getValue());
     }
 
     /**
@@ -320,7 +320,7 @@ public class UserAllStubsTest {
     public void testRemoveProductFromStoreSubscribe(){
         setUpProductAdded();
         ProductData product= data.getProductData(Data.VALID);
-        assertTrue(user.removeProductFromStore(product.getStoreName(),product.getProductName()));
+        assertTrue(user.removeProductFromStore(product.getStoreName(),product.getProductName()).getValue());
     }
 
     /**
@@ -329,7 +329,7 @@ public class UserAllStubsTest {
     @Test
     public void testEditProductFromStoreGuest(){
         setUpGuest();
-        assertFalse(user.editProductFromStore(data.getProductData(Data.EDIT)));
+        assertFalse(user.editProductFromStore(data.getProductData(Data.EDIT)).getValue());
     }
 
     /**
@@ -338,7 +338,7 @@ public class UserAllStubsTest {
     @Test
     public void testEditProductFromStoreSubscribe() {
         setUpProductAdded();
-        assertTrue(user.editProductFromStore(data.getProductData(Data.EDIT)));
+        assertTrue(user.editProductFromStore(data.getProductData(Data.EDIT)).getValue());
     }
 
     /**
@@ -347,7 +347,7 @@ public class UserAllStubsTest {
     @Test
     public void testAddManagerGuest(){
         setUpGuest();
-        assertFalse(user.addManager(data.getSubscribe(Data.ADMIN), data.getStore(Data.VALID).getName()));
+        assertFalse(user.addManager(data.getSubscribe(Data.ADMIN), data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -356,7 +356,7 @@ public class UserAllStubsTest {
     @Test
     public void testAddManagerSubscribe(){
         setUpOpenStore();
-        assertTrue(user.addManager(data.getSubscribe(Data.ADMIN), data.getStore(Data.VALID).getName()));
+        assertTrue(user.addManager(data.getSubscribe(Data.ADMIN), data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -366,7 +366,7 @@ public class UserAllStubsTest {
     public void testAddPermissionsGuest(){
         setUpGuest();
         assertFalse(user.addPermissions(data.getPermissionTypeList(),
-                data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()));
+                data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -376,7 +376,7 @@ public class UserAllStubsTest {
     public void testAddPermissionsSubscribe(){
         setUpAddedManager();
         assertTrue(user.addPermissions(data.getPermissionTypeList(),
-                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()).getValue());
     }
 
     /**
@@ -386,7 +386,7 @@ public class UserAllStubsTest {
     public void testRemovePermissionsGuest(){
         setUpGuest();
         assertFalse(user.removePermissions(data.getPermissionTypeList(),
-                data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()));
+                data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -396,7 +396,7 @@ public class UserAllStubsTest {
     public void testRemovePermissionsSubscribe(){
         setUpPermissionAdded();
         assertTrue(user.removePermissions(data.getPermissionTypeList(),
-                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()));
+                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()).getValue());
     }
 
     /**
@@ -405,7 +405,7 @@ public class UserAllStubsTest {
     @Test
     public void testRemoveManagerGuest(){
         setUpGuest();
-        assertFalse(user.removeManager(data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()));
+        assertFalse(user.removeManager(data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**
@@ -414,7 +414,7 @@ public class UserAllStubsTest {
     @Test
     public void testRemoveManagerSubscribe(){
         setUpAddedManager();
-        assertTrue(user.removeManager(data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()));
+        assertTrue(user.removeManager(data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()).getValue());
     }
 
 
@@ -434,7 +434,7 @@ public class UserAllStubsTest {
     public void testReplayRequestGuest(){
         setUpGuest();
         assertNull(user.replayToRequest(data.getRequest(Data.VALID).getStoreName()
-            , data.getRequest(Data.VALID).getId(), "I want replay but can't"));}
+            , data.getRequest(Data.VALID).getId(), "I want replay but can't").getValue());}
 
     /**
      * use case 6.4.1 - watch user store

@@ -1,5 +1,6 @@
 package Stubs;
 
+import DataAPI.*;
 import DataAPI.ProductData;
 import Domain.*;
 import Domain.PurchasePolicy.PurchasePolicy;
@@ -27,8 +28,8 @@ public class StoreStub extends Store {
      * @return
      */
     @Override
-    public boolean addProduct(ProductData productData) {
-        return true;
+    public Response<Boolean> addProduct(ProductData productData) {
+        return new Response<>(true, OpCode.Success);
     }
 
     /**
@@ -37,8 +38,8 @@ public class StoreStub extends Store {
      * @return
      */
     @Override
-    public boolean removeProduct(String productName) {
-        return true;
+    public Response<Boolean> removeProduct(String productName) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -47,7 +48,7 @@ public class StoreStub extends Store {
      * @return
      */
     @Override
-    public boolean editProduct(ProductData productData) {
-        return true;
+    public Response<Boolean> editProduct(ProductData productData) {
+        return new Response<>(true,OpCode.Success);
     }
 }
