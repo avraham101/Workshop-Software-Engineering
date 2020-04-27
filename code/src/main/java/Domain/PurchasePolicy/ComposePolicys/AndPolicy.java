@@ -27,4 +27,12 @@ public class AndPolicy implements PurchasePolicy {
         return true;
     }
 
+    /**
+     * add policy to the policies list
+     * @param purchasePolicy - the policy we want to add
+     */
+    public void addPolicy(PurchasePolicy purchasePolicy) {
+        policyList.add(purchasePolicy);
+    }
+
 }
