@@ -26,4 +26,9 @@ public class StoreDiscount implements Discount {
             sum+=list.get(p)*p.getPrice();
         return sum>=minAmount;
     }
+
+    @Override
+    public boolean isValid() {
+        return minAmount>0&&percentage>0&&percentage<100;
+    }
 }

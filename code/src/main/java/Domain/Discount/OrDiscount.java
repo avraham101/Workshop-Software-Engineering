@@ -29,4 +29,15 @@ public class OrDiscount implements Discount{
         }
         return false;
     }
+
+    @Override
+    public boolean isValid() {
+        if(discounts==null||discounts.isEmpty())
+            return false;
+        for(Discount d:discounts){
+            if(!d.isValid())
+                return false;
+        }
+        return true;
+    }
 }

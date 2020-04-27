@@ -20,4 +20,14 @@ public class OrTerm implements Term{
         }
         return false;
     }
+
+    @Override
+    public boolean isValid() {
+        if(terms==null||terms.isEmpty())
+            return false;
+        for(Term t:terms)
+            if(!t.isValid())
+                return false;
+        return true;
+    }
 }

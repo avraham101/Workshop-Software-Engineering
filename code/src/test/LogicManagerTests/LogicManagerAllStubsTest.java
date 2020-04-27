@@ -3,11 +3,16 @@ package LogicManagerTests;
 import Data.*;
 import DataAPI.*;
 import Domain.*;
+import Domain.Discount.Discount;
+import Domain.Discount.XorDiscount;
 import Stubs.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
 import Systems.SupplySystem.SupplySystem;
+import Utils.InterfaceAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -1629,6 +1634,18 @@ public class LogicManagerAllStubsTest {
         assertNull(response.getValue());
         assertEquals(response.getReason(),OpCode.Dont_Have_Permission);
 
+    }
+
+    //TODO remove this for tests
+    @Test
+    public void tryi(){
+        XorDiscount xorDiscount=new XorDiscount(data.getDiscounts(Data.VALID));
+        GsonBuilder builderDiscount = new GsonBuilder();
+        builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
+        Gson discountGson = builderDiscount.create();
+        String a=discountGson.toJson(xorDiscount,Discount.class);
+        Discount o=logicManager.makeDiscountFromData(a);
+        assertTrue(true);
     }
 
 }

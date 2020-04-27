@@ -351,4 +351,27 @@ public class Store {
         return new Response<>(true,OpCode.Success);
     }
 
+    /**
+     * use case 4.2.1.1 - add discount to store
+     * @param discount - discount to add to the store
+     * @return
+     */
+    public Response<Boolean> addDiscount(Discount discount) {
+        if(discountPolicy.putIfAbsent(discountCounter.getAndIncrement(),discount)==null)
+            return new Response<>(true,OpCode.Success);
+        return new Response<>(false,OpCode.Already_Exists);
+    }
+
+    /**
+     * use case 4.2.1.2 - delete discount from store
+     * @param discountId - discount to delete from the store
+     * @return if the removing was successfull
+     */
+    public Response<Boolean> deleteDiscount(int discountId) {
+        if(discountPolicy.remove(discountId)!=null)
+            return new Response<>(true, OpCode.Success);
+        return new Response<>(false,OpCode.Not_Found);
+    }
+
+
 }

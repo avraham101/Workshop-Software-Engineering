@@ -1,6 +1,7 @@
 package Domain;
 
 import DataAPI.*;
+import Domain.Discount.Discount;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -223,6 +224,15 @@ public class User {
     }
 
     /**
+     * 4.2.1.2 - remove discount
+     * @param discountId - id of the discount ro delete
+     * @param storeName - name of the store to remove the discount from
+     */
+    public Response<Boolean> deleteDiscountFromStore(int discountId, String storeName) {
+        return state.deleteDiscountFromStore(discountId,storeName);
+    }
+
+    /**
      * use case 4.5 - add manager
      * @param subscribe
      * @param storeName
@@ -307,4 +317,9 @@ public class User {
     public Set<StorePermissionType> getPermissionsForStore(String storeName) {
         return state.getPermissionsForStore(storeName);
     }
+
+    public Response<Boolean> addDiscountToStore(String storeName, Discount discount) {
+        return state.addDiscountToStore(storeName,discount);
+    }
+
 }

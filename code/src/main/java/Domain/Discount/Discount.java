@@ -9,4 +9,5 @@ public interface Discount {
     public boolean checkTerm(HashMap<Product, Integer> list);
 
 
+    boolean isValid();
 }

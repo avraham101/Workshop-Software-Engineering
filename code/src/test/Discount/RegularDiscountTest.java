@@ -4,6 +4,7 @@ import Data.Data;
 import Data.TestData;
 import Domain.Discount.RegularDiscount;
 import Domain.Product;
+import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,4 +55,46 @@ public class RegularDiscountTest {
         reqularDiscount=new RegularDiscount(data.getSubscribe(Data.ADMIN).getName(),10);
         assertFalse(reqularDiscount.checkTerm(productAndAmounts));
     }
+
+    /**
+     * test function: is valid
+     * case: success
+     */
+    @Test
+    public void isValidSuccess() {
+        reqularDiscount=new RegularDiscount(data.getSubscribe(Data.ADMIN).getName(),10);
+        assertTrue(reqularDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidNullProduct() {
+        reqularDiscount=new RegularDiscount(null,10);
+        assertFalse(reqularDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidOver100Percantage(){
+        reqularDiscount=new RegularDiscount(data.getSubscribe(Data.ADMIN).getName(),101);
+        assertFalse(reqularDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidLessThan0Percantage(){
+        reqularDiscount=new RegularDiscount(data.getSubscribe(Data.ADMIN).getName(),0);
+        assertFalse(reqularDiscount.isValid());
+    }
+
+
 }

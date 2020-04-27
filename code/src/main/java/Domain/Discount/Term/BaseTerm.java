@@ -31,4 +31,9 @@ public class BaseTerm implements Term{
         }
         return false;
     }
+
+    @Override
+    public boolean isValid() {
+        return product!=null&&amount>0;
+    }
 }

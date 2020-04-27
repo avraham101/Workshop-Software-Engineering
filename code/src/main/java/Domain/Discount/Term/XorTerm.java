@@ -21,4 +21,14 @@ public class XorTerm implements Term{
         }
         return counter==1;
     }
+
+    @Override
+    public boolean isValid() {
+        if(terms==null||terms.isEmpty())
+            return false;
+        for(Term t:terms)
+            if(!t.isValid())
+                return false;
+        return true;
+    }
 }

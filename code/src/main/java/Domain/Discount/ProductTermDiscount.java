@@ -36,4 +36,9 @@ public class ProductTermDiscount implements Discount {
             }
         return found&&term.checkTerm(list,product,amount);
     }
+
+    @Override
+    public boolean isValid() {
+        return term!=null&&term.isValid()&&product!=null&&amount>0;
+    }
 }

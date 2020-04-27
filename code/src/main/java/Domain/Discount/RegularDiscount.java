@@ -29,4 +29,9 @@ public class RegularDiscount implements Discount{
         }
         return false;
     }
+
+    @Override
+    public boolean isValid() {
+        return product!=null&&percantage>0&&percantage<=100;
+    }
 }

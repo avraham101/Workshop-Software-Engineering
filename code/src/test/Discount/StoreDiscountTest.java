@@ -57,4 +57,44 @@ public class StoreDiscountTest {
         storeDiscount=new StoreDiscount(3000,10);
         assertFalse(storeDiscount.checkTerm(productAndAmounts));
     }
+
+    /**
+     * test function: is valid
+     * case: success
+     */
+    @Test
+    public void isValidSuccess() {
+        storeDiscount=new StoreDiscount(3000,10);
+        assertTrue(storeDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidLessThan0Amount() {
+        storeDiscount=new StoreDiscount(0,10);
+        assertFalse(storeDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidOver100Percantage(){
+        storeDiscount=new StoreDiscount(3000,101);
+        assertFalse(storeDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidLessThan0Percantage(){
+        storeDiscount=new StoreDiscount(3000,0);
+        assertFalse(storeDiscount.isValid());
+    }
 }

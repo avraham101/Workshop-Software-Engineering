@@ -58,4 +58,59 @@ public class ProductTermDiscountTest {
                 data.getRealProduct(Data.VALID).getName(),100);
         assertFalse(productTermDiscount.checkTerm(productAndAmounts));
     }
+
+    /**
+     * test function: is valid
+     * case: success
+     */
+    @Test
+    public void isValidSuccess() {
+        productTermDiscount=new ProductTermDiscount(data.getTerm(Data.VALID),
+                data.getRealProduct(Data.VALID).getName(),100);
+        assertTrue(productTermDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidNullTerm(){
+        productTermDiscount=new ProductTermDiscount(null,
+                data.getRealProduct(Data.VALID).getName(),100);
+        assertFalse(productTermDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidNotValidTerm(){
+        productTermDiscount=new ProductTermDiscount(data.getTerm(Data.NULL_PRODUCT),
+                data.getRealProduct(Data.VALID).getName(),100);
+        assertFalse(productTermDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidNullProduct() {
+        productTermDiscount=new ProductTermDiscount(data.getTerm(Data.VALID),
+                null,100);
+        assertFalse(productTermDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidNegAmount(){
+        productTermDiscount=new ProductTermDiscount(data.getTerm(Data.VALID),
+                data.getRealProduct(Data.VALID).getName(),0);
+        assertFalse(productTermDiscount.isValid());
+    }
 }

@@ -1,12 +1,16 @@
 package Domain;
 
 import DataAPI.*;
+import DataAPI.DiscountData.DiscountData;
 import Domain.Discount.Discount;
 import Systems.*;
 import Systems.PaymentSystem.*;
 import Systems.SupplySystem.*;
 import Utils.Utils;
-import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
+import Utils.InterfaceAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.omg.CORBA.Policy;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -25,6 +29,8 @@ public class LogicManager {
     private LoggerSystem loggerSystem;
     private AtomicInteger requestIdGenerator;
     private final Object openStoreLocker=new Object();
+    private Gson discountGson;
+    private Gson policyGson;
 
     /**
      * test constructor, mock systems
@@ -38,6 +44,12 @@ public class LogicManager {
                         ConcurrentHashMap<Integer,User> connectedUsers,PaymentSystem paymentSystem,SupplySystem supplySystem) throws Exception {
         this.subscribes = subscribes;
         this.stores = stores;
+        GsonBuilder builderDiscount = new GsonBuilder();
+        builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
+        discountGson = builderDiscount.create();
+        GsonBuilder builderPolicy = new GsonBuilder();
+        builderPolicy.registerTypeAdapter(Policy.class, new InterfaceAdapter());
+        policyGson = builderPolicy.create();
         this.connectedUsers =connectedUsers;
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
@@ -79,6 +91,12 @@ public class LogicManager {
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
         this.connectedUsers =new ConcurrentHashMap<>();
+        GsonBuilder builderDiscount = new GsonBuilder();
+        builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
+        discountGson = builderDiscount.create();
+        GsonBuilder builderPolicy = new GsonBuilder();
+        builderPolicy.registerTypeAdapter(Policy.class, new InterfaceAdapter());
+        policyGson = builderPolicy.create();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -124,6 +142,12 @@ public class LogicManager {
         this.connectedUsers =new ConcurrentHashMap<>();
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
+        GsonBuilder builderDiscount = new GsonBuilder();
+        builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
+        discountGson = builderDiscount.create();
+        GsonBuilder builderPolicy = new GsonBuilder();
+        builderPolicy.registerTypeAdapter(Policy.class, new InterfaceAdapter());
+        policyGson = builderPolicy.create();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -813,6 +837,66 @@ public class LogicManager {
     }
 
     /**
+     * 4.2.1.1 - add discount
+     * @param id
+     * @param discountData - data of the new discount to add
+     * @param storeName - name of the store to add the discount to
+     */
+    public Response<Boolean> addDiscount(int id, String discountData, String storeName) {
+        loggerSystem.writeEvent("LogicManager","addDiscountToStore",
+                "add discount to the store", new Object[] {discountData,storeName});
+        User current=connectedUsers.get(id);
+        Store store=stores.get(storeName);
+        if(store==null)
+            return new Response<>(false,OpCode.Store_Not_Found);
+        Discount discount=makeDiscountFromData(discountData);
+        if(discount==null)
+            return new Response<>(false,OpCode.Invalid_Discount);
+        return current.addDiscountToStore(storeName,discount);
+    }
+
+    public Discount makeDiscountFromData(String discountData){
+        try {
+            Discount d = discountGson.fromJson(discountData, Discount.class);
+            if (d != null && d.isValid())
+                return d;
+        }
+        catch (Exception ignored){}
+        return null;
+     }
+
+    /**
+     * 4.2.1.2 - remove discount
+     * @param id
+     * @param discountId - id of the discount ro delete
+     * @param storeName - name of the store to remove the discount from
+     */
+    public Response<Boolean> deleteDiscountFromStore(int id, int discountId, String storeName){
+        loggerSystem.writeEvent("LogicManager","removeDiscountToStore",
+                "remove discount from the store", new Object[] {discountId,storeName});
+        User current=connectedUsers.get(id);
+        Store store=stores.get(storeName);
+        if(store==null)
+            return new Response<>(false,OpCode.Store_Not_Found);
+        return current.deleteDiscountFromStore(discountId,storeName);
+    }
+
+
+    /**
+     * 4.2.2 - update policy
+     */
+    public Policy makePolicyFromData(String policyData){
+        try {
+            Policy policy = policyGson.fromJson(policyData, Policy.class);
+            //TODO is valid and tests
+            if (policy != null)//&&policy.isValid())
+                return policy;
+        }
+        catch (Exception e){}
+        return null;
+    }
+
+    /**
      * use case 4.3 - manage owner
      * @param storeName the name of the store to be manager of
      * @param userName the user to be manager of the store
@@ -1041,4 +1125,5 @@ public class LogicManager {
 
 
     }
+
 }

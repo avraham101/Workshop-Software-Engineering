@@ -49,6 +49,39 @@ public class TermTest {
     }
 
     /**
+     * test class: base term
+     * test function: is valid
+     * case: success
+     */
+    @Test
+    public void isValidBaseTermTestSuccess() {
+        term=data.getTerm(Data.VALID);
+        assertTrue(term.isValid());
+    }
+
+    /**
+     * test class: base term
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidBaseTermProductNull(){
+        term=data.getTerm(Data.NULL_PRODUCT);
+        assertFalse(term.isValid());
+    }
+
+    /**
+     * test class: base term
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidBaseTermAmountLessThan0(){
+        term=data.getTerm(Data.ZERO);
+        assertFalse(term.isValid());
+    }
+
+    /**
      * test class: xor term
      * test function: check term
      * case: success
@@ -68,6 +101,29 @@ public class TermTest {
     public void checkTermXorTermFail(){
         term=new XorTerm(termsData);
         assertFalse(term.checkTerm(productAndAmounts,data.getRealProduct(Data.VALID).getName(),1));
+    }
+
+    /**
+     * test class: xor term
+     * test function: isValid
+     * case: fail
+     */
+    @Test
+    public void isValidXorTermFail(){
+        term=new XorTerm(termsData);
+        termsData.add(data.getTerm(Data.ZERO));
+        assertFalse(term.isValid());
+    }
+
+    /**
+     * test class: xor term
+     * test function: cisValid
+     * case: success
+     */
+    @Test
+    public void isValidXorTermSuccess(){
+        term=new XorTerm(termsData);
+        assertTrue(term.isValid());
     }
 
     /**
@@ -93,6 +149,29 @@ public class TermTest {
         assertFalse(term.checkTerm(productAndAmounts,data.getRealProduct(Data.VALID).getName(),100));
     }
 
+    /**
+     * test class: or term
+     * test function: isValid
+     * case: fail
+     */
+    @Test
+    public void isValidOrTermFail(){
+        term=new OrTerm(termsData);
+        termsData.add(data.getTerm(Data.ZERO));
+        assertFalse(term.isValid());
+    }
+
+    /**
+     * test class: or term
+     * test function: cisValid
+     * case: success
+     */
+    @Test
+    public void isValidOrrTermSuccess(){
+        term=new OrTerm(termsData);
+        assertTrue(term.isValid());
+    }
+
 
     /**
      * test class: and term
@@ -114,6 +193,29 @@ public class TermTest {
     public void checkTermAndTermFail(){
         term=new AndTerm(termsData);
         assertFalse(term.checkTerm(productAndAmounts,data.getRealProduct(Data.VALID).getName(),100));
+    }
+
+    /**
+     * test class: and term
+     * test function: isValid
+     * case: fail
+     */
+    @Test
+    public void isValidAndTermFail(){
+        term=new AndTerm(termsData);
+        termsData.add(data.getTerm(Data.ZERO));
+        assertFalse(term.isValid());
+    }
+
+    /**
+     * test class: and term
+     * test function: cisValid
+     * case: success
+     */
+    @Test
+    public void isValidAndTermSuccess(){
+        term=new AndTerm(termsData);
+        assertTrue(term.isValid());
     }
 
 

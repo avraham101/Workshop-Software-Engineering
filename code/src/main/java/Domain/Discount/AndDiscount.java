@@ -28,4 +28,15 @@ public class AndDiscount implements Discount {
         }
         return true;
     }
+
+    @Override
+    public boolean isValid() {
+        if(discounts==null||discounts.isEmpty())
+            return false;
+        for(Discount d:discounts){
+            if(!d.isValid())
+                return false;
+        }
+        return true;
+    }
 }

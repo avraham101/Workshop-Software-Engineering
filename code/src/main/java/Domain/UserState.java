@@ -1,6 +1,7 @@
 package Domain;
 
 import DataAPI.*;
+import Domain.Discount.Discount;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -221,6 +222,21 @@ public abstract class UserState {
     public abstract Response<Boolean> editProductFromStore(ProductData productData);
 
     /**
+     * use case 4.2.1.1 - add discount to store
+     * @param storeName
+     * @param discount
+     * @return
+     */
+    public abstract Response<Boolean> addDiscountToStore(String storeName, Discount discount);
+
+    /**
+     * 4.2.1.2 - remove discount
+     * @param discountId - id of the discount ro delete
+     * @param storeName - name of the store to remove the discount from
+     */
+    public abstract Response<Boolean> deleteDiscountFromStore(int discountId, String storeName);
+
+    /**
      * use case 4.5 - add manager
      * @param subscribe
      * @param storeName
@@ -286,4 +302,5 @@ public abstract class UserState {
     public abstract List<Store> getMyManagedStores();
 
     public abstract Set<StorePermissionType> getPermissionsForStore(String storeName);
+
 }

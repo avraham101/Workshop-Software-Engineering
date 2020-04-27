@@ -5,4 +5,5 @@ public enum PermissionType {
     ADD_MANAGER,
     ADD_OWNER,
     OWNER,
+    CRUD_POLICY_DISCOUNT,
 }

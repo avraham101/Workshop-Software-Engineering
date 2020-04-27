@@ -233,6 +233,29 @@ public class ServiceAPI {
     }
 
     /**
+     * //TODO add acceptance test location
+     * use case 4.2.1.1 - add discount to store
+     * @param id - user id
+     * @param discountData - data of the new discount to add
+     * @param storeName - name of the store to add the discount to
+     * @return
+     */
+    public Response<Boolean> addDiscount(int id,String discountData,String storeName){
+        return logicManager.addDiscount(id,discountData,storeName);
+    }
+
+    /**
+     * //TODO add acceptance test location
+     * 4.2.1.2 - remove discount
+     * @param id - user id
+     * @param discountId - id of the discount ro delete
+     * @param storeName - name of the store to remove the discount from
+     */
+    public Response<Boolean> deleteDiscountFromStore(int id,int discountId,String storeName){
+        return logicManager.deleteDiscountFromStore(id,discountId,storeName);
+    }
+
+    /**
      * use case 4.3
      * acceptance test class : AppointAnotherOwnerToStoreTest
      * @param id - user id

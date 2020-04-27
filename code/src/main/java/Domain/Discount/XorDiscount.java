@@ -31,4 +31,15 @@ public class XorDiscount implements Discount {
         }
         return counter==1;
     }
+
+    @Override
+    public boolean isValid() {
+        if(discounts==null||discounts.isEmpty())
+            return false;
+        for(Discount d:discounts){
+            if(!d.isValid())
+                return false;
+        }
+        return true;
+    }
 }

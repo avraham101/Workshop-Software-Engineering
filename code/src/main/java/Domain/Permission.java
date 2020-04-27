@@ -118,5 +118,13 @@ public class Permission {
         lock.readLock().unlock();
         return result;
     }
+
+    public boolean canCRUDPolicyAndDiscount() {
+        lock.readLock().lock();
+        boolean result=permissionType.contains(PermissionType.CRUD_POLICY_DISCOUNT)||
+                permissionType.contains(PermissionType.OWNER);
+        lock.readLock().unlock();
+        return result;
+    }
 }
 
