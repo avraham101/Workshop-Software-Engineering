@@ -1,26 +1,33 @@
 package Domain;
 
 import DataAPI.ProductData;
+import Domain.Discount.Discount;
+import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
+import Domain.PurchasePolicy.PurchasePolicy;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Store {
 
     private String name; //unique
-    private PurchasePolicy1 purchasePolicy1;
-    private DiscountPolicy discount;
+    private String description;
+    private PurchasePolicy purchasePolicy;
+    private AtomicInteger discountCounter;
+    private ConcurrentHashMap<Integer,Discount> discountPolicy;
     private ConcurrentHashMap<String, Product> products;
     private ConcurrentHashMap<String, Category> categoryList;
     private ConcurrentHashMap<Integer, Request> requests;
     private ConcurrentHashMap<String, Permission> permissions;
     private List<Purchase> purchases;
 
-    public Store(String name, PurchasePolicy1 purchasePolicy1, DiscountPolicy discount,
-                 Permission permission) {
+    public Store(String name,Permission permission,String description) {
         this.name = name;
-        this.purchasePolicy1 = purchasePolicy1;
-        this.discount = discount;
+        this.description=description;
+        this.purchasePolicy = new AndPolicy(new ArrayList<>());
+        discountCounter=new AtomicInteger(0);
+        this.discountPolicy=new ConcurrentHashMap<>();
         this.permissions = new ConcurrentHashMap<>();
         this.permissions.put(permission.getOwner().getName(), permission);
         this.products=new ConcurrentHashMap<>();
@@ -39,16 +46,24 @@ public class Store {
         this.name = name;
     }
 
-    public PurchasePolicy1 getPurchasePolicy1() {
-        return purchasePolicy1;
+    public String getDescription() {
+        return description;
     }
 
-    public void setPurchasePolicy1(PurchasePolicy1 purchasePolicy1) {
-        this.purchasePolicy1 = purchasePolicy1;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public DiscountPolicy getDiscount() {
-        return discount;
+    public PurchasePolicy getPurchasePolicy() {
+        return purchasePolicy;
+    }
+
+    public void setPurchasePolicy(PurchasePolicy purchasePolicy) {
+        this.purchasePolicy = purchasePolicy;
+    }
+
+    public ConcurrentHashMap<Integer, Discount> getDiscount() {
+        return discountPolicy;
     }
 
     public ConcurrentHashMap<String, Product> getProducts() {
@@ -83,8 +98,8 @@ public class Store {
         this.permissions = permissions;
     }
 
-    public void setDiscount(DiscountPolicy discount) {
-        this.discount = discount;
+    public void setDiscount(ConcurrentHashMap<Integer, Discount> discounts) {
+        this.discountPolicy = discounts;
     }
 
     /**
@@ -138,8 +153,8 @@ public class Store {
         if (o == null || getClass() != o.getClass()) return false;
         Store store = (Store) o;
         return Objects.equals(name, store.name) &&
-                Objects.equals(purchasePolicy1, store.purchasePolicy1) &&
-                Objects.equals(discount, store.discount) &&
+                Objects.equals(purchasePolicy, store.purchasePolicy) &&
+                Objects.equals(discountPolicy, store.discountPolicy) &&
                 Objects.equals(products, store.products) &&
                 Objects.equals(categoryList, store.categoryList) &&
                 Objects.equals(requests, store.requests) &&
@@ -148,7 +163,7 @@ public class Store {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, purchasePolicy1, discount, products, categoryList, requests, permissions);
+        return Objects.hash(name, purchasePolicy, discountPolicy, products, categoryList, requests, permissions);
     }
 
 
@@ -160,9 +175,9 @@ public class Store {
      * @return
      */
     //TODO check this
-    public double getPriceForBasket(HashMap<Product, Integer> list) {
-        return discount.stands(list);
-    }
+    //public double getPriceForBasket(HashMap<Product, Integer> list) {
+      //  return discount.stands(list);
+    //}
 
     /**
      * use case 2.8 - reserveCart cart

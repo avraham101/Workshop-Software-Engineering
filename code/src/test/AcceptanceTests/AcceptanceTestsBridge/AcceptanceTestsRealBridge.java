@@ -135,7 +135,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-3.2---------------------------------//
     @Override
     public StoreTestData openStore(int id,String storeName) {
-        StoreData store = new StoreData(storeName,new PurchasePolicy1(),new DiscountPolicy());
+        StoreData store = new StoreData(storeName,"description");
         boolean approval = serviceAPI.openStore(id,store);
         if(!approval) {
             return null;
@@ -448,12 +448,12 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     }
 
-    private List<Discount1> buildDiscounts(List<DiscountTestData> discountTestData){
-        List<Discount1> discount1s = new ArrayList<>();
-        for(DiscountTestData dst : discountTestData)
-            discount1s.add(new Discount1(dst.getPercentage()));
-        return discount1s;
-    }
+//    private List<Discount> buildDiscounts(List<DiscountTestData> discountTestData){
+//        List<Discount> discount1s = new ArrayList<>();
+//        for(DiscountTestData dst : discountTestData)
+//            discount1s.add(new Discount1(dst.getPercentage()));
+//        return discount1s;
+//    }
 
     private List<Review> buildReviews(List<ReviewTestData> reviewTestData, String storeName, String productName){
         List<Review> apiReviews = new ArrayList<>();
@@ -488,17 +488,17 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return new ReviewTestData(review.getWriter(),review.getContent());
     }
 
-    private List<DiscountTestData> buildDiscountsTestData(List<Discount1> discount1s) {
-        List<DiscountTestData> discountsTestData = new ArrayList<>();
-        for(Discount1 discount1 : discount1s)
-            discountsTestData.add(buildDiscountTestData(discount1));
+//    private List<DiscountTestData> buildDiscountsTestData(List<Discount1> discount1s) {
+//        List<DiscountTestData> discountsTestData = new ArrayList<>();
+//        for(Discount1 discount1 : discount1s)
+//            discountsTestData.add(buildDiscountTestData(discount1));
+//
+//        return discountsTestData;
+//    }
 
-        return discountsTestData;
-    }
-
-    private DiscountTestData buildDiscountTestData(Discount1 discount1) {
-        return new DiscountTestData(discount1.getPercentage(),null);
-    }
+//    private DiscountTestData buildDiscountTestData(Discount1 discount1) {
+//        return new DiscountTestData(discount1.getPercentage(),null);
+//    }
 
     @Override
     public void changeAmountOfProductInStore(int id,ProductTestData product, int amount) {

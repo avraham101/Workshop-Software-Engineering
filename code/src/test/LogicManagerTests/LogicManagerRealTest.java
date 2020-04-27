@@ -432,8 +432,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     private void testOpenStorePurchesAndDiscontPolicy() {
         StoreData storeData = data.getStore(Data.VALID);
         Store store = stores.get(storeData.getName());
-        assertEquals(storeData.getPurchasePolicy1(), store.getPurchasePolicy1());
-        assertEquals(storeData.getDiscountPolicy(), store.getDiscount());
+        assertEquals(storeData.getDescription(),"description");
     }
 
     /**

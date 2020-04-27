@@ -1,6 +1,7 @@
 package Domain;
 
 import DataAPI.*;
+import Domain.Discount.Discount;
 import Systems.*;
 import Systems.PaymentSystem.*;
 import Systems.SupplySystem.*;
@@ -249,8 +250,7 @@ public class LogicManager {
         List<StoreData> data = new LinkedList<>();
         for (String storeName: stores.keySet()) {
             Store store = stores.get(storeName);
-            StoreData storeData = new StoreData(store.getName(),store.getPurchasePolicy1(),
-                    store.getDiscount());
+            StoreData storeData = new StoreData(store.getName(),store.getDescription());
             data.add(storeData);
         }
         return data;
@@ -278,11 +278,11 @@ public class LogicManager {
      * @param discount1s of the product
      * @return if the discounts are not null and between 0 to 100
      */
-    private boolean validDiscounts(List<Discount1> discount1s) {
+    private boolean validDiscounts(List<DiscountData> discount1s) {
         if(discount1s ==null)
             return false;
-        for(Discount1 discount1 : discount1s){
-            if(!validDiscount(discount1))
+        for(DiscountData discount : discount1s){
+            if(!validDiscount(discount))
                 return false;
         }
         return true;
@@ -290,11 +290,13 @@ public class LogicManager {
 
     /**
      * check if discounts of product are valid
-     * @param discount1 of the product
+     * @param discount of the product
      * @return if the discount is not null and between 0 to 100
      */
-    private boolean validDiscount(Discount1 discount1) {
-        return discount1 !=null&& discount1.getPercentage()>0&& discount1.getPercentage()<100;
+    private boolean validDiscount(DiscountData discount) {
+        //TODO
+        return false;
+        //return discount1 !=null&& discount.getPercentage()>0&& discount1.getPercentage()<100;
     }
 
     /**
@@ -642,8 +644,7 @@ public class LogicManager {
      * @return true the store data is ok, otherwise false
      */
     private boolean validStoreDetails(StoreData storeData) {
-        return storeData!=null && storeData.getName() != null && storeData.getDiscountPolicy()!=null &&
-                storeData.getPurchasePolicy1()!=null;
+        return storeData!=null && storeData.getName() != null && storeData.getDescription()!=null;
     }
 
 

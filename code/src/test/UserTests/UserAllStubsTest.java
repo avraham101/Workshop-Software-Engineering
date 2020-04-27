@@ -66,7 +66,7 @@ public class UserAllStubsTest {
      */
     private void setUpOpenStore(){
         setUpSubscribe();
-        StoreData storeData = new StoreData("Store", new PurchasePolicy1(), new DiscountPolicy());
+        StoreData storeData = new StoreData("Store", "description");
         PaymentSystem paymentSystem = new ProxyPayment();
         SupplySystem supplySystem = new ProxySupply();
         user.openStore(storeData);
@@ -208,7 +208,7 @@ public class UserAllStubsTest {
     @Test
     public void testOpenStoreGuest() {
         setUpGuest();
-        StoreData storeData = new StoreData("Store", new PurchasePolicy1(), new DiscountPolicy());
+        StoreData storeData = new StoreData("Store","description");
         assertNull(user.openStore(storeData));
     }
 
@@ -218,7 +218,7 @@ public class UserAllStubsTest {
     @Test
     public void testOpenStoreSubscribe() {
         setUpSubscribe();
-        StoreData storeData = new StoreData("Store", new PurchasePolicy1(), new DiscountPolicy());
+        StoreData storeData = new StoreData("Store", "description");
         Store store = user.openStore(storeData);
         assertEquals(storeData.getName(), store.getName());
     }

@@ -1,18 +1,12 @@
 package DataAPI;
-
-import Domain.DiscountPolicy;
-import Domain.PurchasePolicy1;
-
 public class StoreData {
 
     private String name;
-    private PurchasePolicy1 purchasePolicy1;
-    private DiscountPolicy discountPolicy;
+    private String description;
 
-    public StoreData(String name, PurchasePolicy1 purchasePolicy1, DiscountPolicy discountPolicy) {
+    public StoreData(String name,String description) {
         this.name = name;
-        this.purchasePolicy1 = purchasePolicy1;
-        this.discountPolicy = discountPolicy;
+        this.description=description;
     }
 
     // ============================ getters & setters ============================ //
@@ -25,20 +19,12 @@ public class StoreData {
         this.name = name;
     }
 
-    public PurchasePolicy1 getPurchasePolicy1() {
-        return purchasePolicy1;
+    public String getDescription() {
+        return description;
     }
 
-    public void setPurchasePolicy1(PurchasePolicy1 purchasePolicy1) {
-        this.purchasePolicy1 = purchasePolicy1;
-    }
-
-    public DiscountPolicy getDiscountPolicy() {
-        return discountPolicy;
-    }
-
-    public void setDiscountPolicy(DiscountPolicy discountPolicy) {
-        this.discountPolicy = discountPolicy;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     // ============================ getters & setters ============================ //

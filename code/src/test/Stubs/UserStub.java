@@ -37,8 +37,8 @@ public class UserStub extends User {
      */
     @Override
     public Store openStore(StoreData storeDetails) {
-        return new Store(storeDetails.getName(), new PurchasePolicy1(), new DiscountPolicy(),
-                new Permission(new Subscribe("Yuval", this.getPassword())));
+        return new Store(storeDetails.getName(),
+                new Permission(new Subscribe("Yuval", this.getPassword())),"description");
     }
 
     /**

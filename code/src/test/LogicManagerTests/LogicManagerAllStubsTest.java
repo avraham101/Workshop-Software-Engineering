@@ -107,8 +107,7 @@ public class LogicManagerAllStubsTest {
         logicManager.openStore(data.getId(Data.VALID), storeData);
         Store store = stores.get(storeData.getName());
         Permission permission = new Permission(data.getSubscribe(Data.VALID));
-        StoreStub storeStub = new StoreStub(store.getName(),store.getPurchasePolicy1(),
-                store.getDiscount(),permission);
+        StoreStub storeStub = new StoreStub(store.getName(),permission,"description");
         permission.setStore(storeStub);
         stores.put(storeData.getName(),storeStub);
     }

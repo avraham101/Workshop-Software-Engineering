@@ -21,8 +21,8 @@ public class StoreTestsAllStubs {
     @Before
     public void setUp(){
         data=new TestData();
-        store=new Store(data.getStore(Data.VALID).getName(), new PurchasePolicy1(), null,
-                new Permission(data.getSubscribe(Data.VALID)));
+        store=new Store(data.getStore(Data.VALID).getName(),
+                new Permission(data.getSubscribe(Data.VALID)),"description");
     }
 
     /**--------------------------------set-ups-------------------------------------------------------------------*/

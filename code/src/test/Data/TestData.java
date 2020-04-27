@@ -161,13 +161,12 @@ public class TestData {
      */
     private void setUpStoreData() {
         stores = new HashMap<>();
-        stores.put(Data.VALID,new StoreData("Store",new PurchasePolicy1(), new DiscountPolicy()));
+        stores.put(Data.VALID,new StoreData("Store","description"));
         stores.put(Data.NULL, null);
-        stores.put(Data.NULL_NAME, new StoreData(null,new PurchasePolicy1(), new DiscountPolicy()));
-        stores.put(Data.WRONG_STORE, new StoreData("None Store",new PurchasePolicy1(), new DiscountPolicy()));
-        stores.put(Data.NULL_STORE, new StoreData(null,new PurchasePolicy1(), new DiscountPolicy()));
-        stores.put(Data.NULL_PURCHASE, new StoreData("Store",null, new DiscountPolicy()));
-        stores.put(Data.NULL_DISCOUNT, new StoreData("Store",new PurchasePolicy1(), null));
+        stores.put(Data.NULL_NAME, new StoreData(null,"description"));
+        stores.put(Data.WRONG_STORE, new StoreData("None Store","description"));
+        stores.put(Data.NULL_STORE, new StoreData(null,"description"));
+        stores.put(Data.NULL_DESCRIPTION,new StoreData("Store",null));
     }
 
     /**
@@ -359,8 +358,7 @@ public class TestData {
     public Store getRealStore(Data data) {
         StoreData storeData = getStore(data);
         Permission permission = new Permission(getSubscribe(Data.VALID));
-        Store store = new Store(storeData.getName(),storeData.getPurchasePolicy1(),
-                storeData.getDiscountPolicy(), permission);
+        Store store = new Store(storeData.getName(), permission,"description");
         permission.setStore(store);
         store.addProduct(getProductData(Data.VALID));
         return store;

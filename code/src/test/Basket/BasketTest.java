@@ -35,8 +35,7 @@ public class BasketTest {
     private void initStore() {
         Permission permission = new Permission(data.getSubscribe(Data.VALID));
         StoreData storeData = data.getStore(Data.VALID);
-        store = new StoreStub(storeData.getName(),storeData.getPurchasePolicy1(),
-                storeData.getDiscountPolicy(),permission);
+        store = new StoreStub(storeData.getName(),permission,"description");
         permission.setStore(store);
     }
 

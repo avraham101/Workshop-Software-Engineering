@@ -88,8 +88,7 @@ public class Subscribe extends UserState{
     @Override
     public Store openStore(StoreData storeDetails) {
         Permission permission = new Permission(this);
-        Store store = new Store(storeDetails.getName(),storeDetails.getPurchasePolicy1(),
-                storeDetails.getDiscountPolicy(), permission);
+        Store store = new Store(storeDetails.getName(), permission,storeDetails.getDescription());
         permission.setStore(store);
         permission.addType(PermissionType.OWNER); //Always true, store just created.
         permissions.put(store.getName(),permission);
@@ -119,7 +118,6 @@ public class Subscribe extends UserState{
      * use case 3.3 - write review
      * the function check if the product is purchased
      * @param storeName - the store name
-     * @param productName - the product name
      * @return true if the product is purchased
      */
     @Override

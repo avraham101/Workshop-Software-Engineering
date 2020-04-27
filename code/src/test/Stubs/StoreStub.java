@@ -2,11 +2,12 @@ package Stubs;
 
 import DataAPI.ProductData;
 import Domain.*;
+import Domain.PurchasePolicy.PurchasePolicy;
 
 public class StoreStub extends Store {
 
-    public StoreStub(String name, PurchasePolicy1 purchasePolicy1, DiscountPolicy discount, Permission permissions) {
-        super(name, purchasePolicy1, discount, permissions);
+    public StoreStub(String name, Permission permissions,String descrption) {
+        super(name,permissions,descrption);
     }
 
 

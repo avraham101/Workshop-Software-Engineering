@@ -43,8 +43,7 @@ public class SubscribeStub extends Subscribe{
      */
     @Override
     public Store openStore(StoreData storeDetails) {
-        return new Store(storeDetails.getName(), new PurchasePolicy1(), new DiscountPolicy(),
-                new Permission(this));
+        return new Store(storeDetails.getName(),new Permission(this),storeDetails.getDescription());
     }
 
     /**
