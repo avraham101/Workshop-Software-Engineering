@@ -908,22 +908,10 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_NAME)).getValue());
     }
 
-    /**
-     * part of test use case 3.2 - Open Store
-     */
     @Test
-    public void testOpenStoreNullPurchase() {
+    public void testOpenStoreNullDiscription() {
         setUpLogedInUser();
-        assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_PURCHASE)).getValue());
-    }
-
-    /**
-     * part of test use case 3.2 - Open Store
-     */
-    @Test
-    public void testOpenStoreNullDiscount() {
-        setUpLogedInUser();
-        assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_DISCOUNT)).getValue());
+        assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_DESCRIPTION)).getValue());
     }
 
     /**
@@ -1099,30 +1087,6 @@ public class LogicManagerAllStubsTest {
         testAddProductNegativeAmount();
         testAddProductNegativePrice();
         testAddProductNullPurchasePolicy();
-        testAddProductOver100DiscountPercentage();
-        testAddProductDiscountListWithNullValue();
-        testAddProductNegativeDiscountPercentage();
-    }
-
-    /**
-     * part of use case 4.1.1 - add product
-     */
-    private void testAddProductNegativeDiscountPercentage() {
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_PERCENTAGE)).getValue());
-    }
-
-    /**
-     * part of use case 4.1.1 - add product
-     */
-    private void testAddProductDiscountListWithNullValue() {
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_DISCOUNT)).getValue());
-    }
-
-    /**
-     * part of use case 4.1.1 - add product
-     */
-    private void testAddProductOver100DiscountPercentage() {
-        assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.OVER_100_PERCENTAGE)).getValue());
     }
 
     /**
@@ -1231,30 +1195,6 @@ public class LogicManagerAllStubsTest {
         testEditProductNegativeAmount();
         testEditProductNegativePrice();
         testEditProductNullPurchasePolicy();
-        testEditProductOver100DiscountPercentage();
-        testEditProductDiscountListWithNullValue();
-        testEditProductNegativeDiscountPercentage();
-    }
-
-    /**
-     * part of test use case 4.1.3 - edit product in store
-     */
-    private void testEditProductNegativeDiscountPercentage() {
-        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.NEGATIVE_PERCENTAGE)).getValue());
-    }
-
-    /**
-     * part of test use case 4.1.3 - edit product in store
-     */
-    private void testEditProductDiscountListWithNullValue() {
-        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.WRONG_DISCOUNT)).getValue());
-    }
-
-    /**
-     * part of test use case 4.1.3 - edit product in store
-     */
-    private void testEditProductOver100DiscountPercentage() {
-        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.OVER_100_PERCENTAGE)).getValue());
     }
 
     /**
