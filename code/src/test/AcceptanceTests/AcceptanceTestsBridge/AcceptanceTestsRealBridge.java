@@ -114,13 +114,13 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
             delivery=null;
         }
         if(paymentMethod!=null){
-            paymentData = new PaymentData(paymentMethod.getCreditCardOwner(),"addr",paymentMethod.getCreditCardNumber());
+            paymentData = new PaymentData(paymentMethod.getCreditCardOwner(),"addr", 30, paymentMethod.getCreditCardNumber());
         }
         else{
             paymentData=null;
         }
 
-        boolean approval = serviceAPI.purchaseCart(id,paymentData,delivery).getValue();
+        boolean approval = serviceAPI.purchaseCart(id,"Israel",paymentData,delivery).getValue();
         return approval;
     }
     //---------------------------Use-Case-2.8---------------------------------//
@@ -135,7 +135,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-3.2---------------------------------//
     @Override
     public StoreTestData openStore(int id,String storeName) {
-        StoreData store = new StoreData(storeName,new PurchasePolicy(),new DiscountPolicy());
+        StoreData store = new StoreData(storeName,"description");
         boolean approval = serviceAPI.openStore(id,store).getValue();
         if(!approval) {
             return null;
@@ -342,7 +342,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         int amountInStore = productData.getAmount();
         double price = productData.getPrice();
         String category = productData.getCategory();
-        List<DiscountTestData> discounts = buildDiscountsTestData(productData.getDiscount());
+        List<DiscountTestData> discounts = null;//buildDiscountsTestData(productData.getDiscount());
         List<ReviewTestData> reviews = buildReviewsTestData(productData.getReviews());
 
         return new ProductTestData(productName,storeName,amountInStore,price,category,reviews,discounts);
@@ -442,19 +442,18 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
                 storeName,
                 product.getCategory(),
                 buildReviews(product.getReviews(),storeName,productName),
-                buildDiscounts(product.getDiscounts()),
                 product.getAmountInStore(),
                 product.getPrice(),
                 PurchaseTypeData.IMMEDDIATE);
 
     }
 
-    private List<Discount> buildDiscounts(List<DiscountTestData> discountTestData){
-        List<Discount> discounts = new ArrayList<>();
-        for(DiscountTestData dst : discountTestData)
-            discounts.add(new Discount(dst.getPercentage()));
-        return discounts;
-    }
+//    private List<Discount> buildDiscounts(List<DiscountTestData> discountTestData){
+//        List<Discount> discount1s = new ArrayList<>();
+//        for(DiscountTestData dst : discountTestData)
+//            discount1s.add(new Discount1(dst.getPercentage()));
+//        return discount1s;
+//    }
 
     private List<Review> buildReviews(List<ReviewTestData> reviewTestData, String storeName, String productName){
         List<Review> apiReviews = new ArrayList<>();
@@ -488,18 +487,19 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     private ReviewTestData buildReviewTestData(Review review) {
         return new ReviewTestData(review.getWriter(),review.getContent());
     }
+//TODO take care of discounts
 
-    private List<DiscountTestData> buildDiscountsTestData(List<Discount> discounts) {
-        List<DiscountTestData> discountsTestData = new ArrayList<>();
-        for(Discount discount : discounts )
-            discountsTestData.add(buildDiscountTestData(discount));
+//    private List<DiscountTestData> buildDiscountsTestData(List<Discount1> discount1s) {
+//        List<DiscountTestData> discountsTestData = new ArrayList<>();
+//        for(Discount1 discount1 : discount1s)
+//            discountsTestData.add(buildDiscountTestData(discount1));
+//
+//        return discountsTestData;
+//    }
 
-        return discountsTestData;
-    }
-
-    private DiscountTestData buildDiscountTestData(Discount discount) {
-        return new DiscountTestData(discount.getPercentage(),null);
-    }
+//    private DiscountTestData buildDiscountTestData(Discount1 discount1) {
+//        return new DiscountTestData(discount1.getPercentage(),null);
+//    }
 
     @Override
     public void changeAmountOfProductInStore(int id,ProductTestData product, int amount) {

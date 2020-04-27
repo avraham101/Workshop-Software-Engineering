@@ -8,7 +8,6 @@ import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
 import Stubs.StoreStub;
-import Systems.PaymentSystem.ProxyPayment;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.HashMap;
@@ -36,8 +35,7 @@ public class BasketTest {
     private void initStore() {
         Permission permission = new Permission(data.getSubscribe(Data.VALID));
         StoreData storeData = data.getStore(Data.VALID);
-        store = new StoreStub(storeData.getName(),storeData.getPurchasePolicy(),
-                storeData.getDiscountPolicy(),permission);
+        store = new StoreStub(storeData.getName(),permission,"description");
         permission.setStore(store);
     }
 

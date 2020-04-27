@@ -121,8 +121,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         StoreData storeData=data.getStore(Data.VALID);
         Store store = sub.openStore(storeData);
         assertEquals(storeData.getName(), store.getName());
-        assertEquals(storeData.getDiscountPolicy(), store.getDiscount());
-        assertEquals(storeData.getPurchasePolicy(), store.getPurchasePolicy());
+        assertEquals(storeData.getDescription(),"description");
         //test Owner permissions
         ConcurrentHashMap<String, Permission> permissions = sub.getPermissions();
         assertTrue(permissions.containsKey(store.getName()));
@@ -273,7 +272,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         assertNotNull(managedStores);
         assertTrue(!managedStores.isEmpty());
         Store managedStore = managedStores.get(0);
-        StoreData managedStoreData = new StoreData(managedStore.getName(),managedStore.getPurchasePolicy(),managedStore.getDiscount());
+        StoreData managedStoreData = new StoreData(managedStore.getName(),managedStore.getDescription());
         assertEquals(myStore,managedStoreData);
 
     }

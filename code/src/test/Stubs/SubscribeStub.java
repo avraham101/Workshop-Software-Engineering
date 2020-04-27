@@ -2,8 +2,6 @@ package Stubs;
 
 import DataAPI.*;
 import Domain.*;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.SupplySystem.SupplySystem;
 
 import java.util.*;
 
@@ -41,8 +39,7 @@ public class SubscribeStub extends Subscribe{
      */
     @Override
     public Store openStore(StoreData storeDetails) {
-        return new Store(storeDetails.getName(), new PurchasePolicy(), new DiscountPolicy(),
-                new Permission(this));
+        return new Store(storeDetails.getName(),new Permission(this),storeDetails.getDescription());
     }
 
     /**

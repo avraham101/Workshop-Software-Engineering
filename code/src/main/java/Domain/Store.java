@@ -1,31 +1,36 @@
 package Domain;
 
+import DataAPI.ProductData;
+import Domain.Discount.Discount;
+import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
+import Domain.PurchasePolicy.PurchasePolicy;
 import DataAPI.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Store {
 
     private String name; //unique
+    private String description;
     private PurchasePolicy purchasePolicy;
-    private DiscountPolicy discount;
+    private AtomicInteger discountCounter;
+    private ConcurrentHashMap<Integer,Discount> discountPolicy;
     private ConcurrentHashMap<String, Product> products;
     private ConcurrentHashMap<String, Category> categoryList;
     private ConcurrentHashMap<Integer, Request> requests;
     private ConcurrentHashMap<String, Permission> permissions;
     private List<Purchase> purchases;
 
-    public Store(String name, PurchasePolicy purchasePolicy, DiscountPolicy discount,
-                 Permission permission) {
+    public Store(String name,Permission permission,String description) {
         this.name = name;
-        this.purchasePolicy = purchasePolicy;
-        this.discount = discount;
+        this.description=description;
+        this.purchasePolicy = new AndPolicy(new ArrayList<>());
+        discountCounter=new AtomicInteger(0);
+        this.discountPolicy=new ConcurrentHashMap<>();
         this.permissions = new ConcurrentHashMap<>();
         this.permissions.put(permission.getOwner().getName(), permission);
         this.products=new ConcurrentHashMap<>();
@@ -44,6 +49,14 @@ public class Store {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public PurchasePolicy getPurchasePolicy() {
         return purchasePolicy;
     }
@@ -52,8 +65,8 @@ public class Store {
         this.purchasePolicy = purchasePolicy;
     }
 
-    public DiscountPolicy getDiscount() {
-        return discount;
+    public ConcurrentHashMap<Integer, Discount> getDiscount() {
+        return discountPolicy;
     }
 
     public ConcurrentHashMap<String, Product> getProducts() {
@@ -88,8 +101,8 @@ public class Store {
         this.permissions = permissions;
     }
 
-    public void setDiscount(DiscountPolicy discount) {
-        this.discount = discount;
+    public void setDiscount(ConcurrentHashMap<Integer, Discount> discounts) {
+        this.discountPolicy = discounts;
     }
 
     /**
@@ -144,7 +157,7 @@ public class Store {
         Store store = (Store) o;
         return Objects.equals(name, store.name) &&
                 Objects.equals(purchasePolicy, store.purchasePolicy) &&
-                Objects.equals(discount, store.discount) &&
+                Objects.equals(discountPolicy, store.discountPolicy) &&
                 Objects.equals(products, store.products) &&
                 Objects.equals(categoryList, store.categoryList) &&
                 Objects.equals(requests, store.requests) &&
@@ -153,7 +166,7 @@ public class Store {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, purchasePolicy, discount, products, categoryList, requests, permissions);
+        return Objects.hash(name, purchasePolicy, discountPolicy, products, categoryList, requests, permissions);
     }
 
 
@@ -165,9 +178,9 @@ public class Store {
      * @return
      */
     //TODO check this
-    public double getPriceForBasket(HashMap<Product, Integer> list) {
-        return discount.stands(list);
-    }
+    //public double getPriceForBasket(HashMap<Product, Integer> list) {
+      //  return discount.stands(list);
+    //}
 
     /**
      * use case 2.8 - reserveCart cart
@@ -186,8 +199,8 @@ public class Store {
                 if(amount<=real.getAmount()) {
                     productsReserved.put(real,amount);
                     real.setAmount(real.getAmount() - amount);
-                    //TODO call this policy of the product
-                    other.setPrice(real.getDiscountPrice());
+                    //TODO call this policy of the store
+                    //TODO call to discount of the store
                     real.getWriteLock().unlock();
                 }
                 else {

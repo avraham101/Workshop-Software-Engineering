@@ -1,6 +1,7 @@
 package Domain;
 
 import DataAPI.*;
+import Domain.Discount.Discount;
 import Systems.*;
 import Systems.PaymentSystem.*;
 import Systems.SupplySystem.*;
@@ -252,8 +253,7 @@ public class LogicManager {
         List<StoreData> data = new LinkedList<>();
         for (String storeName: stores.keySet()) {
             Store store = stores.get(storeName);
-            StoreData storeData = new StoreData(store.getName(),store.getPurchasePolicy(),
-                    store.getDiscount());
+            StoreData storeData = new StoreData(store.getName(),store.getDescription());
             data.add(storeData);
         }
         return new Response<>(data,OpCode.Success);
@@ -279,13 +279,13 @@ public class LogicManager {
 
     /**
      * check if discounts of product are valid
-     * @param discounts of the product
+     * @param discount1s of the product
      * @return if the discounts are not null and between 0 to 100
      */
-    private boolean validDiscounts(List<Discount> discounts) {
-        if(discounts==null)
+    private boolean validDiscounts(List<DiscountData> discount1s) {
+        if(discount1s ==null)
             return false;
-        for(Discount discount :discounts ){
+        for(DiscountData discount : discount1s){
             if(!validDiscount(discount))
                 return false;
         }
@@ -297,8 +297,10 @@ public class LogicManager {
      * @param discount of the product
      * @return if the discount is not null and between 0 to 100
      */
-    private boolean validDiscount(Discount discount) {
-        return discount!=null&&discount.getPercentage()>0&&discount.getPercentage()<100;
+    private boolean validDiscount(DiscountData discount) {
+        //TODO
+        return false;
+        //return discount1 !=null&& discount.getPercentage()>0&& discount1.getPercentage()<100;
     }
 
     /**
@@ -532,6 +534,7 @@ public class LogicManager {
             Product product = store.getProduct(productName);
             if (product != null && amount > 0 && amount <= product.getAmount()) {
                 product = product.clone();
+                //TODO check that the product is not in the basket
                 result = current.addProductToCart(store, product, amount);
             }
         }
@@ -548,7 +551,7 @@ public class LogicManager {
      * @param addresToDeliver - the address do Deliver the purchase
      * @return true is the purchase succeeded, otherwise false
      */
-    public Response<Boolean> purchaseCart(int id, PaymentData paymentData, String addresToDeliver) {
+    public Response<Boolean> purchaseCart(int id, String country, PaymentData paymentData, String addresToDeliver) {
         loggerSystem.writeEvent("LogicManager","purchaseCart",
                 "reserveCart the products in the cart", new Object[] {paymentData, addresToDeliver});
         //1) user get
@@ -563,7 +566,7 @@ public class LogicManager {
         if(!reserved) {
             return new Response<>(false, OpCode.Fail_Buy_Cart);
         }
-        DeliveryData deliveryData = new DeliveryData(addresToDeliver, new LinkedList<>());
+        DeliveryData deliveryData = new DeliveryData(addresToDeliver, country, new LinkedList<>());
         current.buyCart(paymentData, deliveryData);
         //4) external systems
         Response<Boolean> payedAndDelivered = externalSystemsBuy(id,paymentData,deliveryData);
@@ -662,8 +665,7 @@ public class LogicManager {
      * @return true the store data is ok, otherwise false
      */
     private boolean validStoreDetails(StoreData storeData) {
-        return storeData!=null && storeData.getName() != null && storeData.getDiscountPolicy()!=null &&
-                storeData.getPurchasePolicy()!=null;
+        return storeData!=null && storeData.getName() != null && storeData.getDescription()!=null;
     }
 
 
@@ -773,8 +775,7 @@ public class LogicManager {
      * @return true if the details of the product are valid
      */
     private boolean validProduct(ProductData productData) {
-        return productData.getProductName()!=null &&productData.getCategory()!=null
-                && validDiscounts(productData.getDiscount()) && productData.getPrice()>0
+        return productData.getProductName()!=null &&productData.getCategory()!=null && productData.getPrice()>0
                 && productData.getAmount()>0 && productData.getPurchaseType()!=null;
     }
 
@@ -1008,8 +1009,7 @@ public class LogicManager {
         }
         else{
             for (Store store: managedStores) {
-                storesData.add(new StoreData(store.getName(),
-                        store.getPurchasePolicy(),store.getDiscount()));
+                storesData.add(new StoreData(store.getName(),store.getDescription()));
 
             }
             response.setReason(OpCode.Success);

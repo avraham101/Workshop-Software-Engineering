@@ -16,7 +16,7 @@ public class ServiceAPI {
      * use case 1.1 - Init Trading System
      * acceptance test class : initialStartTest
      * @param userName - the user name
-     * @param password - the user password
+     * @param password - the user passwords
      * @throws Exception - system crashed exception
      */
     public ServiceAPI(String userName, String password) throws Exception{
@@ -139,8 +139,9 @@ public class ServiceAPI {
      * @param addressToDeliver - the addressToDiliver
      * @return true is the purchase succeeded, otherwise false
      */
-    public Response<Boolean> purchaseCart(int id,PaymentData paymentData, String addressToDeliver){
-        return logicManager.purchaseCart(id,paymentData,addressToDeliver);
+
+    public Response<Boolean> purchaseCart(int id, String country, PaymentData paymentData, String addressToDeliver){
+        return logicManager.purchaseCart(id, country, paymentData,addressToDeliver);
     }
 
     /**

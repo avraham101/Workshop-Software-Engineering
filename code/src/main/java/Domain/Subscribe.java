@@ -5,6 +5,9 @@ import jdk.internal.org.objectweb.asm.Opcodes;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -86,8 +89,7 @@ public class Subscribe extends UserState{
     @Override
     public Store openStore(StoreData storeDetails) {
         Permission permission = new Permission(this);
-        Store store = new Store(storeDetails.getName(),storeDetails.getPurchasePolicy(),
-                storeDetails.getDiscountPolicy(), permission);
+        Store store = new Store(storeDetails.getName(), permission,storeDetails.getDescription());
         permission.setStore(store);
         permission.addType(PermissionType.OWNER); //Always true, store just created.
         permissions.put(store.getName(),permission);

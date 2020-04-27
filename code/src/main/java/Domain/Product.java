@@ -13,7 +13,6 @@ public class Product {
     private String name; //unique
     private AtomicInteger amount;
     private double price;
-    private List<Discount> discount;
     private PurchaseType purchaseType;
     private Category category;
     private List<Review> reviews;
@@ -26,7 +25,6 @@ public class Product {
         category.addProduct(this);
         this.amount=new AtomicInteger(productData.getAmount());
         this.price=productData.getPrice();
-        this.discount=productData.getDiscount();
         this.reviews=new ArrayList<>();
         lock=new ReentrantReadWriteLock();
     }
@@ -39,7 +37,6 @@ public class Product {
         this.name = other.name;
         this.amount = new AtomicInteger(other.getAmount());
         this.price = other.price;
-        this.discount = new LinkedList<>();
         this.purchaseType = new PurchaseType();
         this.category = new Category(other.category.getName());
         this.reviews = new LinkedList<>();
@@ -61,7 +58,6 @@ public class Product {
         category.addProduct(this);
         this.amount=new AtomicInteger(productData.getAmount());
         this.price=productData.getPrice();
-        this.discount=productData.getDiscount();
         getWriteLock().unlock();
     }
 
@@ -83,14 +79,6 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Discount> getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(List<Discount> discount) {
-        this.discount = discount;
     }
 
     public PurchaseType getPurchaseType() {
@@ -155,18 +143,6 @@ public class Product {
     public Product clone() {
         Product temp = new Product(this);
         return temp;
-    }
-
-    /**
-     * use case 2.4.1 - view all products from store
-     * @return the price of the product after discount
-     */
-    public double getDiscountPrice() {
-        double p = price;
-        for (Discount d: discount) {
-            p = p -  p* d.getPercentage();
-        }
-        return p;
     }
 
     /**

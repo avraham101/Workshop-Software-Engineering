@@ -4,12 +4,14 @@ public class PaymentData {
 
     private String name;
     private String address;
+    private int age;
     private String creditCard;
     private double totalPrice;
 
-    public PaymentData(String name, String address, String creditCard) {
+    public PaymentData(String name, String address, int age, String creditCard) {
         this.name = name;
         this.address = address;
+        this.age = age;
         this.creditCard = creditCard;
         this.totalPrice = 0;
     }
@@ -46,6 +48,14 @@ public class PaymentData {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     // ============================ getters & setters ============================ //
