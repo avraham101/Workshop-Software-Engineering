@@ -23,4 +23,12 @@ public class OrPolicy implements PurchasePolicy {
         }
         return output;
     }
+
+    /**
+     * add policy to the policies list
+     * @param purchasePolicy - the policy we want to add
+     */
+    public void addPolicy(PurchasePolicy purchasePolicy) {
+        policyList.add(purchasePolicy);
+    }
 }

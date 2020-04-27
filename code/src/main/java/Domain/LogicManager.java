@@ -583,7 +583,7 @@ public class LogicManager {
         //2) validation check
         if (!validPaymentData(paymentData))
             return new Response<>(false, OpCode.Invalid_Payment_Data);
-        if (addresToDeliver == null || addresToDeliver.isEmpty())
+        if (addresToDeliver == null || addresToDeliver.isEmpty() || country == null || country.isEmpty())
             return new Response<>(false, OpCode.Invalid_Delivery_Data);
         //3) sumUp cart - updated PaymentData, DeliveryData
         boolean reserved = current.reservedCart();
