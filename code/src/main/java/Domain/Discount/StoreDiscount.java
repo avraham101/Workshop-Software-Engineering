@@ -23,7 +23,7 @@ public class StoreDiscount implements Discount {
     public boolean checkTerm(HashMap<Product, Integer> list) {
         int sum=0;
         for(Product p:list.keySet())
-            sum+=p.getAmount()*p.getPrice();
+            sum+=list.get(p)*p.getPrice();
         return sum>=minAmount;
     }
 }

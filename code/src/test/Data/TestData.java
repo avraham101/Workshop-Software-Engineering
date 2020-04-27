@@ -2,10 +2,11 @@ package Data;
 
 import DataAPI.*;
 import Domain.*;
+import Domain.Discount.Discount;
+import Domain.Discount.RegularDiscount;
+import Domain.Discount.StoreDiscount;
 import Domain.PurchasePolicy.*;
 
-import Systems.PaymentSystem.ProxyPayment;
-import Systems.SupplySystem.ProxySupply;
 import Domain.Discount.Term.BaseTerm;
 import java.util.*;
 
@@ -17,7 +18,7 @@ public class TestData {
     private HashMap<Data, Subscribe> users;
     private HashMap<Data, ProductData> productsData;
     private HashMap<Data, StoreData> stores;
-    private HashMap<Data, List<Discount1>> discounts;
+    private HashMap<Data, List<Discount>> discounts;
     private HashMap<Data, HashMap<ProductData, Integer>> basket;
     private HashMap<Data, Filter> filters;
     private HashMap<Data, Request> requests;
@@ -36,7 +37,6 @@ public class TestData {
     public TestData() {
         setUpIds();
         setUpUsers();
-        setUpDiscountData();
         setUpProductData();
         setUpStoreData();
         setUpBasketData();
@@ -49,6 +49,7 @@ public class TestData {
         setUpPurchasePolicy();
         setUpProductsAndAmountsData();
         setUpTerms();
+        setUpDiscounts();
     }
 
     /**
@@ -88,14 +89,22 @@ public class TestData {
     /**
      * set up data of discount
      */
-    private void setUpDiscountData() {
+    private void setUpDiscounts() {
         discounts=new HashMap<>();
-        List<Discount1> discountsListHasNull=new ArrayList<>();
+        List<Discount> discountsListHasNull=new ArrayList<>();
         discountsListHasNull.add(null);
-        List<Discount1> discount1ListNegPercentage =new ArrayList<>();
-        discount1ListNegPercentage.add(new Discount1(-1));
-        List<Discount1> discount1ListOver100Percentage =new ArrayList<>();
-        discount1ListOver100Percentage.add(new Discount1(101));
+        List<Discount> discount1ListNegPercentage =new ArrayList<>();
+        //discount1ListNegPercentage.add(new RegularDiscount());
+        List<Discount> discount1ListOver100Percentage =new ArrayList<>();
+        //discount1ListOver100Percentage.add(new Discount1(101));
+        List<Discount> validDiscounts=new ArrayList<>();
+        validDiscounts.add(new RegularDiscount(getRealProduct(Data.VALID).getName(),10));
+        validDiscounts.add(new RegularDiscount(getRealProduct(Data.VALID2).getName(),10));
+        List <Discount> dontStandsTermDiscount=new ArrayList<>();
+        dontStandsTermDiscount.add(new StoreDiscount(10000,10));
+        discounts.put(Data.VALID,validDiscounts);
+        discounts.put(Data.NOT_STANDS_IN_TERM,dontStandsTermDiscount);
+        //TODO add those to discount data test in logic manager for valid inputs
         discounts.put(Data.NULL_DISCOUNT,discountsListHasNull);
         discounts.put(Data.NEGATIVE_PERCENTAGE, discount1ListNegPercentage);
         discounts.put(Data.OVER_100_PERCENTAGE, discount1ListOver100Percentage);
@@ -357,7 +366,7 @@ public class TestData {
         return store;
     }
 
-    public List<Discount1> getDiscounts(Data data){
+    public List<Discount> getDiscounts(Data data){
         return  discounts.get(data);
     }
 

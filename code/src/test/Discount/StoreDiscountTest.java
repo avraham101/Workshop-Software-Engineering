@@ -54,7 +54,7 @@ public class StoreDiscountTest {
      */
     @Test
     public void checkTermFail() {
-        storeDiscount=new StoreDiscount(1000,10);
+        storeDiscount=new StoreDiscount(3000,10);
         assertFalse(storeDiscount.checkTerm(productAndAmounts));
     }
 }
