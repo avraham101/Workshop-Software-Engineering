@@ -20,7 +20,7 @@ public class ProductTermDiscount implements Discount {
     public void calculateDiscount(HashMap<Product, Integer> list) {
         for(Product p:list.keySet()){
             if(p.getName().equals(product))
-                list.put(p,Math.max(p.getAmount()-amount,0));
+                list.put(p,Math.max(list.get(p)-amount,0));
         }
     }
 
@@ -29,7 +29,7 @@ public class ProductTermDiscount implements Discount {
         boolean found=false;
         for(Product p:list.keySet())
             if(p.getName().equals(product)){
-                if(p.getAmount()>=amount)
+                if(list.get(p)>=amount)
                     found=true;
                 else
                     break;

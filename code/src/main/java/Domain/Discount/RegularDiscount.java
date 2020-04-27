@@ -17,7 +17,8 @@ public class RegularDiscount implements Discount{
     public void calculateDiscount(HashMap<Product, Integer> list) {
         for(Product p:list.keySet())
             if(p.getName().equals(product))
-                p.setPrice(p.getPrice() * percantage / 100);
+                p.setPrice(p.getPrice() * (100-percantage) / 100);
+            return;
     }
 
     @Override

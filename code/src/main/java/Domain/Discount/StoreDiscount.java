@@ -8,10 +8,15 @@ public class StoreDiscount implements Discount {
     private int minAmount;
     private double percentage;
 
+    public StoreDiscount(int minAmount, double percentage) {
+        this.minAmount = minAmount;
+        this.percentage = percentage;
+    }
+
     @Override
     public void calculateDiscount(HashMap<Product, Integer> list) {
         for(Product p:list.keySet())
-            p.setPrice(p.getPrice()*percentage/100);
+            p.setPrice(p.getPrice()*(100-percentage)/100);
     }
 
     @Override
