@@ -16,7 +16,7 @@ public class ServiceAPI {
      * use case 1.1 - Init Trading System
      * acceptance test class : initialStartTest
      * @param userName - the user name
-     * @param password - the user password
+     * @param password - the user passwords
      * @throws Exception - system crashed exception
      */
     public ServiceAPI(String userName, String password) throws Exception{
