@@ -396,7 +396,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.INVALID_COUNTRY).getCountry();
         List<String> contries=new ArrayList<>();
-        contries.add("Italy");
+        contries.add("Israel");
         stores.get(data.getStore(Data.VALID).getName()).setPurchasePolicy(new UserPurchasePolicy(contries));
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
     }

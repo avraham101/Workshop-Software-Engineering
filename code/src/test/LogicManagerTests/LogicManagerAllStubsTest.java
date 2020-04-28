@@ -4,6 +4,9 @@ import Data.*;
 import DataAPI.*;
 import Domain.*;
 import Domain.Discount.Discount;
+import Domain.Discount.ProductTermDiscount;
+import Domain.Discount.Term.BaseTerm;
+import Domain.Discount.Term.Term;
 import Domain.Discount.XorDiscount;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Stubs.*;
@@ -1285,7 +1288,6 @@ public class LogicManagerAllStubsTest {
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         Gson discountGson = builderDiscount.create();
         String discountToAdd=discountGson.toJson(discount,Discount.class);
-        System.out.println(discountToAdd);
         assertTrue(logicManager.addDiscount(data.getId(Data.VALID),discountToAdd,
                 data.getStore(Data.VALID).getName()).getValue());
     }
@@ -1850,6 +1852,19 @@ public class LogicManagerAllStubsTest {
         assertNull(response.getValue());
         assertEquals(response.getReason(),OpCode.Dont_Have_Permission);
 
+    }
+
+    @Test
+    public void test(){
+        ProductTermDiscount discount=new ProductTermDiscount(new BaseTerm("hello",3),"hello",1);
+        GsonBuilder builderDiscount = new GsonBuilder();
+        builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
+        builderDiscount.registerTypeAdapter(Term.class, new InterfaceAdapter());
+        Gson discountGson = builderDiscount.create();
+        String discountData=discountGson.toJson(discount,Discount.class);
+        discount=null;
+        Discount d=discountGson.fromJson(discountData, Discount.class);
+        assertFalse(false);
     }
 
 }
