@@ -221,7 +221,7 @@ public class AcceptanceTests {
 
     protected  void addStores(List<StoreTestData> stores){
         bridge.register(admin.getUsername(),admin.getPassword());
-       // bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
+        bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
 
         for(StoreTestData store : stores) {
             UserTestData owner = store.getStoreOwner();
@@ -269,8 +269,6 @@ public class AcceptanceTests {
     }
 
     protected  void logoutAndLogin(UserTestData toLoginUser){
-        //TODO: change name ?
-        //bridge.logout();
         bridge.login(toLoginUser.getId(),toLoginUser.getUsername(),toLoginUser.getPassword());
     }
 

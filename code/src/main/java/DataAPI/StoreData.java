@@ -39,8 +39,5 @@ public class StoreData {
         }
         StoreData storeData = (StoreData) obj;
         return (storeData.getName().equals(this.getName()));
-        /**
-         * TODO - need to add equals for the policy.
-         */
     }
 }

@@ -86,10 +86,12 @@ public class Cart {
      * @param paymentData the payment data
      * @param deliveryData the delivery data
      */
-    public void buy(PaymentData paymentData, DeliveryData deliveryData) {
+    public boolean buy(PaymentData paymentData, DeliveryData deliveryData) {
         for(Basket b:baskets.values()){
-            b.buy(paymentData,deliveryData);
+            if(!b.buy(paymentData,deliveryData))
+                return false;
         }
+        return true;
     }
 
     /**

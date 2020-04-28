@@ -1864,16 +1864,4 @@ public class LogicManagerAllStubsTest {
 
     }
 
-    //TODO remove this for tests
-    @Test
-    public void tryi(){
-        XorDiscount xorDiscount=new XorDiscount(data.getDiscounts(Data.VALID));
-        GsonBuilder builderDiscount = new GsonBuilder();
-        builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
-        Gson discountGson = builderDiscount.create();
-        String a=discountGson.toJson(xorDiscount,Discount.class);
-        //Discount o=logicManager.makeDiscountFromData(a);
-        assertTrue(true);
-    }
-
 }

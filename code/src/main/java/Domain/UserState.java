@@ -119,8 +119,8 @@ public abstract class UserState {
      * @param paymentData the payment data
      * @param deliveryData the delivery data
      */
-    public void buyCart(PaymentData paymentData, DeliveryData deliveryData) {
-        cart.buy(paymentData,deliveryData);
+    public boolean buyCart(PaymentData paymentData, DeliveryData deliveryData) {
+        return cart.buy(paymentData,deliveryData);
     }
 
     /**

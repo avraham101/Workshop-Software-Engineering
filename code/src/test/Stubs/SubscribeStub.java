@@ -174,8 +174,8 @@ public class SubscribeStub extends Subscribe{
      * @return
      */
     @Override
-    public void buyCart(PaymentData paymentData, DeliveryData addresToDeliver) {
-
+    public boolean buyCart(PaymentData paymentData, DeliveryData addresToDeliver) {
+        return true;
     }
 
     /**

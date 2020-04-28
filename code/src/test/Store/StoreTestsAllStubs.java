@@ -41,10 +41,10 @@ public class StoreTestsAllStubs {
     /**
      * prepare product wth discount at the store
      */
-    private void setUpDiscountAdded() {
+    protected void setUpDiscountAdded() {
         setUpProductAdded();
         Discount d=data.getDiscounts(Data.VALID).get(0);
-        store.addDiscount(d).getValue();
+        store.addDiscount(d);
     }
 
     /**--------------------------------set-ups-------------------------------------------------------------------*/
@@ -119,7 +119,6 @@ public class StoreTestsAllStubs {
     /**
      * use case 3.3 - add review
      */
-    //TODO split test
     @Test
     public void testAddReview() {
         setUpProductAdded();
@@ -129,7 +128,6 @@ public class StoreTestsAllStubs {
         assertTrue(product.getReviews().contains(review));
         review = data.getReview(Data.WRONG_PRODUCT);
         assertFalse(store.addReview(review));
-        //TODO check review wasn't added
     }
 
 

@@ -169,16 +169,25 @@ public class Store {
 
 
     /**
-     * use case 2.8 - purchase cart
-     * the function calc the price of the products after discount
-     * pre-condition: all products in list are available.
-     * @param list - the list of products to reserveCart and there amount
-     * @return
+     * use case 2.8 - calculate the price of a basket
+     * @param products
+     * @return calculate price of the products after discounts
      */
-    //TODO check this
-    //public double getPriceForBasket(HashMap<Product, Integer> list) {
-    //  return discount.stands(list);
-    //}
+    public double calculatePrice(HashMap<Product, Integer> products) {
+        double price=0;
+        for(int discountId:discountPolicy.keySet()){
+            Discount discount=discountPolicy.get(discountId);
+            if (discount.checkTerm(products)){
+                discount.calculateDiscount(products);
+            }
+        }
+        for(Product p:products.keySet()){
+            int amount =  products.get(p);
+            price += amount * p.getPrice();
+        }
+        return price;
+
+    }
 
     /**
      * use case 2.8 - reserveCart cart
@@ -188,7 +197,6 @@ public class Store {
     public boolean reserveProducts(HashMap<Product, Integer> otherProducts) {
         HashMap<Product, Integer> productsReserved = new HashMap<>();
         boolean output = true;
-        //TODO add here policy
         for(Product other: otherProducts.keySet()) {
             int amount = otherProducts.get(other);
             Product real = products.get(other.getName());
@@ -399,4 +407,6 @@ public class Store {
                 return false;
         return true;
     }
+
+
 }

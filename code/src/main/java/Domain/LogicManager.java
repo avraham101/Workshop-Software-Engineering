@@ -559,13 +559,28 @@ public class LogicManager {
             return new Response<>(false, OpCode.Invalid_Payment_Data);
         if (addresToDeliver == null || addresToDeliver.isEmpty() || country == null || country.isEmpty())
             return new Response<>(false, OpCode.Invalid_Delivery_Data);
-        //3) sumUp cart - updated PaymentData, DeliveryData
+        //3) sumUp cart - updated PaymentData, DeliveryData and check policy of store
         boolean reserved = current.reservedCart();
         if(!reserved) {
             return new Response<>(false, OpCode.Fail_Buy_Cart);
         }
         DeliveryData deliveryData = new DeliveryData(addresToDeliver, country, new LinkedList<>());
-        current.buyCart(paymentData, deliveryData);
+        return buyAndPay(id, paymentData, deliveryData);
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     * @param id - the id
+     * @param paymentData - the payment data of this purchase
+     * @param deliveryData - delivery details
+     * @return true is the purchase succeeded, otherwise false
+     */
+    private Response<Boolean> buyAndPay(int id, PaymentData paymentData, DeliveryData deliveryData) {
+        User current = connectedUsers.get(id);
+        if(!current.buyCart(paymentData, deliveryData)){
+            current.cancelCart();
+            return new Response<>(false, OpCode.Not_Stands_In_Policy);
+        }
         //4) external systems
         Response<Boolean> payedAndDelivered = externalSystemsBuy(id,paymentData,deliveryData);
         if(!payedAndDelivered.getValue()) {
