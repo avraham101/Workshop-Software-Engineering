@@ -2,6 +2,7 @@ package Domain;
 
 import DataAPI.*;
 import Domain.Discount.Discount;
+import Domain.PurchasePolicy.PurchasePolicy;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -235,6 +236,14 @@ public abstract class UserState {
      * @param storeName - name of the store to remove the discount from
      */
     public abstract Response<Boolean> deleteDiscountFromStore(int discountId, String storeName);
+
+    /**
+     * 4.2.2 - update policy
+     * update the policy of the store
+     * @param storeName - the name of the store
+     * @param policy - the policy
+     */
+    public abstract Response<Boolean> updateStorePolicy(String storeName, PurchasePolicy policy);
 
     /**
      * use case 4.5 - add manager

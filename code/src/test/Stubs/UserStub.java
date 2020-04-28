@@ -3,6 +3,7 @@ package Stubs;
 import DataAPI.*;
 import Domain.*;
 import Domain.Discount.Discount;
+import Domain.PurchasePolicy.PurchasePolicy;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -135,6 +136,11 @@ public class UserStub extends User {
      */
     @Override
     public Response<Boolean> deleteDiscountFromStore(int discountId, String storeName) {
+        return new Response<>(true,OpCode.Success);
+    }
+
+    @Override
+    public Response<Boolean> updateStorePolicy(String storeName, PurchasePolicy policy) {
         return new Response<>(true,OpCode.Success);
     }
 

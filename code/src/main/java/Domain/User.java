@@ -2,6 +2,7 @@ package Domain;
 
 import DataAPI.*;
 import Domain.Discount.Discount;
+import Domain.PurchasePolicy.PurchasePolicy;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -322,4 +323,7 @@ public class User {
         return state.addDiscountToStore(storeName,discount);
     }
 
+    public Response<Boolean> updateStorePolicy(String storeName, PurchasePolicy policy) {
+        return state.updateStorePolicy(storeName, policy);
+    }
 }

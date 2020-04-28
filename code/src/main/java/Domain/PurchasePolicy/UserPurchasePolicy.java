@@ -2,10 +2,8 @@ package Domain.PurchasePolicy;
 
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
-import Domain.Product;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class UserPurchasePolicy implements PurchasePolicy {
 
@@ -18,5 +16,15 @@ public class UserPurchasePolicy implements PurchasePolicy {
     @Override
     public boolean standInPolicy(PaymentData paymentData, DeliveryData deliveryData) {
         return countries.contains(deliveryData.getCountry());
+    }
+
+    @Override
+    public boolean isValid() {
+        return (countries != null && !countries.isEmpty());
+    }
+
+    @Override
+    public List<String> getProducts() {
+        return new LinkedList<>();
     }
 }

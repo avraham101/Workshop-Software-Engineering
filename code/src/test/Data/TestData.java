@@ -325,10 +325,18 @@ public class TestData {
         List<String> countries = new LinkedList<>();
         countries.add("Israel");
         amountPerProduct.put(this.getProductData(Data.VALID).getProductName(),3);
+        // valid policies
         purchasePolicy.put(Data.VALID_BASKET_PURCHASE_POLICY, new BasketPurchasePolicy(10));
         purchasePolicy.put(Data.VALID_PRODUCT_PURCHASE_POLICY, new ProductPurchasePolicy(amountPerProduct));
         purchasePolicy.put(Data.VALID_SYSTEM_PURCHASE_POLICY, new SystemPurchasePolicy(18));
         purchasePolicy.put(Data.VALID_USER_PURCHASE_POLICY, new UserPurchasePolicy(countries));
+        // invalid policies
+        purchasePolicy.put(Data.INVALID_BASKET_PURCHASE_POLICY, new BasketPurchasePolicy(-3));
+        purchasePolicy.put(Data.NULL_PRODUCT_PURCHASE_POLICY, new ProductPurchasePolicy(null));
+        purchasePolicy.put(Data.EMPTY_PRODUCT_PURCHASE_POLICY, new ProductPurchasePolicy(new HashMap<>()));
+        purchasePolicy.put(Data.INVALID_SYSTEM_PURCHASE_POLICY, new SystemPurchasePolicy(-3));
+        purchasePolicy.put(Data.NULL_USER_PURCHASE_POLICY, new UserPurchasePolicy(null));
+        purchasePolicy.put(Data.EMPTY_USER_PURCHASE_POLICY, new UserPurchasePolicy(new LinkedList<>()));
     }
 
     // ============================ getters ============================ //

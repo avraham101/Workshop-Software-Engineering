@@ -2,6 +2,7 @@ package Domain;
 
 import DataAPI.*;
 import Domain.Discount.Discount;
+import Domain.PurchasePolicy.PurchasePolicy;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
@@ -171,6 +172,16 @@ public class Guest extends UserState {
      */
     @Override
     public Response<Boolean> deleteDiscountFromStore(int discountId, String storeName) {
+        return new Response<>(false,OpCode.Not_Login);
+    }
+
+    /**
+     * use case 4.2. - update policy
+     * @param storeName - the name of the store
+     * @param policy - the policy
+     */
+    @Override
+    public Response<Boolean> updateStorePolicy(String storeName, PurchasePolicy policy) {
         return new Response<>(false,OpCode.Not_Login);
     }
 

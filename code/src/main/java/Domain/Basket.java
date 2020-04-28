@@ -147,6 +147,7 @@ public class Basket {
         for(Product p: products.keySet()) {
             int amount =  products.get(p);
             price += amount * p.getPrice();
+            // why adding to the list?
             list.add(new ProductData(p, store.getName()));
         }
         paymentData.setTotalPrice(price);
