@@ -1,16 +1,17 @@
 package Server.Controllers;
 
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("home")
+@Controller
 public class UserController {
 
-    @GetMapping
-    public  Boolean get (){
-        return true;
+    @GetMapping("/index")
+    public String get (){
+        return "index";
     }
 }
