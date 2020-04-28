@@ -3,11 +3,9 @@ package Domain.PurchasePolicy;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
+import Domain.Product;
 
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 public class BasketPurchasePolicy implements PurchasePolicy {
@@ -35,6 +33,11 @@ public class BasketPurchasePolicy implements PurchasePolicy {
     @Override
     public List<String> getProducts() {
         return new LinkedList<>();
+    }
+
+    @Override
+    public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
+        return false;
     }
 
 }

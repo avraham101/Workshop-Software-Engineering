@@ -2,7 +2,10 @@ package Domain.PurchasePolicy.ComposePolicys;
 
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
+import Domain.Product;
 import Domain.PurchasePolicy.PurchasePolicy;
+
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,5 +45,10 @@ public class OrPolicy implements PurchasePolicy {
             products.addAll(policy.getProducts());
         }
         return products;
+    }
+
+    @Override
+    public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
+        return false;
     }
 }
