@@ -1854,17 +1854,4 @@ public class LogicManagerAllStubsTest {
 
     }
 
-    @Test
-    public void test(){
-        ProductTermDiscount discount=new ProductTermDiscount(new BaseTerm("hello",3),"hello",1);
-        GsonBuilder builderDiscount = new GsonBuilder();
-        builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
-        builderDiscount.registerTypeAdapter(Term.class, new InterfaceAdapter());
-        Gson discountGson = builderDiscount.create();
-        String discountData=discountGson.toJson(discount,Discount.class);
-        discount=null;
-        Discount d=discountGson.fromJson(discountData, Discount.class);
-        assertFalse(false);
-    }
-
 }
