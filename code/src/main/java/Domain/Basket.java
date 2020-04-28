@@ -139,7 +139,7 @@ public class Basket {
      * @param deliveryData the delivery data
      */
     public boolean buy(PaymentData paymentData, DeliveryData deliveryData) {
-        if(store.getPurchasePolicy().standInPolicy(paymentData,deliveryData))
+        if(!store.getPurchasePolicy().standInPolicy(paymentData,deliveryData.getCountry(),products))
             return false;
         double price = paymentData.getTotalPrice();
         List<ProductData> list = deliveryData.getProducts();

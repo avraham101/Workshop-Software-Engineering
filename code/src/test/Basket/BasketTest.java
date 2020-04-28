@@ -41,7 +41,8 @@ public class BasketTest {
 
     /**--------------set-ups----------------------*/
     protected void setUpAddedToBasket(){
-        HashMap<ProductData, Integer> products = data.getProductsInBasket(Data.VALID);
+        //TODO remove this
+        //HashMap<ProductData, Integer> products = data.getProductsInBasket(Data.VALID);
         Product product = data.getRealProduct(Data.VALID);
         basket.addProduct(product, product.getAmount());
     }
@@ -128,13 +129,13 @@ public class BasketTest {
      * use case 2.8 buy basket
      */
     @Test
-    public void testBuy() {
+    public void testBuySuccess() {
         setUpAddedToBasket();
         int price = 0;
         List<ProductData> productDataList = new LinkedList<>();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        basket.buy(paymentData, deliveryData);
+        assertTrue(basket.buy(paymentData, deliveryData));
         for (Product product: basket.getProducts().keySet()) {
             price += product.getPrice();
             productDataList.add(new ProductData(product, store.getName()));
