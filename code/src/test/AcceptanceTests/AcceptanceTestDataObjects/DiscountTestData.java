@@ -1,14 +1,12 @@
 package AcceptanceTests.AcceptanceTestDataObjects;
 
-import java.util.Date;
-
 public class DiscountTestData {
     private double percentage;
-    private Date expirationDate;
+    private String product;
 
-    public DiscountTestData(double percentage, Date expirationDate) {
+    public DiscountTestData(double percentage, String product) {
         this.percentage = percentage;
-        this.expirationDate = expirationDate;
+        this.product=product;
     }
 
     public double getPercentage() {
@@ -19,12 +17,12 @@ public class DiscountTestData {
         this.percentage = percentage;
     }
 
-    public Date getExpirationDate() {
-        return expirationDate;
+    public String getProduct() {
+        return product;
     }
 
-    public void setExpirationDate(Date expirationDate) {
-        this.expirationDate = expirationDate;
+    public void setProduct(String product) {
+        this.product = product;
     }
 
     @Override
@@ -35,6 +33,6 @@ public class DiscountTestData {
         DiscountTestData that = (DiscountTestData) o;
 
         if (Double.compare(that.percentage, percentage) != 0) return false;
-        return expirationDate != null ? expirationDate.equals(that.expirationDate) : that.expirationDate == null;
+        return product != null ? product.equals(that.product) : that.product == null;
     }
 }

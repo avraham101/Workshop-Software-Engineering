@@ -1,10 +1,8 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.DiscountTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ReviewTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +26,7 @@ public class EditStore extends AcceptanceTests {
         String storeName = stores.get(0).getStoreName();
         ProductTestData product = new ProductTestData("newProduct",
                 storeName,5,15.5,"tests",
-                new ArrayList<ReviewTestData>(),new ArrayList<DiscountTestData>());
+                new ArrayList<ReviewTestData>());
         boolean approval = bridge.addProduct(superUser.getId(),product);
         assertTrue(approval);
 
@@ -47,7 +45,7 @@ public class EditStore extends AcceptanceTests {
     public void addProductToStoreFailInvalidAmount(){
         ProductTestData product = new ProductTestData("newProduct",
                 "store0Test",-1,15.5,"tests"
-                ,new ArrayList<ReviewTestData>(),new ArrayList<DiscountTestData>());
+                ,new ArrayList<ReviewTestData>());
         boolean approval = bridge.addProduct(superUser.getId(),product);
         assertFalse(approval);
 
@@ -59,7 +57,7 @@ public class EditStore extends AcceptanceTests {
     public void addProductFailInvalidPrice(){
         ProductTestData product = new ProductTestData("newProduct",
                 "store0Test",5,-1,"tests"
-                ,new ArrayList<ReviewTestData>(),new ArrayList<DiscountTestData>());
+                ,new ArrayList<ReviewTestData>());
         boolean approval = bridge.addProduct(superUser.getId(),product);
         assertFalse(approval);
 
@@ -71,7 +69,7 @@ public class EditStore extends AcceptanceTests {
     public void addProductFailNotMyStore(){
         ProductTestData product = new ProductTestData("newProduct",
                 "store2Test",5,15.5,"tests",
-                new ArrayList<ReviewTestData>(),new ArrayList<DiscountTestData>());
+                new ArrayList<ReviewTestData>());
         boolean approval = bridge.addProduct(superUser.getId(),product);
         assertFalse(approval);
 
@@ -97,7 +95,7 @@ public class EditStore extends AcceptanceTests {
     public void deleteProductNotExist() {
         ProductTestData product = new ProductTestData("newProduct",
                 "store0Test", 5, 15.5, "tests",
-                new ArrayList<ReviewTestData>(),new ArrayList<DiscountTestData>());
+                new ArrayList<ReviewTestData>());
         boolean approval = bridge.deleteProduct(superUser.getId(),product);
         assertFalse(approval);
     }

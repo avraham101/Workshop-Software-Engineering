@@ -1,14 +1,12 @@
 package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class ManagerPermissionsTest extends AcceptanceTests {
                                         100,
                                         6,
                                         "Dairy",
-                                        new ArrayList<ReviewTestData>(),new ArrayList<DiscountTestData>());
+                                        new ArrayList<ReviewTestData>());
 
     }
 

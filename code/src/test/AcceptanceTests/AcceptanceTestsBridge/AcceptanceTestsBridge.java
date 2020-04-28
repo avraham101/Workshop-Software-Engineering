@@ -50,4 +50,5 @@ public interface AcceptanceTestsBridge {
     List<PurchaseTestData> userGetStorePurchasesHistory(int id,String storeName);
     int connect();
 
+    boolean addDiscount(int id,DiscountTestData discountTestData,String store);
 }

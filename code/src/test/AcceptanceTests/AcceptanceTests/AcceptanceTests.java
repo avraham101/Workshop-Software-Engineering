@@ -90,62 +90,62 @@ public class AcceptanceTests {
                                                     30,
                                                     1.5,
                                                     "Fruits",
-                                                    new ArrayList<ReviewTestData>(),new ArrayList<DiscountTestData>());
+                                                    new ArrayList<ReviewTestData>());
         ProductTestData prod1 = new ProductTestData("milkTest",
                                                     "store0Test",
                                                     100,
                                                     5.79,
                                                     "Dairy",
-                                                    new ArrayList<ReviewTestData>(),new ArrayList<DiscountTestData>());
+                                                    new ArrayList<ReviewTestData>());
         ProductTestData prod2 = new ProductTestData("burekasTest",
                                                     "store0Test",
                                                     90,
                                                     2,
                                                     "Pastries",
-                                                    new ArrayList<ReviewTestData>(),new ArrayList<DiscountTestData>());
+                                                    new ArrayList<ReviewTestData>());
         ProductTestData prod3 = new ProductTestData("cocacolaTest",
                                                     "store1Test",
                                                     200,
                                                     6,
                                                     "Sodas",
-                                                    new ArrayList<ReviewTestData>(),new ArrayList<DiscountTestData>());
+                                                    new ArrayList<ReviewTestData>());
         ProductTestData prod4 = new ProductTestData("waterTest",
                                                     "store1Test",
                                                     500,
                                                     3,
                                                     "Sodas",
-                                                    new ArrayList<ReviewTestData>(),new ArrayList<DiscountTestData>());
+                                                    new ArrayList<ReviewTestData>());
         ProductTestData prod5 = new ProductTestData("milkiTest",
                                                     "store1Test",
                                                     52,
                                                     4,
                                                     "Dairy",
-                                                    new ArrayList<ReviewTestData>(),new ArrayList<DiscountTestData>());
+                                                    new ArrayList<ReviewTestData>());
         ProductTestData prod6 = new ProductTestData("tomatoTest",
                                                     "store2Test",
                                                     140,
                                                     3.5,
                                                     "Vegetables",
-                                                    new ArrayList<ReviewTestData>(),new ArrayList<DiscountTestData>());
+                                                    new ArrayList<ReviewTestData>());
         ProductTestData prod7 = new ProductTestData("onionTest",
                                                     "store2Test",
                                                     100,
                                                     1.5,
                                                     "Vegetables",
-                                                    new ArrayList<ReviewTestData>(),new ArrayList<DiscountTestData>());
+                                                    new ArrayList<ReviewTestData>());
         ProductTestData prod8 = new ProductTestData("bambaTest",
                                                     "store2Test",
                                                     100,
                                                     3.80,
                                                     "Snacks",
-                                                    new ArrayList<ReviewTestData>(), new ArrayList<DiscountTestData>());
+                                                    new ArrayList<ReviewTestData>());
         ProductTestData prod9 = new ProductTestData("cheeseTest",
                                                     "store2Test",
                                                     500,
                                                     4.5,
                                                     "Dairy",
-                                                    new ArrayList<ReviewTestData>(),
-                                                    new ArrayList<DiscountTestData>());
+                                                    new ArrayList<ReviewTestData>()
+        );
 
         products.addAll(Arrays.asList(prod0, prod1,prod2,
                                         prod3,prod4,prod5,

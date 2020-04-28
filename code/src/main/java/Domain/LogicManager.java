@@ -829,7 +829,7 @@ public class LogicManager {
         return current.addDiscountToStore(storeName,discount);
     }
 
-    public Discount makeDiscountFromData(String discountData){
+    private Discount makeDiscountFromData(String discountData){
         try {
             Discount d = discountGson.fromJson(discountData, Discount.class);
             if (d != null && d.isValid())
@@ -857,16 +857,21 @@ public class LogicManager {
 
     /**
      * 4.2.1.3 - view discounts
+     * //TODO make discount string
      * @param storeName - name of the store to get the discounts from
      */
-    public Response<HashMap<Integer,Discount>> viewDiscounts(String storeName){
+    public Response<HashMap<Integer,String>> viewDiscounts(String storeName){
         loggerSystem.writeEvent("LogicManager","viewDiscountsOfStore",
                 "view discount of the store", new Object[] {storeName});
         Store store=stores.get(storeName);
         if(store==null)
             return new Response<>(null,OpCode.Store_Not_Found);
         HashMap<Integer, Discount> discounts = new HashMap<>(store.getDiscount());
-        return new Response<>(discounts,OpCode.Success);
+        HashMap<Integer,String> response=new HashMap<>();
+        for(int id:discounts.keySet()){
+            response.put(id,discountGson.toJson(discounts.get(id),Discount.class));
+        }
+        return new Response<>(response,OpCode.Success);
     }
 
     /**

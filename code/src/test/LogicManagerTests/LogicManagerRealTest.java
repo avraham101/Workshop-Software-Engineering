@@ -8,6 +8,9 @@ import Domain.Discount.RegularDiscount;
 import Systems.HashSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
+import Utils.InterfaceAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -711,15 +714,19 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
     /**
      * use case 4.2.1.3 -view discounts from store
+     * test that the discount we added was added
      */
     @Test @Override
     public void testViewDiscountSuccess(){
         super.testViewDiscountSuccess();
         String store=data.getStore(Data.VALID).getName();
-        HashMap<Integer, Discount> discounts =logicManager.viewDiscounts(store).getValue();
+        HashMap<Integer, String> discounts =logicManager.viewDiscounts(store).getValue();
         assertNotNull(discounts.get(0));
         try {
-            RegularDiscount discount = (RegularDiscount) discounts.get(0);
+            GsonBuilder builderDiscount = new GsonBuilder();
+            builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
+            Gson discountGson = builderDiscount.create();
+            RegularDiscount discount = (RegularDiscount) (discountGson.fromJson(discounts.get(0),Discount.class));
             assertEquals(discount.getProduct(),data.getProductData(Data.VALID).getProductName());
             assertEquals(discount.getPercantage(),10,0.001);
         }
