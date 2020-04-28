@@ -175,7 +175,7 @@ public class SubscribeAllStubsTest {
     }
 
     /**
-     * use case - 2.8 reserveCart cart
+     * use case - 2.8 buy cart
      */
     @Test
     public void testBuyCart() {
@@ -191,8 +191,8 @@ public class SubscribeAllStubsTest {
             }
         }
         PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        sub.buyCart(paymentData,deliveryData);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
+        assertTrue(sub.buyCart(paymentData,deliveryData));
         assertEquals(sum,paymentData.getTotalPrice(),0.001);
         assertEquals(size,deliveryData.getProducts().size());
     }

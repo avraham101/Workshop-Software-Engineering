@@ -5,6 +5,7 @@ import Data.Data;
 import Domain.*;
 import Domain.Discount.Discount;
 import Domain.Discount.RegularDiscount;
+import Domain.PurchasePolicy.UserPurchasePolicy;
 import Systems.HashSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
@@ -14,10 +15,7 @@ import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -386,6 +384,21 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
         assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartInvalidCountry() {
+        setUpProductAddedToCart();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        String country = data.getDeliveryData(Data.INVALID_COUNTRY).getCountry();
+        List<String> contries=new ArrayList<>();
+        contries.add("Israel");
+        stores.get(data.getStore(Data.VALID).getName()).setPurchasePolicy(new UserPurchasePolicy(contries));
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
     }
 
     /**

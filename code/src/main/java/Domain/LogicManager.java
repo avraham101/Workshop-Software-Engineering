@@ -2,7 +2,7 @@ package Domain;
 
 import DataAPI.*;
 import Domain.Discount.Discount;
-import Domain.PurchasePolicy.BasketPurchasePolicy;
+import Domain.Discount.Term.Term;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Systems.*;
 import Systems.PaymentSystem.*;
@@ -11,7 +11,6 @@ import Utils.Utils;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.omg.CORBA.Policy;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -19,7 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LogicManager {
-    //TODO check all classes
     private ConcurrentHashMap<String, Subscribe> subscribes;
     private ConcurrentHashMap<String, Store> stores;
     private ConcurrentHashMap<Integer,User> connectedUsers;
@@ -30,8 +28,7 @@ public class LogicManager {
     private LoggerSystem loggerSystem;
     private AtomicInteger requestIdGenerator;
     private final Object openStoreLocker=new Object();
-    private Gson discountGson;
-    private Gson policyGson;
+    private Gson gson;
 
     /**
      * test constructor, mock systems
@@ -47,10 +44,9 @@ public class LogicManager {
         this.stores = stores;
         GsonBuilder builderDiscount = new GsonBuilder();
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
-        discountGson = builderDiscount.create();
-        GsonBuilder builderPolicy = new GsonBuilder();
-        builderPolicy.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
-        this.policyGson = builderPolicy.create();
+        builderDiscount.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
+        builderDiscount.registerTypeAdapter(Term.class,new InterfaceAdapter());
+        gson = builderDiscount.create();
         this.connectedUsers =connectedUsers;
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
@@ -94,10 +90,9 @@ public class LogicManager {
         this.connectedUsers =new ConcurrentHashMap<>();
         GsonBuilder builderDiscount = new GsonBuilder();
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
-        discountGson = builderDiscount.create();
-        GsonBuilder builderPolicy = new GsonBuilder();
-        builderPolicy.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
-        this.policyGson = builderPolicy.create();
+        builderDiscount.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
+        builderDiscount.registerTypeAdapter(Term.class,new InterfaceAdapter());
+        gson = builderDiscount.create();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -145,10 +140,9 @@ public class LogicManager {
         requestIdGenerator = new AtomicInteger(0);
         GsonBuilder builderDiscount = new GsonBuilder();
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
-        discountGson = builderDiscount.create();
-        GsonBuilder builderPolicy = new GsonBuilder();
-        builderPolicy.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
-        this.policyGson = builderPolicy.create();
+        builderDiscount.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
+        builderDiscount.registerTypeAdapter(Term.class,new InterfaceAdapter());
+        gson = builderDiscount.create();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -845,9 +839,9 @@ public class LogicManager {
         return current.addDiscountToStore(storeName,discount);
     }
 
-    private Discount makeDiscountFromData(String discountData){
+    public Discount makeDiscountFromData(String discountData){
         try {
-            Discount d = discountGson.fromJson(discountData, Discount.class);
+            Discount d = gson.fromJson(discountData, Discount.class);
             if (d != null && d.isValid())
                 return d;
         }
@@ -885,7 +879,7 @@ public class LogicManager {
         HashMap<Integer, Discount> discounts = new HashMap<>(store.getDiscount());
         HashMap<Integer,String> response=new HashMap<>();
         for(int id:discounts.keySet()){
-            response.put(id,discountGson.toJson(discounts.get(id),Discount.class));
+            response.put(id, gson.toJson(discounts.get(id),Discount.class));
         }
         return new Response<>(response,OpCode.Success);
     }
@@ -895,7 +889,7 @@ public class LogicManager {
      */
     private PurchasePolicy makePolicyFromData(String policyData){
         try {
-            PurchasePolicy policy = policyGson.fromJson(policyData, PurchasePolicy.class);
+            PurchasePolicy policy = gson.fromJson(policyData, PurchasePolicy.class);
             if (policy != null && policy.isValid())
                 return policy;
         }
@@ -934,7 +928,7 @@ public class LogicManager {
         if(store==null)
             return new Response<>(null,OpCode.Store_Not_Found);
         PurchasePolicy policy = store.getPurchasePolicy();
-        String output = discountGson.toJson(policy);
+        String output = gson.toJson(policy);
         return new Response<>(output,OpCode.Success);
     }
 

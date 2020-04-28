@@ -23,7 +23,7 @@ public class XorDiscountTest {
     @Before
     public void setUp() {
         data=new TestData();
-        productAndAmounts=data.getProductsAndAmount();
+        productAndAmounts=data.getProductsAndAmount(Data.VALID);
         discounts=data.getDiscounts(Data.VALID);
         xorDiscount=new XorDiscount(discounts);
     }

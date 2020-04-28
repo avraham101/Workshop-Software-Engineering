@@ -2,6 +2,7 @@ package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.CartTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.PurchasePolicyTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
 import AcceptanceTests.SystemMocks.*;
 import Systems.PaymentSystem.PaymentSystem;
@@ -101,6 +102,18 @@ public class BuyCartTest extends AcceptanceTests {
     private void addProductToCart(int amount){
         bridge.addToUserCart(userId,
                 stores.get(0).getProducts().get(0),amount);
+    }
+
+    @Test
+    public void buyCartNotStandsInPolicy(){
+        positiveSetUp();
+        addProductToCart(2);
+        PurchasePolicyTestData purchasePolicyTestData = new PurchasePolicyTestData(1);
+        bridge.updatePolicy(superUser.getId(),purchasePolicyTestData,"store0Test");
+        boolean approval = bridge.buyCart(userId,validPayment,validDelivery);
+        assertFalse(approval);
+        CartTestData currCart = bridge.getUsersCart(userId);
+        assertFalse(currCart.isEmpty());
     }
 
 }

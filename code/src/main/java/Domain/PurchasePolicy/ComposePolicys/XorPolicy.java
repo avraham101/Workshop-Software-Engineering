@@ -18,17 +18,6 @@ public class XorPolicy implements PurchasePolicy {
     }
 
     @Override
-    public boolean standInPolicy(PaymentData paymentData, DeliveryData deliveryData) {
-        int counter = 0;
-        for (PurchasePolicy policy: policyList) {
-            if(policy.standInPolicy(paymentData, deliveryData)) {
-                counter += 1;
-            }
-        }
-        return (counter == 1);
-    }
-
-    @Override
     public boolean isValid() {
         if (policyList == null || policyList.isEmpty())
             return false;
@@ -51,6 +40,12 @@ public class XorPolicy implements PurchasePolicy {
 
     @Override
     public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
-        return false;
+        int counter = 0;
+        for (PurchasePolicy policy: policyList) {
+            if(policy.standInPolicy(paymentData, country, products)) {
+                counter += 1;
+            }
+        }
+        return (counter == 1);
     }
 }

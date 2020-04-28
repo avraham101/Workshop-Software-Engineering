@@ -4,6 +4,9 @@ import Data.*;
 import DataAPI.*;
 import Domain.*;
 import Domain.Discount.Discount;
+import Domain.Discount.ProductTermDiscount;
+import Domain.Discount.Term.BaseTerm;
+import Domain.Discount.Term.Term;
 import Domain.Discount.XorDiscount;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Stubs.*;
@@ -893,18 +896,6 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * use case 2.8 - test buy Cart
-     */
-    @Test
-    public void testBuyCartInvalidCountry() {
-        setUpProductAddedToCart();
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        String address = data.getDeliveryData(Data.VALID).getAddress();
-        String country = data.getDeliveryData(Data.INVALID_COUNTRY).getCountry();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
-    }
-
-    /**
      * test: use case 3.1 - Logout
      */
     @Test
@@ -1297,7 +1288,6 @@ public class LogicManagerAllStubsTest {
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         Gson discountGson = builderDiscount.create();
         String discountToAdd=discountGson.toJson(discount,Discount.class);
-        System.out.println(discountToAdd);
         assertTrue(logicManager.addDiscount(data.getId(Data.VALID),discountToAdd,
                 data.getStore(Data.VALID).getName()).getValue());
     }

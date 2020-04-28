@@ -15,11 +15,6 @@ public class UserPurchasePolicy implements PurchasePolicy {
     }
 
     @Override
-    public boolean standInPolicy(PaymentData paymentData, DeliveryData deliveryData) {
-        return countries.contains(deliveryData.getCountry());
-    }
-
-    @Override
     public boolean isValid() {
         return (countries != null && !countries.isEmpty());
     }
@@ -31,6 +26,6 @@ public class UserPurchasePolicy implements PurchasePolicy {
 
     @Override
     public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
-        return false;
+        return countries.contains(country);
     }
 }

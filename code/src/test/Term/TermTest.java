@@ -20,7 +20,7 @@ public class TermTest {
     @Before
     public void setUp() {
             data=new TestData();
-            productAndAmounts=data.getProductsAndAmount();
+            productAndAmounts=data.getProductsAndAmount(Data.VALID);
             termsData=new ArrayList<>();
             termsData.add(data.getTerm(Data.VALID));
             termsData.add(data.getTerm(Data.VALID2));

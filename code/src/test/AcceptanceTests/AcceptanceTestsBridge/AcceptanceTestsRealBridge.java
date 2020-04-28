@@ -213,6 +213,10 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return serviceAPI.upadtePolicy(id,policyData,store).getValue();
     }
 
+    @Override
+    public String viewPolicy(String storeName) {
+       return serviceAPI.viewPolicy(storeName).getValue();
+    }
 
     //---------------------------Use-Case-4.2---------------------------------//
 

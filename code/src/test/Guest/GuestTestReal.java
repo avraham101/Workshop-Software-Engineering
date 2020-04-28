@@ -7,6 +7,7 @@ import DataAPI.PaymentData;
 import Domain.Basket;
 import Domain.Cart;
 import Domain.Product;
+import Domain.PurchasePolicy.BasketPurchasePolicy;
 import Domain.Store;
 import org.junit.Before;
 import org.junit.Test;
@@ -113,6 +114,21 @@ public class GuestTestReal extends GuestTest{
         guest.savePurchase(guest.getName());
         assertEquals(storeExpected, store.getPurchases().size());
         assertTrue(guest.getCart().getBaskets().isEmpty());
+    }
+
+    /**
+     * use case - 2.8 buy cart
+     */
+    @Test
+    public void testBuyCart(){
+        setUpBuy();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
+        guest.getCart().getBaskets().get(data.getStore(Data.VALID).getName()).getStore().setPurchasePolicy(
+                new BasketPurchasePolicy(0));
+        assertFalse(guest.buyCart(paymentData,deliveryData));
+        assertEquals(0,paymentData.getTotalPrice(),0.001);
+        assertTrue(deliveryData.getProducts().isEmpty());
     }
 
 

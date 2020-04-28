@@ -5,6 +5,7 @@ import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import Domain.*;
+import Domain.PurchasePolicy.BasketPurchasePolicy;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -86,10 +87,27 @@ public class UserRealTest extends UserAllStubsTest{
             }
         }
         PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        user.buyCart(paymentData,deliveryData);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
+        assertTrue(user.buyCart(paymentData,deliveryData));
         assertEquals(sum,paymentData.getTotalPrice(),0.001);
         assertEquals(size,deliveryData.getProducts().size());
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     */
+    @Test
+    public void testBuyCartFail(){
+        setUpReservedCart();
+        Cart cart = user.getState().getCart();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
+        cart.getBaskets().get(data.getStore(Data.VALID).getName()).getStore().setPurchasePolicy(
+                new BasketPurchasePolicy(0));
+        assertFalse(user.buyCart(paymentData,deliveryData));
+        assertEquals(0,paymentData.getTotalPrice(),0.001);
+        assertTrue(deliveryData.getProducts().isEmpty());
+
     }
 
     /**

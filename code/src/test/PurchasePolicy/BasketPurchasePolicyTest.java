@@ -6,10 +6,13 @@ import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import Domain.Permission;
 import Domain.PermissionType;
+import Domain.Product;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
 import Domain.Subscribe;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.HashMap;
 import java.util.HashSet;
 
 
@@ -33,8 +36,9 @@ public class BasketPurchasePolicyTest {
     @Test
     public void testBasketPurchasePolicy() {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        assertTrue(policy.standInPolicy(paymentData, deliveryData));
+        String country = data.getDeliveryData(Data.VALID).getCountry();
+        HashMap<Product, Integer> products = data.getProductsAndAmount(Data.VALID);
+        assertTrue(policy.standInPolicy(paymentData, country, products));
     }
 
     /**
@@ -43,8 +47,9 @@ public class BasketPurchasePolicyTest {
     @Test
     public void testBasketPurchasePolicyFail() {
         PaymentData paymentData = data.getPaymentData(Data.UNDER_AGE);
-        DeliveryData deliveryData = data.getDeliveryData(Data.FAIL_POLICY);
-        assertFalse(policy.standInPolicy(paymentData, deliveryData));
+        String country = data.getDeliveryData(Data.VALID).getCountry();
+        HashMap<Product, Integer> products = data.getProductsAndAmount(Data.LARGE_AMOUNT);
+        assertFalse(policy.standInPolicy(paymentData, country, products));
     }
 
     /**

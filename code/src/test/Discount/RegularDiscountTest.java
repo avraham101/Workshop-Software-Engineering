@@ -20,7 +20,7 @@ public class RegularDiscountTest {
     @Before
     public void setUp() {
         data=new TestData();
-        productAndAmounts=data.getProductsAndAmount();
+        productAndAmounts=data.getProductsAndAmount(Data.VALID);
         reqularDiscount=new RegularDiscount(data.getRealProduct(Data.VALID).getName(),10);
     }
 
