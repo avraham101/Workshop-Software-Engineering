@@ -51,4 +51,8 @@ public interface AcceptanceTestsBridge {
     int connect();
 
     boolean addDiscount(int id,DiscountTestData discountTestData,String store);
+
+    boolean deleteDiscount(int id, int discountId, String store);
+
+    List<DiscountTestData> getDiscountsOfStore(String store);
 }

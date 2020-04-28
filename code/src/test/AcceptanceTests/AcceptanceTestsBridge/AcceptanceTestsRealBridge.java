@@ -194,6 +194,23 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return serviceAPI.addDiscount(id,discountData,store).getValue();
     }
 
+    @Override
+    public boolean deleteDiscount(int id, int discountId, String store) {
+        return serviceAPI.deleteDiscountFromStore(id,discountId,store).getValue();
+    }
+
+    @Override
+    public List<DiscountTestData> getDiscountsOfStore(String store) {
+        List<DiscountTestData> discountTestDataList=new ArrayList<>();
+        HashMap<Integer,String> discounts=serviceAPI.viewDiscounts(store).getValue();
+        if(discounts==null)
+            return null;
+        for(int id:discounts.keySet())
+            discountTestDataList.add(buildDiscountTestData(id,discounts.get(id)));
+        return discountTestDataList;
+
+    }
+
 
     //---------------------------Use-Case-4.2---------------------------------//
 
@@ -464,6 +481,16 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return discountData;
     }
 
+    private DiscountTestData buildDiscountTestData(int id,String s) {
+        String product=null;
+        double percantage=-1;
+        String[] mid= s.split("\"");
+        product=mid[9];
+        int i=mid[12].indexOf('}');
+        percantage=Double.valueOf(mid[12].substring(1,i));
+        return new DiscountTestData(percantage,product,id);
+    }
+
     private List<Review> buildReviews(List<ReviewTestData> reviewTestData, String storeName, String productName){
         List<Review> apiReviews = new ArrayList<>();
         for(ReviewTestData rtd : reviewTestData)
@@ -496,19 +523,6 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     private ReviewTestData buildReviewTestData(Review review) {
         return new ReviewTestData(review.getWriter(),review.getContent());
     }
-//TODO take care of discounts
-
-//    private List<DiscountTestData> buildDiscountsTestData(List<Discount1> discount1s) {
-//        List<DiscountTestData> discountsTestData = new ArrayList<>();
-//        for(Discount1 discount1 : discount1s)
-//            discountsTestData.add(buildDiscountTestData(discount1));
-//
-//        return discountsTestData;
-//    }
-
-//    private DiscountTestData buildDiscountTestData(Discount1 discount1) {
-//        return new DiscountTestData(discount1.getPercentage(),null);
-//    }
 
     @Override
     public void changeAmountOfProductInStore(int id,ProductTestData product, int amount) {

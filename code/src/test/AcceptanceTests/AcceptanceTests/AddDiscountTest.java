@@ -1,7 +1,6 @@
 package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.DiscountTestData;
-import Domain.Discount.Discount;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,22 +12,24 @@ import static org.junit.Assert.*;
 public class AddDiscountTest extends AcceptanceTests {
 
     private DiscountTestData discountTestData;
+    private String store;
 
     @Before
     public void setUp(){
         addUserStoresAndProducts(superUser);
         discountTestData=new DiscountTestData(10,"cocacolaTest");
+        store="store1Test";
     }
 
     @Test
     public void addDiscountSuccess(){
-        assertTrue(bridge.addDiscount(superUser.getId(),discountTestData,"store1Test"));
+        assertTrue(bridge.addDiscount(superUser.getId(),discountTestData,store));
     }
 
     @Test
     public void addDiscountNullProduct(){
         discountTestData.setProduct(null);
-        assertFalse(bridge.addDiscount(superUser.getId(),discountTestData,"store1Test"));
+        assertFalse(bridge.addDiscount(superUser.getId(),discountTestData,store));
     }
 
     @Test
@@ -40,7 +41,7 @@ public class AddDiscountTest extends AcceptanceTests {
     @Test
     public void addDiscount0Percentage(){
         discountTestData.setPercentage(0);
-        assertFalse(bridge.addDiscount(superUser.getId(),discountTestData,"store1Test"));
+        assertFalse(bridge.addDiscount(superUser.getId(),discountTestData,store));
     }
 
     @Test
@@ -50,13 +51,13 @@ public class AddDiscountTest extends AcceptanceTests {
 
     @Test
     public void addDiscountNotMyStore(){
-        assertFalse(bridge.addDiscount(users.get(1).getId(),discountTestData,"store1Test"));
+        assertFalse(bridge.addDiscount(users.get(1).getId(),discountTestData,store));
     }
 
     @Test
     public void addDiscountProductNotInStore(){
         discountTestData.setProduct("appleTest");
-        assertFalse(bridge.addDiscount(superUser.getId(),discountTestData,"store1Test"));
+        assertFalse(bridge.addDiscount(superUser.getId(),discountTestData,store));
     }
 
 

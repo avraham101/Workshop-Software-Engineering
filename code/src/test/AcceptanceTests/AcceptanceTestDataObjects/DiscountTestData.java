@@ -3,10 +3,18 @@ package AcceptanceTests.AcceptanceTestDataObjects;
 public class DiscountTestData {
     private double percentage;
     private String product;
+    private int id;
 
     public DiscountTestData(double percentage, String product) {
         this.percentage = percentage;
         this.product=product;
+        this.id=-1;
+    }
+
+    public DiscountTestData(double percentage, String product, int id) {
+        this.percentage = percentage;
+        this.product = product;
+        this.id = id;
     }
 
     public double getPercentage() {
@@ -23,6 +31,14 @@ public class DiscountTestData {
 
     public void setProduct(String product) {
         this.product = product;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

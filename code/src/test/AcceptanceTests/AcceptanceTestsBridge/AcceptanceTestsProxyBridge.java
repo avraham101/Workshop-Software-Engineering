@@ -292,4 +292,18 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
             return realBridge.addDiscount(id,discountTestData,store);
         return false;
     }
+
+    @Override
+    public boolean deleteDiscount(int id, int discountId, String store) {
+        if(realBridge!=null)
+            return realBridge.deleteDiscount(id,discountId,store);
+        return false;
+    }
+
+    @Override
+    public List<DiscountTestData> getDiscountsOfStore(String store) {
+        if(realBridge!=null)
+            return realBridge.getDiscountsOfStore(store);
+        return null;
+    }
 }
