@@ -314,4 +314,11 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
             return realBridge.updatePolicy(id,purchasePolicyData,store);
         return false;
     }
+
+    @Override
+    public String viewPolicy(String storeName) {
+        if (realBridge != null)
+            return realBridge.viewPolicy(storeName);
+        return null;
+    }
 }

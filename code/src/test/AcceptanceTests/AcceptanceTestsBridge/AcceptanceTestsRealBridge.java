@@ -7,7 +7,6 @@ import Domain.*;
 import Service.ServiceAPI;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
-
 import java.util.*;
 
 public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
@@ -214,6 +213,10 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return serviceAPI.upadtePolicy(id,policyData,store).getValue();
     }
 
+    @Override
+    public String viewPolicy(String storeName) {
+       return serviceAPI.viewPolicy(storeName).getValue();
+    }
 
     //---------------------------Use-Case-4.2---------------------------------//
 
@@ -485,12 +488,10 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     }
 
     private DiscountTestData buildDiscountTestData(int id,String s) {
-        String product=null;
-        double percantage=-1;
         String[] mid= s.split("\"");
-        product=mid[9];
+        String product=mid[9];
         int i=mid[12].indexOf('}');
-        percantage=Double.valueOf(mid[12].substring(1,i));
+        double percantage=Double.valueOf(mid[12].substring(1,i));
         return new DiscountTestData(percantage,product,id);
     }
 
