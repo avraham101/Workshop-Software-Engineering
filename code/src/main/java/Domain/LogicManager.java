@@ -2,6 +2,7 @@ package Domain;
 
 import DataAPI.*;
 import Domain.Discount.Discount;
+import Domain.PurchasePolicy.BasketPurchasePolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Systems.*;
 import Systems.PaymentSystem.*;
@@ -48,8 +49,8 @@ public class LogicManager {
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         discountGson = builderDiscount.create();
         GsonBuilder builderPolicy = new GsonBuilder();
-        builderPolicy.registerTypeAdapter(PurchasePolicy.class, new InterfaceAdapter());
-        policyGson = builderPolicy.create();
+        builderPolicy.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
+        this.policyGson = builderPolicy.create();
         this.connectedUsers =connectedUsers;
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
@@ -95,8 +96,8 @@ public class LogicManager {
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         discountGson = builderDiscount.create();
         GsonBuilder builderPolicy = new GsonBuilder();
-        builderPolicy.registerTypeAdapter(Policy.class, new InterfaceAdapter());
-        policyGson = builderPolicy.create();
+        builderPolicy.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
+        this.policyGson = builderPolicy.create();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -146,8 +147,8 @@ public class LogicManager {
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         discountGson = builderDiscount.create();
         GsonBuilder builderPolicy = new GsonBuilder();
-        builderPolicy.registerTypeAdapter(Policy.class, new InterfaceAdapter());
-        policyGson = builderPolicy.create();
+        builderPolicy.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
+        this.policyGson = builderPolicy.create();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -559,13 +560,28 @@ public class LogicManager {
             return new Response<>(false, OpCode.Invalid_Payment_Data);
         if (addresToDeliver == null || addresToDeliver.isEmpty() || country == null || country.isEmpty())
             return new Response<>(false, OpCode.Invalid_Delivery_Data);
-        //3) sumUp cart - updated PaymentData, DeliveryData
+        //3) sumUp cart - updated PaymentData, DeliveryData and check policy of store
         boolean reserved = current.reservedCart();
         if(!reserved) {
             return new Response<>(false, OpCode.Fail_Buy_Cart);
         }
         DeliveryData deliveryData = new DeliveryData(addresToDeliver, country, new LinkedList<>());
-        current.buyCart(paymentData, deliveryData);
+        return buyAndPay(id, paymentData, deliveryData);
+    }
+
+    /**
+     * use case 2.8 - purchase cart
+     * @param id - the id
+     * @param paymentData - the payment data of this purchase
+     * @param deliveryData - delivery details
+     * @return true is the purchase succeeded, otherwise false
+     */
+    private Response<Boolean> buyAndPay(int id, PaymentData paymentData, DeliveryData deliveryData) {
+        User current = connectedUsers.get(id);
+        if(!current.buyCart(paymentData, deliveryData)){
+            current.cancelCart();
+            return new Response<>(false, OpCode.Not_Stands_In_Policy);
+        }
         //4) external systems
         Response<Boolean> payedAndDelivered = externalSystemsBuy(id,paymentData,deliveryData);
         if(!payedAndDelivered.getValue()) {

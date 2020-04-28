@@ -101,8 +101,8 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
 
     /**
      * part of use case 3.3 - write review
+     * empty for overriding in extended class
      */
-    //TODO why it is empty
     @Override
     protected void testWriteReviewValid() {
 

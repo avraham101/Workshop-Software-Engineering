@@ -1409,7 +1409,6 @@ public class LogicManagerAllStubsTest {
         builderPolicy.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
         Gson policyGson = builderPolicy.create();
         String policyToAdd = policyGson.toJson(policy, PurchasePolicy.class);
-        System.out.println(policyToAdd);
         assertTrue(logicManager.updatePolicy(data.getId(Data.VALID),policyToAdd,
                 data.getStore(Data.VALID).getName()).getValue());
     }
@@ -1863,18 +1862,6 @@ public class LogicManagerAllStubsTest {
         assertNull(response.getValue());
         assertEquals(response.getReason(),OpCode.Dont_Have_Permission);
 
-    }
-
-    //TODO remove this for tests
-    @Test
-    public void tryi(){
-        XorDiscount xorDiscount=new XorDiscount(data.getDiscounts(Data.VALID));
-        GsonBuilder builderDiscount = new GsonBuilder();
-        builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
-        Gson discountGson = builderDiscount.create();
-        String a=discountGson.toJson(xorDiscount,Discount.class);
-        //Discount o=logicManager.makeDiscountFromData(a);
-        assertTrue(true);
     }
 
 }

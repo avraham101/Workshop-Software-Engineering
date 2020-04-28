@@ -15,15 +15,4 @@ public class PurchasePolicyTestData {
     public void setMaxAmount(int maxAmount) {
         this.maxAmount = maxAmount;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        PurchasePolicyTestData that = (PurchasePolicyTestData) o;
-
-        if (that.maxAmount != maxAmount) return false;
-        return true;
-    }
 }

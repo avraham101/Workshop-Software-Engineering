@@ -110,8 +110,8 @@ public class User {
      * @param paymentData - the payment data
      * @param deliveryData - the delivery data
      */
-    public void buyCart(PaymentData paymentData, DeliveryData deliveryData) {
-        state.buyCart(paymentData, deliveryData);
+    public boolean buyCart(PaymentData paymentData, DeliveryData deliveryData) {
+        return state.buyCart(paymentData, deliveryData);
     }
 
     /**

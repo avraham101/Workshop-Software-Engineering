@@ -2,9 +2,29 @@ package Store;
 
 import Data.Data;
 import DataAPI.ProductData;
+import Domain.Product;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class StoreTestReal extends StoreTestsAllStubs {
+
+
+    /**
+     * part of 2.8 - buy cart
+     */
+    @Test
+    public void calculatePrice(){
+        setUpDiscountAdded();
+        HashMap<Product,Integer> productsAmount=new HashMap<>();
+        productsAmount.put(data.getRealProduct(Data.VALID).clone(),3);
+        double price=store.calculatePrice(productsAmount);
+        assertEquals(price,27,0.001);
+    }
 
     /**
      * use case 4.1.1
@@ -34,4 +54,5 @@ public class StoreTestReal extends StoreTestsAllStubs {
         ProductData product=data.getProductData(Data.EDIT);
         assertTrue(store.getProducts().get(product.getProductName()).equal(product));
     }
+
 }
