@@ -733,6 +733,25 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         catch(Exception e){
             fail();
         }
+    }
+
+    /**
+     * use case 4.2.2.1 - update policy for the store
+     */
+    @Test @Override
+    public void testUpdatePolicy() {
+        super.testUpdatePolicy();
+        Subscribe subscribe = ((Subscribe) currUser.getState());
+        Store store = subscribe.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
+        assertNotNull(store.getPurchasePolicy());
+    }
+
+    @Test @Override
+    public void testViewStorePolicy() {
+        super.testViewStorePolicy();
+        String store = data.getStore(Data.VALID).getName();
+        String output = logicManager.viewPolicy(store).getValue();
+        assertFalse(output.isEmpty());
 
     }
 

@@ -2,6 +2,7 @@ package Domain;
 
 import DataAPI.*;
 import Domain.Discount.Discount;
+import Domain.PurchasePolicy.PurchasePolicy;
 import jdk.internal.org.objectweb.asm.Opcodes;
 
 import java.time.LocalDateTime;
@@ -240,6 +241,16 @@ public class Subscribe extends UserState{
         if(!permission.canCRUDPolicyAndDiscount())
             return new Response<>(false, OpCode.Dont_Have_Permission);
         return permission.getStore().deleteDiscount(discountId);
+    }
+
+    @Override
+    public Response<Boolean> updateStorePolicy(String storeName, PurchasePolicy policy) {
+        Permission permission=permissions.get(storeName);
+        if(permission==null)
+            return new Response<>(false, OpCode.Dont_Have_Permission);
+        if(!permission.canCRUDPolicyAndDiscount())
+            return new Response<>(false, OpCode.Dont_Have_Permission);
+        return permission.getStore().addPolicy(policy);
     }
 
     /**

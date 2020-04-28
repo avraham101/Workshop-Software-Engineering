@@ -2,6 +2,7 @@ package Domain;
 
 import DataAPI.*;
 import Domain.Discount.Discount;
+import Domain.PurchasePolicy.PurchasePolicy;
 import Systems.*;
 import Systems.PaymentSystem.*;
 import Systems.SupplySystem.*;
@@ -47,7 +48,7 @@ public class LogicManager {
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         discountGson = builderDiscount.create();
         GsonBuilder builderPolicy = new GsonBuilder();
-        builderPolicy.registerTypeAdapter(Policy.class, new InterfaceAdapter());
+        builderPolicy.registerTypeAdapter(PurchasePolicy.class, new InterfaceAdapter());
         policyGson = builderPolicy.create();
         this.connectedUsers =connectedUsers;
         usersIdCounter=new AtomicInteger(0);
@@ -873,22 +874,53 @@ public class LogicManager {
         return new Response<>(response,OpCode.Success);
     }
 
-
     /**
-     * 4.2.2 - update policy
+     * 4.2.2.1 - update policy
      */
-    public Policy makePolicyFromData(String policyData){
+    private PurchasePolicy makePolicyFromData(String policyData){
         try {
-            Policy policy = policyGson.fromJson(policyData, Policy.class);
-            //TODO is valid and tests
-            if (policy != null)//&&policy.isValid())
+            PurchasePolicy policy = policyGson.fromJson(policyData, PurchasePolicy.class);
+            if (policy != null && policy.isValid())
                 return policy;
         }
         catch (Exception e){}
         return null;
     }
 
+    /**
+     * use case 4.2.2.1 - update policy
+     * @param id - the id of the user
+     * @param policyData - the data of the policy to add
+     * @param storeName - the name of the store to add the policy
+     * @return - true if added, false if not
+     */
+    public Response<Boolean> updatePolicy(int id, String policyData, String storeName) {
+        loggerSystem.writeEvent("LogicManager","updatePolicy",
+                "update the policy of the store", new Object[] {policyData,storeName});
+        User current=connectedUsers.get(id);
+        Store store=stores.get(storeName);
+        if(store == null)
+            return new Response<>(false,OpCode.Store_Not_Found);
+        PurchasePolicy policy = makePolicyFromData(policyData);
+        if(policy==null)
+            return new Response<>(false,OpCode.Invalid_Policy);
+        return current.updateStorePolicy(storeName, policy);
+    }
 
+    /**
+     * 4.2.2.2 - view policy
+     * @param storeName - name of the store to get the policy from
+     */
+    public Response<String> viewPolicy(String storeName){
+        loggerSystem.writeEvent("LogicManager","viewPolicy",
+                "view the policy of the store", new Object[] {storeName});
+        Store store=stores.get(storeName);
+        if(store==null)
+            return new Response<>(null,OpCode.Store_Not_Found);
+        PurchasePolicy policy = store.getPurchasePolicy();
+        String output = discountGson.toJson(policy);
+        return new Response<>(output,OpCode.Success);
+    }
 
     /**
      * use case 4.3 - manage owner

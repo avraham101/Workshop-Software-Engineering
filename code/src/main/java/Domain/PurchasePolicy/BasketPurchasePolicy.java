@@ -4,6 +4,11 @@ import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
 
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 
 public class BasketPurchasePolicy implements PurchasePolicy {
 
@@ -21,4 +26,15 @@ public class BasketPurchasePolicy implements PurchasePolicy {
         }
         return (counter <= maxAmount);
     }
+
+    @Override
+    public boolean isValid() {
+        return (maxAmount >= 0);
+    }
+
+    @Override
+    public List<String> getProducts() {
+        return new LinkedList<>();
+    }
+
 }

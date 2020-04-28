@@ -380,6 +380,23 @@ public class Store {
         return new Response<>(false,OpCode.Not_Found);
     }
 
+    /**
+     * use case 4.2.2 - update the store purchase policy
+     * @param policy - the policy to update to
+     * @return - true if updated, false if not
+     */
+    public Response<Boolean> addPolicy(PurchasePolicy policy) {
+        if(!checkProducts(policy))
+            return new Response<>(false,OpCode.Invalid_Product);
+        this.purchasePolicy = policy;
+        return new Response<>(true,OpCode.Success);
+    }
 
-
+    private boolean checkProducts(PurchasePolicy policy) {
+        List<String> productsInPolicy = policy.getProducts();
+        for(String product:productsInPolicy)
+            if(!this.products.containsKey(product))
+                return false;
+        return true;
+    }
 }

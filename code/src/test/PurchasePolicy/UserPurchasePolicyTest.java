@@ -44,4 +44,29 @@ public class UserPurchasePolicyTest {
         assertFalse(policy.standInPolicy(paymentData, deliveryData));
     }
 
+    /**
+     * check if the policy is indeed valid
+     */
+    @Test
+    public void checkValidPolicy() {
+        assertTrue(policy.isValid());
+    }
+
+    /**
+     * check if the policy is indeed not valid
+     */
+    @Test
+    public void checkNotValidPolicyNullList() {
+        policy = (UserPurchasePolicy) data.getPurchasePolicy(Data.NULL_USER_PURCHASE_POLICY);
+        assertFalse(policy.isValid());
+    }
+
+    /**
+     * check if the policy is indeed not valid
+     */
+    @Test
+    public void checkNotValidPolicyEmptyList() {
+        policy = (UserPurchasePolicy) data.getPurchasePolicy(Data.EMPTY_USER_PURCHASE_POLICY);
+        assertFalse(policy.isValid());
+    }
 }

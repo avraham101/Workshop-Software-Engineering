@@ -31,7 +31,8 @@ public enum OpCode implements Serializable {
     Invalid_Request,
     Null_Request,
     Invalid_Discount,
-    No_Stores_To_Manage
+    No_Stores_To_Manage,
+    Invalid_Policy,
 
 
 }
