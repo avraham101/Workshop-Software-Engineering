@@ -7,7 +7,6 @@ import Domain.*;
 import Service.ServiceAPI;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
-
 import java.util.*;
 
 public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
@@ -497,10 +496,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     private String buildPolicy(PurchasePolicyTestData policyTestData) {
         String policyData = "{\"CLASSNAME\":\"Domain.PurchasePolicy.BasketPurchasePolicy\",\"DATA\":{\"maxAmount\":" +
                 ""+policyTestData.getMaxAmount()+"}}";
-        String test = "{\"CLASSNAME\":\"Domain.PurchasePolicy.BasketPurchasePolicy\"," +
-                "\"DATA\":{\"maxAmount\":10}}";
-
-        return test;
+        return policyData;
     }
 
     private List<Review> buildReviews(List<ReviewTestData> reviewTestData, String storeName, String productName){

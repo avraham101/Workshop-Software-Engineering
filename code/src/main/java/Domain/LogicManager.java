@@ -2,6 +2,7 @@ package Domain;
 
 import DataAPI.*;
 import Domain.Discount.Discount;
+import Domain.PurchasePolicy.BasketPurchasePolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Systems.*;
 import Systems.PaymentSystem.*;
@@ -48,8 +49,8 @@ public class LogicManager {
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         discountGson = builderDiscount.create();
         GsonBuilder builderPolicy = new GsonBuilder();
-        builderPolicy.registerTypeAdapter(PurchasePolicy.class, new InterfaceAdapter());
-        policyGson = builderPolicy.create();
+        builderPolicy.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
+        this.policyGson = builderPolicy.create();
         this.connectedUsers =connectedUsers;
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
@@ -95,8 +96,8 @@ public class LogicManager {
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         discountGson = builderDiscount.create();
         GsonBuilder builderPolicy = new GsonBuilder();
-        builderPolicy.registerTypeAdapter(Policy.class, new InterfaceAdapter());
-        policyGson = builderPolicy.create();
+        builderPolicy.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
+        this.policyGson = builderPolicy.create();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -146,8 +147,8 @@ public class LogicManager {
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         discountGson = builderDiscount.create();
         GsonBuilder builderPolicy = new GsonBuilder();
-        builderPolicy.registerTypeAdapter(Policy.class, new InterfaceAdapter());
-        policyGson = builderPolicy.create();
+        builderPolicy.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
+        this.policyGson = builderPolicy.create();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();

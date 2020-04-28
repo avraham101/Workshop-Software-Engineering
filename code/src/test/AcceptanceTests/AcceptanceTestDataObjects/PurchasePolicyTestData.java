@@ -1,4 +1,4 @@
-package AcceptanceTests.AcceptanceTestDataObjects.FilterTestData;
+package AcceptanceTests.AcceptanceTestDataObjects;
 
 public class PurchasePolicyTestData {
 

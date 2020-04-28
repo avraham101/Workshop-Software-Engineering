@@ -1,6 +1,6 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.PurchasePolicyTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.PurchasePolicyTestData;
 import org.junit.Before;
 import org.junit.Test;
 
