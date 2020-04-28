@@ -5,7 +5,8 @@ import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import Domain.Product;
 
-import java.util.HashMap;
+import java.util.*;
+
 
 public class BasketPurchasePolicy implements PurchasePolicy {
 
@@ -23,4 +24,20 @@ public class BasketPurchasePolicy implements PurchasePolicy {
         }
         return (counter <= maxAmount);
     }
+
+    @Override
+    public boolean isValid() {
+        return (maxAmount >= 0);
+    }
+
+    @Override
+    public List<String> getProducts() {
+        return new LinkedList<>();
+    }
+
+    @Override
+    public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
+        return false;
+    }
+
 }

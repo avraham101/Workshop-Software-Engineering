@@ -58,4 +58,43 @@ public class AndDiscountTest {
     public void checkTermSuccess() {
         assertTrue(andDiscount.checkTerm(productAndAmounts));
     }
+
+    /**
+     * test function: is valid
+     * case: success
+     */
+    @Test
+    public void isValidSuccess() {
+        assertTrue(andDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidHasNotValidDiscount() {
+        discounts.addAll(data.getDiscounts(Data.NULL_PRODUCT));
+        assertFalse(andDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidHasNullDiscount() {
+        andDiscount=new AndDiscount(null);
+        assertFalse(andDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidEmptyDiscountList() {
+        discounts.clear();
+        assertFalse(andDiscount.isValid());
+    }
 }

@@ -67,8 +67,6 @@ public class UserAllStubsTest {
     private void setUpOpenStore(){
         setUpSubscribe();
         StoreData storeData = new StoreData("Store", "description");
-        PaymentSystem paymentSystem = new ProxyPayment();
-        SupplySystem supplySystem = new ProxySupply();
         user.openStore(storeData);
     }
 
@@ -95,6 +93,15 @@ public class UserAllStubsTest {
     protected void setUpProductAdded(){
         setUpOpenStore();
         user.addProductToStore(data.getProductData(Data.VALID));
+    }
+
+    /**
+     * set up add discount to a store
+     */
+    private void setUpDiscountAdded() {
+        setUpProductAdded();
+        user.addDiscountToStore(data.getStore(Data.VALID).getName(),
+                data.getDiscounts(Data.VALID).get(0));
     }
 
     /**
@@ -339,6 +346,46 @@ public class UserAllStubsTest {
     public void testEditProductFromStoreSubscribe() {
         setUpProductAdded();
         assertTrue(user.editProductFromStore(data.getProductData(Data.EDIT)).getValue());
+    }
+
+
+    /**
+     * use case 4.2.1.1 -add product to store
+     */
+    @Test
+    public void testAddDiscountToStoreSuccessSubscribe(){
+        setUpProductAdded();
+        assertTrue(user.addDiscountToStore(data.getStore(Data.VALID).getName(),
+                data.getDiscounts(Data.VALID).get(0)).getValue());
+    }
+
+
+    /**
+     * use case 4.2.1.1 -add product to store
+     */
+    @Test
+    public void testAddDiscountToStoreFailGuest(){
+        setUpGuest();
+        assertFalse(user.addDiscountToStore(data.getStore(Data.VALID).getName(),
+                data.getDiscounts(Data.VALID).get(0)).getValue());
+    }
+
+    /**
+     * use case 4.2.1.2 -remove product from store
+     */
+    @Test
+    public void testDeleteDiscountFromStoreSuccessSubscribe(){
+        setUpDiscountAdded();
+        assertTrue(user.deleteDiscountFromStore(0,data.getStore(Data.VALID).getName()).getValue());
+    }
+
+    /**
+     * use case 4.2.1.2 -remove product from store
+     */
+    @Test
+    public void testDeleteDiscountFromStoreFailGuest(){
+        setUpGuest();
+        assertFalse(user.deleteDiscountFromStore(0,data.getStore(Data.VALID).getName()).getValue());
     }
 
     /**

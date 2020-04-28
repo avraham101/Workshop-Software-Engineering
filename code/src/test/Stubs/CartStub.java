@@ -29,7 +29,8 @@ public class CartStub extends Cart {
      * @return
      */
     @Override
-    public void buy(PaymentData paymentData, DeliveryData addresToDeliver) {
+    public boolean buy(PaymentData paymentData, DeliveryData addresToDeliver) {
+        return true;
     }
 
     /**

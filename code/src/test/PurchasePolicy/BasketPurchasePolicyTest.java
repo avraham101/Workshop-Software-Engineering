@@ -47,4 +47,21 @@ public class BasketPurchasePolicyTest {
         assertFalse(policy.standInPolicy(paymentData, deliveryData));
     }
 
+    /**
+     * check if the policy is indeed valid
+     */
+    @Test
+    public void checkValidPolicy() {
+        assertTrue(policy.isValid());
+    }
+
+    /**
+     * check if the policy is indeed not valid
+     */
+    @Test
+    public void checkNotValidPolicy() {
+        policy = (BasketPurchasePolicy)data.getPurchasePolicy(Data.INVALID_BASKET_PURCHASE_POLICY);
+        assertFalse(policy.isValid());
+    }
+
 }

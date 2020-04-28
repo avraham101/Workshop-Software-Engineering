@@ -229,6 +229,28 @@ public class UserRealTest extends UserAllStubsTest{
     }
 
     /**
+     * use case 4.2.1.1 -add product to store
+     */
+    @Test @Override
+    public void testAddDiscountToStoreSuccessSubscribe(){
+        super.testAddDiscountToStoreSuccessSubscribe();
+        Subscribe sub=(Subscribe) user.getState();
+        Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
+        assertEquals(data.getDiscounts(Data.VALID).get(0),store.getDiscount().get(0));
+    }
+
+    /**
+     * use case 4.2.1.2 -remove product from store
+     */
+    @Test @Override
+    public void testDeleteDiscountFromStoreSuccessSubscribe(){
+        super.testDeleteDiscountFromStoreSuccessSubscribe();
+        Subscribe sub=(Subscribe) user.getState();
+        Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
+        assertTrue(store.getDiscount().isEmpty());
+    }
+
+    /**
      * use case 4.5 - add manager
      */
     @Override @Test

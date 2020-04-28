@@ -3,12 +3,18 @@ package LogicManagerTests;
 import DataAPI.*;
 import Data.Data;
 import Domain.*;
+import Domain.Discount.Discount;
+import Domain.Discount.RegularDiscount;
 import Systems.HashSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
+import Utils.InterfaceAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -683,6 +689,72 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertFalse(store.getProducts().get(pData.getProductName()).equal(pData));
         permission.addType(PermissionType.OWNER);
     }
+
+    /**
+     * use case 4.2.1.1 -add discount to store
+     */
+    @Test @Override
+    public void testAddDiscountToStoreSuccess(){
+        super.testAddDiscountToStoreSuccess();
+        Subscribe sub = ((Subscribe) currUser.getState());
+        Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
+        assertTrue(store.getDiscount().containsKey(0));
+    }
+
+    /**
+     * use case 4.2.1.2 -remove discount from store
+     */
+    @Test
+    public void testDeleteDiscountFromStoreSuccess(){
+        super.testDeleteDiscountFromStoreSuccess();
+        Subscribe sub = ((Subscribe) currUser.getState());
+        Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
+        assertTrue(store.getDiscount().isEmpty());
+    }
+
+    /**
+     * use case 4.2.1.3 -view discounts from store
+     * test that the discount we added was added
+     */
+    @Test @Override
+    public void testViewDiscountSuccess(){
+        super.testViewDiscountSuccess();
+        String store=data.getStore(Data.VALID).getName();
+        HashMap<Integer, String> discounts =logicManager.viewDiscounts(store).getValue();
+        assertNotNull(discounts.get(0));
+        try {
+            GsonBuilder builderDiscount = new GsonBuilder();
+            builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
+            Gson discountGson = builderDiscount.create();
+            RegularDiscount discount = (RegularDiscount) (discountGson.fromJson(discounts.get(0),Discount.class));
+            assertEquals(discount.getProduct(),data.getProductData(Data.VALID).getProductName());
+            assertEquals(discount.getPercantage(),10,0.001);
+        }
+        catch(Exception e){
+            fail();
+        }
+    }
+
+    /**
+     * use case 4.2.2.1 - update policy for the store
+     */
+    @Test @Override
+    public void testUpdatePolicy() {
+        super.testUpdatePolicy();
+        Subscribe subscribe = ((Subscribe) currUser.getState());
+        Store store = subscribe.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
+        assertNotNull(store.getPurchasePolicy());
+    }
+
+    @Test @Override
+    public void testViewStorePolicy() {
+        super.testViewStorePolicy();
+        String store = data.getStore(Data.VALID).getName();
+        String output = logicManager.viewPolicy(store).getValue();
+        assertFalse(output.isEmpty());
+
+    }
+
 
     /**
      * use case 4.3 - manage owner - success

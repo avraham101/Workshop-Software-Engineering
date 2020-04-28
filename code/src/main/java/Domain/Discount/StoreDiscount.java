@@ -2,7 +2,10 @@ package Domain.Discount;
 
 import Domain.Product;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class StoreDiscount implements Discount {
     private int minAmount;
@@ -25,5 +28,15 @@ public class StoreDiscount implements Discount {
         for(Product p:list.keySet())
             sum+=list.get(p)*p.getPrice();
         return sum>=minAmount;
+    }
+
+    @Override
+    public boolean isValid() {
+        return minAmount>0&&percentage>0&&percentage<100;
+    }
+
+    @Override
+    public Set<String> getProducts() {
+        return new HashSet<>();
     }
 }

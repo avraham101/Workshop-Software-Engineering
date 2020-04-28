@@ -1,6 +1,8 @@
 package Domain;
 
 import DataAPI.*;
+import Domain.Discount.Discount;
+import Domain.PurchasePolicy.PurchasePolicy;
 import jdk.internal.org.objectweb.asm.Opcodes;
 
 import java.time.LocalDateTime;
@@ -209,6 +211,46 @@ public class Subscribe extends UserState{
         if(!permission.canAddProduct())
             return new Response<>(false, OpCode.Dont_Have_Permission);
         return permission.getStore().editProduct(productData);
+    }
+
+    /**
+     * use case 4.2.1.1 - add discount to store
+     * @param storeName
+     * @param discount
+     * @return
+     */
+    @Override
+    public Response<Boolean> addDiscountToStore(String storeName, Discount discount) {
+        Permission permission=permissions.get(storeName);
+        if(permission==null)
+            return new Response<>(false, OpCode.Dont_Have_Permission);
+        if(!permission.canCRUDPolicyAndDiscount())
+            return new Response<>(false, OpCode.Dont_Have_Permission);
+        return permission.getStore().addDiscount(discount);
+    }
+    /**
+     * 4.2.1.2 - remove discount
+     * @param discountId - id of the discount ro delete
+     * @param storeName - name of the store to remove the discount from
+     */
+    @Override
+    public Response<Boolean> deleteDiscountFromStore(int discountId, String storeName) {
+        Permission permission=permissions.get(storeName);
+        if(permission==null)
+            return new Response<>(false, OpCode.Dont_Have_Permission);
+        if(!permission.canCRUDPolicyAndDiscount())
+            return new Response<>(false, OpCode.Dont_Have_Permission);
+        return permission.getStore().deleteDiscount(discountId);
+    }
+
+    @Override
+    public Response<Boolean> updateStorePolicy(String storeName, PurchasePolicy policy) {
+        Permission permission=permissions.get(storeName);
+        if(permission==null)
+            return new Response<>(false, OpCode.Dont_Have_Permission);
+        if(!permission.canCRUDPolicyAndDiscount())
+            return new Response<>(false, OpCode.Dont_Have_Permission);
+        return permission.getStore().addPolicy(policy);
     }
 
     /**

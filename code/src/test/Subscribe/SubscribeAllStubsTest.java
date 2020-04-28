@@ -75,6 +75,15 @@ public class SubscribeAllStubsTest {
     }
 
     /**
+     * set up discount in the store
+     */
+    private void setUpDiscountAdded() {
+        setUpProductAdded();
+        sub.addDiscountToStore(data.getStore(Data.VALID).getName(),
+                data.getDiscounts(Data.VALID).get(0));
+    }
+
+    /**
      * set up a valid cart with a valid product
      */
     private void setUpProductAddedToCart(){
@@ -394,6 +403,87 @@ public class SubscribeAllStubsTest {
     protected void testSuccessEditProduct(){
         assertTrue(sub.editProductFromStore(data.getProductData(Data.EDIT)).getValue());
     }
+
+    /**
+     * use case 4.2.1.1 -add product to store
+     */
+    @Test
+    public void testAddDiscountToStoreSuccess(){
+        setUpProductAdded();
+        assertTrue(sub.addDiscountToStore(data.getStore(Data.VALID).getName(),
+                data.getDiscounts(Data.VALID).get(0)).getValue());
+    }
+
+    /**
+     * use case 4.2.1.1 -add product to store
+     */
+    @Test
+    public void checkAddDiscountToStoreNotManager() {
+        setUpProductAdded();
+        String validStoreName=data.getProductData(Data.VALID).getStoreName();
+        Permission permission=sub.getPermissions().get(validStoreName);
+        Store store=permission.getStore();
+        sub.getPermissions().clear();
+        assertFalse(sub.addDiscountToStore(store.getName(),data.getDiscounts(Data.VALID).get(0)).getValue());
+        assertTrue(store.getDiscount().isEmpty());
+        sub.getPermissions().put(validStoreName,permission);
+    }
+
+    /**
+     * use case 4.2.1.1 -add product to store
+     */
+    @Test
+    public void checkAddDiscountToStoreHasNoPermission() {
+        setUpProductAdded();
+        String validStoreName=data.getProductData(Data.VALID).getStoreName();
+        Permission permission=sub.getPermissions().get(validStoreName);
+        Store store=permission.getStore();
+        permission.removeType(PermissionType.OWNER);
+        assertFalse(sub.addDiscountToStore(store.getName(),data.getDiscounts(Data.VALID).get(0)).getValue());
+        assertTrue(store.getDiscount().isEmpty());
+        permission.addType(PermissionType.OWNER);
+    }
+
+
+    /**
+     * use case 4.2.1.2 -remove product from store
+     */
+    @Test
+    public void testRemoveDiscountFromStoreSuccess(){
+        setUpDiscountAdded();
+        assertTrue(sub.deleteDiscountFromStore(0,data.getStore(Data.VALID).getName()).getValue());
+    }
+
+    /**
+     * use case 4.2.1.2 -remove product from store
+     */
+    @Test
+    public void checkRemoveDiscountFromStoreNotManager() {
+        setUpDiscountAdded();
+        String validStoreName=data.getProductData(Data.VALID).getStoreName();
+        Permission permission=sub.getPermissions().get(validStoreName);
+        Store store=permission.getStore();
+        sub.getPermissions().clear();
+        assertFalse(sub.deleteDiscountFromStore(0,store.getName()).getValue());
+        assertFalse(store.getDiscount().isEmpty());
+        sub.getPermissions().put(validStoreName,permission);
+    }
+
+    /**
+     * use case 4.2.1.2 -remove product from store
+     */
+    @Test
+    public void checkRemoveDiscountFromStoreHasNoPermission() {
+        setUpDiscountAdded();
+        String validStoreName=data.getProductData(Data.VALID).getStoreName();
+        Permission permission=sub.getPermissions().get(validStoreName);
+        Store store=permission.getStore();
+        permission.removeType(PermissionType.OWNER);
+        assertFalse(sub.deleteDiscountFromStore(0,store.getName()).getValue());
+        assertFalse(store.getDiscount().isEmpty());
+        permission.addType(PermissionType.OWNER);
+    }
+
 
 
     /**

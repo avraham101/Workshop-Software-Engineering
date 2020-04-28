@@ -5,8 +5,6 @@ import Domain.Discount.Discount;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
 import DataAPI.*;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.SupplySystem.SupplySystem;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -171,16 +169,25 @@ public class Store {
 
 
     /**
-     * use case 2.8 - purchase cart
-     * the function calc the price of the products after discount
-     * pre-condition: all products in list are available.
-     * @param list - the list of products to reserveCart and there amount
-     * @return
+     * use case 2.8 - calculate the price of a basket
+     * @param products
+     * @return calculate price of the products after discounts
      */
-    //TODO check this
-    //public double getPriceForBasket(HashMap<Product, Integer> list) {
-      //  return discount.stands(list);
-    //}
+    public double calculatePrice(HashMap<Product, Integer> products) {
+        double price=0;
+        for(int discountId:discountPolicy.keySet()){
+            Discount discount=discountPolicy.get(discountId);
+            if (discount.checkTerm(products)){
+                discount.calculateDiscount(products);
+            }
+        }
+        for(Product p:products.keySet()){
+            int amount =  products.get(p);
+            price += amount * p.getPrice();
+        }
+        return price;
+
+    }
 
     /**
      * use case 2.8 - reserveCart cart
@@ -190,7 +197,6 @@ public class Store {
     public boolean reserveProducts(HashMap<Product, Integer> otherProducts) {
         HashMap<Product, Integer> productsReserved = new HashMap<>();
         boolean output = true;
-        //TODO add here policy
         for(Product other: otherProducts.keySet()) {
             int amount = otherProducts.get(other);
             Product real = products.get(other.getName());
@@ -350,5 +356,57 @@ public class Store {
         old.edit(productData,categoryList.get(categoryName));
         return new Response<>(true,OpCode.Success);
     }
+
+    /**
+     * use case 4.2.1.1 - add discount to store
+     * @param discount - discount to add to the store
+     * @return
+     */
+    public Response<Boolean> addDiscount(Discount discount) {
+        if(!checkProducts(discount))
+            return new Response<>(false,OpCode.Invalid_Product);
+        discountPolicy.putIfAbsent(discountCounter.getAndIncrement(),discount);
+        return new Response<>(true,OpCode.Success);
+    }
+
+    private boolean checkProducts(Discount discount) {
+        Set<String> productsInDiscount=discount.getProducts();
+        for(String product:productsInDiscount)
+            if(!this.products.containsKey(product))
+                return false;
+        return true;
+    }
+
+    /**
+     * use case 4.2.1.2 - delete discount from store
+     * @param discountId - discount to delete from the store
+     * @return if the removing was successfull
+     */
+    public Response<Boolean> deleteDiscount(int discountId) {
+        if(discountPolicy.remove(discountId)!=null)
+            return new Response<>(true, OpCode.Success);
+        return new Response<>(false,OpCode.Not_Found);
+    }
+
+    /**
+     * use case 4.2.2 - update the store purchase policy
+     * @param policy - the policy to update to
+     * @return - true if updated, false if not
+     */
+    public Response<Boolean> addPolicy(PurchasePolicy policy) {
+        if(!checkProducts(policy))
+            return new Response<>(false,OpCode.Invalid_Product);
+        this.purchasePolicy = policy;
+        return new Response<>(true,OpCode.Success);
+    }
+
+    private boolean checkProducts(PurchasePolicy policy) {
+        List<String> productsInPolicy = policy.getProducts();
+        for(String product:productsInPolicy)
+            if(!this.products.containsKey(product))
+                return false;
+        return true;
+    }
+
 
 }

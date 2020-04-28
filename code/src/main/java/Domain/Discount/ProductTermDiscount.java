@@ -4,6 +4,8 @@ import Domain.Discount.Term.Term;
 import Domain.Product;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public class ProductTermDiscount implements Discount {
     private Term term;
@@ -35,5 +37,16 @@ public class ProductTermDiscount implements Discount {
                     break;
             }
         return found&&term.checkTerm(list,product,amount);
+    }
+
+    @Override
+    public boolean isValid() {
+        return term!=null&&term.isValid()&&product!=null&&amount>0;
+    }
+
+    @Override
+    public Set<String> getProducts() {
+        Set<String> producs=term.getProducts();
+        return null;
     }
 }

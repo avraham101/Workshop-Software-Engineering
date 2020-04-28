@@ -1,16 +1,12 @@
 package AcceptanceTests.AcceptanceTestsBridge;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
-import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.CategoryFilterTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.PriceRangeFilterTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.ProductNameFilterTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.*;
 import DataAPI.*;
 import Domain.*;
 import Service.ServiceAPI;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
-
 import java.util.*;
 
 public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
@@ -184,7 +180,41 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         ProductData productData = buildProductData(product);
         return serviceAPI.editProductFromStore(id,productData).getValue();
     }
-    //---------------------------Use-Case-4.1---------------------------------//
+    //---------------------------Use-Case-4.1 --------------------------------//
+
+    //---------------------------Use-Case-4.2---------------------------------//
+
+    @Override
+    public boolean addDiscount(int id,DiscountTestData discountTestData,String store) {
+        String discountData=buildDiscount(discountTestData);
+        return serviceAPI.addDiscount(id,discountData,store).getValue();
+    }
+
+    @Override
+    public boolean deleteDiscount(int id, int discountId, String store) {
+        return serviceAPI.deleteDiscountFromStore(id,discountId,store).getValue();
+    }
+
+    @Override
+    public List<DiscountTestData> getDiscountsOfStore(String store) {
+        List<DiscountTestData> discountTestDataList=new ArrayList<>();
+        HashMap<Integer,String> discounts=serviceAPI.viewDiscounts(store).getValue();
+        if(discounts==null)
+            return null;
+        for(int id:discounts.keySet())
+            discountTestDataList.add(buildDiscountTestData(id,discounts.get(id)));
+        return discountTestDataList;
+
+    }
+
+    @Override
+    public boolean updatePolicy(int id, PurchasePolicyTestData purchasePolicyData, String store) {
+        String policyData = buildPolicy(purchasePolicyData);
+        return serviceAPI.upadtePolicy(id,policyData,store).getValue();
+    }
+
+
+    //---------------------------Use-Case-4.2---------------------------------//
 
     //---------------------------Use-Case-4.3---------------------------------//
     @Override
@@ -342,10 +372,9 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         int amountInStore = productData.getAmount();
         double price = productData.getPrice();
         String category = productData.getCategory();
-        List<DiscountTestData> discounts = null;//buildDiscountsTestData(productData.getDiscount());
         List<ReviewTestData> reviews = buildReviewsTestData(productData.getReviews());
 
-        return new ProductTestData(productName,storeName,amountInStore,price,category,reviews,discounts);
+        return new ProductTestData(productName,storeName,amountInStore,price,category,reviews);
     }
 
     private Filter buildFilterFromTestFilters(List<FilterTestData> filters) {
@@ -448,12 +477,27 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     }
 
-//    private List<Discount> buildDiscounts(List<DiscountTestData> discountTestData){
-//        List<Discount> discount1s = new ArrayList<>();
-//        for(DiscountTestData dst : discountTestData)
-//            discount1s.add(new Discount1(dst.getPercentage()));
-//        return discount1s;
-//    }
+    private String buildDiscount(DiscountTestData discountTestData){
+        String discountData="{\"CLASSNAME\":\"Domain.Discount.RegularDiscount\",\"DATA\":{\"product\":\"" +
+                ""+discountTestData.getProduct()+"\",\"percantage\":"+discountTestData.getPercentage()+"}}";
+        return discountData;
+    }
+
+    private DiscountTestData buildDiscountTestData(int id,String s) {
+        String[] mid= s.split("\"");
+        String product=mid[9];
+        int i=mid[12].indexOf('}');
+        double percantage=Double.valueOf(mid[12].substring(1,i));
+        return new DiscountTestData(percantage,product,id);
+    }
+
+
+
+    private String buildPolicy(PurchasePolicyTestData policyTestData) {
+        String policyData = "{\"CLASSNAME\":\"Domain.PurchasePolicy.BasketPurchasePolicy\",\"DATA\":{\"maxAmount\":" +
+                ""+policyTestData.getMaxAmount()+"}}";
+        return policyData;
+    }
 
     private List<Review> buildReviews(List<ReviewTestData> reviewTestData, String storeName, String productName){
         List<Review> apiReviews = new ArrayList<>();
@@ -487,19 +531,6 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     private ReviewTestData buildReviewTestData(Review review) {
         return new ReviewTestData(review.getWriter(),review.getContent());
     }
-//TODO take care of discounts
-
-//    private List<DiscountTestData> buildDiscountsTestData(List<Discount1> discount1s) {
-//        List<DiscountTestData> discountsTestData = new ArrayList<>();
-//        for(Discount1 discount1 : discount1s)
-//            discountsTestData.add(buildDiscountTestData(discount1));
-//
-//        return discountsTestData;
-//    }
-
-//    private DiscountTestData buildDiscountTestData(Discount1 discount1) {
-//        return new DiscountTestData(discount1.getPercentage(),null);
-//    }
 
     @Override
     public void changeAmountOfProductInStore(int id,ProductTestData product, int amount) {
@@ -548,7 +579,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 //        double totalCost=0;
 //        Date date = new Date();
 //        for (Purchase purchase: history) {
-//            List<ProductData> products = purchase.getProduct();
+//            List<ProductData> products = purchase.getProducts();
 //            for (ProductData product: products) {
 //                productsAndAmountInPurchase.put(buildProductTestData(product)
 //                        ,product.getAmount());
@@ -568,14 +599,14 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 //        double totalCost=0;
 //        Date date = new Date();
 //        for (Purchase purchase: history) {
-//            List<ProductData> products = purchase.getProduct();
+//            List<ProductData> products = purchase.getProducts();
 //            for (ProductData product: products) {
 //                productsAndAmountInPurchase.put(buildProductTestData(product)
 //                        ,product.getAmount());
 //                totalCost+=product.getPriceAfterDiscount()*product.getAmount();
 //
 //        for (Purchase purchase: purchaseHistory) {
-//            List<ProductData> products = purchase.getProduct();
+//            List<ProductData> products = purchase.getProducts();
 //            for (ProductData product: products) {
 //                productsAndAmountInPurchase.put(buildProductTestData(product)
 //                        ,product.getAmount());

@@ -3,7 +3,9 @@ package Domain.PurchasePolicy;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
-import java.util.HashMap;
+import Domain.Product;
+
+import java.util.*;
 
 public class ProductPurchasePolicy implements PurchasePolicy {
 
@@ -21,6 +23,21 @@ public class ProductPurchasePolicy implements PurchasePolicy {
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean isValid() {
+        return (maxAmountPerProduct != null && !maxAmountPerProduct.isEmpty());
+    }
+
+    @Override
+    public List<String> getProducts() {
+        return new LinkedList<>(maxAmountPerProduct.keySet());
+    }
+
+    @Override
+    public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
+        return false;
     }
 
 }

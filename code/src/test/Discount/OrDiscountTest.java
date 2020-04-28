@@ -2,6 +2,7 @@ package Discount;
 
 import Data.Data;
 import Data.TestData;
+import Domain.Discount.AndDiscount;
 import Domain.Discount.Discount;
 import Domain.Discount.OrDiscount;
 import Domain.Product;
@@ -60,5 +61,44 @@ public class OrDiscountTest {
         discounts.clear();
         discounts.addAll(data.getDiscounts(Data.NOT_STANDS_IN_TERM));
         assertFalse(orDiscount.checkTerm(productAndAmounts));
+    }
+
+    /**
+     * test function: is valid
+     * case: success
+     */
+    @Test
+    public void isValidSuccess() {
+        assertTrue(orDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidHasNotValidDiscount() {
+        discounts.addAll(data.getDiscounts(Data.NULL_PRODUCT));
+        assertFalse(orDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidHasNullDiscount() {
+        orDiscount=new OrDiscount(null);
+        assertFalse(orDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidEmptyDiscountList() {
+        discounts.clear();
+        assertFalse(orDiscount.isValid());
     }
 }

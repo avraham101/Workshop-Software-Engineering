@@ -73,4 +73,46 @@ public class XorDiscountTest {
     public void checkTermFailMoreThanOneISValid() {
         assertFalse(xorDiscount.checkTerm(productAndAmounts));
     }
+
+    /**
+     * test function: is valid
+     * case: success
+     */
+    @Test
+    public void isValidSuccess() {
+        assertTrue(xorDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidHasNotValidDiscount() {
+        discounts.addAll(data.getDiscounts(Data.NULL_PRODUCT));
+        assertFalse(xorDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidHasNullDiscount() {
+        xorDiscount=new XorDiscount(null);
+        assertFalse(xorDiscount.isValid());
+    }
+
+    /**
+     * test function: is valid
+     * case: fail
+     */
+    @Test
+    public void isValidEmptyDiscountList() {
+        discounts.clear();
+        assertFalse(xorDiscount.isValid());
+    }
+
+
+
 }

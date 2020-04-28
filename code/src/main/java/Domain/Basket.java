@@ -5,10 +5,7 @@ import DataAPI.PaymentData;
 import DataAPI.ProductData;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 public class Basket {
@@ -141,15 +138,26 @@ public class Basket {
      * @param paymentData the payment data
      * @param deliveryData the delivery data
      */
-    public void buy(PaymentData paymentData, DeliveryData deliveryData) {
+    public boolean buy(PaymentData paymentData, DeliveryData deliveryData) {
+        if(!store.getPurchasePolicy().standInPolicy(paymentData,deliveryData.getCountry(),products))
+            return false;
         double price = paymentData.getTotalPrice();
         List<ProductData> list = deliveryData.getProducts();
+        //update delivery data
         for(Product p: products.keySet()) {
-            int amount =  products.get(p);
-            price += amount * p.getPrice();
+            p.setAmount(products.get(p));
             list.add(new ProductData(p, store.getName()));
         }
-        paymentData.setTotalPrice(price);
+        //set the price to be after discounts
+        paymentData.setTotalPrice(price+store.calculatePrice(productsClone()));
+        return true;
+    }
+
+    private HashMap<Product, Integer> productsClone() {
+        HashMap<Product,Integer> productAmountsClone=new HashMap<>();
+        for(Product p:products.keySet())
+            productAmountsClone.put(p.clone(),products.get(p));
+        return productAmountsClone;
     }
 
     /**

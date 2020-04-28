@@ -4,7 +4,7 @@ import DataAPI.*;
 import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
-
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -230,6 +230,58 @@ public class ServiceAPI {
      */
     public Response<Boolean> editProductFromStore(int id,ProductData productData){
         return logicManager.editProductFromStore(id,productData);
+    }
+
+    /**
+     * acceptance test class : AddDiscountTest
+     * use case 4.2.1.1 - add discount to store
+     * @param id - user id
+     * @param discountData - data of the new discount to add
+     * @param storeName - name of the store to add the discount to
+     * @return
+     */
+    public Response<Boolean> addDiscount(int id,String discountData,String storeName){
+        return logicManager.addDiscount(id,discountData,storeName);
+    }
+
+    /**
+     * acceptance test class : ViewDeleteDiscountTest
+     * 4.2.1.2 - remove discount
+     * @param id - user id
+     * @param discountId - id of the discount ro delete
+     * @param storeName - name of the store to remove the discount from
+     */
+    public Response<Boolean> deleteDiscountFromStore(int id,int discountId,String storeName){
+        return logicManager.deleteDiscountFromStore(id,discountId,storeName);
+    }
+
+    /**
+     * acceptance test class : ViewDeleteDiscountTest
+     * 4.2.1.3 - view discounts
+     * @param storeName - name of the store to get the discounts from
+     */
+    public Response<HashMap<Integer,String>> viewDiscounts(String storeName){
+        return logicManager.viewDiscounts(storeName);
+    }
+
+    /**
+     * use case 4.2.2.1 - update policy of a store
+     * @param id - the id of the user
+     * @param policyData - the data about the policy
+     * @param storeName - the name of the store
+     * @return - true if added. false is not.
+     */
+    public Response<Boolean> upadtePolicy(int id, String policyData, String storeName) {
+        return logicManager.updatePolicy(id,policyData,storeName);
+    }
+
+    /**
+     * use case 4.2.2.2 - view the policy of a store
+     * @param storeName - the name of the store
+     * @return - string of the policy
+     */
+    public Response<String> viewPolicy(String storeName) {
+        return logicManager.viewPolicy(storeName);
     }
 
     /**
