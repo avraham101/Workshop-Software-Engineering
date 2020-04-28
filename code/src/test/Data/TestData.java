@@ -183,13 +183,17 @@ public class TestData {
     private void setUpProductsAndAmountsData() {
         productsAndAmount = new HashMap<Data, HashMap<Product, Integer>>();
         HashMap <Product, Integer> productsAmount = new HashMap<>();
+        HashMap <Product, Integer> productsAmount2 = new HashMap<>();
         productsAmount.put(getRealProduct(Data.VALID), 100);
         productsAmount.put(getRealProduct(Data.VALID2), 100);
         productsAndAmount.put(Data.VALID, productsAmount);
+        productsAmount2.put(getRealProduct(Data.VALID), 300);
+        productsAndAmount.put(Data.LARGE_AMOUNT, productsAmount2);
+
     }
 
-    public HashMap<Product,Integer> getProductsAndAmount(){
-        return productsAndAmount.get(Data.VALID);
+    public HashMap<Product,Integer> getProductsAndAmount(Data data){
+        return productsAndAmount.get(data);
     }
 
     /**
@@ -325,9 +329,10 @@ public class TestData {
         HashMap<String, Integer> amountPerProduct = new HashMap<>();
         List<String> countries = new LinkedList<>();
         countries.add("Israel");
-        amountPerProduct.put(this.getProductData(Data.VALID).getProductName(),3);
+        amountPerProduct.put(this.getProductData(Data.VALID).getProductName(),101);
+        amountPerProduct.put(this.getProductData(Data.VALID2).getProductName(),101);
         // valid policies
-        purchasePolicy.put(Data.VALID_BASKET_PURCHASE_POLICY, new BasketPurchasePolicy(10));
+        purchasePolicy.put(Data.VALID_BASKET_PURCHASE_POLICY, new BasketPurchasePolicy(210));
         purchasePolicy.put(Data.VALID_PRODUCT_PURCHASE_POLICY, new ProductPurchasePolicy(amountPerProduct));
         purchasePolicy.put(Data.VALID_SYSTEM_PURCHASE_POLICY, new SystemPurchasePolicy(18));
         purchasePolicy.put(Data.VALID_USER_PURCHASE_POLICY, new UserPurchasePolicy(countries));

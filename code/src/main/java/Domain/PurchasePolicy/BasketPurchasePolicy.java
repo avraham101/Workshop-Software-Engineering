@@ -17,15 +17,6 @@ public class BasketPurchasePolicy implements PurchasePolicy {
     }
 
     @Override
-    public boolean standInPolicy(PaymentData paymentData, DeliveryData deliveryData) {
-        int counter = 0;
-        for (ProductData productData: deliveryData.getProducts()) {
-            counter += productData.getAmount();
-        }
-        return (counter <= maxAmount);
-    }
-
-    @Override
     public boolean isValid() {
         return (maxAmount >= 0);
     }
@@ -37,7 +28,11 @@ public class BasketPurchasePolicy implements PurchasePolicy {
 
     @Override
     public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
-        return true;
+        int counter = 0;
+        for (int amount: products.values()) {
+            counter += amount;
+        }
+        return (counter <= maxAmount);
     }
 
 }

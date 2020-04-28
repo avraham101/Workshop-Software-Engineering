@@ -18,16 +18,6 @@ public class AndPolicy implements PurchasePolicy {
     }
 
     @Override
-    public boolean standInPolicy(PaymentData paymentData, DeliveryData deliveryData) {
-        for (PurchasePolicy policy: policyList) {
-            if(! policy.standInPolicy(paymentData, deliveryData)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
     public boolean isValid() {
         if (policyList == null || policyList.isEmpty())
             return false;
@@ -50,6 +40,11 @@ public class AndPolicy implements PurchasePolicy {
 
     @Override
     public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
+        for (PurchasePolicy policy: policyList) {
+            if(! policy.standInPolicy(paymentData, country, products)) {
+                return false;
+            }
+        }
         return true;
     }
 

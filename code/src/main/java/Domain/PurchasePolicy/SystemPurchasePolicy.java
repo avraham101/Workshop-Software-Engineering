@@ -18,11 +18,6 @@ public class SystemPurchasePolicy implements PurchasePolicy {
     }
 
     @Override
-    public boolean standInPolicy(PaymentData paymentData, DeliveryData deliveryData) {
-        return (paymentData.getAge() >= age);
-    }
-
-    @Override
     public boolean isValid() {
         return (age >= 0);
     }
@@ -34,6 +29,6 @@ public class SystemPurchasePolicy implements PurchasePolicy {
 
     @Override
     public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
-        return false;
+        return (paymentData.getAge() >= age);
     }
 }

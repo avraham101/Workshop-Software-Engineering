@@ -54,4 +54,5 @@ public interface AcceptanceTestsBridge {
     boolean deleteDiscount(int id, int discountId, String store);
     List<DiscountTestData> getDiscountsOfStore(String store);
     boolean updatePolicy(int id, PurchasePolicyTestData purchasePolicyData, String store);
+    String viewPolicy(String storeName);
 }

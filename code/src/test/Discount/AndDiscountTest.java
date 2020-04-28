@@ -23,7 +23,7 @@ public class AndDiscountTest {
     @Before
     public void setUp() {
         data=new TestData();
-        productAndAmounts=data.getProductsAndAmount();
+        productAndAmounts=data.getProductsAndAmount(Data.VALID);
         discounts=data.getDiscounts(Data.VALID);
         andDiscount=new AndDiscount(discounts);
     }

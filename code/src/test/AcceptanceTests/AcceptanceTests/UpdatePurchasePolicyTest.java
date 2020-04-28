@@ -4,7 +4,7 @@ import AcceptanceTests.AcceptanceTestDataObjects.PurchasePolicyTestData;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class UpdatePurchasePolicyTest extends AcceptanceTests {
 
@@ -21,5 +21,25 @@ public class UpdatePurchasePolicyTest extends AcceptanceTests {
         assertTrue(bridge.updatePolicy(superUser.getId(),purchasePolicyTestData,"store1Test"));
     }
 
+    @Test
+    public void updatePurchasePolicyNotExistStore() {
+        assertFalse(bridge.updatePolicy(superUser.getId(),purchasePolicyTestData,"store4Test"));
+    }
+
+    @Test
+    public void updatePurchasePolicyWrongAmount() {
+        purchasePolicyTestData.setMaxAmount(-1);
+        assertFalse(bridge.updatePolicy(superUser.getId(),purchasePolicyTestData,"store1Test"));
+    }
+
+    @Test
+    public void viewPolicy() {
+        assertNotNull(bridge.viewPolicy("store1Test"));
+    }
+
+    @Test
+    public void viewPolicyFail() {
+        assertNull(bridge.viewPolicy("store11Test"));
+    }
 
 }
