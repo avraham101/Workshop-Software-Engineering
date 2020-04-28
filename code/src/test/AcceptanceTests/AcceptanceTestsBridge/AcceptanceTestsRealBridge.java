@@ -1,10 +1,7 @@
 package AcceptanceTests.AcceptanceTestsBridge;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
-import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.CategoryFilterTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.PriceRangeFilterTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.ProductNameFilterTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.*;
 import DataAPI.*;
 import Domain.*;
 import Service.ServiceAPI;
@@ -209,6 +206,12 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
             discountTestDataList.add(buildDiscountTestData(id,discounts.get(id)));
         return discountTestDataList;
 
+    }
+
+    @Override
+    public boolean updatePolicy(int id, PurchasePolicyTestData purchasePolicyData, String store) {
+        String policyData = buildPolicy(purchasePolicyData);
+        return serviceAPI.upadtePolicy(id,policyData,store).getValue();
     }
 
 
@@ -487,6 +490,17 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         int i=mid[12].indexOf('}');
         double percantage=Double.valueOf(mid[12].substring(1,i));
         return new DiscountTestData(percantage,product,id);
+    }
+
+
+
+    private String buildPolicy(PurchasePolicyTestData policyTestData) {
+        String policyData = "{\"CLASSNAME\":\"Domain.PurchasePolicy.BasketPurchasePolicy\",\"DATA\":{\"maxAmount\":" +
+                ""+policyTestData.getMaxAmount()+"}}";
+        String test = "{\"CLASSNAME\":\"Domain.PurchasePolicy.BasketPurchasePolicy\"," +
+                "\"DATA\":{\"maxAmount\":10}}";
+
+        return test;
     }
 
     private List<Review> buildReviews(List<ReviewTestData> reviewTestData, String storeName, String productName){

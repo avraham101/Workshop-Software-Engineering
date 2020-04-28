@@ -2,6 +2,7 @@ package AcceptanceTests.AcceptanceTestsBridge;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.PurchasePolicyTestData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
@@ -305,5 +306,12 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
         if(realBridge!=null)
             return realBridge.getDiscountsOfStore(store);
         return null;
+    }
+
+    @Override
+    public boolean updatePolicy(int id, PurchasePolicyTestData purchasePolicyData, String store) {
+        if(realBridge != null)
+            return realBridge.updatePolicy(id,purchasePolicyData,store);
+        return false;
     }
 }

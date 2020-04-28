@@ -266,6 +266,26 @@ public class ServiceAPI {
     }
 
     /**
+     * use case 4.2.2.1 - update policy of a store
+     * @param id - the id of the user
+     * @param policyData - the data about the policy
+     * @param storeName - the name of the store
+     * @return - true if added. false is not.
+     */
+    public Response<Boolean> upadtePolicy(int id, String policyData, String storeName) {
+        return logicManager.updatePolicy(id,policyData,storeName);
+    }
+
+    /**
+     * use case 4.2.2.2 - view the policy of a store
+     * @param storeName - the name of the store
+     * @return - string of the policy
+     */
+    public Response<String> viewPolicy(String storeName) {
+        return logicManager.viewPolicy(storeName);
+    }
+
+    /**
      * use case 4.3
      * acceptance test class : AppointAnotherOwnerToStoreTest
      * @param id - user id
