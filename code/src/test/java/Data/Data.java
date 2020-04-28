@@ -1,6 +1,6 @@
 package Data;
 
-public enum Data {
+public enum Data{
     VALID,
     ADMIN,
     NULL,

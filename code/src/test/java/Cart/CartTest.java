@@ -1,7 +1,6 @@
 package Cart;
 
-import Data.Data;
-import Data.TestData;
+import Data.*;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;

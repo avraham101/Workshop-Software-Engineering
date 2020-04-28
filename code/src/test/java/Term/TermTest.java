@@ -1,7 +1,7 @@
 package Term;
 
-import Data.Data;
-import Data.TestData;
+import Data.*;
+
 import Domain.Discount.Term.*;
 import Domain.Product;
 import org.junit.*;
