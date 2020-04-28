@@ -16,16 +16,6 @@ public class ProductPurchasePolicy implements PurchasePolicy {
     }
 
     @Override
-    public boolean standInPolicy(PaymentData paymentData, DeliveryData deliveryData) {
-        for (ProductData product: deliveryData.getProducts()) {
-            if (!(product.getAmount() <= maxAmountPerProduct.get(product.getProductName()))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
     public boolean isValid() {
         return (maxAmountPerProduct != null && !maxAmountPerProduct.isEmpty());
     }
@@ -37,7 +27,12 @@ public class ProductPurchasePolicy implements PurchasePolicy {
 
     @Override
     public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
-        return false;
+        for (Product product: products.keySet()) {
+            if (!(products.get(product) <= maxAmountPerProduct.get(product.getName()))) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

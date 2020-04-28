@@ -4,9 +4,12 @@ import Data.Data;
 import Data.TestData;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
+import Domain.Product;
 import Domain.PurchasePolicy.ProductPurchasePolicy;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.HashMap;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -29,8 +32,9 @@ public class ProductPurchasePolicyTest {
     @Test
     public void testProductPurchasePolicy() {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        assertTrue(policy.standInPolicy(paymentData, deliveryData));
+        String country = data.getDeliveryData(Data.VALID).getCountry();
+        HashMap<Product, Integer> products = data.getProductsAndAmount(Data.VALID);
+        assertTrue(policy.standInPolicy(paymentData, country, products));
     }
 
     /**
@@ -39,8 +43,9 @@ public class ProductPurchasePolicyTest {
     @Test
     public void testProductPurchasePolicyFail() {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.LARGE_AMOUNT);
-        assertFalse(policy.standInPolicy(paymentData, deliveryData));
+        String country = data.getDeliveryData(Data.VALID).getCountry();
+        HashMap<Product, Integer> products = data.getProductsAndAmount(Data.LARGE_AMOUNT);
+        assertFalse(policy.standInPolicy(paymentData, country, products));
     }
 
     /**

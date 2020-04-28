@@ -19,7 +19,7 @@ public class StoreDiscountTest {
     @Before
     public void setUp() {
         data=new TestData();
-        productAndAmounts=data.getProductsAndAmount();
+        productAndAmounts=data.getProductsAndAmount(Data.VALID);
         storeDiscount=new StoreDiscount(100,10);
     }
 
