@@ -3,12 +3,15 @@ package LogicManagerTests;
 import DataAPI.*;
 import Data.Data;
 import Domain.*;
+import Domain.Discount.Discount;
+import Domain.Discount.RegularDiscount;
 import Systems.HashSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -705,6 +708,27 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
         assertTrue(store.getDiscount().isEmpty());
     }
+
+    /**
+     * use case 4.2.1.3 -view discounts from store
+     */
+    @Test @Override
+    public void testViewDiscountSuccess(){
+        super.testViewDiscountSuccess();
+        String store=data.getStore(Data.VALID).getName();
+        HashMap<Integer, Discount> discounts =logicManager.viewDiscounts(store).getValue();
+        assertNotNull(discounts.get(0));
+        try {
+            RegularDiscount discount = (RegularDiscount) discounts.get(0);
+            assertEquals(discount.getProduct(),data.getProductData(Data.VALID).getProductName());
+            assertEquals(discount.getPercantage(),10,0.001);
+        }
+        catch(Exception e){
+            fail();
+        }
+
+    }
+
 
     /**
      * use case 4.3 - manage owner - success

@@ -1342,7 +1342,6 @@ public class LogicManagerAllStubsTest {
                 data.getStore(Data.VALID).getName()).getValue());
     }
 
-
     /**
      * use case 4.2.1.2 -remove discount from store
      */
@@ -1353,7 +1352,6 @@ public class LogicManagerAllStubsTest {
                 data.getStore(Data.VALID).getName()).getValue());
     }
 
-    //TODO remove and real tests
     /**
      * use case 4.2.1.2 -remove discount from store
      * test not existing store
@@ -1364,6 +1362,25 @@ public class LogicManagerAllStubsTest {
         String userName=data.getSubscribe(Data.ADMIN).getName();
         //invalid storeName
         assertFalse(logicManager.deleteDiscountFromStore(data.getId(Data.VALID),0,userName).getValue());
+    }
+
+    /**
+     * use case 4.2.1.3 -view discounts from store
+     */
+    @Test
+    public void testViewDiscountSuccess(){
+        setUpDiscountAdded();
+        assertNotNull(logicManager.viewDiscounts(data.getStore(Data.VALID).getName()).getValue());
+    }
+
+    /**
+     * use case 4.2.1.3 -view discounts from store
+     * test not existing store
+     */
+    @Test
+    public void testViewDiscountNotExistingStore(){
+        setUpDiscountAdded();
+        assertNull(logicManager.viewDiscounts(data.getSubscribe(Data.VALID).getName()).getValue());
     }
 
     /**

@@ -881,6 +881,20 @@ public class LogicManager {
         return current.deleteDiscountFromStore(discountId,storeName);
     }
 
+    /**
+     * 4.2.1.3 - view discounts
+     * @param storeName - name of the store to get the discounts from
+     */
+    public Response<HashMap<Integer,Discount>> viewDiscounts(String storeName){
+        loggerSystem.writeEvent("LogicManager","viewDiscountsOfStore",
+                "view discount of the store", new Object[] {storeName});
+        Store store=stores.get(storeName);
+        if(store==null)
+            return new Response<>(null,OpCode.Store_Not_Found);
+        HashMap<Integer, Discount> discounts = new HashMap<>(store.getDiscount());
+        return new Response<>(discounts,OpCode.Success);
+    }
+
 
     /**
      * 4.2.2 - update policy

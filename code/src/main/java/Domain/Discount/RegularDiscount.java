@@ -41,4 +41,12 @@ public class RegularDiscount implements Discount{
         products.add(product);
         return products;
     }
+
+    public String getProduct() {
+        return product;
+    }
+
+    public double getPercantage() {
+        return percantage;
+    }
 }
