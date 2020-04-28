@@ -47,13 +47,14 @@ public class BasketTestData {
         return result;
     }
 
+    //TODO buy product
     public double getTotalAmount (){
         double totalPrice = 0;
         for (Map.Entry<ProductTestData,Integer> entry: productsAndAmountInBasket.entrySet()) {
             double productPrice = entry.getKey().getPrice();
             int amount = entry.getValue();
-            List<DiscountTestData> discounts = entry.getKey().getDiscounts();
-            totalPrice += calculateProductPriceAfterDiscount(productPrice,amount,discounts);
+//            List<DiscountTestData> discounts = entry.getKey().getDiscounts();
+//            totalPrice += calculateProductPriceAfterDiscount(productPrice,amount,discounts);
         }
         return totalPrice ;
     }

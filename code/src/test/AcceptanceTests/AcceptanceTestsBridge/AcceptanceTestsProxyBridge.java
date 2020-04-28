@@ -285,4 +285,11 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
             return realBridge.connect();
         return -1;
     }
+
+    @Override
+    public boolean addDiscount(int id,DiscountTestData discountTestData,String store) {
+        if(realBridge!=null)
+            return realBridge.addDiscount(id,discountTestData,store);
+        return false;
+    }
 }

@@ -186,6 +186,17 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     }
     //---------------------------Use-Case-4.1---------------------------------//
 
+    //---------------------------Use-Case-4.2---------------------------------//
+
+    @Override
+    public boolean addDiscount(int id,DiscountTestData discountTestData,String store) {
+        String discountData=buildDiscount(discountTestData);
+        return serviceAPI.addDiscount(id,discountData,store).getValue();
+    }
+
+
+    //---------------------------Use-Case-4.2---------------------------------//
+
     //---------------------------Use-Case-4.3---------------------------------//
     @Override
     public boolean appointOwnerToStore(int id,String storeName, String username) {
@@ -342,10 +353,9 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         int amountInStore = productData.getAmount();
         double price = productData.getPrice();
         String category = productData.getCategory();
-        List<DiscountTestData> discounts = null;//buildDiscountsTestData(productData.getDiscount());
         List<ReviewTestData> reviews = buildReviewsTestData(productData.getReviews());
 
-        return new ProductTestData(productName,storeName,amountInStore,price,category,reviews,discounts);
+        return new ProductTestData(productName,storeName,amountInStore,price,category,reviews);
     }
 
     private Filter buildFilterFromTestFilters(List<FilterTestData> filters) {
@@ -448,12 +458,11 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     }
 
-//    private List<Discount> buildDiscounts(List<DiscountTestData> discountTestData){
-//        List<Discount> discount1s = new ArrayList<>();
-//        for(DiscountTestData dst : discountTestData)
-//            discount1s.add(new Discount1(dst.getPercentage()));
-//        return discount1s;
-//    }
+    private String buildDiscount(DiscountTestData discountTestData){
+        String discountData="{\"CLASSNAME\":\"Domain.Discount.RegularDiscount\",\"DATA\":{\"product\":\"" +
+                ""+discountTestData.getProduct()+"\",\"percantage\":"+discountTestData.getPercentage()+"}}";
+        return discountData;
+    }
 
     private List<Review> buildReviews(List<ReviewTestData> reviewTestData, String storeName, String productName){
         List<Review> apiReviews = new ArrayList<>();

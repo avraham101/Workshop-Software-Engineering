@@ -8,23 +8,18 @@ public class ProductTestData {
     private int amountInStore;
     private double price;
     private String category;
-    private List<DiscountTestData> discounts;
     private List<ReviewTestData> reviews;
 
     public ProductTestData(String productName, String storeName, int amountInStore, double price, String category,
-                           List<ReviewTestData> reviews, List<DiscountTestData> discounts) {
+                           List<ReviewTestData> reviews) {
         this.productName = productName;
         this.storeName = storeName;
         this.amountInStore = amountInStore;
         this.price = price;
         this.category = category;
         this.reviews = reviews;
-        this.discounts = discounts;
     }
 
-    public List<DiscountTestData> getDiscounts() {
-        return discounts;
-    }
     public String getProductName() {
         return productName;
     }

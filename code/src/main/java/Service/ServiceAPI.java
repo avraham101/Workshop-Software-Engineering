@@ -5,6 +5,7 @@ import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -233,7 +234,7 @@ public class ServiceAPI {
     }
 
     /**
-     * //TODO add acceptance test location
+     * acceptance test class : AddDiscountTest
      * use case 4.2.1.1 - add discount to store
      * @param id - user id
      * @param discountData - data of the new discount to add
@@ -245,7 +246,7 @@ public class ServiceAPI {
     }
 
     /**
-     * //TODO add acceptance test location
+     * acceptance test class : ViewDeleteDiscountTest
      * 4.2.1.2 - remove discount
      * @param id - user id
      * @param discountId - id of the discount ro delete
@@ -253,6 +254,15 @@ public class ServiceAPI {
      */
     public Response<Boolean> deleteDiscountFromStore(int id,int discountId,String storeName){
         return logicManager.deleteDiscountFromStore(id,discountId,storeName);
+    }
+
+    /**
+     * acceptance test class : ViewDeleteDiscountTest
+     * 4.2.1.3 - view discounts
+     * @param storeName - name of the store to get the discounts from
+     */
+    public Response<HashMap<Integer,String>> viewDiscounts(String storeName){
+        return logicManager.viewDiscounts(storeName);
     }
 
     /**
