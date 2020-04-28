@@ -1409,6 +1409,7 @@ public class LogicManagerAllStubsTest {
         builderPolicy.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
         Gson policyGson = builderPolicy.create();
         String policyToAdd = policyGson.toJson(policy, PurchasePolicy.class);
+        System.out.println(policyToAdd);
         assertTrue(logicManager.updatePolicy(data.getId(Data.VALID),policyToAdd,
                 data.getStore(Data.VALID).getName()).getValue());
     }

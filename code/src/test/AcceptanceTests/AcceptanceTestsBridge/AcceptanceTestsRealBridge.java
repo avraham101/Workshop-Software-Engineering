@@ -1,10 +1,7 @@
 package AcceptanceTests.AcceptanceTestsBridge;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
-import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.CategoryFilterTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.PriceRangeFilterTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.ProductNameFilterTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.*;
 import DataAPI.*;
 import Domain.*;
 import Service.ServiceAPI;
@@ -192,6 +189,12 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     public boolean addDiscount(int id,DiscountTestData discountTestData,String store) {
         String discountData=buildDiscount(discountTestData);
         return serviceAPI.addDiscount(id,discountData,store).getValue();
+    }
+
+    @Override
+    public boolean updatePolicy(int id, PurchasePolicyTestData purchasePolicyData, String store) {
+        String policyData = buildPolicy(purchasePolicyData);
+        return serviceAPI.upadtePolicy(id,policyData,store).getValue();
     }
 
 
@@ -462,6 +465,17 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         String discountData="{\"CLASSNAME\":\"Domain.Discount.RegularDiscount\",\"DATA\":{\"product\":\"" +
                 ""+discountTestData.getProduct()+"\",\"percantage\":"+discountTestData.getPercentage()+"}}";
         return discountData;
+    }
+
+
+
+    private String buildPolicy(PurchasePolicyTestData policyTestData) {
+        String policyData = "{\"CLASSNAME\":\"Domain.PurchasePolicy.BasketPurchasePolicy\",\"DATA\":{\"maxAmount\":" +
+                ""+policyTestData.getMaxAmount()+"}}";
+        String test = "{\"CLASSNAME\":\"Domain.PurchasePolicy.BasketPurchasePolicy\"," +
+                "\"DATA\":{\"maxAmount\":10}}";
+
+        return test;
     }
 
     private List<Review> buildReviews(List<ReviewTestData> reviewTestData, String storeName, String productName){

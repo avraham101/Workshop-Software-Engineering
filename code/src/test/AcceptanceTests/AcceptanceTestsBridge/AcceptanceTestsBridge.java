@@ -2,6 +2,7 @@ package AcceptanceTests.AcceptanceTestsBridge;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.PurchasePolicyTestData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
@@ -49,6 +50,6 @@ public interface AcceptanceTestsBridge {
     List<ApplicationToStoreTestData> getUserApplications(int id,String username, String storeName);
     List<PurchaseTestData> userGetStorePurchasesHistory(int id,String storeName);
     int connect();
-
     boolean addDiscount(int id,DiscountTestData discountTestData,String store);
+    boolean updatePolicy(int id, PurchasePolicyTestData purchasePolicyData, String store);
 }
