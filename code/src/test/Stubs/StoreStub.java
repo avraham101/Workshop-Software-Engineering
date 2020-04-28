@@ -3,6 +3,7 @@ package Stubs;
 import DataAPI.*;
 import DataAPI.ProductData;
 import Domain.*;
+import Domain.Discount.Discount;
 import Domain.PurchasePolicy.PurchasePolicy;
 
 public class StoreStub extends Store {
@@ -49,6 +50,26 @@ public class StoreStub extends Store {
      */
     @Override
     public Response<Boolean> editProduct(ProductData productData) {
+        return new Response<>(true,OpCode.Success);
+    }
+
+    /**
+     * use case 4.2.1.1
+     * @param discount - discount to add to the store
+     * @return
+     */
+    @Override
+    public Response<Boolean> addDiscount(Discount discount) {
+        return new Response<>(true,OpCode.Success);
+    }
+
+    /**
+     * use case 4.2.1.2
+     * @param discountId - discount to delete from the store
+     * @return
+     */
+    @Override
+    public Response<Boolean> deleteDiscount(int discountId) {
         return new Response<>(true,OpCode.Success);
     }
 }

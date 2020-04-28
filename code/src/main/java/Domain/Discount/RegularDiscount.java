@@ -2,7 +2,7 @@ package Domain.Discount;
 
 import Domain.Product;
 
-import java.util.HashMap;
+import java.util.*;
 
 public class RegularDiscount implements Discount{
     private String product;
@@ -33,5 +33,12 @@ public class RegularDiscount implements Discount{
     @Override
     public boolean isValid() {
         return product!=null&&percantage>0&&percantage<=100;
+    }
+
+    @Override
+    public Set<String> getProducts() {
+        Set<String> products=new HashSet<>();
+        products.add(product);
+        return products;
     }
 }

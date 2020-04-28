@@ -4,6 +4,7 @@ import Data.Data;
 import Data.TestData;
 import DataAPI.ProductData;
 import Domain.*;
+import Domain.Discount.Discount;
 import Stubs.ProductStub;
 
 import static org.junit.Assert.*;
@@ -35,6 +36,15 @@ public class StoreTestsAllStubs {
         store.addProduct(data.getProductData(Data.VALID));
         ProductData p=data.getProductData(Data.VALID);
         store.getProducts().put(p.getProductName(),new ProductStub(p,new Category(p.getCategory())));
+    }
+
+    /**
+     * prepare product wth discount at the store
+     */
+    private void setUpDiscountAdded() {
+        setUpProductAdded();
+        Discount d=data.getDiscounts(Data.VALID).get(0);
+        store.addDiscount(d).getValue();
     }
 
     /**--------------------------------set-ups-------------------------------------------------------------------*/
@@ -206,5 +216,46 @@ public class StoreTestsAllStubs {
     protected void testSuccessEditProduct(){
         assertTrue(store.editProduct(data.getProductData(Data.EDIT)).getValue());
     }
+
+    /**
+     * test use case 4.2.1.1 -add discount to store
+     * success
+     */
+    @Test
+    public void testAddDiscountToStoreSuccess(){
+        setUpProductAdded();
+        Discount d=data.getDiscounts(Data.VALID).get(0);
+        assertTrue(store.addDiscount(d).getValue());
+        assertEquals(store.getDiscount().get(0),d);
+    }
+
+    /**
+     * test use case 4.2.1.1 -add discount to store
+     */
+    @Test
+    public void testAddDiscountFailProductNotInStore(){
+        assertFalse(store.addDiscount(data.getDiscounts(Data.VALID).get(0)).getValue());
+        assertTrue(store.getDiscount().isEmpty());
+    }
+
+    /**
+     * test use case 4.2.1.2 - delete discount from store
+     */
+    @Test
+    public void testDeleteProductFromStoreSuccess(){
+        setUpDiscountAdded();
+        assertTrue(store.deleteDiscount(0).getValue());
+        assertTrue(store.getDiscount().isEmpty());
+    }
+
+    /**
+     * test use case 4.2.1.2 - delete discount from store
+     */
+    @Test
+    public void testDeleteProductFromStoreDiscountNotExistInStore(){
+        setUpProductAdded();
+        assertFalse(store.deleteDiscount(0).getValue());
+    }
+
 
 }

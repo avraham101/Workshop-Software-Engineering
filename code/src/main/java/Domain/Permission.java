@@ -60,7 +60,7 @@ public class Permission {
      * Use case 3.2 - open store
      * use case 4.6.1 - add permissions
      * @param type - the permission type
-     * @return true if the permission doesnt exists or if the manager is not owner
+     * @return true if the permission does'nt exists or if the manager is not owner
      */
     public boolean addType(PermissionType type) {
         lock.writeLock().lock();

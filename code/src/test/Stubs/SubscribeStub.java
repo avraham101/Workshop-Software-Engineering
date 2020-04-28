@@ -2,6 +2,7 @@ package Stubs;
 
 import DataAPI.*;
 import Domain.*;
+import Domain.Discount.Discount;
 
 import java.util.*;
 
@@ -70,6 +71,22 @@ public class SubscribeStub extends Subscribe{
      */
     @Override
     public Response<Boolean> editProductFromStore(ProductData productData) {
+        return new Response<>(true,OpCode.Success);
+    }
+
+    /**
+     * use case 4.2.1.1 -add product to store
+     */
+    @Override
+    public Response<Boolean> addDiscountToStore(String storeName, Discount discount) {
+        return new Response<>(true,OpCode.Success);
+    }
+
+    /**
+     * use case 4.2.1.2 -remove product from store
+     */
+    @Override
+    public Response<Boolean> deleteDiscountFromStore(int discountId, String storeName) {
         return new Response<>(true,OpCode.Success);
     }
 

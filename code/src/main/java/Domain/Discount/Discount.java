@@ -3,6 +3,7 @@ package Domain.Discount;
 import Domain.Product;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public interface Discount {
     public void calculateDiscount(HashMap<Product, Integer> list);
@@ -10,4 +11,6 @@ public interface Discount {
 
 
     boolean isValid();
+
+    Set<String> getProducts();
 }

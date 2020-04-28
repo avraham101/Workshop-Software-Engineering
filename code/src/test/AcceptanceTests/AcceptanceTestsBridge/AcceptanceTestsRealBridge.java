@@ -548,7 +548,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 //        double totalCost=0;
 //        Date date = new Date();
 //        for (Purchase purchase: history) {
-//            List<ProductData> products = purchase.getProduct();
+//            List<ProductData> products = purchase.getProducts();
 //            for (ProductData product: products) {
 //                productsAndAmountInPurchase.put(buildProductTestData(product)
 //                        ,product.getAmount());
@@ -568,14 +568,14 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 //        double totalCost=0;
 //        Date date = new Date();
 //        for (Purchase purchase: history) {
-//            List<ProductData> products = purchase.getProduct();
+//            List<ProductData> products = purchase.getProducts();
 //            for (ProductData product: products) {
 //                productsAndAmountInPurchase.put(buildProductTestData(product)
 //                        ,product.getAmount());
 //                totalCost+=product.getPriceAfterDiscount()*product.getAmount();
 //
 //        for (Purchase purchase: purchaseHistory) {
-//            List<ProductData> products = purchase.getProduct();
+//            List<ProductData> products = purchase.getProducts();
 //            for (ProductData product: products) {
 //                productsAndAmountInPurchase.put(buildProductTestData(product)
 //                        ,product.getAmount());

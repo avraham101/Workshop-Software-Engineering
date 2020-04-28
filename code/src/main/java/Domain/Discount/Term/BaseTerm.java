@@ -3,6 +3,8 @@ package Domain.Discount.Term;
 import Domain.Product;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BaseTerm implements Term{
     private String product;
@@ -35,5 +37,12 @@ public class BaseTerm implements Term{
     @Override
     public boolean isValid() {
         return product!=null&&amount>0;
+    }
+
+    @Override
+    public Set<String> getProducts() {
+        HashSet<String> products=new HashSet<>();
+        products.add(product);
+        return products;
     }
 }

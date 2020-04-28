@@ -165,6 +165,27 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     }
 
     /**
+     * use case 4.2.1.1 -add product to store
+     * check that the product added
+     */
+    @Test @Override
+    public void testAddDiscountToStoreSuccess(){
+        super.testAddDiscountToStoreSuccess();
+        Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
+        assertEquals(store.getDiscount().get(0),data.getDiscounts(Data.VALID).get(0));
+    }
+
+    /**
+     * use case 4.2.1.2 -remove product from store
+     */
+    @Test
+    public void testRemoveDiscountFromStoreSuccess(){
+        super.testRemoveDiscountFromStoreSuccess();
+        Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
+        assertTrue(store.getDiscount().isEmpty());
+    }
+
+    /**
      * use case 4.5 - add manager
      * check also if the permission was added
      */

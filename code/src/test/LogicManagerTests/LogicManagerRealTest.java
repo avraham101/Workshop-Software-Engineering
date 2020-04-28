@@ -685,6 +685,28 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * use case 4.2.1.1 -add discount to store
+     */
+    @Test @Override
+    public void testAddDiscountToStoreSuccess(){
+        super.testAddDiscountToStoreSuccess();
+        Subscribe sub = ((Subscribe) currUser.getState());
+        Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
+        assertTrue(store.getDiscount().containsKey(0));
+    }
+
+    /**
+     * use case 4.2.1.2 -remove discount from store
+     */
+    @Test
+    public void testDeleteDiscountFromStoreSuccess(){
+        super.testDeleteDiscountFromStoreSuccess();
+        Subscribe sub = ((Subscribe) currUser.getState());
+        Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
+        assertTrue(store.getDiscount().isEmpty());
+    }
+
+    /**
      * use case 4.3 - manage owner - success
      */
     @Override

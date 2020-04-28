@@ -91,12 +91,6 @@ public class TestData {
      */
     private void setUpDiscounts() {
         discounts=new HashMap<>();
-        List<Discount> discountsListHasNull=new ArrayList<>();
-        discountsListHasNull.add(null);
-        List<Discount> discount1ListNegPercentage =new ArrayList<>();
-        //discount1ListNegPercentage.add(new RegularDiscount());
-        List<Discount> discount1ListOver100Percentage =new ArrayList<>();
-        //discount1ListOver100Percentage.add(new Discount1(101));
         List<Discount> validDiscounts=new ArrayList<>();
         validDiscounts.add(new RegularDiscount(getRealProduct(Data.VALID).getName(),10));
         validDiscounts.add(new RegularDiscount(getRealProduct(Data.VALID2).getName(),10));
@@ -107,10 +101,6 @@ public class TestData {
         discounts.put(Data.VALID,validDiscounts);
         discounts.put(Data.NOT_STANDS_IN_TERM,dontStandsTermDiscount);
         discounts.put(Data.NULL_PRODUCT,notValidDiscounts);
-        //TODO add those to discount data test in logic manager for valid inputs
-        discounts.put(Data.NULL_DISCOUNT,discountsListHasNull);
-        discounts.put(Data.NEGATIVE_PERCENTAGE, discount1ListNegPercentage);
-        discounts.put(Data.OVER_100_PERCENTAGE, discount1ListOver100Percentage);
     }
 
     /**

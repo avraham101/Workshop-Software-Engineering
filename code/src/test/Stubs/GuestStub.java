@@ -2,6 +2,7 @@ package Stubs;
 
 import DataAPI.*;
 import Domain.*;
+import Domain.Discount.Discount;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
@@ -58,6 +59,22 @@ public class GuestStub extends Guest {
      */
     @Override
     public Response<Boolean> addProductToStore(ProductData productData){
+        return new Response<>(false,OpCode.Not_Login);
+    }
+
+    /**
+     * use case 4.2.1.1 -add product to store
+     */
+    @Override
+    public Response<Boolean> addDiscountToStore(String storeName, Discount discount) {
+        return new Response<>(false,OpCode.Not_Login);
+    }
+
+    /**
+     * use case 4.2.1.2 -remove product from store
+     */
+    @Override
+    public Response<Boolean> deleteDiscountFromStore(int discountId, String storeName) {
         return new Response<>(false,OpCode.Not_Login);
     }
 

@@ -153,6 +153,20 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
+     * set up discount added to the store
+     */
+    private void setUpDiscountAdded() {
+        setUpProductAdded();
+        Discount discount=data.getDiscounts(Data.VALID).get(0);
+        GsonBuilder builderDiscount = new GsonBuilder();
+        builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
+        Gson discountGson = builderDiscount.create();
+        String discountToAdd=discountGson.toJson(discount,Discount.class);
+        logicManager.addDiscount(data.getId(Data.VALID),discountToAdd,
+                data.getStore(Data.VALID).getName()).getValue();
+    }
+
+    /**
      * set up for a state where a valid request was added for a valid store
      */
     private void setUpRequestAdded(){
@@ -1256,6 +1270,100 @@ public class LogicManagerAllStubsTest {
      */
     protected void testEditProductFailNullProduct(){
         assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),null).getValue());
+    }
+
+    /**
+     * use case 4.2.1.1 -add discount to store
+     */
+    @Test
+    public void testAddDiscountToStoreSuccess(){
+        setUpProductAdded();
+        Discount discount=data.getDiscounts(Data.VALID).get(0);
+        GsonBuilder builderDiscount = new GsonBuilder();
+        builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
+        Gson discountGson = builderDiscount.create();
+        String discountToAdd=discountGson.toJson(discount,Discount.class);
+        assertTrue(logicManager.addDiscount(data.getId(Data.VALID),discountToAdd,
+                data.getStore(Data.VALID).getName()).getValue());
+    }
+
+    /**
+     * use case 4.2.1.1 -add discount to store
+     */
+    @Test
+    public void testAddDiscountToStoreNotExistStore(){
+        setUpProductAdded();
+        Discount discount=data.getDiscounts(Data.VALID).get(0);
+        GsonBuilder builderDiscount = new GsonBuilder();
+        builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
+        Gson discountGson = builderDiscount.create();
+        String discountToAdd=discountGson.toJson(discount,Discount.class);
+        assertFalse(logicManager.addDiscount(data.getId(Data.VALID),discountToAdd,
+                discountToAdd).getValue());
+    }
+
+    /**
+     * use case 4.2.1.1 -add discount to store
+     */
+    @Test
+    public void testAddDiscountToStoreNullDiscount(){
+        setUpProductAdded();
+        Discount discount=null;
+        GsonBuilder builderDiscount = new GsonBuilder();
+        builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
+        Gson discountGson = builderDiscount.create();
+        String discountToAdd=discountGson.toJson(discount,Discount.class);
+        assertFalse(logicManager.addDiscount(data.getId(Data.VALID),discountToAdd,
+                data.getStore(Data.VALID).getName()).getValue());
+    }
+
+    /**
+     * use case 4.2.1.1 -add discount to store
+     */
+    @Test
+    public void testAddDiscountToStoreNotValidDiscount(){
+        setUpProductAdded();
+        Discount discount=data.getDiscounts(Data.NULL_PRODUCT).get(0);
+        GsonBuilder builderDiscount = new GsonBuilder();
+        builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
+        Gson discountGson = builderDiscount.create();
+        String discountToAdd=discountGson.toJson(discount,Discount.class);
+        assertFalse(logicManager.addDiscount(data.getId(Data.VALID),discountToAdd,
+                data.getStore(Data.VALID).getName()).getValue());
+    }
+
+    /**
+     * use case 4.2.1.1 -add discount to store
+     */
+    @Test
+    public void testAddDiscountToStoreStringWithNoSence(){
+        setUpProductAdded();
+        assertFalse(logicManager.addDiscount(data.getId(Data.VALID),"string",
+                data.getStore(Data.VALID).getName()).getValue());
+    }
+
+
+    /**
+     * use case 4.2.1.2 -remove discount from store
+     */
+    @Test
+    public void testDeleteDiscountFromStoreSuccess(){
+        setUpDiscountAdded();
+        assertTrue(logicManager.deleteDiscountFromStore(data.getId(Data.VALID),0,
+                data.getStore(Data.VALID).getName()).getValue());
+    }
+
+    //TODO remove and real tests
+    /**
+     * use case 4.2.1.2 -remove discount from store
+     * test not existing store
+     */
+    @Test
+    public void testDeleteDiscountFromStoreFailStore() {
+        setUpDiscountAdded();
+        String userName=data.getSubscribe(Data.ADMIN).getName();
+        //invalid storeName
+        assertFalse(logicManager.deleteDiscountFromStore(data.getId(Data.VALID),0,userName).getValue());
     }
 
     /**

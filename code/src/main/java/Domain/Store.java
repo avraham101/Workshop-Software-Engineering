@@ -5,8 +5,6 @@ import Domain.Discount.Discount;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
 import DataAPI.*;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.SupplySystem.SupplySystem;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -179,7 +177,7 @@ public class Store {
      */
     //TODO check this
     //public double getPriceForBasket(HashMap<Product, Integer> list) {
-      //  return discount.stands(list);
+    //  return discount.stands(list);
     //}
 
     /**
@@ -357,9 +355,18 @@ public class Store {
      * @return
      */
     public Response<Boolean> addDiscount(Discount discount) {
-        if(discountPolicy.putIfAbsent(discountCounter.getAndIncrement(),discount)==null)
-            return new Response<>(true,OpCode.Success);
-        return new Response<>(false,OpCode.Already_Exists);
+        if(!checkProducts(discount))
+            return new Response<>(false,OpCode.Invalid_Product);
+        discountPolicy.putIfAbsent(discountCounter.getAndIncrement(),discount);
+        return new Response<>(true,OpCode.Success);
+    }
+
+    private boolean checkProducts(Discount discount) {
+        Set<String> productsInDiscount=discount.getProducts();
+        for(String product:productsInDiscount)
+            if(!this.products.containsKey(product))
+                return false;
+        return true;
     }
 
     /**
@@ -372,6 +379,7 @@ public class Store {
             return new Response<>(true, OpCode.Success);
         return new Response<>(false,OpCode.Not_Found);
     }
+
 
 
 }
