@@ -526,7 +526,6 @@ public class LogicManager {
             Product product = store.getProduct(productName);
             if (product != null && amount > 0 && amount <= product.getAmount()) {
                 product = product.clone();
-                //TODO check that the product is not in the basket
                 result = current.addProductToCart(store, product, amount);
             }
         }

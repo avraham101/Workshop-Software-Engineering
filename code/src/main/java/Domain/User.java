@@ -94,7 +94,6 @@ public class User {
         return state.addProductToCart(store, product, amount);
     }
 
-
     /**
      * use case 2.8 - purchase cart
      * the function reserved Products from cart

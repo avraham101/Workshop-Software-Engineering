@@ -27,10 +27,10 @@ public class AddToCartTest extends AcceptanceTests {
         cart0 = user0.getCart();
         addCartToUser(user0.getId(),cart0);
     }
+
     @Test
     public void addToCartTestSuccessExistingBasket(){
         List<BasketTestData> baskets = cart0.getBaskets();
-
         for(BasketTestData basket : baskets){
             for(Map.Entry<ProductTestData,Integer> entry : basket.getProductsAndAmountInBasket().entrySet()){
                 ProductTestData productToAdd = entry.getKey();
