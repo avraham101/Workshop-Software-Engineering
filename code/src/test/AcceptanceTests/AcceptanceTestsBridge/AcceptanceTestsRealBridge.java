@@ -430,7 +430,6 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return new CartTestData(baskets);
     }
 
-    //TODO: fix
     @Override
     public StoreTestData getStoreInfoByName(String storeName) {
 

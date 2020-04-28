@@ -205,8 +205,6 @@ public class Store {
                 if(amount<=real.getAmount()) {
                     productsReserved.put(real,amount);
                     real.setAmount(real.getAmount() - amount);
-                    //TODO call this policy of the store
-                    //TODO call to discount of the store
                     real.getWriteLock().unlock();
                 }
                 else {
@@ -262,7 +260,9 @@ public class Store {
     public void savePurchase(Purchase purchase) {
         synchronized (purchases) {
             this.purchases.add(purchase);
+
         }
+        //TODO send real time notification
     }
 
     /**

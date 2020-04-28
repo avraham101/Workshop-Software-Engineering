@@ -56,13 +56,6 @@ public class CartTestData {
                 return basket;
         return null;
     }
-    public double getTotalAmount(){
-        double amount=0;
-        for (BasketTestData bd: baskets) {
-            amount+=bd.getTotalAmount();
-        }
-        return amount;
-    }
 
     public boolean isEmpty(){
         for (BasketTestData bd: baskets) {

@@ -55,7 +55,6 @@ public class LogicManager {
             loggerSystem = new LoggerSystem();
             this.paymentSystem = paymentSystem;
             this.supplySystem = supplySystem;
-            //TODO add write to logger when exception
             if(!paymentSystem.connect()) {
                 loggerSystem.writeError("Logic manager", "constructor",
                         "Fail connection to payment system",new Object[]{userName});
@@ -847,7 +846,7 @@ public class LogicManager {
         }
         catch (Exception ignored){}
         return null;
-     }
+    }
 
     /**
      * 4.2.1.2 - remove discount
@@ -867,7 +866,6 @@ public class LogicManager {
 
     /**
      * 4.2.1.3 - view discounts
-     * //TODO make discount string
      * @param storeName - name of the store to get the discounts from
      */
     public Response<HashMap<Integer,String>> viewDiscounts(String storeName){
@@ -1057,19 +1055,25 @@ public class LogicManager {
     }
 
     /**
-     * use case 4.9.2 - replay to Request
+     * use case 4.9.2 - reply to Request
      * @param id
      * @param storeName
      * @param requestID
      * @param content
-     * @return true if replay, false else
+     * @return true if reply, false else
      */
     public Response<Request> replayRequest(int id, String storeName, int requestID, String content) {
         loggerSystem.writeEvent("LogicManager","viewStoreRequest",
                 "store owner view the requests of the store", new Object[] {storeName});
         User current=connectedUsers.get(id);
-        if (storeName!=null && stores.containsKey(storeName))
-            return current.replayToRequest(storeName, requestID, content) ;
+        if (storeName!=null && stores.containsKey(storeName)) {
+            Response<Request> response=current.replayToRequest(storeName, requestID, content);
+            if(response.getReason()==OpCode.Success)
+                //TODO send real time notification
+                //TODO remove
+                current=connectedUsers.get(id);
+            return response;
+        }
         return new Response<>(null,OpCode.Store_Not_Found);
     }
 

@@ -36,7 +36,7 @@ public class ManagerPermissionsTest extends AcceptanceTests {
         manager = users.get(1);
         newManager = users.get(2);
 
-        registerAndLogin(superUser);//TODO not good need to do logout??
+        registerAndLogin(superUser);
         registerAndLogin(manager);
         registerAndLogin(newManager);
         logoutAndLogin(superUser);
