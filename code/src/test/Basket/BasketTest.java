@@ -134,7 +134,7 @@ public class BasketTest {
         int price = 0;
         List<ProductData> productDataList = new LinkedList<>();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
         assertTrue(basket.buy(paymentData, deliveryData));
         for (Product product: basket.getProducts().keySet()) {
             price += product.getPrice();

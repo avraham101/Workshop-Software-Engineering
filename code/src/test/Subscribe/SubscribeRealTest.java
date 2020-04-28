@@ -1,11 +1,9 @@
 package Subscribe;
 
 import Data.*;
-import DataAPI.ProductData;
-import DataAPI.StatusTypeData;
-import DataAPI.StoreData;
-import DataAPI.StorePermissionType;
+import DataAPI.*;
 import Domain.*;
+import Domain.PurchasePolicy.BasketPurchasePolicy;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -100,6 +98,21 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         int result = sub.getPurchases().size();
         assertEquals(expected, result);
         assertEquals(storeExpected, store.getPurchases().size());
+    }
+
+    /**
+     * use case - 2.8 buy cart
+     */
+    @Test
+    public void testBuyCartFailPolicy(){
+        setUpBuy();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
+        sub.getCart().getBaskets().get(data.getStore(Data.VALID).getName()).getStore().setPurchasePolicy(
+                new BasketPurchasePolicy(0));
+        assertFalse(sub.buyCart(paymentData,deliveryData));
+        assertEquals(0,paymentData.getTotalPrice(),0.001);
+        assertTrue(deliveryData.getProducts().isEmpty());
     }
 
     /**

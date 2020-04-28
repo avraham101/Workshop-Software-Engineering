@@ -6,6 +6,8 @@ import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import Domain.*;
+import Domain.PurchasePolicy.BasketPurchasePolicy;
+import Domain.PurchasePolicy.PurchasePolicy;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -80,7 +82,7 @@ public class CartTest {
      * use case 2.8 - reserveCart
      */
     @Test
-    public void testBuyCart() {
+    public void testBuyCartSuccess() {
         setUpBuy();
         int size = 0;
         double sum =0;
@@ -93,10 +95,26 @@ public class CartTest {
             }
         }
         PaymentData paymentData = testData.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = testData.getDeliveryData(Data.VALID);
-        cart.buy(paymentData, deliveryData);
+        DeliveryData deliveryData = testData.getDeliveryData(Data.VALID2);
+        assertTrue(cart.buy(paymentData, deliveryData));
         assertEquals(sum,paymentData.getTotalPrice(),0.001);
         assertEquals(size,deliveryData.getProducts().size());
+    }
+
+    /**
+     * 2.8 -buy cart
+     * buy cart fail because one basket policy fails
+     */
+    @Test
+    public void testBuyCartPolicyFail(){
+        setUpBuy();
+        cart.getBaskets().get(testData.getStore(Data.VALID).getName()).getStore().setPurchasePolicy(
+                new BasketPurchasePolicy(0));
+        PaymentData paymentData = testData.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = testData.getDeliveryData(Data.VALID2);
+        assertFalse(cart.buy(paymentData,deliveryData));
+        assertTrue(deliveryData.getProducts().isEmpty());
+        assertEquals(paymentData.getTotalPrice(),0,0.001);
     }
 
     /**

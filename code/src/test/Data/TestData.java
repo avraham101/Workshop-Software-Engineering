@@ -293,6 +293,7 @@ public class TestData {
         product.add(this.productsData.get(Data.VALID));
         tooMuchProduct.add((this.productsData.get(Data.LARGE_AMOUNT)));
         deliveryData.put(Data.VALID, new DeliveryData("Tapoz 3, Nevatim", "Israel", product));
+        deliveryData.put(Data.VALID2,new DeliveryData("Tapoz 3, Nevatim", "Israel", new ArrayList<>()));
         deliveryData.put(Data.EMPTY_ADDRESS, new DeliveryData("", "Israel", product));
         deliveryData.put(Data.NULL_ADDRESS, new DeliveryData(null, "Israel", product));
         deliveryData.put(Data.EMPTY_COUNTRY, new DeliveryData("Tapoz 3, Nevatim", "", product));

@@ -70,6 +70,17 @@ public class GuestTest {
         assertSame(user.getState(), sub);
     }
 
+
+    /**
+     * use case 2.7 add to cart
+     */
+    @Test
+    public void testAddProductToCart() {
+        Store store = data.getRealStore(Data.VALID);
+        Product product = data.getRealProduct(Data.VALID);
+        assertTrue(guest.addProductToCart(store,product,product.getAmount()));
+    }
+
     /**
      * use case - 2.8 reserveCart cart
      */
@@ -96,20 +107,10 @@ public class GuestTest {
             }
         }
         PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
         guest.buyCart(paymentData,deliveryData);
         assertEquals(sum,paymentData.getTotalPrice(),0.001);
         assertEquals(size,deliveryData.getProducts().size());
-    }
-
-    /**
-     * use case 2.7 add to cart
-     */
-    @Test
-    public void testAddProductToCart() {
-        Store store = data.getRealStore(Data.VALID);
-        Product product = data.getRealProduct(Data.VALID);
-        assertTrue(guest.addProductToCart(store,product,product.getAmount()));
     }
 
     /**

@@ -10,6 +10,7 @@ import Domain.PurchasePolicy.BasketPurchasePolicy;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class BasketTestReal extends BasketTest{
         int price = 0;
         List<ProductData> productDataList = new LinkedList<>();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
         assertTrue(basket.buy(paymentData, deliveryData));
         for (Product product: basket.getProducts().keySet()) {
             price += product.getPrice();
@@ -65,8 +66,10 @@ public class BasketTestReal extends BasketTest{
         setUpForBuy();
         basket.getStore().setPurchasePolicy(new BasketPurchasePolicy(0));
         PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
         assertFalse(basket.buy(paymentData, deliveryData));
+        assertTrue(deliveryData.getProducts().isEmpty());
+        assertEquals(0,paymentData.getTotalPrice(),0.001);
     }
 
 
