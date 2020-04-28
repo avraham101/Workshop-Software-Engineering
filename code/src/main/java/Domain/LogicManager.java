@@ -1,7 +1,6 @@
 package Domain;
 
 import DataAPI.*;
-import DataAPI.DiscountData.DiscountData;
 import Domain.Discount.Discount;
 import Systems.*;
 import Systems.PaymentSystem.*;
@@ -299,32 +298,6 @@ public class LogicManager {
             return new Response<>(output,OpCode.Success);
         }
         return new Response<>(null,OpCode.Store_Not_Found);
-    }
-
-    /**
-     * check if discounts of product are valid
-     * @param discount1s of the product
-     * @return if the discounts are not null and between 0 to 100
-     */
-    private boolean validDiscounts(List<DiscountData> discount1s) {
-        if(discount1s ==null)
-            return false;
-        for(DiscountData discount : discount1s){
-            if(!validDiscount(discount))
-                return false;
-        }
-        return true;
-    }
-
-    /**
-     * check if discounts of product are valid
-     * @param discount of the product
-     * @return if the discount is not null and between 0 to 100
-     */
-    private boolean validDiscount(DiscountData discount) {
-        //TODO
-        return false;
-        //return discount1 !=null&& discount.getPercentage()>0&& discount1.getPercentage()<100;
     }
 
     /**
@@ -909,6 +882,8 @@ public class LogicManager {
         catch (Exception e){}
         return null;
     }
+
+
 
     /**
      * use case 4.3 - manage owner
