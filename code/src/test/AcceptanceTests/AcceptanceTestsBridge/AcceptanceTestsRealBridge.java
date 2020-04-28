@@ -184,7 +184,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         ProductData productData = buildProductData(product);
         return serviceAPI.editProductFromStore(id,productData).getValue();
     }
-    //---------------------------Use-Case-4.1---------------------------------//
+    //---------------------------Use-Case-4.1 --------------------------------//
 
     //---------------------------Use-Case-4.2---------------------------------//
 
