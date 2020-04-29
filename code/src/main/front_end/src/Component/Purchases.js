@@ -6,6 +6,7 @@ class Purchases extends Component {
     constructor(props){
         super(props)
         this.purchases=this.props.purchases;
+        this.counter=1;
     }
 
 
@@ -15,9 +16,10 @@ class Purchases extends Component {
         output.push(
         <table style={style_sheet}>
             <tr>
-                <th>{element.buyer}</th>
-                <th>{element.storeName}</th>
-                <th>{element.date}</th>
+                {"purchase "+this.counter+++":"}
+                <th>{"buyer:"+element.buyer}</th>
+                <th>{"store:"+element.storeName}</th>
+                <th>{"date:"+element.date}</th>
             </tr>
            {this.renderProduct(element.products)}
         </table>
@@ -31,11 +33,11 @@ class Purchases extends Component {
     products.forEach(pro => {
         output.push(
             <tr>
-                <th>{pro.productName}</th>
-                <th>{pro.category}</th>
-                <th>{pro.amount}</th>
-                <th>{pro.price}</th>
-                <th>{pro.purchase}</th>
+                <th>{"product name:"+pro.productName}</th>
+                <th>{"category:"+pro.category}</th>
+                <th>{"amount:"+pro.amount}</th>
+                <th>{"price per unit:"+pro.price}</th>
+                <th>{"purchase type:"+pro.purchaseType}</th>
             </tr>
         )
     }); 
@@ -57,10 +59,10 @@ export default Purchases;
 const style_sheet = {
     color: "black",
     backgroundColor: "#4DA0F3",
-    padding: "15px",
+    padding: "1px",
     margin: "10px",
     lineHeight: 5,
     fontFamily: "Arial",
-    width:"99%",
+    width:"80%",
   }
 
