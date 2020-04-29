@@ -23,7 +23,7 @@ public class UserAdministrationInfo extends AcceptanceTests {
     }
 
     /**
-     * set a user permission and stores he manage
+     * set a user permission and stores he managed
      */
     private void setUpManagerPermissionsTestManagers(){
         store = stores.get(0);
