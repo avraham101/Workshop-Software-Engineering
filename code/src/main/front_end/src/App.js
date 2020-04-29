@@ -4,6 +4,7 @@ import GuestIndex from './Screen/Guest/GuestIndex'
 import Register from './Screen/Guest/Register'
 import Login from './Screen/Guest/Login'
 import history from './Screen/history'
+import StoreOwnerWatchHistory from './Screen/Subscribe/StoreOwnerWatchHistory'
 
 class App extends Component {
 
@@ -11,7 +12,8 @@ class App extends Component {
     return (<Router history={history}>
             <Switch>
               <Route path="/register" component={withRouter(Register)} />       
-              <Route path="/login" component={withRouter(Login)} />        
+              <Route path="/login" component={withRouter(Login)} /> 
+              <Route path="/storeOwnerWatchHistory" component={withRouter(StoreOwnerWatchHistory)} />         
               <Route path="/" component={withRouter(GuestIndex)} exact />
             </Switch>
           </Router>)
