@@ -11,7 +11,6 @@ import java.util.*;
 
 public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     private ServiceAPI serviceAPI;
-    private int id=0;
 
     //---------------------------Use-Case-1.1---------------------------------//
     @Override
@@ -312,6 +311,34 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     }
     //---------------------------Use-Case-6.4---------------------------------//
 
+    //----------------------Server-Client-Use-Cases---------------------------//
+
+    @Override
+    public List<StoreTestData> getStoresManagedByUser(int id) {
+        List<StoreData> storeDataList = serviceAPI.getStoresManagedByUser(id).getValue();
+        return buildStoresTestData(storeDataList);
+    }
+
+
+    @Override
+    public Set<StorePermissionsTypeTestData> getPermissionsForStore(int id, String storeName) {
+        Set<StorePermissionType> permissionTypeset = serviceAPI.getPermissionsForStore(id, storeName).getValue();
+        return buildStorePermissionType(permissionTypeset);
+    }
+
+    //----------------------Server-Client-Use-Cases---------------------------//
+
+
+    //--------------------------get managers of store---------------------------------//
+
+    @Override
+    public List<String> getAllManagersOfStore(String store) {
+        return serviceAPI.getManagersOfStore(store).getValue();
+    }
+
+
+    //--------------------------get managers of store---------------------------------//
+
 
     //----------------------RealBridge aux functions--------------------------//
     @Override
@@ -342,8 +369,10 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     private List<StoreTestData> buildStoresTestData(List<StoreData> storeData){
         List<StoreTestData> storeTestData = new ArrayList<>();
-        for(StoreData sd : storeData)
-            storeTestData.add(buildStoreTestData(sd));
+        if (storeData != null) {
+            for (StoreData sd : storeData)
+                storeTestData.add(buildStoreTestData(sd));
+        }
         return storeTestData;
     }
 
@@ -430,7 +459,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return new CartTestData(baskets);
     }
 
-    //TODO: fix
+
     @Override
     public StoreTestData getStoreInfoByName(String storeName) {
 
@@ -454,7 +483,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
                 for (ProductData product : products) {
                     productsAndAmountInPurchase.put(buildProductTestData(product)
                             , product.getAmount());
-                    totalCost += product.getPriceAfterDiscount() * product.getAmount();
+                    totalCost += product.getPrice() * product.getAmount();
 
                 }
                 PurchaseTestData purchaseTestData = new PurchaseTestData
@@ -571,6 +600,32 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     private ApplicationToStoreTestData buildApplicationToStore(Request request) {
         return new ApplicationToStoreTestData(request.getStoreName(),request.getSenderName(),request.getContent());
+    }
+
+    private Set<StorePermissionsTypeTestData> buildStorePermissionType(Set<StorePermissionType> permissionsTypeTestData) {
+        Set<StorePermissionsTypeTestData> output = new LinkedHashSet<>();
+        for (StorePermissionType permissionsType: permissionsTypeTestData) {
+            switch (permissionsType) {
+                case DELETE_MANAGER:
+                    output.add(StorePermissionsTypeTestData.DELETE_MANAGER);
+                    break;
+                case PRODUCTS_INVENTORY:
+                    output.add(StorePermissionsTypeTestData.PRODUCTS_INVENTORY);
+                    break;
+                case ADD_MANAGER:
+                    output.add(StorePermissionsTypeTestData.ADD_MANAGER);
+                    break;
+                case ADD_OWNER:
+                    output.add(StorePermissionsTypeTestData.ADD_OWNER);
+                    break;
+                case OWNER:
+                    output.add(StorePermissionsTypeTestData.OWNER);
+                    break;
+                default:
+                    return null;
+            }
+        }
+        return output;
     }
 
     //----------------------RealBridge aux functions--------------------------//

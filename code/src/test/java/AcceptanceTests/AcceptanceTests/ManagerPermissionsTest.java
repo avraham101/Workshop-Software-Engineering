@@ -36,7 +36,7 @@ public class ManagerPermissionsTest extends AcceptanceTests {
         manager = users.get(1);
         newManager = users.get(2);
 
-        registerAndLogin(superUser);//TODO not good need to do logout??
+        registerAndLogin(superUser);
         registerAndLogin(manager);
         registerAndLogin(newManager);
         logoutAndLogin(superUser);
@@ -69,5 +69,21 @@ public class ManagerPermissionsTest extends AcceptanceTests {
         boolean isAdded = bridge.appointOwnerToStore(manager.getId(),
                 newProduct.getStoreName(),newManager.getUsername());
         assertFalse(isAdded);
+    }
+
+
+    @Test
+    public void getManagersOfStoreSuccess(){
+        List<String> managers=bridge.getAllManagersOfStore(newProduct.getStoreName());
+        List<String> expectedManagers=new ArrayList<>();
+        expectedManagers.add(superUser.getUsername());
+        expectedManagers.add(admin.getUsername());
+        expectedManagers.add(users.get(1).getUsername());
+        assertEquals(managers,expectedManagers);
+    }
+
+    @Test
+    public void getManagersOfStoreNotExistStore(){
+        assertNull(bridge.getAllManagersOfStore(newProduct.getProductName()));
     }
 }

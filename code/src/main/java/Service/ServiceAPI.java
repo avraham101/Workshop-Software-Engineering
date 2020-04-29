@@ -412,8 +412,33 @@ public class ServiceAPI {
         return logicManager.getStoresManagedByUser(id);
     }
 
+
+    /**
+     *
+     * @param id user's id
+     * @param storeName store name
+     * @return list of user's permissions for given store
+     * if regular manager -> empty list
+     * not a manager -> null
+     */
+    /**
+     * return all the permissions of a user by a store
+     * @param id - the id of the user
+     * @param storeName - the store name
+     * @return - list of user's permissions for given store
+     */
     public Response<Set<StorePermissionType>> getPermissionsForStore(int id, String storeName){
         return logicManager.getPermissionsForStore(id,storeName);
 
     }
+
+    /**
+     * Acceptance test in ManagerPermissionsTest
+     * return all the managers of a specific store
+     * @return managers of specific store
+     */
+    public Response<List<String>> getManagersOfStore(String storeName){
+        return logicManager.getManagersOfStore(storeName);
+    }
+
 }
