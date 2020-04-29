@@ -210,7 +210,9 @@ public class LogicManager {
         else
             subscribe = new Subscribe(userName, password);
         boolean output = this.subscribes.putIfAbsent(userName,subscribe)==null;
-        return new Response<>(output, OpCode.Success);
+        if(output==true)
+            return new Response<>(output, OpCode.Success);
+        return new Response<>(output,OpCode.User_Name_Already_Exist);
     }
 
     /***

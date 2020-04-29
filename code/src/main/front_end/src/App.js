@@ -5,12 +5,14 @@ import Register from './Screen/Guest/Register'
 import Login from './Screen/Guest/Login'
 import history from './Screen/history'
 import StoreOwnerWatchHistory from './Screen/Subscribe/StoreOwnerWatchHistory'
+import InitSystem from './Screen/Subscribe/Admin/InitSystem'
 
 class App extends Component {
 
   render() {
     return (<Router history={history}>
             <Switch>
+              <Route path="/admin" component={withRouter(InitSystem)} exact/>
               <Route path="/register" component={withRouter(Register)} />       
               <Route path="/login" component={withRouter(Login)} /> 
               <Route path="/storeOwnerWatchHistory" component={withRouter(StoreOwnerWatchHistory)} />         
