@@ -3,6 +3,7 @@ import history from '../history'
 import BackGrond from '../../Component/BackGrond'
 import Menu from '../../Component/Menu'
 import Title from '../../Component/Title'
+
 class GuestIndex extends Component {
 
   click_me() {
@@ -14,6 +15,8 @@ class GuestIndex extends Component {
     <table style={style_table}>
       <tr>
         <th> Store 1 </th>
+        <th> Store 2 </th>
+        <th> Store 3 </th>
       </tr>
     </table>);
   }
@@ -34,7 +37,7 @@ class GuestIndex extends Component {
           <Menu/>
           <body>
             <Title title="Welcome Guest"/>
-            <div>
+            <div >
               <h3 style={{textAlign:'center'}}> Stores </h3>
               {this.render_stores()}
             </div>

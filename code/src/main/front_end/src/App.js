@@ -9,7 +9,8 @@ class App extends Component {
   render() {
     return (<Router history={history}>
             <Switch>
-              <Route path="/register" component={withRouter(Register)} />          
+              <Route path="/register" component={withRouter(Register)} />       
+              <Route path="/login" component={withRouter(Login)} />        
               <Route path="/" component={withRouter(GuestIndex)} exact />
             </Switch>
           </Router>)
