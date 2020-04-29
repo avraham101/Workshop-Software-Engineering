@@ -205,8 +205,6 @@ public class Store {
                 if(amount<=real.getAmount()) {
                     productsReserved.put(real,amount);
                     real.setAmount(real.getAmount() - amount);
-                    //TODO call this policy of the store
-                    //TODO call to discount of the store
                     real.getWriteLock().unlock();
                 }
                 else {

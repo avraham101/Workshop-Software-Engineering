@@ -55,7 +55,6 @@ public class LogicManager {
             loggerSystem = new LoggerSystem();
             this.paymentSystem = paymentSystem;
             this.supplySystem = supplySystem;
-            //TODO add write to logger when exception
             if(!paymentSystem.connect()) {
                 loggerSystem.writeError("Logic manager", "constructor",
                         "Fail connection to payment system",new Object[]{userName});
@@ -867,7 +866,6 @@ public class LogicManager {
 
     /**
      * 4.2.1.3 - view discounts
-     * //TODO make discount string
      * @param storeName - name of the store to get the discounts from
      */
     public Response<HashMap<Integer,String>> viewDiscounts(String storeName){

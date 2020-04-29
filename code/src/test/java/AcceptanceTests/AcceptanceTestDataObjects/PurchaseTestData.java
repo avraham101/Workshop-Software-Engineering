@@ -63,16 +63,4 @@ public class PurchaseTestData {
         return result;
     }
 
-    //TODO buy product
-    public double calculateTotalAmount() {
-        double totalAmount = 0;
-        for(Map.Entry<ProductTestData,Integer> prodAndAmounts : productsAndAmountInPurchase.entrySet()) {
-            double productPrice = prodAndAmounts.getKey().getPrice();
-            int amount = prodAndAmounts.getValue();
-//            for (DiscountTestData discount : prodAndAmounts.getKey().getDiscounts())
-//                productPrice = productPrice * (1 - discount.getPercentage());
-            totalAmount+= productPrice * amount;
-        }
-        return totalAmount;
-    }
 }

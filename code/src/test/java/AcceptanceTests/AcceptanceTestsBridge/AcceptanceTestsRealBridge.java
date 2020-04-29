@@ -11,7 +11,6 @@ import java.util.*;
 
 public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     private ServiceAPI serviceAPI;
-    private int id=0;
 
     //---------------------------Use-Case-1.1---------------------------------//
     @Override
@@ -430,7 +429,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return new CartTestData(baskets);
     }
 
-    //TODO: fix
+
     @Override
     public StoreTestData getStoreInfoByName(String storeName) {
 
@@ -454,7 +453,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
                 for (ProductData product : products) {
                     productsAndAmountInPurchase.put(buildProductTestData(product)
                             , product.getAmount());
-                    totalCost += product.getPriceAfterDiscount() * product.getAmount();
+                    totalCost += product.getPrice() * product.getAmount();
 
                 }
                 PurchaseTestData purchaseTestData = new PurchaseTestData

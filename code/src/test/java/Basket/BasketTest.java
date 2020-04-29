@@ -41,8 +41,6 @@ public class BasketTest {
 
     /**--------------set-ups----------------------*/
     protected void setUpAddedToBasket(){
-        //TODO remove this
-        //HashMap<ProductData, Integer> products = data.getProductsInBasket(Data.VALID);
         Product product = data.getRealProduct(Data.VALID);
         basket.addProduct(product, product.getAmount());
     }
