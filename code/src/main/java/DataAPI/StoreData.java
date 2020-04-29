@@ -1,8 +1,8 @@
 package DataAPI;
 public class StoreData {
 
-    private String name;
-    private String description;
+        private String name;
+        private String description;
 
     public StoreData(String name,String description) {
         this.name = name;

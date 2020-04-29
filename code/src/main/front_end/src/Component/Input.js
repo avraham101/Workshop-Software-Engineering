@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 class Input extends Component {
   
   render() {
-    this.props.onChange.bind(this);
     return (
       <div>
           <label> {this.props.title}
