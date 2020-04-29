@@ -9,6 +9,7 @@ import Systems.SupplySystem.SupplySystem;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public interface AcceptanceTestsBridge {
     boolean initialStart(String username , String password
@@ -55,4 +56,7 @@ public interface AcceptanceTestsBridge {
     List<DiscountTestData> getDiscountsOfStore(String store);
     boolean updatePolicy(int id, PurchasePolicyTestData purchasePolicyData, String store);
     String viewPolicy(String storeName);
+    List<StoreTestData> getStoresManagedByUser(int id);
+    Set<StorePermissionsTypeTestData> getPermissionsForStore(int id, String storeName);
+    List<String> getAllManagersOfStore(String store);
 }

@@ -55,7 +55,6 @@ public class LogicManager {
             loggerSystem = new LoggerSystem();
             this.paymentSystem = paymentSystem;
             this.supplySystem = supplySystem;
-            //TODO add write to logger when exception
             if(!paymentSystem.connect()) {
                 loggerSystem.writeError("Logic manager", "constructor",
                         "Fail connection to payment system",new Object[]{userName});
@@ -867,7 +866,6 @@ public class LogicManager {
 
     /**
      * 4.2.1.3 - view discounts
-     * //TODO make discount string
      * @param storeName - name of the store to get the discounts from
      */
     public Response<HashMap<Integer,String>> viewDiscounts(String storeName){
@@ -1112,7 +1110,7 @@ public class LogicManager {
     }
 
     /**
-     *
+     * get the stores a user manage
      * @param id user's id
      * @return list of stores managed by user,
      * if user does not manage store return null
@@ -1140,7 +1138,7 @@ public class LogicManager {
     }
 
     /**
-     *
+     * get the permission of a user by a store
      * @param id user's id
      * @param storeName store name
      * @return list of user's permissions for given store
@@ -1160,6 +1158,19 @@ public class LogicManager {
         return response;
 
 
+    }
+
+
+    /**
+     * return all the managers of a specific store
+     * @return managers of specific store
+     */
+    public Response<List<String>> getManagersOfStore(String storeName) {
+        Store store=stores.get(storeName);
+        if(store==null)
+            return new Response<>(null,OpCode.Store_Not_Found);
+        List<String> managers=new ArrayList<>(store.getPermissions().keySet());
+        return new Response<>(managers,OpCode.Success);
     }
 
 }
