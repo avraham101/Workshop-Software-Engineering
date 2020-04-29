@@ -4,10 +4,13 @@ import DataAPI.*;
 import Domain.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
+import org.springframework.stereotype.Service;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+@Service
 public class ServiceAPI {
 
     private LogicManager logicManager;
