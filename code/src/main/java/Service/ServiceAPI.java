@@ -415,6 +415,7 @@ public class ServiceAPI {
     }
 
     /**
+     * Acceptance test in ManagerPermissionsTest
      * return all the managers of a specific store
      * @return managers of specific store
      */

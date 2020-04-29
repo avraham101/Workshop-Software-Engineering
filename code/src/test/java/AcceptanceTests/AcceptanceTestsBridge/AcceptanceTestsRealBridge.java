@@ -312,6 +312,17 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-6.4---------------------------------//
 
 
+    //--------------------------get managers of store---------------------------------//
+
+    @Override
+    public List<String> getAllManagersOfStore(String store) {
+        return serviceAPI.getManagersOfStore(store).getValue();
+    }
+
+
+    //--------------------------get managers of store---------------------------------//
+
+
     //----------------------RealBridge aux functions--------------------------//
     @Override
     public int connect() {

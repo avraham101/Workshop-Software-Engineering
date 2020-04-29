@@ -70,4 +70,20 @@ public class ManagerPermissionsTest extends AcceptanceTests {
                 newProduct.getStoreName(),newManager.getUsername());
         assertFalse(isAdded);
     }
+
+
+    @Test
+    public void getManagersOfStoreSuccess(){
+        List<String> managers=bridge.getAllManagersOfStore(newProduct.getStoreName());
+        List<String> expectedManagers=new ArrayList<>();
+        expectedManagers.add(superUser.getUsername());
+        expectedManagers.add(admin.getUsername());
+        expectedManagers.add(users.get(1).getUsername());
+        assertEquals(managers,expectedManagers);
+    }
+
+    @Test
+    public void getManagersOfStoreNotExistStore(){
+        assertNull(bridge.getAllManagersOfStore(newProduct.getProductName()));
+    }
 }

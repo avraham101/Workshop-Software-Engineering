@@ -55,4 +55,5 @@ public interface AcceptanceTestsBridge {
     List<DiscountTestData> getDiscountsOfStore(String store);
     boolean updatePolicy(int id, PurchasePolicyTestData purchasePolicyData, String store);
     String viewPolicy(String storeName);
+    List<String> getAllManagersOfStore(String store);
 }
