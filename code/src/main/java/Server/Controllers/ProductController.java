@@ -23,7 +23,8 @@ public class ProductController {
 
     }
 
-    //productInSTORE
-   // @GetMapping
-   // public Response<ProductData> getProductInStore()
+    @GetMapping
+    public Response<List<ProductData>> getProductInStore(String storeName){
+        return SingleService.getInstance().viewProductsInStore(storeName);
+    }
 }
