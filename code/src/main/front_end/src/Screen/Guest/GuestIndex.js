@@ -121,6 +121,7 @@ class GuestIndex extends Component {
 export default GuestIndex;
 
 const style_table = {
+  
   width:"99%", 
   textAlign: 'center',
   border: '2px solid black',
