@@ -1,16 +1,14 @@
 package Server.Controllers;
 
 
-import DataAPI.CartData;
-import DataAPI.ProductIdData;
-import DataAPI.Response;
-import DataAPI.UserData;
+import DataAPI.*;
+import Domain.Purchase;
 import Service.ServiceAPI;
 import Service.SingleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -44,6 +42,26 @@ public class UserController {
     public Response<Boolean> logIn (@RequestParam(name="id") int id ,@RequestBody UserData user){
        return SingleService.getInstance().login(id,user.getName(),user.getPassword());
 
+    }
+
+    @PostMapping("home/logout")
+    @ResponseBody
+    public Response<Boolean> logOut(@RequestParam(name="id") int id){
+        return SingleService.getInstance().logout(id);
+    }
+
+    @PostMapping("home/buy/{country}")
+    @ResponseBody
+    //TODO discus the delivery
+    public Response<Boolean> buyCart(@PathVariable String country,
+                                     @RequestParam(name="id") int id, @RequestBody PaymentData paymentData){
+        return SingleService.getInstance().purchaseCart(id,country,paymentData,paymentData.getAddress());
+
+    }
+
+    @GetMapping("home/history")
+    public Response<List<Purchase>> getPurchaseHistory(@RequestParam(name="id") int id){
+        return SingleService.getInstance().watchMyPurchaseHistory(id);
     }
 
 
