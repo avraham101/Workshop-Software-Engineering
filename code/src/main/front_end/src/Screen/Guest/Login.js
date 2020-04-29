@@ -34,7 +34,7 @@ class Login extends Component {
     return (
       <BackGroud>
         <Menu/>
-        <Title title = 'Want to Register?'/>
+        <Title title = 'Want to Login?'/>
         <div>
           <Input title = 'User Name:' type="text" value={this.state.name} onChange={this.handleChangeName} />
           <Input title = 'Password:' type="text" value={this.state.password} onChange={this.handleChangePassword} />

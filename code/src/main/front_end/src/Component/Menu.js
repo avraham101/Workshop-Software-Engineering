@@ -30,7 +30,8 @@ class Menu extends Component {
                 style={{background:this.state.color_3}} 
                 onMouseOver={()=>this.setState({color_3: WHITE_BLUE})}
                 onMouseLeave={()=>this.setState({color_3: ''})}> Register </th>
-            <th style={{background:this.state.color_4}} 
+            <th onClick={()=>history.push('/login')}
+                style={{background:this.state.color_4}} 
                 onMouseOver={()=>this.setState({color_4: WHITE_BLUE})}
                 onMouseLeave={()=>this.setState({color_4: ''})}> Login </th>
             <th style={{background:this.state.color_5}} 
