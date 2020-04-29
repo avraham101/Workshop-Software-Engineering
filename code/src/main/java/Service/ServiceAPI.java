@@ -413,4 +413,13 @@ public class ServiceAPI {
         return logicManager.getPermissionsForStore(id,storeName);
 
     }
+
+    /**
+     * return all the managers of a specific store
+     * @return managers of specific store
+     */
+    public Response<List<String>> getManagersOfStore(String storeName){
+        return logicManager.getManagersOfStore(storeName);
+    }
+
 }

@@ -1160,4 +1160,17 @@ public class LogicManager {
 
     }
 
+
+    /**
+     * return all the managers of a specific store
+     * @return managers of specific store
+     */
+    public Response<List<String>> getManagersOfStore(String storeName) {
+        Store store=stores.get(storeName);
+        if(store==null)
+            return new Response<>(null,OpCode.Store_Not_Found);
+        List<String> managers=new ArrayList<>(store.getPermissions().keySet());
+        return new Response<>(managers,OpCode.Success);
+    }
+
 }

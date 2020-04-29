@@ -1025,5 +1025,21 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
     }
 
+    /**
+     * tests for getManagersOfStore
+     * success
+     */
+    @Test
+    public void  testGetManagersOfStoreSuccess(){
+        setUpManagerAddedSubManagerAdded();
+        StoreData storeData = data.getStore(Data.VALID);
+        List<String> expectedManager=new ArrayList<>();
+        expectedManager.add(data.getSubscribe(Data.VALID).getName());
+        expectedManager.add(data.getSubscribe(Data.VALID2).getName());
+        expectedManager.add(data.getSubscribe(Data.ADMIN).getName());
+        List<String> mangers=logicManager.getManagersOfStore(storeData.getName()).getValue();
+        assertEquals(expectedManager,mangers);
+    }
+
 }
 
