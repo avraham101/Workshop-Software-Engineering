@@ -15,10 +15,6 @@ class Menu extends Component {
     }
   }
 
-  changeColor(button){
-    this.setState({color: 'black'})
- }
-
   render() {
     return (
         <header>
@@ -52,7 +48,7 @@ export default Menu;
 const style_sheet = {
   color: "black",
   backgroundColor: "#4DA0F3",
-  padding: "10px",
+  padding: "15px",
   fontFamily: "Arial",
-  width:"100%",
+  width:"99%",
 }

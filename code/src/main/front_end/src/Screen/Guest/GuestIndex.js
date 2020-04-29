@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import history from '../history'
+import BackGrond from '../../Component/BackGrond'
 import Menu from '../../Component/Menu'
-
+import Title from '../../Component/Title'
 class GuestIndex extends Component {
 
   click_me() {
@@ -29,10 +30,10 @@ class GuestIndex extends Component {
 
   render() {
     return (
-      <div>
+      <BackGrond>
           <Menu/>
           <body>
-            <p style={style_p}> Geust Screen </p>
+            <Title title="Welcome Guest"/>
             <div>
               <h3 style={{textAlign:'center'}}> Stores </h3>
               {this.render_stores()}
@@ -42,7 +43,7 @@ class GuestIndex extends Component {
               {this.render_product()}
             </div>
           </body>
-      </div>
+      </BackGrond>
     );
   }
 }
@@ -50,7 +51,7 @@ class GuestIndex extends Component {
 export default GuestIndex;
 
 const style_table = {
-  width:"100%", 
+  width:"99%", 
   textAlign: 'center',
   border: '2px solid black'
 }
