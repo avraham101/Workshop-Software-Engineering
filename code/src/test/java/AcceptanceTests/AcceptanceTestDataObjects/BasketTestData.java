@@ -47,23 +47,17 @@ public class BasketTestData {
         return result;
     }
 
-    //TODO buy product
+
     public double getTotalAmount (){
         double totalPrice = 0;
         for (Map.Entry<ProductTestData,Integer> entry: productsAndAmountInBasket.entrySet()) {
             double productPrice = entry.getKey().getPrice();
             int amount = entry.getValue();
-//            List<DiscountTestData> discounts = entry.getKey().getDiscounts();
-//            totalPrice += calculateProductPriceAfterDiscount(productPrice,amount,discounts);
+            totalPrice += amount*productPrice;
         }
         return totalPrice ;
     }
 
-    private double calculateProductPriceAfterDiscount(double productPrice, int amount, List<DiscountTestData> discounts) {
-        for(DiscountTestData discount : discounts)
-            productPrice *= (1-discount.getPercentage());
-        return productPrice * amount;
-    }
 
     public boolean isEmpty(){
         return productsAndAmountInBasket.isEmpty();

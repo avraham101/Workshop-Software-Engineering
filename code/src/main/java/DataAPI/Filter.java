@@ -14,7 +14,7 @@ public class Filter {
      * @param search - the search to do
      * @param value - the value of the chosen search
      * @param minPrice - min price: must be over 0. for validation
-     * @param maxPrice - max price: must be over 0 for validation. TODO maybe need to be max double validation
+     * @param maxPrice - max price: must be over 0 for validation.
      * @param category - category: if empty string means not filter
      */
     public Filter(Search search, String value, double minPrice, double maxPrice, String category) {
