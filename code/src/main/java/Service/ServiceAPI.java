@@ -418,6 +418,12 @@ public class ServiceAPI {
      * if regular manager -> empty list
      * not a manager -> null
      */
+    /**
+     * return all the permissions of a user by a store
+     * @param id - the id of the user
+     * @param storeName - the store name
+     * @return - list of user's permissions for given store
+     */
     public Response<Set<StorePermissionType>> getPermissionsForStore(int id, String storeName){
         return logicManager.getPermissionsForStore(id,storeName);
 

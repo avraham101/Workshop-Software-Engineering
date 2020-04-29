@@ -1110,7 +1110,7 @@ public class LogicManager {
     }
 
     /**
-     *
+     * get the stores a user manage
      * @param id user's id
      * @return list of stores managed by user,
      * if user does not manage store return null
@@ -1138,7 +1138,7 @@ public class LogicManager {
     }
 
     /**
-     *
+     * get the permission of a user by a store
      * @param id user's id
      * @param storeName store name
      * @return list of user's permissions for given store

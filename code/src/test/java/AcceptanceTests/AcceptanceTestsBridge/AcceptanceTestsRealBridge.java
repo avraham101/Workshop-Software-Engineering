@@ -311,6 +311,23 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     }
     //---------------------------Use-Case-6.4---------------------------------//
 
+    //----------------------Server-Client-Use-Cases---------------------------//
+
+    @Override
+    public List<StoreTestData> getStoresManagedByUser(int id) {
+        List<StoreData> storeDataList = serviceAPI.getStoresManagedByUser(id).getValue();
+        return buildStoresTestData(storeDataList);
+    }
+
+
+    @Override
+    public Set<StorePermissionsTypeTestData> getPermissionsForStore(int id, String storeName) {
+        Set<StorePermissionType> permissionTypeset = serviceAPI.getPermissionsForStore(id, storeName).getValue();
+        return buildStorePermissionType(permissionTypeset);
+    }
+
+    //----------------------Server-Client-Use-Cases---------------------------//
+
 
     //--------------------------get managers of store---------------------------------//
 
@@ -352,8 +369,10 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     private List<StoreTestData> buildStoresTestData(List<StoreData> storeData){
         List<StoreTestData> storeTestData = new ArrayList<>();
-        for(StoreData sd : storeData)
-            storeTestData.add(buildStoreTestData(sd));
+        if (storeData != null) {
+            for (StoreData sd : storeData)
+                storeTestData.add(buildStoreTestData(sd));
+        }
         return storeTestData;
     }
 
@@ -581,6 +600,27 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     private ApplicationToStoreTestData buildApplicationToStore(Request request) {
         return new ApplicationToStoreTestData(request.getStoreName(),request.getSenderName(),request.getContent());
+    }
+
+    private Set<StorePermissionsTypeTestData> buildStorePermissionType(Set<StorePermissionType> permissionsTypeTestData) {
+        Set<StorePermissionsTypeTestData> output = new LinkedHashSet<>();
+        for (StorePermissionType permissionsType: permissionsTypeTestData) {
+            switch (permissionsType) {
+                case DELETE_MANAGER:
+                    output.add(StorePermissionsTypeTestData.DELETE_MANAGER);
+                case PRODUCTS_INVENTORY:
+                    output.add(StorePermissionsTypeTestData.ADD_OWNER);
+                case ADD_MANAGER:
+                    output.add(StorePermissionsTypeTestData.ADD_MANAGER);
+                case ADD_OWNER:
+                    output.add(StorePermissionsTypeTestData.PRODUCTS_INVENTORY);
+                case OWNER:
+                    output.add(StorePermissionsTypeTestData.OWNER);
+                default:
+                    return null;
+            }
+        }
+        return output;
     }
 
     //----------------------RealBridge aux functions--------------------------//

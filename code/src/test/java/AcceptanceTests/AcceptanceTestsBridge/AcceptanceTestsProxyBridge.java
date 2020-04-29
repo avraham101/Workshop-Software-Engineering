@@ -3,12 +3,15 @@ package AcceptanceTests.AcceptanceTestsBridge;
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.PurchasePolicyTestData;
+import DataAPI.StoreData;
+import DataAPI.StorePermissionType;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     private AcceptanceTestsBridge realBridge;
@@ -326,6 +329,21 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     public List<String> getAllManagersOfStore(String store) {
         if (realBridge != null)
             return realBridge.getAllManagersOfStore(store);
+        return null;
+    }
+
+    @Override
+    public List<StoreTestData> getStoresManagedByUser(int id) {
+        if (realBridge != null)
+            return realBridge.getStoresManagedByUser(id);
+        return null;
+    }
+
+
+    @Override
+    public Set<StorePermissionsTypeTestData> getPermissionsForStore(int id, String storeName) {
+        if (realBridge != null)
+            return realBridge.getPermissionsForStore(id, storeName);
         return null;
     }
 }
