@@ -31,7 +31,7 @@ public class UserAdministrationInfo extends AcceptanceTests {
         registerAndLogin(superUser);
         registerAndLogin(user);
         bridge.appointManager(superUser.getId(),store.getStoreName(), user.getUsername());
-        bridge.addPermissionToManager(user.getId(),store.getStoreName(),superUser.getUsername(), PermissionsTypeTestData.PRODUCTS_INVENTORY);
+        bridge.addPermissionToManager(superUser.getId(),store.getStoreName(),user.getUsername(), PermissionsTypeTestData.PRODUCTS_INVENTORY);
         logoutAndLogin(user);
         logoutAndLogin(superUser);
     }
@@ -83,7 +83,7 @@ public class UserAdministrationInfo extends AcceptanceTests {
         int id = user.getId();
         String storeName = store.getStoreName();
         Set<StorePermissionsTypeTestData> storePermission = bridge.getPermissionsForStore(id, storeName);
-        assertTrue(storePermission.contains(PermissionsTypeTestData.PRODUCTS_INVENTORY));
+        assertTrue(storePermission.contains(StorePermissionsTypeTestData.PRODUCTS_INVENTORY));
     }
 
         @Test
@@ -91,7 +91,7 @@ public class UserAdministrationInfo extends AcceptanceTests {
         int id = user.getId();
         String storeName = store.getStoreName();
         Set<StorePermissionsTypeTestData> storePermission = bridge.getPermissionsForStore(id, storeName);
-        assertFalse(storePermission.contains(PermissionsTypeTestData.ADD_MANAGER));
+        assertFalse(storePermission.contains(StorePermissionsTypeTestData.ADD_MANAGER));
     }
 
 

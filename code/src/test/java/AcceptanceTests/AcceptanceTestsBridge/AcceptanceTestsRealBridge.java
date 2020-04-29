@@ -608,14 +608,19 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
             switch (permissionsType) {
                 case DELETE_MANAGER:
                     output.add(StorePermissionsTypeTestData.DELETE_MANAGER);
+                    break;
                 case PRODUCTS_INVENTORY:
-                    output.add(StorePermissionsTypeTestData.ADD_OWNER);
+                    output.add(StorePermissionsTypeTestData.PRODUCTS_INVENTORY);
+                    break;
                 case ADD_MANAGER:
                     output.add(StorePermissionsTypeTestData.ADD_MANAGER);
+                    break;
                 case ADD_OWNER:
-                    output.add(StorePermissionsTypeTestData.PRODUCTS_INVENTORY);
+                    output.add(StorePermissionsTypeTestData.ADD_OWNER);
+                    break;
                 case OWNER:
                     output.add(StorePermissionsTypeTestData.OWNER);
+                    break;
                 default:
                     return null;
             }
