@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Router, Route, Switch, withRouter } from 'react-router-dom';
 import GuestIndex from './Screen/Guest/GuestIndex'
 import Register from './Screen/Guest/Register'
+import Login from './Screen/Guest/Login'
 import history from './Screen/history'
 
 class App extends Component {
