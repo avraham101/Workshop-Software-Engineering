@@ -64,7 +64,7 @@ public class Basket {
      */
     public boolean addProduct(Product product, int amount) {
         products.put(product,amount);
-        return true; // TODO - need to check policy in the the next version
+        return true;
     }
 
     /**

@@ -4,7 +4,9 @@ class Button extends Component {
   
   render() {
     return (
-      <button style={style_sheet} onClick={this.props.onClick}> {this.props.text} </button>
+      <div style={{ textAlign:'center', margin:10}}>
+        <button style={style_sheet} onClick={this.props.onClick}> {this.props.text} </button>
+      </div>
       );
   }
 }
@@ -14,7 +16,8 @@ export default Button;
 const style_sheet = {
   textAlign: 'center',
   color: "black",
-  backgroundColor: '#F3F3F3',
+  backgroundColor: '#4287FF',
   padding: "10px",
-  fontFamily: "Arial",
+  fontFamily: "David",
+  fontSize: 16,
 }
