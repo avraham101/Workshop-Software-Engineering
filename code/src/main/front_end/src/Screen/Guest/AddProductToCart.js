@@ -10,6 +10,7 @@ import Button from "../../Component/Button";
 import history from "../history";
 
 class AddProductToCart extends Component {
+  
   /**
    * constructor
    * @param {the product that choosed to add to cart} product
@@ -70,7 +71,8 @@ class AddProductToCart extends Component {
           {this.renderProducts()}
           <Input
             title="Choose amount to cart:"
-            type="text"
+            type="number"
+            min={1}
             value={this.state.amount}
             onChange={this.handleChangedAmount}
           />
@@ -103,9 +105,6 @@ const style_table = {
 };
 
 const product = {
-  name: "pen",
-  price: 20,
-  amountInStore: 100,
 };
 
 const under_line = {

@@ -12,7 +12,7 @@ class Input extends Component {
             <label style={{marginLeft:5, marginRight:12}}> {this.props.title} </label>
           </div>
         <div style= {{textAlign:'center'}}>
-          <input type={this.props.type} value={this.props.value} onChange={this.props.onChange} />
+          <input style={{textAlign:'center'}} type={this.props.type} min={this.props.min} max={this.props.max} value={this.props.value} onChange={this.props.onChange} />
         </div>
         <div style = {{textAlign:'center'}}>
             {this.props.error != null? (<lable style={style_error}> {this.props.error} </lable>) : ''}  

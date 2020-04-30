@@ -11,13 +11,11 @@ class Cart extends Component {
         this.handleDelete = this.handleDelete.bind(this);
     }
 
-
     handleDelete(event,product) {
         let index=this.cart.products.indexOf(product);
         if(index!==-1){         
             this.cart.products.splice(index,1);
         }
-
         this.setState({})
       }
 
