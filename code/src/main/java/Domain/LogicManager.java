@@ -846,7 +846,9 @@ public class LogicManager {
             if (d != null && d.isValid())
                 return d;
         }
-        catch (Exception ignored){}
+        catch (Exception ignored){
+            System.out.println(ignored.getCause());
+        }
         return null;
      }
 

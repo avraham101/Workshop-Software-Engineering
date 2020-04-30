@@ -552,24 +552,26 @@ public class Subscribe extends UserState{
      */
     @Override
     public Set<StorePermissionType> getPermissionsForStore(String storeName) {
-        Permission permission = permissions.get(storeName);
-        if(permission==null)
-            return null;
-        Set<StorePermissionType> permissionsForStore = new HashSet<>();
-        HashSet<PermissionType> permissionTypes= permission.getPermissionType();
-        if(permissionTypes.contains(PermissionType.OWNER)){
-            permissionsForStore.add(StorePermissionType.OWNER);
-            return permissionsForStore;
-        }
-        if(permission.canAddProduct())
-            permissionsForStore.add(StorePermissionType.PRODUCTS_INVENTORY);
-        if(permission.canAddOwner())
-            permissionsForStore.add(StorePermissionType.ADD_OWNER);
-        if(permission.canAddManager())
-            permissionsForStore.add(StorePermissionType.ADD_MANAGER);
-        if(!givenByMePermissions.isEmpty())
-            permissionsForStore.add(StorePermissionType.DELETE_MANAGER);
-        return permissionsForStore;
+     Permission permission = permissions.get(storeName);
+     if(permission==null)
+         return null;
+     Set<StorePermissionType> permissionsForStore = new HashSet<>();
+     HashSet<PermissionType> permissionTypes= permission.getPermissionType();
+     if(permissionTypes.contains(PermissionType.OWNER)){
+         permissionsForStore.add(StorePermissionType.OWNER);
+         return permissionsForStore;
+     }
+     if(permission.canAddProduct())
+         permissionsForStore.add(StorePermissionType.PRODUCTS_INVENTORY);
+     if(permission.canAddOwner())
+         permissionsForStore.add(StorePermissionType.ADD_OWNER);
+     if(permission.canAddManager())
+         permissionsForStore.add(StorePermissionType.ADD_MANAGER);
+     if(!givenByMePermissions.isEmpty())
+         permissionsForStore.add(StorePermissionType.DELETE_MANAGER);
+     if(permissionTypes.contains(PermissionType.CRUD_POLICY_DISCOUNT))
+         permissionsForStore.add(StorePermissionType.CRUD_POLICY_DISCOUNT);
+     return permissionsForStore;
 
     }
 
