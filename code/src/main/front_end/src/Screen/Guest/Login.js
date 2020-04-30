@@ -36,7 +36,7 @@ class Login extends Component {
         <Menu/>
         <Title title = 'Want to Login?'/>
         <div>
-          <Input title = 'User Name:' type="text" value={this.state.name} onChange={this.handleChangeName} />
+          <Input title = 'User Name:' error="name" type="text" value={this.state.name} onChange={this.handleChangeName} />
           <Input title = 'Password:' type="text" value={this.state.password} onChange={this.handleChangePassword} />
           <Button text = 'Submit' onClick={this.handleSubmit}/>
         </div>

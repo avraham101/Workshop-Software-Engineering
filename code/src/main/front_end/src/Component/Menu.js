@@ -48,8 +48,9 @@ export default Menu;
 
 const style_sheet = {
   color: "black",
-  backgroundColor: "#4DA0F3",
-  padding: "15px",
+  backgroundColor: '#FFC242',
   fontFamily: "Arial",
-  width:"99%",
+  width:"100%",
+  height:'50px',
+  borderBottom:'2px solid #B38118',
 }

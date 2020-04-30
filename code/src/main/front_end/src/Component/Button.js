@@ -14,7 +14,8 @@ export default Button;
 const style_sheet = {
   textAlign: 'center',
   color: "black",
-  backgroundColor: '#F3F3F3',
+  backgroundColor: '#4287FF',
   padding: "10px",
-  fontFamily: "Arial",
+  fontFamily: "David",
+  fontSize: 16,
 }
