@@ -6,7 +6,7 @@ import Login from './Screen/Guest/Login'
 import history from './Screen/history'
 import StoreOwnerWatchHistory from './Screen/Subscribe/StoreOwnerWatchHistory'
 import UserWatchPurchasesHistory from './Screen/Subscribe/UserWatchPurchasesHistory'
-//import InitSystem from './Screen/Subscribe/Admin/InitSystem'
+import InitSystem from './Screen/Subscribe/Admin/InitSystem'
 import ViewStoresAndProducts from "./Screen/Guest/ViewStoresAndProducts";
 import ViewProductsInCart from './Screen/Guest/ViewProductsInCart';
 import AddProductToCart from './Screen/Guest/AddProductToCart';
@@ -16,7 +16,7 @@ class App extends Component {
   render() {
     return (<Router history={history}>
             <Switch>
-              {/*<Route path="/admin" component={withRouter(InitSystem)} exact/>*/}
+              <Route path="/admin" component={withRouter(InitSystem)} exact/>
               <Route path="/register" component={withRouter(Register)} />
               <Route path="/login" component={withRouter(Login)} />
               <Route path="/storeOwnerWatchHistory" component={withRouter(StoreOwnerWatchHistory)} />
