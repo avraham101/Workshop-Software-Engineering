@@ -26,7 +26,7 @@ class OpenStore extends Component {
 
   handleOpen(event) {
     event.preventDefault();
-    var str = "Congregulasion! The store " + this.state.storeName + " open!";
+    var str = "Congratulation! The store " + this.state.storeName + " open.\nYou are the owner, enjoy!";
     alert(str);
   }
 
