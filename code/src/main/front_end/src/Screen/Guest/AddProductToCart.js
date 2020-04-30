@@ -5,12 +5,10 @@ import Error from "../../Component/Error";
 import Title from "../../Component/Title";
 import Input from "../../Component/Input";
 import Button from "../../Component/Button";
-//import IconButton from '@material-ui/core/IconButton';
-//import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import history from "../history";
 
 class AddProductToCart extends Component {
-  
+
   /**
    * constructor
    * @param {the product that choosed to add to cart} product
@@ -82,7 +80,7 @@ class AddProductToCart extends Component {
               aria-label="add to shopping cart"
               text="add"
               onClick={(e) =>
-                parseInt(this.state.amount) < product.amountInStore
+                (parseInt(this.state.amount) < this.state.product.amountInStore)
                   ? this.setState({ enough: true })
                   : this.setState({ enough: false })
               }
@@ -102,9 +100,6 @@ const style_table = {
   width: "99%",
   textAlign: "center",
   border: "2px solid black",
-};
-
-const product = {
 };
 
 const under_line = {
