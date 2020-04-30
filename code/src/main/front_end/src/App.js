@@ -11,6 +11,7 @@ import ViewStoresAndProducts from "./Screen/Guest/ViewStoresAndProducts";
 import ViewProductsInCart from './Screen/Guest/ViewProductsInCart';
 import AddProductToCart from './Screen/Guest/AddProductToCart';
 import sendRequestToStore from './Screen/Subscribe/SendRequestToStore'
+import OpenStore from "./Screen/Subscribe/OpenStore";
 
 class App extends Component {
 

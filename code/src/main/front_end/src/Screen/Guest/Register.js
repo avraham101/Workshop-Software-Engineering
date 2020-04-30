@@ -32,15 +32,15 @@ class Register extends Component {
 
   render() {
     return (
-      <BackGroud>
-        <Menu/>
-        <Title title = 'Want to Register?'/>
-        <div>
-          <Input title = 'User Name:' type="text" value={this.state.name} onChange={this.handleChangeName} />
-          <Input title = 'Password:' type="text" value={this.state.password} onChange={this.handleChangePassword} />
-          <Button text = 'Submit' onClick={this.handleSubmit}/>
-        </div>
-      </BackGroud>
+        <BackGroud>
+          <Menu/>
+          <Title title = 'Want to Register?'/>
+          <div>
+            <Input title = 'User Name:' type="text" value={this.state.name} onChange={this.handleChangeName} />
+            <Input title = 'Password:' type="text" value={this.state.password} onChange={this.handleChangePassword} />
+            <Button text = 'Submit' onClick={this.handleSubmit}/>
+          </div>
+        </BackGroud>
     );
   }
 }
