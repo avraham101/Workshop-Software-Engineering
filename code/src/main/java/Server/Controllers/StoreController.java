@@ -4,8 +4,10 @@ import DataAPI.ProductData;
 import DataAPI.RequestData;
 import DataAPI.Response;
 import DataAPI.StoreData;
+import Domain.Request;
 import Service.ServiceAPI;
 import Service.SingleService;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,15 +22,19 @@ import java.util.List;
 @RequestMapping("store")
 public class StoreController {
 
-    private  ServiceAPI serviceAPI;
+    Gson json ;
 
     public StoreController() {
-        this.serviceAPI = SingleService.getInstance();
+        json = new Gson();
     }
 
+    /**
+     * use case 3.2 - Open Store
+     */
+
     @PostMapping
-    @ResponseBody
-    public ResponseEntity<?> addStore(@RequestParam(name="id") int id, @RequestBody StoreData storeData){
+        public ResponseEntity<?> addStore(@RequestParam(name="id") int id, @RequestBody String storeDataStr){
+        StoreData storeData= json.fromJson(storeDataStr,StoreData.class);
         Response<Boolean> response= SingleService.getInstance().openStore(id,storeData);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
@@ -36,30 +42,31 @@ public class StoreController {
 
     }
 
+    /**
+     * use case 3.5 - write a request to specific store
+     */
+
     @PostMapping("request")
-    @ResponseBody
-    public ResponseEntity<?> writeRequestToStore(@RequestParam (name="id" ) int id, @RequestBody RequestData requestData){
+        public ResponseEntity<?> writeRequestToStore(@RequestParam (name="id" ) int id, @RequestBody String  requestDataStr){
+        RequestData requestData =json.fromJson(requestDataStr,RequestData.class);
         Response<Boolean> response = SingleService.getInstance().writeRequestToStore(id,requestData.getStoreName(),requestData.getContent());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
     }
 
+    /**
+     * use 2.4.1 - show the details about every store
+     */
+
     @GetMapping
-    @ResponseBody
-    public ResponseEntity<?> getStores(){
+        public ResponseEntity<?> getStores(){
        Response<List<StoreData>> response= SingleService.getInstance().viewStores();
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
     }
 
-    @PostMapping("addproduct")
-    @ResponseBody
-    public ResponseEntity<?> addProduct(@RequestParam(name="id") int id, @RequestBody ProductData product){
-        Response<Boolean> response = SingleService.getInstance().addProductToStore(id,product);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-        return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
-    }
+
+
 }
