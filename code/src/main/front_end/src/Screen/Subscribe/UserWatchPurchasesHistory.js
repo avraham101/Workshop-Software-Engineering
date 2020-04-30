@@ -3,9 +3,10 @@ import BackGroud from '../../Component/BackGrond';
 import Menu from '../../Component/Menu';
 import Title from '../../Component/Title';
 import Purchases from '../../Component/Purchases';
+import UserPurchases from '../../Component/UserPurchases';
 
-//4.10
-class StoreOwnerWatchHistory extends Component {
+
+class UserWatchPurchasesHistory extends Component {
 
   constructor(purchases) {
     super();
@@ -16,15 +17,15 @@ class StoreOwnerWatchHistory extends Component {
     return (
       <BackGroud>
         <Menu/>
-        <Purchases purchases={this.purchases}>
-            <Title title = 'store purchases:'/> 
-        </Purchases>
+        <UserPurchases purchases={this.purchases} eventName="add review">
+            <Title title = 'my purchases:'/> 
+        </UserPurchases>
       </BackGroud>
     );
   }
 }
 
-export default StoreOwnerWatchHistory;
+export default UserWatchPurchasesHistory;
 
 
 const product={
@@ -32,14 +33,22 @@ const product={
     category: "category",
     amount: 3,
     price: 4.5,
-    purchaseType: "immediate"
+    purchaseType: "immediate",
+    review: '',
+}
+
+const product2={
+    productName: "peanuts2",
+    category: "category",
+    amount: 3,
+    price: 4.5,
+    purchaseType: "immediate",
+    review: '',
 }
 
 const purchase={
     storeName: "store",
     buyer: "buyer",
-    products: [product,product],
+    products: [product,product2],
     date: "21.01.20"
 }
-
-
