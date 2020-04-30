@@ -25,6 +25,7 @@ class Purchases extends Component {
         </table>
         )
     });
+    this.counter=1;
     return output
   }
 
@@ -58,7 +59,6 @@ export default Purchases;
 
 const style_sheet = {
     color: "black",
-    backgroundColor: "#4DA0F3",
     padding: "1px",
     margin: "10px",
     lineHeight: 5,
