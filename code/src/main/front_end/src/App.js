@@ -14,6 +14,8 @@ import ViewDeleteProductsInStore from './Screen/Subscribe/ViewDeleteProductsInSt
 import sendRequestToStore from './Screen/Subscribe/SendRequestToStore';
 import OpenStore from "./Screen/Subscribe/OpenStore";
 import ManageProductInStore from './Screen/Subscribe/ManageProductInStore';
+import ManageDiscount from './Screen/Subscribe/ManageDiscount';
+
 class App extends Component {
 
   render() {
@@ -33,6 +35,7 @@ class App extends Component {
               <Route path="/sendRequest" component={withRouter(sendRequestToStore)} />
               <Route path="/openStore" component={withRouter(OpenStore)} />
               <Route path="/manageProducts" component={withRouter(ManageProductInStore)} />
+              <Route path="/manageDiscount" component={withRouter(ManageDiscount)} exact/>
               <Route path="/" component={withRouter(GuestIndex)} exact />
             </Switch>
           </Router>)
