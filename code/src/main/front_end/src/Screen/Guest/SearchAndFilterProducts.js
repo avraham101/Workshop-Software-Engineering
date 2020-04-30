@@ -4,6 +4,7 @@ import Menu from "../../Component/Menu";
 import Title from "../../Component/Title";
 import Input from "../../Component/Input";
 import Button from "../../Component/Button";
+import Row from "../../Component/Row";
 
 class SearchAndFilterProducts  extends Component{
 
@@ -18,8 +19,68 @@ class SearchAndFilterProducts  extends Component{
             searchValue: '',
             minPrice: '',
             maxPrice:'',
-            filteredProducts : {}
+            filteredProducts : {},
         }
+    }
+
+
+    create_products() {
+        let output = []
+        for(let i =0; i<5;i++) {
+            output.push({
+                productName:'product '+i,
+                storeName:'store '+i,
+                category:'category '+i,
+                reviews: [],
+                amount: i,
+                price:i,
+                priceAfterDiscount: i,
+                purchaseType:'purchase type '+i,
+            })
+        }
+        return output
+    }
+
+
+    pass(url, data) {
+        this.props.history.push({
+            pathname: url,
+            fromPath: '/searchAndFilter',
+            data: data // your data array of objects
+        });
+    }
+
+    render_product_table(){
+        let products = this.create_products();
+        let output = [];
+        products.forEach( element =>
+            output.push(
+                <Row onClick={()=>this.pass('/addToCart', element)}>
+                    <th> {element.productName} </th>
+                    <th> {element.storeName} </th>
+                    <th> {element.category} </th>
+                    <th> {element.amount} </th>
+                    <th> {element.price} </th>
+                    <th> {element.purchaseType} </th>
+                </Row>
+            )
+        )
+        return output;
+    }
+
+    render_product() {
+        return (
+            <table style={style_table}>
+                <tr>
+                    <th style = {under_line}> Product Name </th>
+                    <th style = {under_line}> Store Name </th>
+                    <th style = {under_line}> Category </th>
+                    <th style = {under_line}> Amount </th>
+                    <th style = {under_line}> Price </th>
+                    <th style = {under_line}> Purchase Type </th>
+                </tr>
+                {this.render_product_table()}
+            </table>);
     }
 
     handleSearch(event){
@@ -63,9 +124,26 @@ class SearchAndFilterProducts  extends Component{
                         <th><Button text="Submit" onClick={this.handleSubmit}/></th>
                     </tr>
                 </table>
+                <div>
+                    <h3 style={{textAlign:'center'}}> Filtered Products </h3>
+                    {this.render_product()}
+                </div>
             </BackGroud>
         );
     }
 }
 
 export default SearchAndFilterProducts
+
+const style_table = {
+
+    width:"99%",
+    textAlign: 'center',
+    border: '2px solid black',
+    lineHeight:1.5,
+    margin:7.5,
+}
+
+const under_line = {
+    borderBottom: '2px solid black'
+}

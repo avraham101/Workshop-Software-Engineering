@@ -29,7 +29,8 @@ class Menu extends Component {
                 style={{background:this.state.color_1}}
                 onMouseOver={()=>this.setState({color_1: WHITE_BLUE})}
                 onMouseLeave={()=>this.setState({color_1: ''})}> Watch Store and Products </th>
-            <th style={{background:this.state.color_2}} 
+            <th onClick={()=>history.push('/searchAndFilter')}
+                style={{background:this.state.color_2}}
                 onMouseOver={()=>this.setState({color_2: WHITE_BLUE})}
                 onMouseLeave={()=>this.setState({color_2: ''})}> Search and Filter Products </th>
             <th onClick={()=>history.push('/register')} 

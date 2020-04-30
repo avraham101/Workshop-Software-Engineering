@@ -17,6 +17,8 @@ import BuyCart from "./Screen/Guest/BuyCart";
 import ManageProductInStore from './Screen/Subscribe/ManageProductInStore';
 import RemoveManagerFromStore from './Screen/Subscribe/RemoveManagerFromStore';
 import StoreManagement from "./Screen/Subscribe/StoreManagement";
+import InitSystem from "./Screen/Subscribe/Admin/InitSystem";
+import SearchAndFilterProducts from "./Screen/Guest/SearchAndFilterProducts";
 
 class App extends Component {
 
