@@ -138,7 +138,7 @@ class ViewStoresAndProducts extends Component {
           <div>
             {this.render_stores()}
             <h5>
-              To watch the products in the store- choose a store and press here
+              To watch the products in the store- choose a store and press on it.
             </h5>
           </div>
           {this.state.showProducts ? this.render_product() : ""}
