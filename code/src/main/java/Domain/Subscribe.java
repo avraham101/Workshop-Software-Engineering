@@ -552,25 +552,39 @@ public class Subscribe extends UserState{
      */
     @Override
     public Set<StorePermissionType> getPermissionsForStore(String storeName) {
-     Permission permission = permissions.get(storeName);
-     if(permission==null)
-         return null;
-     Set<StorePermissionType> permissionsForStore = new HashSet<>();
-     HashSet<PermissionType> permissionTypes= permission.getPermissionType();
-     if(permissionTypes.contains(PermissionType.OWNER)){
-         permissionsForStore.add(StorePermissionType.OWNER);
-         return permissionsForStore;
-     }
-     if(permission.canAddProduct())
-         permissionsForStore.add(StorePermissionType.PRODUCTS_INVENTORY);
-     if(permission.canAddOwner())
-         permissionsForStore.add(StorePermissionType.ADD_OWNER);
-     if(permission.canAddManager())
-         permissionsForStore.add(StorePermissionType.ADD_MANAGER);
-     if(!givenByMePermissions.isEmpty())
-         permissionsForStore.add(StorePermissionType.DELETE_MANAGER);
-     return permissionsForStore;
+        Permission permission = permissions.get(storeName);
+        if(permission==null)
+            return null;
+        Set<StorePermissionType> permissionsForStore = new HashSet<>();
+        HashSet<PermissionType> permissionTypes= permission.getPermissionType();
+        if(permissionTypes.contains(PermissionType.OWNER)){
+            permissionsForStore.add(StorePermissionType.OWNER);
+            return permissionsForStore;
+        }
+        if(permission.canAddProduct())
+            permissionsForStore.add(StorePermissionType.PRODUCTS_INVENTORY);
+        if(permission.canAddOwner())
+            permissionsForStore.add(StorePermissionType.ADD_OWNER);
+        if(permission.canAddManager())
+            permissionsForStore.add(StorePermissionType.ADD_MANAGER);
+        if(!givenByMePermissions.isEmpty())
+            permissionsForStore.add(StorePermissionType.DELETE_MANAGER);
+        return permissionsForStore;
 
     }
 
+    /**
+     * return all the managers of a specific store that user with id managed
+     * @return managers of specific store
+     */
+    @Override
+    public Response<List<String>> getManagersOfStoreUserManaged(String storeName) {
+        List<String> managers=new LinkedList<>();
+        lock.readLock().lock();
+        for( Permission p:givenByMePermissions)
+            if(p.getStore().getName().equals(storeName))
+                managers.add(p.getOwner().getName());
+        lock.readLock().unlock();
+        return new Response<>(managers,OpCode.Success);
+    }
 }

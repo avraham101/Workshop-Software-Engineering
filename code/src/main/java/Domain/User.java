@@ -326,4 +326,12 @@ public class User {
     public Response<Boolean> updateStorePolicy(String storeName, PurchasePolicy policy) {
         return state.updateStorePolicy(storeName, policy);
     }
+
+    /**
+     * return all the managers of a specific store that user with id managed
+     * @return managers of specific store
+     */
+    public Response<List<String>> getManagersOfStoreUserManaged(String storeName) {
+        return state.getManagersOfStoreUserManaged(storeName);
+    }
 }

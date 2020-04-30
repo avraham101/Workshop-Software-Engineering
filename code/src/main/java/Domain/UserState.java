@@ -311,4 +311,10 @@ public abstract class UserState {
 
     public abstract Set<StorePermissionType> getPermissionsForStore(String storeName);
 
+    /**
+     * return all the managers of a specific store that user with id managed
+     * @return managers of specific store
+     */
+    public abstract Response<List<String>> getManagersOfStoreUserManaged(String storeName);
+
 }

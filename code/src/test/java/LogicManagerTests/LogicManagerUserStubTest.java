@@ -5,6 +5,10 @@ import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.Store;
 import org.junit.Before;
+import org.junit.Test;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -106,6 +110,16 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
     @Override
     protected void testWriteReviewValid() {
 
+    }
+
+    /**
+     * getManagersOfStoreUserManaged tests
+     */
+    @Test
+    public void getManagersOfStoreUserManagedNotExistStore(){
+        setUpManagerAddedSubManagerAdded();
+        assertNull(logicManager.getManagersOfStoreUserManaged(data.getId(Data.VALID),
+                data.getSubscribe(Data.VALID).getName()).getValue());
     }
 
 

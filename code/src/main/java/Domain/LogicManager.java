@@ -1173,4 +1173,18 @@ public class LogicManager {
         return new Response<>(managers,OpCode.Success);
     }
 
+    /**
+     * return all the managers of a specific store that user with id managed
+     * @return managers of specific store
+     */
+    public Response<List<String>> getManagersOfStoreUserManaged(int id,String storeName){
+        Store store=stores.get(storeName);
+        User current=connectedUsers.get(id);
+        if(store==null)
+            return new Response<>(null,OpCode.Store_Not_Found);
+        return current.getManagersOfStoreUserManaged(storeName);
+    }
+
+
+
 }
