@@ -6,4 +6,5 @@ public enum StorePermissionType {
     ADD_MANAGER,
     ADD_OWNER,
     OWNER,
+    CRUD_POLICY_DISCOUNT
 }

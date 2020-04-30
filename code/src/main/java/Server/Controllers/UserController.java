@@ -14,8 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
+
 public class UserController {
 
     Gson json;
@@ -45,9 +47,7 @@ public class UserController {
     public ResponseEntity<?> register(@RequestBody String userStr){
         UserData user = json.fromJson(userStr,UserData.class);
         Response<Boolean> response= SingleService.getInstance().register(user.getName(),user.getPassword());
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-        return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
+        return getResponseEntity(response);
     }
 
     /**
@@ -59,9 +59,7 @@ public class UserController {
     public ResponseEntity<?> logIn (@RequestParam(name="id") int id ,@RequestBody String userStr){
         UserData user = json.fromJson(userStr,UserData.class);
         Response<Boolean> response =SingleService.getInstance().login(id,user.getName(),user.getPassword());
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-        return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
+        return getResponseEntity(response);
 
     }
 
@@ -73,9 +71,7 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<?> logOut(@RequestParam(name="id") int id){
         Response<Boolean> response= SingleService.getInstance().logout(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-        return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
+        return getResponseEntity(response);
     }
 
     /**
@@ -89,9 +85,7 @@ public class UserController {
                                      @RequestParam(name="id") int id, @RequestBody String  paymentDataStr){
         PaymentData paymentData = json.fromJson(paymentDataStr,PaymentData.class);
         Response<Boolean> response= SingleService.getInstance().purchaseCart(id,country,paymentData,paymentData.getAddress());
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-        return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
+        return getResponseEntity(response);
 
     }
 
@@ -102,6 +96,16 @@ public class UserController {
     @GetMapping("home/history")
     public ResponseEntity<?> getPurchaseHistory(@RequestParam(name="id") int id){
         Response<List<Purchase>> response= SingleService.getInstance().watchMyPurchaseHistory(id);
+        return getResponseEntity(response);
+    }
+
+    @GetMapping("home/permissions/{store}")
+    public ResponseEntity<?> getPermissionsForStore(@RequestParam(name="id") int id, @PathVariable String store){
+        Response<Set<StorePermissionType>> response = SingleService.getInstance().getPermissionsForStore(id,store);
+        return getResponseEntity(response);
+    }
+
+    private ResponseEntity<?> getResponseEntity(Response<?> response) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);

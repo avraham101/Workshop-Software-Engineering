@@ -1,14 +1,9 @@
 package Server.Controllers;
 
-import DataAPI.ProductData;
-import DataAPI.RequestData;
-import DataAPI.Response;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Domain.Request;
-import Service.ServiceAPI;
 import Service.SingleService;
 import com.google.gson.Gson;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.PublicKey;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
 @RequestMapping("store")
-public class StoreController {
+public class StoreController  {
 
     Gson json ;
 
@@ -36,11 +32,11 @@ public class StoreController {
         public ResponseEntity<?> addStore(@RequestParam(name="id") int id, @RequestBody String storeDataStr){
         StoreData storeData= json.fromJson(storeDataStr,StoreData.class);
         Response<Boolean> response= SingleService.getInstance().openStore(id,storeData);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-        return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
+        return getResponseEntity(response);
 
     }
+
+
 
     /**
      * use case 3.5 - write a request to specific store
@@ -50,9 +46,7 @@ public class StoreController {
         public ResponseEntity<?> writeRequestToStore(@RequestParam (name="id" ) int id, @RequestBody String  requestDataStr){
         RequestData requestData =json.fromJson(requestDataStr,RequestData.class);
         Response<Boolean> response = SingleService.getInstance().writeRequestToStore(id,requestData.getStoreName(),requestData.getContent());
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-        return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
+        return getResponseEntity(response);
     }
 
     /**
@@ -61,12 +55,67 @@ public class StoreController {
 
     @GetMapping
         public ResponseEntity<?> getStores(){
-       Response<List<StoreData>> response= SingleService.getInstance().viewStores();
+        Response<List<StoreData>> response= SingleService.getInstance().viewStores();
+        return getResponseEntity(response);
+    }
+
+    /**
+     * use case 4.2.1.1 - add discount to store
+     */
+
+    @PostMapping("discount/{store}")
+    public ResponseEntity<?> addDiscountToStore(@PathVariable String store,
+                                                @RequestParam (name="id" ) int id,@RequestBody  String discount){
+        Response<Boolean> response = SingleService.getInstance().addDiscount(id,discount,store);
+        return getResponseEntity(response);
+    }
+
+    /**
+     * 4.2.1.2 - remove discount
+     */
+    @DeleteMapping("discount/{store}")
+    public ResponseEntity<?> deleteDiscountFromStore(@PathVariable String store,
+                                                     @RequestParam (name="id" ) int id, @RequestBody Integer discountId){
+        Response<Boolean> response =  SingleService.getInstance().deleteDiscountFromStore(id,discountId,store);
+        return getResponseEntity(response);
+    }
+
+    /**
+     * 4.2.1.3 - view discounts
+     */
+
+    @GetMapping("discount/{store}")
+    public ResponseEntity<?> getDiscounts(@PathVariable String store){
+       Response<HashMap<Integer,String>> response = SingleService.getInstance().viewDiscounts(store);
+       return getResponseEntity(response);
+    }
+
+    /**
+     * use case 4.2.2.1 - update policy of a store
+     */
+
+    @PutMapping("policy/{store}")
+    public ResponseEntity<?> updatePolicy(@PathVariable String store,
+                                          @RequestParam (name="id" ) int id,
+                                          @RequestBody String policyData){
+        Response<Boolean> response = SingleService.getInstance().upadtePolicy(id,policyData,store);
+        return getResponseEntity(response);
+    }
+
+    /**
+     * use case 4.2.2.2 - view the policy of a store
+     */
+    @GetMapping("policy/{store}")
+        public ResponseEntity<?> getStorePolicy(@PathVariable String store){
+        Response<String> response = SingleService.getInstance().viewPolicy(store);
+        return getResponseEntity(response);
+    }
+
+
+    private ResponseEntity<?> getResponseEntity(Response<?> response) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
     }
-
-
 
 }

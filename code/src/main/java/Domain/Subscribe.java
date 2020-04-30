@@ -569,6 +569,8 @@ public class Subscribe extends UserState{
          permissionsForStore.add(StorePermissionType.ADD_MANAGER);
      if(!givenByMePermissions.isEmpty())
          permissionsForStore.add(StorePermissionType.DELETE_MANAGER);
+     if(permissionTypes.contains(PermissionType.CRUD_POLICY_DISCOUNT))
+         permissionsForStore.add(StorePermissionType.CRUD_POLICY_DISCOUNT);
      return permissionsForStore;
 
     }
