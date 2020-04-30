@@ -17,36 +17,101 @@ class ViewStoresAndProducts extends Component {
     };
   }
 
+    create_stores() {
+        let output = []
+        for(let i =0; i<5;i++) {
+            output.push({
+                name:'Store '+i,
+                description:'Description '+i
+            })
+        }
+        return output
+    }
+
+    create_products() {
+        let output = []
+        for(let i =0; i<5;i++) {
+            output.push({
+                productName:'product '+i,
+                storeName:'store '+i,
+                category:'category '+i,
+                reviews: [],
+                amount: i,
+                price:i,
+                priceAfterDiscount: i,
+                purchaseType:'purchase type '+i,
+            })
+        }
+        return output
+    }
+
   handleStores(event) {
     this.state.showProducts = true;
     this.setState({ name: event.target.value });
   }
 
-  renderStores() {
-    return (
-      <div>
-        <input type="radio" id="r1" name="store" />
-        <label for="r1">{this.state.stores[0]}</label>
-        <br></br>
-        <input type="radio" id="r2" name="store" />
-        <label for="r2">{this.state.stores[1]}</label>
-        <br></br>
-        <input type="radio" id="r3" name="store" />
-        <label for="r3">{this.state.stores[2]}</label>
-        <br></br>
-      </div>
-    );
-  }
+    render_stores_table() {
+        let stores = this.create_stores();
+        let output = [];
+        let i =0;
+        stores.forEach( element =>
+            output.push(
+                <tr>
+                    <th> <input type="radio" id={i} name="store" /> </th>
+                    <th>{element.name}</th>
+                    <th> {element.description} </th>
+                </tr>
+            ),
+            i=i+1
+        )
+        return output;
+    }
 
-  render_product() {
-    return (
-      <table style={style_table}>
-        <tr id="r1">{this.state.products[0]}</tr>
-        <tr id="r2">{this.state.products[1]}</tr>
-        <tr id="r3">{this.state.products[2]}</tr>
-      </table>
-    );
-  }
+    render_stores() {
+        return (
+            <table style={style_table}>
+                <tr>
+                    <th style = {under_line}> </th>
+                    <th style = {under_line}> Store Name </th>
+                    <th style = {under_line}> Description </th>
+                </tr>
+                {this.render_stores_table()}
+            </table>);
+    }
+
+    render_product_table(){
+        let proudcts = this.create_products();
+        let output = [];
+        proudcts.forEach( element =>
+            output.push(
+                <tr>
+                    <th> {element.productName} </th>
+                    <th> {element.storeName} </th>
+                    <th> {element.category} </th>
+                    <th> {element.amount} </th>
+                    <th> {element.price} </th>
+                    <th> {element.purchaseType} </th>
+                </tr>
+            )
+        )
+        return output;
+    }
+
+    render_product() {
+        return (
+            <table style={style_table}>
+                <tr>
+                    <th style = {under_line}> Product Name </th>
+                    <th style = {under_line}> Store Name </th>
+                    <th style = {under_line}> Category </th>
+                    <th style = {under_line}> Amount </th>
+                    <th style = {under_line}> Price </th>
+                    <th style = {under_line}> Purchase Type </th>
+                </tr>
+                {this.render_product_table()}
+            </table>);
+    }
+
 
   render() {
     return (
@@ -56,7 +121,7 @@ class ViewStoresAndProducts extends Component {
         <div>
           <Title title="Stores :" />
           <div>
-            {this.renderStores()}
+            {this.render_stores()}
             <h5>
               To watch the products in the store- choose a store and press here
             </h5>
@@ -76,3 +141,7 @@ const style_table = {
   textAlign: "center",
   border: "2px solid black",
 };
+
+const under_line = {
+    borderBottom: '2px solid black'
+}
