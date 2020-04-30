@@ -4,7 +4,9 @@ class Button extends Component {
   
   render() {
     return (
-      <button style={style_sheet} onClick={this.props.onClick}> {this.props.text} </button>
+      <div style={{ textAlign:'center', margin:10}}>
+        <button style={style_sheet} onClick={this.props.onClick}> {this.props.text} </button>
+      </div>
       );
   }
 }

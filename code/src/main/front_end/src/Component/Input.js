@@ -7,7 +7,7 @@ class Input extends Component {
     if(this.props.error!=null)
       border='2px solid red'
     return (
-      <div style={{marginLeft:400, marginRight:400,padding:5, border:border}}>
+      <div style={{marginLeft:'30%', marginRight:'30%',padding:5, border:border}}>
           <div style = {{textAlign:'center'}}>
             <label style={{marginLeft:5, marginRight:12}}> {this.props.title} </label>
           </div>
