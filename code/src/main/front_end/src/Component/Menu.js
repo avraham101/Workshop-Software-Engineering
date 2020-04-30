@@ -7,6 +7,7 @@ class Menu extends Component {
   constructor(){
     super()
     this.state = {
+      color_0: '',
       color_1: '',
       color_2: '',
       color_3: '',
@@ -20,6 +21,10 @@ class Menu extends Component {
         <header>
         <table style={style_sheet}>
           <tr>
+          <th onClick={() => history.push("/")}
+                style={{background:this.state.color_0}}
+                onMouseOver={()=>this.setState({color_0: WHITE_BLUE})}
+                onMouseLeave={()=>this.setState({color_0: ''})}> Menu </th>
             <th onClick={() => history.push("/viewStoresAndProducts")}
                 style={{background:this.state.color_1}}
                 onMouseOver={()=>this.setState({color_1: WHITE_BLUE})}
@@ -52,7 +57,7 @@ const style_sheet = {
   color: "black",
   backgroundColor: '#FFC242',
   fontFamily: "Arial",
-  width:"100%",
+  width:"99%",
   height:'50px',
   borderBottom:'2px solid #B38118',
 }

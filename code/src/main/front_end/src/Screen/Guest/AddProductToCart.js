@@ -36,20 +36,29 @@ class AddProductToCart extends Component {
    * print the details about the product to add to cart
    */
   renderProducts() {
-    return (
-      <table style={style_table}>
+    let product = this.props.location.data;
+    return (product === undefined)?
+    ( <h3> Didn't selected product </h3> ) :
+    ( <table style={style_table}>
         <tr>
-          <th> Product name </th>
-          <th> Price </th>
-          <th> Amount in the store </th>
+          <th style = {under_line}> Product Name </th>
+          <th style = {under_line}> Store Name </th>
+          <th style = {under_line}> Category </th>
+          <th style = {under_line}> Amount </th>
+          <th style = {under_line}> Price </th>
+          <th style = {under_line}> Purchase Type </th>
         </tr>
+        {}
         <tr>
-          <th> {product.name} </th>
+          <th> {product.productName} </th>
+          <th> {product.storeName} </th>
+          <th> {product.category} </th>
+          <th> {product.amount} </th>
           <th> {product.price} </th>
-          <th> {product.amountInStore} </th>
+          <th> {product.purchaseType} </th>
         </tr>
       </table>
-    );
+      );
   }
 
   render() {
@@ -98,3 +107,7 @@ const product = {
   price: 20,
   amountInStore: 100,
 };
+
+const under_line = {
+  borderBottom: '2px solid black'
+}
