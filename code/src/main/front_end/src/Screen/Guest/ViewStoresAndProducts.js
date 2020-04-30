@@ -4,6 +4,7 @@ import Menu from "../../Component/Menu";
 import Title from "../../Component/Title";
 import Input from "../../Component/Input";
 import Button from "../../Component/Button";
+import Row from "../../Component/Row";
 
 class ViewStoresAndProducts extends Component {
   constructor() {
@@ -44,10 +45,12 @@ class ViewStoresAndProducts extends Component {
     return output;
   }
 
-  handleStores(event) {
-    this.state.showProducts = true;
-    this.state.store = this.getStoreSelected();
-    this.setState({ name: event.target.value });
+  handleStores(event, store) {
+    this.setState({
+      name: event.target.value,
+      showProducts: true,
+      store: store,
+    });
   }
 
   getStoreSelected() {
@@ -68,19 +71,10 @@ class ViewStoresAndProducts extends Component {
     stores.forEach(
       (element) =>
         output.push(
-          <tr>
-            <th>
-              {" "}
-              <input
-                type="radio"
-                id={i}
-                name="store"
-                value={element.name}
-              />{" "}
-            </th>
+          <Row onClick={(e) => this.handleStores(e, element.name)}>
             <th>{element.name}</th>
             <th> {element.description} </th>
-          </tr>
+          </Row>
         ),
       (i = i + 1)
     );
@@ -91,7 +85,6 @@ class ViewStoresAndProducts extends Component {
     return (
       <table style={style_table}>
         <tr>
-          <th style={under_line}> </th>
           <th style={under_line}> Store Name </th>
           <th style={under_line}> Description </th>
         </tr>
@@ -105,13 +98,13 @@ class ViewStoresAndProducts extends Component {
     let output = [];
     proudcts.forEach((element) =>
       output.push(
-        <tr>
+        <Row>
           <th> {element.productName} </th>
           <th> {element.category} </th>
           <th> {element.amount} </th>
           <th> {element.price} </th>
           <th> {element.purchaseType} </th>
-        </tr>
+        </Row>
       )
     );
     return output;
@@ -119,16 +112,19 @@ class ViewStoresAndProducts extends Component {
 
   render_product() {
     return (
-      <table style={style_table}>
-        <tr>
-          <th style={under_line}> Product Name </th>
-          <th style={under_line}> Category </th>
-          <th style={under_line}> Amount </th>
-          <th style={under_line}> Price </th>
-          <th style={under_line}> Purchase Type </th>
-        </tr>
-        {this.render_product_table()}
-      </table>
+      <div>
+        <h3>{this.state.store}</h3>
+        <table style={style_table}>
+          <tr>
+            <th style={under_line}> Product Name </th>
+            <th style={under_line}> Category </th>
+            <th style={under_line}> Amount </th>
+            <th style={under_line}> Price </th>
+            <th style={under_line}> Purchase Type </th>
+          </tr>
+          {this.render_product_table()}
+        </table>
+      </div>
     );
   }
 
@@ -142,9 +138,8 @@ class ViewStoresAndProducts extends Component {
           <div>
             {this.render_stores()}
             <h5>
-              To watch the products in the store- choose a store and press here
+              To watch the products in the store- choose a store and press on it.
             </h5>
-            <Button text="Select" onClick={this.handleStores} />
           </div>
           {this.state.showProducts ? this.render_product() : ""}
         </div>
@@ -163,4 +158,13 @@ const style_table = {
 
 const under_line = {
   borderBottom: "2px solid black",
+};
+
+const style_sheet = {
+  color: "black",
+  backgroundColor: "#FFC242",
+  fontFamily: "Arial",
+  width: "100%",
+  height: "50px",
+  borderBottom: "2px solid #B38118",
 };
