@@ -10,6 +10,7 @@ import UserWatchPurchasesHistory from './Screen/Subscribe/UserWatchPurchasesHist
 import ViewStoresAndProducts from "./Screen/Guest/ViewStoresAndProducts";
 import ViewProductsInCart from './Screen/Guest/ViewProductsInCart';
 import AddProductToCart from './Screen/Guest/AddProductToCart';
+import ViewDeleteProductsInStore from './Screen/Subscribe/ViewDeleteProductsInStore';
 
 class App extends Component {
 
@@ -26,6 +27,7 @@ class App extends Component {
               <Route path="/register" component={withRouter(Register)} />
               <Route path="/login" component={withRouter(Login)} />
               <Route path="/addToCart" component={withRouter(AddProductToCart)} />
+              <Route path="/productsDelete" component={withRouter(ViewDeleteProductsInStore)} />
               <Route path="/" component={withRouter(GuestIndex)} exact />
             </Switch>
           </Router>)
