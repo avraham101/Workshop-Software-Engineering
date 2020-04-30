@@ -17,7 +17,6 @@ class ViewProductsInCart extends Component {
       <BackGroud>
         <Menu/>
         <Cart cart={this.cart}>
-            <Title title = 'my cart:'/> 
         </Cart>
       </BackGroud>
     );

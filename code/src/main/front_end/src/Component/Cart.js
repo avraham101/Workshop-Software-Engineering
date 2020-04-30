@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import history from '../Screen/history';
 import Button from '.././Component/Button';
+import Title from '.././Component/Title';
 
-class Purchases extends Component {
+class Cart extends Component {
   
     constructor(props){
         super(props)
@@ -26,23 +27,36 @@ class Purchases extends Component {
         this.setState({})
       }
 
+      renderTitle(){
+          if(this.cart.products.length===0)
+            return "your cart is empty";
+        else
+            return "products in my cart:"
+      }
+
+      handleBuyCart(event){
+          this.cart.products=[]
+        this.setState({})
+      }
+
   renderCart(){
     let output=[];
         output.push(
         <table style={style_sheet}>
             <tr>
-                {"total price :"+this.cart.price}
-                <th>{"products in my cart:"}</th>
+                <th>{"total price :"+this.cart.price}</th>
+                <th><Button text = "Buy Cart" onClick={(t)=>this.handleBuyCart(t)}/></th>
             </tr>
             <tr>
-                <th></th>
+                <th>{}</th>
                 <th>{"product name"}</th>
                 <th>{"store"}</th>
                 <th>{"category"}</th>
                 <th>{"price per unit"}</th>
                 <th>{"purchase type"}</th>
                 <th>{"amount"}</th>
-                <th></th>
+                <th>{}</th>
+                <th>{}</th>
             </tr>
            {this.renderProduct(this.cart.products)}
         </table>
@@ -72,15 +86,16 @@ class Purchases extends Component {
 
 
   render() {
-    return (
+    return ( 
         <div>
+            <Title title = {this.renderTitle()}/>
             {this.renderCart()} 
         </div>      
     );
   }
 }
 
-export default Purchases;
+export default Cart;
 
 const style_sheet = {
     color: "black",
