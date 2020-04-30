@@ -10,6 +10,8 @@ import InitSystem from './Screen/Subscribe/Admin/InitSystem';
 import ViewStoresAndProducts from "./Screen/Guest/ViewStoresAndProducts";
 import ViewProductsInCart from './Screen/Guest/ViewProductsInCart';
 import AddProductToCart from './Screen/Guest/AddProductToCart';
+import ViewDeleteProductsInStore from './Screen/Subscribe/ViewDeleteProductsInStore';
+import sendRequestToStore from './Screen/Subscribe/SendRequestToStore'
 import sendRequestToStore from './Screen/Subscribe/SendRequestToStore';
 import OpenStore from "./Screen/Subscribe/OpenStore";
 import ManageProductInStore from './Screen/Subscribe/ManageProductInStore';
@@ -28,6 +30,7 @@ class App extends Component {
               <Route path="/register" component={withRouter(Register)} />
               <Route path="/login" component={withRouter(Login)} />
               <Route path="/addToCart" component={withRouter(AddProductToCart)} />
+              <Route path="/productsDelete" component={withRouter(ViewDeleteProductsInStore)} />
               <Route path="/sendRequest" component={withRouter(sendRequestToStore)} />
               <Route path="/openStore" component={withRouter(OpenStore)} />
               <Route path="/manageProducts" component={withRouter(ManageProductInStore)} />
