@@ -17,7 +17,6 @@ import ManageProductInStore from './Screen/Subscribe/ManageProductInStore';
 import ManageDiscount from './Screen/Subscribe/ManageDiscount';
 import RemoveManagerFromStore from './Screen/Subscribe/RemoveManagerFromStore';
 import StoreManagement from "./Screen/Subscribe/StoreManagement";
-import InitSystem from "./Screen/Subscribe/Admin/InitSystem";
 import SearchAndFilterProducts from "./Screen/Guest/SearchAndFilterProducts";
 
 class App extends Component {

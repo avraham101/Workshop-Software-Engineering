@@ -112,7 +112,7 @@ class SearchAndFilterProducts  extends Component{
                 <table>
                     <tr>
                         <th><Input title="Search:" type="text" value={this.state.search} onChange={this.handleSearch} /></th>
-                        <th><Input title="Value:" type="text" value={this.state.search} onChange={this.handleSearchValue} /></th>
+                        <th><Input title="Value:" type="text" value={this.state.searchValue} onChange={this.handleSearchValue} /></th>
                     </tr>
                     <tr>
                         <th><Input title="MinPrice" type="number" min={0} max={Number.MAX_SAFE_INTEGER} value={this.state.minPrice} onChange={this.handleMinPrice} /></th>
