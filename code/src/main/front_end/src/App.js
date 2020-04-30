@@ -11,6 +11,7 @@ import ViewStoresAndProducts from "./Screen/Guest/ViewStoresAndProducts";
 import ViewProductsInCart from './Screen/Guest/ViewProductsInCart';
 import AddProductToCart from './Screen/Guest/AddProductToCart';
 import OpenStore from "./Screen/Subscribe/OpenStore";
+import StoreManagement from "./Screen/Subscribe/StoreManagement";
 
 class App extends Component {
 
@@ -28,6 +29,7 @@ class App extends Component {
               <Route path="/login" component={withRouter(Login)} />
               <Route path="/addToCart" component={withRouter(AddProductToCart)} />
               <Route path="/openStore" component={withRouter(OpenStore)} />
+              <Route path="/storeManagement" component={withRouter(StoreManagement)} />
               <Route path="/" component={withRouter(GuestIndex)} exact />
             </Switch>
           </Router>)
