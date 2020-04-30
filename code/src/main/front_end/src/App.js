@@ -10,15 +10,20 @@ import UserWatchPurchasesHistory from './Screen/Subscribe/UserWatchPurchasesHist
 import ViewStoresAndProducts from "./Screen/Guest/ViewStoresAndProducts";
 import ViewProductsInCart from './Screen/Guest/ViewProductsInCart';
 import AddProductToCart from './Screen/Guest/AddProductToCart';
-import InitSystem from "./Screen/Subscribe/Admin/InitSystem";
-import SearchAndFilterProducts from "./Screen/Guest/SearchAndFilterProducts"
+import ViewDeleteProductsInStore from './Screen/Subscribe/ViewDeleteProductsInStore';
+import sendRequestToStore from './Screen/Subscribe/SendRequestToStore';
+import OpenStore from "./Screen/Subscribe/OpenStore";
+import BuyCart from "./Screen/Guest/BuyCart";
+import ManageProductInStore from './Screen/Subscribe/ManageProductInStore';
+import RemoveManagerFromStore from './Screen/Subscribe/RemoveManagerFromStore';
+import StoreManagement from "./Screen/Subscribe/StoreManagement";
 
 class App extends Component {
 
   render() {
     return (<Router history={history}>
             <Switch>
-              {<Route path="/admin" component={withRouter(InitSystem)} exact/>}
+              <Route path="/admin" component={withRouter(InitSystem)} exact/>
               <Route path="/register" component={withRouter(Register)} />
               <Route path="/searchAndFilter" component={withRouter(SearchAndFilterProducts)}/>
               <Route path="/login" component={withRouter(Login)} />
@@ -29,6 +34,13 @@ class App extends Component {
               <Route path="/register" component={withRouter(Register)} />
               <Route path="/login" component={withRouter(Login)} />
               <Route path="/addToCart" component={withRouter(AddProductToCart)} />
+              <Route path="/productsDelete" component={withRouter(ViewDeleteProductsInStore)} />
+              <Route path="/sendRequest" component={withRouter(sendRequestToStore)} />
+              <Route path="/buyCart" component={withRouter(BuyCart)} />
+              <Route path="/openStore" component={withRouter(OpenStore)} />
+              <Route path="/manageProducts" component={withRouter(ManageProductInStore)} />
+              <Route path="/storeManagement" component={withRouter(StoreManagement)} />
+              <Route path="/removeManagerFromStore" component={withRouter(RemoveManagerFromStore)} />
               <Route path="/" component={withRouter(GuestIndex)} exact />
             </Switch>
           </Router>)

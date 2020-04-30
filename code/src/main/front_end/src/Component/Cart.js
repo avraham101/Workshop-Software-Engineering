@@ -11,13 +11,11 @@ class Cart extends Component {
         this.handleDelete = this.handleDelete.bind(this);
     }
 
-
     handleDelete(event,product) {
         let index=this.cart.products.indexOf(product);
         if(index!==-1){         
             this.cart.products.splice(index,1);
         }
-
         this.setState({})
       }
 
@@ -45,7 +43,7 @@ class Cart extends Component {
         <table style={style_sheet}>
             <tr>
                 <th>{"total price :"+this.cart.price}</th>
-                <th><Button text = "Buy Cart" onClick={(t)=>this.handleBuyCart(t)}/></th>
+                <th><Button text = "Buy Cart" onClick={()=>history.push("/buyCart")}/></th>
             </tr>
             <tr>
                 <th>{}</th>
