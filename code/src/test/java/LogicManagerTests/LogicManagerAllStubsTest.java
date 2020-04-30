@@ -1854,4 +1854,15 @@ public class LogicManagerAllStubsTest {
 
     }
 
+
+    /**
+     * tests for getManagersOfStore
+     * fail not existing store in the system
+     */
+    @Test
+    public void testGetManagersOfStoreFailStoreNotExist(){
+        StoreData storeData = data.getStore(Data.VALID);
+        assertNull(logicManager.getManagersOfStore(storeData.getName()).getValue());
+    }
+
 }
