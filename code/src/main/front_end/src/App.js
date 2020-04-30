@@ -33,12 +33,12 @@ class App extends Component {
               <Route path="/addToCart" component={withRouter(AddProductToCart)} />
               <Route path="/productsDelete" component={withRouter(ViewDeleteProductsInStore)} />
               <Route path="/sendRequest" component={withRouter(sendRequestToStore)} />
-              <Route path="/buyCart" component={withRouter(BuyCart)} />
+              {/*<Route path="/buyCart" component={withRouter(BuyCart)} />*/}
               <Route path="/openStore" component={withRouter(OpenStore)} />
               <Route path="/manageProducts" component={withRouter(ManageProductInStore)} />
               <Route path="/manageDiscount" component={withRouter(ManageDiscount)} exact/>
-              <Route path="/storeManagement" component={withRouter(StoreManagement)} />
-              <Route path="/removeManagerFromStore" component={withRouter(RemoveManagerFromStore)} />
+              {/*<Route path="/storeManagement" component={withRouter(StoreManagement)} />*/}
+              {/*<Route path="/removeManagerFromStore" component={withRouter(RemoveManagerFromStore)} />*/}
               <Route path="/" component={withRouter(GuestIndex)} exact />
             </Switch>
           </Router>)

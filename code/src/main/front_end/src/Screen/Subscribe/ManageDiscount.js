@@ -165,21 +165,37 @@ class ManageDiscount extends Component {
     let addDiscountToComplicated = (discount) => {
       this.comlicatedDiscounts.push(discount);
       this.selectedDiscounts = [];
-      this.setState({})
+      this.setState({error_selected:undefined})
     }
     let andClick = (e) => {
-      addDiscountToComplicated({CLASSNAME:CLASS_AND,DATA:{discounts:this.selectedDiscounts}})
+      if(this.selectedDiscounts.length>1)
+        addDiscountToComplicated({CLASSNAME:CLASS_AND,DATA:{discounts:this.selectedDiscounts}})
+      else if(this.selectedDiscounts.length==1)
+        this.setState({error_selected:'please select more then 1 discount'});
+      else
+        this.setState({error_selected:'empty discounts'});
     };
     let orClick = (e) => {
-      addDiscountToComplicated({CLASSNAME:CLASS_OR,DATA:{discounts:this.selectedDiscounts}})
+      if(this.selectedDiscounts.length>1)
+        addDiscountToComplicated({CLASSNAME:CLASS_OR,DATA:{discounts:this.selectedDiscounts}})
+      else if(this.selectedDiscounts.length==1)
+        this.setState({error_selected:'please select more then 1 discount'});
+      else
+        this.setState({error_selected:'empty discounts'});
     };
     let xorClick = (e) => {
-      addDiscountToComplicated({CLASSNAME:CLASS_XOR,DATA:{discounts:this.selectedDiscounts}})
+      if(this.selectedDiscounts.length>1)
+        addDiscountToComplicated({CLASSNAME:CLASS_XOR,DATA:{discounts:this.selectedDiscounts}})
+      else if(this.selectedDiscounts.length===1)
+        this.setState({error_selected:'please select more then 1 discount'});
+      else
+        this.setState({error_selected:'empty discounts'});
     };
     return (
       <div>
-          <h2 style={titleStyle}> Selected Discounts </h2>
+        <h2 style={titleStyle}> Selected Discounts </h2>
         {this.renderSelectedDiscountList(this.selectedDiscounts, true)}
+          <p style={{color:'red'}}> {this.state.error_selected!=undefined?this.state.error_selected:''} </p>
           <div style={{float:'right',width:'33%'}}> 
             <Button text="AND" onClick={andClick}/>
           </div>
@@ -251,7 +267,7 @@ class ManageDiscount extends Component {
         <Title title="Discount Manager"/>
         <h2 style={{textAlign:'center'}}>{this.state.storeName}</h2>
         <p>
-          {JSON.stringify(this.state.selectedDiscounts)}
+          {JSON.stringify(this.state.chosenDiscount)}
         </p>
         <div style={{height:'100%'}}>
           {this.renderProducts('15%')}
