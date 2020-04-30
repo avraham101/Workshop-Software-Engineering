@@ -5,11 +5,10 @@ import Error from "../../Component/Error";
 import Title from "../../Component/Title";
 import Input from "../../Component/Input";
 import Button from "../../Component/Button";
-//import IconButton from '@material-ui/core/IconButton';
-//import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import history from "../history";
 
 class AddProductToCart extends Component {
+
   /**
    * constructor
    * @param {the product that choosed to add to cart} product
@@ -70,7 +69,8 @@ class AddProductToCart extends Component {
           {this.renderProducts()}
           <Input
             title="Choose amount to cart:"
-            type="text"
+            type="number"
+            min={1}
             value={this.state.amount}
             onChange={this.handleChangedAmount}
           />

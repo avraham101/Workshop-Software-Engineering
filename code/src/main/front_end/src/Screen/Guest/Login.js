@@ -4,6 +4,7 @@ import Menu from '../../Component/Menu';
 import Title from '../../Component/Title';
 import Input from '../../Component/Input';
 import Button from '../../Component/Button';
+import history from "../history";
 
 class Login extends Component {
 
@@ -39,6 +40,7 @@ class Login extends Component {
           <Input title = 'User Name:' error="name" type="text" value={this.state.name} onChange={this.handleChangeName} />
           <Input title = 'Password:' type="text" value={this.state.password} onChange={this.handleChangePassword} />
           <Button text = 'Submit' onClick={this.handleSubmit}/>
+          <Button text="cancel" onClick={() => history.push("/")} />
         </div>
       </BackGroud>
     );

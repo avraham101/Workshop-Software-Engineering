@@ -19,6 +19,7 @@ class BuyCart extends Component {
         this.handleChangeAddress = this.handleChangeAddress.bind(this);
         this.handleChangeCountry = this.handleChangeCountry.bind(this);
         this.handleChangeCreditCard = this.handleChangeCreditCard.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.cart = cart1;
         this.state = {
             name: "",
@@ -51,6 +52,11 @@ class BuyCart extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
+        if (this.state.creditCard.length !== 4) {
+            alert("wrong credit card, must be length 4") }
+        else {
+            alert("buy succefully, go back to the main menu");
+            history.push("/"); }
     }
 
     render() {
