@@ -1,5 +1,6 @@
 package Server.Controllers;
 
+import DataAPI.ProductData;
 import DataAPI.RequestData;
 import DataAPI.Response;
 import DataAPI.StoreData;
@@ -39,5 +40,11 @@ public class StoreController {
     @ResponseBody
     public Response<List<StoreData>> getStores(){
        return SingleService.getInstance().viewStores();
+    }
+
+    @PostMapping("addproduct")
+    @ResponseBody
+    public Response<Boolean> addProduct(@RequestParam(name="id") int id, @RequestBody ProductData product){
+        return SingleService.getInstance().addProductToStore(id,product);
     }
 }
