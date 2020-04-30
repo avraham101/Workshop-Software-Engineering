@@ -80,7 +80,7 @@ class AddProductToCart extends Component {
               aria-label="add to shopping cart"
               text="add"
               onClick={(e) =>
-                parseInt(this.state.amount) < product.amountInStore
+                (parseInt(this.state.amount) < this.state.product.amountInStore)
                   ? this.setState({ enough: true })
                   : this.setState({ enough: false })
               }
@@ -100,12 +100,6 @@ const style_table = {
   width: "99%",
   textAlign: "center",
   border: "2px solid black",
-};
-
-const product = {
-  name: "pen",
-  price: 20,
-  amountInStore: 100,
 };
 
 const under_line = {

@@ -45,7 +45,7 @@ class Cart extends Component {
         <table style={style_sheet}>
             <tr>
                 <th>{"total price :"+this.cart.price}</th>
-                <th><Button text = "Buy Cart" onClick={(t)=>this.handleBuyCart(t)}/></th>
+                <th><Button text = "Buy Cart" onClick={()=>history.push("/buyCart")}/></th>
             </tr>
             <tr>
                 <th>{}</th>

@@ -12,6 +12,8 @@ import ViewProductsInCart from './Screen/Guest/ViewProductsInCart';
 import AddProductToCart from './Screen/Guest/AddProductToCart';
 import sendRequestToStore from './Screen/Subscribe/SendRequestToStore'
 import OpenStore from "./Screen/Subscribe/OpenStore";
+import BuyCart from "./Screen/Guest/BuyCart";
+
 
 class App extends Component {
 
@@ -29,6 +31,7 @@ class App extends Component {
               <Route path="/login" component={withRouter(Login)} />
               <Route path="/addToCart" component={withRouter(AddProductToCart)} />
               <Route path="/sendRequest" component={withRouter(sendRequestToStore)} />
+              <Route path="/buyCart" component={withRouter(BuyCart)} />
               <Route path="/" component={withRouter(GuestIndex)} exact />
             </Switch>
           </Router>)
