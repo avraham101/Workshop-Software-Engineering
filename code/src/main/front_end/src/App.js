@@ -9,6 +9,7 @@ import UserWatchPurchasesHistory from './Screen/Subscribe/UserWatchPurchasesHist
 //import InitSystem from './Screen/Subscribe/Admin/InitSystem'
 import ViewStoresAndProducts from "./Screen/Guest/ViewStoresAndProducts";
 import AddProductToCart from './Screen/Guest/AddProductToCart';
+import OpenStore from "./Screen/Subscribe/OpenStore";
 
 class App extends Component {
 
@@ -26,6 +27,7 @@ class App extends Component {
               <Route path="/storeOwnerWatchHistory" component={withRouter(StoreOwnerWatchHistory)} />
               <Route path="/register" component={withRouter(Register)} />
               <Route path="/addToCart" component={withRouter(AddProductToCart)} />
+              <Route path="/openStore" component={withRouter(OpenStore)} />
               <Route path="/" component={withRouter(GuestIndex)} exact />
             </Switch>
           </Router>)

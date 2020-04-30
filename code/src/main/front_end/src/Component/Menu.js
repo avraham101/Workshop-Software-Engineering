@@ -51,7 +51,7 @@ const style_sheet = {
   color: "black",
   backgroundColor: '#FFC242',
   fontFamily: "Arial",
-  width:"100%",
+  width:"99%",
   height:'50px',
   borderBottom:'2px solid #B38118',
 }
