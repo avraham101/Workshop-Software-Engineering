@@ -53,21 +53,9 @@ class ViewStoresAndProducts extends Component {
     });
   }
 
-  getStoreSelected() {
-    var stores = document.getElementsByName("store");
-    var store_value;
-    for (var i = 0; i < stores.length; i++) {
-      if (stores[i].checked) {
-        store_value = stores[i].value;
-      }
-      return store_value;
-    }
-  }
-
   render_stores_table() {
     let stores = this.state.stores;
     let output = [];
-    let i = 0;
     stores.forEach(
       (element) =>
         output.push(
@@ -75,8 +63,7 @@ class ViewStoresAndProducts extends Component {
             <th>{element.name}</th>
             <th> {element.description} </th>
           </Row>
-        ),
-      (i = i + 1)
+        )
     );
     return output;
   }
@@ -158,13 +145,4 @@ const style_table = {
 
 const under_line = {
   borderBottom: "2px solid black",
-};
-
-const style_sheet = {
-  color: "black",
-  backgroundColor: "#FFC242",
-  fontFamily: "Arial",
-  width: "100%",
-  height: "50px",
-  borderBottom: "2px solid #B38118",
 };

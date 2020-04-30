@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import { Router, Route, Switch, withRouter } from 'react-router-dom';
-import GuestIndex from './Screen/Guest/GuestIndex';
-import Register from './Screen/Guest/Register';
-import Login from './Screen/Guest/Login';
-import history from './Screen/history';
-import StoreOwnerWatchHistory from './Screen/Subscribe/StoreOwnerWatchHistory';
-import UserWatchPurchasesHistory from './Screen/Subscribe/UserWatchPurchasesHistory';
-import InitSystem from './Screen/Subscribe/Admin/InitSystem';
+import GuestIndex from './Screen/Guest/GuestIndex'
+import Register from './Screen/Guest/Register'
+import Login from './Screen/Guest/Login'
+import history from './Screen/history'
+import StoreOwnerWatchHistory from './Screen/Subscribe/StoreOwnerWatchHistory'
+import UserWatchPurchasesHistory from './Screen/Subscribe/UserWatchPurchasesHistory'
+import InitSystem from './Screen/Subscribe/Admin/InitSystem'
 import ViewStoresAndProducts from "./Screen/Guest/ViewStoresAndProducts";
 import ViewProductsInCart from './Screen/Guest/ViewProductsInCart';
 import AddProductToCart from './Screen/Guest/AddProductToCart';
@@ -16,6 +16,8 @@ import OpenStore from "./Screen/Subscribe/OpenStore";
 import BuyCart from "./Screen/Guest/BuyCart";
 import ManageProductInStore from './Screen/Subscribe/ManageProductInStore';
 import RemoveManagerFromStore from './Screen/Subscribe/RemoveManagerFromStore';
+import StoreManagement from "./Screen/Subscribe/StoreManagement";
+
 class App extends Component {
 
   render() {
@@ -36,6 +38,7 @@ class App extends Component {
               <Route path="/buyCart" component={withRouter(BuyCart)} />
               <Route path="/openStore" component={withRouter(OpenStore)} />
               <Route path="/manageProducts" component={withRouter(ManageProductInStore)} />
+              <Route path="/storeManagement" component={withRouter(StoreManagement)} />
               <Route path="/removeManagerFromStore" component={withRouter(RemoveManagerFromStore)} />
               <Route path="/" component={withRouter(GuestIndex)} exact />
             </Switch>
