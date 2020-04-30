@@ -11,7 +11,6 @@ import ViewStoresAndProducts from "./Screen/Guest/ViewStoresAndProducts";
 import ViewProductsInCart from './Screen/Guest/ViewProductsInCart';
 import AddProductToCart from './Screen/Guest/AddProductToCart';
 import ViewDeleteProductsInStore from './Screen/Subscribe/ViewDeleteProductsInStore';
-import sendRequestToStore from './Screen/Subscribe/SendRequestToStore'
 import sendRequestToStore from './Screen/Subscribe/SendRequestToStore';
 import OpenStore from "./Screen/Subscribe/OpenStore";
 import ManageProductInStore from './Screen/Subscribe/ManageProductInStore';
