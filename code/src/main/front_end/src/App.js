@@ -9,6 +9,7 @@ import UserWatchPurchasesHistory from './Screen/Subscribe/UserWatchPurchasesHist
 //import InitSystem from './Screen/Subscribe/Admin/InitSystem'
 import ViewStoresAndProducts from "./Screen/Guest/ViewStoresAndProducts";
 import ViewProductsInCart from './Screen/Guest/ViewProductsInCart';
+import AddProductToCart from './Screen/Guest/AddProductToCart';
 
 class App extends Component {
 
@@ -16,14 +17,15 @@ class App extends Component {
     return (<Router history={history}>
             <Switch>
               {/*<Route path="/admin" component={withRouter(InitSystem)} exact/>*/}
-              <Route path="/register" component={withRouter(Register)} />       
-              <Route path="/login" component={withRouter(Login)} /> 
+              <Route path="/register" component={withRouter(Register)} />
+              <Route path="/login" component={withRouter(Login)} />
               <Route path="/storeOwnerWatchHistory" component={withRouter(StoreOwnerWatchHistory)} />
-              <Route path="/userWatchPurchasesHistory" component={withRouter(UserWatchPurchasesHistory)} />          
+              <Route path="/userWatchPurchasesHistory" component={withRouter(UserWatchPurchasesHistory)} />
               <Route path="/viewStoresAndProducts" component={withRouter(ViewStoresAndProducts)}/>
               <Route path="/viewMyCart" component={withRouter(ViewProductsInCart)}/>
               <Route path="/register" component={withRouter(Register)} />
               <Route path="/login" component={withRouter(Login)} />
+              <Route path="/addToCart" component={withRouter(AddProductToCart)} />
               <Route path="/" component={withRouter(GuestIndex)} exact />
             </Switch>
           </Router>)
