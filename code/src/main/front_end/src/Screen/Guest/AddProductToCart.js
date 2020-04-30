@@ -10,6 +10,7 @@ import Button from "../../Component/Button";
 import history from "../history";
 
 class AddProductToCart extends Component {
+  
   /**
    * constructor
    * @param {the product that choosed to add to cart} product
@@ -36,20 +37,29 @@ class AddProductToCart extends Component {
    * print the details about the product to add to cart
    */
   renderProducts() {
-    return (
-      <table style={style_table}>
+    let product = this.props.location.data;
+    return (product === undefined)?
+    ( <h3> Didn't selected product </h3> ) :
+    ( <table style={style_table}>
         <tr>
-          <th> Product name </th>
-          <th> Price </th>
-          <th> Amount in the store </th>
+          <th style = {under_line}> Product Name </th>
+          <th style = {under_line}> Store Name </th>
+          <th style = {under_line}> Category </th>
+          <th style = {under_line}> Amount </th>
+          <th style = {under_line}> Price </th>
+          <th style = {under_line}> Purchase Type </th>
         </tr>
+        {}
         <tr>
-          <th> {product.name} </th>
+          <th> {product.productName} </th>
+          <th> {product.storeName} </th>
+          <th> {product.category} </th>
+          <th> {product.amount} </th>
           <th> {product.price} </th>
-          <th> {product.amountInStore} </th>
+          <th> {product.purchaseType} </th>
         </tr>
       </table>
-    );
+      );
   }
 
   render() {
@@ -61,7 +71,8 @@ class AddProductToCart extends Component {
           {this.renderProducts()}
           <Input
             title="Choose amount to cart:"
-            type="text"
+            type="number"
+            min={1}
             value={this.state.amount}
             onChange={this.handleChangedAmount}
           />
@@ -94,7 +105,8 @@ const style_table = {
 };
 
 const product = {
-  name: "pen",
-  price: 20,
-  amountInStore: 100,
 };
+
+const under_line = {
+  borderBottom: '2px solid black'
+}

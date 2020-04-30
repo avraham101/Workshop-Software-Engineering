@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import history from '../history'
-import BackGrond from '../../Component/BackGrond'
-import Menu from '../../Component/Menu'
-import Title from '../../Component/Title'
+import history from '../history';
+import BackGrond from '../../Component/BackGrond';
+import Menu from '../../Component/Menu';
+import Title from '../../Component/Title';
+import Row from '../../Component/Row';
 
 class GuestIndex extends Component {
 
@@ -34,21 +35,19 @@ class GuestIndex extends Component {
     return output
   }
 
-
   click_me() {
     history.push('/register')
   }
-
 
   render_stores_table() {
       let stores = this.create_stores();
       let output = [];
       stores.forEach( element =>
         output.push(
-          <tr>
+          <Row>
             <th> {element.name} </th>
             <th> {element.description} </th>
-          </tr>
+          </Row>
         )
       )
       return output;
@@ -65,19 +64,26 @@ class GuestIndex extends Component {
     </table>);
   }
 
+  pass(url, data) {
+    this.props.history.push({
+      pathname: url,
+      data: data // your data array of objects
+    });
+  }
+
   render_product_table(){
     let proudcts = this.create_products();
     let output = [];
     proudcts.forEach( element =>
       output.push(
-        <tr>
+        <Row onClick={()=>this.pass('/addToCart', element)}>
           <th> {element.productName} </th>
           <th> {element.storeName} </th>
           <th> {element.category} </th>
           <th> {element.amount} </th>
           <th> {element.price} </th>
           <th> {element.purchaseType} </th>
-        </tr>
+        </Row>
       )
     )
     return output;
