@@ -441,4 +441,13 @@ public class ServiceAPI {
         return logicManager.getManagersOfStore(storeName);
     }
 
+    /**
+     * Acceptance test in ManagerPermissionsTest
+     * return all the managers of a specific store managed by user with id, id
+     * @return managers of specific store
+     */
+    public Response<List<String>> getManagersOfStoreUserManaged(int id,String storeName){
+        return logicManager.getManagersOfStoreUserManaged(id,storeName);
+    }
+
 }

@@ -575,4 +575,18 @@ public class Subscribe extends UserState{
 
     }
 
+    /**
+     * return all the managers of a specific store that user with id managed
+     * @return managers of specific store
+     */
+    @Override
+    public Response<List<String>> getManagersOfStoreUserManaged(String storeName) {
+        List<String> managers=new LinkedList<>();
+        lock.readLock().lock();
+        for( Permission p:givenByMePermissions)
+            if(p.getStore().getName().equals(storeName))
+                managers.add(p.getOwner().getName());
+        lock.readLock().unlock();
+        return new Response<>(managers,OpCode.Success);
+    }
 }

@@ -28,9 +28,7 @@ public class CartController {
     @GetMapping
     public ResponseEntity<?> getCart (@RequestParam(name="id") int id){
         Response <CartData> response= SingleService.getInstance().watchCartDetatils(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-        return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
+        return getResponseEntity(response);
     }
 
     /**
@@ -42,9 +40,7 @@ public class CartController {
                                             @RequestBody String productStr){
         ProductIdData product = json.fromJson(productStr,ProductIdData.class);
         Response <Boolean> response =SingleService.getInstance().deleteFromCart(id,product.getProductName(),product.getStoreName());
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-        return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
+        return getResponseEntity(response);
     }
 
     /**
@@ -56,6 +52,22 @@ public class CartController {
         ProductIdData product = json.fromJson(productStr,ProductIdData.class);
         Response<Boolean> response=  SingleService.getInstance().editProductInCart(id,product.getProductName(),
                 product.getStoreName(),product.getAmount());
+        return getResponseEntity(response);
+    }
+
+
+
+    @PostMapping
+    public ResponseEntity<?> addProductToStore(@RequestParam(name="id") int id,
+                                               @RequestBody String  productStr){
+        ProductIdData product = json.fromJson(productStr,ProductIdData.class);
+        Response<Boolean> response = SingleService.getInstance().addProductToCart(id,product.getProductName(),
+                                            product.getStoreName(),product.getAmount());
+        return getResponseEntity(response);
+
+    }
+
+    private ResponseEntity<?> getResponseEntity(Response<?> response) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);

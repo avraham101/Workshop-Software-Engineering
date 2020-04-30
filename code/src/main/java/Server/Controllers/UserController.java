@@ -99,9 +99,22 @@ public class UserController {
         return getResponseEntity(response);
     }
 
+    /**
+     * get user permissions for specific store
+     * @param id
+     * @param store
+     * @return
+     */
+
     @GetMapping("home/permissions/{store}")
     public ResponseEntity<?> getPermissionsForStore(@RequestParam(name="id") int id, @PathVariable String store){
         Response<Set<StorePermissionType>> response = SingleService.getInstance().getPermissionsForStore(id,store);
+        return getResponseEntity(response);
+    }
+
+    @GetMapping("home/managers/{store}")
+    public ResponseEntity<?> getManagersAppointedByUser(@RequestParam(name="id") int id, @PathVariable String store){
+        Response<List<String>> response =  SingleService.getInstance().getManagersOfStoreUserManaged(id,store);
         return getResponseEntity(response);
     }
 

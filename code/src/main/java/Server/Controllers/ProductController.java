@@ -43,7 +43,7 @@ public class ProductController {
      */
 
     @GetMapping
-    public ResponseEntity<?> getProductInStore(String storeName){
+    public ResponseEntity<?> getProductInStore(@RequestBody  String storeName){
         Response<List<ProductData>> response=SingleService.getInstance().viewProductsInStore(storeName);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
