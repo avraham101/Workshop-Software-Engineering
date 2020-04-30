@@ -10,8 +10,8 @@ class ViewStoresAndProducts extends Component {
     super();
     this.handleStores = this.handleStores.bind(this);
     this.state = {
-      stores: ["store1", "store2", "store3"],
-      products: ["product1", "product2", "product3"],
+      stores: this.create_stores(),
+      products: this.create_products(),
       store: "",
       showProducts: false,
     };
@@ -33,7 +33,6 @@ class ViewStoresAndProducts extends Component {
         for(let i =0; i<5;i++) {
             output.push({
                 productName:'product '+i,
-                storeName:'store '+i,
                 category:'category '+i,
                 reviews: [],
                 amount: i,
@@ -51,7 +50,7 @@ class ViewStoresAndProducts extends Component {
   }
 
     render_stores_table() {
-        let stores = this.create_stores();
+        let stores = this.state.stores;
         let output = [];
         let i =0;
         stores.forEach( element =>
@@ -80,13 +79,12 @@ class ViewStoresAndProducts extends Component {
     }
 
     render_product_table(){
-        let proudcts = this.create_products();
+        let proudcts = this.state.products;
         let output = [];
         proudcts.forEach( element =>
             output.push(
                 <tr>
                     <th> {element.productName} </th>
-                    <th> {element.storeName} </th>
                     <th> {element.category} </th>
                     <th> {element.amount} </th>
                     <th> {element.price} </th>
@@ -102,7 +100,6 @@ class ViewStoresAndProducts extends Component {
             <table style={style_table}>
                 <tr>
                     <th style = {under_line}> Product Name </th>
-                    <th style = {under_line}> Store Name </th>
                     <th style = {under_line}> Category </th>
                     <th style = {under_line}> Amount </th>
                     <th style = {under_line}> Price </th>
