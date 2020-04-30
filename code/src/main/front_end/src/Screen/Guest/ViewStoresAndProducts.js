@@ -17,98 +17,120 @@ class ViewStoresAndProducts extends Component {
     };
   }
 
-    create_stores() {
-        let output = []
-        for(let i =0; i<5;i++) {
-            output.push({
-                name:'Store '+i,
-                description:'Description '+i
-            })
-        }
-        return output
+  create_stores() {
+    let output = [];
+    for (let i = 0; i < 5; i++) {
+      output.push({
+        name: "Store " + i,
+        description: "Description " + i,
+      });
     }
+    return output;
+  }
 
-    create_products() {
-        let output = []
-        for(let i =0; i<5;i++) {
-            output.push({
-                productName:'product '+i,
-                category:'category '+i,
-                reviews: [],
-                amount: i,
-                price:i,
-                priceAfterDiscount: i,
-                purchaseType:'purchase type '+i,
-            })
-        }
-        return output
+  create_products() {
+    let output = [];
+    for (let i = 0; i < 5; i++) {
+      output.push({
+        productName: "product " + i,
+        category: "category " + i,
+        reviews: [],
+        amount: i,
+        price: i,
+        priceAfterDiscount: i,
+        purchaseType: "purchase type " + i,
+      });
     }
+    return output;
+  }
 
   handleStores(event) {
     this.state.showProducts = true;
+    this.state.store = this.getStoreSelected();
     this.setState({ name: event.target.value });
   }
 
-    render_stores_table() {
-        let stores = this.state.stores;
-        let output = [];
-        let i =0;
-        stores.forEach( element =>
-            output.push(
-                <tr>
-                    <th> <input type="radio" id={i} name="store" /> </th>
-                    <th>{element.name}</th>
-                    <th> {element.description} </th>
-                </tr>
-            ),
-            i=i+1
-        )
-        return output;
+  getStoreSelected() {
+    var stores = document.getElementsByName("store");
+    var store_value;
+    for (var i = 0; i < stores.length; i++) {
+      if (stores[i].checked) {
+        store_value = stores[i].value;
+      }
+      return store_value;
     }
+  }
 
-    render_stores() {
-        return (
-            <table style={style_table}>
-                <tr>
-                    <th style = {under_line}> </th>
-                    <th style = {under_line}> Store Name </th>
-                    <th style = {under_line}> Description </th>
-                </tr>
-                {this.render_stores_table()}
-            </table>);
-    }
+  render_stores_table() {
+    let stores = this.state.stores;
+    let output = [];
+    let i = 0;
+    stores.forEach(
+      (element) =>
+        output.push(
+          <tr>
+            <th>
+              {" "}
+              <input
+                type="radio"
+                id={i}
+                name="store"
+                value={element.name}
+              />{" "}
+            </th>
+            <th>{element.name}</th>
+            <th> {element.description} </th>
+          </tr>
+        ),
+      (i = i + 1)
+    );
+    return output;
+  }
 
-    render_product_table(){
-        let proudcts = this.state.products;
-        let output = [];
-        proudcts.forEach( element =>
-            output.push(
-                <tr>
-                    <th> {element.productName} </th>
-                    <th> {element.category} </th>
-                    <th> {element.amount} </th>
-                    <th> {element.price} </th>
-                    <th> {element.purchaseType} </th>
-                </tr>
-            )
-        )
-        return output;
-    }
+  render_stores() {
+    return (
+      <table style={style_table}>
+        <tr>
+          <th style={under_line}> </th>
+          <th style={under_line}> Store Name </th>
+          <th style={under_line}> Description </th>
+        </tr>
+        {this.render_stores_table()}
+      </table>
+    );
+  }
 
-    render_product() {
-        return (
-            <table style={style_table}>
-                <tr>
-                    <th style = {under_line}> Product Name </th>
-                    <th style = {under_line}> Category </th>
-                    <th style = {under_line}> Amount </th>
-                    <th style = {under_line}> Price </th>
-                    <th style = {under_line}> Purchase Type </th>
-                </tr>
-                {this.render_product_table()}
-            </table>);
-    }
+  render_product_table() {
+    let proudcts = this.state.products;
+    let output = [];
+    proudcts.forEach((element) =>
+      output.push(
+        <tr>
+          <th> {element.productName} </th>
+          <th> {element.category} </th>
+          <th> {element.amount} </th>
+          <th> {element.price} </th>
+          <th> {element.purchaseType} </th>
+        </tr>
+      )
+    );
+    return output;
+  }
 
+  render_product() {
+    return (
+      <table style={style_table}>
+        <tr>
+          <th style={under_line}> Product Name </th>
+          <th style={under_line}> Category </th>
+          <th style={under_line}> Amount </th>
+          <th style={under_line}> Price </th>
+          <th style={under_line}> Purchase Type </th>
+        </tr>
+        {this.render_product_table()}
+      </table>
+    );
+  }
 
   render() {
     return (
@@ -140,5 +162,5 @@ const style_table = {
 };
 
 const under_line = {
-    borderBottom: '2px solid black'
-}
+  borderBottom: "2px solid black",
+};
