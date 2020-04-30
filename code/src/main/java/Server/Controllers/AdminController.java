@@ -1,5 +1,7 @@
 package Server.Controllers;
 
+import DataAPI.OpCode;
+import DataAPI.Response;
 import DataAPI.UserData;
 import Service.SingleService;
 import com.google.gson.Gson;
@@ -21,12 +23,13 @@ public class AdminController {
 
     @PostMapping("/admin")
     @ResponseBody
-    public Boolean initialStart(@RequestHeader Map<String,String> header, @RequestBody String string){
+    public Response<Boolean> initialStart(@RequestHeader Map<String,String> header, @RequestBody String string){
         Gson json = new Gson();
         UserData user =  json.fromJson(string,UserData.class);
         System.out.println(user.getName());
         System.out.println(user.getPassword());
-        return SingleService.getInstance(user.getName(),user.getPassword()) !=null;
-
+        Boolean state= SingleService.getInstance(user.getName(),user.getPassword()) !=null;
+        Response<Boolean> response = new Response<>(state, OpCode.Success);
+        return response;
     }
 }
