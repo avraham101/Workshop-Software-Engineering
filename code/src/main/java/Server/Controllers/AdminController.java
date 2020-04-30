@@ -28,25 +28,14 @@ public class AdminController {
     }
 
     @PostMapping("/admin")
-    public ResponseEntity<?> initialStart(@RequestHeader Map<String,String> header, @RequestBody String string){
+    public ResponseEntity<?> initialStart(@RequestBody String string){
         Gson json = new Gson();
         UserData user =  json.fromJson(string,UserData.class);
-        System.out.println(user.getName());
-        System.out.println(user.getPassword());
-        Boolean state= SingleService.getInstance(user.getName(),user.getPassword()) !=null;
-
+        Boolean state = SingleService.getInstance(user.getName(),user.getPassword()) !=null;
         Response<Boolean> response = new Response<>(state, OpCode.Success);
-        //String body = json.toJson(response);
-        //System.out.println(body);
+        //send the response
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.ACCEPT, MediaType.TEXT_PLAIN_VALUE);
-        headers.add(HttpHeaders.ACCEPT_CHARSET, StandardCharsets.UTF_8.name());
-        headers.add(HttpHeaders.CONNECTION, "close");
-        //headers.add(HttpHeaders.CONTENT_LENGTH, ""+body.length());
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "OPTIONS, GET, POST, PUT, PATCH, DELETE");
-        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type, Authorization");
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
-        //return body;
     }
 }
