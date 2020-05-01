@@ -17,15 +17,24 @@ var Stomp = require('webstomp-client');
 //     'Content-Length': msg.length,},
 //   };
 
-  var ws=new WebSocket('ws://localhost:8443/ws');
+  var ws=null;//new WebSocket('ws://localhost:8443/ws');
 
   //var stompClient=Stomp.over(ws);
 
+
   export const connect= async (update) =>{
-    ws.onmessage = function(message){
-          update(recive(message));
-        }
+    ws=new WebSocket('ws://localhost:8443/ws');
+
+    ws.onopen=function(){
+      ws.send("here");
     }
+    ws.onmessage = function(event){
+          update(recive(event.data));
+    }
+    ws.onclose=function(event){
+      console.log('closed'+event.code)
+    }
+  }
 
 
 export function sendMessage() {

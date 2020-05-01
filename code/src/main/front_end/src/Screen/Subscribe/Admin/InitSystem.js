@@ -39,7 +39,7 @@ class InitSystem extends Component {
     //RECIVED RESPONSE AS MSG
     connect((msg)=>this.setState({msg:''+msg.value}));
     //send(msg, (msg)=>this.setState({msg:''+msg.value}));
-    sendMessage();
+    //sendMessage();
   }
 
   render() {
