@@ -11,6 +11,7 @@ class StoreMenu extends Component {
       manageProduct: true,
       storeDiscounts: true,
       appointOwner: true,
+      appointManager: true,
       managerPermissions: true,
       deleteManager: true,
       viewAndReplyRequests: true,
@@ -18,23 +19,26 @@ class StoreMenu extends Component {
     };
   }
 
-  pass(url) {
+  pass(url, storeName) {
     this.props.history.push({
       pathname: url,
       fromPath: "/storeMenu",
+      storeName: storeName
     });
   }
 
   render_permissions() {
+    const { storeName } = this.props.location;
     return (
       <table style = {style_table}>
-        {this.state.manageProduct ? (<Row onClick={() => this.pass("/manageProducts")}>Manage Product</Row>) : ("")}
-        {this.state.storeDiscounts ? (<Row onClick={() => this.pass("/manageDiscount")}>Store Discounts</Row>) : ("")}
-        {this.state.appointOwner ? (<Row onClick={() => this.pass("/TODO")}>Appoint Owner</Row>):("")}
-        {this.state.managerPermissions ? (<Row onClick={() => this.pass("/TODO")}>Manager Permissions</Row>):("")}
-        {this.state.deleteManager ? (<Row onClick={() => this.pass("/removeManagerFromStore")}>Delete Manager</Row>):("")}
-        {this.state.viewAndReplyRequests ? (<Row onClick={() => this.pass("/TODO")}>View And Reply Requests</Row>):("")}
-        {this.state.ownerWatchPurchaseHistory ? (<Row onClick={() => this.pass("/storeOwnerWatchHistory")}>Owner Watch Purchase History</Row>):("")}
+        {this.state.manageProduct ? (<Row onClick={() => this.pass("/manageProducts",storeName)}>Manage Product</Row>) : ("")}
+        {this.state.storeDiscounts ? (<Row onClick={() => this.pass("/manageDiscount",storeName)}>Store Discounts</Row>) : ("")}
+        {this.state.appointOwner ? (<Row onClick={() => this.pass("/addOwnerToStore",storeName)}>Appoint Owner</Row>):("")}
+        {this.state.appointManager ? (<Row onClick={() => this.pass("/addManagerToStore",storeName)}>Appoint Manager</Row>):("")}
+        {this.state.managerPermissions ? (<Row onClick={() => this.pass("/TODO",storeName)}>Manager Permissions</Row>):("")}
+        {this.state.deleteManager ? (<Row onClick={() => this.pass("/removeManagerFromStore",storeName)}>Delete Manager</Row>):("")}
+        {this.state.viewAndReplyRequests ? (<Row onClick={() => this.pass("/TODO",storeName)}>View And Reply Requests</Row>):("")}
+        {this.state.ownerWatchPurchaseHistory ? (<Row onClick={() => this.pass("/storeOwnerWatchHistory",storeName)}>Owner Watch Purchase History</Row>):("")}
       </table>
     );
   }

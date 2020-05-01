@@ -92,7 +92,7 @@ class StoreManagement extends Component {
   pass(url, storeName) {
     this.props.history.push({
       pathname: url,
-      fromPath: "/storeManagment",
+      fromPath: "/storeManagement",
       storeName: storeName, // your data array of objects
     });
   }
