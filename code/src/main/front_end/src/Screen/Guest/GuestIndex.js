@@ -67,6 +67,7 @@ class GuestIndex extends Component {
   pass(url, data) {
     this.props.history.push({
       pathname: url,
+      fromPath: './',
       data: data // your data array of objects
     });
   }

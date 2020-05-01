@@ -15,6 +15,9 @@ import sendRequestToStore from './Screen/Subscribe/SendRequestToStore';
 import OpenStore from "./Screen/Subscribe/OpenStore";
 import ManageProductInStore from './Screen/Subscribe/ManageProductInStore';
 import ManageDiscount from './Screen/Subscribe/ManageDiscount';
+import RemoveManagerFromStore from './Screen/Subscribe/RemoveManagerFromStore';
+import StoreManagement from "./Screen/Subscribe/StoreManagement";
+import SearchAndFilterProducts from "./Screen/Guest/SearchAndFilterProducts";
 
 class App extends Component {
 
@@ -23,6 +26,7 @@ class App extends Component {
             <Switch>
               <Route path="/admin" component={withRouter(InitSystem)} exact/>
               <Route path="/register" component={withRouter(Register)} />
+              <Route path="/searchAndFilter" component={withRouter(SearchAndFilterProducts)}/>
               <Route path="/login" component={withRouter(Login)} />
               <Route path="/storeOwnerWatchHistory" component={withRouter(StoreOwnerWatchHistory)} />
               <Route path="/userWatchPurchasesHistory" component={withRouter(UserWatchPurchasesHistory)} />

@@ -88,7 +88,7 @@ class AddProductToCart extends Component {
             {this.state.enough === false ? <Error text="Close Me" /> : ""}
           </div>
         </body>
-        <Button text="back" onClick={() => history.push("/")} />
+        <Button text="back" onClick={() => history.push(this.props.location.fromPath)} />
       </BackGroud>
     );
   }
