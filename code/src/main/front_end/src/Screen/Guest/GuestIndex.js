@@ -4,18 +4,34 @@ import BackGrond from '../../Component/BackGrond';
 import Menu from '../../Component/Menu';
 import Title from '../../Component/Title';
 import Row from '../../Component/Row';
+import {send} from '../../Handler/ConnectionHandler';
 
 class GuestIndex extends Component {
 
+  constructor() {
+    super();
+    let id = send('/','POST','',(recvied)=>{
+      if(recvied==null)
+        this.setState({error:'Connection unstable'});
+      else {
+        let data = recvied.DATA;  
+      }
+    }); 
+    this.state = {
+      id_session:0,
+      error:'',
+    }
+  }
+
   create_stores() {
-    let output = []
+    let output = [];
     for(let i =0; i<5;i++) {
       output.push({
         name:'Store '+i,
         description:'Description '+i
-      })
+      });
     }
-    return output
+    return output;
   }
 
   create_products() {
@@ -32,7 +48,7 @@ class GuestIndex extends Component {
         purchaseType:'purchase type '+i,
       })
     }
-    return output
+    return output;
   }
 
   click_me() {
@@ -64,10 +80,10 @@ class GuestIndex extends Component {
     </table>);
   }
 
-  pass(url, data) {
+  pass(url, fromPath, data) {
     this.props.history.push({
       pathname: url,
-      fromPath: './',
+      fromPath: fromPath,
       data: data // your data array of objects
     });
   }
