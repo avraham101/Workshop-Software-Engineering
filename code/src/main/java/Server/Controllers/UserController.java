@@ -31,6 +31,8 @@ public class UserController {
         return "index";
     }
 
+
+
     @GetMapping("home/connect")
     @ResponseBody
     public Integer connect(){
