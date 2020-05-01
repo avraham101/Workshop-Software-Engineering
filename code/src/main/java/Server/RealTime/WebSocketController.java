@@ -28,7 +28,7 @@ public class WebSocketController {
     public ResponseEntity<?> processMessageFromClient(@Payload String message, Principal principal) throws Exception {
         String name = new Gson().fromJson(message, Map.class).get("name").toString();
         //messagingTemplate.convertAndSendToUser(principal.getName(), "/queue/reply", name);
-        System.out.println(principal.getName());
+        System.out.println("tal" +principal.getName());
          Response<String> response = new Response<>("nice", OpCode.Success);
         return getResponseEntity(response);
     }
