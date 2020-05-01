@@ -37,7 +37,7 @@ class StoreMenu extends Component {
         {this.state.appointManager ? (<Row onClick={() => this.pass("/addManagerToStore",storeName)}>Appoint Manager</Row>):("")}
         {this.state.managerPermissions ? (<Row onClick={() => this.pass("/TODO",storeName)}>Manager Permissions</Row>):("")}
         {this.state.deleteManager ? (<Row onClick={() => this.pass("/removeManagerFromStore",storeName)}>Delete Manager</Row>):("")}
-        {this.state.viewAndReplyRequests ? (<Row onClick={() => this.pass("/TODO",storeName)}>View And Reply Requests</Row>):("")}
+        {this.state.viewAndReplyRequests ? (<Row onClick={() => this.pass("/viewAndReplyRequests",storeName)}>View And Reply Requests</Row>):("")}
         {this.state.ownerWatchPurchaseHistory ? (<Row onClick={() => this.pass("/storeOwnerWatchHistory",storeName)}>Owner Watch Purchase History</Row>):("")}
       </table>
     );
