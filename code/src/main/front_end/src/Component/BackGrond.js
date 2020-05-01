@@ -10,7 +10,7 @@ class BackGrond extends Component {
 
   render() {
     return (
-      <div style={style_sheet}>
+      <div style={{  backgroundColor: "#F9F9F9", padding: 1, width: '100%', height:this.props.height + 200}}>
         {this.props.children}
       </div>
       );
@@ -20,8 +20,5 @@ class BackGrond extends Component {
 export default BackGrond;
 
 const style_sheet = {
-  backgroundColor: "#F9F9F9",
-  padding: 1,
-  width: '100%',
-  height: '700px',
+
 }

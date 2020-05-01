@@ -5,12 +5,13 @@ import Title from "../../Component/Title";
 import Input from "../../Component/Input";
 import Button from '../../Component/Button';
 import Row from '../../Component/Row'
+import DivBetter from '../../Component/DivBetter'
 
 const CLASS_AND = 'Domain.Discount.AndDiscount'; 
 const CLASS_OR = 'Domain.Discount.OrDiscount';
 const CLASS_XOR = 'Domain.Discount.XorDiscount';
 const CLASS_STORE = 'Domain.Discount.StoreDiscount';
-
+const MAX_HEIGHT = 1000;
 class ManageDiscount extends Component {
   
   constructor() {
@@ -23,7 +24,27 @@ class ManageDiscount extends Component {
       store_amount:1,
       store_precentag:1,
       chosenDiscount:{},
+      selectedProduct:undefined,
     }
+    this.products = this.create_products(5);
+  }
+
+  /* the function create a product list */
+  create_products(num) {
+    let output = []
+    for(let i =0; i<num;i++) {
+      output.push({
+        productName:'product '+i,
+        storeName:'store '+i,
+        category:'category '+i,
+        reviews: [],
+        amount: i,
+        price:i,
+        priceAfterDiscount: i,
+        purchaseType:'purchase type '+i,
+      })
+    }
+    return output
   }
 
   /* this function add discount to store discount list */
@@ -61,11 +82,11 @@ class ManageDiscount extends Component {
       output.push(
         <div style={{borderBottom:'1px solid black', textAlign:'center'}}>
           <table style={{width:"100%"}}>
-            <Row>
-              <th> <p style={{backgroundColor:'#FFC242'}}> Discont:</p> </th>
-              <th> {elemnt.DATA.minAmount} $ , </th>
-              <th> {elemnt.DATA.percentage} % </th>
-            </Row>
+            <DivBetter>
+              <p style={{backgroundColor:'#FFC242', height:30, marginTop:0}}> Discont</p>
+              <p style={{margin:2}}> Amount: {elemnt.DATA.minAmount} </p>
+              <p style={{margin:4}}> Precentage: {elemnt.DATA.percentage} % </p>
+            </DivBetter>
           </table>
           <Triple selectClick={()=>selectClick(elemnt)} 
                   comlicatedClick={()=>comlicatedClick(elemnt)} 
@@ -79,7 +100,7 @@ class ManageDiscount extends Component {
   /* this function render the store discount section */
   renderStoreDiscount(width) {
     return (
-      <div style={{float: 'left', width:width, border: '1px solid black',}}>
+      <div style={{float: 'left', width:width, borderLeft: '1px solid black',height:MAX_HEIGHT}}>
               <h2 style={titleStyle}> Store Discount </h2>
               <div>
                 <SmallInput title = 'Minmum Price:' type="number" min={0} value={this.state.store_amount} 
@@ -96,18 +117,53 @@ class ManageDiscount extends Component {
     )
   }
 
+  renderSelectedProductPicked(){
+    let element = this.state.selectedProduct;
+    return (element===undefined)? '':
+    (
+      <DivBetter style={{borderBottom:'1px solid black', textAlign:"center", marginTop:0}}>
+        <h3 style={{marginTop:0, borderBottom:'1px solid black',backgroundColor:'#FFC242'}}> {element.productName} </h3>
+        <p> Price: {element.price} $ </p>
+        <p> Category: {element.category} </p>
+        <p> Amount In Store: {element.amount} </p>
+        <p> Type: {element.purchaseType} </p>
+      </DivBetter>
+    ) 
+  }
+
+  /*the function print the selected product and move him to Simple Discount or Term Discount */
   renderSelectedProduct(width) {
       return (
-        <div style={{backgroundColor:'gray', border: '1px solid black',}}>
-          <h2> Selected Product </h2>
+        <div>
+          <h2 style={titleStyle}> Selected Product </h2>
+          <div style={{padding:4}}>
+            {this.renderSelectedProductPicked()}
+            <div style={{float:'left',width:'33%'}}> 
+              <Button text="Select as Simple Discount"/>
+            </div>
+            <div style={{float:'left',width:'33%'}}> 
+              <Button text="Select as target Term Discount" />
+            </div>
+            <div style={{float:'left',width:'33%'}}> 
+              <Button text="Select as Term Discount" />
+            </div>
+          </div>
         </div>
       )
   }
 
   renderSimpleDiscount(width) {
       return (
-        <div style={{float: 'left', width:width}}>
-          <h3> Simple Discount </h3>
+        <div style={{float: 'left', width:width, borderRight:'1px solid black', marginBottom:0}}>
+          <h3 style={titleStyle}> Simple Discount </h3>
+          <div>
+            <h4 style={titleStyle}>Selected Simple Discount </h4>
+            <SmallInput title = 'Discount Prcentage:' type="number" min={0} value={this.state.store_amount} 
+                    onChange={(e)=>{this.setState({store_amount:e.target.value})}} />
+          </div>
+          <div>
+            <h4 style={titleStyle}>Discounts </h4>
+          </div>
         </div>
       )
   }
@@ -115,15 +171,58 @@ class ManageDiscount extends Component {
   renderTermDiscount(width) {
     return (
       <div style={{float: 'left', width:width,}}>
-        <h3> Term Discount </h3>
+        <h3 style={titleStyle}> Term Discount </h3>
+        <div>
+          <h4 style={titleStyle}> Selected Term Target </h4>
+          <h4 style={titleStyle}> Selected Term Discount </h4>
+          <h4 style={titleStyle}> Terms </h4>
+          <div>
+            <div style={{float:'left',width:'33%'}}> 
+              <Button text="AND"/>
+            </div>
+            <div style={{float:'left',width:'33%'}}> 
+              <Button text="OR" />
+            </div>
+            <div style={{float:'left',width:'33%'}}>
+              <Button text="XOR" />
+            </div>
+            <div style={{float:'left',width:'100%'}}>
+              <Button text="Create Term Discount" />
+            </div>
+          </div>
+          <h4 style={titleStyle}> Discounts </h4>
+          
+        </div>
       </div>
     )
   }
 
+  /*the function render list of product */
+  renderProductsList(list) {
+    let output = [];
+    let onClick = (element) => {
+      this.setState({selectedProduct:element})
+    }
+    list.forEach(element=>{
+      output.push(
+        <div>
+        <DivBetter style={{borderBottom:'1px solid black', textAlign:"center"}} onClick={()=>onClick(element)}>
+          <h3 style={{marginTop:0, borderBottom:'1px solid black',backgroundColor:'#FFC242'}}> {element.productName} </h3>
+          <p> Price: {element.price} $ </p>
+          <p> Type: {element.purchaseType} </p>
+        </DivBetter>
+        </div>
+      )    
+    })
+    return output;
+  }
+
+  /*the function render products list */
   renderProducts(width) {
     return (
-    <div style={{float: 'left', width:width , backgroundColor:'yellow',  border: '1px solid black',}}>
-      <h3> Products </h3>
+    <div style={{float: 'left', width:width ,  borderRight: '1px solid black',overflowY: 'scroll', height:MAX_HEIGHT}}>
+      <h2 style={titleStyle}> Products </h2>
+      {this.renderProductsList(this.products)}
     </div>
     );
   }
@@ -135,12 +234,12 @@ class ManageDiscount extends Component {
     switch(elemnt.CLASSNAME) {
       case CLASS_STORE:
         return (<div>
-                  <Row>
-                    <th> <label style={{margin:4}}>Store Discount: </label></th>
-                    <th> {elemnt.DATA.minAmount} $ , </th>
-                    <th> {elemnt.DATA.percentage} % </th>
-                    {deleteOn?<th> <button style={buttonX} onClick={onClick}> X</button> </th>:''}
-                  </Row>
+                  <DivBetter style={{margin:4}}>
+                    <p style={{backgroundColor:'#FFC242', height:30, marginTop:0}}> Discont</p>
+                    <p style={{margin:2}}> Amount: {elemnt.DATA.minAmount} </p>
+                    <p style={{margin:2}}> Precentage: {elemnt.DATA.percentage} % </p>
+                    {deleteOn? <button style={buttonX} onClick={onClick}> X</button> :''}
+                  </DivBetter>
                 </div>);
       case CLASS_AND: case CLASS_XOR: case CLASS_OR:
         return (
@@ -161,7 +260,7 @@ class ManageDiscount extends Component {
   }
 
   /*this function responble for rendering the select discount and chosing xor, and, or */
-  renderSelctedDiscounts(){
+  renderSelctedDiscounts(width){
     let addDiscountToComplicated = (discount) => {
       this.comlicatedDiscounts.push(discount);
       this.selectedDiscounts = [];
@@ -192,19 +291,27 @@ class ManageDiscount extends Component {
         this.setState({error_selected:'empty discounts'});
     };
     return (
-      <div>
+      <div style={{overflowY: 'scroll',height:MAX_HEIGHT, width:width, borderLeft:'1px solid black'}}>
         <h2 style={titleStyle}> Selected Discounts </h2>
-        {this.renderSelectedDiscountList(this.selectedDiscounts, true)}
-          <p style={{color:'red'}}> {this.state.error_selected!=undefined?this.state.error_selected:''} </p>
-          <div style={{float:'right',width:'33%'}}> 
-            <Button text="AND" onClick={andClick}/>
+        <div style={{padding:4}}>
+          {this.renderSelectedDiscountList(this.selectedDiscounts, true)}
+        </div>
+        <p style={{color:'red'}}> {this.state.error_selected!=undefined?this.state.error_selected:''} </p>
+        <div style={{float:'left',width:'33%'}}> 
+          <Button text="AND" onClick={andClick}/>
+        </div>
+        <div style={{float:'left',width:'33%'}}> 
+          <Button text="OR" onClick={orClick}/>
+        </div>
+        <div style={{float:'left',width:'33%'}}>
+          <Button text="XOR" onClick={xorClick} />
+        </div>
+        <div style={{float:'left',width:'100%'}}>
+          <h2 style={titleStyle}> Complicated Discounts </h2>
+          <div style={{padding:10}}>
+          {this.renderComplicatedDiscountList(true)}
           </div>
-          <div style={{float:'right',width:'33%'}}> 
-            <Button text="OR" onClick={orClick}/>
-          </div>
-          <div style={{float:'right',width:'33%'}}>
-            <Button text="XOR" onClick={xorClick} />
-          </div>
+        </div>
       </div>
     )
   }
@@ -232,8 +339,8 @@ class ManageDiscount extends Component {
     }
     return (
       <div style= {{border:'1px solid black', textAlign:'center', marginBottom:5, backgroundColor:'white'}}>
-        <p style={{borderBottom:'1px solid black'}}> {name} </p>
-        <div>
+        <p style={{borderBottom:'1px solid black', backgroundColor:'#47CEFF', marginTop:0}}> {name} </p>
+        <div style={{padding:10}}>
           {this.renderSelectedDiscountList(elemnt.DATA.discounts, false)}
         </div>
         {deletOn?<Triple selectClick={()=>selectClick(elemnt)} comlicatedClick={()=>comlicatedClick(elemnt)} deleteClick={()=>deleteClick(elemnt)}/>:''}
@@ -250,41 +357,27 @@ class ManageDiscount extends Component {
     return output;
   }
 
-  /* this function print comlicated disconts */
-  renderComplicatedDisconts(){
-    return (
-      <div style={{float:"left", width:'100%'}}>
-        <h2 style={titleStyle}> Complicated Discounts </h2>
-        {this.renderComplicatedDiscountList(true)}
-      </div>
-    )
-  }
-
   render() {
     return (
-      <BackGrond>
+      <BackGrond height={MAX_HEIGHT}>
         <Menu />
         <Title title="Discount Manager"/>
         <h2 style={{textAlign:'center'}}>{this.state.storeName}</h2>
         <p>
           {JSON.stringify(this.state.chosenDiscount)}
         </p>
-        <div style={{height:'100%'}}>
+        <div style={{height:MAX_HEIGHT}}>
           {this.renderProducts('15%')}
           <div style={{float: 'left', width:'84%'}}>
             <div style={{float: 'left', width:'50%'}}>
               {this.renderSelectedProduct()}
               {this.renderSimpleDiscount('50%')}
-              {this.renderTermDiscount('50%')}
+              {this.renderTermDiscount('49.7%')}
             </div>
             {this.renderStoreDiscount('24%')}
-            <div style={{float: 'left', width:'25%'}}>
-                {this.renderSelctedDiscounts()}
-                {this.renderComplicatedDisconts()}
-            </div>
+            {this.renderSelctedDiscounts('25%')}
           </div>
         </div>
-        <Button text='Submit' onClick={()=>{}}/>
       </BackGrond>
     );
   }
@@ -326,7 +419,8 @@ class Triple extends Component {
 const titleStyle ={
   textAlign:'center',
   backgroundColor:'lightgray',
-  borderBottom:'1px solid black'
+  borderBottom:'1px solid black',
+  marginBottom:5,
 };
 
 const buttonX = {
