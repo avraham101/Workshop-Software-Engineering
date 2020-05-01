@@ -27,7 +27,17 @@ class OpenStore extends Component {
   handleOpen(event) {
     event.preventDefault();
     var str = "Congratulation! The store " + this.state.storeName + " open.\nYou are the owner, enjoy!";
-    alert(str);
+    if(window.confirm(str)){
+      this.pass("/manageProducts", this.state.storeName)
+    }
+  }
+
+  pass(url, storeName) {
+    this.props.history.push({
+      pathname: url,
+      fromPath: "/storeMenu",
+      storeName: storeName
+    });
   }
 
   render() {

@@ -18,7 +18,11 @@ import ManageDiscount from './Screen/Subscribe/ManageDiscount';
 import RemoveManagerFromStore from './Screen/Subscribe/RemoveManagerFromStore';
 import StoreManagement from "./Screen/Subscribe/StoreManagement";
 import SearchAndFilterProducts from "./Screen/Guest/SearchAndFilterProducts";
+import StoreMenu from "./Screen/Subscribe/StoreMenu";
+import AddManagerToStore from "./Screen/Subscribe/AddManagerToStore";
+import AddOwnerToStore from "./Screen/Subscribe/AddOwnerToStore";
 
+import EditManagerPermissions from "./Screen/Subscribe/EditManagerPermissions";
 class App extends Component {
 
   render() {
@@ -41,8 +45,12 @@ class App extends Component {
               <Route path="/openStore" component={withRouter(OpenStore)} />
               <Route path="/manageProducts" component={withRouter(ManageProductInStore)} />
               <Route path="/manageDiscount" component={withRouter(ManageDiscount)} exact/>
-              {/*<Route path="/storeManagement" component={withRouter(StoreManagement)} />*/}
-              {/*<Route path="/removeManagerFromStore" component={withRouter(RemoveManagerFromStore)} />*/}
+              <Route path="/storeManagement" component={withRouter(StoreManagement)} />
+              <Route path="/storeMenu" component={withRouter(StoreMenu)} />
+              <Route path="/removeManagerFromStore" component={withRouter(RemoveManagerFromStore)} />
+              <Route path="/addManagerToStore" component={withRouter(AddManagerToStore)} />
+              <Route path="/addOwnerToStore" component={withRouter(AddOwnerToStore)} />
+              <Route path="/editManagerPermissions" component={withRouter(EditManagerPermissions)} />
               <Route path="/" component={withRouter(GuestIndex)} exact />
             </Switch>
           </Router>)
