@@ -17,7 +17,7 @@ import BuyCart from "./Screen/Guest/BuyCart";
 import ManageProductInStore from './Screen/Subscribe/ManageProductInStore';
 import RemoveManagerFromStore from './Screen/Subscribe/RemoveManagerFromStore';
 import StoreManagement from "./Screen/Subscribe/StoreManagement";
-
+import EditManagerPermissions from "./Screen/Subscribe/EditManagerPermissions";
 class App extends Component {
 
   render() {
@@ -40,6 +40,7 @@ class App extends Component {
               <Route path="/manageProducts" component={withRouter(ManageProductInStore)} />
               <Route path="/storeManagement" component={withRouter(StoreManagement)} />
               <Route path="/removeManagerFromStore" component={withRouter(RemoveManagerFromStore)} />
+              <Route path="/editManagerPermissions" component={withRouter(EditManagerPermissions)} />
               <Route path="/" component={withRouter(GuestIndex)} exact />
             </Switch>
           </Router>)
