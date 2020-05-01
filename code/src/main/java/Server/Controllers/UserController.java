@@ -34,7 +34,9 @@ public class UserController {
     @GetMapping("home/connect")
     @ResponseBody
     public Integer connect(){
-       return SingleService.getInstance().connectToSystem();
+       int id =  SingleService.getInstance().connectToSystem();
+        System.out.println("new id:" + id);
+        return id;
 
     }
 

@@ -8,20 +8,23 @@ import {send} from '../../Handler/ConnectionHandler';
 
 class GuestIndex extends Component {
 
-  constructor() {
-    super();
-    let id = send('/','POST','',(recvied)=>{
-      if(recvied==null)
-        this.setState({error:'Connection unstable'});
-      else {
-        let data = recvied.DATA;  
-      }
-    }); 
-    this.state = {
-      id_session:0,
-      error:'',
-    }
-  }
+// constructor() {
+//     super();
+//     this.state = {
+//       id_session:0,
+//       error:'',
+//     }
+//
+//     let id = send('home/connect','GET','',(received)=>{
+//       if(received ==null)
+//         this.setState({error:'Connection unstable'});
+//       else {
+//         let id = received;
+//         this.setState({id:id});
+//       }
+//     });
+//
+//   }
 
   create_stores() {
     let output = [];
@@ -89,9 +92,9 @@ class GuestIndex extends Component {
   }
 
   render_product_table(){
-    let proudcts = this.create_products();
+    let products = this.create_products();
     let output = [];
-    proudcts.forEach( element =>
+    products.forEach( element =>
       output.push(
         <Row onClick={()=>this.pass('/addToCart', element)}>
           <th> {element.productName} </th>
@@ -132,7 +135,7 @@ class GuestIndex extends Component {
               {this.render_stores()}
             </div>
             <div>
-              <h3 style={{textAlign:'center'}}> Prodcuts </h3>
+              <h3 style={{textAlign:'center'}}> Products </h3>
               {this.render_product()}
             </div>
           </body>

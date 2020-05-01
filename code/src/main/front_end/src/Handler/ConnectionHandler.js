@@ -15,8 +15,9 @@ export const send = async (path, method, msg, update) => {
     'Content-Length': msg.length,},
   };
   let req = https.request(options, (res) => {
-    res.on('data', (data) => { update(recive(data)); });
-    res.on('close', (close)=> { update(null); })
+    res.on('data', (data) => { update(receive(data)); });
+    // closes https request
+    //res.on('close', (close)=> { update(null); })
     res.on('error', (error) => { update(null); });
   });
   req.on('error',(error)=>{ update(null); })
@@ -26,9 +27,8 @@ export const send = async (path, method, msg, update) => {
 }
 
 //The function return a response object
-const recive = (buffer) => {
+const receive = (buffer) => {
     //let out = Object.getOwnPropertyNames(buffer)
-    let out = buffer.toString('utf8')
-    let result = JSON.parse(out);
-    return result;
+    let out = buffer.toString();
+    return JSON.parse(out);
 }
