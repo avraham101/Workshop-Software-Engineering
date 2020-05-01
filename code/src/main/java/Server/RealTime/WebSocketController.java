@@ -1,4 +1,4 @@
-package Server.RealTime;
+/**package Server.RealTime;
 
 import DataAPI.OpCode;
 import DataAPI.Response;
@@ -47,4 +47,4 @@ public class WebSocketController {
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
     }
 
-}
+}*/
