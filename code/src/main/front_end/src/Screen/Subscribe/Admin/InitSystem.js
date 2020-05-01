@@ -6,7 +6,7 @@ import Input from '../../../Component/Input';
 import Button from '../../../Component/Button';
 //import {send} from '../../../Handler/ConnectionHandler';
 import { connect } from '../../../Handler/ConnectionHandler';
-
+import { sendMessage } from '../../../Handler/ConnectionHandler';
 //const FormData = require('form-data')
 //const https = require('https');
 
@@ -39,6 +39,7 @@ class InitSystem extends Component {
     //RECIVED RESPONSE AS MSG
     connect((msg)=>this.setState({msg:''+msg.value}));
     //send(msg, (msg)=>this.setState({msg:''+msg.value}));
+    sendMessage();
   }
 
   render() {

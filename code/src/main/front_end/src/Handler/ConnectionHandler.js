@@ -17,26 +17,20 @@ var Stomp = require('webstomp-client');
 //     'Content-Length': msg.length,},
 //   };
 
-  var ws=new SockJS('https://localhost:8443/ws');
+  var ws=new WebSocket('ws://localhost:8443/ws');
 
-  var stompClient=Stomp.over(ws);
+  //var stompClient=Stomp.over(ws);
 
-  export const connect=async(update)=>{
-    stompClient.connect({},function(frame){
-      stompClient.subscribe("/user/topic/reply",
-        function(message){
+  export const connect= async (update) =>{
+    ws.onmessage = function(message){
           update(recive(message));
-        },function(error){
-          console.log("Stomp error "+error);
-      });
-    });
+        }
+    }
+
+
+export function sendMessage() {
+  ws.send('/app/message', {}, "Hello self!");;
 }
-
-
-function send(msg){
-  stompClient.send(msg);
-}
-
 
 //   let req = https.request(options, (res) => {
 //     res.on('data', (data) => { update(recive(data)); });
