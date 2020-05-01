@@ -23,13 +23,18 @@ var Stomp = require('webstomp-client');
 
   export const connect=async(update)=>{
     stompClient.connect({},function(frame){
-      stompClient.subscribe("/user/q/reply",
+      stompClient.subscribe("/user/topic/reply",
         function(message){
           update(recive(message));
         },function(error){
           console.log("Stomp error "+error);
       });
     });
+}
+
+
+function send(msg){
+  stompClient.send(msg);
 }
 
 

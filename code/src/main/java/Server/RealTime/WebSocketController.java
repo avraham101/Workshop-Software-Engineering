@@ -24,7 +24,7 @@ public class WebSocketController {
     private SimpMessageSendingOperations messagingTemplate;
 
     @MessageMapping("/message")
-    @SendToUser("/queue/reply")
+    @SendToUser("/topic/reply")
     public ResponseEntity<?> processMessageFromClient(@Payload String message, Principal principal) throws Exception {
         String name = new Gson().fromJson(message, Map.class).get("name").toString();
         //messagingTemplate.convertAndSendToUser(principal.getName(), "/queue/reply", name);
@@ -34,7 +34,7 @@ public class WebSocketController {
     }
 
     @MessageExceptionHandler
-    @SendToUser("/queue/errors")
+    @SendToUser("/topic/errors")
     public String handleException(Throwable exception) {
         return exception.getMessage();
     }
