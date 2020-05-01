@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class ProductData {
+
     private String productName;
     private String storeName;
     private String category;
