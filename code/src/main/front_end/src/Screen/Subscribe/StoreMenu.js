@@ -27,7 +27,7 @@ class StoreMenu extends Component {
 
   render_permissions() {
     return (
-      <table style={style_table}>
+      <table style = {style_table}>
         {this.state.manageProduct ? (<Row onClick={() => this.pass("/manageProducts")}>Manage Product</Row>) : ("")}
         {this.state.storeDiscounts ? (<Row onClick={() => this.pass("/manageDiscount")}>Store Discounts</Row>) : ("")}
         {this.state.appointOwner ? (<Row onClick={() => this.pass("/TODO")}>Appoint Owner</Row>):("")}
