@@ -3,7 +3,9 @@ import BackGroud from '../../Component/BackGrond';
 import Menu from '../../Component/Menu';
 import Title from "../../Component/Title";
 import ProductsDelete from '../../Component/ProductsDelete';
-
+import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils'
+import Button from "../../Component/Button";
 //4.1.2
 class ViewDeleteProductsInStore extends Component {
 
@@ -14,11 +16,14 @@ class ViewDeleteProductsInStore extends Component {
   }
 
   render() {
+    let onBack= () => {
+      pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state); 
+    }
     return (
       <BackGroud>
-        <Menu/>
-        <ProductsDelete products={this.products} store={this.store}>
-        </ProductsDelete> 
+        <Menu state={this.props.location.state} />
+        <ProductsDelete products={this.products} store={this.props.location.state.storeName}/>
+        <Button text="Back" onClick={onBack}/>
       </BackGroud>
     );
   }

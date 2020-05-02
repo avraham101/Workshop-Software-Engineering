@@ -12,8 +12,8 @@ class ManageProductInStore extends Component {
     super();
     this.pathname = "/manageProducts";
     this.addClick = this.addClick.bind(this);
+    this.addProductPromise = this.addProductPromise.bind(this);
     this.state = {
-      storeName:'-- Didnt Selected Store --',
       name:'',
       category:'',
       amount: 0,
@@ -23,7 +23,43 @@ class ManageProductInStore extends Component {
   }
 
   addClick() {
-    pass(this.props.history,'/storeManagement',this.pathname,this.props.location.state)
+    let msg ={};
+    msg['productName']=this.state.name;
+    msg['storeName']=this.props.location.state.storeName;
+    msg['category']=this.state.category;
+    msg['amount'] = this.state.amount;
+    msg['price'] = this.state.price;
+    msg['purchaseType'] = this.state.purchase;
+    let id = this.props.location.state.id;
+    send('/home/product?id='+id,'POST',msg,this.addProductPromise)
+  }
+
+  addProductPromise(received) {
+    if(received==null)
+      alert("Server Failed");
+    else {
+      let opt = ''+ received.reason;
+      if (opt == "Invalid_Product‏") {
+        alert("The product data isnt valid. please ensert again");
+      } 
+      else if(opt == 'Store_Not_Found‏') {
+        alert("Store doesn't Exits. Go back to main menu");
+        pass(this.props.history,'/subscribe',this.pathname,this.props.location.state)
+      }
+      else if(opt =="Dont_Have_Permission‏") {
+        alert("");
+      }
+      else if(opt =='Already_Exists‏') {
+
+      }
+      else if(opt == 'Success') {
+        alert("");
+        pass(this.props.history,'/storeManagement',this.pathname,this.props.location.state)
+      }
+      else {
+        alert(opt+", Cant Add Product to Store");
+      }
+    }
   }
 
   render() {
