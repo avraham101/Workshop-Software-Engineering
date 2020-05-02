@@ -569,8 +569,24 @@ public class Subscribe extends UserState{
          permissionsForStore.add(StorePermissionType.ADD_MANAGER);
      if(!givenByMePermissions.isEmpty())
          permissionsForStore.add(StorePermissionType.DELETE_MANAGER);
+     if(permissionTypes.contains(PermissionType.CRUD_POLICY_DISCOUNT))
+         permissionsForStore.add(StorePermissionType.CRUD_POLICY_DISCOUNT);
      return permissionsForStore;
 
     }
 
+    /**
+     * return all the managers of a specific store that user with id managed
+     * @return managers of specific store
+     */
+    @Override
+    public Response<List<String>> getManagersOfStoreUserManaged(String storeName) {
+        List<String> managers=new LinkedList<>();
+        lock.readLock().lock();
+        for( Permission p:givenByMePermissions)
+            if(p.getStore().getName().equals(storeName))
+                managers.add(p.getOwner().getName());
+        lock.readLock().unlock();
+        return new Response<>(managers,OpCode.Success);
+    }
 }

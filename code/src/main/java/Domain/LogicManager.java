@@ -846,7 +846,9 @@ public class LogicManager {
             if (d != null && d.isValid())
                 return d;
         }
-        catch (Exception ignored){}
+        catch (Exception ignored){
+            System.out.println(ignored.getCause());
+        }
         return null;
      }
 
@@ -1174,5 +1176,19 @@ public class LogicManager {
         List<String> managers=new ArrayList<>(store.getPermissions().keySet());
         return new Response<>(managers,OpCode.Success);
     }
+
+    /**
+     * return all the managers of a specific store that user with id managed
+     * @return managers of specific store
+     */
+    public Response<List<String>> getManagersOfStoreUserManaged(int id,String storeName){
+        Store store=stores.get(storeName);
+        User current=connectedUsers.get(id);
+        if(store==null)
+            return new Response<>(null,OpCode.Store_Not_Found);
+        return current.getManagersOfStoreUserManaged(storeName);
+    }
+
+
 
 }
