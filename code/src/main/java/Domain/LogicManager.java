@@ -589,7 +589,6 @@ public class LogicManager {
         }
         //5) update the purchase for both store and user (synchronized)
         current.savePurchase(paymentData.getName());
-        //TODO real time through delivery data
         sendNotificationsToAllStoreManagers(deliveryData.getProducts());
         return new Response<>(true, OpCode.Success);
     }
@@ -1100,7 +1099,6 @@ public class LogicManager {
             }
             return response;
         }
-            //TODO real time through request.getWriter()
 
         return new Response<>(null,OpCode.Store_Not_Found);
     }

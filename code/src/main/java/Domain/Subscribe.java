@@ -381,7 +381,6 @@ public class Subscribe extends UserState{
         permissions.remove(storeName);
         //remove the permission from the store
         store.getPermissions().remove(userName);
-        //TODO real time trough this
 
     }
     /**
@@ -397,7 +396,6 @@ public class Subscribe extends UserState{
         Permission permission = permissions.get(storeName);
         if(permission != null){
             Store store = permission.getStore();
-            //TODO check if concurrent
             output = new LinkedList<>(store.getRequests().values());
         }
         return output;
