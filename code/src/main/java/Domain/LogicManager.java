@@ -589,16 +589,21 @@ public class LogicManager {
         }
         //5) update the purchase for both store and user (synchronized)
         current.savePurchase(paymentData.getName());
-        //TODO real time through delivery data
         sendNotificationsToAllStoreManagers(deliveryData.getProducts());
         return new Response<>(true, OpCode.Success);
     }
 
     private void sendNotificationsToAllStoreManagers(List<ProductData> products) {
         HashMap <String,List<ProductData>> productsAndStores=new HashMap<>();
-//        for(ProductData p:products){
-//
-//        }
+        for(ProductData p:products){
+            if(!productsAndStores.containsKey(p.getStoreName()))
+                productsAndStores.put(p.getStoreName(),new ArrayList<>());
+            productsAndStores.get(p.getStoreName()).add(p);
+        }
+        for(String storeName:productsAndStores.keySet()){
+            Store store=stores.get(storeName);
+            store.sendManagersNotifications(productsAndStores.get(storeName));
+        }
     }
 
     /**
@@ -1094,7 +1099,6 @@ public class LogicManager {
             }
             return response;
         }
-            //TODO real time through request.getWriter()
 
         return new Response<>(null,OpCode.Store_Not_Found);
     }
@@ -1220,7 +1224,7 @@ public class LogicManager {
 
     public void deleteReceivedNotifications(int id, List<Integer> notificationsId) {
         User current=connectedUsers.get(id);
-       // current.deleteReceivedNotifications(notificationsId);
+        current.deleteReceivedNotifications(notificationsId);
 
     }
 }

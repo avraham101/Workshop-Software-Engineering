@@ -26,10 +26,10 @@ public class Subscribe extends UserState{
     private List<Request> requests;
     private List<Review> reviews;
     private AtomicInteger sessionNumber;
-    private AtomicInteger notificationNuber;
+    private AtomicInteger notificationNumber;
     private ReentrantReadWriteLock lock;
     private Publisher publisher;
-    private ConcurrentLinkedQueue notifications;
+    private ConcurrentLinkedQueue<Notification> notifications;
 
     public Subscribe(String userName, String password) {
         initSubscribe(userName,password);
@@ -51,7 +51,7 @@ public class Subscribe extends UserState{
         requests=new ArrayList<>();
         reviews = new LinkedList<>();
         sessionNumber=new AtomicInteger(-1);
-        notificationNuber = new AtomicInteger(-1);
+         notificationNumber = new AtomicInteger(0);
     }
 
     /**
@@ -384,7 +384,7 @@ public class Subscribe extends UserState{
         //remove the permission from the store
         store.getPermissions().remove(userName);
         //TODO real time trough this
-        sendNotification( new Notification<>(storeName,OpCode.Removed_From_Management));
+        sendNotification( new Notification<>(storeName,OpCode.Removed_From_Management,notificationNumber.getAndIncrement()));
 
     }
     /**
@@ -400,7 +400,6 @@ public class Subscribe extends UserState{
         Permission permission = permissions.get(storeName);
         if(permission != null){
             Store store = permission.getStore();
-            //TODO check if concurrent
             output = new LinkedList<>(store.getRequests().values());
         }
         return output;
@@ -600,11 +599,14 @@ public class Subscribe extends UserState{
         return new Response<>(managers,OpCode.Success);
     }
 
+
+
     public void setPublisher(Publisher publisher) {
         this.publisher=publisher;
     }
 
     public void sendNotification(Notification<?> notification) {
+        notification.setId(notificationNumber.getAndIncrement());
         notifications.add(notification);
         sendAllNotifications();
     }
@@ -615,4 +617,12 @@ public class Subscribe extends UserState{
             publisher.update(String.valueOf(id), new ArrayList<Notification>(notifications));
         }
     }
+    @Override
+    public void deleteReceivedNotifications(List<Integer> notificationsId) {
+
+        notifications.removeIf(n ->notificationsId.contains(n.getId()));
+
+    }
+
+
 }
