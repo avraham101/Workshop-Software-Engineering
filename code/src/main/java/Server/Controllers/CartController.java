@@ -28,7 +28,7 @@ public class CartController {
 
     @GetMapping
     public ResponseEntity<?> getCart (@RequestParam(name="id") int id){
-        Response <CartData> response= SingleService.getInstance().watchCartDetatils(id);
+        Response <CartData> response = SingleService.getInstance().watchCartDetatils(id);
         return getResponseEntity(response);
     }
 
