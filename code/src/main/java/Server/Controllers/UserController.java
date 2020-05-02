@@ -33,8 +33,11 @@ public class UserController {
 
     @GetMapping("home/connect")
     @ResponseBody
-    public Integer connect(){
-       return SingleService.getInstance().connectToSystem();
+    public ResponseEntity<?> connect(){
+       Integer id = SingleService.getInstance().connectToSystem();
+       Response<Integer> response = new Response<>(id,OpCode.Success);
+       return getResponseEntity(response);
+
 
     }
 

@@ -11,14 +11,14 @@ class AddProductToCart extends Component {
 
   /**
    * constructor
-   * @param {the product that choosed to add to cart} product
+   * @param props
    */
-  constructor(product) {
-    super();
+  constructor(props) {
+    super(props);
     this.handleChangedAmount = this.handleChangedAmount.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
-      product: product,
+      product: props.location.state.element,
       amount: 0,
     };
   }
@@ -35,8 +35,8 @@ class AddProductToCart extends Component {
    * print the details about the product to add to cart
    */
   renderProducts() {
-    let product = this.props.location.data;
-    return (product === undefined)?
+    let product = this.state.product;
+    return (this.state.product === undefined)?
     ( <h3> Didn't selected product </h3> ) :
     ( <table style={style_table}>
         <tr>
