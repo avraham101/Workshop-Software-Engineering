@@ -16,7 +16,7 @@ class UserWatchPurchasesHistory extends Component {
   render() {
     return (
       <BackGroud>
-        <Menu/>
+        <Menu state={this.props.location.state} />
         <UserPurchases purchases={this.purchases} eventName="add review">
             <Title title = 'my purchases:'/> 
         </UserPurchases>

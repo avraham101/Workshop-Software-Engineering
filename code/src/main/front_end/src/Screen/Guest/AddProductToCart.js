@@ -6,6 +6,8 @@ import Title from "../../Component/Title";
 import Input from "../../Component/Input";
 import Button from "../../Component/Button";
 import history from "../history";
+import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils';
 
 class AddProductToCart extends Component {
 
@@ -18,7 +20,7 @@ class AddProductToCart extends Component {
     this.handleChangedAmount = this.handleChangedAmount.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
-      product: props.location.state.element,
+      product: this.props.location.state.product,
       amount: 0,
     };
   }
@@ -63,7 +65,7 @@ class AddProductToCart extends Component {
   render() {
     return (
       <BackGroud>
-        <Menu />
+        <Menu state={this.props.location.state}/>
         <body>
           <Title title="Add product to cart" />
           {this.renderProducts()}
@@ -88,7 +90,7 @@ class AddProductToCart extends Component {
             {this.state.enough === false ? <Error text="Close Me" /> : ""}
           </div>
         </body>
-        <Button text="back" onClick={() => history.push(this.props.location.fromPath)} />
+        <Button text="back" onClick={() => pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state)} />
       </BackGroud>
     );
   }

@@ -3,11 +3,14 @@ import BackGrond from "../../Component/BackGrond";
 import Menu from "../../Component/Menu";
 import Title from "../../Component/Title";
 import Row from "../../Component/Row";
+import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils'
 
 class StoreManagement extends Component {
   constructor() {
     super();
     this.handlePermission = this.handlePermission.bind(this);
+    this.pathname = "/storeManagement";
     this.state = {
       manageStores: this.create_manage_stores(),
       ownerStores: this.create_owner_stores(),
@@ -77,10 +80,15 @@ class StoreManagement extends Component {
   }
 
   render_stores_table(stores) {
+    let onClick = (element) => {
+      let state = this.props.location.state;
+      state['storeName'] = element.name;
+      pass(this.props.history,'/storeMenu',this.pathname,this.props.location.state)
+    }
     let output = [];
     stores.forEach((element) =>
       output.push(
-        <Row onClick={() => this.pass("/storeMenu", element.name)}>
+        <Row onClick={() =>onClick(element)}>
           <th> {element.name} </th>
           <th> {element.description} </th>
         </Row>
@@ -100,7 +108,7 @@ class StoreManagement extends Component {
   render() {
     return (
       <BackGrond>
-        <Menu />
+        <Menu state={this.props.location.state} />
         <Title title="Manage Store" />
         <h3 style={style_sheet}>Choose permission to work with</h3>
         <h4 style={style_sheet}>

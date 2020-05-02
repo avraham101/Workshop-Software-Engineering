@@ -4,12 +4,15 @@ import Menu from "../../Component/Menu";
 import Title from "../../Component/Title";
 import Input from "../../Component/Input";
 import Button from "../../Component/Button";
+import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils'
 
 class OpenStore extends Component {
   constructor() {
     super();
     this.handleChangeName = this.handleChangeName.bind(this);
     this.handleChangeDescription = this.handleChangeDescription.bind(this);
+    this.pathname = "/openStore";
     this.state = {
       storeName: "",
       storeDescription: "",
@@ -28,22 +31,16 @@ class OpenStore extends Component {
     event.preventDefault();
     var str = "Congratulation! The store " + this.state.storeName + " open.\nYou are the owner, enjoy!";
     if(window.confirm(str)){
-      this.pass("/manageProducts", this.state.storeName)
+      let state = this.props.location.state;
+      state['storeName'] = this.state.storeName;
+      pass(this.props.history,'/manageProducts',this.pathname,state)
     }
-  }
-
-  pass(url, storeName) {
-    this.props.history.push({
-      pathname: url,
-      fromPath: "/storeMenu",
-      storeName: storeName
-    });
   }
 
   render() {
     return (
       <BackGrond>
-        <Menu />
+        <Menu state={this.props.location.state} />
         <Title title="Open Store" />
         <div>
           <Input

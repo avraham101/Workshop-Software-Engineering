@@ -47,8 +47,8 @@ class StoreMenu extends Component {
     const { storeName } = this.props.location;
     return (
       <BackGrond>
-        <Menu />
-        <Title title={"Welcome to - " + storeName} />
+        <Menu state={this.props.location.state} />
+        <Title title={"Welcome to - " + this.props.location.state.storeName} />
         <Title title="What do you want to do in your store?" />
         <div>{this.render_permissions()}</div>
       </BackGrond>

@@ -5,7 +5,8 @@ import Title from "../../Component/Title";
 import Input from "../../Component/Input";
 import Button from "../../Component/Button";
 import Row from "../../Component/Row";
-
+import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils';
 class SearchAndFilterProducts  extends Component{
 
     constructor() {
@@ -14,6 +15,7 @@ class SearchAndFilterProducts  extends Component{
         this.handleMinPrice = this.handleMinPrice.bind(this);
         this.handleMaxPrice = this.handleMaxPrice.bind(this);
         this.handleSearchValue = this.handleSearchValue.bind(this);
+        this.pathname = "/searchAndFilter";
         this.state = {
             search: '',
             searchValue: '',
@@ -51,11 +53,24 @@ class SearchAndFilterProducts  extends Component{
     }
 
     render_product_table(){
+        let state = this.props.location.state;
+        let onClick = (element) => {
+          let product = {
+            productName:element.productName,
+            storeName:element.storeName,
+            category:element.category,
+            amount:element.amount,
+            price:element.price,
+            purchaseType:element.purchaseType,
+          }
+          state['product'] = product;
+          pass(this.props.history,'/addToCart',this.pathname,state)
+        };
         let products = this.create_products();
         let output = [];
         products.forEach( element =>
             output.push(
-                <Row onClick={()=>this.pass('/addToCart', element)}>
+                <Row onClick={()=>onClick(element)}>
                     <th> {element.productName} </th>
                     <th> {element.storeName} </th>
                     <th> {element.category} </th>
@@ -107,7 +122,7 @@ class SearchAndFilterProducts  extends Component{
     render() {
         return (
             <BackGroud>
-                <Menu/>
+                <Menu state={this.props.location.state}/>
                 <Title title = 'Search And Filter Products'/>
                 <table>
                     <tr>

@@ -81,11 +81,24 @@ class GuestIndex extends Component {
   }
 
   render_product_table(){
+    let state = this.props.location.state;
+    let onClick = (element) => {
+      let product = {
+        productName:element.productName,
+        storeName:element.storeName,
+        category:element.category,
+        amount:element.amount,
+        price:element.price,
+        purchaseType:element.purchaseType,
+      }
+      state['product'] = product;
+      pass(this.props.history,'/addToCart',this.pathname,state)
+    };
     let products = this.create_products();
     let output = [];
-    products.forEach( element =>
+    products.forEach( element =>(
       output.push(
-        <Row onClick={()=>pass(this.props.history,'/addToCart',this.pathname, {element:element})}>
+        <Row onClick={()=>onClick(element)}>
           <th> {element.productName} </th>
           <th> {element.storeName} </th>
           <th> {element.category} </th>
@@ -94,7 +107,7 @@ class GuestIndex extends Component {
           <th> {element.purchaseType} </th>
         </Row>
       )
-    )
+    ));
     return output;
   }
 
@@ -117,27 +130,28 @@ class GuestIndex extends Component {
     send('/home/connect','GET','',this.handleGetId)
   }
 
-  handleGetId(received){
+  handleGetId(received) {
     if(received === null)
-      this.props.location.state.id = -1;
+      this.props.location.state = {id:-1};
     else {
       let opt = '' + received.reason;
       if (opt !== "Success") {
-        alert(this.state.error);
-        this.props.location.state.id = -1;
-      } else {
-        this.props.location.state.id = received.value;
-        alert(this.state.success);
+        this.props.location.state = {id:-1};
+      } 
+      else {
+        this.props.location.state = {id:received.value};
       }
     }
+    this.setState({});
   };
 
+  times=0;
+
   render() {
-    if(this.props.location.state === undefined){
+    if(this.props.location.state === undefined)
       this.handleConnect();
-      if(this.props.location.state.id === -1)
-        return <p>server didn't init</p>
-    }
+    if(this.props.location.state === undefined || this.props.location.state.id==-1)
+      return <p style={{color:'red'}}>Page not found: 404 </p>
     return (
       <BackGrond>
           <Menu state={this.props.location.state}/>

@@ -7,7 +7,8 @@ import Input from "../../Component/Input";
 import Button from "../../Component/Button";
 import history from "../history";
 import Cart from '../../Component/Cart';
-
+import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils'
 
 class BuyCart extends Component {
 
@@ -21,6 +22,7 @@ class BuyCart extends Component {
         this.handleChangeCreditCard = this.handleChangeCreditCard.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.cart = cart1;
+        this.pathname = '/buyCart';
         this.state = {
             name: "",
             address: "",
@@ -60,9 +62,12 @@ class BuyCart extends Component {
     }
 
     render() {
+        let onClick =()=> {
+            pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state)
+        }
         return (
             <BackGroud>
-                <Menu/>
+                <Menu state={this.props.location.state}/>
                 <body>
                     <Title title='Buy Cart' />
                     <h3 style={style_sheet}> Enter your details:</h3>
@@ -72,7 +77,7 @@ class BuyCart extends Component {
                     <Input title="country" type="text" value={this.state.country} onChange={this.handleChangeCountry} />
                     <Input title="creditCard" type="text" value={this.state.creditCard} onChange={this.handleChangeCreditCard} />
                     <Button text="buy" onClick={this.handleSubmit}/>
-                    <Button text="cancel" onClick={() => history.push("/viewMyCart")} />
+                    <Button text="cancel" onClick={onClick} />
                 </body>
             </BackGroud>
         );

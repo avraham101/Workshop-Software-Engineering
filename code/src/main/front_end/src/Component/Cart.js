@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import history from '../Screen/history';
 import Button from '.././Component/Button';
 import Title from '.././Component/Title';
+import {send} from '../Handler/ConnectionHandler';
+import {pass} from '../Utils/Utils'
 
 class Cart extends Component {
   
@@ -38,12 +40,15 @@ class Cart extends Component {
       }
 
   renderCart(){
+    let onClick = () => {
+        pass(this.props.history,'/buyCart',this.props.pathname,this.props.state)
+    }
     let output=[];
         output.push(
         <table style={style_sheet}>
             <tr>
                 <th>{"total price :"+this.cart.price}</th>
-                <th><Button text = "Buy Cart" onClick={()=>history.push("/buyCart")}/></th>
+                <th><Button text = "Buy Cart" onClick={()=>onClick()}/></th>
             </tr>
             <tr>
                 <th>{}</th>
