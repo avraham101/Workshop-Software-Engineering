@@ -6,6 +6,7 @@ import java.util.Map;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import Publisher.Publisher;
+import Service.SingleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,10 +26,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class WebSocketController {
 
-    @Autowired
-    private SimpMessageSendingOperations messagingTemplate;
+    private final SimpMessageSendingOperations messagingTemplate;
+    private final Publisher pub;
 
-   Publisher pub = new Publisher();
+    public WebSocketController(SimpMessageSendingOperations messagingTemplate) {
+        this.messagingTemplate = messagingTemplate;
+        pub = new Publisher(messagingTemplate);
+        SingleService.setPublisher(pub);
+    }
 
     @MessageMapping("/hello")
     @SendToUser("queue/greetings")
@@ -37,7 +42,7 @@ public class WebSocketController {
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         ResponseEntity<Response<String>> e=new ResponseEntity<>(new Response<>(message, OpCode.Success), headers, HttpStatus.CREATED);
 //        messagingTemplate.convertAndSendToUser( principal.getName(),"/queue/greetings", e);
-        pub.notify("0");
+        //pub.update("0");
         System.out.println(principal.getName());
         Thread.sleep(5000);
         System.out.println("nivvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
@@ -45,17 +50,17 @@ public class WebSocketController {
         return e;
     }
 
-    @GetMapping("/test")
-    public void test(){
-        messagingTemplate.convertAndSend( "/topic/greetings", "tallll");
-        //return "index";
-    }
+//    @GetMapping("/test")
+//    public void test(){
+//        messagingTemplate.convertAndSend( "/topic/greetings", "tallll");
+//        //return "index";
+//    }
 
 
     @MessageExceptionHandler
     @SendToUser("/errors")
     public String handleException(Throwable exception) {
-        System.out.println("error");
+        System.out.println(exception.getMessage()+"\n"+exception.getCause());
         return exception.getMessage();
     }
 

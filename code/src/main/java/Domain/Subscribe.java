@@ -3,6 +3,8 @@ package Domain;
 import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Publisher.Publisher;
+import com.sun.deploy.net.MessageHeader;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -24,6 +27,8 @@ public class Subscribe extends UserState{
     private List<Review> reviews;
     private AtomicInteger sessionNumber;
     private ReentrantReadWriteLock lock;
+    private Publisher publisher;
+    private ConcurrentLinkedQueue notifications;
 
     public Subscribe(String userName, String password) {
         initSubscribe(userName,password);
@@ -35,6 +40,7 @@ public class Subscribe extends UserState{
     }
 
     private void initSubscribe(String userName, String password) {
+        notifications=new ConcurrentLinkedQueue();
         lock=new ReentrantReadWriteLock();
         this.userName = userName;
         this.password = password;
@@ -375,6 +381,7 @@ public class Subscribe extends UserState{
         permissions.remove(storeName);
         //remove the permission from the store
         store.getPermissions().remove(userName);
+        //TODO real time trough this
 
     }
     /**
@@ -588,5 +595,21 @@ public class Subscribe extends UserState{
                 managers.add(p.getOwner().getName());
         lock.readLock().unlock();
         return new Response<>(managers,OpCode.Success);
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher=publisher;
+    }
+
+    public void sendNotification(Notification<Request> notification) {
+        notifications.add(notification);
+        sendAllNotifications();
+    }
+
+    public void sendAllNotifications() {
+        int id=sessionNumber.get();
+        if(!notifications.isEmpty()&&publisher!=null&&id!=-1) {
+            publisher.update(String.valueOf(id), new ArrayList<Notification>(notifications));
+        }
     }
 }
