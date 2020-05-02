@@ -41,17 +41,6 @@ public class WebSocketController {
         return e;
     }
 
-//    @MessageMapping("/hello")
-//    @SendToUser("queue/greetings")
-//    public String processMessageFromClient(@RequestBody String message, Principal principal) throws Exception {
-//        messagingTemplate.convertAndSendToUser( principal.getName(),"/queue/greetings", "yuvallll");
-//        System.out.println(principal.getName());
-//        Thread.sleep(50000);
-//        System.out.println("nivvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
-//
-//        return "yuvallll";
-//    }
-
     @GetMapping("/test")
     public void test(){
         messagingTemplate.convertAndSend( "/topic/greetings", "tallll");
