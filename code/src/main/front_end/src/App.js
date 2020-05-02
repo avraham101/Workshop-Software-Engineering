@@ -21,6 +21,7 @@ import SearchAndFilterProducts from "./Screen/Guest/SearchAndFilterProducts";
 import StoreMenu from "./Screen/Subscribe/StoreMenu";
 import AddManagerToStore from "./Screen/Subscribe/AddManagerToStore";
 import AddOwnerToStore from "./Screen/Subscribe/AddOwnerToStore";
+import BuyCart from './Screen/Guest/BuyCart';
 
 import EditManagerPermissions from "./Screen/Subscribe/EditManagerPermissions";
 class App extends Component {
@@ -41,7 +42,7 @@ class App extends Component {
               <Route path="/addToCart" component={withRouter(AddProductToCart)} />
               <Route path="/productsDelete" component={withRouter(ViewDeleteProductsInStore)} />
               <Route path="/sendRequest" component={withRouter(sendRequestToStore)} />
-              {/*<Route path="/buyCart" component={withRouter(BuyCart)} />*/}
+              <Route path="/buyCart" component={withRouter(BuyCart)} />
               <Route path="/openStore" component={withRouter(OpenStore)} />
               <Route path="/manageProducts" component={withRouter(ManageProductInStore)} />
               <Route path="/manageDiscount" component={withRouter(ManageDiscount)} exact/>
