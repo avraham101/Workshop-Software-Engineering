@@ -106,7 +106,7 @@ class SendRequestToStore extends Component {
     render() {
         return (
             <BackGroud>
-                <Menu/>
+                 <Menu state={this.props.location.state} />
                 <div>
                     <Title title='Stores:' />
                     <div>

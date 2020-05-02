@@ -9,13 +9,14 @@ class ViewProductsInCart extends Component {
   constructor(cart) {
     super();
     this.cart=cart1;
+    this.pathname = '/viewMyCart';
   }
 
   render() {
     return (
       <BackGroud>
-        <Menu/>
-        <Cart cart={this.cart}>
+        <Menu state={this.props.location.state}/>
+        <Cart cart={this.cart} history={this.props.history} state={this.props.location.state} pathname={this.pathname}>
         </Cart>
       </BackGroud>
     );

@@ -5,11 +5,13 @@ import Title from "../../Component/Title";
 import Input from "../../Component/Input";
 import Button from "../../Component/Button";
 import Row from "../../Component/Row";
-
+import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils';
 class ViewStoresAndProducts extends Component {
   constructor() {
     super();
     this.handleStores = this.handleStores.bind(this);
+    this.pathname = "/viewStoresAndProducts";
     this.state = {
       stores: this.create_stores(),
       products: this.create_products(),
@@ -89,19 +91,24 @@ class ViewStoresAndProducts extends Component {
   }
 
   render_product_table() {
+    let state = this.props.location.state;
+    let onClick = (element) => {
+      let product = {
+        productName:element.productName,
+        storeName:element.storeName,
+        category:element.category,
+        amount:element.amount,
+        price:element.price,
+        purchaseType:element.purchaseType,
+      }
+      state['product'] = product;
+      pass(this.props.history,'/addToCart',this.pathname,state)
+    };
     let proudcts = this.state.products;
     let output = [];
     proudcts.forEach((element) =>
       output.push(
-        <Row onClick={()=>this.pass("/addToCart", {productName: element.productName,
-                                                                storeName: this.state.store,
-                                                                category: element.category,
-                                                                reviews: element.reviews,
-                                                                amount: element.amount,
-                                                                price: element.price,
-                                                                priceAfterDiscount: element.priceAfterDiscount,
-                                                                purchaseType: element.purchaseType,})}>
-
+        <Row onClick={()=>onClick(element)}>
           <th> {element.productName} </th>
           <th> {element.category} </th>
           <th> {element.amount} </th>
@@ -134,7 +141,7 @@ class ViewStoresAndProducts extends Component {
   render() {
     return (
       <BackGroud>
-        <Menu />
+        <Menu state={this.props.location.state} />
         <Title title="Watch Stores And Products" />
         <div>
           <Title title="Stores :" />

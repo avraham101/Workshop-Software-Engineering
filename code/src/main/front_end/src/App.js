@@ -27,6 +27,7 @@ import ViewAndReplyRequests from "./Screen/Subscribe/ViewAndReplyRequests";
 import WatchUserAndStoreHistory from './Screen/Subscribe/Admin/WatchUserAndStoreHistory';
 
 
+import SubscribeIndex from './Screen/Subscribe/SubscribetIndex';
 class App extends Component {
 
   render() {
@@ -57,6 +58,7 @@ class App extends Component {
               <Route path="/editManagerPermissions" component={withRouter(EditManagerPermissions)} />
               <Route path="/viewAndReplyRequests" component={withRouter(ViewAndReplyRequests)} />
               <Route path="/watchUserAndStoreHistory" component={withRouter(WatchUserAndStoreHistory)} />
+              <Route path="/subscribe" component={withRouter(SubscribeIndex)} />
               <Route path="/" component={withRouter(GuestIndex)} exact />
             </Switch>
           </Router>)

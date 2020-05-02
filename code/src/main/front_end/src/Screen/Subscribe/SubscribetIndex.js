@@ -1,25 +1,21 @@
 import React, {Component} from 'react';
 import history from '../history';
 import BackGrond from '../../Component/BackGrond';
-import Menu from '../../Component/Menu';
 import Title from '../../Component/Title';
 import Row from '../../Component/Row';
 import {send} from '../../Handler/ConnectionHandler';
-import {pass} from '../../Utils/Utils'
+import {pass} from '../../Utils/Utils';
+import MenuSubscribe from '../../Component/MenuSubscribe';
 
-class GuestIndex extends Component {
+class SubscribeIndex extends Component {
 
   constructor(props) {
     super(props);
-    this.pathname = "/"
+    this.pathname = "/subscribe"
     this.state = {
       id: -1,
       error:'',
     };
-    this.handleConnect = this.handleConnect.bind(this);
-    this.handleGetId = this.handleGetId.bind(this);
-
-    //this.handleConnect();
   }
 
 
@@ -93,10 +89,10 @@ class GuestIndex extends Component {
       }
       state['product'] = product;
       pass(this.props.history,'/addToCart',this.pathname,state)
-    };
+    }
     let products = this.create_products();
     let output = [];
-    products.forEach( element =>(
+    products.forEach( element =>
       output.push(
         <Row onClick={()=>onClick(element)}>
           <th> {element.productName} </th>
@@ -107,7 +103,7 @@ class GuestIndex extends Component {
           <th> {element.purchaseType} </th>
         </Row>
       )
-    ));
+    )
     return output;
   }
 
@@ -126,37 +122,12 @@ class GuestIndex extends Component {
     </table>);
   }
 
-  handleConnect(){
-    send('/home/connect','GET','',this.handleGetId)
-  }
-
-  handleGetId(received) {
-    if(received === null)
-      this.props.location.state = {id:-1};
-    else {
-      let opt = '' + received.reason;
-      if (opt !== "Success") {
-        this.props.location.state = {id:-1};
-      } 
-      else {
-        this.props.location.state = {id:received.value};
-      }
-    }
-    this.setState({});
-  };
-
-  times=0;
-
   render() {
-    if(this.props.location.state === undefined)
-      this.handleConnect();
-    if(this.props.location.state === undefined || this.props.location.state.id==-1)
-      return <p style={{color:'red'}}>Page not found: 404 </p>
     return (
       <BackGrond>
-          <Menu state={this.props.location.state}/>
+          <MenuSubscribe state={this.props.location.state}/>
           <body>
-            <Title title="Welcome Guest"/>
+            <Title title={"Welcome user "+this.props.location.state.name}/>
             <div >
               <h3 style={{textAlign:'center'}}> Stores </h3>
               {this.render_stores()}
@@ -171,7 +142,7 @@ class GuestIndex extends Component {
   }
 }
 
-export default GuestIndex;
+export default SubscribeIndex;
 
 const style_table = {
   

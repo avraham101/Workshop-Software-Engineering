@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Controller
 
 public class UserController {
 
     Gson json;
+    AtomicInteger counter = new AtomicInteger(0);
 
     public UserController() {
         json= new Gson();
@@ -34,11 +36,10 @@ public class UserController {
     @GetMapping("home/connect")
     @ResponseBody
     public ResponseEntity<?> connect(){
-       Integer id = SingleService.getInstance().connectToSystem();
-       Response<Integer> response = new Response<>(id,OpCode.Success);
-       return getResponseEntity(response);
-
-
+        System.out.println("connected user "+counter.getAndIncrement());
+        Integer id = SingleService.getInstance().connectToSystem();
+        Response<Integer> response = new Response<>(id,OpCode.Success);
+        return getResponseEntity(response);
     }
 
     /**

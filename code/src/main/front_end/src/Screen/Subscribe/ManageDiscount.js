@@ -6,12 +6,17 @@ import Input from "../../Component/Input";
 import Button from '../../Component/Button';
 import Row from '../../Component/Row'
 import DivBetter from '../../Component/DivBetter'
+import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils'
 
 const CLASS_AND = 'Domain.Discount.AndDiscount'; 
 const CLASS_OR = 'Domain.Discount.OrDiscount';
 const CLASS_XOR = 'Domain.Discount.XorDiscount';
 const CLASS_STORE = 'Domain.Discount.StoreDiscount';
 const MAX_HEIGHT = 1000;
+
+
+  
 class ManageDiscount extends Component {
   
   constructor() {
@@ -19,12 +24,16 @@ class ManageDiscount extends Component {
     this.storeDiscounts = [];
     this.selectedDiscounts = [];
     this.comlicatedDiscounts = [];
+    this.pathname = "/manageDiscount";
     this.state = {
       storeName:'-- Didnt Selected Store --',
       store_amount:1,
       store_precentag:1,
       chosenDiscount:{},
       selectedProduct:undefined,
+      selectedProductSimpleDiscount:undefined,
+      selectedProductsTerm:undefined,
+      selectedProudctTarget:undefined,
     }
     this.products = this.create_products(5);
   }
@@ -153,13 +162,18 @@ class ManageDiscount extends Component {
   }
 
   renderSimpleDiscount(width) {
+      let onSelect = () => {
+
+      }
       return (
         <div style={{float: 'left', width:width, borderRight:'1px solid black', marginBottom:0}}>
           <h3 style={titleStyle}> Simple Discount </h3>
           <div>
             <h4 style={titleStyle}>Selected Simple Discount </h4>
+            {this.renderProduct(this.state.selectedProductSimpleDiscount,onSelect)}
             <SmallInput title = 'Discount Prcentage:' type="number" min={0} value={this.state.store_amount} 
                     onChange={(e)=>{this.setState({store_amount:e.target.value})}} />
+            <Button text="Select" onClick={onSelect} />
           </div>
           <div>
             <h4 style={titleStyle}>Discounts </h4>
@@ -197,6 +211,21 @@ class ManageDiscount extends Component {
     )
   }
 
+  /* this function render a product */
+  renderProduct(element, onClick) {
+    if(element==undefined)
+      return (<p style={{color:'red'}}></p>)
+    return (
+      <div>
+      <DivBetter style={{borderBottom:'1px solid black', textAlign:"center"}} onClick={()=>onClick(element)}>
+        <h3 style={{marginTop:0, borderBottom:'1px solid black',backgroundColor:'#FFC242'}}> {element.productName} </h3>
+        <p> Price: {element.price} $ </p>
+        <p> Type: {element.purchaseType} </p>
+      </DivBetter>
+      </div>
+    )
+  }
+
   /*the function render list of product */
   renderProductsList(list) {
     let output = [];
@@ -204,15 +233,7 @@ class ManageDiscount extends Component {
       this.setState({selectedProduct:element})
     }
     list.forEach(element=>{
-      output.push(
-        <div>
-        <DivBetter style={{borderBottom:'1px solid black', textAlign:"center"}} onClick={()=>onClick(element)}>
-          <h3 style={{marginTop:0, borderBottom:'1px solid black',backgroundColor:'#FFC242'}}> {element.productName} </h3>
-          <p> Price: {element.price} $ </p>
-          <p> Type: {element.purchaseType} </p>
-        </DivBetter>
-        </div>
-      )    
+      output.push(this.renderProduct(element,onClick))    
     })
     return output;
   }
@@ -358,14 +379,18 @@ class ManageDiscount extends Component {
   }
 
   render() {
+    let onBack= () => {
+      pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state); 
+    }
     return (
       <BackGrond height={MAX_HEIGHT}>
-        <Menu />
+        <Menu state={this.props.location.state} />
         <Title title="Discount Manager"/>
         <h2 style={{textAlign:'center'}}>{this.state.storeName}</h2>
         <p>
           {JSON.stringify(this.state.chosenDiscount)}
         </p>
+        <Button text="Back" onClick={onBack}/>
         <div style={{height:MAX_HEIGHT}}>
           {this.renderProducts('15%')}
           <div style={{float: 'left', width:'84%'}}>
