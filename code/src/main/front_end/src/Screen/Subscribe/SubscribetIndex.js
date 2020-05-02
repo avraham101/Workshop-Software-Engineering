@@ -15,46 +15,32 @@ class SubscribeIndex extends Component {
     this.state = {
       id: -1,
       error:'',
+      stores:[],
     };
+    this.buildStores = this.buildStores.bind(this);
   }
 
+  buildStores(received) {
+    if(received==null)
+      alert("Server Failed");
+    else {
+      let opt = ''+ received.reason;
+      if(opt == 'Success') {
+        this.setState({stores:received.value})
+      }
+      else {
+        alert(opt+", Cant Add Product to Store");
+      }
+    }
+  };
 
   create_stores() {
-    let output = [];
-    for(let i =0; i<5;i++) {
-      output.push({
-        name:'Store '+i,
-        description:'Description '+i
-      });
-    }
-    return output;
-  }
-
-  create_products() {
-    let output = []
-    for(let i =0; i<5;i++) {
-      output.push({
-        productName:'product '+i,
-        storeName:'store '+i,
-        category:'category '+i,
-        reviews: [],
-        amount: i,
-        price:i,
-        priceAfterDiscount: i,
-        purchaseType:'purchase type '+i,
-      })
-    }
-    return output;
-  }
-
-  click_me() {
-    history.push('/register')
+    send('/store', 'GET', '', this.buildStores)  
   }
 
   render_stores_table() {
-      let stores = this.create_stores();
       let output = [];
-      stores.forEach( element =>
+      this.state.stores.forEach( element =>
         output.push(
           <Row>
             <th> {element.name} </th>
@@ -77,6 +63,7 @@ class SubscribeIndex extends Component {
   }
 
   render() {
+    this.create_stores();
     return (
       <BackGrond>
           <MenuSubscribe state={this.props.location.state}/>
@@ -84,7 +71,7 @@ class SubscribeIndex extends Component {
             <Title title={"Welcome user "+this.props.location.state.name}/>
             <div >
               <h3 style={{textAlign:'center'}}> Stores </h3>
-              {this.render_stores()}
+              {(this.state.stores.length===0)?<h3 style={{textAlign:'center'}}> no stores on board</h3>: this.render_stores()}
             </div>
           </body>
       </BackGrond>

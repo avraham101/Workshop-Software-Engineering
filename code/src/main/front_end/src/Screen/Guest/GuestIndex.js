@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import history from '../history';
 import BackGrond from '../../Component/BackGrond';
 import Menu from '../../Component/Menu';
 import Title from '../../Component/Title';
@@ -83,8 +82,6 @@ class GuestIndex extends Component {
     }
     this.setState({});
   };
-
-  times=0;
 
   render() {
     if(this.props.location.state === undefined)
