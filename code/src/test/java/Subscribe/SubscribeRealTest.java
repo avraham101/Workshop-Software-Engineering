@@ -362,5 +362,14 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
 
     }
 
+    /**
+     * getManagersOfStoreUserManaged tests
+     */
+    @Test
+    public void getManagersOfStoreUserManagedSuccess(){
+        setUpManagerAdded();
+        assertTrue(sub.getManagersOfStoreUserManaged(data.getStore(Data.VALID).getName()).getValue().
+                contains(data.getSubscribe(Data.ADMIN).getName()));
+    }
 
 }

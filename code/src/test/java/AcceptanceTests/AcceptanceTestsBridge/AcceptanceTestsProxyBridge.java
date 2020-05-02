@@ -346,4 +346,11 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
             return realBridge.getPermissionsForStore(id, storeName);
         return null;
     }
+
+    @Override
+    public List<String> getManagersOfStoreIManaged(int id, String storeName) {
+        if (realBridge != null)
+            return realBridge.getManagersOfStoreIManaged(id, storeName);
+        return null;
+    }
 }

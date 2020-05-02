@@ -201,4 +201,12 @@ public class GuestTest {
         StoreData storeData = data.getStore(Data.VALID);
         assertFalse(guest.addPermissions(data.getPermissionTypeList(),storeData.getName(),subscribe.getName()).getValue());
     }
+
+    /**
+     * getManagersOfStoreUserManaged tests
+     */
+    @Test
+    public void getManagersOfStoreUserManagedGuest(){
+        assertNull(guest.getManagersOfStoreUserManaged(data.getStore(Data.VALID).getName()).getValue());
+    }
 }

@@ -327,4 +327,24 @@ public class UserRealTest extends UserAllStubsTest{
         assertFalse(niv.getPermissions().containsKey(storeName));
         assertFalse(p.getOwner().getPermissions().containsKey(storeName));
     }
+
+    /**
+     * getManagersOfStoreUserManaged tests
+     */
+    @Test
+    public void getManagersOfStoreUserManagedSuccess(){
+        setUpAddedManager();
+        assertTrue(user.getManagersOfStoreUserManaged(data.getStore(Data.VALID).getName()).getValue().
+                contains(data.getSubscribe(Data.ADMIN).getName()));
+    }
+
+    /**
+     * getManagersOfStoreUserManaged tests
+     */
+    @Test
+    public void getManagersOfStoreUserManagedGuest(){
+        setUpGuest();
+        assertNull(user.getManagersOfStoreUserManaged(data.getStore(Data.VALID).getName()).getValue());
+    }
+
 }

@@ -5,23 +5,23 @@ import Menu from '../../Component/Menu';
 import Title from '../../Component/Title';
 import Row from '../../Component/Row';
 import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils'
 
 class GuestIndex extends Component {
 
-  constructor() {
-    super();
-    let id = send('/','POST','',(recvied)=>{
-      if(recvied==null)
-        this.setState({error:'Connection unstable'});
-      else {
-        let data = recvied.DATA;  
-      }
-    }); 
+  constructor(props) {
+    super(props);
+    this.pathname = "/"
     this.state = {
-      id_session:0,
+      id: -1,
       error:'',
-    }
+    };
+    this.handleConnect = this.handleConnect.bind(this);
+    this.handleGetId = this.handleGetId.bind(this);
+
+    //this.handleConnect();
   }
+
 
   create_stores() {
     let output = [];
@@ -80,20 +80,12 @@ class GuestIndex extends Component {
     </table>);
   }
 
-  pass(url, fromPath, data) {
-    this.props.history.push({
-      pathname: url,
-      fromPath: fromPath,
-      data: data // your data array of objects
-    });
-  }
-
   render_product_table(){
-    let proudcts = this.create_products();
+    let products = this.create_products();
     let output = [];
-    proudcts.forEach( element =>
+    products.forEach( element =>
       output.push(
-        <Row onClick={()=>this.pass('/addToCart', element)}>
+        <Row onClick={()=>pass(this.props.history,'/addToCart',this.pathname, {element:element})}>
           <th> {element.productName} </th>
           <th> {element.storeName} </th>
           <th> {element.category} </th>
@@ -121,10 +113,34 @@ class GuestIndex extends Component {
     </table>);
   }
 
+  handleConnect(){
+    send('/home/connect','GET','',this.handleGetId)
+  }
+
+  handleGetId(received){
+    if(received === null)
+      this.props.location.state.id = -1;
+    else {
+      let opt = '' + received.reason;
+      if (opt !== "Success") {
+        alert(this.state.error);
+        this.props.location.state.id = -1;
+      } else {
+        this.props.location.state.id = received.value;
+        alert(this.state.success);
+      }
+    }
+  };
+
   render() {
+    if(this.props.location.state === undefined){
+      this.handleConnect();
+      if(this.props.location.state.id === -1)
+        return <p>server didn't init</p>
+    }
     return (
       <BackGrond>
-          <Menu/>
+          <Menu state={this.props.location.state}/>
           <body>
             <Title title="Welcome Guest"/>
             <div >
@@ -132,7 +148,7 @@ class GuestIndex extends Component {
               {this.render_stores()}
             </div>
             <div>
-              <h3 style={{textAlign:'center'}}> Prodcuts </h3>
+              <h3 style={{textAlign:'center'}}> Products </h3>
               {this.render_product()}
             </div>
           </body>

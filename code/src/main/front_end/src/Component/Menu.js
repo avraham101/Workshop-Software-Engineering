@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
 import history from '../Screen/history'
+import {pass} from '../Utils/Utils'
 
 const WHITE_BLUE= '#B3D1F0'
 class Menu extends Component {
   
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
+    this.fromPath = this.props.fromPath
+    this.prevState = this.props.state
     this.state = {
       color_0: '',
       color_1: '',
@@ -19,9 +22,10 @@ class Menu extends Component {
   render() {
     return (
         <header>
-        <table style={style_sheet}>
+          <p>{this.props.state.id}</p>
+          <table style={style_sheet}>
           <tr>
-          <th onClick={() => history.push("/")}
+          <th onClick={() => pass(history,"/",this.fromPath,this.props.state)}
                 style={{background:this.state.color_0}}
                 onMouseOver={()=>this.setState({color_0: WHITE_BLUE})}
                 onMouseLeave={()=>this.setState({color_0: ''})}> Menu </th>

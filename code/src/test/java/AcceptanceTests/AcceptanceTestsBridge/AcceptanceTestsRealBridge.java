@@ -336,6 +336,14 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return serviceAPI.getManagersOfStore(store).getValue();
     }
 
+    /**
+     * return all the managers of a specific store managed by user with id, id
+     * @return managers of specific store
+     */
+    public List<String> getManagersOfStoreIManaged(int id,String storeName){
+        return serviceAPI.getManagersOfStoreUserManaged(id,storeName).getValue();
+    }
+
 
     //--------------------------get managers of store---------------------------------//
 

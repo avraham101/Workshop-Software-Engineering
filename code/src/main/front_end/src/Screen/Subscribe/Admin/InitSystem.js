@@ -11,16 +11,38 @@ const https = require('https');
 
 class InitSystem extends Component {
 
-  constructor() {
-    super();
-    this.handleChangeName = this.handleChangeName.bind(this);
-    this.handleChangePassword = this.handleChangePassword.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+  constructor(props) {
+    super(props);
     this.state = {
+      id: -1,
       name: '',
       password: '',
+      error: 'Cannot register Admin',
+      success: "Registered Admin",
     };
+
+
+    this.handleChangeName = this.handleChangeName.bind(this);
+    this.handleChangePassword = this.handleChangePassword.bind(this);
+    this.handleConnect = this.handleConnect.bind(this);
+    this.handleGetId = this.handleGetId.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleReceived = this.handleReceived.bind(this);
   }
+
+  handleConnect(){
+    send('/home/connect','GET','',this.handleGetId)
+  }
+
+  handleGetId(received){
+    let opt = ''+received.reason;
+    if(opt !== "Success")
+      alert(this.state.error)
+    else {
+      this.setState({id: received.value});
+      alert(this.state.success)
+    }
+  };
 
   handleChangeName(event) {
     this.setState({name: event.target.value});
@@ -34,19 +56,26 @@ class InitSystem extends Component {
   handleSubmit() {
     let name = this.state.name;
     let password = this.state.password;
-    let msg = {name:name, password:password};
+    let msg = {name: name, password: password};
     //RECIVED RESPONSE AS MSG
-    send(msg, (msg)=>this.setState({msg:''+msg.value}));
-  }
+    send('/admin', 'POST', msg, this.handleReceived)
+  };
+
+  handleReceived(buffer) {
+    if (buffer && buffer.value)
+      this.handleConnect();
+    else
+      alert(this.state.error);
+  };
+
 
   render() {
     return (
       <BackGroud>
-        <Menu/>
+        <Menu state={this.state}/>
         <Title title = 'Register Admin'/>
+        <p>{this.state.id}</p>
         <div>
-          <p> data {this.state.data} </p>
-          <p> msg {this.state.msg} </p>
           <Input title = 'User Name:' type="text" value={this.state.name} onChange={this.handleChangeName} />
           <Input title = 'Password:' type="text" value={this.state.password} onChange={this.handleChangePassword} />
           <Button text = 'Submit' onClick={this.handleSubmit}/>

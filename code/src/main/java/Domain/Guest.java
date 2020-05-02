@@ -281,4 +281,13 @@ public class Guest extends UserState {
     public Set<StorePermissionType> getPermissionsForStore(String storeName) {
         return null;
     }
+
+    /**
+     * return all the managers of a specific store that user with id managed
+     * @return managers of specific store
+     */
+    @Override
+    public Response<List<String>> getManagersOfStoreUserManaged(String storeName) {
+        return new Response<>(null,OpCode.Not_Login);
+    }
 }
