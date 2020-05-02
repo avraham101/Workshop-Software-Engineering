@@ -5,6 +5,7 @@ import java.util.Map;
 
 import DataAPI.OpCode;
 import DataAPI.Response;
+import Publisher.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,13 +28,16 @@ public class WebSocketController {
     @Autowired
     private SimpMessageSendingOperations messagingTemplate;
 
+   Publisher pub = new Publisher();
+
     @MessageMapping("/hello")
     @SendToUser("queue/greetings")
     public ResponseEntity<Response<String>> processMessageFromClient(@RequestBody String message, Principal principal) throws Exception {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         ResponseEntity<Response<String>> e=new ResponseEntity<>(new Response<>(message, OpCode.Success), headers, HttpStatus.CREATED);
-        messagingTemplate.convertAndSendToUser( principal.getName(),"/queue/greetings", e);
+//        messagingTemplate.convertAndSendToUser( principal.getName(),"/queue/greetings", e);
+        pub.notify("0");
         System.out.println(principal.getName());
         Thread.sleep(5000);
         System.out.println("nivvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
