@@ -596,9 +596,15 @@ public class LogicManager {
 
     private void sendNotificationsToAllStoreManagers(List<ProductData> products) {
         HashMap <String,List<ProductData>> productsAndStores=new HashMap<>();
-//        for(ProductData p:products){
-//
-//        }
+        for(ProductData p:products){
+            if(!productsAndStores.containsKey(p.getStoreName()))
+                productsAndStores.put(p.getStoreName(),new ArrayList<>());
+            productsAndStores.get(p.getStoreName()).add(p);
+        }
+        for(String storeName:productsAndStores.keySet()){
+            Store store=stores.get(storeName);
+            store.sendManagersNotifications(productsAndStores.get(storeName));
+        }
     }
 
     /**

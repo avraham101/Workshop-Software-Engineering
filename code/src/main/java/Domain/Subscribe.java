@@ -601,7 +601,7 @@ public class Subscribe extends UserState{
         this.publisher=publisher;
     }
 
-    public void sendNotification(Notification<Request> notification) {
+    public void sendNotification(Notification<?> notification) {
         notifications.add(notification);
         sendAllNotifications();
     }
