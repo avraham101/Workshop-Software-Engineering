@@ -5,6 +5,7 @@ import Title from '../../../Component/Title';
 import Input from '../../../Component/Input';
 import Button from '../../../Component/Button';
 import {send} from '../../../Handler/ConnectionHandler';
+import {pass} from '../../../Utils/Utils'
 
 const FormData = require('form-data')
 const https = require('https');
@@ -40,7 +41,8 @@ class InitSystem extends Component {
       alert(this.state.error)
     else {
       this.setState({id: received.value});
-      alert(this.state.success)
+      alert(this.state.success);
+      pass(this.props.history,'/','',{id:this.state.id})
     }
   };
 
@@ -72,9 +74,7 @@ class InitSystem extends Component {
   render() {
     return (
       <BackGroud>
-        <Menu state={this.state}/>
         <Title title = 'Register Admin'/>
-        <p>{this.state.id}</p>
         <div>
           <Input title = 'User Name:' type="text" value={this.state.name} onChange={this.handleChangeName} />
           <Input title = 'Password:' type="text" value={this.state.password} onChange={this.handleChangePassword} />
