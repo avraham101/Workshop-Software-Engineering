@@ -12,7 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("home/cart")
+@Controller
+@RequestMapping("home/cart")
 public class CartController {
 
     Gson json ;
@@ -55,11 +56,9 @@ public class CartController {
         return getResponseEntity(response);
     }
 
-
-
     @PostMapping
     public ResponseEntity<?> addProductToStore(@RequestParam(name="id") int id,
-                                               @RequestBody String  productStr){
+                                               @RequestBody String productStr){
         ProductIdData product = json.fromJson(productStr,ProductIdData.class);
         Response<Boolean> response = SingleService.getInstance().addProductToCart(id,product.getProductName(),
                                             product.getStoreName(),product.getAmount());
