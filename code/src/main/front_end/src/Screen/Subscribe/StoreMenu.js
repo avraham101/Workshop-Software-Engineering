@@ -13,6 +13,7 @@ class StoreMenu extends Component {
     this.state = {
       manageProduct: true,
       storeDiscounts: true,
+      storePolicy: true,
       appointOwner: true,
       appointManager: true,
       managerPermissions: true,
@@ -31,6 +32,7 @@ class StoreMenu extends Component {
       <table style = {style_table}>
         {this.state.manageProduct ? (<Row onClick={() => this.onClick("/manageProducts")}>Manage Product</Row>) : ("")}
         {this.state.storeDiscounts ? (<Row onClick={() => this.onClick("/manageDiscount")}>Store Discounts</Row>) : ("")}
+        {this.state.storePolicy ? (<Row onClick={() => this.onClick("/policy")}>Store Policy</Row>) : ("")}
         {this.state.appointOwner ? (<Row onClick={() => this.onClick("/addOwnerToStore")}>Appoint Owner</Row>):("")}
         {this.state.appointManager ? (<Row onClick={() => this.onClick("/addManagerToStore")}>Appoint Manager</Row>):("")}
         {this.state.managerPermissions ? (<Row onClick={() => this.onClick("/editManagerPermissions")}>Manager Permissions</Row>):("")}

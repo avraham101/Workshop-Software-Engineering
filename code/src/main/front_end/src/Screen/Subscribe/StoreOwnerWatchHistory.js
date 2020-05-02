@@ -3,22 +3,29 @@ import BackGroud from '../../Component/BackGrond';
 import Menu from '../../Component/Menu';
 import Title from '../../Component/Title';
 import Purchases from '../../Component/Purchases';
+import Button from "../../Component/Button";
+import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils'
 
 //4.10
 class StoreOwnerWatchHistory extends Component {
 
   constructor(purchases) {
     super();
+    this.pathname = "/viewAndReplyRequests";
     this.purchases=[purchase,purchase];
   }
 
   render() {
+    let onBack= () => {
+      pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state); 
+    }
     return (
       <BackGroud>
-        <Menu/>
-        <Purchases purchases={this.purchases}>
-            <Title title = 'store purchases:'/> 
-        </Purchases>
+        <Menu state={this.props.location.state} />
+        <Title title = 'store purchases:'/> 
+        <Purchases purchases={this.purchases}/>
+        <Button text="Back" onClick={onBack}/>
       </BackGroud>
     );
   }

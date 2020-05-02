@@ -38,6 +38,9 @@ class OpenStore extends Component {
   }
 
   render() {
+    let onBack= () => {
+      pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state); 
+    }
     return (
       <BackGrond>
         <Menu state={this.props.location.state} />
@@ -56,6 +59,7 @@ class OpenStore extends Component {
             onChange={this.handleChangeDescription}
           ></InputBig>
           <Button text="Open" onClick={(e) => this.handleOpen(e)}></Button>
+          <Button text="Back" onClick={onBack}/>
         </div>
       </BackGrond>
     );

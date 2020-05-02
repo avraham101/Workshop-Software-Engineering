@@ -5,6 +5,8 @@ import Title from "../../Component/Title";
 import Button from "../../Component/Button";
 import history from "../history";
 import Row from "../../Component/Row";
+import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils'
 
 class EditManagerPermissions extends Component {
 
@@ -13,6 +15,7 @@ class EditManagerPermissions extends Component {
         this.handleManager = this.handleManager.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.pathname = "/editManagerPermissions";
         this.state = {
             managers: this.create_managers(),
             showManagers: false,
@@ -148,17 +151,20 @@ class EditManagerPermissions extends Component {
     }
 
     render() {
+        let onBack= () => {
+            pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state); 
+        }
         return(
             <BackGroud>
-                <Menu/>
-                <body>
+                <Menu state={this.props.location.state} />
+                <div>
                     <Title title="Add permissions to manager from store:"/>
                     {this.state.showManagers === false ? this.render_manager() : ""}
                     {this.state.showManagers === true ? this.render_Permissions() : ""}
                     {this.state.showManagers === true ? <Button text="Add" onClick={this.handleSubmit}/> : ""}
                     {this.state.showManagers === true ? <Button text="Cencel" onClick={this.handleCancel}/> : ""}
-                    <Button text="Back to menu" onClick={() => history.push("/")} />
-                </body>
+                    <Button text="Back" onClick={onBack}/>
+                </div>
             </BackGroud>
         );
     }

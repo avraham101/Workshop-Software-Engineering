@@ -5,12 +5,15 @@ import Title from "../../Component/Title";
 import Input from "../../Component/Input";
 import Button from "../../Component/Button";
 import Row from "../../Component/Row";
+import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils'
 
 class ViewAndReplyRequests extends Component{
     constructor(props) {
         super(props);
         this.handleRequests = this.handleRequests.bind(this);
         this.handleChangeComment = this.handleChangeComment.bind(this);
+        this.pathname = "/viewAndReplyRequests";
         this.state ={
             requests: this.createRequests(),
             enableResponse: false,
@@ -90,16 +93,21 @@ class ViewAndReplyRequests extends Component{
     }
 
     render() {
-        const { storeName } = this.props.location;
+        let onBack= () => {
+            pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state); 
+        }
         return (
             <BackGrond>
-                <Menu/>
+                <Menu state={this.props.location.state} />
                 <Title title="Watch And Replay On Requests"></Title>
-                <h4 style={style_sheet}>Requests in store: {storeName}</h4>
                 <div>
-                    {this.renderRequests()}
+                    <h4 style={style_sheet}>Requests in store: {this.props.location.state.storeName}</h4>
+                    <div>
+                        {this.renderRequests()}
+                    </div>
+                    {this.state.enableResponse ? this.renderResponse() : ("")}
+                    <Button text="Back" onClick={onBack}/>
                 </div>
-                {this.state.enableResponse ? this.renderResponse() : ("")}
             </BackGrond>
         );
     }
