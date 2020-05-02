@@ -1,4 +1,4 @@
-/**package Server.RealTime;
+package Server.RealTime;
 
 import DataAPI.OpCode;
 import DataAPI.Response;
@@ -23,7 +23,8 @@ import java.util.Map;
 public class WebSocketController {
 
     @Autowired
-    private SimpMessagingTemplate messagingTemplate;
+
+    private SimpMessageSendingOperations messagingTemplate;
 
     @MessageMapping("/message")
     @SendToUser("/topic/reply")
@@ -47,4 +48,4 @@ public class WebSocketController {
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
     }
 
-}*/
+}
