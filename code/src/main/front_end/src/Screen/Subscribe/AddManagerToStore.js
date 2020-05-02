@@ -7,7 +7,10 @@ import AddOwnerToStore from "./AddOwnerToStore";
 class AddManagerToStore extends AddOwnerToStore {
   constructor() {
     super();
-    this.state = {};
+    this.pathname = "/addManagerToStore";
+    this.state = {
+        name:''
+    };
   }
 
   getPermission(){ return "manager"; }
