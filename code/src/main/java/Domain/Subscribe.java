@@ -26,6 +26,7 @@ public class Subscribe extends UserState{
     private List<Request> requests;
     private List<Review> reviews;
     private AtomicInteger sessionNumber;
+    private AtomicInteger notificationNuber;
     private ReentrantReadWriteLock lock;
     private Publisher publisher;
     private ConcurrentLinkedQueue notifications;
@@ -50,6 +51,7 @@ public class Subscribe extends UserState{
         requests=new ArrayList<>();
         reviews = new LinkedList<>();
         sessionNumber=new AtomicInteger(-1);
+        notificationNuber = new AtomicInteger(-1);
     }
 
     /**
@@ -382,6 +384,7 @@ public class Subscribe extends UserState{
         //remove the permission from the store
         store.getPermissions().remove(userName);
         //TODO real time trough this
+        sendNotification( new Notification<>(storeName,OpCode.Removed_From_Management));
 
     }
     /**
@@ -601,7 +604,7 @@ public class Subscribe extends UserState{
         this.publisher=publisher;
     }
 
-    public void sendNotification(Notification<Request> notification) {
+    public void sendNotification(Notification<?> notification) {
         notifications.add(notification);
         sendAllNotifications();
     }

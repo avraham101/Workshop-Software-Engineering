@@ -454,4 +454,8 @@ public class ServiceAPI {
     public void setPublisher(Publisher pub) {
         logicManager.setPublisher(pub);
     }
+
+    public void deleteRecivedNotifications(int id,List<Integer> notificationsId){
+        logicManager.deleteReceivedNotifications(id,notificationsId);
+    }
 }

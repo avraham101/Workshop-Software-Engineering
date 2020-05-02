@@ -35,7 +35,8 @@ public enum OpCode implements Serializable {
     Invalid_Policy,
     Not_Stands_In_Policy,
     Reply_Request,
-    User_Name_Already_Exist
+    User_Name_Already_Exist,
+    Removed_From_Management
 
 
 }

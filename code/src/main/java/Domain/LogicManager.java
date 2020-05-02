@@ -1217,4 +1217,10 @@ public class LogicManager {
     public void setPublisher(Publisher pub) {
         this.publisher=pub;
     }
+
+    public void deleteReceivedNotifications(int id, List<Integer> notificationsId) {
+        User current=connectedUsers.get(id);
+       // current.deleteReceivedNotifications(notificationsId);
+
+    }
 }
