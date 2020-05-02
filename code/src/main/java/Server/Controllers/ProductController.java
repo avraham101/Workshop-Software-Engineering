@@ -41,7 +41,7 @@ public class ProductController {
      */
 
     @GetMapping
-    public ResponseEntity<?> getProductInStore(@RequestBody  String storeName){
+    public ResponseEntity<?> getProductInStore(@RequestParam(name="store") String storeName){
         Response<List<ProductData>> response=SingleService.getInstance().viewProductsInStore(storeName);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
@@ -66,12 +66,6 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<?> addProduct(@RequestParam(name="id") int id, @RequestBody String productStr){
         ProductData product= json.fromJson(productStr,ProductData.class);
-        System.out.println(product.getProductName());
-        System.out.println(product.getStoreName());
-        System.out.println(product.getCategory());
-        System.out.println(product.getAmount());
-        System.out.println(product.getPrice());
-        System.out.println(product.getPurchaseType());
         Response<Boolean> response = SingleService.getInstance().addProductToStore(id,product);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
