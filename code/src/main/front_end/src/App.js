@@ -24,6 +24,7 @@ import AddOwnerToStore from "./Screen/Subscribe/AddOwnerToStore";
 import BuyCart from './Screen/Guest/BuyCart';
 
 import EditManagerPermissions from "./Screen/Subscribe/EditManagerPermissions";
+import ViewAndReplyRequests from "./Screen/Subscribe/ViewAndReplyRequests";
 class App extends Component {
 
   render() {
@@ -52,6 +53,7 @@ class App extends Component {
               <Route path="/addManagerToStore" component={withRouter(AddManagerToStore)} />
               <Route path="/addOwnerToStore" component={withRouter(AddOwnerToStore)} />
               <Route path="/editManagerPermissions" component={withRouter(EditManagerPermissions)} />
+              <Route path="/viewAndReplyRequests" component={withRouter(ViewAndReplyRequests)} />
               <Route path="/" component={withRouter(GuestIndex)} exact />
             </Switch>
           </Router>)

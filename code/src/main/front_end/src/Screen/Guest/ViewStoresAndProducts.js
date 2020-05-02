@@ -18,6 +18,14 @@ class ViewStoresAndProducts extends Component {
     };
   }
 
+  pass(url, data) {
+    this.props.history.push({
+      pathname: url,
+      fromPath: "/viewStoresAndProducts",
+      data: data,
+    });
+  }
+
   create_stores() {
     let output = [];
     for (let i = 0; i < 5; i++) {
@@ -85,7 +93,15 @@ class ViewStoresAndProducts extends Component {
     let output = [];
     proudcts.forEach((element) =>
       output.push(
-        <Row>
+        <Row onClick={()=>this.pass("/addToCart", {productName: element.productName,
+                                                                storeName: this.state.store,
+                                                                category: element.category,
+                                                                reviews: element.reviews,
+                                                                amount: element.amount,
+                                                                price: element.price,
+                                                                priceAfterDiscount: element.priceAfterDiscount,
+                                                                purchaseType: element.purchaseType,})}>
+
           <th> {element.productName} </th>
           <th> {element.category} </th>
           <th> {element.amount} </th>
