@@ -3,7 +3,12 @@ package Server.RealTime;
 import java.security.Principal;
 import java.util.Map;
 
+import DataAPI.OpCode;
+import DataAPI.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -24,13 +29,28 @@ public class WebSocketController {
 
     @MessageMapping("/hello")
     @SendToUser("queue/greetings")
-    public String processMessageFromClient(@RequestBody String message,Principal principal) throws Exception {
-        messagingTemplate.convertAndSendToUser( principal.getName(),"/queue/greetings", "yuvall");
+    public ResponseEntity<Response<String>> processMessageFromClient(@RequestBody String message, Principal principal) throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
+        ResponseEntity<Response<String>> e=new ResponseEntity<>(new Response<>(message, OpCode.Success), headers, HttpStatus.CREATED);
+        messagingTemplate.convertAndSendToUser( principal.getName(),"/queue/greetings", e);
         System.out.println(principal.getName());
         Thread.sleep(5000);
         System.out.println("nivvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
-        return message;
+
+        return e;
     }
+
+//    @MessageMapping("/hello")
+//    @SendToUser("queue/greetings")
+//    public String processMessageFromClient(@RequestBody String message, Principal principal) throws Exception {
+//        messagingTemplate.convertAndSendToUser( principal.getName(),"/queue/greetings", "yuvallll");
+//        System.out.println(principal.getName());
+//        Thread.sleep(50000);
+//        System.out.println("nivvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
+//
+//        return "yuvallll";
+//    }
 
     @GetMapping("/test")
     public void test(){
