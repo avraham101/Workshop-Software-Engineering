@@ -76,52 +76,6 @@ class SubscribeIndex extends Component {
     </table>);
   }
 
-  render_product_table(){
-    let state = this.props.location.state;
-    let onClick = (element) => {
-      let product = {
-        productName:element.productName,
-        storeName:element.storeName,
-        category:element.category,
-        amount:element.amount,
-        price:element.price,
-        purchaseType:element.purchaseType,
-      }
-      state['product'] = product;
-      pass(this.props.history,'/addToCart',this.pathname,state)
-    }
-    let products = this.create_products();
-    let output = [];
-    products.forEach( element =>
-      output.push(
-        <Row onClick={()=>onClick(element)}>
-          <th> {element.productName} </th>
-          <th> {element.storeName} </th>
-          <th> {element.category} </th>
-          <th> {element.amount} </th>
-          <th> {element.price} </th>
-          <th> {element.purchaseType} </th>
-        </Row>
-      )
-    )
-    return output;
-  }
-
-  render_product() {
-    return (
-    <table style={style_table}>
-        <tr>
-          <th style = {under_line}> Product Name </th>
-          <th style = {under_line}> Store Name </th>
-          <th style = {under_line}> Category </th>
-          <th style = {under_line}> Amount </th>
-          <th style = {under_line}> Price </th>
-          <th style = {under_line}> Purchase Type </th>
-        </tr>
-        {this.render_product_table()}
-    </table>);
-  }
-
   render() {
     return (
       <BackGrond>
@@ -131,10 +85,6 @@ class SubscribeIndex extends Component {
             <div >
               <h3 style={{textAlign:'center'}}> Stores </h3>
               {this.render_stores()}
-            </div>
-            <div>
-              <h3 style={{textAlign:'center'}}> Products </h3>
-              {this.render_product()}
             </div>
           </body>
       </BackGrond>
