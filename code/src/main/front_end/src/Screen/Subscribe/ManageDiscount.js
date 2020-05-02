@@ -6,12 +6,17 @@ import Input from "../../Component/Input";
 import Button from '../../Component/Button';
 import Row from '../../Component/Row'
 import DivBetter from '../../Component/DivBetter'
+import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils'
 
 const CLASS_AND = 'Domain.Discount.AndDiscount'; 
 const CLASS_OR = 'Domain.Discount.OrDiscount';
 const CLASS_XOR = 'Domain.Discount.XorDiscount';
 const CLASS_STORE = 'Domain.Discount.StoreDiscount';
 const MAX_HEIGHT = 1000;
+
+
+  
 class ManageDiscount extends Component {
   
   constructor() {
@@ -19,6 +24,7 @@ class ManageDiscount extends Component {
     this.storeDiscounts = [];
     this.selectedDiscounts = [];
     this.comlicatedDiscounts = [];
+    this.pathname = "/manageDiscount";
     this.state = {
       storeName:'-- Didnt Selected Store --',
       store_amount:1,
@@ -373,14 +379,18 @@ class ManageDiscount extends Component {
   }
 
   render() {
+    let onBack= () => {
+      pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state); 
+    }
     return (
       <BackGrond height={MAX_HEIGHT}>
-        <Menu />
+        <Menu state={this.props.location.state} />
         <Title title="Discount Manager"/>
         <h2 style={{textAlign:'center'}}>{this.state.storeName}</h2>
         <p>
           {JSON.stringify(this.state.chosenDiscount)}
         </p>
+        <Button text="Back" onClick={onBack}/>
         <div style={{height:MAX_HEIGHT}}>
           {this.renderProducts('15%')}
           <div style={{float: 'left', width:'84%'}}>
