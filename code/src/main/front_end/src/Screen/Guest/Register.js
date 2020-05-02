@@ -64,7 +64,7 @@ class Register extends Component {
           <Title title = 'Want to Register?'/>
           <div>
             <Input title = 'User Name:' error={this.state.valid_error} type="text" value={this.state.name} onChange={this.handleChangeName} />
-            <Input title = 'Password:' error={this.state.valid_error} type="text" hidden='true' value={this.state.password} onChange={this.handleChangePassword} />
+            <Input title = 'Password:' error={this.state.valid_error} type="text" value={this.state.password} onChange={this.handleChangePassword} />
             <Button text = 'Submit' onClick={this.handleSubmit}/>
           </div>
         </BackGroud>
