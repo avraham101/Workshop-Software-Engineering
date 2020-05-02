@@ -11,20 +11,23 @@ const https = require('https');
 
 class InitSystem extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      id: 100,
+      id: -1,
       name: '',
       password: '',
-      error:'',
+      error: 'Cannot register Admin',
+      success: "Registered Admin",
     };
+
+
     this.handleChangeName = this.handleChangeName.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
     this.handleConnect = this.handleConnect.bind(this);
+    this.handleGetId = this.handleGetId.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReceived = this.handleReceived.bind(this);
-    this.handleGetId = this.handleGetId.bind(this);
   }
 
   handleConnect(){
@@ -32,15 +35,14 @@ class InitSystem extends Component {
   }
 
   handleGetId(received){
-    if(received ==null)
-      this.setState({error:'Connection unstable'});
+    let opt = ''+received.reason;
+    if(opt !== "Success")
+      alert(this.state.error)
     else {
-      //let id = received.value;
-      this.setState({id:received});
+      this.setState({id: received.value});
+      alert(this.state.success)
     }
   };
-
-
 
   handleChangeName(event) {
     this.setState({name: event.target.value});
@@ -59,20 +61,21 @@ class InitSystem extends Component {
     send('/admin', 'POST', msg, this.handleReceived)
   };
 
-  handleReceived(buffer){
-    let value = buffer.value;
-    if(value)
+  handleReceived(buffer) {
+    if (buffer && buffer.value)
       this.handleConnect();
+    else
+      alert(this.state.error);
   };
 
 
   render() {
     return (
       <BackGroud>
-        <Menu/>
+        <Menu state={this.state}/>
         <Title title = 'Register Admin'/>
+        <p>{this.state.id}</p>
         <div>
-          <p>{this.state.id}</p>
           <Input title = 'User Name:' type="text" value={this.state.name} onChange={this.handleChangeName} />
           <Input title = 'Password:' type="text" value={this.state.password} onChange={this.handleChangePassword} />
           <Button text = 'Submit' onClick={this.handleSubmit}/>

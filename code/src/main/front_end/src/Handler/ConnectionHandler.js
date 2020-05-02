@@ -4,7 +4,8 @@ const https = require('https');
 /* method - the method of the https protocol */
 /* msg - the msg  */
 /* update - the function of with the result of the connection given and act  */
-export const send = async (path, method, msg, update) => {
+/* id - connection number of user - optional */
+export const send = async (path, method, msg, update,id=-1) => {
   let options = {
     hostname: 'localhost',
     port: 8443,
@@ -18,11 +19,11 @@ export const send = async (path, method, msg, update) => {
     res.on('data', (data) => { update(receive(data)); });
     // closes https request
     //res.on('close', (close)=> { update(null); })
-    res.on('error', (error) => { update(null); });
+    res.on('error', (error) => { update(receive(null)); });
   });
   req.on('error',(error)=>{ update(null); })
   req.on('close',(close)=>{ update(null); })
-  req.write(JSON.stringify(msg)+'\n')
+  id === -1 ? req.write(JSON.stringify(msg)+'\n') : req.write(id,JSON.stringify(msg)+'\n')
   req.end();
 }
 

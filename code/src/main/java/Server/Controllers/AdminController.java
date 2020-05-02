@@ -38,15 +38,12 @@ public class AdminController {
     public ResponseEntity<?> initialStart(@RequestBody String string){
         Gson json = new Gson();
         UserData user =  json.fromJson(string,UserData.class);
-        System.out.println(user.getName());
-        System.out.println(user.getPassword());
         Boolean state = SingleService.getInstance(user.getName(),user.getPassword()) !=null;
         Response<Boolean> response = new Response<>(state, OpCode.Success);
         //send the response
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
-
     }
 
     /**
