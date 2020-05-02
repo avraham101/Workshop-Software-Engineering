@@ -25,6 +25,9 @@ class ManageDiscount extends Component {
       store_precentag:1,
       chosenDiscount:{},
       selectedProduct:undefined,
+      selectedProductSimpleDiscount:undefined,
+      selectedProductsTerm:undefined,
+      selectedProudctTarget:undefined,
     }
     this.products = this.create_products(5);
   }
@@ -153,13 +156,18 @@ class ManageDiscount extends Component {
   }
 
   renderSimpleDiscount(width) {
+      let onSelect = () => {
+
+      }
       return (
         <div style={{float: 'left', width:width, borderRight:'1px solid black', marginBottom:0}}>
           <h3 style={titleStyle}> Simple Discount </h3>
           <div>
             <h4 style={titleStyle}>Selected Simple Discount </h4>
+            {this.renderProduct(this.state.selectedProductSimpleDiscount,onSelect)}
             <SmallInput title = 'Discount Prcentage:' type="number" min={0} value={this.state.store_amount} 
                     onChange={(e)=>{this.setState({store_amount:e.target.value})}} />
+            <Button text="Select" onClick={onSelect} />
           </div>
           <div>
             <h4 style={titleStyle}>Discounts </h4>
@@ -197,6 +205,21 @@ class ManageDiscount extends Component {
     )
   }
 
+  /* this function render a product */
+  renderProduct(element, onClick) {
+    if(element==undefined)
+      return (<p style={{color:'red'}}></p>)
+    return (
+      <div>
+      <DivBetter style={{borderBottom:'1px solid black', textAlign:"center"}} onClick={()=>onClick(element)}>
+        <h3 style={{marginTop:0, borderBottom:'1px solid black',backgroundColor:'#FFC242'}}> {element.productName} </h3>
+        <p> Price: {element.price} $ </p>
+        <p> Type: {element.purchaseType} </p>
+      </DivBetter>
+      </div>
+    )
+  }
+
   /*the function render list of product */
   renderProductsList(list) {
     let output = [];
@@ -204,15 +227,7 @@ class ManageDiscount extends Component {
       this.setState({selectedProduct:element})
     }
     list.forEach(element=>{
-      output.push(
-        <div>
-        <DivBetter style={{borderBottom:'1px solid black', textAlign:"center"}} onClick={()=>onClick(element)}>
-          <h3 style={{marginTop:0, borderBottom:'1px solid black',backgroundColor:'#FFC242'}}> {element.productName} </h3>
-          <p> Price: {element.price} $ </p>
-          <p> Type: {element.purchaseType} </p>
-        </DivBetter>
-        </div>
-      )    
+      output.push(this.renderProduct(element,onClick))    
     })
     return output;
   }
