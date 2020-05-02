@@ -1,72 +1,80 @@
 package Server.RealTime;
 
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.CloseStatus;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.simp.config.ChannelRegistration;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.messaging.simp.stomp.StompCommand;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.messaging.support.ChannelInterceptor;
+import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.web.socket.WebSocketHandler;
-import org.springframework.web.socket.WebSocketMessage;
-import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import org.springframework.web.socket.config.annotation.*;
+import org.springframework.web.socket.server.HandshakeFailureException;
+import org.springframework.web.socket.server.HandshakeHandler;
+import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
+
+import java.security.Principal;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Configuration
-@EnableWebSocket
-public class WebSocketConfig implements WebSocketConfigurer {
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        System.out.println("1");
-        registry.addHandler(new SocketHandler(), "/name");
-    }
+@EnableWebSocketMessageBroker
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+    AtomicInteger atomicId = new AtomicInteger(0);
 
-    private class SocketHandler implements WebSocketHandler {
-        @Override
-        public void afterConnectionEstablished(WebSocketSession webSocketSession) throws Exception {
-            System.out.println("connect");
-
-        }
-
-        @Override
-        public void handleMessage(WebSocketSession webSocketSession, WebSocketMessage<?> webSocketMessage) throws Exception {
-            System.out.println("2");
-        }
-
-        @Override
-        public void handleTransportError(WebSocketSession webSocketSession, Throwable throwable) throws Exception {
-            System.out.println("3");
-        }
-
-        @Override
-        public void afterConnectionClosed(WebSocketSession webSocketSession, CloseStatus closeStatus) throws Exception {
-            System.out.println("4");
-        }
-
-        @Override
-        public boolean supportsPartialMessages() {
-            return false;
-        }
-    }
-
-
-    /*@Override
-    public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker( "/topic");
-        config.setApplicationDestinationPrefixes("/app");
-    }
     @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry){
-        registry.addEndpoint("/ws").withSockJS();
-    }*/
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
+        registry.enableSimpleBroker("/topic/","/queue/");
+        registry.setApplicationDestinationPrefixes("/app");
 
-   /* private class hanShakeInterceptor implements HandshakeInterceptor {
+    }
+
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/gs-guide-websocket")
+                .withSockJS();
+
+    }
+
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.setInterceptors(new ChannelInterceptorAdapter());
+    }
+
+    private class ChannelInterceptorAdapter implements ChannelInterceptor {
         @Override
-        public boolean beforeHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Map<String, Object> map) throws Exception {
+        public Message<?> preSend(Message<?> message, MessageChannel channel) {
+            StompHeaderAccessor accessor =
+                    MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+            if (StompCommand.CONNECT.equals(accessor.getCommand())){
+               String id = accessor.getFirstNativeHeader("id");
+                System.out.println(id);
+                accessor.setUser(new StompPrincipal(String.valueOf(atomicId.getAndIncrement())));
+                System.out.println(accessor.getUser().getName());//principal.getname
 
-            System.out.println("connecting");
-            return true;
+            }
+
+
+
+            return message;
+
         }
+    }
 
-        @Override
-        public void afterHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Exception e) {
+//    private class CustomHandshakeHandler extends DefaultHandshakeHandler {
+//        @Override
+//        protected Principal determineUser(ServerHttpRequest request,
+//                                          WebSocketHandler wsHandler,
+//                                          Map<String, Object> attributes) {
+//            // Generate principal with UUID as name
+//            return new StompPrincipal("tal");
+//        }
+//    }
 
-        }
-    }*/
 }
