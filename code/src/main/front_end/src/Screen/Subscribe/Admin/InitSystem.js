@@ -4,10 +4,11 @@ import Menu from '../../../Component/Menu';
 import Title from '../../../Component/Title';
 import Input from '../../../Component/Input';
 import Button from '../../../Component/Button';
-import {send} from '../../../Handler/ConnectionHandler';
-
-const FormData = require('form-data')
-const https = require('https');
+//import {send} from '../../../Handler/ConnectionHandler';
+import { connect } from '../../../Handler/Ch2';
+import { sendMessage } from '../../../Handler/Ch2';
+//const FormData = require('form-data')
+//const https = require('https');
 
 class InitSystem extends Component {
 
@@ -36,7 +37,9 @@ class InitSystem extends Component {
     let password = this.state.password;
     let msg = {name:name, password:password};
     //RECIVED RESPONSE AS MSG
-    send(msg, (msg)=>this.setState({msg:''+msg.value}));
+    connect((msg)=>this.setState({msg:''+msg.value}));
+    //send(msg, (msg)=>this.setState({msg:''+msg.value}));
+    //sendMessage();
   }
 
   render() {

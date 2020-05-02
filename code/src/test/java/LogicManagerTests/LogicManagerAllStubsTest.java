@@ -1865,4 +1865,5 @@ public class LogicManagerAllStubsTest {
         assertNull(logicManager.getManagersOfStore(storeData.getName()).getValue());
     }
 
+
 }

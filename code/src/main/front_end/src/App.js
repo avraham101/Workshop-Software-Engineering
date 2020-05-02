@@ -45,7 +45,7 @@ class App extends Component {
               <Route path="/storeManagement" component={withRouter(StoreManagement)} />
               <Route path="/storeMenu" component={withRouter(StoreMenu)} />
               <Route path="/removeManagerFromStore" component={withRouter(RemoveManagerFromStore)} />
-              <Route path="/" component={withRouter(GuestIndex)} exact />
+              <Route path="/" component={withRouter(InitSystem/*GuestIndex*/)} exact />
             </Switch>
           </Router>)
   }
