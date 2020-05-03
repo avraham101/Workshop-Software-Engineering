@@ -10,16 +10,14 @@ class Cart extends Component {
   
     constructor(props){
         super(props)
-        this.handleDelete = this.handleDelete.bind(this);
+        this.handleEditAmount = this.handleEditAmount.bind(this);
+        this.renderTitle = this.renderTitle.bind(this);
+        this.renderCart = this.renderCart.bind(this);
+        this.renderProduct = this.renderProduct.bind(this);
+
     }
 
-    handleDelete(event,product) {
-        let index=this.props.cart.products.indexOf(product);
-        if(index!==-1){         
-            this.props.cart.products.splice(index,1);
-        }
-        this.setState({})
-    }
+
 
     handleEditAmount(event,product){
         let index=this.props.cart.products.indexOf(product);
@@ -78,7 +76,7 @@ class Cart extends Component {
     products.forEach(pro => {
         output.push(
             <Row>
-                <Button text = "X" onClick={(t)=>this.handleDelete(t,pro)}/>
+                <Button text = "X" onClick={(t)=>this.props.handleDelete(t,pro)}/>
                 <th>{pro.productName}</th>
                 <th>{pro.storeName}</th>
                 <th>{pro.category}</th>
@@ -98,7 +96,8 @@ class Cart extends Component {
     return ( 
         <div>
             <Title title = {this.renderTitle()}/>
-            {this.renderCart()} 
+            <p>{'/home/cart?id='+this.props.state.id}</p>
+            {this.renderCart()}
         </div>      
     );
   }

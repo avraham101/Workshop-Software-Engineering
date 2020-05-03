@@ -26,8 +26,10 @@ public class CartController {
      * use case 2.7.1 - watch cart details
      */
 
+
     @GetMapping
     public ResponseEntity<?> getCart (@RequestParam(name="id") int id){
+        System.out.println("got cart");
         Response <CartData> response = SingleService.getInstance().watchCartDetatils(id);
         return getResponseEntity(response);
     }
@@ -36,11 +38,12 @@ public class CartController {
      * use case 2.7.2 - delete product from cart
      */
 
-    @DeleteMapping
+    @PostMapping("delete")
     public ResponseEntity<?> deleteFromCart(@RequestParam(name="id") int id,
                                             @RequestBody String productStr){
+        System.out.println("HERE!!!!");
         ProductIdData product = json.fromJson(productStr,ProductIdData.class);
-        Response <Boolean> response =SingleService.getInstance().deleteFromCart(id,product.getProductName(),product.getStoreName());
+        Response <Boolean> response = SingleService.getInstance().deleteFromCart(id,product.getProductName(),product.getStoreName());
         return getResponseEntity(response);
     }
 
