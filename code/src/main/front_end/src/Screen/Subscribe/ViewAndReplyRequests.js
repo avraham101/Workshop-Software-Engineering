@@ -15,33 +15,25 @@ class ViewAndReplyRequests extends Component{
         this.handleChangeComment = this.handleChangeComment.bind(this);
         this.getRequestsPromise = this.getRequestsPromise.bind(this);
         this.getRequestById = this.getRequestById.bind(this);
+        this.getRequestOfStore = this.getRequestOfStore.bind(this);
+        this.renderRequestTable = this.renderRequestTable.bind(this);
+        this.renderRequests = this.renderRequests.bind(this);
+        this.handleSend = this.handleSend.bind(this);
 
         this.pathname = "/viewAndReplyRequests";
         this.state ={
-            requests: this.createRequests(),
+            requests: '',
             enableResponse: false,
-            requestId: '',
+            requestId:'',
             comment: '',
         }
-    }
-
-    createRequests(){
-        let output=[];
-        for(let i=0; i<5; i++){
-            output.push({
-                id: i,
-                sender: "man"+i,
-                content: "request"+i,
-                comment: '',
-            })
-        }
-        return output;
+        this.getRequestOfStore();
     }
 
     getRequestOfStore(){
         let id = this.props.location.state.id;
-        let store = this.props.location.storeName;
-        send('/request/'+store+'?id='+id, 'GET', '', this.getRequestsPromise)
+        let store = this.props.location.state.storeName;
+        send('/managers/request/'+store+'?id='+id, 'GET', '', this.getRequestsPromise)
     }
 
     getRequestsPromise(received){
@@ -58,19 +50,20 @@ class ViewAndReplyRequests extends Component{
     }
 
     renderRequestTable(){
-        this.getRequestOfStore();
         let requests = this.state.requests;
         let output = [];
-        requests.forEach(
-            (element) =>
-                output.push(
-                    <Row onClick={(e) => this.handleRequests(e, element.id)}>
-                        <th>{element.id}</th>
-                        <th>{element.sender}</th>
-                        <th>{element.content}</th>
-                    </Row>
-                )
-        );
+        if(requests) {
+            requests.forEach(
+                (element) =>
+                    output.push(
+                        <Row onClick={(e) => this.handleRequests(e, element.id)}>
+                            <th>{element.id}</th>
+                            <th>{element.senderName}</th>
+                            <th>{element.content}</th>
+                        </Row>
+                    )
+            );
+        }
         return output;
     }
 
@@ -82,7 +75,7 @@ class ViewAndReplyRequests extends Component{
                     <th style={under_line}> Sender </th>
                     <th style={under_line}> Content </th>
                 </tr>
-                {this.renderRequestTable()}
+                    {this.renderRequestTable()}
             </table>
         );
     }
@@ -103,15 +96,14 @@ class ViewAndReplyRequests extends Component{
         let requestId = this.state.requestId;
         if(this.state.comment === '')
             alert("Cannot send an empty comment!")
-        else if(this.getRequestById(requestId).content !== ''){
+        if(this.getRequestById(requestId).comment !== null){
             alert("Already sent a comment!")
         }
         else {
             let id = this.props.location.state.id;
-            let store = this.props.location.storeName;
+            let store = this.props.location.state.storeName;
             let responseData = {requestId: requestId, content: this.state.comment};
-            send('/response/'+store+'?id='+id, 'POST', responseData, (received) =>{
-                console.log(received);
+            send('/managers/response/'+store+'?id='+id, 'POST', responseData, (received) =>{
                 if(received==null) {
                     alert('Server Crashed')
                 }
@@ -119,7 +111,7 @@ class ViewAndReplyRequests extends Component{
                     let opcode = ''+received.reason;
                     if(opcode === 'Success') {
                         let request = received.value;
-                        request.content === this.state.comment ?
+                        request.comment === this.state.comment ?
                             alert(`Send response to request ${requestId} Successfully!`) :
                             alert(`Cannot send response to request ${requestId}!`)
                     }

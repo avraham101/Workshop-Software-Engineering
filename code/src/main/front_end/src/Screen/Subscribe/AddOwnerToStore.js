@@ -14,8 +14,8 @@ class AddOwnerToStore extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.promiseAppointOwner = this.promiseAppointOwner.bind(this);
         this.onBack = this.onBack.bind(this);
-        this.pathname = "/managers/addOwnerToStore";
-        this.url = '/owner?id=';
+        this.pathname = "/addOwnerToStore";
+        this.url = '/managers/owner?id=';
         this.state = {
             name:''
         };
@@ -27,7 +27,7 @@ class AddOwnerToStore extends Component {
 
     handleSubmit(event){
         let id = this.props.location.state.id;
-        let storeName = this.props.location.state.id;
+        let storeName = this.props.location.state.storeName;
         let managerData = {
             storeName: storeName,
             userName: this.state.name,
@@ -47,6 +47,7 @@ class AddOwnerToStore extends Component {
 
             }
             else {
+                console.log(received);
                 alert(`Cant Appoint ${this.getPermission()}!\n Please try again.`)
             }
         }

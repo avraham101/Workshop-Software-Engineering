@@ -4,8 +4,8 @@ import AddOwnerToStore from "./AddOwnerToStore";
 class AddManagerToStore extends AddOwnerToStore {
   constructor() {
     super();
-    this.pathname = "/managers/addManagerToStore";
-    this.url = "/manager?id="
+    this.pathname = "/addManagerToStore";
+    this.url = "/managers/manager?id="
     this.state = {
         name:''
     };
