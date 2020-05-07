@@ -49,7 +49,6 @@ class ViewProductsInCart extends Component {
     let productStr = {productName: product.productName,storeName: product.storeName, amount: product.amount};
 
     send('/home/cart/delete?id='+id,'POST',productStr,(received) =>{
-      //alert("promise")
       this.renderDelete(received,product)
     });
   }
@@ -58,7 +57,7 @@ class ViewProductsInCart extends Component {
     if(received && received.value){
       let index=this.state.cart.products.indexOf(product);
       if(index!==-1){
-        //this.props.cart.products.splice(index,1);
+        this.state.cart.products.splice(index,1);
       }
       this.getCart();
       alert("Product Deleted")
@@ -73,24 +72,24 @@ class ViewProductsInCart extends Component {
     let id = this.props.location.state.id;
     let productStr = {productName: product.productName,storeName: product.storeName, amount: newAmount};
 
-    send('/home/cart?id='+id, 'PUT', productStr, this.promiseEdit) 
+    send('/home/cart/edit?id='+id, 'POST', productStr, this.promiseEdit);
   }
 
   /* the function responseble for the promise from of edit*/
   promiseEdit(received) {
+    console.log(received);
     if(received==null) {
       alert('Server Crashed')
     }
     else {
-      let opcode = ''+received.OpCode;
-      let value = received.value;
-      if(opcode=='SUCCESS') {
-        alert('Prodcut Edit')
+      let opcode = ''+received.reason;
+      if(opcode === 'Success') {
+        alert('Edit Product Amount Successfully')
+        this.getCart();
       }
       else {
         alert('Cant Edit Product. Please try again.')
       }
-      this.getCart();
     }
   } 
   

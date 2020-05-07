@@ -60,7 +60,7 @@ class InitSystem extends Component {
     let password = this.state.password;
     let msg = {name: name, password: password};
     //RECIVED RESPONSE AS MSG
-    send('/admin', 'POST', msg, this.handleReceived)
+    send('/admin/init', 'POST', msg, this.handleReceived)
   };
 
   handleReceived(buffer) {

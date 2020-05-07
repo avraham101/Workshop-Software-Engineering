@@ -1,29 +1,18 @@
 import React, {Component} from 'react';
-import history from '../Screen/history';
 import Button from '.././Component/Button';
 import Title from '.././Component/Title';
 import Row from '.././Component/Row';
-import {send} from '../Handler/ConnectionHandler';
 import {pass} from '../Utils/Utils'
 
 class Cart extends Component {
   
     constructor(props){
         super(props)
-        this.handleEditAmount = this.handleEditAmount.bind(this);
         this.renderTitle = this.renderTitle.bind(this);
         this.renderCart = this.renderCart.bind(this);
         this.renderProduct = this.renderProduct.bind(this);
-
     }
 
-
-
-    handleEditAmount(event,product){
-        let index=this.props.cart.products.indexOf(product);
-        //this.props.cart   .products[index].amount=product.amount;
-        this.setState({})
-    }
 
     renderTitle(){
         if(this.props.cart.products.length===0)
@@ -84,7 +73,7 @@ class Cart extends Component {
                 <th>{pro.purchaseType}</th>
                 <th>{pro.amount}</th>
                 <th><input type="number" min={1} onChange={(e)=>pro.amount=parseInt(e.target.value)}/></th>
-                <Button text = "Edit" onClick={(t)=>this.handleEditAmount(t,pro)}/>
+                <Button text = "Edit" onClick={(t)=>this.props.handleEdit(t,pro,pro.amount)}/>
             </Row>
         )
     }); 
@@ -96,7 +85,6 @@ class Cart extends Component {
     return ( 
         <div>
             <Title title = {this.renderTitle()}/>
-            <p>{'/home/cart?id='+this.props.state.id}</p>
             {this.renderCart()}
         </div>      
     );
