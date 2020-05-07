@@ -82,13 +82,14 @@ public class UserController {
      * use case 2.8 - buy cart
      */
 
-    @PostMapping("home/buy/{country}")
+    //@PostMapping("home/buy/{country}")
+    @PostMapping("home/buy")
     @ResponseBody
     //TODO discus the delivery
-    public ResponseEntity<?> buyCart(@PathVariable String country,
-                                     @RequestParam(name="id") int id, @RequestBody String  paymentDataStr){
+    public ResponseEntity<?> buyCart(@RequestParam(name="id") int id, @RequestBody String  paymentDataStr){
+        //System.out.println("buy");
         PaymentData paymentData = json.fromJson(paymentDataStr,PaymentData.class);
-        Response<Boolean> response= SingleService.getInstance().purchaseCart(id,country,paymentData,paymentData.getAddress());
+        Response<Boolean> response= SingleService.getInstance().purchaseCart(id,paymentData.getCountry(),paymentData,paymentData.getAddress());
         return getResponseEntity(response);
 
     }
@@ -112,6 +113,7 @@ public class UserController {
 
     @GetMapping("home/permissions/{store}")
     public ResponseEntity<?> getPermissionsForStore(@RequestParam(name="id") int id, @PathVariable String store){
+        System.out.println("permit");
         Response<Set<StorePermissionType>> response = SingleService.getInstance().getPermissionsForStore(id,store);
         return getResponseEntity(response);
     }

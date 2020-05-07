@@ -1,53 +1,69 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import BackGrond from "../../Component/BackGrond";
 import Menu from "../../Component/Menu";
 import Title from "../../Component/Title";
-import Input from "../../Component/Input";
 import Button from "../../Component/Button";
 import Row from "../../Component/Row";
 import {send} from '../../Handler/ConnectionHandler';
 import {pass} from '../../Utils/Utils'
+import TextArea from "../../Component/TextArea";
 
 class ViewAndReplyRequests extends Component{
     constructor(props) {
         super(props);
         this.handleRequests = this.handleRequests.bind(this);
         this.handleChangeComment = this.handleChangeComment.bind(this);
+        this.getRequestsPromise = this.getRequestsPromise.bind(this);
+        this.getRequestById = this.getRequestById.bind(this);
+        this.getRequestOfStore = this.getRequestOfStore.bind(this);
+        this.renderRequestTable = this.renderRequestTable.bind(this);
+        this.renderRequests = this.renderRequests.bind(this);
+        this.handleSend = this.handleSend.bind(this);
+
         this.pathname = "/viewAndReplyRequests";
         this.state ={
-            requests: this.createRequests(),
+            requests: '',
             enableResponse: false,
-            request: '',
+            requestId:'',
             comment: '',
         }
+        this.getRequestOfStore();
     }
 
-    createRequests(){
-        let output=[];
-        for(let i=0; i<5; i++){
-            output.push({
-                id: i,
-                sender: "man"+i,
-                content: "request"+i,
-                comment: '',
-            })
+    getRequestOfStore(){
+        let id = this.props.location.state.id;
+        let store = this.props.location.state.storeName;
+        send('/managers/request/'+store+'?id='+id, 'GET', '', this.getRequestsPromise)
+    }
+
+    getRequestsPromise(received){
+        if(received==null)
+            alert("Server Failed");
+        else {
+            let opt = ""+ received.reason;
+            if(opt === 'Success') {
+                this.setState({
+                    requests: received.value,
+                });
+            }
         }
-        return output;
     }
 
     renderRequestTable(){
         let requests = this.state.requests;
         let output = [];
-        requests.forEach(
-            (element) =>
-                output.push(
-                    <Row onClick={(e) => this.handleRequests(e, element.id)}>
-                        <th>{element.id}</th>
-                        <th>{element.sender}</th>
-                        <th>{element.content}</th>
-                    </Row>
-                )
-        );
+        if(requests) {
+            requests.forEach(
+                (element) =>
+                    output.push(
+                        <Row onClick={(e) => this.handleRequests(e, element.id)}>
+                            <th>{element.id}</th>
+                            <th>{element.senderName}</th>
+                            <th>{element.content}</th>
+                        </Row>
+                    )
+            );
+        }
         return output;
     }
 
@@ -59,7 +75,7 @@ class ViewAndReplyRequests extends Component{
                     <th style={under_line}> Sender </th>
                     <th style={under_line}> Content </th>
                 </tr>
-                {this.renderRequestTable()}
+                    {this.renderRequestTable()}
             </table>
         );
     }
@@ -68,7 +84,7 @@ class ViewAndReplyRequests extends Component{
         this.setState({
             name: event.target.value,
             enableResponse: true,
-            request: requestId,
+            requestId: requestId,
         })
     }
 
@@ -77,15 +93,45 @@ class ViewAndReplyRequests extends Component{
     }
 
     handleSend(event) {
-        alert("received successfully");
-        event.preventDefault();
+        let requestId = this.state.requestId;
+        if(this.state.comment === '')
+            alert("Cannot send an empty comment!")
+        if(this.getRequestById(requestId).comment !== null){
+            alert("Already sent a comment!")
+        }
+        else {
+            let id = this.props.location.state.id;
+            let store = this.props.location.state.storeName;
+            let responseData = {requestId: requestId, content: this.state.comment};
+            send('/managers/response/'+store+'?id='+id, 'POST', responseData, (received) =>{
+                if(received==null) {
+                    alert('Server Crashed')
+                }
+                else {
+                    let opcode = ''+received.reason;
+                    if(opcode === 'Success') {
+                        let request = received.value;
+                        request.comment === this.state.comment ?
+                            alert(`Send response to request ${requestId} Successfully!`) :
+                            alert(`Cannot send response to request ${requestId}!`)
+                    }
+                    else {
+                        alert(`Cannot send response to request ${requestId}!`)
+                    }
+                }
+            });
+        }
     }
 
+    getRequestById(requestId){
+        let requests = this.state.requests;
+        return requests.filter((req) => req.id === requestId)[0];
+    }
 
     renderResponse(){
         return(
             <div>
-                <Input title = {'Response to request with id '+ this.state.request +':'} type="text" value={this.state.comment} onChange={this.handleChangeComment}></Input>
+                <TextArea title = {'Response to request with id '+ this.state.requestId +':'} rows={4} cols={50} value={this.state.comment} onChange={this.handleChangeComment}></TextArea>
                 <Button text="send" onClick={this.handleSend}></Button>
             </div>
 

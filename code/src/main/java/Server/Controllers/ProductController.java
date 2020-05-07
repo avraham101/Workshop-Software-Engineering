@@ -43,7 +43,6 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<?> getProductInStore(@RequestParam(name="store") String storeName){
-        System.out.println("get");
         Response<List<ProductData>> response=SingleService.getInstance().viewProductsInStore(storeName);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
@@ -57,7 +56,7 @@ public class ProductController {
     public ResponseEntity<?> postReview (@RequestParam(name="id") int id, @RequestBody String reviewDataStr){
         System.out.println("post");
         ReviewData reviewData = json.fromJson(reviewDataStr,ReviewData.class);
-        Response<Boolean> response =  SingleService.getInstance().writeReview(id,reviewData.getStoreName(),reviewData.getStoreName(),reviewData.getContent());
+        Response<Boolean> response =  SingleService.getInstance().writeReview(id,reviewData.getStoreName(),reviewData.getProductName(),reviewData.getContent());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
@@ -66,7 +65,7 @@ public class ProductController {
     /**
      * use case 4.1.1
      */
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<?> addProduct(@RequestParam(name="id") int id, @RequestBody String productStr){
         System.out.println("add");
         ProductData product= json.fromJson(productStr,ProductData.class);
@@ -80,7 +79,7 @@ public class ProductController {
      * use case 4.1.2
      */
 
-    @DeleteMapping
+    @PostMapping("delete")
     public ResponseEntity<?> deleteProduct(@RequestParam(name="id") int id, @RequestBody String productStr){
         System.out.println("delete");
         ProductData product= json.fromJson(productStr,ProductData.class);
@@ -94,7 +93,7 @@ public class ProductController {
      * use case 4.1.3
      */
 
-    @PutMapping
+    @PostMapping("edit")
     public ResponseEntity<?> editProduct(@RequestParam(name="id") int id, @RequestBody String productStr){
         System.out.println("edit");
         ProductData product= json.fromJson(productStr,ProductData.class);
@@ -102,7 +101,6 @@ public class ProductController {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
-
     }
 
 

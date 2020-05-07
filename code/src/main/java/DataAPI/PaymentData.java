@@ -7,6 +7,7 @@ public class PaymentData {
     private int age;
     private String creditCard;
     private double totalPrice;
+    private String country;
 
     public PaymentData(String name, String address, int age, String creditCard) {
         this.name = name;
@@ -14,6 +15,7 @@ public class PaymentData {
         this.age = age;
         this.creditCard = creditCard;
         this.totalPrice = 0;
+        this.country="";
     }
 
     // ============================ getters & setters ============================ //
@@ -56,6 +58,14 @@ public class PaymentData {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     // ============================ getters & setters ============================ //

@@ -5,7 +5,7 @@ class AddManagerToStore extends AddOwnerToStore {
   constructor() {
     super();
     this.pathname = "/addManagerToStore";
-    this.url = "/manager?id="
+    this.url = "/managers/manager?id="
     this.state = {
         name:''
     };
