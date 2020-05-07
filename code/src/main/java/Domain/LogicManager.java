@@ -1196,7 +1196,7 @@ public class LogicManager {
     public Response<List<String>> getAllUsers(int id) {
         User current=connectedUsers.get(id);
         if (!current.canWatchUserHistory()) {
-            return new Response<>(new LinkedList<>(),OpCode.Success);
+            return new Response<>(new LinkedList<>(),OpCode.NOT_ADMIN);
         }
         List<String> users = new LinkedList<>(this.subscribes.keySet());
         return new Response<>(users,OpCode.Success);
