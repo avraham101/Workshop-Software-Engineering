@@ -45,18 +45,18 @@ class ViewProductsInCart extends Component {
   }
 
   handleDelete(event,product) {
-    let id = this.props.state.id;
+    let id = this.props.location.state.id;
     let productStr = {productName: product.productName,storeName: product.storeName, amount: product.amount};
 
     send('/home/cart/delete?id='+id,'POST',productStr,(received) =>{
-      alert("promise")
+      //alert("promise")
       this.renderDelete(received,product)
     });
   }
 
   renderDelete(received, product){
     if(received && received.value){
-      let index=this.props.cart.products.indexOf(product);
+      let index=this.state.cart.products.indexOf(product);
       if(index!==-1){
         //this.props.cart.products.splice(index,1);
       }
