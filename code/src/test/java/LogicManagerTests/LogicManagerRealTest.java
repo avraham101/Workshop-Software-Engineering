@@ -68,6 +68,15 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**----------------------set-ups------------------------------------------*/
 
     /**
+     * set up for register a user
+     */
+    private void setUpRegisteredUser(){
+        setUpConnect();
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        logicManager.register(subscribe.getName(),subscribe.getPassword());
+    }
+
+    /**
      * test use case 2.3 - Login
      */
     @Override @Test
@@ -1054,5 +1063,14 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(managers,expectedManagers);
     }
 
+    /**
+     * get all the users for the admin
+     */
+    @Test @Override
+    public void testGetAllUsersNotAnAdmin() {
+        setUpRegisteredUser();
+        List<String> users = logicManager.getAllUsers(data.getId(Data.VALID)).getValue();
+        assertTrue(users.isEmpty());
+    }
 }
 
