@@ -1,10 +1,8 @@
 package Server.Controllers;
 
 
-import DataAPI.Filter;
-import DataAPI.ProductData;
-import DataAPI.Response;
-import DataAPI.ReviewData;
+import DataAPI.*;
+import Domain.PurchaseType;
 import Service.SingleService;
 import com.google.gson.Gson;
 import org.springframework.http.HttpHeaders;
@@ -43,7 +41,7 @@ public class ProductController {
      */
 
     @GetMapping
-    public ResponseEntity<?> getProductInStore(@RequestBody  String storeName){
+    public ResponseEntity<?> getProductInStore(@RequestParam(name="store") String storeName){
         Response<List<ProductData>> response=SingleService.getInstance().viewProductsInStore(storeName);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");

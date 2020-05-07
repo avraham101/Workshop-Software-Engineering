@@ -12,18 +12,56 @@ class ManageProductInStore extends Component {
     super();
     this.pathname = "/manageProducts";
     this.addClick = this.addClick.bind(this);
+    this.addProductPromise = this.addProductPromise.bind(this);
     this.state = {
-      storeName:'-- Didnt Selected Store --',
       name:'',
       category:'',
-      amount: 0,
-      price: 0,
-      purchase: 'Immeddiate',
+      amount: 1,
+      price: 1,
+      purchase: 'IMMEDDIATE',
     }
   }
 
   addClick() {
-    pass(this.props.history,'/storeManagement',this.pathname,this.props.location.state)
+    let msg ={};
+    msg['productName']=this.state.name;
+    msg['storeName']=this.props.location.state.storeName;
+    msg['category']=this.state.category;
+    msg['amount'] = this.state.amount;
+    msg['price'] = this.state.price;
+    msg['purchaseType'] = this.state.purchase;
+    let id = this.props.location.state.id;
+    send('/home/product?id='+id,'POST',msg,this.addProductPromise)
+  }
+
+  addProductPromise(received) {
+    if(received==null)
+      alert("Server Failed");
+    else {
+      let opt = ''+ received.reason;
+      if (opt == "Invalid_Product") {
+        alert("The product data isnt valid. please insert again");
+      } 
+      else if(opt == 'Store_Not_Found‏') {
+        alert("Store doesn't Exits. Go back to main menu");
+        pass(this.props.history,'/subscribe',this.pathname,this.props.location.state)
+      }
+      else if(opt =="Dont_Have_Permission‏") {
+        alert("User Doesnt have premission for that. By By");
+        pass(this.props.history,'/subscribe',this.pathname,this.props.location.state)
+      }
+      else if(opt =='Already_Exists‏') {
+        alert("Product Already Exits, Please insert Again");
+        this.setState({name:''});
+      }
+      else if(opt == 'Success') {
+        alert("Product Added. Go to Store mangment");
+        pass(this.props.history,'/storeManagement',this.pathname,this.props.location.state)
+      }
+      else {
+        alert(opt+", Cant Add Product to Store");
+      }
+    }
   }
 
   render() {

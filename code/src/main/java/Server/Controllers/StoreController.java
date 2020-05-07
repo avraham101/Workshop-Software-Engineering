@@ -33,7 +33,6 @@ public class StoreController  {
         StoreData storeData= json.fromJson(storeDataStr,StoreData.class);
         Response<Boolean> response= SingleService.getInstance().openStore(id,storeData);
         return getResponseEntity(response);
-
     }
 
 

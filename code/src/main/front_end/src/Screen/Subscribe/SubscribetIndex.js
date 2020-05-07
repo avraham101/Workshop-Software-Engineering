@@ -15,46 +15,32 @@ class SubscribeIndex extends Component {
     this.state = {
       id: -1,
       error:'',
+      stores:[],
     };
+    this.buildStores = this.buildStores.bind(this);
   }
 
+  buildStores(received) {
+    if(received==null)
+      alert("Server Failed");
+    else {
+      let opt = ''+ received.reason;
+      if(opt == 'Success') {
+        this.setState({stores:received.value})
+      }
+      else {
+        alert(opt+", Cant Add Product to Store");
+      }
+    }
+  };
 
   create_stores() {
-    let output = [];
-    for(let i =0; i<5;i++) {
-      output.push({
-        name:'Store '+i,
-        description:'Description '+i
-      });
-    }
-    return output;
-  }
-
-  create_products() {
-    let output = []
-    for(let i =0; i<5;i++) {
-      output.push({
-        productName:'product '+i,
-        storeName:'store '+i,
-        category:'category '+i,
-        reviews: [],
-        amount: i,
-        price:i,
-        priceAfterDiscount: i,
-        purchaseType:'purchase type '+i,
-      })
-    }
-    return output;
-  }
-
-  click_me() {
-    history.push('/register')
+    send('/store', 'GET', '', this.buildStores)  
   }
 
   render_stores_table() {
-      let stores = this.create_stores();
       let output = [];
-      stores.forEach( element =>
+      this.state.stores.forEach( element =>
         output.push(
           <Row>
             <th> {element.name} </th>
@@ -76,53 +62,8 @@ class SubscribeIndex extends Component {
     </table>);
   }
 
-  render_product_table(){
-    let state = this.props.location.state;
-    let onClick = (element) => {
-      let product = {
-        productName:element.productName,
-        storeName:element.storeName,
-        category:element.category,
-        amount:element.amount,
-        price:element.price,
-        purchaseType:element.purchaseType,
-      }
-      state['product'] = product;
-      pass(this.props.history,'/addToCart',this.pathname,state)
-    }
-    let products = this.create_products();
-    let output = [];
-    products.forEach( element =>
-      output.push(
-        <Row onClick={()=>onClick(element)}>
-          <th> {element.productName} </th>
-          <th> {element.storeName} </th>
-          <th> {element.category} </th>
-          <th> {element.amount} </th>
-          <th> {element.price} </th>
-          <th> {element.purchaseType} </th>
-        </Row>
-      )
-    )
-    return output;
-  }
-
-  render_product() {
-    return (
-    <table style={style_table}>
-        <tr>
-          <th style = {under_line}> Product Name </th>
-          <th style = {under_line}> Store Name </th>
-          <th style = {under_line}> Category </th>
-          <th style = {under_line}> Amount </th>
-          <th style = {under_line}> Price </th>
-          <th style = {under_line}> Purchase Type </th>
-        </tr>
-        {this.render_product_table()}
-    </table>);
-  }
-
   render() {
+    this.create_stores();
     return (
       <BackGrond>
           <MenuSubscribe state={this.props.location.state}/>
@@ -130,11 +71,7 @@ class SubscribeIndex extends Component {
             <Title title={"Welcome user "+this.props.location.state.name}/>
             <div >
               <h3 style={{textAlign:'center'}}> Stores </h3>
-              {this.render_stores()}
-            </div>
-            <div>
-              <h3 style={{textAlign:'center'}}> Products </h3>
-              {this.render_product()}
+              {(this.state.stores.length===0)?<h3 style={{textAlign:'center'}}> no stores on board</h3>: this.render_stores()}
             </div>
           </body>
       </BackGrond>

@@ -13,27 +13,35 @@ const CLASS_AND = 'Domain.Discount.AndDiscount';
 const CLASS_OR = 'Domain.Discount.OrDiscount';
 const CLASS_XOR = 'Domain.Discount.XorDiscount';
 const CLASS_STORE = 'Domain.Discount.StoreDiscount';
+const CLASS_SIMPLE = 'Domain.Discount.RegularDiscount';
+const CLASS_BASIC_TERM = 'Domain.Discount.Term.BaseTerm';
+const CLASS_AND_TERM = 'Domain.Discount.Term.AndTerm';
+const CLASS_OR_TERM = 'Domain.Discount.Term.OrTerm';
+const CLASS_XOR_TERM = 'Domain.Discount.Term.XorTerm';
+const CLASS_TERM = 'Domain.Discount.ProductTermDiscount';
 const MAX_HEIGHT = 1000;
-
-
   
 class ManageDiscount extends Component {
   
   constructor() {
     super();
     this.storeDiscounts = [];
+    this.simpleDiscounts = [];
     this.selectedDiscounts = [];
     this.comlicatedDiscounts = [];
+    this.termDiscounts = [];
+    this.selectedProductsTerms = [];
+    this.targetProductTerm = undefined;
     this.pathname = "/manageDiscount";
     this.state = {
-      storeName:'-- Didnt Selected Store --',
       store_amount:1,
       store_precentag:1,
-      chosenDiscount:{},
+      chosenDiscount:undefined,
       selectedProduct:undefined,
       selectedProductSimpleDiscount:undefined,
-      selectedProductsTerm:undefined,
-      selectedProudctTarget:undefined,
+      simple_precentag:1,
+      selectedProudctTerm:undefined,
+      target_amount:1,
     }
     this.products = this.create_products(5);
   }
@@ -73,7 +81,9 @@ class ManageDiscount extends Component {
 
   /* this function render the store discount list */
   renderStoreDiscontList(){
-    let output = [];
+    if(this.storeDiscounts.length===0)
+      return
+    let output = [<h2 style={titleStyle}> Discounts </h2>];
     let deleteClick= (elemnt)=> {
       this.storeDiscounts.splice(this.storeDiscounts.indexOf(elemnt),1);
       this.setState({})
@@ -119,7 +129,6 @@ class ManageDiscount extends Component {
                 <Button text='Add' onClick={()=>this.addStoreDiscount()}/>
               </div>
               <div> 
-                <h2 style={titleStyle}> Discounts </h2>
                 {this.renderStoreDiscontList()}
               </div>         
       </div>
@@ -142,71 +151,297 @@ class ManageDiscount extends Component {
 
   /*the function print the selected product and move him to Simple Discount or Term Discount */
   renderSelectedProduct(width) {
+      let onClickSimple = () => {
+        this.setState({ selectedProduct:undefined,
+          selectedProductSimpleDiscount:this.state.selectedProduct,})
+      }
+      let onClickTerm = () => {
+        this.setState({
+          selectedProduct:undefined,
+          selectedProudctTerm:this.state.selectedProduct,
+          })
+      }
       return (
         <div>
           <h2 style={titleStyle}> Selected Product </h2>
           <div style={{padding:4}}>
             {this.renderSelectedProductPicked()}
-            <div style={{float:'left',width:'33%'}}> 
-              <Button text="Select as Simple Discount"/>
+            <div style={{float:'left',width:'50%'}}> 
+              <Button text="Select as Simple Discount" onClick={onClickSimple}/>
             </div>
-            <div style={{float:'left',width:'33%'}}> 
-              <Button text="Select as target Term Discount" />
-            </div>
-            <div style={{float:'left',width:'33%'}}> 
-              <Button text="Select as Term Discount" />
+            <div style={{float:'left',width:'50%'}}> 
+              <Button text="Select as Term Product" onClick={onClickTerm} />
             </div>
           </div>
         </div>
       )
   }
 
-  renderSimpleDiscount(width) {
-      let onSelect = () => {
 
-      }
+  /* the function render simple discount selection */
+  renderSimpleDiscontSelection() {
+    let onSelect = () => {
+      let data = {};
+      let pName = this.state.selectedProductSimpleDiscount.productName;
+      data["CLASSNAME"]=CLASS_SIMPLE;
+      data["DATA"] = {product:pName,percantage:this.state.simple_precentag};
+      this.simpleDiscounts.push(data);
+      this.setState({selectedProductSimpleDiscount:undefined});
+    }
+    if(this.state.selectedProductSimpleDiscount==undefined)
+      return (<p style={{textAlign:'center'}}> No product Selected </p>)
+    return (
+      <div>
+        {this.renderProduct(this.state.selectedProductSimpleDiscount,onSelect)}
+        <SmallInput title = 'Discount Prcentage:' type="number" min={0} max={100} value={this.state.simple_precentag} 
+              onChange={(e)=>{this.setState({simple_precentag:e.target.value})}} />
+        <Button text="Select" onClick={onSelect}/>
+      </div>
+    );
+  }
+
+  renderSimpleDiscountList() {
+    if(this.simpleDiscounts.length===0)
+      return
+    let deleteClick = (elemnt)=>{
+      this.simpleDiscounts.splice(this.simpleDiscounts.indexOf(elemnt),1);
+      this.setState({})
+    }
+    let comlicatedClick= (elemnt)=>{
+      this.addDiscountToSelectedDiscounts(elemnt); 
+      this.simpleDiscounts.splice(this.simpleDiscounts.indexOf(elemnt),1);
+      this.setState({})
+    }
+    let selectClick = (elemnt)=> {
+      this.simpleDiscounts.splice(this.simpleDiscounts.indexOf(elemnt),1);
+      this.setState({chosenDiscount:elemnt});
+    }
+    let output = [<h4 style={titleStyle}>Discounts </h4>];
+    this.simpleDiscounts.forEach(elemnt => {
+      output.push(
+        <DivBetter>
+          <p style={{backgroundColor:'lightgreen', marginTop:0}}> Simple Discount </p>
+          <p style={{textAlign:'center'}}>Product: {elemnt.DATA.product} </p>
+          <p style={{textAlign:'center'}}>Precentage: {elemnt.DATA.percantage} % </p>
+          <Triple selectClick={()=>selectClick(elemnt)} 
+                  comlicatedClick={()=>comlicatedClick(elemnt)} 
+                  deleteClick={()=>deleteClick(elemnt)}/>
+        </DivBetter>);
+    });
+    return output;
+  }
+
+  /*the function render simple discount */
+  renderSimpleDiscount(width) {
       return (
         <div style={{float: 'left', width:width, borderRight:'1px solid black', marginBottom:0}}>
           <h3 style={titleStyle}> Simple Discount </h3>
+          {this.renderSimpleDiscontSelection()}
           <div>
-            <h4 style={titleStyle}>Selected Simple Discount </h4>
-            {this.renderProduct(this.state.selectedProductSimpleDiscount,onSelect)}
-            <SmallInput title = 'Discount Prcentage:' type="number" min={0} value={this.state.store_amount} 
-                    onChange={(e)=>{this.setState({store_amount:e.target.value})}} />
-            <Button text="Select" onClick={onSelect} />
-          </div>
-          <div>
-            <h4 style={titleStyle}>Discounts </h4>
+            {this.renderSimpleDiscountList()}
           </div>
         </div>
       )
   }
 
+  renderTermByClass(term) {
+    let title = 'Simple Term'
+    switch(term.CLASSNAME) {
+      case CLASS_BASIC_TERM:
+        return (        
+        <DivBetter>
+          <p style={{backgroundColor:'pink',marginTop:0}}>{title}</p>
+          <p style={{textAlign:'center'}}> product: {term.DATA.product} </p>
+          <p style={{textAlign:'center'}}> amount: {term.DATA.amount} </p>
+        </DivBetter>)
+      case CLASS_AND_TERM: title = 'AND Term'; break;
+      case CLASS_OR_TERM: title = 'OR Term'; break; 
+      case CLASS_XOR_TERM: title = 'XOR Term'; break;
+    }
+    let renderList = (terms) => {
+      let output = [];
+      terms.forEach(element => {
+        output.push(this.renderTermByClass(element))
+      })
+      return output;
+    }
+    return (
+      <DivBetter>
+        <p style={{backgroundColor:'#E640B5',marginTop:0}}>{title}</p>
+        <div style={{padding:3}}>
+          {renderList(term.DATA.terms)}
+        </div>
+      </DivBetter>
+    )
+  }
+
+  /* the function render list of terms */
+  renderTermsList() {
+    let onX = (element) => {
+      this.selectedProductsTerms.splice(this.selectedProductsTerms.indexOf(element),1);
+      this.setState({})
+    }
+    let output = [];
+    this.selectedProductsTerms.forEach(element => {
+      output.push(
+        <div style={{textAlign:'center'}}>
+          {this.renderTermByClass(element)}
+          <button style={buttonX} onClick={()=>onX(element)} > X </button>
+        </div>
+      )
+    })
+    return output;
+  }
+
+  /* the function render the selected Product Terms */
+  renderTermsSelected() {
+    let element = this.selectedProductsTerms;
+    let morethen1 = () => {
+      if(this.selectedProductsTerms.length<=1) {
+        alert('please select more then 1 term to create complex terms.');
+        return false;
+      }
+      return true;
+    }
+    let onAnd = () =>{
+      if(morethen1()) {
+        let data = this.selectedProductsTerms;
+        let term = {};
+        term['CLASSNAME'] = CLASS_AND_TERM;
+        term['DATA'] = {terms:data}
+        this.selectedProductsTerms = [];
+        this.selectedProductsTerms.push(term);
+        this.setState({})
+      }
+    }
+    let onOr = () => {
+      if(morethen1()) {
+        let data = this.selectedProductsTerms;
+        let term = {};
+        term['CLASSNAME'] = CLASS_OR_TERM;
+        term['DATA'] = {terms:data}
+        this.selectedProductsTerms = [];
+        this.selectedProductsTerms.push(term);
+        this.setState({})
+      }
+    }
+    let onXor = () => {
+      if(morethen1()) {
+        let data = this.selectedProductsTerms;
+        let term = {};
+        term['CLASSNAME'] = CLASS_XOR_TERM;
+        term['DATA'] = {terms:data}
+        this.selectedProductsTerms = [];
+        this.selectedProductsTerms.push(term);
+        this.setState({})
+      }
+    }
+
+    if(element.length==0)
+      return <p style={{textAlign:'center'}}> No Terms Selected </p>
+    return (
+      <div style={{float:'left', width:'100%'}}>
+        <h4 style={titleStyle}> Selected Terms </h4>
+        <div style={{overflowY: 'scroll'}}>
+          {this.renderTermsList()}
+        </div>
+        <div>
+          <div style={{float:'left',width:'33%'}}> 
+            <Button text="AND" onClick={onAnd}/>
+          </div>
+          <div style={{float:'left',width:'33%'}}> 
+            <Button text="OR" onClick={onOr}/>
+          </div>
+          <div style={{float:'left',width:'33%'}}>
+            <Button text="XOR" onClick={onXor}/>
+          </div>
+          <p></p>
+        </div>
+      </div>
+    )
+  }
+
+  /*the function render the target term */
+  renderTargetTerm() {
+    let element = this.state.selectedProudctTerm;
+    if(element===undefined)
+      return <p style={{textAlign:'center'}}> No Proudct Select to Term </p>
+    let onClickTarget = () => {
+      this.targetProductTerm = this.state.selectedProudctTerm;
+      this.setState({
+        selectedProudctTerm:undefined,
+      })
+    }
+    let onClickTerm = () => {
+      if(this.selectedProductsTerms!=undefined) {
+        let data = {}
+        data['product'] = this.state.selectedProudctTerm.productName;
+        data['amount'] = this.state.selectedProudctTerm.amount;
+        let object = {CLASSNAME: CLASS_BASIC_TERM, DATA:data}
+        this.selectedProductsTerms.push(object);
+      }
+      this.setState({
+        selectedProudctTerm:undefined,
+      })
+    }
+    return (
+        <div style={{marginBottom:2}}>
+          <DivBetter>
+             <h3 style={{marginTop:0, borderBottom:'1px solid black',backgroundColor:'#FFC242'}}> {element.productName} </h3>
+              <SmallInput title="amount" type="number" min={1} value={this.state.target_amount} 
+                      onChange={(e)=>this.setState({target_amount:e.target.value})}/>
+          <p></p>
+          </DivBetter>
+            <div style={{float:'left',width:'50%',}}> 
+              <Button text="Select as target Term Discount" onClick={onClickTarget} />
+            </div>
+            <div style={{float:'left',width:'50%'}}> 
+              <Button text="Select as Term Discount" onClick={onClickTerm}/>
+            </div>
+        </div>
+    )
+  }
+
+  renderTragetProduct() {
+    if(this.targetProductTerm==undefined)
+      return <p style={{textAlign:'center'}}> No Target Product Selected </p>
+    let element = this.targetProductTerm;
+    let onClick = () => {
+      if(this.selectedProductsTerms.length==0) 
+        alert('no products term selected. please select before create a term discount')
+      else if(this.selectedProductsTerms.length>1) 
+        alert('please select only 1 term.')
+      else {
+        let data = {};
+        let object = {};
+        object['CLASSNAME'] = CLASS_TERM;
+        object['DATA'] = {term:this.selectedProductsTerms[0],
+                          product:this.targetProductTerm.productName,
+                          amount:this.targetProductTerm.amount}
+       this.comlicatedDiscounts.push(object);
+        this.targetProductTerm = undefined;
+        this.selectedProductsTerms = [];
+        this.setState({})
+      }
+    }
+    return (
+      <div style={{float:'left', width:'100%', textAlign:'center', border:'1px solid black', margin:2}}>
+        <h4 style={{backgroundColor:'pink', marginTop:0}}> Target Product </h4>
+        <p> Proudct: {element.productName} </p>
+        <p> amount: {element.amount} </p>
+        <Button text="Create Term Discount" onClick={onClick}/>
+      </div>
+    )
+  }
+
+  /* the function render the terms section */
   renderTermDiscount(width) {
     return (
       <div style={{float: 'left', width:width,}}>
         <h3 style={titleStyle}> Term Discount </h3>
-        <div>
-          <h4 style={titleStyle}> Selected Term Target </h4>
-          <h4 style={titleStyle}> Selected Term Discount </h4>
-          <h4 style={titleStyle}> Terms </h4>
-          <div>
-            <div style={{float:'left',width:'33%'}}> 
-              <Button text="AND"/>
-            </div>
-            <div style={{float:'left',width:'33%'}}> 
-              <Button text="OR" />
-            </div>
-            <div style={{float:'left',width:'33%'}}>
-              <Button text="XOR" />
-            </div>
-            <div style={{float:'left',width:'100%'}}>
-              <Button text="Create Term Discount" />
-            </div>
-          </div>
-          <h4 style={titleStyle}> Discounts </h4>
-          
-        </div>
+        {this.renderTargetTerm()}
+        {this.renderTragetProduct()}
+        {this.renderTermsSelected()}
       </div>
     )
   }
@@ -268,16 +503,51 @@ class ManageDiscount extends Component {
             {this.renderComlicatedByClass(elemnt, false)}
           </div>
         );
+      case CLASS_SIMPLE:
+        return (
+          <DivBetter>
+            <p style={{backgroundColor:'lightgreen', marginTop:0}}> Simple Discount </p>
+            <p style={{textAlign:'center'}}>Product: {elemnt.DATA.product} </p>
+            <p style={{textAlign:'center'}}>Precentage: {elemnt.DATA.percantage} % </p>
+            {deleteOn? <button style={buttonX} onClick={onClick}> X</button> :''}
+          </DivBetter>
+        )
+      case CLASS_TERM:
+        let term = elemnt.DATA.term;
+        let target_prodct = elemnt.DATA.product;
+        let target_amount = elemnt.DATA.amount;
+        return (
+          <DivBetter> 
+              <p style={{backgroundColor:'#CC84F0',textAlign:'center', marginTop:0}}> Term Discount </p>
+              <p style={{textAlign:'center'}}> Product: {target_prodct}</p>
+              <p style={{textAlign:'center'}}> Amount: {target_amount}</p>
+              <div style={{padding:4}}>
+                {this.renderTermByClass(term)}
+              </div>
+          </DivBetter>
+        );
     }
   }
 
   /*this function render the discount list */
-  renderSelectedDiscountList(list, deleteOn){
+  renderSelectedDiscountList(element, deleteOn){
     let output=[];
-    list.forEach(elemnt =>{
-      output.push(this.renderDiscountByClass(elemnt, deleteOn) )
-    })
-    return output;
+    switch(element.CLASSNAME) {
+      case CLASS_TERM:
+        output.push(this.renderDiscountByClass(element, deleteOn));
+        return output;
+      case CLASS_XOR: case CLASS_OR: case CLASS_AND:
+        let list = element.DATA.discounts;
+        list.forEach(elemnt =>{
+          output.push(this.renderDiscountByClass(elemnt, deleteOn) )
+        })
+        return output;
+      default:
+        element.forEach(elemnt =>{
+            output.push(this.renderDiscountByClass(elemnt, deleteOn) )
+        })
+        return output;
+    }
   }
 
   /*this function responble for rendering the select discount and chosing xor, and, or */
@@ -362,7 +632,7 @@ class ManageDiscount extends Component {
       <div style= {{border:'1px solid black', textAlign:'center', marginBottom:5, backgroundColor:'white'}}>
         <p style={{borderBottom:'1px solid black', backgroundColor:'#47CEFF', marginTop:0}}> {name} </p>
         <div style={{padding:10}}>
-          {this.renderSelectedDiscountList(elemnt.DATA.discounts, false)}
+          {this.renderSelectedDiscountList(elemnt, false)}
         </div>
         {deletOn?<Triple selectClick={()=>selectClick(elemnt)} comlicatedClick={()=>comlicatedClick(elemnt)} deleteClick={()=>deleteClick(elemnt)}/>:''}
       </div>
@@ -378,6 +648,34 @@ class ManageDiscount extends Component {
     return output;
   }
 
+  /*the function responseble to render the send discount */
+  renderSendDiscount() {
+    if(this.state.chosenDiscount == undefined)
+      return
+
+    let cancle = () => {
+      this.setState({chosenDiscount:undefined});
+    }
+    return (
+      <div style={{width:'100%', marginBottom:10}}>
+        <p> {JSON.stringify(this.state.chosenDiscount)} </p>
+        <div style={{float:'left', width:'40%', paddingLeft:300}}>
+          {this.renderDiscountByClass(this.state.chosenDiscount,false)}
+        </div>
+        <div style={{float:'left', width:'29%'}}>
+          <div style={{textAlign:'center'}}>
+            <Button text="Cancle" onClick={cancle}/>
+          </div>
+          <div style={{textAlign:'center'}}>
+            <Button text="Send"/>
+          </div>
+        </div>
+      </div>
+      
+    )
+  }
+
+  /*the main render function */
   render() {
     let onBack= () => {
       pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state); 
@@ -386,12 +684,9 @@ class ManageDiscount extends Component {
       <BackGrond height={MAX_HEIGHT}>
         <Menu state={this.props.location.state} />
         <Title title="Discount Manager"/>
-        <h2 style={{textAlign:'center'}}>{this.state.storeName}</h2>
-        <p>
-          {JSON.stringify(this.state.chosenDiscount)}
-        </p>
-        <Button text="Back" onClick={onBack}/>
-        <div style={{height:MAX_HEIGHT}}>
+        <h2 style={{textAlign:'center', marginTop:0}}>{this.props.location.state.storeName}</h2>
+        {this.renderSendDiscount()}
+        <div style={{float:'left',height:MAX_HEIGHT, width:'100%'}}>
           {this.renderProducts('15%')}
           <div style={{float: 'left', width:'84%'}}>
             <div style={{float: 'left', width:'50%'}}>
@@ -402,6 +697,7 @@ class ManageDiscount extends Component {
             {this.renderStoreDiscount('24%')}
             {this.renderSelctedDiscounts('25%')}
           </div>
+          <Button text="Back" onClick={onBack}/>
         </div>
       </BackGrond>
     );

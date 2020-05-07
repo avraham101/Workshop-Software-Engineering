@@ -8,59 +8,69 @@ import Row from "../../Component/Row";
 import {send} from '../../Handler/ConnectionHandler';
 import {pass} from '../../Utils/Utils';
 class ViewStoresAndProducts extends Component {
+  
   constructor() {
     super();
     this.handleStores = this.handleStores.bind(this);
+    this.buildStores = this.buildStores.bind(this);
+    this.buildProducts = this.buildProducts.bind(this);
+    this.create_products = this.create_products.bind(this);
     this.pathname = "/viewStoresAndProducts";
     this.state = {
-      stores: this.create_stores(),
-      products: this.create_products(),
+      stores: [],
+      products: [],
       store: "",
       showProducts: false,
     };
+    this.create_stores();
   }
 
-  pass(url, data) {
-    this.props.history.push({
-      pathname: url,
-      fromPath: "/viewStoresAndProducts",
-      data: data,
-    });
-  }
+  buildStores(received) {
+    if(received==null)
+      alert("Server Failed");
+    else {
+      let opt = ''+ received.reason;
+      if(opt == 'Success') {
+        this.setState({stores:received.value})
+      }
+      else {
+        alert(opt+", Cant Add Product to Store");
+      }
+    }
+  };
 
   create_stores() {
-    let output = [];
-    for (let i = 0; i < 5; i++) {
-      output.push({
-        name: "Store " + i,
-        description: "Description " + i,
-      });
-    }
-    return output;
+    send('/store', 'GET', '', this.buildStores)  
   }
 
-  create_products() {
-    let output = [];
-    for (let i = 0; i < 5; i++) {
-      output.push({
-        productName: "product " + i,
-        category: "category " + i,
-        reviews: [],
-        amount: i,
-        price: i,
-        priceAfterDiscount: i,
-        purchaseType: "purchase type " + i,
-      });
+  buildProducts(received) {
+    if(received==null)
+      alert("Server Failed");
+    else {
+      let opt = ''+ received.reason;
+      if(opt == 'Success') {
+        this.setState({products:received.value})
+      }
+      else if(opt == 'Store_Not_Found‏') {
+        alert('Store Not Found. Soryy.')
+        this.create_stores();
+      }
+      else {
+        alert(opt+", Cant Add Product to Store");
+      }
     }
-    return output;
+  };
+
+  create_products(store) {
+    send('/home/product?store='+store, 'GET','', this.buildProducts)  
   }
 
   handleStores(event, store) {
     this.setState({
-      name: event.target.value,
       showProducts: true,
       store: store,
     });
+    this.create_products(store);
   }
 
   render_stores_table() {
