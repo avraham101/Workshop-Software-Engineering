@@ -158,7 +158,7 @@ class EditManagerPermissions extends Component {
             <BackGroud>
                 <Menu state={this.props.location.state} />
                 <div>
-                    <Title title="Add permissions to manager from store:"/>
+                    <Title title="Edit permissions to manager from store:"/>
                     {this.state.showManagers === false ? this.render_manager() : ""}
                     {this.state.showManagers === true ? this.render_Permissions() : ""}
                     {this.state.showManagers === true ? <Button text="Add" onClick={this.handleSubmit}/> : ""}

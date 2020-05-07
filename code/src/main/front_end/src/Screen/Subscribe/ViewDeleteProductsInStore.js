@@ -168,6 +168,7 @@ class ViewDeleteProductsInStore extends Component {
   render_selected_product() {
     if(this.state.productName===undefined)
       return ''
+    //finish
     return (
       <div>
           <div style={{margin:2 ,width:'30%', float:'left', padding:0, border:"2px solid #89CCC1"}}>
