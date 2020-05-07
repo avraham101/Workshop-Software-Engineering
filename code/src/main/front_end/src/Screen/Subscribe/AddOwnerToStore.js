@@ -12,7 +12,10 @@ class AddOwnerToStore extends Component {
         super();
         this.handleChangeName = this.handleChangeName.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.promiseAppointOwner = this.promiseAppointOwner.bind(this);
+        this.onBack = this.onBack.bind(this);
         this.pathname = "/addOwnerToStore";
+        this.url = '/owner?id=';
         this.state = {
             name:''
         };
@@ -23,26 +26,50 @@ class AddOwnerToStore extends Component {
     }
 
     handleSubmit(event){
-        alert("The user : "+this.state.name+" added successfully\n To be the "+this.getPermission()+" of the store :"+this.props.location.state.storeName)
+        let id = this.props.location.state.id;
+        let storeName = this.props.location.state.id;
+        let managerData = {
+            storeName: storeName,
+            userName: this.state.name,
+        }
+        send(this.url+id, 'POST', managerData, this.promiseAppointOwner);
+    }
+
+    promiseAppointOwner(received){
+        console.log(received);
+        if(received==null) {
+            alert('Server Crashed')
+        }
+        else {
+            let opcode = ''+received.reason;
+            if(opcode === 'Success' && received.value) {
+                alert("The user : "+this.state.name+" added successfully\n To be the "+this.getPermission()+" of the store :"+this.props.location.state.storeName)
+
+            }
+            else {
+                alert(`Cant Appoint ${this.getPermission()}!\n Please try again.`)
+            }
+        }
+    }
+
+    onBack(){
+        pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state);
     }
 
     render() {        
-        let onBack= () => {
-            pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state); 
-        }
+
         return (
             <BackGrond>
                 <Menu state={this.props.location.state} />
-                <Title title={"Add Manager To Store -" + this.props.location.state.storeName}></Title>
+                <Title title={"Add Manager To Store - " + this.props.location.state.storeName}></Title>
                 <h4 style={style_sheet}>Enter the name of the user you want to add, then press submit</h4>
                 <Input title = 'User Name:' type="text" value={this.state.name} onChange={this.handleChangeName} />
                 <Button text = 'Submit' onClick={this.handleSubmit}/>
-                <Button text="Back" onClick={onBack}/>
+                <Button text="Back" onClick={this.onBack}/>
             </BackGrond>
         );
     }
-
-    getPermission(){ return "owner"; }
+    getPermission(){ return "Owner"; }
 }
 export default AddOwnerToStore;
 

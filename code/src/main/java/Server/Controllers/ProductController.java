@@ -26,8 +26,9 @@ public class ProductController {
     /**
      * use case 2.5 - Search product in store
      */
-    @GetMapping("filter")
+    @PostMapping("filter")
     public ResponseEntity<?>  getProductByFilter(@RequestBody String filterStr){
+        System.out.println(filterStr);
         Filter filter = json.fromJson(filterStr,Filter.class);
         Response<List<ProductData>> response =  SingleService.getInstance().viewSpasificProducts(filter);
         HttpHeaders headers = new HttpHeaders();
@@ -53,6 +54,7 @@ public class ProductController {
      */
     @PostMapping("review")
     public ResponseEntity<?> postReview (@RequestParam(name="id") int id, @RequestBody String reviewDataStr){
+        System.out.println("post");
         ReviewData reviewData = json.fromJson(reviewDataStr,ReviewData.class);
         Response<Boolean> response =  SingleService.getInstance().writeReview(id,reviewData.getStoreName(),reviewData.getStoreName(),reviewData.getContent());
         HttpHeaders headers = new HttpHeaders();
@@ -65,6 +67,7 @@ public class ProductController {
      */
     @PostMapping
     public ResponseEntity<?> addProduct(@RequestParam(name="id") int id, @RequestBody String productStr){
+        System.out.println("add");
         ProductData product= json.fromJson(productStr,ProductData.class);
         Response<Boolean> response = SingleService.getInstance().addProductToStore(id,product);
         HttpHeaders headers = new HttpHeaders();
@@ -78,6 +81,7 @@ public class ProductController {
 
     @DeleteMapping
     public ResponseEntity<?> deleteProduct(@RequestParam(name="id") int id, @RequestBody String productStr){
+        System.out.println("delete");
         ProductData product= json.fromJson(productStr,ProductData.class);
         Response<Boolean> response= SingleService.getInstance().removeProductFromStore(id,product.getStoreName(),product.getProductName());
         HttpHeaders headers = new HttpHeaders();
@@ -91,6 +95,7 @@ public class ProductController {
 
     @PutMapping
     public ResponseEntity<?> editProduct(@RequestParam(name="id") int id, @RequestBody String productStr){
+        System.out.println("edit");
         ProductData product= json.fromJson(productStr,ProductData.class);
         Response<Boolean> response= SingleService.getInstance().editProductFromStore(id,product);
         HttpHeaders headers = new HttpHeaders();

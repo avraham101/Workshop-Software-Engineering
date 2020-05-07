@@ -15,34 +15,48 @@ class SearchAndFilterProducts  extends Component{
         this.handleMinPrice = this.handleMinPrice.bind(this);
         this.handleMaxPrice = this.handleMaxPrice.bind(this);
         this.handleSearchValue = this.handleSearchValue.bind(this);
+        this.create_products=this.create_products.bind(this);
+        this.buildProducts=this.buildProducts.bind(this);
         this.pathname = "/searchAndFilter";
         this.state = {
             search: '',
             searchValue: '',
-            minPrice: '',
-            maxPrice:'',
-            filteredProducts : {},
+            minPrice: 0,
+            maxPrice: '',
+            filteredProducts : [],
         }
     }
-
 
     create_products() {
-        let output = []
-        for(let i =0; i<5;i++) {
-            output.push({
-                productName:'product '+i,
-                storeName:'store '+i,
-                category:'category '+i,
-                reviews: [],
-                amount: i,
-                price:i,
-                priceAfterDiscount: i,
-                purchaseType:'purchase type '+i,
-            })
-        }
-        return output
-    }
+        let data={search:this.state.search,
+                  value:this.state.searchValue,
+                  minPrice: this.state.minPrice,
+                  maxPrice: (this.state.maxPrice==''?Number.MAX_SAFE_INTEGER:this.state.maxPrice),
+                  category:'',
+                };
+        if(data.minPrice>data.maxPrice)
+            alert('max price must be greater than min price. Soryy.');
+        else
+        //this.setState({search:'changed'});
+            send('/home/product/filter', 'POST',data, this.buildProducts)  
+      }
 
+    buildProducts(received) {
+        if(received==null)
+          alert("Server Failed");
+        else {
+          let opt = ''+ received.reason;
+          if(opt == 'Success') {
+            this.setState({filteredProducts:received.value})
+          }
+          else if(opt == 'Not_Valid_Filter') {
+            alert('Not_Valid_Filter. Soryy.')
+          }
+          else {
+            alert(opt+", Cant serach by those filters");
+          }
+        }
+    };
 
     pass(url, data) {
         this.props.history.push({
@@ -66,9 +80,8 @@ class SearchAndFilterProducts  extends Component{
           state['product'] = product;
           pass(this.props.history,'/addToCart',this.pathname,state)
         };
-        let products = this.create_products();
         let output = [];
-        products.forEach( element =>
+        this.state.filteredProducts.forEach( element =>
             output.push(
                 <Row onClick={()=>onClick(element)}>
                     <th> {element.productName} </th>
@@ -115,10 +128,6 @@ class SearchAndFilterProducts  extends Component{
         this.setState({maxPrice: maxPrice});
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-    }
-
     render() {
         return (
             <BackGroud>
@@ -133,10 +142,10 @@ class SearchAndFilterProducts  extends Component{
                         <th><Input title="MinPrice" type="number" min={0} max={Number.MAX_SAFE_INTEGER} value={this.state.minPrice} onChange={this.handleMinPrice} /></th>
                     </tr>
                     <tr>
-                        <th><Input title="MaxPrice" type="number" min={0} max={Number.MAX_SAFE_INTEGER} value={this.state.maxPrice} onChange={this.handleMaxPrice} /></th>
+                        <th><Input title="MaxPrice" type="number" min={1} max={Number.MAX_SAFE_INTEGER} value={this.state.maxPrice} onChange={this.handleMaxPrice} /></th>
                     </tr>
                     <tr>
-                        <th><Button text="Submit" onClick={this.handleSubmit}/></th>
+                        <th><Button text="Submit" onClick={this.create_products}/></th>
                     </tr>
                 </table>
                 <div>

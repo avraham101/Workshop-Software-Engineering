@@ -3,6 +3,7 @@ package Server.Controllers;
 import DataAPI.ManagerData;
 import DataAPI.Response;
 import DataAPI.ResponseData;
+import DataAPI.StoreData;
 import Domain.Purchase;
 import Domain.Request;
 import Service.SingleService;
@@ -16,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Signature;
 import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("managers")
 public class ManagerController {
 
     Gson json ;
@@ -112,6 +114,19 @@ public class ManagerController {
         ResponseData responseData = json.fromJson(responseDataStr,ResponseData.class);
         Response<Request> response = SingleService.getInstance().answerRequest(id,responseData.getRequestId(),
                 responseData.getContent(),store);
+        return getResponseEntity(response);
+
+    }
+
+    @GetMapping("mystores")
+    public ResponseEntity<?> getStoresManagedByUser(@RequestParam (name="id" ) int id){
+        Response<List<StoreData>> response = SingleService.getInstance().getStoresManagedByUser(id);
+        return getResponseEntity(response);
+    }
+
+    @GetMapping("mymanagers/{store}")
+    public ResponseEntity<?> getManagersOfStore(@PathVariable String store){
+        Response<List<String>> response = SingleService.getInstance().getManagersOfStore(store);
         return getResponseEntity(response);
 
     }

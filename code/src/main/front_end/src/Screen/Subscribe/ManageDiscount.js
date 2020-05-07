@@ -477,7 +477,9 @@ class ManageDiscount extends Component {
 
   /*the function render products list */
   renderProducts(width) {
-    this.getProducts(this.props.location.state.storeName);
+    if(this.state.products.length === 0) {
+      this.getProducts(this.props.location.state.storeName);
+    }
     return (
     <div style={{float: 'left', width:width ,  borderRight: '1px solid black',overflowY: 'scroll', height:MAX_HEIGHT}}>
       <h2 style={titleStyle}> Products </h2>
@@ -680,7 +682,7 @@ class ManageDiscount extends Component {
         }
         else if(opt ==='Success'){
           alert('Discount Added to store');
-          this.setState({chosenDiscount:undefined})}
+          this.setState({chosenDiscount:undefined, products:[]})}
       }
     }
 
