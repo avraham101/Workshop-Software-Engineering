@@ -22,10 +22,10 @@ class Menu extends Component {
 
   renderGuest() {
     return (
-        <header>
-          <p>{(this.props.state!=undefined)?this.props.state.id:''}</p>
+        <header style={{backgroundColor: '#FFC242', borderBottom:'2px solid #B38118'}}>
+          {/*<p>{(this.props.state!=undefined)?this.props.state.id:''}</p>*/}
           <table style={style_sheet}>
-          <tr>
+          <tr style={{width:'100%'}}>
             <th onClick={() => pass(history,"/",this.fromPath,this.props.state)}
                 style={{background:this.state.color_0}}
                 onMouseOver={()=>this.setState({color_0: WHITE_BLUE})}
@@ -59,7 +59,8 @@ class Menu extends Component {
   render() {
     return (this.props.state==undefined)? this.renderGuest():
            (this.props.state.logged==undefined)? this.renderGuest():
-           <MenuSubscribe state ={this.props.state}/>
+            <MenuSubscribe state ={this.props.state}/>
+           
   }
 }
 
@@ -69,7 +70,8 @@ const style_sheet = {
   color: "black",
   backgroundColor: '#FFC242',
   fontFamily: "Arial",
-  width:"99%",
+  width:"100%",
   height:'50px',
-  borderBottom:'2px solid #B38118',
+  padding:0,
+  margin:0,
 }

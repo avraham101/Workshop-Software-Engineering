@@ -1,15 +1,16 @@
 import React, {Component} from 'react';
+import Notifications from '../Component/Notifications';
 import history from '../Screen/history'
 import {pass} from '../Utils/Utils'
 import { send } from '../Handler/ConnectionHandler';
-
 const WHITE_BLUE= '#B3D1F0'
 class MenuSubscribe extends Component {
   
   constructor(props){
     super(props)
-    this.fromPath = this.props.fromPath
-    this.prevState = this.props.state
+    this.fromPath = this.props.fromPath;
+    this.prevState = this.props.state;
+    this.refresh = this.refresh.bind(this);
     this.state = {
       color_0: '',
       color_1: '',
@@ -29,10 +30,14 @@ class MenuSubscribe extends Component {
     pass(history,"/",this.fromPath,{id:id});
   }
 
+  refresh() {
+    this.setState({});
+  }
+
   render() {
     return (
-        <header>
-          <p> {(this.props.state!=undefined)?this.props.state.id:''} </p>
+        <header style={{backgroundColor: '#FFC242', borderBottom:'2px solid #B38118',marginBottom:0}}>
+          {/*<p> {(this.props.state!=undefined)?this.props.state.id:''} </p>*/}
           <table style={style_sheet}>
           <tr>
             <th onClick={() => pass(history,"/subscribe",this.fromPath,this.props.state)}
@@ -86,5 +91,4 @@ const style_sheet = {
   fontFamily: "Arial",
   width:"99%",
   height:'50px',
-  borderBottom:'2px solid #B38118',
 }
