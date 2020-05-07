@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
@@ -34,8 +35,9 @@ public class AdminController {
      * use case 1.1
      */
 
-    @PostMapping
+    @PostMapping("init")
     public ResponseEntity<?> initialStart(@RequestBody String string){
+        System.out.println(string);
         Gson json = new Gson();
         UserData user =  json.fromJson(string,UserData.class);
         Boolean state = SingleService.getInstance(user.getName(),user.getPassword()) !=null;

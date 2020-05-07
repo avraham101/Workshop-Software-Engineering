@@ -12,6 +12,8 @@ export const send = async (path, method, msg, update) => {
     path: path,
     method: method,
     headers: { 
+    //'Accept':'*/*',
+    //'Content-Type':'*',  
     'Accept-Encoding':'gzip, deflate, br',
     'Content-Length': msg.length,},
   };
@@ -19,9 +21,9 @@ export const send = async (path, method, msg, update) => {
     res.on('data', (data) => { update(receive(data)); });
     // closes https request
     //res.on('close', (close)=> { update(null); })
-    //res.on('error', (error) => { update(null); });
+    //res.on('error', (error) => { alert('error in conection handler'); });
   });
-  //req.on('error',(error)=>{ update(null); })
+  //req.on('error',(error)=>{ alert('error in conection handler'); alert(error)})
   //req.on('close',(close)=>{ update(null); })
   req.write(JSON.stringify(msg)+'\n');
   req.end();
