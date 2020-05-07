@@ -108,7 +108,7 @@ public class ManagerController {
      * use case 4.9.2 - reply request
      */
 
-    @PutMapping("response/{store}")
+    @PostMapping("response/{store}")
     public  ResponseEntity<?> answerRequest(@PathVariable String store,@RequestParam (name="id" ) int id,
                                             @RequestBody String responseDataStr){
         ResponseData responseData = json.fromJson(responseDataStr,ResponseData.class);

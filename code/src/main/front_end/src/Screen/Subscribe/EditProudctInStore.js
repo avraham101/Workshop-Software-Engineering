@@ -64,7 +64,6 @@ class EditProductInStore extends Component {
   }
 
   editProductPromise(received) {
-    alert("here");  
     if(received===null)
       alert("Server Failed");
     else {
@@ -81,7 +80,7 @@ class EditProductInStore extends Component {
         pass(this.props.history,'/storeManagement',this.pathname,this.props.location.state)
       }
       else if(opt === 'Success') {
-        alert("Product Edit. Go to Store mangment");
+        alert("Product Edit");
         this.setState({
           name:undefined,
           category:'',
