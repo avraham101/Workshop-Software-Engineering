@@ -29,7 +29,6 @@ public class CartController {
 
     @GetMapping
     public ResponseEntity<?> getCart (@RequestParam(name="id") int id){
-        System.out.println("got cart");
         Response <CartData> response = SingleService.getInstance().watchCartDetatils(id);
         return getResponseEntity(response);
     }
@@ -41,7 +40,6 @@ public class CartController {
     @PostMapping("delete")
     public ResponseEntity<?> deleteFromCart(@RequestParam(name="id") int id,
                                             @RequestBody String productStr){
-        System.out.println("HERE!!!!");
         ProductIdData product = json.fromJson(productStr,ProductIdData.class);
         Response <Boolean> response = SingleService.getInstance().deleteFromCart(id,product.getProductName(),product.getStoreName());
         return getResponseEntity(response);
@@ -50,7 +48,7 @@ public class CartController {
     /**
      * use case 2.7.3 - edit amount of product
      */
-    @PutMapping
+    @PostMapping("edit")
     public ResponseEntity<?> editProductAmount(@RequestParam(name="id") int id,
                                                @RequestBody String  productStr){
         ProductIdData product = json.fromJson(productStr,ProductIdData.class);
