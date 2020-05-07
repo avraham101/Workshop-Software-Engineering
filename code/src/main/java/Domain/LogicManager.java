@@ -1189,6 +1189,18 @@ public class LogicManager {
         return current.getManagersOfStoreUserManaged(storeName);
     }
 
+    /**
+     * get all the subscribes users
+     * @return
+     */
+    public Response<List<String>> getAllUsers(int id) {
+        User current=connectedUsers.get(id);
+        if (!current.canWatchUserHistory()) {
+            return new Response<>(new LinkedList<>(),OpCode.Success);
+        }
+        List<String> users = new LinkedList<>(this.subscribes.keySet());
+        return new Response<>(users,OpCode.Success);
+    }
 
 
 }
