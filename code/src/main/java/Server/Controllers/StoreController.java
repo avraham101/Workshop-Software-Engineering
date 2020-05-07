@@ -14,8 +14,8 @@ import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.List;
 
-@Controller
-@RequestMapping("store")
+@RestController
+@RequestMapping("/store")
 public class StoreController  {
 
     Gson json ;
@@ -28,12 +28,11 @@ public class StoreController  {
      * use case 3.2 - Open Store
      */
 
-    @PostMapping
+    @PostMapping()
         public ResponseEntity<?> addStore(@RequestParam(name="id") int id, @RequestBody String storeDataStr){
         StoreData storeData= json.fromJson(storeDataStr,StoreData.class);
         Response<Boolean> response= SingleService.getInstance().openStore(id,storeData);
         return getResponseEntity(response);
-
     }
 
 
@@ -50,32 +49,36 @@ public class StoreController  {
     }
 
     /**
+     * use case 4.2.1.1 - add discount to store
+     */
+
+    @PostMapping("/discount")
+    public ResponseEntity<?> addDiscountToStore(@RequestParam (name="id" ) int id,
+                                                @RequestParam (name="store") String store,
+                                                @RequestBody String discount){
+        System.out.println("start adding discount");
+        Response<Boolean> response = SingleService.getInstance().addDiscount(id,discount,store);
+        System.out.println("finish adding discount");
+        return getResponseEntity(response);
+    }
+
+    /**
      * use 2.4.1 - show the details about every store
      */
 
-    @GetMapping
+    @GetMapping()
         public ResponseEntity<?> getStores(){
         Response<List<StoreData>> response= SingleService.getInstance().viewStores();
         return getResponseEntity(response);
     }
 
     /**
-     * use case 4.2.1.1 - add discount to store
-     */
-
-    @PostMapping("discount/{store}")
-    public ResponseEntity<?> addDiscountToStore(@PathVariable String store,
-                                                @RequestParam (name="id" ) int id,@RequestBody  String discount){
-        Response<Boolean> response = SingleService.getInstance().addDiscount(id,discount,store);
-        return getResponseEntity(response);
-    }
-
-    /**
      * 4.2.1.2 - remove discount
      */
-    @DeleteMapping("discount/{store}")
-    public ResponseEntity<?> deleteDiscountFromStore(@PathVariable String store,
-                                                     @RequestParam (name="id" ) int id, @RequestBody Integer discountId){
+    @PostMapping("discount/delete")
+    public ResponseEntity<?> deleteDiscountFromStore(@RequestParam (name="store") String store,
+                                                     @RequestParam (name="id") int id,
+                                                     @RequestBody Integer discountId){
         Response<Boolean> response =  SingleService.getInstance().deleteDiscountFromStore(id,discountId,store);
         return getResponseEntity(response);
     }
@@ -84,9 +87,10 @@ public class StoreController  {
      * 4.2.1.3 - view discounts
      */
 
-    @GetMapping("discount/{store}")
-    public ResponseEntity<?> getDiscounts(@PathVariable String store){
-       Response<HashMap<Integer,String>> response = SingleService.getInstance().viewDiscounts(store);
+    @GetMapping("discount/get")
+    public ResponseEntity<?> getDiscounts(@RequestParam (name="store") String store){
+        System.out.println("?!!@!@?@!#@!#?!@#!@#?!@3");
+        Response<HashMap<Integer,String>> response = SingleService.getInstance().viewDiscounts(store);
        return getResponseEntity(response);
     }
 
@@ -112,7 +116,7 @@ public class StoreController  {
     }
 
 
-    private ResponseEntity<?> getResponseEntity(Response<?> response) {
+        private ResponseEntity<?> getResponseEntity(Response<?> response) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);

@@ -38,6 +38,6 @@ public enum OpCode implements Serializable {
     User_Name_Already_Exist,
     Removed_From_Management,
     Buy_Product,
-
+    NOT_ADMIN
 
 }

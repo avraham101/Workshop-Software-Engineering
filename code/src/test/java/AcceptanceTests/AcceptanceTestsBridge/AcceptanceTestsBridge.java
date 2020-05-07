@@ -60,4 +60,5 @@ public interface AcceptanceTestsBridge {
     Set<StorePermissionsTypeTestData> getPermissionsForStore(int id, String storeName);
     List<String> getAllManagersOfStore(String store);
     List<String> getManagersOfStoreIManaged(int id,String storeName);
+    List<String> getAllUsers(int id);
 }

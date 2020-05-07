@@ -3,65 +3,47 @@ import BackGrond from "../../Component/BackGrond";
 import Menu from "../../Component/Menu";
 import Title from "../../Component/Title";
 import Row from "../../Component/Row";
+import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils'
 
 class StoreManagement extends Component {
   constructor() {
     super();
-    this.handlePermission = this.handlePermission.bind(this);
+    this.create_stores = this.create_stores.bind(this);
+    this.buildstores=this.buildstores.bind(this);
+    this.pathname = "/storeManagement";
     this.state = {
-      manageStores: this.create_manage_stores(),
-      ownerStores: this.create_owner_stores(),
-      permission: "",
-      showStores: false,
+      stores: [],
     };
+    this.flag=true;
   }
 
-  create_owner_stores() {
-    let output = [];
-    for (let i = 0; i < 5; i++) {
-      output.push({
-        name: "Store " + i + " in owner ",
-        description: "Description " + i,
-      });
+  create_stores() {
+    let id=this.props.location.state.id;
+    if(this.flag){
+      this.flag=false;
+      send('/managers/mystores?id='+id, 'GET','',this.buildstores);
+    }  
+  }
+
+  buildstores(received) {
+    if(received==null)
+      alert("Server Failed");
+    else{
+      let opt = ''+ received.reason;
+      if(opt == 'Success') {
+        this.setState({stores:received.value})
+      }
+      else if(opt == 'No_Stores_To_Manage') {
+        alert('No Stores To Manage. Soryy.')
+      }
+      else {
+        alert(opt+", Cant get your stores ");
+      }
     }
-    return output;
-  }
-
-  create_manage_stores() {
-    let output = [];
-    for (let i = 0; i < 5; i++) {
-      output.push({
-        name: "Store " + i + " in manage ",
-        description: "Description " + i,
-      });
-    }
-    return output;
-  }
-
-  render_permission() {
-    return (
-      <table style={style_table}>
-        <Row onClick={(e) => this.handlePermission(e, "Owner")}>Owner</Row>
-        <Row onClick={(e) => this.handlePermission(e, "Manager")}>Manager</Row>
-      </table>
-    );
-  }
-
-  handlePermission(event, permission) {
-    this.setState({
-      name: event.target.value,
-      showStores: true,
-      permission: permission,
-    });
   }
 
   render_stores() {
-    return this.state.permission === "Owner"
-      ? this.render_stores_table_style(this.state.ownerStores)
-      : this.render_stores_table_style(this.state.manageStores);
-  }
-
-  render_stores_table_style(stores) {
     return (
       <div>
         <h3>The stores of the {this.state.permission} :</h3>
@@ -70,17 +52,22 @@ class StoreManagement extends Component {
             <th style={under_line}> Store Name </th>
             <th style={under_line}> Description </th>
           </tr>
-          {this.render_stores_table(stores)}
+          {this.render_stores_table()}
         </table>
       </div>
     );
   }
 
-  render_stores_table(stores) {
+  render_stores_table() {
+    let onClick = (element) => {
+      let state = this.props.location.state;
+      state['storeName'] = element.name;
+      pass(this.props.history,'/storeMenu',this.pathname,this.props.location.state)
+    }
     let output = [];
-    stores.forEach((element) =>
+    this.state.stores.forEach((element) =>
       output.push(
-        <Row onClick={() => this.pass("/storeMenu", element.name)}>
+        <Row onClick={() =>onClick(element)}>
           <th> {element.name} </th>
           <th> {element.description} </th>
         </Row>
@@ -92,22 +79,18 @@ class StoreManagement extends Component {
   pass(url, storeName) {
     this.props.history.push({
       pathname: url,
-      fromPath: "/storeManagment",
+      fromPath: "/storeManagement",
       storeName: storeName, // your data array of objects
     });
   }
 
   render() {
+    this.create_stores();
     return (
       <BackGrond>
-        <Menu />
+        <Menu state={this.props.location.state} />
         <Title title="Manage Store" />
-        <h3 style={style_sheet}>Choose permission to work with</h3>
-        <h4 style={style_sheet}>
-          That will point you to the stores that you have permission to theme.
-        </h4>
-        <div>{this.render_permission()}</div>
-        <div>{this.state.showStores ? this.render_stores() : ""}</div>
+        <div>{this.render_stores()}</div>
       </BackGrond>
     );
   }
