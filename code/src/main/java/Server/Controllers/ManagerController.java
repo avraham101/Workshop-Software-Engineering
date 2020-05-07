@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Signature;
 import java.util.List;
 
+@RestController
+@RequestMapping("managers")
 public class ManagerController {
 
     Gson json ;

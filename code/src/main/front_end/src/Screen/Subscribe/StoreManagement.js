@@ -10,17 +10,38 @@ class StoreManagement extends Component {
   constructor() {
     super();
     this.create_stores = this.create_stores.bind(this);
+    this.buildstores=this.buildstores.bind(this);
     this.pathname = "/storeManagement";
     this.state = {
       stores: [],
     };
-    this.create_stores();
+    this.flag=true;
   }
 
   create_stores() {
-    send('/home/product/filter', 'GET','',this.buildstores);  
+    let id=this.props.location.state.id;
+    if(this.flag){
+      this.flag=false;
+      send('/managers/mystores?id='+id, 'GET','',this.buildstores);
+    }  
   }
 
+  buildstores(received) {
+    if(received==null)
+      alert("Server Failed");
+    else{
+      let opt = ''+ received.reason;
+      if(opt == 'Success') {
+        this.setState({stores:received.value})
+      }
+      else if(opt == 'No_Stores_To_Manage') {
+        alert('No Stores To Manage. Soryy.')
+      }
+      else {
+        alert(opt+", Cant get your stores ");
+      }
+    }
+  }
 
   render_stores() {
     return (
@@ -64,6 +85,7 @@ class StoreManagement extends Component {
   }
 
   render() {
+    this.create_stores();
     return (
       <BackGrond>
         <Menu state={this.props.location.state} />
