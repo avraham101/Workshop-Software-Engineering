@@ -23,6 +23,7 @@ class WatchUserAndStoreHistory extends Component {
             store: "",
             purchases:[],
             showStores: true,
+            values:[],
         };
     }
 
@@ -92,12 +93,22 @@ class WatchUserAndStoreHistory extends Component {
     return output;
   }
 
+  create_users(){
+
+  }
+
+  create_stores(){
+
+  }
+
     handleChangeStoreName(event) {
-        this.setState({store: event.target.value});
+        this.setState({store: event.target.value,});
+        this.create_users();
     }
 
     handleChangeUserName(event) {
-        this.setState({user: event.target.value});
+        this.setState({user: event.target.value,});
+        this.create_stores();
     }
 
     render_stores() {
@@ -126,7 +137,7 @@ class WatchUserAndStoreHistory extends Component {
                 <Menu/>
                 <body>
                     {this.state.showStores === true ? this.render_stores() : this.render_users()}
-                    <Button text="switch" onClick={() => this.setState({showStores: !this.state.showStores})} />
+                    <Button text="switch" onClick={() => this.setState({showStores: !this.state.showStores,purchases:[]})} />
                     <Button text="Back to menu" onClick={() => history.push("/")} />
                 </body>
                 {this.renderPurchase()} 
