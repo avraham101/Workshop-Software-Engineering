@@ -83,7 +83,7 @@ public class ManagerController {
      * use case 4.7 - remove manger
      */
 
-    @DeleteMapping("manager")
+    @PostMapping("deleteManager")
     public ResponseEntity<?> deleteManager(@RequestParam(name="id" ) int id,
                                            @RequestBody String managerDataStr){
         ManagerData managerData = json.fromJson(managerDataStr,ManagerData.class);
