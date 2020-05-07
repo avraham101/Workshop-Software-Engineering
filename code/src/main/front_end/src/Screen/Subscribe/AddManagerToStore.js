@@ -1,18 +1,15 @@
 import React, { Component } from "react";
-import BackGrond from "../../Component/BackGrond";
-import Menu from "../../Component/Menu";
-import Title from "../../Component/Title";
 import AddOwnerToStore from "./AddOwnerToStore";
 
 class AddManagerToStore extends AddOwnerToStore {
   constructor() {
     super();
     this.pathname = "/addManagerToStore";
+    this.url = "/manager?id="
     this.state = {
         name:''
     };
   }
-
-  getPermission(){ return "manager"; }
+  getPermission(){ return "Manager"; }
 }
 export default AddManagerToStore;
