@@ -32,12 +32,14 @@ class Register extends Component {
   handleSubmit() {
     this.setState({valid_error:''});
     let promise = (received) => {
-      if(received === null)
-        this.setState({valid_error:'server crashed'});
+      if(received === null) {
+        this.setState({valid_error: 'server crashed'});
+      }
       else {
         let opt = '' + received.reason;
-        if(opt === "Invalid_Register_Details‏")
-          this.setState({valid_error:'name or password isnt valid'});
+        if(opt === "Invalid_Register_Details‏") {
+          this.setState({valid_error: 'name or password isnt valid'});
+        }
         else if (opt === "User_Name_Already_Exist‏") {
           this.setState({valid_error:'user already exits'});
         }

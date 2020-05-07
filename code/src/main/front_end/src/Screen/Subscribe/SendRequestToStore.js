@@ -8,6 +8,7 @@ import Button from '../../Component/Button';
 import Row from "../../Component/Row";
 import {send} from '../../Handler/ConnectionHandler';
 import {pass} from '../../Utils/Utils';
+import TextArea from "../../Component/TextArea";
 
 class SendRequestToStore extends Component {
  
@@ -101,14 +102,14 @@ class SendRequestToStore extends Component {
           alert("Server Failed");
         else {
           let opt = ''+ received.reason;
-          if(opt == 'Null_Request‏') {
-            alert("Reqest is Null");
+          if(opt === 'Null_Request‏') {
+            alert("Request is Null");
           }
           else if(opt === 'Invalid_Request') {
-            alert("Reqest is Not Valid");
+            alert("Request is Not Valid");
           }
-          else if(opt == 'Success') {
-            alert("Reqest Added. Thank You");
+          else if(opt === 'Success') {
+            alert("Request Added. Thank You");
             pass(this.props.history,'/subscribe',this.pathname,this.props.location.state);
           }
           else {
@@ -130,7 +131,7 @@ class SendRequestToStore extends Component {
                 <table style={style_table}>
                     <tr>
                         <th> Write the request: </th>
-                        <th><Input title='Request:' type='text' value={this.state.request} onChange={this.handleRequest} /></th>
+                        <th><TextArea title='Request:' rows={4} cols={50} value={this.state.request} onChange={this.handleRequest} /></th>
                         <th><Button text='Submit' onClick={this.handleSubmit}/></th>
                     </tr>
                 </table>
