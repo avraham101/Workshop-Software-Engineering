@@ -26,7 +26,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-    AtomicInteger atomicId = new AtomicInteger(0);
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -55,7 +54,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             if (StompCommand.CONNECT.equals(accessor.getCommand())){
                String id = accessor.getFirstNativeHeader("id");
                 System.out.println(id);
-                accessor.setUser(new StompPrincipal(String.valueOf(atomicId.getAndIncrement())));
+                accessor.setUser(new StompPrincipal(id));
                 System.out.println(accessor.getUser().getName());//principal.getname
 
             }
