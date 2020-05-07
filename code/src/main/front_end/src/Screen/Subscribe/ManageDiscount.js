@@ -225,6 +225,7 @@ class ManageDiscount extends Component {
       )
   }
 
+  /*the funcion print terms */
   renderTermByClass(term) {
     let title = 'Simple Term';
     switch(term.CLASSNAME) {

@@ -75,9 +75,10 @@ public class StoreController  {
     /**
      * 4.2.1.2 - remove discount
      */
-    @DeleteMapping("discount/{store}")
-    public ResponseEntity<?> deleteDiscountFromStore(@PathVariable String store,
-                                                     @RequestParam (name="id" ) int id, @RequestBody Integer discountId){
+    @PostMapping("discount/delete")
+    public ResponseEntity<?> deleteDiscountFromStore(@RequestParam (name="store") String store,
+                                                     @RequestParam (name="id") int id,
+                                                     @RequestBody Integer discountId){
         Response<Boolean> response =  SingleService.getInstance().deleteDiscountFromStore(id,discountId,store);
         return getResponseEntity(response);
     }
@@ -86,9 +87,10 @@ public class StoreController  {
      * 4.2.1.3 - view discounts
      */
 
-    @GetMapping("discount/{store}")
-    public ResponseEntity<?> getDiscounts(@PathVariable String store){
-       Response<HashMap<Integer,String>> response = SingleService.getInstance().viewDiscounts(store);
+    @GetMapping("discount/get")
+    public ResponseEntity<?> getDiscounts(@RequestParam (name="store") String store){
+        System.out.println("?!!@!@?@!#@!#?!@#!@#?!@3");
+        Response<HashMap<Integer,String>> response = SingleService.getInstance().viewDiscounts(store);
        return getResponseEntity(response);
     }
 
@@ -114,7 +116,7 @@ public class StoreController  {
     }
 
 
-    private ResponseEntity<?> getResponseEntity(Response<?> response) {
+        private ResponseEntity<?> getResponseEntity(Response<?> response) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);

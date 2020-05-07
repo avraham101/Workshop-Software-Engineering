@@ -75,7 +75,8 @@ class StoreMenu extends Component {
         {this.state.manageProduct ? (<Row onClick={() => this.onClick("/manageProducts")}>Add Product</Row>) : ("")}
         {this.state.manageProduct ? (<Row onClick={() => this.onClick("/editProduct")}>Edit Product</Row>) : ("")}
         {this.state.manageProduct ? (<Row onClick={() => this.onClick("/productsDelete")}>View & Delete Product</Row>) : ("")}
-        {this.state.storeDiscounts ? (<Row onClick={() => this.onClick("/manageDiscount")}>Store Discounts</Row>) : ("")}
+        {this.state.storeDiscounts ? (<Row onClick={() => this.onClick("/manageDiscount")}>Add Discounts</Row>) : ("")}
+        {this.state.storeDiscounts ? (<Row onClick={() => this.onClick("/viewDiscounts")}>View & Delete Discounts</Row>) : ("")}
         {this.state.storePolicy ? (<Row onClick={() => this.onClick("/policy")}>Store Policy</Row>) : ("")}
         {this.state.appointOwner ? (<Row onClick={() => this.onClick("/addOwnerToStore")}>Appoint Owner</Row>):("")}
         {this.state.appointManager ? (<Row onClick={() => this.onClick("/addManagerToStore")}>Appoint Manager</Row>):("")}

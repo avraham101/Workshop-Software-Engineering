@@ -26,6 +26,7 @@ import EditManagerPermissions from "./Screen/Subscribe/EditManagerPermissions";
 import ViewAndReplyRequests from "./Screen/Subscribe/ViewAndReplyRequests";
 import SubscribeIndex from './Screen/Subscribe/SubscribetIndex';
 import EditProductInStore from './Screen/Subscribe/EditProudctInStore';
+import ViewDiscounts from './Screen/Subscribe/ViewDiscounts';
 class App extends Component {
 
   render() {
@@ -48,6 +49,7 @@ class App extends Component {
               <Route path="/openStore" component={withRouter(OpenStore)} />
               <Route path="/manageProducts" component={withRouter(ManageProductInStore)} />
               <Route path="/manageDiscount" component={withRouter(ManageDiscount)} exact/>
+              <Route path="/viewDiscounts" component={withRouter(ViewDiscounts)} exact/>
               <Route path="/storeManagement" component={withRouter(StoreManagement)} />
               <Route path="/storeMenu" component={withRouter(StoreMenu)} />
               <Route path="/removeManagerFromStore" component={withRouter(RemoveManagerFromStore)} />
