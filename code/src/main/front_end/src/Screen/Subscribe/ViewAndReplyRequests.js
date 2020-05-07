@@ -7,6 +7,7 @@ import Button from "../../Component/Button";
 import Row from "../../Component/Row";
 import {send} from '../../Handler/ConnectionHandler';
 import {pass} from '../../Utils/Utils'
+import TextArea from "../../Component/TextArea";
 
 class ViewAndReplyRequests extends Component{
     constructor(props) {
@@ -85,7 +86,7 @@ class ViewAndReplyRequests extends Component{
     renderResponse(){
         return(
             <div>
-                <Input title = {'Response to request with id '+ this.state.request +':'} type="text" value={this.state.comment} onChange={this.handleChangeComment}></Input>
+                <TextArea title = {'Response to request with id '+ this.state.request +':'} rows={4} cols={50} value={this.state.comment} onChange={this.handleChangeComment}></TextArea>
                 <Button text="send" onClick={this.handleSend}></Button>
             </div>
 
