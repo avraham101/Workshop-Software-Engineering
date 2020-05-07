@@ -14,7 +14,7 @@ class AddOwnerToStore extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.promiseAppointOwner = this.promiseAppointOwner.bind(this);
         this.onBack = this.onBack.bind(this);
-        this.pathname = "/addOwnerToStore";
+        this.pathname = "/managers/addOwnerToStore";
         this.url = '/owner?id=';
         this.state = {
             name:''

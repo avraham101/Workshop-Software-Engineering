@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import BackGrond from "../../Component/BackGrond";
 import Menu from "../../Component/Menu";
 import Title from "../../Component/Title";
-import Input from "../../Component/Input";
 import Button from "../../Component/Button";
 import Row from "../../Component/Row";
 import {send} from '../../Handler/ConnectionHandler';
@@ -14,11 +13,14 @@ class ViewAndReplyRequests extends Component{
         super(props);
         this.handleRequests = this.handleRequests.bind(this);
         this.handleChangeComment = this.handleChangeComment.bind(this);
+        this.getRequestsPromise = this.getRequestsPromise.bind(this);
+        this.getRequestById = this.getRequestById.bind(this);
+
         this.pathname = "/viewAndReplyRequests";
         this.state ={
             requests: this.createRequests(),
             enableResponse: false,
-            request: '',
+            requestId: '',
             comment: '',
         }
     }
@@ -36,7 +38,27 @@ class ViewAndReplyRequests extends Component{
         return output;
     }
 
+    getRequestOfStore(){
+        let id = this.props.location.state.id;
+        let store = this.props.location.storeName;
+        send('/request/'+store+'?id='+id, 'GET', '', this.getRequestsPromise)
+    }
+
+    getRequestsPromise(received){
+        if(received==null)
+            alert("Server Failed");
+        else {
+            let opt = ""+ received.reason;
+            if(opt === 'Success') {
+                this.setState({
+                    requests: received.value,
+                });
+            }
+        }
+    }
+
     renderRequestTable(){
+        this.getRequestOfStore();
         let requests = this.state.requests;
         let output = [];
         requests.forEach(
@@ -69,7 +91,7 @@ class ViewAndReplyRequests extends Component{
         this.setState({
             name: event.target.value,
             enableResponse: true,
-            request: requestId,
+            requestId: requestId,
         })
     }
 
@@ -78,15 +100,46 @@ class ViewAndReplyRequests extends Component{
     }
 
     handleSend(event) {
-        alert("received successfully");
-        event.preventDefault();
+        let requestId = this.state.requestId;
+        if(this.state.comment === '')
+            alert("Cannot send an empty comment!")
+        else if(this.getRequestById(requestId).content !== ''){
+            alert("Already sent a comment!")
+        }
+        else {
+            let id = this.props.location.state.id;
+            let store = this.props.location.storeName;
+            let responseData = {requestId: requestId, content: this.state.comment};
+            send('/response/'+store+'?id='+id, 'POST', responseData, (received) =>{
+                console.log(received);
+                if(received==null) {
+                    alert('Server Crashed')
+                }
+                else {
+                    let opcode = ''+received.reason;
+                    if(opcode === 'Success') {
+                        let request = received.value;
+                        request.content === this.state.comment ?
+                            alert(`Send response to request ${requestId} Successfully!`) :
+                            alert(`Cannot send response to request ${requestId}!`)
+                    }
+                    else {
+                        alert(`Cannot send response to request ${requestId}!`)
+                    }
+                }
+            });
+        }
     }
 
+    getRequestById(requestId){
+        let requests = this.state.requests;
+        return requests.filter((req) => req.id === requestId)[0];
+    }
 
     renderResponse(){
         return(
             <div>
-                <TextArea title = {'Response to request with id '+ this.state.request +':'} rows={4} cols={50} value={this.state.comment} onChange={this.handleChangeComment}></TextArea>
+                <TextArea title = {'Response to request with id '+ this.state.requestId +':'} rows={4} cols={50} value={this.state.comment} onChange={this.handleChangeComment}></TextArea>
                 <Button text="send" onClick={this.handleSend}></Button>
             </div>
 
