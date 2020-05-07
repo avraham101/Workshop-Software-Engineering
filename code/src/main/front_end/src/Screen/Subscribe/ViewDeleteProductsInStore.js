@@ -21,6 +21,7 @@ class ViewDeleteProductsInStore extends Component {
       category: '',
       amount: 0,
       price: 0,
+      reviews: [],
       purchase: '',
     }
     this.store="hanut";
@@ -59,6 +60,7 @@ class ViewDeleteProductsInStore extends Component {
         amount: element.amount,
         price: element.price,
         purchase: element.purchaseType,
+        reviews: element.reviews,
       });
     };
     let proudcts = this.state.products;
@@ -125,9 +127,6 @@ class ViewDeleteProductsInStore extends Component {
           })
         }
         else {
-          //alert("recived "+received);
-          //alert("recived.value "+received.value);
-          //alert("recived.reason "+received.reason);
           alert(" Cant Delete product. Try again later to Store");
           pass(this.props.history,'/storeManagement',this.pathname,this.props.location.state)
         }
@@ -142,6 +141,29 @@ class ViewDeleteProductsInStore extends Component {
     msg['purchaseType'] = this.state.purchase;
     let id = this.props.location.state.id;
     send('/home/product/delete?id='+id,'POST', msg, promise)
+  }
+
+  render_reviews() {
+    if(this.state.reviews.length===0)
+      return <p style={{textAlign:'center'}}> Didnt have reviews yet</p>
+    let output = [];
+    this.state.reviews.forEach(element => {
+      output.push(
+        <DivBetter>
+          <div>
+            <div style={{float:'left', width:'30%'}}>
+              <p style={{textAlign:'center'}}> Writer: {element.writer} </p>
+            </div>
+            <div style={{float:'left', width:'69%'}}>
+              <p style={{textAlign:'center'}}> {element.content} </p>
+            </div>
+          </div>
+          writer;
+        </DivBetter>
+      )
+    });
+    return output;
+     
   }
 
   render_selected_product() {
@@ -159,7 +181,8 @@ class ViewDeleteProductsInStore extends Component {
             <Button text="Delete" onClick={this.deleteProduct}/>
           </div>
           <div style={{width:'67.5%', float:'left'}}>
-            <Title title="Reviews:"/>
+            <h2 style={{textAlign:'center', marginTop:0}}> Reviews </h2>
+            {this.render_reviews()}
           </div>
       </div>
     )
