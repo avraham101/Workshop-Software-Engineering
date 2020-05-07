@@ -1865,4 +1865,24 @@ public class LogicManagerAllStubsTest {
         assertNull(logicManager.getManagersOfStore(storeData.getName()).getValue());
     }
 
+    /**
+     * get all the users for the admin
+     */
+    @Test
+    public void testGetAllUsers() {
+        setUpRegisteredUser();
+        List<String> users = logicManager.getAllUsers(data.getId(Data.ADMIN)).getValue();
+        assertNotNull(users);
+        assertEquals(data.getSubscribe(Data.VALID).getName(),users.get(0));
+    }
+
+    /**
+     * get all the users for the admin
+     */
+    @Test
+    public void testGetAllUsersNotAnAdmin() {
+        setUpRegisteredUser();
+        List<String> users = logicManager.getAllUsers(data.getId(Data.VALID)).getValue();
+        assertTrue(users.isEmpty());
+    }
 }
