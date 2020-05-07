@@ -25,7 +25,7 @@ public class CartController {
      * use case 2.7.1 - watch cart details
      */
 
-    @GetMapping
+    @GetMapping("home/cart")
     public ResponseEntity<?> getCart (@RequestParam(name="id") int id){
         Response <CartData> response= SingleService.getInstance().watchCartDetatils(id);
         return getResponseEntity(response);
@@ -35,7 +35,7 @@ public class CartController {
      * use case 2.7.2 - delete product from cart
      */
 
-    @DeleteMapping
+    @DeleteMapping("home/cart")
     public ResponseEntity<?> deleteFromCart(@RequestParam(name="id") int id,
                                             @RequestBody String productStr){
         ProductIdData product = json.fromJson(productStr,ProductIdData.class);
@@ -46,7 +46,7 @@ public class CartController {
     /**
      * use case 2.7.3 - edit amount of product
      */
-    @PutMapping
+    @PutMapping("home/cart")
     public ResponseEntity<?> editProductAmount(@RequestParam(name="id") int id,
                                                @RequestBody String  productStr){
         ProductIdData product = json.fromJson(productStr,ProductIdData.class);
@@ -57,7 +57,7 @@ public class CartController {
 
 
 
-    @PostMapping
+    @PostMapping("home/cart")
     public ResponseEntity<?> addProductToStore(@RequestParam(name="id") int id,
                                                @RequestBody String  productStr){
         ProductIdData product = json.fromJson(productStr,ProductIdData.class);
