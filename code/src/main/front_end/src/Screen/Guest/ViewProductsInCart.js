@@ -41,7 +41,7 @@ class ViewProductsInCart extends Component {
 
   getCart() {
     let id = this.props.location.state.id;
-    send('/home/cart?id='+id, 'GET', '', this.getPromise) 
+    send('/home/cart?id='+id, 'GET', '', this.getPromise)
   }
 
   handleDelete(event,product) {
