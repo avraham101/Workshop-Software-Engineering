@@ -54,7 +54,7 @@ public class CartController {
     public ResponseEntity<?> editProductAmount(@RequestParam(name="id") int id,
                                                @RequestBody String  productStr){
         ProductIdData product = json.fromJson(productStr,ProductIdData.class);
-        Response<Boolean> response=  SingleService.getInstance().editProductInCart(id,product.getProductName(),
+        Response<Boolean> response = SingleService.getInstance().editProductInCart(id,product.getProductName(),
                 product.getStoreName(),product.getAmount());
         return getResponseEntity(response);
     }

@@ -84,7 +84,7 @@ class ViewProductsInCart extends Component {
     else {
       let opcode = ''+received.reason;
       if(opcode === 'Success') {
-        alert('Edit Product Amount Successfully')
+        alert('Edit Product Amount Successfully');
         this.getCart();
       }
       else {
