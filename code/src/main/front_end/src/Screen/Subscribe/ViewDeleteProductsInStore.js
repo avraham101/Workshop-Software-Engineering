@@ -158,7 +158,6 @@ class ViewDeleteProductsInStore extends Component {
               <p style={{textAlign:'center'}}> {element.content} </p>
             </div>
           </div>
-          writer;
         </DivBetter>
       )
     });

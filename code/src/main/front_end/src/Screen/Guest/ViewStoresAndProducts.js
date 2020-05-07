@@ -18,11 +18,11 @@ class ViewStoresAndProducts extends Component {
     this.pathname = "/viewStoresAndProducts";
     this.state = {
       stores: [],
+      stores_updated: false,
       products: [],
       store: "",
       showProducts: false,
     };
-    this.create_stores();
   }
 
   buildStores(received) {
@@ -40,7 +40,8 @@ class ViewStoresAndProducts extends Component {
   };
 
   create_stores() {
-    send('/store', 'GET', '', this.buildStores)  
+    if(this.state.stores_updated===false)
+      send('/store', 'GET', '', this.buildStores)  
   }
 
   buildProducts(received) {
@@ -53,6 +54,7 @@ class ViewStoresAndProducts extends Component {
       }
       else if(opt == 'Store_Not_Found‏') {
         alert('Store Not Found. Soryy.')
+        this.setState({stores_updated:true})
         this.create_stores();
       }
       else {
@@ -89,6 +91,9 @@ class ViewStoresAndProducts extends Component {
   }
 
   render_stores() {
+    this.create_stores();
+    if(this.state.stores.length===0)
+      return <p style={{textAlign:'center'}}> No products in store </p>
     return (
       <table style={style_table}>
         <tr>
@@ -155,12 +160,8 @@ class ViewStoresAndProducts extends Component {
         <Title title="Watch Stores And Products" />
         <div>
           <Title title="Stores :" />
-          <div>
-            {this.render_stores()}
-            <h5>
-              To watch the products in the store- choose a store and press on it.
-            </h5>
-          </div>
+          {this.render_stores()}
+          
           {this.state.showProducts ? this.render_product() : ""}
         </div>
       </BackGroud>
