@@ -62,7 +62,7 @@ class ViewStoresAndProducts extends Component {
   };
 
   create_products(store) {
-    send('/home/product?store='+store, 'GET','', this.buildProducts)  
+    send('/home/product?store='+store, 'GET','', this.buildProducts);  
   }
 
   handleStores(event, store) {
