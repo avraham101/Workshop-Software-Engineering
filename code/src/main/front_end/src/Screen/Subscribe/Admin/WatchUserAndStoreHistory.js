@@ -45,7 +45,7 @@ class WatchUserAndStoreHistory extends Component {
     render_stores() {
         return (
             <BackGroud>
-                <Title title='Watch store history' />
+                <Title title='Watch store history:' />
                 <Input title='Store name:' type="text" value={this.state.store} onChange={this.handleChangeStoreName} />
                 <Button text='show history of the store' onClick={this.handleStoreSubmit}/>
             </BackGroud>
