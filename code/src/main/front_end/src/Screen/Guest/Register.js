@@ -36,12 +36,12 @@ class Register extends Component {
         this.setState({valid_error:'server crashed'});
       else {
         let opt = '' + received.reason;
-        if(opt == "Invalid_Register_Details‏")
+        if(opt === "Invalid_Register_Details‏")
           this.setState({valid_error:'name or password isnt valid'});
-        else if (opt == "User_Name_Already_Exist‏") {
+        else if (opt === "User_Name_Already_Exist‏") {
           this.setState({valid_error:'user already exits'});
         }
-        else if (opt == "Hash_Fail") {
+        else if (opt === "Hash_Fail") {
           this.setState({valid_error:'system error, invalid data'});
         }
         else if(opt ==='Success'){
