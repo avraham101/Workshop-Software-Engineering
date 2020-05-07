@@ -4,8 +4,10 @@ class Input extends Component {
   
   render() {
     let border = '';
-    if(this.props.error!=null)
-      border='2px solid red'
+    let error_msg = '';
+    if(this.props.error!=null) {
+      border='2px solid red';
+    }
     return (
       <div style={{marginLeft:'30%', marginRight:'30%',padding:5, border:border}}>
         <div style = {{textAlign:'center'}}>

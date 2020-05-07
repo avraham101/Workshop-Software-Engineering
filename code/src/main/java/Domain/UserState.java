@@ -53,7 +53,7 @@ public abstract class UserState {
         for (Basket basket: cart.getBaskets().values()) {
             HashMap<Product, Integer> map = basket.getProducts();
             for (Product product: map.keySet()) {
-                priceBeforeDiscount += product.getPrice();
+                priceBeforeDiscount += product.getPrice()* map.get(product);
                 ProductData productData = new ProductData(product, basket.getStore().getName());
                 productData.setAmount(map.get(product));
                 products.add(productData);

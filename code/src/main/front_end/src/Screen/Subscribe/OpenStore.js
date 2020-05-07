@@ -4,12 +4,16 @@ import Menu from "../../Component/Menu";
 import Title from "../../Component/Title";
 import Input from "../../Component/Input";
 import Button from "../../Component/Button";
+import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils'
 
 class OpenStore extends Component {
   constructor() {
     super();
     this.handleChangeName = this.handleChangeName.bind(this);
     this.handleChangeDescription = this.handleChangeDescription.bind(this);
+    this.storeOpenPromise = this.storeOpenPromise.bind(this);
+    this.pathname = "/openStore";
     this.state = {
       storeName: "",
       storeDescription: "",
@@ -25,30 +29,56 @@ class OpenStore extends Component {
   }
 
   handleOpen(event) {
-    event.preventDefault();
-    var str = "Congratulation! The store " + this.state.storeName + " open.\nYou are the owner, enjoy!";
-    alert(str);
+    let msg = {name:this.state.storeName, description:this.state.storeDescription};
+    let id = this.props.location.state.id;
+    send('/store?id='+id,'POST',msg,this.storeOpenPromise)
+  }
+
+  storeOpenPromise(received) {
+    if(received==null)
+      alert("Server Failed");
+    else {
+      let opt = ''+ received.reason;
+      if (opt == "Invalid_Store_Details") {
+        alert("Invalid Store Details");
+      } 
+      else if(opt == 'Store_Not_Found') {
+        alert("Store Already Exites");
+      }
+      else if(opt =="Store_Doesnt_Exist‏") {
+        alert("Server Broken");
+      }
+      else if(opt == 'Success') {
+        let str = "Congratulation! The store " + this.state.storeName 
+                  + " open.\nYou are the owner, enjoy!";
+        alert(str);
+        let state = this.props.location.state;
+        state['storeName'] = this.state.storeName;
+        pass(this.props.history,'/manageProducts',this.pathname,state)
+      }
+      else {
+        alert(opt+", Cant Open Store");
+      }
+    }
   }
 
   render() {
+    let onBack= () => {
+      pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state); 
+    }
     return (
       <BackGrond>
-        <Menu />
+        <Menu state={this.props.location.state} />
         <Title title="Open Store" />
         <div>
-          <Input
-            title="Store Name: "
-            type="text"
+          <Input title="Store Name:" type="text"
             value={this.state.storeName}
-            onChange={this.handleChangeName}
-          ></Input>
-          <InputBig
-            title="Description: "
-            type="text"
+            onChange={this.handleChangeName}/>
+          <InputBig title="Description: " type="text"
             value={this.state.storeDescription}
-            onChange={this.handleChangeDescription}
-          ></InputBig>
+            onChange={this.handleChangeDescription}/>
           <Button text="Open" onClick={(e) => this.handleOpen(e)}></Button>
+          <Button text="Back" onClick={onBack}/>
         </div>
       </BackGrond>
     );
