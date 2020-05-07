@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import BackGrond from "../../Component/BackGrond";
 import Menu from '../../Component/Menu';
 import Title from "../../Component/Title";
-import Input from "../../Component/Input";
 import Button from '../../Component/Button';
-import Row from '../../Component/Row'
 import DivBetter from '../../Component/DivBetter'
 import {send} from '../../Handler/ConnectionHandler';
 import {pass} from '../../Utils/Utils'
@@ -34,6 +32,7 @@ class ManageDiscount extends Component {
     this.targetProductTerm = undefined;
     this.pathname = "/manageDiscount";
     this.state = {
+      products: [],
       store_amount:1,
       store_precentag:1,
       chosenDiscount:undefined,
@@ -42,26 +41,8 @@ class ManageDiscount extends Component {
       simple_precentag:1,
       selectedProudctTerm:undefined,
       target_amount:1,
-    }
-    this.products = this.create_products(5);
-  }
-
-  /* the function create a product list */
-  create_products(num) {
-    let output = []
-    for(let i =0; i<num;i++) {
-      output.push({
-        productName:'product '+i,
-        storeName:'store '+i,
-        category:'category '+i,
-        reviews: [],
-        amount: i,
-        price:i,
-        priceAfterDiscount: i,
-        purchaseType:'purchase type '+i,
-      })
-    }
-    return output
+    };
+    this.renderProducts = this.renderProducts.bind(this);
   }
 
   /* this function add discount to store discount list */
@@ -188,7 +169,7 @@ class ManageDiscount extends Component {
       this.simpleDiscounts.push(data);
       this.setState({selectedProductSimpleDiscount:undefined});
     }
-    if(this.state.selectedProductSimpleDiscount==undefined)
+    if(this.state.selectedProductSimpleDiscount===undefined)
       return (<p style={{textAlign:'center'}}> No product Selected </p>)
     return (
       <div>
@@ -245,7 +226,7 @@ class ManageDiscount extends Component {
   }
 
   renderTermByClass(term) {
-    let title = 'Simple Term'
+    let title = 'Simple Term';
     switch(term.CLASSNAME) {
       case CLASS_BASIC_TERM:
         return (        
@@ -257,6 +238,7 @@ class ManageDiscount extends Component {
       case CLASS_AND_TERM: title = 'AND Term'; break;
       case CLASS_OR_TERM: title = 'OR Term'; break; 
       case CLASS_XOR_TERM: title = 'XOR Term'; break;
+      default:
     }
     let renderList = (terms) => {
       let output = [];
@@ -337,7 +319,7 @@ class ManageDiscount extends Component {
       }
     }
 
-    if(element.length==0)
+    if(element.length===0)
       return <p style={{textAlign:'center'}}> No Terms Selected </p>
     return (
       <div style={{float:'left', width:'100%'}}>
@@ -373,7 +355,7 @@ class ManageDiscount extends Component {
       })
     }
     let onClickTerm = () => {
-      if(this.selectedProductsTerms!=undefined) {
+      if(this.selectedProductsTerms!==undefined) {
         let data = {}
         data['product'] = this.state.selectedProudctTerm.productName;
         data['amount'] = this.state.selectedProudctTerm.amount;
@@ -403,16 +385,15 @@ class ManageDiscount extends Component {
   }
 
   renderTragetProduct() {
-    if(this.targetProductTerm==undefined)
+    if(this.targetProductTerm===undefined)
       return <p style={{textAlign:'center'}}> No Target Product Selected </p>
     let element = this.targetProductTerm;
     let onClick = () => {
-      if(this.selectedProductsTerms.length==0) 
+      if(this.selectedProductsTerms.length===0) 
         alert('no products term selected. please select before create a term discount')
       else if(this.selectedProductsTerms.length>1) 
         alert('please select only 1 term.')
       else {
-        let data = {};
         let object = {};
         object['CLASSNAME'] = CLASS_TERM;
         object['DATA'] = {term:this.selectedProductsTerms[0],
@@ -448,7 +429,7 @@ class ManageDiscount extends Component {
 
   /* this function render a product */
   renderProduct(element, onClick) {
-    if(element==undefined)
+    if(element===undefined)
       return (<p style={{color:'red'}}></p>)
     return (
       <div>
@@ -473,12 +454,34 @@ class ManageDiscount extends Component {
     return output;
   }
 
+
+
+  //this function get the list of product from the server by given store
+  getProducts(storeName) {
+    let buildProducts = (received) => {
+      if(received==null)
+        alert("Server Failed");
+      else {
+        let opt = ''+ received.reason;
+        if(opt === 'Success') {
+          this.setState({products: received.value});
+        }
+        else {
+          alert("Cant get Products from store. please try again later");
+          pass(this.props.history,'/storeManagement','',this.props.location.state);
+        }
+      }
+    }
+    send('/home/product?store='+storeName, 'GET','', buildProducts)  
+  }
+
   /*the function render products list */
   renderProducts(width) {
+    this.getProducts(this.props.location.state.storeName);
     return (
     <div style={{float: 'left', width:width ,  borderRight: '1px solid black',overflowY: 'scroll', height:MAX_HEIGHT}}>
       <h2 style={titleStyle}> Products </h2>
-      {this.renderProductsList(this.products)}
+      {this.renderProductsList(this.state.products)}
     </div>
     );
   }
@@ -526,6 +529,7 @@ class ManageDiscount extends Component {
               </div>
           </DivBetter>
         );
+      default:
     }
   }
 
@@ -560,7 +564,7 @@ class ManageDiscount extends Component {
     let andClick = (e) => {
       if(this.selectedDiscounts.length>1)
         addDiscountToComplicated({CLASSNAME:CLASS_AND,DATA:{discounts:this.selectedDiscounts}})
-      else if(this.selectedDiscounts.length==1)
+      else if(this.selectedDiscounts.length===1)
         this.setState({error_selected:'please select more then 1 discount'});
       else
         this.setState({error_selected:'empty discounts'});
@@ -568,7 +572,7 @@ class ManageDiscount extends Component {
     let orClick = (e) => {
       if(this.selectedDiscounts.length>1)
         addDiscountToComplicated({CLASSNAME:CLASS_OR,DATA:{discounts:this.selectedDiscounts}})
-      else if(this.selectedDiscounts.length==1)
+      else if(this.selectedDiscounts.length===1)
         this.setState({error_selected:'please select more then 1 discount'});
       else
         this.setState({error_selected:'empty discounts'});
@@ -587,7 +591,7 @@ class ManageDiscount extends Component {
         <div style={{padding:4}}>
           {this.renderSelectedDiscountList(this.selectedDiscounts, true)}
         </div>
-        <p style={{color:'red'}}> {this.state.error_selected!=undefined?this.state.error_selected:''} </p>
+        <p style={{color:'red'}}> {this.state.error_selected!==undefined?this.state.error_selected:''} </p>
         <div style={{float:'left',width:'33%'}}> 
           <Button text="AND" onClick={andClick}/>
         </div>
@@ -614,6 +618,7 @@ class ManageDiscount extends Component {
       case CLASS_AND: name = 'AND Discount'; break; 
       case CLASS_OR: name = 'OR Discount'; break;
       case CLASS_XOR: name = 'XOR Discount'; break;
+      default:
     }
     let deleteClick= (elemnt)=> {
       this.comlicatedDiscounts.splice(this.comlicatedDiscounts.indexOf(elemnt),1);
@@ -648,17 +653,42 @@ class ManageDiscount extends Component {
     return output;
   }
 
+
+
   /*the function responseble to render the send discount */
   renderSendDiscount() {
-    if(this.state.chosenDiscount == undefined)
+    if(this.state.chosenDiscount === undefined)
       return
+    let sendToServer = () => {
+      let id = this.props.location.state.id;
+      let msg = this.state.chosenDiscount;
+      send('/store/discount?id='+id+'&store='+this.props.location.state.storeName,'POST',msg,promise);
+      alert('please wait this takes time');
+    }
+    let promise = (received) => {
+      if(received === null)
+        alert("Server Crashed pls try again layter");
+      else {
+        let opt = '' + received.reason;
+        if(opt === 'Dont_Have_Permission') {
+          alert('You dont have premession to this action!');
+          pass(this.props.history,'/storeManagement','',this.props.location.state);
+        }
+        else if(opt === 'Invalid_Product') {
+          alert('Product dont exits in Store any more.');
+          pass(this.props.history,'/storeManagement','',this.props.location.state);
+        }
+        else if(opt ==='Success'){
+          alert('Discount Added to store');
+          this.setState({chosenDiscount:undefined})}
+      }
+    }
 
     let cancle = () => {
       this.setState({chosenDiscount:undefined});
     }
     return (
       <div style={{width:'100%', marginBottom:10}}>
-        <p> {JSON.stringify(this.state.chosenDiscount)} </p>
         <div style={{float:'left', width:'40%', paddingLeft:300}}>
           {this.renderDiscountByClass(this.state.chosenDiscount,false)}
         </div>
@@ -667,7 +697,7 @@ class ManageDiscount extends Component {
             <Button text="Cancle" onClick={cancle}/>
           </div>
           <div style={{textAlign:'center'}}>
-            <Button text="Send"/>
+            <Button text="Send" onClick={sendToServer}/>
           </div>
         </div>
       </div>
