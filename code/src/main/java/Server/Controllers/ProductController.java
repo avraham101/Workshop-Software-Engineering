@@ -65,7 +65,7 @@ public class ProductController {
     /**
      * use case 4.1.1
      */
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<?> addProduct(@RequestParam(name="id") int id, @RequestBody String productStr){
         System.out.println("add");
         ProductData product= json.fromJson(productStr,ProductData.class);
@@ -93,7 +93,7 @@ public class ProductController {
      * use case 4.1.3
      */
 
-    @PutMapping
+    @PostMapping("edit")
     public ResponseEntity<?> editProduct(@RequestParam(name="id") int id, @RequestBody String productStr){
         System.out.println("edit");
         ProductData product= json.fromJson(productStr,ProductData.class);
@@ -101,7 +101,6 @@ public class ProductController {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
-
     }
 
 
