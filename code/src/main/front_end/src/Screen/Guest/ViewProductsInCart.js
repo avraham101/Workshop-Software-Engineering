@@ -13,9 +13,12 @@ class ViewProductsInCart extends Component {
     this.getPromise = this.getPromise.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.renderDelete = this.renderDelete.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+    this.promiseEdit = this.promiseEdit.bind(this);
     this.state = {
       cart:{ priceBeforeDiscount: 0,
-             products: [],}
+             products: [],}, 
+             cartPrice:0,
     }
     this.pathname = '/viewMyCart';
     this.getCart();
@@ -30,7 +33,8 @@ class ViewProductsInCart extends Component {
         alert("Cant revcive cart");
       }
       else {
-        this.setState({cart:received.value});
+        this.setState({cart:received.value, 
+          cartPrice:received.value.priceBeforeDiscount});
       }
     }
   }
@@ -54,9 +58,8 @@ class ViewProductsInCart extends Component {
     if(received && received.value){
       let index=this.props.cart.products.indexOf(product);
       if(index!==-1){
-        this.props.cart.products.splice(index,1);
+        //this.props.cart.products.splice(index,1);
       }
-      this.setState({});
       this.getCart();
       alert("Product Deleted")
     }
@@ -65,11 +68,42 @@ class ViewProductsInCart extends Component {
     }
   }
 
+  /* the function responseble for editing a product in my cart */
+  handleEdit(event, product, newAmount) {
+    let id = this.props.location.state.id;
+    let productStr = {productName: product.productName,storeName: product.storeName, amount: newAmount};
+
+    send('/home/cart?id='+id, 'PUT', productStr, this.promiseEdit) 
+  }
+
+  /* the function responseble for the promise from of edit*/
+  promiseEdit(received) {
+    if(received==null) {
+      alert('Server Crashed')
+    }
+    else {
+      let opcode = ''+received.OpCode;
+      let value = received.value;
+      if(opcode=='SUCCESS') {
+        alert('Prodcut Edit')
+      }
+      else {
+        alert('Cant Edit Product. Please try again.')
+      }
+      this.getCart();
+    }
+  } 
+  
+
   render() {
     return (
       <BackGroud>
         <Menu state={this.props.location.state}/>
-        <Cart cart={this.state.cart} history={this.props.history} state={this.props.location.state} pathname={this.pathname} handleDelete={this.handleDelete}/>
+        <Cart cart={this.state.cart} history={this.props.history} 
+              state={this.props.location.state} pathname={this.pathname} 
+              cartPrice ={this.state.cartPrice}
+              handleDelete={this.handleDelete}
+              handleEdit={this.handleEdit}/>
       </BackGroud>
     );
   }
