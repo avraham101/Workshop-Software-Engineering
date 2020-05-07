@@ -79,7 +79,7 @@ public class ProductController {
      * use case 4.1.2
      */
 
-    @DeleteMapping
+    @PostMapping("delete")
     public ResponseEntity<?> deleteProduct(@RequestParam(name="id") int id, @RequestBody String productStr){
         System.out.println("delete");
         ProductData product= json.fromJson(productStr,ProductData.class);
