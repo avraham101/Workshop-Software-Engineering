@@ -19,7 +19,7 @@ class SearchAndFilterProducts  extends Component{
         this.buildProducts=this.buildProducts.bind(this);
         this.pathname = "/searchAndFilter";
         this.state = {
-            search: '',
+            search: 'NONE',
             searchValue: '',
             minPrice: 0,
             maxPrice: '',
@@ -135,7 +135,15 @@ class SearchAndFilterProducts  extends Component{
                 <Title title = 'Search And Filter Products'/>
                 <table>
                     <tr>
-                        <th><Input title="Search:" type="text" value={this.state.search} onChange={this.handleSearch} /></th>
+                        <th>
+                            <label>Search by:</label>
+                            <select onChange={this.handleSearch}>
+                            <option value="NONE">none</option>
+                            <option value="CATEGORY">catrgory</option>
+                            <option value="KEY_WORD">key word</option>
+                            <option value="PRODUCT_NAME">product name</option>
+                            </select>
+                        </th>
                         <th><Input title="Value:" type="text" value={this.state.searchValue} onChange={this.handleSearchValue} /></th>
                     </tr>
                     <tr>

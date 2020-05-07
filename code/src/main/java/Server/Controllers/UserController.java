@@ -112,6 +112,7 @@ public class UserController {
 
     @GetMapping("home/permissions/{store}")
     public ResponseEntity<?> getPermissionsForStore(@RequestParam(name="id") int id, @PathVariable String store){
+        System.out.println("permit");
         Response<Set<StorePermissionType>> response = SingleService.getInstance().getPermissionsForStore(id,store);
         return getResponseEntity(response);
     }
