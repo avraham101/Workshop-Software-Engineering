@@ -15,6 +15,7 @@ class GuestIndex extends Component {
       id: -1,
       error:'',
       stores:[],
+      flag:false,
     };
     this.handleConnect = this.handleConnect.bind(this);
     this.handleGetId = this.handleGetId.bind(this);
@@ -28,7 +29,7 @@ class GuestIndex extends Component {
     else {
       let opt = ''+ received.reason;
       if(opt == 'Success') {
-        this.setState({stores:received.value})
+        this.setState({stores:received.value, flag:true})
       }
       else {
         alert(opt+", Cant Add Product to Store");
@@ -37,7 +38,8 @@ class GuestIndex extends Component {
   };
 
   create_stores() {
-    send('/store', 'GET', '', this.buildStores)  
+    if(this.state.flag===false)
+      send('/store', 'GET', '', this.buildStores)  
   }
 
   render_stores_table() {

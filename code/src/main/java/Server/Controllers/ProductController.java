@@ -56,7 +56,7 @@ public class ProductController {
     public ResponseEntity<?> postReview (@RequestParam(name="id") int id, @RequestBody String reviewDataStr){
         System.out.println("post");
         ReviewData reviewData = json.fromJson(reviewDataStr,ReviewData.class);
-        Response<Boolean> response =  SingleService.getInstance().writeReview(id,reviewData.getStoreName(),reviewData.getStoreName(),reviewData.getContent());
+        Response<Boolean> response =  SingleService.getInstance().writeReview(id,reviewData.getStoreName(),reviewData.getProductName(),reviewData.getContent());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
@@ -79,7 +79,7 @@ public class ProductController {
      * use case 4.1.2
      */
 
-    @DeleteMapping
+    @PostMapping("delete")
     public ResponseEntity<?> deleteProduct(@RequestParam(name="id") int id, @RequestBody String productStr){
         System.out.println("delete");
         ProductData product= json.fromJson(productStr,ProductData.class);
