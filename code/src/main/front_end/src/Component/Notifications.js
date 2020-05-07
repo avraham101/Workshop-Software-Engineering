@@ -1,20 +1,31 @@
 import React, {Component} from 'react';
-import history from '../Screen/history'
-import {pass} from '../Utils/Utils'
-import MenuSubscribe from './MenuSubscribe';
+import {connect} from '../Handler/WebSocketHandler'
 
-const WHITE_BLUE= '#B3D1F0'
+export var flag_connected=false;
 class Notifications extends Component {
   
   constructor(props){
     super(props)
-    this.fromPath = this.props.fromPath
     this.state = {
+      notification:[],  
       counter:0,
     }
   }
 
+  handleNotification(notification) {
+    this.state.notification.push(notification);
+    this.setState({counter:this.state.notification.length});
+  }
+
+  connectHandler(id) {
+    if(flag_connected===false) {
+      connect(''+id,this.handleNotification);
+      flag_connected=true;
+    }
+  }
+
   render() {
+    this.connectHandler(this.props.id);
     return (
       <div style={{width:'100%',backgroundColor:'#72CC87',margin:0}}>
         <h4 style={{textAlign:'right',margin:0, paddingRight:10}}> Notifications: 

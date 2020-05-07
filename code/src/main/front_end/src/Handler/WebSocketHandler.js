@@ -1,35 +1,24 @@
-//import Stomp from "@stomp/stompjs"
 import SockJS from 'sockjs-client';
 
-//var Stomp = require('@stomp/stompjs');
 var Stomp = require('webstomp-client');
-// const https = require('https');
-
 var stompClient = null;
 
-export function connect(frame) {
-  var socket = new SockJS('/gs-guide-websocket');
+export function connect(id,update) {
+  var socket = new SockJS('https://localhost:8443/ws');
   stompClient = Stomp.over(socket);
-  frame("try to connect")
-  stompClient.connect({'id':'123'}, function (foo) {
-      frame('isconnected')
-      stompClient.subscribe('/user/queue/greetings', function (greeting) {
-          frame("yuvi")
-          frame(greeting)
+  alert("websockets: try to connect with "+id);
+  stompClient.connect({'id':id}, function (foo) {
+      alert('websockets: isconnected')
+      stompClient.subscribe('/user/queue/greetings', function (notification) {
+          update(notification);
       });
+  },(error)=>{
+    alert(''+error.code+' '+error.reason+' '+error.   );
   });
+  
 }
 
-
 //send message
- export function sendMessage(name) {
-   stompClient.send("/app/hello", {},  name);
- }
-
-// //The function return a response object
-const recive = (buffer) => {
-    let out = Object.getOwnPropertyNames(buffer)
-    out = buffer.toString('utf8')
-    let result = JSON.parse(out);
-    return result;
+export function sendMessage(name) {
+  stompClient.send("/app/hello", {},  name);
 }

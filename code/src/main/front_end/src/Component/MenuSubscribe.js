@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import Notifications from '../Component/Notifications';
 import history from '../Screen/history'
 import {pass} from '../Utils/Utils'
 import { send } from '../Handler/ConnectionHandler';
+import Notifications from './Notifications';
+import flag_connected from './Notifications';
 const WHITE_BLUE= '#B3D1F0'
 class MenuSubscribe extends Component {
   
@@ -26,6 +27,7 @@ class MenuSubscribe extends Component {
 
   logout() {
     let id = this.props.state.id;
+    flag_connected=false;
     send('/home/logout?id='+id,"POST",'',()=>{});
     pass(history,"/",this.fromPath,{id:id});
   }
@@ -78,6 +80,7 @@ class MenuSubscribe extends Component {
                 onMouseLeave={()=>this.setState({color_8: ''})}> Watch My Cart </th>
           </tr>
         </table>
+        <Notifications id={this.props.state.id}/>
         </header>
     );
   }
