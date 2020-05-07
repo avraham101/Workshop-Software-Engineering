@@ -450,4 +450,13 @@ public class ServiceAPI {
         return logicManager.getManagersOfStoreUserManaged(id,storeName);
     }
 
+    /**
+     * get all the users for the admin
+     * @param id - the id of the admin
+     * @return - allt he users
+     */
+    public Response<List<String>> getAllUsers(int id) {
+        return logicManager.getAllUsers(id);
+    }
+
 }
