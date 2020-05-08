@@ -124,16 +124,8 @@ class WatchUserAndStoreHistory extends Component {
       });
       this.setState({values:stores});
     }
-    else if(opt == 'Store_Not_Found') {
-      alert("the store does'nt exist");
-      this.setState({values:[]});
-    }
-    else if(opt == 'Dont_Have_Permission') {
-      alert("you don't have permission to watch the store history");
-      this.setState({values:[]});
-    }
     else {
-      alert(opt+", Can't present your store purchases");
+      alert(opt+", Can't present purchases");
       this.setState({values:[]});
     }
   }
@@ -147,16 +139,12 @@ class WatchUserAndStoreHistory extends Component {
     if(opt == 'Success') {
       this.setState({values:received.value});
     }
-    else if(opt == 'Store_Not_Found') {
-      alert("the store does'nt exist");
-      this.setState({values:[]});
-    }
-    else if(opt == 'Dont_Have_Permission') {
-      alert("you don't have permission to watch the store history");
+    else if(opt == 'NOT_ADMIN') {
+      alert("you are not admin");
       this.setState({values:[]});
     }
     else {
-      alert(opt+", Can't present your store purchases");
+      alert(opt+", Can't present purchases");
       this.setState({values:[]});
     }
   }
@@ -201,7 +189,7 @@ class WatchUserAndStoreHistory extends Component {
     render_users() {
         return (
             <BackGroud>
-                <Title title='Watch user history' />
+                <Title title='Watch user history:' />
                   <div style={select_style}>
                     <label style = {{textAlign:'center'}}>User name: </label>
                   </div>
