@@ -132,7 +132,7 @@ public class UserController {
         List<Double> listOfNotification= json.fromJson(notificationsList,List.class);
         List<Integer> list = new LinkedList<>();
         for(double d:listOfNotification)
-            list.add((int)d);
+            list.add((int)d);//
         SingleService.getInstance().deleteRecivedNotifications(id,list);
         return getResponseEntity(new Response<>("", OpCode.Success));
     }
