@@ -152,9 +152,10 @@ class RemoveManagerFromStore extends Component {
               <div>
                   <Title title="Delete manager from store:"/>
                   {this.state.showManagers === false ? this.render_manager() : ""}
+                  {this.state.showManagers === false ? <Button text="Back" onClick={onBack}/> : ""}
                   {this.state.showManagers === true ? this.renderManagers() : ""}
                   {this.state.showManagers === true ? <Button text="Remove" onClick={this.handleSubmit}/> : ""}
-                  {this.state.showManagers === true ? <Button text="Cancel" onClick={this.handleCancel}/> : ""}
+                  {this.state.showManagers === true ? <Button text="Back" onClick={this.handleCancel}/> : ""}
               </div>
           </BackGroud>
       );

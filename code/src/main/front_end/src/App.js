@@ -36,6 +36,7 @@ class App extends Component {
     return (<Router history={history}>
             <Switch>
               <Route path="/admin" component={withRouter(InitSystem)} exact/>
+              <Route path="/admin/storehistory" component={withRouter(WatchUserAndStoreHistory)} exact/>
               <Route path="/register" component={withRouter(Register)} />
               <Route path="/searchAndFilter" component={withRouter(SearchAndFilterProducts)}/>
               <Route path="/login" component={withRouter(Login)} />

@@ -64,8 +64,10 @@ public class Permission {
      */
     public boolean addType(PermissionType type) {
         lock.writeLock().lock();
-        if(permissionType.contains(PermissionType.OWNER)||this.permissionType.contains(type))
+        if(permissionType.contains(PermissionType.OWNER)||this.permissionType.contains(type)) {
+            lock.writeLock().unlock();
             return false;
+        }
         if(type==PermissionType.OWNER)
             permissionType.clear();
         boolean result=this.permissionType.add(type);

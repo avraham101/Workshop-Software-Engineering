@@ -7,6 +7,7 @@ import Button from "../../Component/Button";
 import Row from "../../Component/Row";
 import {send} from '../../Handler/ConnectionHandler';
 import {pass} from '../../Utils/Utils';
+
 class SearchAndFilterProducts  extends Component{
 
     constructor() {
@@ -69,15 +70,14 @@ class SearchAndFilterProducts  extends Component{
     render_product_table(){
         let state = this.props.location.state;
         let onClick = (element) => {
-          let product = {
-            productName:element.productName,
-            storeName:element.storeName,
-            category:element.category,
-            amount:element.amount,
-            price:element.price,
-            purchaseType:element.purchaseType,
-          }
-          state['product'] = product;
+            state['product'] = {
+              productName: element.productName,
+              storeName: element.storeName,
+              category: element.category,
+              amount: element.amount,
+              price: element.price,
+              purchaseType: element.purchaseType,
+          };
           pass(this.props.history,'/addToCart',this.pathname,state)
         };
         let output = [];
@@ -139,7 +139,7 @@ class SearchAndFilterProducts  extends Component{
                             <label>Search by:</label>
                             <select onChange={this.handleSearch}>
                             <option value="NONE">none</option>
-                            <option value="CATEGORY">catrgory</option>
+                            <option value="CATEGORY">category</option>
                             <option value="KEY_WORD">key word</option>
                             <option value="PRODUCT_NAME">product name</option>
                             </select>
