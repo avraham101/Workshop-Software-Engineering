@@ -36,7 +36,7 @@ public class AddToCartTest extends AcceptanceTests {
                 ProductTestData productToAdd = entry.getKey();
                 Integer amount = entry.getValue();
                 boolean isAdded = bridge.addToUserCart(user0.getId(),productToAdd,amount);
-                assertTrue(isAdded);
+                assertFalse(isAdded);
             }
         }
         CartTestData actualCart = bridge.getUsersCart(user0.getId());

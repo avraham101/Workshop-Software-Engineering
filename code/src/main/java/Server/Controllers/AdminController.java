@@ -34,7 +34,7 @@ public class AdminController {
      * use case 1.1
      */
 
-    @PostMapping
+    @PostMapping("init")
     public ResponseEntity<?> initialStart(@RequestBody String string){
         Gson json = new Gson();
         UserData user =  json.fromJson(string,UserData.class);
@@ -44,7 +44,6 @@ public class AdminController {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
-
     }
 
     /**
@@ -64,6 +63,17 @@ public class AdminController {
     @GetMapping("storehistory/{store}")
     public ResponseEntity<?> getStoreHistory(@RequestParam(name="id") int id ,@PathVariable String store){
         Response<List<Purchase>> response = SingleService.getInstance().AdminWatchStoreHistory(id,store);
+        return getResponseEntity(response);
+    }
+
+    /**
+     * get all the users for the admin
+     * @param id - the id of the admin
+     * @return - list of all the names of the users
+     */
+    @GetMapping("allusers")
+    public ResponseEntity<?> getAllUsers(@RequestParam(name="id") int id ) {
+        Response<List<String>> response = SingleService.getInstance().getAllUsers(id);
         return getResponseEntity(response);
     }
 

@@ -47,6 +47,6 @@ public class ProductTermDiscount implements Discount {
     @Override
     public Set<String> getProducts() {
         Set<String> producs=term.getProducts();
-        return null;
+        return producs;
     }
 }

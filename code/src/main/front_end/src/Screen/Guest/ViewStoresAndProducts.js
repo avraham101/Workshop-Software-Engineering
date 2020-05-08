@@ -5,52 +5,74 @@ import Title from "../../Component/Title";
 import Input from "../../Component/Input";
 import Button from "../../Component/Button";
 import Row from "../../Component/Row";
-
+import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils';
 class ViewStoresAndProducts extends Component {
+  
   constructor() {
     super();
     this.handleStores = this.handleStores.bind(this);
+    this.buildStores = this.buildStores.bind(this);
+    this.buildProducts = this.buildProducts.bind(this);
+    this.create_products = this.create_products.bind(this);
+    this.pathname = "/viewStoresAndProducts";
     this.state = {
-      stores: this.create_stores(),
-      products: this.create_products(),
+      stores: [],
+      stores_updated: false,
+      products: [],
       store: "",
       showProducts: false,
     };
   }
 
-  create_stores() {
-    let output = [];
-    for (let i = 0; i < 5; i++) {
-      output.push({
-        name: "Store " + i,
-        description: "Description " + i,
-      });
+  buildStores(received) {
+    if(received==null)
+      alert("Server Failed");
+    else {
+      let opt = ''+ received.reason;
+      if(opt == 'Success') {
+        this.setState({stores:received.value})
+      }
+      else {
+        alert(opt+", Cant Add Product to Store");
+      }
     }
-    return output;
+  };
+
+  create_stores() {
+    if(this.state.stores_updated===false)
+      send('/store', 'GET', '', this.buildStores)  
   }
 
-  create_products() {
-    let output = [];
-    for (let i = 0; i < 5; i++) {
-      output.push({
-        productName: "product " + i,
-        category: "category " + i,
-        reviews: [],
-        amount: i,
-        price: i,
-        priceAfterDiscount: i,
-        purchaseType: "purchase type " + i,
-      });
+  buildProducts(received) {
+    if(received==null)
+      alert("Server Failed");
+    else {
+      let opt = ''+ received.reason;
+      if(opt == 'Success') {
+        this.setState({products:received.value})
+      }
+      else if(opt == 'Store_Not_Found‏') {
+        alert('Store Not Found. Soryy.')
+        this.setState({stores_updated:true})
+        this.create_stores();
+      }
+      else {
+        alert(opt+", Cant Add Product to Store");
+      }
     }
-    return output;
+  };
+
+  create_products(store) {
+    send('/home/product?store='+store, 'GET','', this.buildProducts);  
   }
 
   handleStores(event, store) {
     this.setState({
-      name: event.target.value,
       showProducts: true,
       store: store,
     });
+    this.create_products(store);
   }
 
   render_stores_table() {
@@ -69,6 +91,9 @@ class ViewStoresAndProducts extends Component {
   }
 
   render_stores() {
+    this.create_stores();
+    if(this.state.stores.length===0)
+      return <p style={{textAlign:'center'}}> No products in store </p>
     return (
       <table style={style_table}>
         <tr>
@@ -81,11 +106,24 @@ class ViewStoresAndProducts extends Component {
   }
 
   render_product_table() {
+    let state = this.props.location.state;
+    let onClick = (element) => {
+      let product = {
+        productName:element.productName,
+        storeName:element.storeName,
+        category:element.category,
+        amount:element.amount,
+        price:element.price,
+        purchaseType:element.purchaseType,
+      }
+      state['product'] = product;
+      pass(this.props.history,'/addToCart',this.pathname,state)
+    };
     let proudcts = this.state.products;
     let output = [];
     proudcts.forEach((element) =>
       output.push(
-        <Row>
+        <Row onClick={()=>onClick(element)}>
           <th> {element.productName} </th>
           <th> {element.category} </th>
           <th> {element.amount} </th>
@@ -118,16 +156,12 @@ class ViewStoresAndProducts extends Component {
   render() {
     return (
       <BackGroud>
-        <Menu />
+        <Menu state={this.props.location.state} />
         <Title title="Watch Stores And Products" />
         <div>
           <Title title="Stores :" />
-          <div>
-            {this.render_stores()}
-            <h5>
-              To watch the products in the store- choose a store and press on it.
-            </h5>
-          </div>
+          {this.render_stores()}
+          
           {this.state.showProducts ? this.render_product() : ""}
         </div>
       </BackGroud>

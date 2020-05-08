@@ -1,63 +1,61 @@
 import React, {Component} from 'react';
-import history from '../Screen/history';
 import Button from '.././Component/Button';
 import Title from '.././Component/Title';
+import Row from '.././Component/Row';
+import {pass} from '../Utils/Utils'
 
 class Cart extends Component {
   
     constructor(props){
         super(props)
-        this.cart=this.props.cart;
-        this.handleDelete = this.handleDelete.bind(this);
+        this.renderTitle = this.renderTitle.bind(this);
+        this.renderCart = this.renderCart.bind(this);
+        this.renderProduct = this.renderProduct.bind(this);
     }
 
-    handleDelete(event,product) {
-        let index=this.cart.products.indexOf(product);
-        if(index!==-1){         
-            this.cart.products.splice(index,1);
-        }
-        this.setState({})
-      }
 
-      handleEditAmount(event,product){
-        let index=this.cart.products.indexOf(product);
-        //this.cart.products[index].amount=product.amount;
-        this.setState({})
-      }
+    renderTitle(){
+        if(this.props.cart.products.length===0)
+        return "your cart is empty";
+    else
+        return "products in my cart:"
+    }
 
-      renderTitle(){
-          if(this.cart.products.length===0)
-            return "your cart is empty";
-        else
-            return "products in my cart:"
-      }
-
-      handleBuyCart(event){
-          this.cart.products=[]
+    handleBuyCart(event){
+        this.props.cart.products=[]
         this.setState({})
-      }
+    }
 
   renderCart(){
+    let onClick = () => {
+        pass(this.props.history,'/buyCart',this.props.pathname,this.props.state)
+    }
     let output=[];
-        output.push(
-        <table style={style_sheet}>
-            <tr>
-                <th>{"total price :"+this.cart.price}</th>
-                <th><Button text = "Buy Cart" onClick={()=>history.push("/buyCart")}/></th>
-            </tr>
-            <tr>
-                <th>{}</th>
-                <th>{"product name"}</th>
-                <th>{"store"}</th>
-                <th>{"category"}</th>
-                <th>{"price per unit"}</th>
-                <th>{"purchase type"}</th>
-                <th>{"amount"}</th>
-                <th>{}</th>
-                <th>{}</th>
-            </tr>
-           {this.renderProduct(this.cart.products)}
-        </table>
+    output.push(
+        <div>
+            <div style={{width:'100%'}}>
+                <div style={{float:'left', width:'90%'}}>
+                    <h3 style={{textAlign:'center'}}>{"total price :"+this.props.cart.priceBeforeDiscount}</h3>
+                </div>
+                <div style={{float:'left', width:'10%'}}>
+                    <Button text = "Buy Cart" onClick={()=>onClick()}/>
+                </div>
+            </div>
+            <table style={style_sheet}>
+                <tr>
+                    <th style= {{ borderBottom:'1px solid black'}}>{}</th>
+                    <th style= {{ borderBottom:'1px solid black'}}>product name</th>
+                    <th style= {{ borderBottom:'1px solid black'}}>store</th>
+                    <th style= {{ borderBottom:'1px solid black'}}>category</th>
+                    <th style= {{ borderBottom:'1px solid black'}}>price per unit</th>
+                    <th style= {{ borderBottom:'1px solid black'}}>purchase type</th>
+                    <th style= {{ borderBottom:'1px solid black'}}>amount</th>
+                    <th style= {{ borderBottom:'1px solid black'}}></th>
+                    <th style= {{ borderBottom:'1px solid black'}}></th>
+                </tr>
+                {this.renderProduct(this.props.cart.products)}
+            </table>
+        </div>
     );
     return output
   }
@@ -66,17 +64,17 @@ class Cart extends Component {
     let output=[];
     products.forEach(pro => {
         output.push(
-            <tr>
-                <Button text = "X" onClick={(t)=>this.handleDelete(t,pro)}/>
+            <Row>
+                <Button text = "X" onClick={(t)=>this.props.handleDelete(t,pro)}/>
                 <th>{pro.productName}</th>
-                <th>{pro.store}</th>
+                <th>{pro.storeName}</th>
                 <th>{pro.category}</th>
                 <th>{pro.price}</th>
                 <th>{pro.purchaseType}</th>
                 <th>{pro.amount}</th>
                 <th><input type="number" min={1} onChange={(e)=>pro.amount=parseInt(e.target.value)}/></th>
-                <Button text = "Edit" onClick={(t)=>this.handleEditAmount(t,pro)}/>
-            </tr>
+                <Button text = "Edit" onClick={(t)=>this.props.handleEdit(t,pro,pro.amount)}/>
+            </Row>
         )
     }); 
     return output;
@@ -87,7 +85,7 @@ class Cart extends Component {
     return ( 
         <div>
             <Title title = {this.renderTitle()}/>
-            {this.renderCart()} 
+            {this.renderCart()}
         </div>      
     );
   }
@@ -101,5 +99,6 @@ const style_sheet = {
     margin: "10px",
     lineHeight: 5,
     fontFamily: "Arial",
-    width:"80%",
+    border:'1px solid black',
+    width:"99%",
   }
