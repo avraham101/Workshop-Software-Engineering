@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.9.12",
     "@material-ui/icons": "^4.9.1",
+    "@stomp/stompjs": "^5.4.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -15,7 +16,9 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
-    "reactjs-popup": "^1.5.0"
+    "reactjs-popup": "^1.5.0",
+    "sockjs-client": "^1.4.0",
+    "webstomp-client": "^1.2.6"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -38,5 +41,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://#####.!@#"
+  "proxy": "http://#####.!@#",
+  "devDependencies": {
+    "@types/sockjs-client": "^1.1.1"
+  }
 }

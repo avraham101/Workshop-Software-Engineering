@@ -14,31 +14,16 @@ public class ProductData {
     private List<Review> reviews;
     private int amount;
     private double price;
-    private double priceAfterDiscount;
     private PurchaseTypeData purchaseType;
 
-    public ProductData(String productName, String storeName, String category, List<Review> reviews, int amount, double price, double priceAfterDiscount,
-                       PurchaseTypeData purchaseType) {
+    public ProductData(String productName, String storeName, String category, List<Review> reviews, int amount, double price, PurchaseTypeData purchaseType) {
         this.productName = productName;
         this.storeName = storeName;
         this.category = category;
         this.reviews = reviews;
         this.amount = amount;
         this.price = price;
-        this.priceAfterDiscount = priceAfterDiscount;
         this.purchaseType = purchaseType;
-    }
-
-    public ProductData(String productName, String storeName, String category, List<Review> reviews
-            , int amount, double price, PurchaseTypeData purchaseType) {
-        this.productName = productName;
-        this.storeName = storeName;
-        this.category = category;
-        this.reviews = reviews;
-        this.price=price;
-        this.priceAfterDiscount = this.price;
-        this.amount=amount;
-        this.purchaseType=purchaseType;
     }
 
     public ProductData(Product product, String storeName) {
@@ -109,13 +94,6 @@ public class ProductData {
         this.purchaseType = purchaseType;
     }
 
-    public double getPriceAfterDiscount() {
-        return priceAfterDiscount;
-    }
-
-    public void setPriceAfterDiscount(double priceAfterDiscount) {
-        this.priceAfterDiscount = priceAfterDiscount;
-    }
 
     // ============================ getters & setters ============================ //
 

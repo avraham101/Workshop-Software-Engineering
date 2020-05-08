@@ -33,6 +33,8 @@ public class UserController {
         return "index";
     }
 
+
+
     @GetMapping("home/connect")
     @ResponseBody
     public ResponseEntity<?> connect(){
@@ -124,6 +126,11 @@ public class UserController {
         return getResponseEntity(response);
     }
 
+    @DeleteMapping("home/notifications")
+    public void deleteNotifications(@RequestParam(name="id") int id,@RequestBody String notificationsList){
+        List<Integer> listOfNotification= json.fromJson(notificationsList,List.class);
+        SingleService.getInstance().deleteRecivedNotifications(id,listOfNotification);
+    }
     private ResponseEntity<?> getResponseEntity(Response<?> response) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
