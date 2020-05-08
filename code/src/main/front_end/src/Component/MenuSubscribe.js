@@ -140,6 +140,7 @@ const style_sheet = {
   color: "black",
   backgroundColor: '#FFC242',
   fontFamily: "Arial",
+  fontSize: "14px",
   width:"99%",
   height:'50px',
 }
