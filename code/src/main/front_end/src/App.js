@@ -35,7 +35,7 @@ class App extends Component {
   render() {
     return (<Router history={history}>
             <Switch>
-              <Route path="/admin" component={withRouter(InitSystem)} exact/>
+              <Route path="/" component={withRouter(InitSystem)} exact/>
               <Route path="/register" component={withRouter(Register)} />
               <Route path="/searchAndFilter" component={withRouter(SearchAndFilterProducts)}/>
               <Route path="/login" component={withRouter(Login)} />
@@ -51,8 +51,8 @@ class App extends Component {
               <Route path="/buyCart" component={withRouter(BuyCart)} />
               <Route path="/openStore" component={withRouter(OpenStore)} />
               <Route path="/manageProducts" component={withRouter(ManageProductInStore)} />
-              <Route path="/manageDiscount" component={withRouter(ManageDiscount)} exact/>
-              <Route path="/viewDiscounts" component={withRouter(ViewDiscounts)} exact/>
+              <Route path="/manageDiscount" component={withRouter(ManageDiscount)}/>
+              <Route path="/viewDiscounts" component={withRouter(ViewDiscounts)}/>
               <Route path="/storeManagement" component={withRouter(StoreManagement)} />
               <Route path="/storeMenu" component={withRouter(StoreMenu)} />
               <Route path="/removeManagerFromStore" component={withRouter(RemoveManagerFromStore)} />
@@ -63,7 +63,7 @@ class App extends Component {
               <Route path="/watchUserAndStoreHistory" component={withRouter(WatchUserAndStoreHistory)} />
               <Route path="/editProduct" component={withRouter(EditProductInStore)} />
               <Route path="/subscribe" component={withRouter(SubscribeIndex)} />
-              <Route path="/" component={withRouter(GuestIndex)} exact />
+              <Route path="/guest" component={withRouter(GuestIndex)} />
             </Switch>
           </Router>)
   }

@@ -26,7 +26,7 @@ class Menu extends Component {
           {/*<p>{(this.props.state!=undefined)?this.props.state.id:''}</p>*/}
           <table style={style_sheet}>
           <tr style={{width:'100%'}}>
-            <th onClick={() => pass(history,"/",this.fromPath,this.props.state)}
+            <th onClick={() => pass(history,"/guest",this.fromPath,this.props.state)}
                 style={{background:this.state.color_0}}
                 onMouseOver={()=>this.setState({color_0: WHITE_BLUE})}
                 onMouseLeave={()=>this.setState({color_0: ''})}> Menu </th>

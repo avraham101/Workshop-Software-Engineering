@@ -1231,6 +1231,10 @@ public class LogicManager {
     }
 
     public void setPublisher(Publisher pub) {
+        for(String s: this.subscribes.keySet()) {
+            Subscribe sub = this.subscribes.get(s);
+            sub.setPublisher(pub);
+        }
         this.publisher=pub;
     }
 

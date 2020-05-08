@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import history from '../Screen/history'
 import {pass} from '../Utils/Utils'
-import { send } from '../Handler/ConnectionHandler';
-import Notifications from './Notifications';
-import flag_connected from './Notifications';
+import {send} from '../Handler/ConnectionHandler';
+import {closeSocket} from '../Handler/WebSocketHandler'
+import {Notifications, turnOf} from './Notifications';
+
 const WHITE_BLUE= '#B3D1F0'
 class MenuSubscribe extends Component {
   
@@ -27,9 +28,10 @@ class MenuSubscribe extends Component {
 
   logout() {
     let id = this.props.state.id;
-    flag_connected=false;
+    turnOf();
     send('/home/logout?id='+id,"POST",'',()=>{});
-    pass(history,"/",this.fromPath,{id:id});
+    closeSocket();
+    pass(history,"/guest",this.fromPath,{id:id});
   }
 
   refresh() {

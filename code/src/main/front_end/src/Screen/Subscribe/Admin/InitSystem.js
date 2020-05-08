@@ -42,7 +42,7 @@ class InitSystem extends Component {
     else {
       this.setState({id: received.value});
       alert(this.state.success);
-      pass(this.props.history,'/','',{id:this.state.id})
+      pass(this.props.history,'/guest','',{id:this.state.id})
     }
   };
 
