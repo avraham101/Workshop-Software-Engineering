@@ -13,7 +13,10 @@ class MenuSubscribe extends Component {
     this.refresh = this.refresh.bind(this);
     this.checkIfAdmin = this.checkIfAdmin.bind(this);
     this.getAdminWatchPurchaseHistoryHtml = this.getAdminWatchPurchaseHistoryHtml.bind(this);
+    this.checkIfManager = this.checkIfManager.bind(this);
+    this.getManageStoresHtml = this.getManageStoresHtml.bind(this);
     this.admin = false;
+    this.manager = false;
     this.state = {
       color_0: '',
       color_1: '',
@@ -27,6 +30,7 @@ class MenuSubscribe extends Component {
       color_9: '',
     }
     this.checkIfAdmin();
+    this.checkIfManager();
   }
 
   checkIfAdmin(){
@@ -49,6 +53,28 @@ class MenuSubscribe extends Component {
             style={{background:this.state.color_9}}
             onMouseOver={()=>this.setState({color_9: WHITE_BLUE})}
             onMouseLeave={()=>this.setState({color_9: ''})}> Admin Watch Purchases </th>);
+  }
+
+  checkIfManager(){
+    let id = this.props.state.id;
+    send('/managers/mystores?id='+id,'GET','',(received)=>{
+      console.log(received)
+      if(received){
+        let opt = ''+received.reason;
+        if(opt === "Success")
+          this.setState({manager: true})
+        else
+          this.setState({manager: false})
+      }
+    });
+  }
+
+  getManageStoresHtml(){
+    return(
+        <th onClick={()=> pass(history,"/storeManagement",this.fromPath,this.props.state)}
+            style={{background:this.state.color_6}}
+            onMouseOver={()=>this.setState({color_6: WHITE_BLUE})}
+            onMouseLeave={()=>this.setState({color_6: ''})}> Manage Stores </th>)
   }
 
   logout() {
@@ -91,10 +117,7 @@ class MenuSubscribe extends Component {
                   style={{background:this.state.color_5}}
                   onMouseOver={()=>this.setState({color_5: WHITE_BLUE})}
                   onMouseLeave={()=>this.setState({color_5: ''})}> Purchases </th>
-            <th onClick={()=> pass(history,"/storeManagement",this.fromPath,this.props.state)}
-                  style={{background:this.state.color_6}}
-                  onMouseOver={()=>this.setState({color_6: WHITE_BLUE})}
-                  onMouseLeave={()=>this.setState({color_6: ''})}> Manage Stores </th>
+            { this.state.manager ? this.getManageStoresHtml() : ""}
             <th onClick={()=>this.logout()}
                 style={{background:this.state.color_7}} 
                 onMouseOver={()=>this.setState({color_7: WHITE_BLUE})}
