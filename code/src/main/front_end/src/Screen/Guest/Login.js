@@ -62,7 +62,7 @@ class Login extends Component {
         <Title title = 'Want to Login?'/>
         <div>
           <Input title = 'User Name:' error={this.state.valid_error} type="text" value={this.state.name} onChange={this.handleChangeName} />
-          <Input title = 'Password:' error={this.state.valid_error} type="text" value={this.state.password} onChange={this.handleChangePassword} />
+          <Input title = 'Password:' error={this.state.valid_error} type="password" value={this.state.password} onChange={this.handleChangePassword} />
           <Button text = 'Submit' onClick={this.handleSubmit}/>
           <p> {this.state.user_error==undefined?'':this.state.user_error}</p>
           <p> {this.state.server_error==undefined?'':this.state.server_error}</p>
