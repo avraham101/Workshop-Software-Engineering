@@ -25,6 +25,8 @@ class ViewDiscounts extends Component {
     this.pathname = "/viewDiscounts";
     this.getMap = this.getMap.bind(this);
     this.renderRowOfDiscounts = this.renderRowOfDiscounts.bind(this);
+    this.removeDiscount=this.removeDiscount.bind(this);
+    this.deleteCallBack=this.deleteCallBack.bind(this);
     this.state = {
       mapped: false,
       map: {},
@@ -41,10 +43,9 @@ class ViewDiscounts extends Component {
       else {
         let opt = received.reason;
         if(opt == 'Store_Not_Found') {
-            alert("Store Already Exites");
+            alert("Store Not Exites");
           }
         else if(opt == 'Success') {
-          //alert(JSON.stringify(received.value));
           this.setState({map:received.value,mapped:true});
           }
         }
@@ -132,7 +133,7 @@ class ViewDiscounts extends Component {
       case CLASS_STORE:
         return (<div>
                   <DivBetter style={{margin:4}}>
-                    <p style={{backgroundColor:'#FFC242', height:30, marginTop:0}}> Discont</p>
+                    <p style={{backgroundColor:'#FFC242', height:30, marginTop:0}}> Store Discount</p>
                     <p style={{margin:2}}> Amount: {elemnt.DATA.minAmount} </p>
                     <p style={{margin:2}}> Precentage: {elemnt.DATA.percentage} % </p>
                   </DivBetter>
@@ -169,15 +170,54 @@ class ViewDiscounts extends Component {
     }
   }
 
-  /*this function render a disount */
+
+  deleteCallBack(received){
+    if (received==null)
+        alert("Server Failed");
+      else {
+        let opt = received.reason;
+        if(opt == 'Store_Not_Found') {
+            alert("Store Not Exites");
+        }
+        else if(opt=='Dont_Have_Permission'){
+            alert("you don't have permmission to delete the disocunt")
+        }
+        else if(opt=='Not_Found'){
+          alert("disount not exist")
+        }
+        else if(opt == 'Success') {
+          alert("discount was removed successfully");
+          this.setState({mapped:false});
+          this.getMap();
+        }
+      }
+  }
+
+  removeDiscount(index){
+    let id=this.props.location.state.id;
+    let storeName=this.props.location.state.storeName;
+    send('/store/discount/delete?store='+storeName+'&id='+id,'POST',index,this.deleteCallBack);
+  }
+  /*this function render a discount */
   renderDiscount(index) {
-    let discount = this.state.map[index];
-    //let obj = JSON.parse(discount);
+    let keys =  Object.getOwnPropertyNames(this.state.map);
+    let discount = this.state.map[keys[index]];
+
+    if(discount!==undefined){
+      let out=discount.toString();
+      let b=JSON.parse(out);
+      return (
+        <div>
+            {this.renderDiscountByClass(b)}
+            <Button text="DELETE" onClick={()=>this.removeDiscount(keys[index])}></Button>
+        </div>        
+        )
+    }
+
     return (
       <div>
         <p> {discount} </p>
       </div>)
-    //return this.renderDiscountByClass(test2)
   }
 
   /*the discount render a row of discounts elements */
@@ -197,7 +237,7 @@ class ViewDiscounts extends Component {
   /*this function render the discount map */
   renderDiscountsMap() {
     this.getMap();
-    let keys =  Object.getOwnPropertyNames(this.state);
+    let keys =  Object.getOwnPropertyNames(this.state.map);
     if(keys.length === 0) {
       return <p style={{textAlign:'center'}}> No disconts in store</p>;
     }
@@ -207,7 +247,9 @@ class ViewDiscounts extends Component {
       output.push(
         <div>
           {this.renderRowOfDiscounts(index_key,keys.length)}
-        </div>)  
+          
+        </div>
+        )  
       index_key+=this.elementInRow;
     }
     return output;

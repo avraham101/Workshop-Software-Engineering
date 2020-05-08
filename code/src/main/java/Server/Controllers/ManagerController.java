@@ -57,11 +57,9 @@ public class ManagerController {
     @PostMapping("permissions")
     public ResponseEntity<?> addPermission(@RequestParam(name="id" ) int id,
                                            @RequestBody String managerDataStr){
-        System.out.println("start perm");
         ManagerData managerData = json.fromJson(managerDataStr,ManagerData.class);
         Response<Boolean> response = SingleService.getInstance().addPermissions(id,managerData.getPermissions(),
                             managerData.getStoreName(),managerData.getUserName());
-        System.out.println("done perm");
         return getResponseEntity(response);
 
     }
@@ -72,7 +70,6 @@ public class ManagerController {
     @PostMapping("permissions/delete")
     public ResponseEntity<?> deletePermissions(@RequestParam(name="id" ) int id,
                                                @RequestBody String managerDataStr){
-        System.out.println("in del server");
         ManagerData managerData = json.fromJson(managerDataStr,ManagerData.class);
         Response<Boolean> response = SingleService.getInstance().removePermissions(id,
                 managerData.getPermissions(),

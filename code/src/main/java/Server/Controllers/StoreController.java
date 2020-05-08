@@ -20,7 +20,8 @@ public class StoreController  {
     Gson json ;
 
     public StoreController() {
-        json = new Gson();
+    json=new Gson();
+       // json = builderDiscount.create();
     }
 
     /**
@@ -55,9 +56,7 @@ public class StoreController  {
     public ResponseEntity<?> addDiscountToStore(@RequestParam (name="id" ) int id,
                                                 @RequestParam (name="store") String store,
                                                 @RequestBody String discount){
-        System.out.println("start adding discount");
         Response<Boolean> response = SingleService.getInstance().addDiscount(id,discount,store);
-        System.out.println("finish adding discount");
         return getResponseEntity(response);
     }
 
@@ -77,8 +76,9 @@ public class StoreController  {
     @PostMapping("discount/delete")
     public ResponseEntity<?> deleteDiscountFromStore(@RequestParam (name="store") String store,
                                                      @RequestParam (name="id") int id,
-                                                     @RequestBody Integer discountId){
-        Response<Boolean> response =  SingleService.getInstance().deleteDiscountFromStore(id,discountId,store);
+                                                     @RequestBody String discountId){
+        int disId=json.fromJson(discountId,Integer.class);
+        Response<Boolean> response =  SingleService.getInstance().deleteDiscountFromStore(id,disId,store);
         return getResponseEntity(response);
     }
 
@@ -88,7 +88,6 @@ public class StoreController  {
 
     @GetMapping("discount/get")
     public ResponseEntity<?> getDiscounts(@RequestParam (name="store") String store){
-        System.out.println("?!!@!@?@!#@!#?!@#!@#?!@3");
         Response<HashMap<Integer,String>> response = SingleService.getInstance().viewDiscounts(store);
        return getResponseEntity(response);
     }

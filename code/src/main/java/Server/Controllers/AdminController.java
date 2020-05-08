@@ -30,7 +30,6 @@ public class AdminController {
 
     @PostMapping("init")
     public ResponseEntity<?> initialStart(@RequestBody String string){
-        System.out.println(string);
         Gson json = new Gson();
         UserData user =  json.fromJson(string,UserData.class);
         Boolean state = SingleService.getInstance(user.getName(),user.getPassword()) !=null;
