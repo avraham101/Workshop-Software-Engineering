@@ -1,7 +1,5 @@
 package AcceptanceTests.AcceptanceTestDataObjects;
 
-import Data.Data;
-
 import java.util.Date;
 
 public class PaymentTestData {

@@ -1,7 +1,7 @@
 package LogicManagerTests;
 
-import DataAPI.*;
 import Data.Data;
+import DataAPI.*;
 import Domain.*;
 import Domain.Discount.Discount;
 import Domain.Discount.RegularDiscount;

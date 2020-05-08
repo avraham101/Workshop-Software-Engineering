@@ -5,9 +5,7 @@ import DataAPI.ProductData;
 import Domain.Product;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import static org.junit.Assert.*;
 

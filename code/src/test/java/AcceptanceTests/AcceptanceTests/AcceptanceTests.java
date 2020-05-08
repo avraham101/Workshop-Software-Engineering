@@ -11,8 +11,6 @@ import org.junit.Before;
 
 import java.util.*;
 
-import static junit.framework.TestCase.assertTrue;
-
 public class AcceptanceTests {
     protected  AcceptanceTestsBridge bridge;
     protected  List<UserTestData> users;

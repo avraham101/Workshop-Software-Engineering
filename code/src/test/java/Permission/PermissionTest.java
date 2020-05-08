@@ -7,10 +7,12 @@ import Domain.PermissionType;
 import Domain.Subscribe;
 import org.junit.Before;
 import org.junit.Test;
-//class for Unit test all stubs
+
 import java.util.HashSet;
 
 import static org.junit.Assert.*;
+
+//class for Unit test all stubs
 
 public class PermissionTest {
     private TestData data;

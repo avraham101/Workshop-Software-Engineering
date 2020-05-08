@@ -1,14 +1,16 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.*;
+import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.ReviewTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.Assert.*;
 
 /**
  * use case 3.3 - write review

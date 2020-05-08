@@ -1,16 +1,15 @@
 package Server.Controllers;
 
-import DataAPI.*;
-import Domain.Request;
+import DataAPI.RequestData;
+import DataAPI.Response;
+import DataAPI.StoreData;
 import Service.SingleService;
 import com.google.gson.Gson;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.List;
 

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Button from './Button';
 
 const RED = '#FF0000';
 const GREEN = '#00FF00'

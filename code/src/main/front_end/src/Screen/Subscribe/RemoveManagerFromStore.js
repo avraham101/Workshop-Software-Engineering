@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import BackGroud from "../../Component/BackGrond";
 import Menu from "../../Component/Menu";
 import Title from "../../Component/Title";
 import Button from "../../Component/Button";
-import history from "../history";
 import Row from "../../Component/Row";
 import {send} from '../../Handler/ConnectionHandler';
 import {pass} from '../../Utils/Utils'

@@ -1,7 +1,5 @@
 package Service;
 
-import ch.qos.logback.core.joran.event.SaxEventRecorder;
-
 public class SingleService {
 
     private static ServiceAPI service;

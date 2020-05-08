@@ -1,7 +1,10 @@
 package Service;
 
 import DataAPI.*;
-import Domain.*;
+import Domain.LogicManager;
+import Domain.PermissionType;
+import Domain.Purchase;
+import Domain.Request;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 import org.springframework.stereotype.Service;

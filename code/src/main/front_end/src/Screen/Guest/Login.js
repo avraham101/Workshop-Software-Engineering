@@ -4,7 +4,6 @@ import Menu from '../../Component/Menu';
 import Title from '../../Component/Title';
 import Input from '../../Component/Input';
 import Button from '../../Component/Button';
-import history from "../history";
 import {send} from '../../Handler/ConnectionHandler';
 import {pass} from '../../Utils/Utils'
 

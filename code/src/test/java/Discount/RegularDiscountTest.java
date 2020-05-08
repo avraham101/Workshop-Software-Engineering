@@ -4,7 +4,6 @@ import Data.Data;
 import Data.TestData;
 import Domain.Discount.RegularDiscount;
 import Domain.Product;
-import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Test;
 

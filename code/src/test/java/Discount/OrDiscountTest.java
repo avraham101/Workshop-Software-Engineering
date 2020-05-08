@@ -2,14 +2,12 @@ package Discount;
 
 import Data.Data;
 import Data.TestData;
-import Domain.Discount.AndDiscount;
 import Domain.Discount.Discount;
 import Domain.Discount.OrDiscount;
 import Domain.Product;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

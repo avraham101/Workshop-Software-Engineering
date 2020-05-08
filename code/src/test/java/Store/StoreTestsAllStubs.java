@@ -6,14 +6,13 @@ import DataAPI.ProductData;
 import Domain.*;
 import Domain.Discount.Discount;
 import Stubs.ProductStub;
-
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class StoreTestsAllStubs {
     protected Store store;

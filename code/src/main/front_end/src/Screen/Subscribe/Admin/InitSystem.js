@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import BackGroud from '../../../Component/BackGrond';
-import Menu from '../../../Component/Menu';
 import Title from '../../../Component/Title';
 import Input from '../../../Component/Input';
 import Button from '../../../Component/Button';

@@ -1,7 +1,8 @@
 package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.DiscountTestData;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.List;
 

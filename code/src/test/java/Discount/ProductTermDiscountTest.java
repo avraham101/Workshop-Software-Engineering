@@ -1,6 +1,7 @@
 package Discount;
 
-import Data.*;
+import Data.Data;
+import Data.TestData;
 import Domain.Discount.ProductTermDiscount;
 import Domain.Product;
 import org.junit.Before;

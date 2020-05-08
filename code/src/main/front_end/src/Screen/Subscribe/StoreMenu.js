@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import BackGrond from "../../Component/BackGrond";
 import Menu from "../../Component/Menu";
 import Title from "../../Component/Title";

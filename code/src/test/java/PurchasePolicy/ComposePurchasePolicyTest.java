@@ -2,14 +2,12 @@ package PurchasePolicy;
 
 import Data.Data;
 import Data.TestData;
-import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import Domain.Product;
 import Domain.PurchasePolicy.*;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.ComposePolicys.OrPolicy;
 import Domain.PurchasePolicy.ComposePolicys.XorPolicy;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

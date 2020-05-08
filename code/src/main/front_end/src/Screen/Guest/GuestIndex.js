@@ -4,7 +4,6 @@ import Menu from '../../Component/Menu';
 import Title from '../../Component/Title';
 import Row from '../../Component/Row';
 import {send} from '../../Handler/ConnectionHandler';
-import {pass} from '../../Utils/Utils'
 
 class GuestIndex extends Component {
 

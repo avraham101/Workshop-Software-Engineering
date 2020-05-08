@@ -6,10 +6,11 @@ import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
+import java.util.Map;
+
 import static org.junit.Assert.*;
-
-
-import java.util.*;
 
 /**
  * use case 2.7.4 - add product to the cart

@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import Notifications from '../Component/Notifications';
 import history from '../Screen/history'
 import {pass} from '../Utils/Utils'
-import { send } from '../Handler/ConnectionHandler';
+import {send} from '../Handler/ConnectionHandler';
+
 const WHITE_BLUE= '#B3D1F0'
 class MenuSubscribe extends Component {
   

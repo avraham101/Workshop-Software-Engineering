@@ -2,7 +2,6 @@ package PurchasePolicy;
 
 import Data.Data;
 import Data.TestData;
-import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import Domain.Product;
 import Domain.PurchasePolicy.SystemPurchasePolicy;
