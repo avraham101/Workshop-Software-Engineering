@@ -6,6 +6,7 @@ import Button from "../../../Component/Button";
 import history from "../../history";
 import Input from '../../../Component/Input';
 import {send} from '../../../Handler/ConnectionHandler';
+import {pass} from "../../../Utils/Utils";
 
 
 class WatchUserAndStoreHistory extends Component {
@@ -36,11 +37,13 @@ class WatchUserAndStoreHistory extends Component {
 
     create_Purchases_stores(){
         this.flag=false;
-        send('/admin/storehistory/'+this.state.store+'?id='+0, 'GET','', this.buildPurchases);
+        let id = this.props.location.state.id;
+        send('/admin/storehistory/'+this.state.store+'?id='+id, 'GET','', this.buildPurchases);
     }
 
     create_Purchases_user(){
-        send('/admin/userhistory/'+this.state.user+'?id='+0, 'GET','', this.buildPurchases);
+        let id = this.props.location.state.id;
+        send('/admin/userhistory/'+this.state.user+'?id='+id, 'GET','', this.buildPurchases);
     }
       
       buildPurchases(received){
@@ -107,7 +110,8 @@ class WatchUserAndStoreHistory extends Component {
         send('/store', 'GET','', this.buildStores);
       }
       else{
-        send('/admin/allusers/'+this.state.user+'?id='+0, 'GET','', this.buildUsers);
+          let id = this.props.location.state.id;
+          send('/admin/allusers/'+this.state.user+'?id='+id, 'GET','', this.buildUsers);
       }
     }
   }
@@ -211,14 +215,16 @@ class WatchUserAndStoreHistory extends Component {
     }
 
     render() {
+        let onBack= () => {
+            pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state);
+        }
       this.create_list();
         return (
             <BackGroud>
-                <Menu/>
+                <Menu state={this.props.location.state}/>
                 <body>
                     {this.state.showStores === true ? this.render_stores() : this.render_users()}
                     <Button text="switch" onClick={this.switch_state} />
-                    <Button text="Back to menu" onClick={() => history.push("/")} />
                 </body>
                 {this.renderPurchase()} 
             </BackGroud>
