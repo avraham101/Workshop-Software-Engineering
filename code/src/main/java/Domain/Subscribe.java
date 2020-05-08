@@ -294,7 +294,6 @@ public class Subscribe extends UserState{
     public Response<Boolean> addPermissions(List<PermissionType> permissions, String storeName, String userName) {
         lock.readLock().lock();
         for(Permission p: givenByMePermissions){
-            System.out.println("got lock");
             if(p.getStore().getName().equals(storeName)&&p.getOwner().getName().equals(userName)){
                 boolean added=false;
                 for(PermissionType type: permissions)

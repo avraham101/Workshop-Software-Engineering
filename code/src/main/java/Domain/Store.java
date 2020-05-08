@@ -1,5 +1,6 @@
 package Domain;
 
+import DataAPI.Notification;
 import DataAPI.OpCode;
 import DataAPI.ProductData;
 import DataAPI.Response;
