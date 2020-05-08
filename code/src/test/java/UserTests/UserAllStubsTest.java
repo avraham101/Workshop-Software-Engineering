@@ -1,24 +1,23 @@
 package UserTests;
+
+import Data.Data;
+import Data.TestData;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.*;
-import Data.TestData;
-import Data.Data;
 import Stubs.AdminStub;
 import Stubs.GuestStub;
 import Stubs.SubscribeStub;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.PaymentSystem.ProxyPayment;
-import Systems.SupplySystem.ProxySupply;
-import Systems.SupplySystem.SupplySystem;
 import org.junit.Before;
 import org.junit.Test;
-//class for Unit test all stubs
+
 import java.util.List;
 
 import static org.junit.Assert.*;
+
+//class for Unit test all stubs
 //class for Unit test all stubs
 
 

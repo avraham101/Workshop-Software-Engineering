@@ -1,10 +1,12 @@
 package Domain;
 
+import DataAPI.Notification;
+import DataAPI.OpCode;
 import DataAPI.ProductData;
+import DataAPI.Response;
 import Domain.Discount.Discount;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
-import DataAPI.*;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

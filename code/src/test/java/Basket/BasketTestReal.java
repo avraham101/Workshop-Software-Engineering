@@ -5,12 +5,13 @@ import Data.TestData;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
-import Domain.*;
+import Domain.Basket;
+import Domain.Product;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
+import Domain.Store;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

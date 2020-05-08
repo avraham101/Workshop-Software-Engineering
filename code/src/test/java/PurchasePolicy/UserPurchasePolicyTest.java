@@ -2,13 +2,11 @@ package PurchasePolicy;
 
 import Data.Data;
 import Data.TestData;
-import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import Domain.Product;
+import Domain.PurchasePolicy.UserPurchasePolicy;
 import org.junit.Before;
 import org.junit.Test;
-import Domain.PurchasePolicy.UserPurchasePolicy;
-
 
 import java.util.HashMap;
 

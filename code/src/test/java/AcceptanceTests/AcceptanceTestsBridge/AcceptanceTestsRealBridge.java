@@ -1,12 +1,19 @@
 package AcceptanceTests.AcceptanceTestsBridge;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
-import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.*;
+import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.CategoryFilterTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.PriceRangeFilterTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.ProductNameFilterTestData;
 import DataAPI.*;
-import Domain.*;
+import Domain.PermissionType;
+import Domain.Purchase;
+import Domain.Request;
+import Domain.Review;
 import Service.ServiceAPI;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
+
 import java.util.*;
 
 public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {

@@ -1,7 +1,5 @@
 package AcceptanceTests.AcceptanceTestDataObjects;
 
-import java.util.Objects;
-
 public class ApplicationToStoreTestData {
     private String writer;
     private String content;

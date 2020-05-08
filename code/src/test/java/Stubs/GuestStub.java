@@ -1,12 +1,11 @@
 package Stubs;
 
 import DataAPI.*;
-import Domain.*;
 import Domain.Discount.Discount;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.SupplySystem.SupplySystem;
+import Domain.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
 public class GuestStub extends Guest {
 

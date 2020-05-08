@@ -2,10 +2,12 @@ package Guest;
 
 import Data.Data;
 import Data.TestData;
-import DataAPI.*;
+import DataAPI.DeliveryData;
+import DataAPI.PaymentData;
+import DataAPI.ProductData;
+import DataAPI.StoreData;
 import Domain.*;
 import Stubs.CartStub;
-import Stubs.SubscribeStub;
 import org.junit.Before;
 import org.junit.Test;
 

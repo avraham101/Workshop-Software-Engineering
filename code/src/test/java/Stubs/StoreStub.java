@@ -1,10 +1,12 @@
 package Stubs;
 
-import DataAPI.*;
+import DataAPI.OpCode;
 import DataAPI.ProductData;
-import Domain.*;
+import DataAPI.Response;
 import Domain.Discount.Discount;
-import Domain.PurchasePolicy.PurchasePolicy;
+import Domain.Permission;
+import Domain.Review;
+import Domain.Store;
 
 public class StoreStub extends Store {
 

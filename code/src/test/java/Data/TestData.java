@@ -5,13 +5,12 @@ import Domain.*;
 import Domain.Discount.Discount;
 import Domain.Discount.RegularDiscount;
 import Domain.Discount.StoreDiscount;
-import Domain.PurchasePolicy.*;
-
 import Domain.Discount.Term.BaseTerm;
-import java.util.*;
+import Domain.PurchasePolicy.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class TestData {

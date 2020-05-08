@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import AddOwnerToStore from "./AddOwnerToStore";
 
 class AddManagerToStore extends AddOwnerToStore {

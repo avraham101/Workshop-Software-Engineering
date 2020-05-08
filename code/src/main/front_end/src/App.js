@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Router, Route, Switch, withRouter } from 'react-router-dom';
+import {Route, Router, Switch, withRouter} from 'react-router-dom';
 import GuestIndex from './Screen/Guest/GuestIndex'
 import Register from './Screen/Guest/Register'
 import Login from './Screen/Guest/Login'
@@ -30,12 +30,14 @@ import WatchUserAndStoreHistory from './Screen/Subscribe/Admin/WatchUserAndStore
 import SubscribeIndex from './Screen/Subscribe/SubscribetIndex';
 import EditProductInStore from './Screen/Subscribe/EditProudctInStore';
 import ViewDiscounts from './Screen/Subscribe/ViewDiscounts';
+
 class App extends Component {
 
   render() {
     return (<Router history={history}>
             <Switch>
               <Route path="/admin" component={withRouter(InitSystem)} exact/>
+              <Route path="/admin/storehistory" component={withRouter(WatchUserAndStoreHistory)} exact/>
               <Route path="/register" component={withRouter(Register)} />
               <Route path="/searchAndFilter" component={withRouter(SearchAndFilterProducts)}/>
               <Route path="/login" component={withRouter(Login)} />

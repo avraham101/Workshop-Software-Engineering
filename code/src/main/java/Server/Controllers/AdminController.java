@@ -6,19 +6,13 @@ import DataAPI.UserData;
 import Domain.Purchase;
 import Service.SingleService;
 import com.google.gson.Gson;
-import com.sun.org.apache.xpath.internal.axes.SelfIteratorNoPredicate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.HttpURLConnection;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("admin")

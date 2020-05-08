@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import history from '../Screen/history';
 import Button from '.././Component/Button';
 import Row from './Row';
 import Title from '.././Component/Title';

@@ -1,7 +1,4 @@
 import React, {Component} from 'react';
-import history from '../Screen/history'
-import {pass} from '../Utils/Utils'
-import MenuSubscribe from './MenuSubscribe';
 
 const WHITE_BLUE= '#B3D1F0'
 class Notifications extends Component {

@@ -1,6 +1,10 @@
 package Service;
 
 import DataAPI.*;
+import Domain.LogicManager;
+import Domain.PermissionType;
+import Domain.Purchase;
+import Domain.Request;
 import Domain.*;
 import Publisher.Publisher;
 import Systems.PaymentSystem.PaymentSystem;
