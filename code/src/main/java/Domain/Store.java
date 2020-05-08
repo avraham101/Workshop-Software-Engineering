@@ -408,4 +408,10 @@ public class Store {
     }
 
 
+    public void sendManagersNotifications(List<ProductData> productData) {
+        for(String manager: permissions.keySet()){
+            Notification notification=new Notification(productData,OpCode.Buy_Product);
+            permissions.get(manager).getOwner().sendNotification(notification);
+        }
+    }
 }

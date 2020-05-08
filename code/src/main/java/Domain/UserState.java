@@ -316,4 +316,5 @@ public abstract class UserState {
      */
     public abstract Response<List<String>> getManagersOfStoreUserManaged(String storeName);
 
+    public abstract void deleteReceivedNotifications(List<Integer> notificationsId);
 }

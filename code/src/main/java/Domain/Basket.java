@@ -65,6 +65,10 @@ public class Basket {
      * @return - true if added, false if not
      */
     public boolean addProduct(Product product, int amount) {
+        for(Product p:products.keySet()){
+            if(p.getName().equals(product.getName()))
+                return false;
+        }
         products.put(product,amount);
         return true;
     }

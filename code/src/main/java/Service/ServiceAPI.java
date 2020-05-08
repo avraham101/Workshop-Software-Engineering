@@ -5,6 +5,8 @@ import Domain.LogicManager;
 import Domain.PermissionType;
 import Domain.Purchase;
 import Domain.Request;
+import Domain.*;
+import Publisher.Publisher;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 import org.springframework.stereotype.Service;
@@ -447,6 +449,13 @@ public class ServiceAPI {
         return logicManager.getManagersOfStoreUserManaged(id,storeName);
     }
 
+    public void setPublisher(Publisher pub) {
+        logicManager.setPublisher(pub);
+    }
+
+    public void deleteRecivedNotifications(int id,List<Integer> notificationsId){
+        logicManager.deleteReceivedNotifications(id,notificationsId);
+    }
     /**
      * get all the users for the admin
      * @param id - the id of the admin

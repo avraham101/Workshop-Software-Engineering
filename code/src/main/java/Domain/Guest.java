@@ -287,4 +287,9 @@ public class Guest extends UserState {
     public Response<List<String>> getManagersOfStoreUserManaged(String storeName) {
         return new Response<>(null,OpCode.Not_Login);
     }
+
+    @Override
+    public void deleteReceivedNotifications(List<Integer> notificationsId) {
+
+    }
 }

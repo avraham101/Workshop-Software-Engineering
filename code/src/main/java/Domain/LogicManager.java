@@ -10,6 +10,11 @@ import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
 import Systems.SupplySystem.SupplySystem;
+import Publisher.Publisher;
+import Systems.*;
+import Systems.PaymentSystem.*;
+import Systems.SupplySystem.*;
+import Utils.Utils;
 import Utils.InterfaceAdapter;
 import Utils.Utils;
 import com.google.gson.Gson;
@@ -32,6 +37,7 @@ public class LogicManager {
     private AtomicInteger requestIdGenerator;
     private final Object openStoreLocker=new Object();
     private Gson gson;
+    private Publisher publisher;
 
     /**
      * test constructor, mock systems
@@ -212,6 +218,7 @@ public class LogicManager {
         else
             subscribe = new Subscribe(userName, password);
         boolean output = this.subscribes.putIfAbsent(userName,subscribe)==null;
+        subscribe.setPublisher(publisher);
         if(output==true)
             return new Response<>(output, OpCode.Success);
         return new Response<>(output,OpCode.User_Name_Already_Exist);
@@ -238,6 +245,7 @@ public class LogicManager {
                 password = hashSystem.encrypt(password);
                 if (subscribe.getPassword().compareTo(password) == 0) {
                     boolean output = user.login(subscribe);
+                    subscribe.sendAllNotifications();
                     return new Response<>(output, OpCode.Success);
                 }
             } catch (NoSuchAlgorithmException e) {
@@ -245,6 +253,7 @@ public class LogicManager {
                         "Fail to login the user",new Object[]{userName, password});
             }
         }
+
         return new Response<>(false,OpCode.User_Not_Found);
     }
 
@@ -527,14 +536,14 @@ public class LogicManager {
         User current=connectedUsers.get(id);
         if (storeName != null)
             store = stores.get(storeName);
-        if (store != null) {
-            Product product = store.getProduct(productName);
-            if (product != null && amount > 0 && amount <= product.getAmount()) {
-                product = product.clone();
-                //TODO check that the product is not in the basket
-                result = current.addProductToCart(store, product, amount);
-            }
+        if(store==null)
+            return new Response<>(false, OpCode.Store_Not_Found);
+        Product product = store.getProduct(productName);
+        if(product==null||amount <= 0 || amount > product.getAmount()){
+            return new Response<>(false, OpCode.Not_Found);
         }
+        product = product.clone();
+        result = current.addProductToCart(store, product, amount);
         if (result) {
             return new Response<>(true, OpCode.Success);
         }
@@ -587,7 +596,21 @@ public class LogicManager {
         }
         //5) update the purchase for both store and user (synchronized)
         current.savePurchase(paymentData.getName());
+        sendNotificationsToAllStoreManagers(deliveryData.getProducts());
         return new Response<>(true, OpCode.Success);
+    }
+
+    private void sendNotificationsToAllStoreManagers(List<ProductData> products) {
+        HashMap <String,List<ProductData>> productsAndStores=new HashMap<>();
+        for(ProductData p:products){
+            if(!productsAndStores.containsKey(p.getStoreName()))
+                productsAndStores.put(p.getStoreName(),new ArrayList<>());
+            productsAndStores.get(p.getStoreName()).add(p);
+        }
+        for(String storeName:productsAndStores.keySet()){
+            Store store=stores.get(storeName);
+            store.sendManagersNotifications(productsAndStores.get(storeName));
+        }
     }
 
     /**
@@ -630,6 +653,7 @@ public class LogicManager {
             current.cancelCart();
             return new Response<>(false, OpCode.Supply_Reject);
         }
+
         return new Response<>(true,OpCode.Success);
     }
 
@@ -853,7 +877,7 @@ public class LogicManager {
             System.out.println(ignored.getCause());
         }
         return null;
-     }
+    }
 
     /**
      * 4.2.1.2 - remove discount
@@ -1073,8 +1097,16 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","viewStoreRequest",
                 "store owner view the requests of the store", new Object[] {storeName});
         User current=connectedUsers.get(id);
-        if (storeName!=null && stores.containsKey(storeName))
-            return current.replayToRequest(storeName, requestID, content) ;
+        if (storeName!=null && stores.containsKey(storeName)){
+            Response<Request> response=current.replayToRequest(storeName, requestID, content) ;
+            Request request=response.getValue();
+            if(request!=null){
+                Notification<Request> notification=new Notification<>(request,OpCode.Reply_Request);
+                subscribes.get(request.getSenderName()).sendNotification(notification);
+            }
+            return response;
+        }
+
         return new Response<>(null,OpCode.Store_Not_Found);
     }
 
@@ -1205,5 +1237,13 @@ public class LogicManager {
         return new Response<>(users,OpCode.Success);
     }
 
+    public void setPublisher(Publisher pub) {
+        this.publisher=pub;
+    }
 
+    public void deleteReceivedNotifications(int id, List<Integer> notificationsId) {
+        User current=connectedUsers.get(id);
+        current.deleteReceivedNotifications(notificationsId);
+
+    }
 }

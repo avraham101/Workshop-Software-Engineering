@@ -58,8 +58,16 @@ class AddProductToCart extends Component {
       alert("Server Failed");
     else {
       let opt = ''+ received.reason;
-      if(opt == 'Invalid_Product') {
+      if(opt == 'Not_Found') {
         alert("Product dosen't in the store any more. Went to menu");
+        pass(this.props.history,'/subscribe',this.pathname,this.props.location.state);
+      }
+      else if(opt == 'Invalid_Product') {
+        alert("Product is already in your cart, if you wasn't to add more please edit your cart. Went to menu");
+        pass(this.props.history,'/subscribe',this.pathname,this.props.location.state);
+      }
+      else if(opt == 'Store_Not_Found') {
+        alert("the store isn't exiist please try with a different store. Went to menu");
         pass(this.props.history,'/subscribe',this.pathname,this.props.location.state);
       }
       else if(opt == 'Success') {

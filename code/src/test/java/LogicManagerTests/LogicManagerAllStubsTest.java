@@ -1869,18 +1869,12 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testGetAllUsers() {
         setUpRegisteredUser();
+        Subscribe sub=data.getSubscribe(Data.ADMIN);
+        logicManager.login(data.getId(Data.ADMIN),sub.getName(),sub.getPassword());
         List<String> users = logicManager.getAllUsers(data.getId(Data.ADMIN)).getValue();
         assertNotNull(users);
-        assertEquals(data.getSubscribe(Data.VALID).getName(),users.get(0));
+        assertTrue(users.contains(data.getSubscribe(Data.VALID).getName()));
     }
 
-    /**
-     * get all the users for the admin
-     */
-    @Test
-    public void testGetAllUsersNotAnAdmin() {
-        setUpRegisteredUser();
-        List<String> users = logicManager.getAllUsers(data.getId(Data.VALID)).getValue();
-        assertTrue(users.isEmpty());
-    }
+
 }
