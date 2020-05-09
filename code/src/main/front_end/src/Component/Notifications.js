@@ -47,7 +47,7 @@ export class Notifications extends Component {
       replays.push(element.value); //Request
       replays_notification.push(element.id); //id of notification
     }
-    else if(opcode==='Removed_From_Managment') {
+    else if(opcode==='Removed_From_Management') {
       managment.push(element.value); //String store name
       managment_notification.push(element.id); //id of notification
     }
@@ -135,7 +135,7 @@ export class Notifications extends Component {
       return <p style={{textAlign:'center'}}> No Replays Notification Yet </p>;
     replays.forEach(element=>{
         output.push(
-          <div style={{border: "2px solid black", padding:2}}>
+          <div style={{border: "2px solid black", padding:2, backgroundColor:'white'}}>
             <p style={{textAlign:'center', padding: 4}}> Store Name: {element.storeName } </p>
             <p style={{textAlign:'center', padding: 4}}> Content: {element.content} </p>
             <p style={{textAlign:'center', padding: 4}}> Comment: {element.comment} </p>
@@ -153,7 +153,7 @@ export class Notifications extends Component {
     managment.forEach(element=>{
       output.push(
         <div style={{border: "2px solid black", padding:2}}>
-          <p style={{textAlign:'center', padding: 4}}> Store Name: {element} </p>
+          <p style={{textAlign:'center', padding: 4, backgroundColor:'white'}}> Store Name: {element} </p>
         </div>
       )
     })
