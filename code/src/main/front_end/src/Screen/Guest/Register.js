@@ -37,13 +37,13 @@ class Register extends Component {
       }
       else {
         let opt = '' + received.reason;
-        if(opt === "Invalid_Register_Details‏") {
+        if("Invalid_Register_Details‏".startsWith(opt,0)) {
           this.setState({valid_error: 'name or password isnt valid'});
         }
-        else if (opt === "User_Name_Already_Exist‏") {
+        else if ("User_Name_Already_Exist‏".startsWith(opt,0)) {
           this.setState({valid_error:'user already exits'});
         }
-        else if (opt === "Hash_Fail") {
+        else if ("Hash_Fail".startsWith(opt,0)) {
           this.setState({valid_error:'system error, invalid data'});
         }
         else if(opt ==='Success'){
@@ -65,7 +65,7 @@ class Register extends Component {
           <Menu state={this.props.location.state}/>
           <Title title = 'Want to Register?'/>
           <div>
-            <Input title = 'User Name:' error={this.state.valid_error} type="text" value={this.state.name} onChange={this.handleChangeName} />
+            <Input title = 'User Name:' error={this.state.valid_error !== undefined? "": this.state.valid_error } type="text" value={this.state.name} onChange={this.handleChangeName} />
             <Input title = 'Password:' error={this.state.valid_error} type="password" value={this.state.password} onChange={this.handleChangePassword} />
             <Button text = 'Submit' onClick={this.handleSubmit}/>
           </div>

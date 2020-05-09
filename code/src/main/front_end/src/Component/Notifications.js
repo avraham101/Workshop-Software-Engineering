@@ -18,6 +18,7 @@ export function turnOf(){
   flag_connected = false;
 };
 
+
 export class Notifications extends Component {
   
   constructor(props){

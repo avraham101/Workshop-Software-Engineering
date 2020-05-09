@@ -5,6 +5,7 @@ import Title from "../../Component/Title";
 import Row from "../../Component/Row";
 import {send} from '../../Handler/ConnectionHandler';
 import {pass} from '../../Utils/Utils';
+import Button from "../../Component/Button";
 
 class ViewStoresAndProducts extends Component {
   
@@ -14,6 +15,7 @@ class ViewStoresAndProducts extends Component {
     this.buildStores = this.buildStores.bind(this);
     this.buildProducts = this.buildProducts.bind(this);
     this.create_products = this.create_products.bind(this);
+    this.renderDiscountAndPolicyButtons = this.renderDiscountAndPolicyButtons.bind(this);
     this.pathname = "/viewStoresAndProducts";
     this.state = {
       stores: [],
@@ -29,7 +31,7 @@ class ViewStoresAndProducts extends Component {
       alert("Server Failed");
     else {
       let opt = ''+ received.reason;
-      if(opt == 'Success') {
+      if(opt === 'Success') {
         this.setState({stores:received.value})
       }
       else {
@@ -48,11 +50,11 @@ class ViewStoresAndProducts extends Component {
       alert("Server Failed");
     else {
       let opt = ''+ received.reason;
-      if(opt == 'Success') {
+      if(opt === 'Success') {
         this.setState({products:received.value})
       }
-      else if(opt == 'Store_Not_Found‏') {
-        alert('Store Not Found. Soryy.')
+      else if(opt === 'Store_Not_Found‏') {
+        alert('Store Not Found. Sorry.')
         this.setState({stores_updated:true})
         this.create_stores();
       }
@@ -107,20 +109,19 @@ class ViewStoresAndProducts extends Component {
   render_product_table() {
     let state = this.props.location.state;
     let onClick = (element) => {
-      let product = {
-        productName:element.productName,
-        storeName:element.storeName,
-        category:element.category,
-        amount:element.amount,
-        price:element.price,
-        purchaseType:element.purchaseType,
-      }
-      state['product'] = product;
+      state['product'] = {
+        productName: element.productName,
+        storeName: element.storeName,
+        category: element.category,
+        amount: element.amount,
+        price: element.price,
+        purchaseType: element.purchaseType,
+      };
       pass(this.props.history,'/addToCart',this.pathname,state)
     };
-    let proudcts = this.state.products;
+    let products = this.state.products;
     let output = [];
-    proudcts.forEach((element) =>
+    products.forEach((element) =>
       output.push(
         <Row onClick={()=>onClick(element)}>
           <th> {element.productName} </th>
@@ -134,10 +135,32 @@ class ViewStoresAndProducts extends Component {
     return output;
   }
 
+  renderDiscountAndPolicyButtons(){
+    return this.props.location.state.logged ? "" :
+        (<table style={style_table}>
+          <tr>
+            <th>
+              <Button text="View Store Discounts" onClick={
+                () => pass(this.props.history,"/viewDiscounts",this.pathname,this.state)
+              }>
+              </Button>
+            </th>
+            <th>
+              <Button text="View Store Policies" onClick={
+                () => pass(this.props.history,'/viewPolicies',this.pathname,this.state)
+              }>
+
+              </Button>
+            </th>
+          </tr>
+        </table>);
+  }
+
   render_product() {
     return (
       <div>
-        <h3>{this.state.store}</h3>
+        <h3 style={{textAlign: "center"}}> Store: {this.state.store}</h3>
+        {this.renderDiscountAndPolicyButtons()}
         <table style={style_table}>
           <tr>
             <th style={under_line}> Product Name </th>
