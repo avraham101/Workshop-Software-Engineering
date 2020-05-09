@@ -351,15 +351,17 @@ class ManageDiscount extends Component {
       return <p style={{textAlign:'center'}}> No Proudct Select to Term </p>
     let onClickTarget = () => {
       this.targetProductTerm = this.state.selectedProudctTerm;
+      this.targetProductTerm.amount = this.state.target_amount;
       this.setState({
         selectedProudctTerm:undefined,
+        target_amount:0,
       })
     }
     let onClickTerm = () => {
       if(this.selectedProductsTerms!==undefined) {
         let data = {}
         data['product'] = this.state.selectedProudctTerm.productName;
-        data['amount'] = this.state.selectedProudctTerm.amount;
+        data['amount'] = this.state.target_amount;
         let object = {CLASSNAME: CLASS_BASIC_TERM, DATA:data}
         this.selectedProductsTerms.push(object);
       }
