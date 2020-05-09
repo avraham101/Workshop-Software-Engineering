@@ -9,12 +9,17 @@ import Button from "../../Component/Button";
 
 class ViewStoresAndProducts extends Component {
   
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.handleStores = this.handleStores.bind(this);
     this.buildStores = this.buildStores.bind(this);
     this.buildProducts = this.buildProducts.bind(this);
     this.create_products = this.create_products.bind(this);
+    this.create_stores = this.create_stores.bind(this);
+    this.render_stores_table = this.render_stores_table.bind(this);
+    this.render_stores = this.render_stores.bind(this);
+    this.render_product_table = this.render_product_table.bind(this);
+    this.render_product = this.render_product.bind(this);
     this.renderDiscountAndPolicyButtons = this.renderDiscountAndPolicyButtons.bind(this);
     this.pathname = "/viewStoresAndProducts";
     this.state = {
@@ -136,24 +141,24 @@ class ViewStoresAndProducts extends Component {
   }
 
   renderDiscountAndPolicyButtons(){
-    let state = this.props.location.state;
-    state.storeName = this.state.store;
-    return this.props.location.state.logged ? "" :
-        (<table style={style_table}>
+    let s = this.props.location.state;
+    s["storeName"] = this.state.store;
+    let onBackDiscounts = () => pass(this.props.history,"/viewDiscounts",this.pathname,s);
+    let onBackPolicies = () => pass(this.props.history,'/viewPolicies',this.pathname,s);
+    return(
+        <table style={style_table}>
           <tr>
             <th>
-              <Button text="View Store Discounts" onClick={
-                () => pass(this.props.history,"/viewDiscounts",this.pathname,state)}>
+              <Button text="View Store Discounts" onClick={onBackDiscounts}>
               </Button>
             </th>
             <th>
-              <Button text="View Store Policies" onClick={
-                () => pass(this.props.history,'/viewPolicies',this.pathname,state)}>
-
+              <Button text="View Store Policies" onClick={onBackPolicies}>
               </Button>
             </th>
           </tr>
-        </table>);
+        </table>
+    );
   }
 
   render_product() {
@@ -176,6 +181,7 @@ class ViewStoresAndProducts extends Component {
   }
 
   render() {
+   // if(this.state.id === '') this.setState({id:this.props.location.state.id});
     return (
       <BackGroud>
         <Menu state={this.props.location.state} />
