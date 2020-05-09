@@ -44,8 +44,8 @@ class Login extends Component {
         else if(opt ==='Success'){
           let state = this.props.location.state;
           state['name']= this.state.name;
-          state['logged']=true;
-          pass(this.props.history,'/subscribe',this.pathname, state)  
+          state['logged']=true
+          pass(this.props.history,'/subscribe',this.pathname, state)
         }
       }
     }
