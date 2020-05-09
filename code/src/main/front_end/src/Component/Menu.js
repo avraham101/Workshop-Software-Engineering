@@ -23,6 +23,7 @@ class Menu extends Component {
   renderGuest() {
     return (
         <header style={{backgroundColor: '#FFC242', borderBottom:'2px solid #B38118'}}>
+          <title> Trading System </title>
           {/*<p>{(this.props.state!=undefined)?this.props.state.id:''}</p>*/}
           <table style={style_sheet}>
           <tr style={{width:'100%'}}>

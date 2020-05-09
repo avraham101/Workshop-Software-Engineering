@@ -874,7 +874,9 @@ public class LogicManager {
                 return d;
         }
         catch (Exception ignored){
-            System.out.println(ignored.getCause());
+            this.loggerSystem.writeError("LogicManager",
+                    "makeDiscountFromData",ignored.getMessage(),
+                    new Object[]{discountData});
         }
         return null;
     }
@@ -922,7 +924,11 @@ public class LogicManager {
             if (policy != null && policy.isValid())
                 return policy;
         }
-        catch (Exception e){}
+        catch (Exception e){
+            this.loggerSystem.writeError("LogicManager",
+                    "makePolicyFromData",e.getMessage(),
+                    new Object[]{policyData});
+        }
         return null;
     }
 
@@ -1238,6 +1244,10 @@ public class LogicManager {
     }
 
     public void setPublisher(Publisher pub) {
+        for(String s: this.subscribes.keySet()) {
+            Subscribe sub = this.subscribes.get(s);
+            sub.setPublisher(pub);
+        }
         this.publisher=pub;
     }
 

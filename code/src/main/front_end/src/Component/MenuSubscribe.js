@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import history from '../Screen/history'
 import {pass} from '../Utils/Utils'
 import {send} from '../Handler/ConnectionHandler';
+import {closeSocket} from '../Handler/WebSocketHandler'
+import {Notifications, turnOf} from './Notifications';
 
 const WHITE_BLUE= '#B3D1F0'
 class MenuSubscribe extends Component {
@@ -79,7 +81,9 @@ class MenuSubscribe extends Component {
 
   logout() {
     let id = this.props.state.id;
+    turnOf();
     send('/home/logout?id='+id,"POST",'',()=>{});
+    closeSocket();
     pass(history,"/",this.fromPath,{id:id});
   }
 
@@ -129,6 +133,7 @@ class MenuSubscribe extends Component {
             { this.state.admin ? this.getAdminWatchPurchaseHistoryHtml() : ""}
           </tr>
         </table>
+        <Notifications id={this.props.state.id}/>
         </header>
     );
   }

@@ -4,8 +4,6 @@ import Title from '../../Component/Title';
 import Row from '../../Component/Row';
 import {send} from '../../Handler/ConnectionHandler';
 import MenuSubscribe from '../../Component/MenuSubscribe';
-import Notifications from '../../Component/Notifications';
-
 class SubscribeIndex extends Component {
 
   constructor(props) {
@@ -66,7 +64,7 @@ class SubscribeIndex extends Component {
     return (
       <BackGrond>
           <MenuSubscribe state={this.props.location.state}/>
-          <Notifications refresh={()=>this.setState({})}/>
+          {/*<Notifications id={this.props.location.state.id}/>*/}
           <body>
             <Title title={"Welcome user "+this.props.location.state.name}/>
             <div >

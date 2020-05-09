@@ -18,8 +18,7 @@ import java.util.List;
 @RequestMapping("admin")
 public class AdminController {
 
-    @GetMapping
-    @ResponseBody
+    @RequestMapping
     public String getAdminPage(){
         return "admin";
     }

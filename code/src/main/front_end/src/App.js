@@ -6,7 +6,6 @@ import Login from './Screen/Guest/Login'
 import history from './Screen/history'
 import StoreOwnerWatchHistory from './Screen/Subscribe/StoreOwnerWatchHistory'
 import UserWatchPurchasesHistory from './Screen/Subscribe/UserWatchPurchasesHistory'
-import InitSystem from './Screen/Subscribe/Admin/InitSystem'
 import ViewStoresAndProducts from "./Screen/Guest/ViewStoresAndProducts";
 import ViewProductsInCart from './Screen/Guest/ViewProductsInCart';
 import AddProductToCart from './Screen/Guest/AddProductToCart';
@@ -36,7 +35,6 @@ class App extends Component {
   render() {
     return (<Router history={history}>
             <Switch>
-              <Route path="/admin" component={withRouter(InitSystem)} exact/>
               <Route path="/admin/storehistory" component={withRouter(WatchUserAndStoreHistory)} exact/>
               <Route path="/register" component={withRouter(Register)} />
               <Route path="/searchAndFilter" component={withRouter(SearchAndFilterProducts)}/>
@@ -53,8 +51,8 @@ class App extends Component {
               <Route path="/buyCart" component={withRouter(BuyCart)} />
               <Route path="/openStore" component={withRouter(OpenStore)} />
               <Route path="/manageProducts" component={withRouter(ManageProductInStore)} />
-              <Route path="/manageDiscount" component={withRouter(ManageDiscount)} exact/>
-              <Route path="/viewDiscounts" component={withRouter(ViewDiscounts)} exact/>
+              <Route path="/manageDiscount" component={withRouter(ManageDiscount)}/>
+              <Route path="/viewDiscounts" component={withRouter(ViewDiscounts)}/>
               <Route path="/storeManagement" component={withRouter(StoreManagement)} />
               <Route path="/storeMenu" component={withRouter(StoreMenu)} />
               <Route path="/removeManagerFromStore" component={withRouter(RemoveManagerFromStore)} />
