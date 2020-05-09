@@ -115,8 +115,15 @@ class ViewAndReplyRequests extends Component{
                             alert(`Send response to request ${requestId} Successfully!`) :
                             alert(`Cannot send response to request ${requestId}!`)
                     }
-                    else {
-                        alert(`Cannot send response to request ${requestId}!`)
+                    else if(opcode=='InvalidRequest'){
+                        alert("invalid comment: please, send non empty cooment ");
+                    }
+                    else if(opcode=='Dont_Have_Permission'){
+                        alert("you don't have permission for that action");
+                        pass(this.props.history,'/storeManagement','',this.props.location.state);
+                    }
+                    else{
+                        alert("store not found, wrong details");
                     }
                 }
             });
