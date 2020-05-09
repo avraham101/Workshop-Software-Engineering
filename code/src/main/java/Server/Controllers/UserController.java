@@ -5,6 +5,7 @@ import DataAPI.*;
 import Domain.Purchase;
 import Service.SingleService;
 import com.google.gson.Gson;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -130,6 +131,12 @@ public class UserController {
             list.add((int)d);//
         SingleService.getInstance().deleteRecivedNotifications(id,list);
         return getResponseEntity(new Response<>("", OpCode.Success));
+    }
+
+    @GetMapping("home/notifications")
+    public ResponseEntity<?> getNotifications(@RequestParam(name="id") int id){
+        Response<Boolean>  response =SingleService.getInstance().getMyNotification(id);
+        return getResponseEntity(response);
     }
 
     private ResponseEntity<?> getResponseEntity(Response<?> response) {

@@ -628,5 +628,11 @@ public class Subscribe extends UserState{
 
     }
 
+    @Override
+    public Boolean sendMyNotifications() {
+        sendAllNotifications();
+        return true;
+    }
+
 
 }
