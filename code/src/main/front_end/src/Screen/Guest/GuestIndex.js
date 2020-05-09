@@ -1,48 +1,49 @@
 import React, {Component} from 'react';
-import history from '../history';
 import BackGrond from '../../Component/BackGrond';
 import Menu from '../../Component/Menu';
 import Title from '../../Component/Title';
 import Row from '../../Component/Row';
+import {send} from '../../Handler/ConnectionHandler';
 
 class GuestIndex extends Component {
 
+  constructor(props) {
+    super(props);
+    this.pathname = "/"
+    this.state = {
+      id: -1,
+      error:'',
+      stores:[],
+      flag:false,
+    };
+    this.handleConnect = this.handleConnect.bind(this);
+    this.handleGetId = this.handleGetId.bind(this);
+    this.buildStores = this.buildStores.bind(this);
+    this.create_stores = this.create_stores.bind(this);
+  }
+
+  buildStores(received) {
+    if(received==null)
+      alert("Server Failed");
+    else {
+      let opt = ''+ received.reason;
+      if(opt == 'Success') {
+        this.setState({stores:received.value, flag:true})
+      }
+      else {
+        alert(opt+", Cant Add Product to Store");
+      }
+    }
+  };
+
   create_stores() {
-    let output = []
-    for(let i =0; i<5;i++) {
-      output.push({
-        name:'Store '+i,
-        description:'Description '+i
-      })
-    }
-    return output
-  }
-
-  create_products() {
-    let output = []
-    for(let i =0; i<5;i++) {
-      output.push({
-        productName:'product '+i,
-        storeName:'store '+i,
-        category:'category '+i,
-        reviews: [],
-        amount: i,
-        price:i,
-        priceAfterDiscount: i,
-        purchaseType:'purchase type '+i,
-      })
-    }
-    return output
-  }
-
-  click_me() {
-    history.push('/register')
+    if(this.state.flag===false)
+      send('/store', 'GET', '', this.buildStores)  
   }
 
   render_stores_table() {
-      let stores = this.create_stores();
       let output = [];
-      stores.forEach( element =>
+      this.state.stores.forEach( element =>
         output.push(
           <Row>
             <th> {element.name} </th>
@@ -64,60 +65,39 @@ class GuestIndex extends Component {
     </table>);
   }
 
-  pass(url, data) {
-    this.props.history.push({
-      pathname: url,
-      fromPath: './',
-      data: data // your data array of objects
-    });
+  handleConnect(){
+    send('/home/connect','GET','',this.handleGetId)
   }
 
-  render_product_table(){
-    let proudcts = this.create_products();
-    let output = [];
-    proudcts.forEach( element =>
-      output.push(
-        <Row onClick={()=>this.pass('/addToCart', element)}>
-          <th> {element.productName} </th>
-          <th> {element.storeName} </th>
-          <th> {element.category} </th>
-          <th> {element.amount} </th>
-          <th> {element.price} </th>
-          <th> {element.purchaseType} </th>
-        </Row>
-      )
-    )
-    return output;
-  }
-
-  render_product() {
-    return (
-    <table style={style_table}>
-        <tr>
-          <th style = {under_line}> Product Name </th>
-          <th style = {under_line}> Store Name </th>
-          <th style = {under_line}> Category </th>
-          <th style = {under_line}> Amount </th>
-          <th style = {under_line}> Price </th>
-          <th style = {under_line}> Purchase Type </th>
-        </tr>
-        {this.render_product_table()}
-    </table>);
-  }
+  handleGetId(received) {
+    if(received === null)
+      this.props.location.state = {id:-1};
+    else {
+      let opt = '' + received.reason;
+      if (opt !== "Success") {
+        this.props.location.state = {id:-1};
+      } 
+      else {
+        this.props.location.state = {id:received.value};
+      }
+    }
+    this.setState({});
+  };
 
   render() {
+    if(this.props.location.state === undefined)
+      this.handleConnect();
+    if(this.props.location.state === undefined || this.props.location.state.id==-1)
+      return <p style={{color:'red'}}>Page not found: 404 </p>
+    this.create_stores();
     return (
       <BackGrond>
-          <Menu/>
+          <Menu state={this.props.location.state}/>
           <body>
             <Title title="Welcome Guest"/>
             <div >
               <h3 style={{textAlign:'center'}}> Stores </h3>
               {this.render_stores()}
-            </div>
-            <div>
-              <h3 style={{textAlign:'center'}}> Prodcuts </h3>
-              {this.render_product()}
             </div>
           </body>
       </BackGrond>

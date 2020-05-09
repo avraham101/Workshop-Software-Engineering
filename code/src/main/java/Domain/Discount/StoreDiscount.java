@@ -2,7 +2,6 @@ package Domain.Discount;
 
 import Domain.Product;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;

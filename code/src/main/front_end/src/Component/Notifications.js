@@ -61,11 +61,6 @@ export class Notifications extends Component {
 
   handleNotification(listNotification) {
     this.parseList(listNotification);
-    // let msg = 'resived notifications:\n';
-    // msg+= 'products bougt: '+products.length+'\n';
-    // msg+= 'replays recived: '+replays.length+'\n';
-    // msg+= 'removed from store managment: '+ managment.length;
-    // alert(msg);
     size_0 = products.length;
     size_1 = replays.length;
     size_2 = managment.length;

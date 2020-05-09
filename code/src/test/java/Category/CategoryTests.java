@@ -2,21 +2,15 @@ package Category;
 
 import Data.Data;
 import Data.TestData;
-import DataAPI.PaymentData;
 import DataAPI.ProductData;
-import DataAPI.StoreData;
-import Domain.*;
-import Stubs.ProductStub;
-import Stubs.StoreStub;
-import Systems.PaymentSystem.ProxyPayment;
-import Systems.SupplySystem.ProxySupply;
+import Domain.Category;
+import Domain.Product;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * test functions of the class Basket

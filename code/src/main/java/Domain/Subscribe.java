@@ -4,13 +4,8 @@ import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Publisher.Publisher;
-import com.sun.deploy.net.MessageHeader;
 
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -620,8 +615,23 @@ public class Subscribe extends UserState{
     @Override
     public void deleteReceivedNotifications(List<Integer> notificationsId) {
 
-        notifications.removeIf(n ->notificationsId.contains(n.getId()));
+        List<Notification> remove = new LinkedList<>();
+        for(Notification not: this.notifications) {
+            for(int d:notificationsId) {
+                if(not.getId()==d){
+                    remove.add(not);
+                }
+            }
+        }
+        this.notifications.removeAll(remove);
+        //notifications.removeIf(n ->notificationsId.contains(n.getId()));
 
+    }
+
+    @Override
+    public Boolean sendMyNotifications() {
+        sendAllNotifications();
+        return true;
     }
 
 

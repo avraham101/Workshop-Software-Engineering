@@ -4,7 +4,6 @@ import Domain.Discount.Term.Term;
 import Domain.Product;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 public class ProductTermDiscount implements Discount {
@@ -47,6 +46,6 @@ public class ProductTermDiscount implements Discount {
     @Override
     public Set<String> getProducts() {
         Set<String> producs=term.getProducts();
-        return null;
+        return producs;
     }
 }

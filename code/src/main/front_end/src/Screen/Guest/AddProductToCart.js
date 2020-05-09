@@ -1,42 +1,35 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import BackGroud from "../../Component/BackGrond";
 import Menu from "../../Component/Menu";
-import Error from "../../Component/Error";
 import Title from "../../Component/Title";
 import Input from "../../Component/Input";
 import Button from "../../Component/Button";
-import history from "../history";
+import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils';
 
 class AddProductToCart extends Component {
 
   /**
    * constructor
-   * @param {the product that choosed to add to cart} product
+   * @param props
    */
-  constructor(product) {
-    super();
+  constructor(props) {
+    super(props);
     this.handleChangedAmount = this.handleChangedAmount.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
+    this.addPromise = this.addPromise.bind(this);
     this.state = {
-      product: product,
-      amount: 0,
+      product: this.props.location.state.product,
+      amount: 1,
     };
-  }
-
-  handleChangedAmount(event) {
-    this.setState({ amount: event.target.value });
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
   }
 
   /**
    * print the details about the product to add to cart
    */
   renderProducts() {
-    let product = this.props.location.data;
-    return (product === undefined)?
+    let product = this.state.product;
+    return (this.state.product === undefined)?
     ( <h3> Didn't selected product </h3> ) :
     ( <table style={style_table}>
         <tr>
@@ -60,10 +53,54 @@ class AddProductToCart extends Component {
       );
   }
 
+  addPromise(received) {
+    if(received==null)
+      alert("Server Failed");
+    else {
+      let opt = ''+ received.reason;
+      if(opt == 'Not_Found') {
+        alert("Product dosen't in the store any more. Went to menu");
+        pass(this.props.history,'/subscribe',this.pathname,this.props.location.state);
+      }
+      else if(opt == 'Invalid_Product') {
+        alert("Product is already in your cart, if you wasn't to add more please edit your cart. Went to menu");
+        pass(this.props.history,'/subscribe',this.pathname,this.props.location.state);
+      }
+      else if(opt == 'Store_Not_Found') {
+        alert("the store isn't exiist please try with a different store. Went to menu");
+        pass(this.props.history,'/subscribe',this.pathname,this.props.location.state);
+      }
+      else if(opt == 'Success') {
+        alert("Product Added to Cart.");
+        pass(this.props.history,'/viewMyCart',this.pathname,this.props.location.state);
+      }
+      else {
+        alert(opt+", Cant Add Product to Cart");
+      }
+    }
+  }
+
+  handleAdd() {
+    if(this.state.amount > this.state.product.amount){
+      alert("wrong amont selected");
+    }
+    else {
+      let msg = { productName:this.state.product.productName , 
+                  storeName:this.state.product.storeName ,
+                  amount:this.state.amount};
+      let id = this.props.location.state.id;
+      send('/home/cart?id='+id, 'POST', msg, this.addPromise) 
+    }
+  }
+
+  handleChangedAmount(event) {
+    this.setState({amount: event.target.value });
+  }
+
   render() {
     return (
       <BackGroud>
-        <Menu />
+        <Menu state={this.props.location.state}/>
         <body>
           <Title title="Add product to cart" />
           {this.renderProducts()}
@@ -75,20 +112,10 @@ class AddProductToCart extends Component {
             onChange={this.handleChangedAmount}
           />
           <div>
-            <Button
-              color="primary"
-              aria-label="add to shopping cart"
-              text="add"
-              onClick={(e) =>
-                (parseInt(this.state.amount) < this.state.product.amountInStore)
-                  ? this.setState({ enough: true })
-                  : this.setState({ enough: false })
-              }
-            />
-            {this.state.enough === false ? <Error text="Close Me" /> : ""}
+            <Button text="add" onClick={this.handleAdd}/>
           </div>
         </body>
-        <Button text="back" onClick={() => history.push(this.props.location.fromPath)} />
+        <Button text="back" onClick={() => pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state)} />
       </BackGroud>
     );
   }

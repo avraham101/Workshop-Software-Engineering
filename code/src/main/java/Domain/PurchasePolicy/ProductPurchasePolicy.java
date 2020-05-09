@@ -1,11 +1,11 @@
 package Domain.PurchasePolicy;
 
-import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
-import DataAPI.ProductData;
 import Domain.Product;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ProductPurchasePolicy implements PurchasePolicy {
 

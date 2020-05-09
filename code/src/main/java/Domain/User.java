@@ -4,7 +4,6 @@ import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.PurchasePolicy.PurchasePolicy;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -337,5 +336,9 @@ public class User {
 
     public void deleteReceivedNotifications(List<Integer> notificationsId) {
          state.deleteReceivedNotifications(notificationsId);
+    }
+
+    public Boolean sendMyNotification() {
+       return state.sendMyNotifications();
     }
 }

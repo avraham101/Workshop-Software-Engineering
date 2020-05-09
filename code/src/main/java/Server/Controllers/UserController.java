@@ -3,24 +3,26 @@ package Server.Controllers;
 
 import DataAPI.*;
 import Domain.Purchase;
-import Domain.User;
-import Service.ServiceAPI;
 import Service.SingleService;
 import com.google.gson.Gson;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Controller
-
 public class UserController {
 
     Gson json;
+    AtomicInteger counter = new AtomicInteger(0);
 
     public UserController() {
         json= new Gson();
@@ -35,9 +37,10 @@ public class UserController {
 
     @GetMapping("home/connect")
     @ResponseBody
-    public Integer connect(){
-       return SingleService.getInstance().connectToSystem();
-
+    public ResponseEntity<?> connect(){
+        Integer id = SingleService.getInstance().connectToSystem();
+        Response<Integer> response = new Response<>(id,OpCode.Success);
+        return getResponseEntity(response);
     }
 
     /**
@@ -80,13 +83,13 @@ public class UserController {
      * use case 2.8 - buy cart
      */
 
-    @PostMapping("home/buy/{country}")
+    //@PostMapping("home/buy/{country}")
+    @PostMapping("home/buy")
     @ResponseBody
     //TODO discus the delivery
-    public ResponseEntity<?> buyCart(@PathVariable String country,
-                                     @RequestParam(name="id") int id, @RequestBody String  paymentDataStr){
+    public ResponseEntity<?> buyCart(@RequestParam(name="id") int id, @RequestBody String  paymentDataStr){
         PaymentData paymentData = json.fromJson(paymentDataStr,PaymentData.class);
-        Response<Boolean> response= SingleService.getInstance().purchaseCart(id,country,paymentData,paymentData.getAddress());
+        Response<Boolean> response= SingleService.getInstance().purchaseCart(id,paymentData.getCountry(),paymentData,paymentData.getAddress());
         return getResponseEntity(response);
 
     }
@@ -120,11 +123,16 @@ public class UserController {
         return getResponseEntity(response);
     }
 
-    @DeleteMapping("home/notifications")
-    public void deleteNotifications(@RequestParam(name="id") int id,@RequestBody String notificationsList){
-        List<Integer> listOfNotification= json.fromJson(notificationsList,List.class);
-        SingleService.getInstance().deleteRecivedNotifications(id,listOfNotification);
+    @PostMapping("ack")
+    public ResponseEntity<?> deleteNotifications(@RequestParam(name="id") int id,@RequestBody String notificationsList){
+        List<Double> listOfNotification= json.fromJson(notificationsList,List.class);
+        List<Integer> list = new LinkedList<>();
+        for(double d:listOfNotification)
+            list.add((int)d);//
+        SingleService.getInstance().deleteRecivedNotifications(id,list);
+        return getResponseEntity(new Response<>("", OpCode.Success));
     }
+
     private ResponseEntity<?> getResponseEntity(Response<?> response) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");

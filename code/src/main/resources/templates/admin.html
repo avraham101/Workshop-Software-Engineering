@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+	<title> Trading System </title>
+	<script>
+        var name=undefined;
+        var password=undefined;
+        function send(url, method, msg, update) {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    let res = JSON.parse(xhr.response)
+                    update(res);
+                }
+            };
+            let send = JSON.stringify(msg);
+            xhr.open(method,url);
+            xhr.send(send);
+        }
+        //The function return a response object
+        function receive(buffer){
+            //let out = Object.getOwnPropertyNames(buffer)
+            let out = buffer.toString();
+            return JSON.parse(out);
+        }
+        //the function is the handle of submit click
+        function handleSubmit() {
+            let promise = (buffer) => {
+                console.log(buffer);
+                if (buffer && buffer.value) {
+                    alert("Admin Registered");
+                    document.getElementById("name").value = "";
+                    document.getElementById("password").value = "";
+                }
+                else
+                    alert("Server Crashed. Cant Register Admin.")
+            }
+            if(name==undefined) {
+                alert("Please insert name of admin");
+                return
+            }
+            if(password==undefined) {
+                alert("Please insert password");
+                return
+            }
+            let msg = {name: name, password: password};
+            send('/admin/init', 'POST', msg, promise)
+        }
+        function handleChangeName() {
+            name = document.getElementById("name").value;
+        }
+        function handleChangePassword(event) {
+            password = document.getElementById("password").value;
+        }
+	</script>
+</head>
+<body style="padding:0;margin:0;">
+	<div style="background-color: #F9F9F9; width: 100%; height:100%;" class="background">
+		<h2 style="text-align: center;color: black; background-color: #F3F3F3;
+					padding: 10px; font-family: Arial; width: 99%;margin-top:0;">
+			Register Admin </h2>
+		<div>
+			<div style="margin-left:30%; margin-right:30%; padding:5px;">
+				<p style="margin-left:10px; margin-right:10px; font-size: 17px;
+						  font-family: Arial; text-align: center;
+						  font-weight:bold;">
+					Name: </p>
+				<div style="text-align: center;">
+					<input id="name" type="text" value="" onchange="handleChangeName()"> </input>
+				</div>
+			</div>
+			<div style="margin-left:30%; margin-right:30%; padding:5px;">
+				<p style="margin-left:10px; margin-right:10px; font-size: 17px;
+						  font-family: Arial; text-align: center;
+						  font-weight:bold;">
+					Password: </p>
+				<div style="text-align: center;">
+					<input id="password" type="password" value="" onchange="handleChangePassword()"> </input>
+				</div>
+			</div>
+			<div style="padding: 10px;text-align: center;">
+				<button style="	text-align: center; color: black;
+							 	background-color: #4287FF; padding: 10px; font-family: Arial;
+							    font-size: 14px;" onclick="handleSubmit()">
+					Submit </button>
+			</div>
+		</div>
+	</div>	
+</body>
+</html>

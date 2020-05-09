@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import history from '../Screen/history'
 
 class Menu extends Component {
   

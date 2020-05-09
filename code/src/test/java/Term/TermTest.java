@@ -1,15 +1,21 @@
 package Term;
 
-import Data.*;
-
-import Domain.Discount.Term.*;
+import Data.Data;
+import Data.TestData;
+import Domain.Discount.Term.AndTerm;
+import Domain.Discount.Term.OrTerm;
+import Domain.Discount.Term.Term;
+import Domain.Discount.Term.XorTerm;
 import Domain.Product;
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class TermTest {
     private Term term;

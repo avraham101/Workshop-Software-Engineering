@@ -2,7 +2,6 @@ package AcceptanceTests.AcceptanceTestsBridge;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.PurchasePolicyTestData;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
@@ -60,4 +59,5 @@ public interface AcceptanceTestsBridge {
     Set<StorePermissionsTypeTestData> getPermissionsForStore(int id, String storeName);
     List<String> getAllManagersOfStore(String store);
     List<String> getManagersOfStoreIManaged(int id,String storeName);
+    List<String> getAllUsers(int id);
 }

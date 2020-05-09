@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import BackGroud from '../../Component/BackGrond';
 import Menu from '../../Component/Menu';
-import Error from '../../Component/Error';
 import Title from '../../Component/Title';
-import Input from '../../Component/Input';
 import Button from '../../Component/Button';
 import Row from "../../Component/Row";
+import {send} from '../../Handler/ConnectionHandler';
+import {pass} from '../../Utils/Utils';
+import TextArea from "../../Component/TextArea";
 
 class SendRequestToStore extends Component {
  
@@ -13,12 +14,34 @@ class SendRequestToStore extends Component {
         super();
         this.handleStores = this.handleStores.bind(this);
         this.handleRequest = this.handleRequest.bind(this);
+        this.buildStores = this.buildStores.bind(this);
+        this.create_stores = this.create_stores.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.sendRequesPromise = this.sendRequesPromise.bind(this);
         this.state = {
-            stores: this.create_stores(),
+            stores: [],
             name: '',
             store: '',
             addRequest: false,
         };
+    }
+
+    buildStores(received) {
+        if(received==null)
+          alert("Server Failed");
+        else {
+          let opt = ''+ received.reason;
+          if(opt == 'Success') {
+            this.setState({stores:received.value})
+          }
+          else {
+            alert(opt+", Cant Add Product to Store");
+          }
+        }
+      };
+    
+    create_stores() {
+        send('/store', 'GET', '', this.buildStores)  
     }
 
     handleStores(event, store) {
@@ -28,51 +51,32 @@ class SendRequestToStore extends Component {
           store: store,
         });
     }
-
-    handleRequest(event) {
-        this.setState({request: event.target.value});
-    }
     
-    /**
-     * mock of stores
-     */
-    create_stores() {
-        let output = [];
-        for (let i = 0; i < 5; i++) {
-          output.push({
-            name: "Store " + i,
-            description: "Description " + i,
-          });
-        }
-        return output;
-    }
-
     getStoreSelected() {
-        var stores = document.getElementsByName("store");
         var store_value;
-        for (var i = 0; i < stores.length; i++) {
-          if (stores[i].checked) {
-            store_value = stores[i].value;
+        for (var i = 0; i < this.state.stores.length; i++) {
+          if (this.state.stores[i].checked) {
+            store_value = this.state.stores[i].value;
           }
           return store_value;
         }
     }
 
     render_stores_table() {
-    let stores = this.state.stores;
-    let output = [];
-    let i = 0;
-    stores.forEach(
-        (element) =>
-        output.push(
-            <Row onClick={(e) => this.handleStores(e, element.name)}>
-            <th>{element.name}</th>
-            <th> {element.description} </th>
-            </Row>
-        ),
-        (i = i + 1)
-    );
-    return output;
+        let stores = this.state.stores;
+        let output = [];
+        let i = 0;
+        stores.forEach(
+            (element) =>
+            output.push(
+                <Row onClick={(e) => this.handleStores(e, element.name)}>
+                    <th>{element.name}</th>
+                    <th> {element.description} </th>
+                </Row>
+            ),
+            (i = i + 1)
+        );
+        return output;
     }
 
     render_stores() {
@@ -84,7 +88,38 @@ class SendRequestToStore extends Component {
         </tr>
         {this.render_stores_table()}
         </table>
-    );
+        );
+    }
+
+    handleRequest(event) {
+        this.setState({request: event.target.value});
+    }
+    
+    sendRequesPromise(received) {
+        if(received==null)
+          alert("Server Failed");
+        else {
+          let opt = ''+ received.reason;
+          if(opt === 'Null_Request‏') {
+            alert("Request is Null");
+          }
+          else if(opt === 'Invalid_Request') {
+            alert("Request is Not Valid");
+          }
+          else if(opt === 'Success') {
+            alert("Request Added. Thank You");
+            pass(this.props.history,'/subscribe',this.pathname,this.props.location.state);
+          }
+          else {
+            alert(opt+", Cant Add Review to Store");
+          }
+        }
+    }
+
+    handleSubmit() {
+        let msg = {storeName:this.state.store, content:this.state.request};
+        let id = this.props.location.state.id;
+        send('/store/request?id='+id, 'POST', msg, this.sendRequesPromise)  
     }
 
     render_request() {
@@ -94,7 +129,7 @@ class SendRequestToStore extends Component {
                 <table style={style_table}>
                     <tr>
                         <th> Write the request: </th>
-                        <th><Input title='Request:' type='text' value={this.state.request} onChange={this.handleRequest} /></th>
+                        <th><TextArea title='Request:' rows={4} cols={50} value={this.state.request} onChange={this.handleRequest} /></th>
                         <th><Button text='Submit' onClick={this.handleSubmit}/></th>
                     </tr>
                 </table>
@@ -104,9 +139,10 @@ class SendRequestToStore extends Component {
     }
 
     render() {
+        this.create_stores();
         return (
             <BackGroud>
-                <Menu/>
+                 <Menu state={this.props.location.state} />
                 <div>
                     <Title title='Stores:' />
                     <div>

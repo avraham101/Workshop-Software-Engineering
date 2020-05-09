@@ -2,9 +2,6 @@ package AcceptanceTests.AcceptanceTestsBridge;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.PurchasePolicyTestData;
-import DataAPI.StoreData;
-import DataAPI.StorePermissionType;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
@@ -351,6 +348,13 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     public List<String> getManagersOfStoreIManaged(int id, String storeName) {
         if (realBridge != null)
             return realBridge.getManagersOfStoreIManaged(id, storeName);
+        return null;
+    }
+
+    @Override
+    public List<String> getAllUsers(int id) {
+        if (realBridge != null)
+            return  realBridge.getAllUsers(id);
         return null;
     }
 }

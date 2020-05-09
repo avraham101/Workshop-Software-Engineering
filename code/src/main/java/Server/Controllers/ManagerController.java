@@ -3,6 +3,7 @@ package Server.Controllers;
 import DataAPI.ManagerData;
 import DataAPI.Response;
 import DataAPI.ResponseData;
+import DataAPI.StoreData;
 import Domain.Purchase;
 import Domain.Request;
 import Service.SingleService;
@@ -12,9 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Signature;
 import java.util.List;
 
+@RestController
+@RequestMapping("managers")
 public class ManagerController {
 
     Gson json ;
@@ -52,7 +54,7 @@ public class ManagerController {
      * use case 4.6.1 - add permissions
      */
 
-    @PutMapping("permissions")
+    @PostMapping("permissions")
     public ResponseEntity<?> addPermission(@RequestParam(name="id" ) int id,
                                            @RequestBody String managerDataStr){
         ManagerData managerData = json.fromJson(managerDataStr,ManagerData.class);
@@ -65,7 +67,7 @@ public class ManagerController {
     /**
      * use case 4.6.2 - remove permissions
      */
-    @DeleteMapping("permissions")
+    @PostMapping("permissions/delete")
     public ResponseEntity<?> deletePermissions(@RequestParam(name="id" ) int id,
                                                @RequestBody String managerDataStr){
         ManagerData managerData = json.fromJson(managerDataStr,ManagerData.class);
@@ -79,7 +81,7 @@ public class ManagerController {
      * use case 4.7 - remove manger
      */
 
-    @DeleteMapping("manager")
+    @PostMapping("deleteManager")
     public ResponseEntity<?> deleteManager(@RequestParam(name="id" ) int id,
                                            @RequestBody String managerDataStr){
         ManagerData managerData = json.fromJson(managerDataStr,ManagerData.class);
@@ -104,12 +106,25 @@ public class ManagerController {
      * use case 4.9.2 - reply request
      */
 
-    @PutMapping("response/{store}")
+    @PostMapping("response/{store}")
     public  ResponseEntity<?> answerRequest(@PathVariable String store,@RequestParam (name="id" ) int id,
                                             @RequestBody String responseDataStr){
         ResponseData responseData = json.fromJson(responseDataStr,ResponseData.class);
         Response<Request> response = SingleService.getInstance().answerRequest(id,responseData.getRequestId(),
                 responseData.getContent(),store);
+        return getResponseEntity(response);
+
+    }
+
+    @GetMapping("mystores")
+    public ResponseEntity<?> getStoresManagedByUser(@RequestParam (name="id" ) int id){
+        Response<List<StoreData>> response = SingleService.getInstance().getStoresManagedByUser(id);
+        return getResponseEntity(response);
+    }
+
+    @GetMapping("mymanagers/{store}")
+    public ResponseEntity<?> getManagersOfStore(@PathVariable String store){
+        Response<List<String>> response = SingleService.getInstance().getManagersOfStore(store);
         return getResponseEntity(response);
 
     }

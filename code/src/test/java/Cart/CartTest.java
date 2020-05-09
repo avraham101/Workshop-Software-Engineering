@@ -1,12 +1,11 @@
 package Cart;
 
-import Data.*;
+import Data.Data;
+import Data.TestData;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
-import DataAPI.ProductData;
 import Domain.*;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
-import Domain.PurchasePolicy.PurchasePolicy;
 import org.junit.Before;
 import org.junit.Test;
 

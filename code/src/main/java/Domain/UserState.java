@@ -4,7 +4,6 @@ import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.PurchasePolicy.PurchasePolicy;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -53,7 +52,7 @@ public abstract class UserState {
         for (Basket basket: cart.getBaskets().values()) {
             HashMap<Product, Integer> map = basket.getProducts();
             for (Product product: map.keySet()) {
-                priceBeforeDiscount += product.getPrice();
+                priceBeforeDiscount += product.getPrice()* map.get(product);
                 ProductData productData = new ProductData(product, basket.getStore().getName());
                 productData.setAmount(map.get(product));
                 products.add(productData);
@@ -318,4 +317,6 @@ public abstract class UserState {
     public abstract Response<List<String>> getManagersOfStoreUserManaged(String storeName);
 
     public abstract void deleteReceivedNotifications(List<Integer> notificationsId);
+
+    public abstract Boolean sendMyNotifications();
 }

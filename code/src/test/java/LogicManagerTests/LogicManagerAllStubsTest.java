@@ -1,13 +1,10 @@
 package LogicManagerTests;
 
-import Data.*;
+import Data.Data;
+import Data.TestData;
 import DataAPI.*;
-import Domain.*;
 import Domain.Discount.Discount;
-import Domain.Discount.ProductTermDiscount;
-import Domain.Discount.Term.BaseTerm;
-import Domain.Discount.Term.Term;
-import Domain.Discount.XorDiscount;
+import Domain.*;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Stubs.*;
 import Systems.PaymentSystem.PaymentSystem;
@@ -25,8 +22,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-//class for Unit test all stubs
 import static org.junit.Assert.*;
+
+//class for Unit test all stubs
 
 public class LogicManagerAllStubsTest {
 
@@ -1863,6 +1861,19 @@ public class LogicManagerAllStubsTest {
     public void testGetManagersOfStoreFailStoreNotExist(){
         StoreData storeData = data.getStore(Data.VALID);
         assertNull(logicManager.getManagersOfStore(storeData.getName()).getValue());
+    }
+
+    /**
+     * get all the users for the admin
+     */
+    @Test
+    public void testGetAllUsers() {
+        setUpRegisteredUser();
+        Subscribe sub=data.getSubscribe(Data.ADMIN);
+        logicManager.login(data.getId(Data.ADMIN),sub.getName(),sub.getPassword());
+        List<String> users = logicManager.getAllUsers(data.getId(Data.ADMIN)).getValue();
+        assertNotNull(users);
+        assertTrue(users.contains(data.getSubscribe(Data.VALID).getName()));
     }
 
 

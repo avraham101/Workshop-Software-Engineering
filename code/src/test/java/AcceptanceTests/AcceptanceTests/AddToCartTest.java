@@ -6,10 +6,11 @@ import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
+import java.util.Map;
+
 import static org.junit.Assert.*;
-
-
-import java.util.*;
 
 /**
  * use case 2.7.4 - add product to the cart
@@ -36,7 +37,7 @@ public class AddToCartTest extends AcceptanceTests {
                 ProductTestData productToAdd = entry.getKey();
                 Integer amount = entry.getValue();
                 boolean isAdded = bridge.addToUserCart(user0.getId(),productToAdd,amount);
-                assertTrue(isAdded);
+                assertFalse(isAdded);
             }
         }
         CartTestData actualCart = bridge.getUsersCart(user0.getId());

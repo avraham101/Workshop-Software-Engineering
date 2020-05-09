@@ -6,9 +6,11 @@ import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
 import java.util.List;
 import java.util.Set;
+
+import static org.junit.Assert.*;
 
 public class UserAdministrationInfo extends AcceptanceTests {
 
@@ -94,6 +96,28 @@ public class UserAdministrationInfo extends AcceptanceTests {
         assertFalse(storePermission.contains(StorePermissionsTypeTestData.ADD_MANAGER));
     }
 
+    @Test
+    public void testGetAllUsers() {
+        int id = admin.getId();
+        registerAndLogin(admin);
+        List<String> users = bridge.getAllUsers(id);
+        assertFalse(users.isEmpty());
+    }
+
+    @Test
+    public void testGetAllUsersNotAnAdmin() {
+        int id = superUser.getId();
+        registerAndLogin(superUser);
+        List<String> users = bridge.getAllUsers(id);
+        assertTrue(users.isEmpty());
+    }
+
+    @Test
+    public void testGetAllUsersNotLogin() {
+        int id = superUser.getId();
+        List<String> users = bridge.getAllUsers(id);
+        assertTrue(users.isEmpty());
+    }
 
 
 }

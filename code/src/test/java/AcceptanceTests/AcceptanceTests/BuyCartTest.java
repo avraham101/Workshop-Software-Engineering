@@ -4,10 +4,14 @@ import AcceptanceTests.AcceptanceTestDataObjects.CartTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.PurchasePolicyTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
-import AcceptanceTests.SystemMocks.*;
+import AcceptanceTests.SystemMocks.DeliverySystemMockAllPositive;
+import AcceptanceTests.SystemMocks.DeliverySystemMockCantDeliver;
+import AcceptanceTests.SystemMocks.PaymentSystemMockAllPositive;
+import AcceptanceTests.SystemMocks.PaymentSystemMockCantPay;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**

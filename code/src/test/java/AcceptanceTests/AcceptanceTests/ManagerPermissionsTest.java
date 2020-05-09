@@ -1,14 +1,17 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.*;
+import AcceptanceTests.AcceptanceTestDataObjects.PermissionsTypeTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.ReviewTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * 5.1 - manager permission operations

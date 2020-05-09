@@ -1,7 +1,5 @@
 package AcceptanceTests.AcceptanceTestDataObjects;
 
-import Basket.BasketTest;
-
 import java.util.*;
 
 public class CartTestData {

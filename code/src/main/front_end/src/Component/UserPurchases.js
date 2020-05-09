@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import history from '../Screen/history';
+import React from 'react';
 import Purchases from '.././Component/Purchases';
 import Button from '.././Component/Button';
 import Input from '.././Component/Input';

@@ -2,9 +2,11 @@ package Stubs;
 
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
-import Domain.*;
+import Domain.Cart;
+import Domain.Product;
+import Domain.Purchase;
+import Domain.Store;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class CartStub extends Cart {

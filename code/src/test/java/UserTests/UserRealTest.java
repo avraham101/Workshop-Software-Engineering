@@ -1,6 +1,6 @@
 package UserTests;
 
-import Data.*;
+import Data.Data;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
