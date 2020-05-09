@@ -13,9 +13,12 @@ var size_0= 0;
 var size_1= 0;
 var size_2= 0;
 var show = undefined;// PRODUCTS, REPLAYS , MANAGMENT
+
 export function turnOf(){
   flag_connected = false;
 };
+
+export function 
 
 export class Notifications extends Component {
   
