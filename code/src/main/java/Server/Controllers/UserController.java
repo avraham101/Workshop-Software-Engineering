@@ -133,12 +133,6 @@ public class UserController {
         return getResponseEntity(new Response<>("", OpCode.Success));
     }
 
-    @GetMapping("home/notifications")
-    public ResponseEntity<?> getNotifications(@RequestParam(name="id") int id){
-        Response<Boolean>  response =SingleService.getInstance().getMyNotification(id);
-        return getResponseEntity(response);
-    }
-
     private ResponseEntity<?> getResponseEntity(Response<?> response) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");

@@ -21,10 +21,6 @@ public class Publisher {
     }
 
     public void update(String userId, ArrayList<Notification> notification){
-        System.out.println("sending a notification to "+userId);
-        //HttpHeaders headers = new HttpHeaders();
-        //headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-        //ResponseEntity<Response<List<Notification>>> e=new ResponseEntity<>(new Response<>(notification, OpCode.Success), headers, HttpStatus.CREATED);
-        messagingTemplate.convertAndSendToUser( userId,"/queue/greetings", notification);
+       messagingTemplate.convertAndSendToUser( userId,"/queue/greetings", notification);
     }
 }

@@ -30,17 +30,8 @@ public class WebSocketController {
     @MessageMapping("/hello")
     @SendToUser("/queue/greetings")
     public String processMessageFromClient(@Payload String message, Principal principal) throws Exception {
-        messagingTemplate.convertAndSendToUser(principal.getName(), "/queue/reply", "name");
-        System.out.println("nivvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
-        Thread.sleep(1000);
-        return "name";
-    }
-
-    @GetMapping("/test")
-    public String test()
-    {
-        System.out.println("dasd");
-        return "index";
+        SingleService.getInstance().getMyNotification(Integer.parseInt(principal.getName()));
+        return "";
     }
 
     @MessageExceptionHandler
