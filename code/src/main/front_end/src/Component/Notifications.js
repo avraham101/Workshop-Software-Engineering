@@ -43,7 +43,7 @@ export class Notifications extends Component {
       });
       products_notification.push(element.id); //id of notification
     }
-    else if(opcode==='Replay_Request') {
+    else if(opcode==='Reply_Request') { 
       replays.push(element.value); //Request
       replays_notification.push(element.id); //id of notification
     }

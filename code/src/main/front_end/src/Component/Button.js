@@ -18,6 +18,6 @@ const style_sheet = {
   color: "black",
   backgroundColor: '#4287FF',
   padding: "10px",
-  fontFamily: "David",
-  fontSize: 16,
+  fontFamily: "Arial",
+  fontSize: 14,
 }

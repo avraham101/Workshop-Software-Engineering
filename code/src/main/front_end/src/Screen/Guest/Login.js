@@ -66,7 +66,7 @@ class Login extends Component {
           <Button text = 'Submit' onClick={this.handleSubmit}/>
           <p> {this.state.user_error==undefined?'':this.state.user_error}</p>
           <p> {this.state.server_error==undefined?'':this.state.server_error}</p>
-          <Button text="cancel" onClick={() => pass(this.props.history,'/guest',this.pathname, this.props.location.state)  } />
+          <Button text="cancel" onClick={() => pass(this.props.history,'/',this.pathname, this.props.location.state)  } />
           
         </div>
       </BackGroud>

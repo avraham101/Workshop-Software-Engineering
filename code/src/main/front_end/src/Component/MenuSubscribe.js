@@ -31,7 +31,7 @@ class MenuSubscribe extends Component {
     turnOf();
     send('/home/logout?id='+id,"POST",'',()=>{});
     closeSocket();
-    pass(history,"/guest",this.fromPath,{id:id});
+    pass(history,"/",this.fromPath,{id:id});
   }
 
   refresh() {
@@ -42,6 +42,7 @@ class MenuSubscribe extends Component {
     return (
         <header style={{backgroundColor: '#FFC242', borderBottom:'2px solid #B38118',marginBottom:0}}>
           {/*<p> {(this.props.state!=undefined)?this.props.state.id:''} </p>*/}
+          <title> Trading System </title>
           <table style={style_sheet}>
           <tr>
             <th onClick={() => pass(history,"/subscribe",this.fromPath,this.props.state)}
