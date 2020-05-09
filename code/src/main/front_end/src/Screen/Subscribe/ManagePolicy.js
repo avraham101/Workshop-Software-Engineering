@@ -3,11 +3,14 @@ import BackGrond from "../../Component/BackGrond";
 import Menu from "../../Component/Menu";
 import Title from "../../Component/Title";
 import Button from "../../Component/Button";
+import DivBetter from '../../Component/DivBetter';
 import {send} from '../../Handler/ConnectionHandler';
 import {pass} from '../../Utils/Utils'
 
 const CLASS_SYSTEM = 'Domain.PurchasePolicy.SystemPurchasePolicy';
 const CLASS_BASKET = 'Domain.PurchasePolicy.BasketPurchasePolicy';
+const CLASS_COUNRTY = 'Domain.PurchasePolicy.UserPurchasePolicy';
+const CLASS_PRODUCT = 'Domain.PurchasePolicy.ProductPurchasePolicy';
 const CLASS_AND = 'Domain.PurchasePolicy.ComposePolicys.AndPolicy';
 const CLASS_OR = 'Domain.PurchasePolicy.ComposePolicys.OrPolicy';
 const CLASS_XOR = 'Domain.PurchasePolicy.ComposePolicys.XorPolicy';
@@ -18,12 +21,20 @@ class ManagePolicy extends Component {
     this.pathname = "/policy";
     this.list_selected=[];
     this.list_comlicated=[];
+    this.list_county=[];
+    this.map_prodcts={};
+    this.flag = false;
     this.state = {
       age:1,
       maxAmount:0,
+      country:'',
       selected_policy:undefined,
+      products:[],
+      selected_product:undefined,
+      selected_amount:0,
     };
     this.updateClick = this.updateClick.bind(this);
+    this.renderProductPolicy = this.renderProductPolicy.bind(this);
   }
 
   renderSystemPurcahsePolicay() {
@@ -149,7 +160,6 @@ class ManagePolicy extends Component {
                           deleteClick={()=>deleteClick(element)}/>:''}
             </div>
         )
-        break;
       case CLASS_BASKET:
         return (
             <div style={{border:'2px solid #9AB0DB', margin:4}}>
@@ -164,6 +174,44 @@ class ManagePolicy extends Component {
         )
       case CLASS_AND: case CLASS_OR: case CLASS_XOR:
         return this.renderByComlicated(element,deleteOn); 
+      case CLASS_COUNRTY:
+        let list = data.countries;
+        return (
+          <div style={{border:'2px solid #B352FF', margin:4}}>
+            <h4 style={{backgroundColor:'#B352FF', textAlign:'center', marginTop:0}}>
+              Country Policy 
+            </h4>
+            {this.renderCountriesList(list)}
+            {deleteOn?<Triple selectClick={()=>selectClick(element)} 
+                          comlicatedClick={()=>comlicatedClick(element)} 
+                          deleteClick={()=>deleteClick(element)}/>:''}
+          </div>
+        )
+      case CLASS_PRODUCT:
+        let map = data.maxAmountPerProduct;
+        let output = [];
+        let keys = Object.getOwnPropertyNames(map) 
+        keys.forEach(key => {
+          let amount = map[key];
+          output.push(
+            <div>
+              <p style={{textAlign:'center'}}> Product: {key} </p>
+              <p style={{textAlign:'center'}}> Amount of product: {amount} </p>
+            </div>
+          )
+        });
+        return (
+          <div style={{border:'2px solid #B0C8FF', margin:4}}>
+            <h4 style={{backgroundColor:'#B0C8FF', textAlign:'center', marginTop:0}}>
+              Product Policy
+            </h4>
+            {output}
+            {deleteOn?<Triple selectClick={()=>selectClick(element)} 
+                          comlicatedClick={()=>comlicatedClick(element)} 
+                          deleteClick={()=>deleteClick(element)}/>:''}
+          </div>
+        )
+
     }
   }
 
@@ -300,6 +348,168 @@ class ManagePolicy extends Component {
     )
   }
 
+  renderCountriesList(list) {
+    let output = [];
+    list.forEach(element=>{
+      output.push(
+        <p style={{textAlign:'center'}}> Country: {element} </p>
+      )
+    });
+    return output;
+  }
+
+  renderCountryList() {
+    if(this.list_county.length===0)
+      return <p style={{textAlign:'center'}}> No country selected yet </p>
+    let addClick = () => {
+      let obj = {};
+      obj['CLASSNAME'] = CLASS_COUNRTY;
+      obj['DATA'] = {countries:this.list_county};
+      this.list_selected.push(obj);
+      this.list_county = [];
+      this.setState({});
+    }
+    return (
+      <div>
+        <h4 style={titleStyle}> Countries: </h4>
+        {this.renderCountriesList(this.list_county)}
+        <Button text="Add Policy" onClick={addClick}/>
+      </div>
+    )
+  }
+
+  renderCountries() {
+    let onChange = (event) => {
+      this.setState({country:event.target.value});
+    }
+    let addContry = () => {
+      this.list_county.push(this.state.country);
+      this.setState({country:''});
+    }
+    return (
+      <div>
+        <h3 style={titleStyle}> Countries Policy </h3>
+        <div>
+          <SmallInput title="County" type="text" value={this.state.country}
+                onChange={onChange}/>
+          <Button text="Add Country" onClick={addContry}/>
+        </div>
+        {this.renderCountryList()}
+      </div>
+    )
+  }
+
+  //this function get the list of product from the server by given store
+  getProducts(storeName) {
+    let buildProducts = (received) => {
+      if(received==null)
+        alert("Server Failed");
+      else {
+        let opt = ''+ received.reason;
+        if(opt === 'Success') {
+          this.setState({products: received.value});
+        }
+        else {
+          alert("Cant get Products from store. please try again later");
+          pass(this.props.history,'/storeManagement','',this.props.location.state);
+        }
+      }
+    }
+    send('/home/product?store='+storeName, 'GET','', buildProducts)  
+  }
+
+  renderProducts() {
+    if(this.state.products.length===0)
+      return <p style={{textAlign:'center'}}> No proudtcs in Store</p>
+    let output = [];
+    let onClick = (element) => {
+      this.setState({selected_product:element})
+    }
+    this.state.products.forEach(element => {
+      output.push(
+        <DivBetter onClick={()=>onClick(element)}>
+          <h3 style={{backgroundColor:'#FCA6FF', marginTop:0}}> {element.productName} </h3>
+          <p> Amount In Store: {element.amount} </p>
+        </DivBetter>
+      )
+    });
+    return output;
+  }
+
+  renderSelectedProduct() {
+    if(this.state.selected_product===undefined)
+      return
+    let onChange = (event) => {
+      let update_amount = event.target.value;
+      if( update_amount < this.state.selected_product.amount)
+        this.setState({selected_amount:update_amount});
+      else
+        alert("cant select amount to policy gratter the amount in store");
+    }
+    let addProduct = () => {
+      let key = this.state.selected_product.productName;
+      let value = this.state.selected_amount;
+      this.map_prodcts[key] = value;
+      this.setState({selected_amount:1, selected_product:undefined})
+    }
+    return (
+      <div>
+         <h3 style={titleStyle}> {this.state.selected_product.productName} </h3>
+         <SmallInput title="Max Amount of Product" type="number" min={1} value={this.state.selected_amount}
+                onChange={onChange}/>
+          <Button text="Add to Selected Products" onClick={addProduct}/>
+      </div>
+    )
+  }
+
+  renderMapProducts() {
+    let keys = Object.getOwnPropertyNames(this.map_prodcts) 
+    if(keys.length===0)
+      return
+    let output = [];
+    keys.forEach(key => {
+      let amount = this.map_prodcts[key];
+      output.push(
+        <div>
+          <p style={{textAlign:'center'}}> Product: {key} </p>
+          <p style={{textAlign:'center'}}> Amount of product: {amount} </p>
+        </div>
+      )
+    });
+    let onClick = () => {
+      let obj = {};
+      obj['CLASSNAME'] = CLASS_PRODUCT;
+      obj['DATA'] = {maxAmountPerProduct:this.map_prodcts}
+      this.map_prodcts={};
+      this.list_selected.push(obj);
+      this.setState({});
+    }
+    return (
+      <div>
+        <Button text="Add Product Policy" onClick={onClick}/>
+        <h3 style={titleStyle}> Selected Products </h3>
+        {output}
+      </div>
+    );
+  }
+
+  renderProductPolicy() {
+    if(this.state.products.length===0) {
+      let store = this.props.location.state.storeName;
+      this.getProducts(store);
+    }
+    return (
+      <div>
+        <h3 style={titleStyle}> Product Policy </h3>
+        {this.renderMapProducts()}
+        {this.renderSelectedProduct()}
+        <div style={{padding:4}}>
+          {this.renderProducts()}
+        </div>
+      </div>
+    )
+  }
+
   render() {
     let height = 600;
     return (
@@ -315,10 +525,10 @@ class ManagePolicy extends Component {
             {this.renderColumn1()}
           </div>
           <div style={{float:'left', width:'24.8%', borderLeft:'1px solid black', height:height}}>
-            <h3 style={titleStyle}> P3  </h3>
+            {this.renderCountries()}
           </div>
           <div style={{float:'left', width:'24.8%', borderLeft:'1px solid black', height:height}}>
-            <h3 style={titleStyle}> P4  </h3>
+            {this.renderProductPolicy()}
           </div>
           <div style={{float:'left', width:'24.7%', borderLeft:'1px solid black', height:height}}>
             {this.renderSelectedComplex()}
