@@ -99,7 +99,6 @@ class GuestIndex extends Component {
             <div >
               <h3 style={{textAlign:'center'}}> Stores </h3>
               {this.render_stores()}
-              {console.log(this.state.stores)}
             </div>
           </body>
       </BackGrond>
