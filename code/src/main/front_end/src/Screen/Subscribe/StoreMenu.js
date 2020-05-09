@@ -43,10 +43,10 @@ class StoreMenu extends Component {
       alert("Server Failed");
     else{
       let opt = ''+ received.reason;
-      if(opt == 'Success') {
+      if(opt === 'Success') {
         this.update_permissions(received.value);
       }
-      else if(opt == 'Dont_Have_Permission') {
+      else if(opt === 'Dont_Have_Permission') {
         alert('Dont Have Permission for that store. Soryy.')
         pass(this.props.history,'/storeManagement',this.pathname,this.props.location.state);
       }

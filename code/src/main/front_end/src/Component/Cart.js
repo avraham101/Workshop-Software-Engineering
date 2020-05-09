@@ -21,7 +21,7 @@ class Cart extends Component {
         return "products in my cart:"
     }
 
-    handleBuyCart(event){
+    handleBuyCart(){
         this.props.cart.products=[]
         this.setState({})
     }
