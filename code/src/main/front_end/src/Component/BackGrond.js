@@ -18,7 +18,7 @@ class BackGrond extends Component {
 }
 
 export default BackGrond;
-
-const style_sheet = {
-
-}
+//
+// const style_sheet = {
+//
+// }

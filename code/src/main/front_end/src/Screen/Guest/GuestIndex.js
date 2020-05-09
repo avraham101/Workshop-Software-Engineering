@@ -27,7 +27,7 @@ class GuestIndex extends Component {
       alert("Server Failed");
     else {
       let opt = ''+ received.reason;
-      if(opt == 'Success') {
+      if(opt === 'Success') {
         this.setState({stores:received.value, flag:true})
       }
       else {
@@ -90,7 +90,7 @@ class GuestIndex extends Component {
     if(this.props.location.state === undefined || this.props.location.state.id==-1)
       return <p style={{color:'red'}}>Page not found: 404 </p>
     this.create_stores();
-    return (
+    return(
       <BackGrond>
           <Menu state={this.props.location.state}/>
           <body>
@@ -98,6 +98,7 @@ class GuestIndex extends Component {
             <div >
               <h3 style={{textAlign:'center'}}> Stores </h3>
               {this.render_stores()}
+              {console.log(this.state.stores)}
             </div>
           </body>
       </BackGrond>
