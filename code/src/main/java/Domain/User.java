@@ -337,4 +337,8 @@ public class User {
     public void deleteReceivedNotifications(List<Integer> notificationsId) {
          state.deleteReceivedNotifications(notificationsId);
     }
+
+    public Boolean sendMyNotification() {
+       return state.sendMyNotifications();
+    }
 }

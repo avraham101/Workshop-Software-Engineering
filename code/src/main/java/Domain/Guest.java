@@ -292,4 +292,9 @@ public class Guest extends UserState {
     public void deleteReceivedNotifications(List<Integer> notificationsId) {
 
     }
+
+    @Override
+    public Boolean sendMyNotifications() {
+        return false;
+    }
 }
