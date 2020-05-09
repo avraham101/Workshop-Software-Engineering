@@ -256,10 +256,10 @@ class ViewDiscounts extends Component {
   renderRowOfDiscounts(index,mapsize) {
     let output = [];
     let end = index+this.elementInRow;
-    for(let i=0;i<end && i<mapsize;i++) {
+    for(let i=index;i<end && i<mapsize;i++) {
       output.push(
         <div style={{float:'left', width:(98/this.elementInRow)+'%'}}>
-          {this.renderDiscount(index+i)}
+          {this.renderDiscount(i)}
         </div>
       )
     }
@@ -274,14 +274,13 @@ class ViewDiscounts extends Component {
       return <p style={{textAlign:'center'}}> No disconts in store</p>;
     }
     let output = [];
-    let index_key = 0; 
-    for(let i=0;i<(keys.length/this.elementInRow);i++) {
+    for(let i=0;i<=((keys.length+(this.elementInRow-1))/this.elementInRow);i++) {
       output.push(
         <div>
-          {this.renderRowOfDiscounts(index_key,keys.length)}
+          {this.renderRowOfDiscounts(i*this.elementInRow,keys.length)}
+          
         </div>
-        )  
-      index_key+=this.elementInRow;
+        )
     }
     return output;
   }
