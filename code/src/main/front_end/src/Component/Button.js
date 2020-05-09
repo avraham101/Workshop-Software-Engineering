@@ -1,11 +1,21 @@
 import React, {Component} from 'react';
 
 class Button extends Component {
-  
+  constructor() {
+    super();
+    this.state = {
+      color:'#4287FF'
+    } 
+  }
+    
   render() {
     return (
       <div style={{ textAlign:'center', margin:10}}>
-        <button style={style_sheet} onClick={this.props.onClick}> {this.props.text} </button>
+        <button style={{  textAlign: 'center', color: "black", backgroundColor: this.state.color, 
+            padding: "10px", fontFamily: "Arial", fontSize: 14, border:'1px solid black',}} 
+          onMouseDown={(event)=>{this.setState({color:'white'})}}
+          onMouseUp={(event)=>{this.setState({color:'#4287FF'})}}
+          onClick={this.props.onClick}> {this.props.text} </button>
       </div>
       );
   }
@@ -20,4 +30,5 @@ const style_sheet = {
   padding: "10px",
   fontFamily: "Arial",
   fontSize: 14,
+  border:'1px solid black',
 }
