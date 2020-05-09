@@ -152,8 +152,8 @@ export class Notifications extends Component {
       return <p style={{textAlign:'center'}}> No Removes From Management Yet </p>;
     managment.forEach(element=>{
       output.push(
-        <div style={{border: "2px solid black", padding:2}}>
-          <p style={{textAlign:'center', padding: 4, backgroundColor:'white'}}> Store Name: {element} </p>
+        <div style={{border: "2px solid black", padding:2, backgroundColor:'white'}}>
+          <p style={{textAlign:'center', padding: 4,}}> Store Name: {element} </p>
         </div>
       )
     })
