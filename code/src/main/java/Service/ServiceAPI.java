@@ -461,4 +461,7 @@ public class ServiceAPI {
         return logicManager.getAllUsers(id);
     }
 
+    public Response<Boolean> getMyNotification(int id) {
+       return logicManager.getMyNotification(id);
+    }
 }

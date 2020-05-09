@@ -14,6 +14,7 @@ public class Basket {
 
     private Store store; // the store of the basket
     private HashMap<Product, Integer> products; // key is the product and the value is the amount of the product in thr basket
+    private double price;
 
     /**
      * constructor
@@ -22,6 +23,7 @@ public class Basket {
     public Basket(Store store) {
         this.store = store;
         this.products = new HashMap<>();
+        this.price=0;
     }
 
     /**
@@ -155,6 +157,7 @@ public class Basket {
             list.add(new ProductData(p, store.getName()));
         }
         //set the price to be after discounts
+        this.price=store.calculatePrice(productsClone());
         paymentData.setTotalPrice(price+store.calculatePrice(productsClone()));
         return true;
     }
@@ -181,6 +184,7 @@ public class Basket {
             list.add(temp);
         }
         Purchase purchase = new Purchase(storeName,buyer,list);
+        purchase.setPrice(this.price);
         store.savePurchase(purchase);
         return purchase;
     }

@@ -90,6 +90,7 @@ this.state.purchases.forEach(element => {
             {"purchase "+this.counter+++":"}
             <th>{"buyer:"+element.buyer}</th>
             <th>{"store:"+element.storeName}</th>
+            <th>{"total price:"+element.price}</th>
             <th>{"date:"+element.date.substring(0,index)}</th>
             <th>{"hour:"+element.date.substring(index+1)}</th>
             
@@ -110,7 +111,6 @@ products.forEach(pro => {
           <th>{"product name:"+pro.productName}</th>
           <th>{"category:"+pro.category}</th>
           <th>{"amount:"+pro.amount}</th>
-          <th>{"price per unit:"+pro.price}</th>
           <th>{"purchase type:"+pro.purchaseType}</th>
       </tr> 
   )

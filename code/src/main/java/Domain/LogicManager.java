@@ -245,7 +245,6 @@ public class LogicManager {
                 password = hashSystem.encrypt(password);
                 if (subscribe.getPassword().compareTo(password) == 0) {
                     boolean output = user.login(subscribe);
-                    subscribe.sendAllNotifications();
                     return new Response<>(output, OpCode.Success);
                 }
             } catch (NoSuchAlgorithmException e) {
@@ -1255,6 +1254,17 @@ public class LogicManager {
     public void deleteReceivedNotifications(int id, List<Integer> notificationsId) {
         User current=connectedUsers.get(id);
         current.deleteReceivedNotifications(notificationsId);
+
+    }
+
+    public Response<Boolean> getMyNotification(int id) {
+        User current = connectedUsers.get(id);
+        Boolean rep = current.sendMyNotification();
+        Response<Boolean> response = new Response<>(rep,OpCode.Not_Login);
+        if(rep){
+            response.setReason(OpCode.Success);
+        }
+        return response;
 
     }
 }
