@@ -29,14 +29,13 @@ class ViewDiscounts extends Component {
     this.deleteCallBack=this.deleteCallBack.bind(this);
     this.init_permissions = this.init_permissions.bind(this);
     this.canDeletePromise = this.canDeletePromise.bind(this);
-    this.flag = false;
+    this.flag = true;
     this.state = {
       mapped: false,
       map: {},
       canDelete: false,
     };
     this.elementInRow = 3;
-    this.init_permissions();
   }
 
   init_permissions() {
@@ -79,7 +78,8 @@ class ViewDiscounts extends Component {
           }
         else if(opt == 'Success') {
           this.setState({map:received.value,mapped:true});
-          }
+          this.init_permissions();
+        }
         }
       }
     send('/store/discount/get?store='+this.props.location.state.storeName,'GET','',promise)
