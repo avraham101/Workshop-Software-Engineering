@@ -260,10 +260,11 @@ class ViewDiscounts extends Component {
     let onBack= () => {
       pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state); 
     }
+    let storeName = this.props.location.state.storeName;
     return (
       <BackGrond>
         <Menu state={this.props.location.state} />
-        <Title title="View Discounts Manager"/>
+        <Title title={"View Discounts "+storeName}/>
         {this.renderDiscountsMap()}
         <div style={{float:'left', width:'100%'}}>
           <Button text="Back" onClick={onBack}/>

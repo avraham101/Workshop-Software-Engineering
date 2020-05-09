@@ -963,7 +963,8 @@ public class LogicManager {
         if(store==null)
             return new Response<>(null,OpCode.Store_Not_Found);
         PurchasePolicy policy = store.getPurchasePolicy();
-        String output = gson.toJson(policy);
+
+        String output = gson.toJson(policy,PurchasePolicy.class);
         return new Response<>(output,OpCode.Success);
     }
 

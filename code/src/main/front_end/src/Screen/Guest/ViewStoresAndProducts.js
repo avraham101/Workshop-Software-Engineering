@@ -136,19 +136,19 @@ class ViewStoresAndProducts extends Component {
   }
 
   renderDiscountAndPolicyButtons(){
+    let state = this.props.location.state;
+    state.storeName = this.state.store;
     return this.props.location.state.logged ? "" :
         (<table style={style_table}>
           <tr>
             <th>
               <Button text="View Store Discounts" onClick={
-                () => pass(this.props.history,"/viewDiscounts",this.pathname,this.state)
-              }>
+                () => pass(this.props.history,"/viewDiscounts",this.pathname,state)}>
               </Button>
             </th>
             <th>
               <Button text="View Store Policies" onClick={
-                () => pass(this.props.history,'/viewPolicies',this.pathname,this.state)
-              }>
+                () => pass(this.props.history,'/viewPolicies',this.pathname,state)}>
 
               </Button>
             </th>

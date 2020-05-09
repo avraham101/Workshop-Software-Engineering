@@ -107,8 +107,8 @@ public class StoreController  {
     /**
      * use case 4.2.2.2 - view the policy of a store
      */
-    @GetMapping("policy/{store}")
-        public ResponseEntity<?> getStorePolicy(@PathVariable String store){
+    @GetMapping("policy/get")
+        public ResponseEntity<?> getStorePolicy(@RequestParam (name="store") String store){
         Response<String> response = SingleService.getInstance().viewPolicy(store);
         return getResponseEntity(response);
     }
