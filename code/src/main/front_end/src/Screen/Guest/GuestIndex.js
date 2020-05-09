@@ -4,6 +4,7 @@ import Menu from '../../Component/Menu';
 import Title from '../../Component/Title';
 import Row from '../../Component/Row';
 import {send} from '../../Handler/ConnectionHandler';
+import Logo_404 from '../../Assests/404_logo.jpg'
 
 class GuestIndex extends Component {
 
@@ -88,7 +89,7 @@ class GuestIndex extends Component {
     if(this.props.location.state === undefined)
       this.handleConnect();
     if(this.props.location.state === undefined || this.props.location.state.id==-1)
-      return <p style={{color:'red'}}>Page not found: 404 </p>
+      return <img src={Logo_404}/>
     this.create_stores();
     return(
       <BackGrond>
