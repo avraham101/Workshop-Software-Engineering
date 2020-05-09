@@ -9,7 +9,8 @@
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
-                    alert(xhr.response);
+                    let res = JSON.parse(xhr.response)
+                    update(res);
                 }
             };
             let send = JSON.stringify(msg);
@@ -25,10 +26,11 @@
         //the function is the handle of submit click
         function handleSubmit() {
             let promise = (buffer) => {
+                console.log(buffer);
                 if (buffer && buffer.value) {
                     alert("Admin Registered");
-                    document.getElementById("name").innerHTML = "";
-                    document.getElementById("password").innerHTML = "";
+                    document.getElementById("name").value = "";
+                    document.getElementById("password").value = "";
                 }
                 else
                     alert("Server Crashed. Cant Register Admin.")
