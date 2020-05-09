@@ -124,11 +124,12 @@ class ManageDiscount extends Component {
         <h3 style={{marginTop:0, borderBottom:'1px solid black',backgroundColor:'#FFC242'}}> {element.productName} </h3>
         <p> Price: {element.price} $ </p>
         <p> Category: {element.category} </p>
-        <p> Amount In Store: {element.amount} </p>
         <p> Type: {element.purchaseType} </p>
       </DivBetter>
     ) 
   }
+
+  /* */
 
   /*the function print the selected product and move him to Simple Discount or Term Discount */
   renderSelectedProduct(width) {

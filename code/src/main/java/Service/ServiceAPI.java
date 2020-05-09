@@ -269,6 +269,7 @@ public class ServiceAPI {
     }
 
     /**
+     * acceptance test class : UpdatePurchasePolicyTest‏
      * use case 4.2.2.1 - update policy of a store
      * @param id - the id of the user
      * @param policyData - the data about the policy
@@ -280,6 +281,7 @@ public class ServiceAPI {
     }
 
     /**
+     * acceptance test class : UpdatePurchasePolicyTest‏
      * use case 4.2.2.2 - view the policy of a store
      * @param storeName - the name of the store
      * @return - string of the policy
@@ -405,6 +407,7 @@ public class ServiceAPI {
     }
 
     /**
+     * acceptance test class : UserAdministrationInfo
      * returns all the stores managed by user
      * @param id user id
      * @return the stores managed by user
@@ -415,7 +418,7 @@ public class ServiceAPI {
 
 
     /**
-     *
+     * acceptance test class : UserAdministrationInfo
      * @param id user's id
      * @param storeName store name
      * @return list of user's permissions for given store
@@ -452,7 +455,9 @@ public class ServiceAPI {
     public void deleteRecivedNotifications(int id,List<Integer> notificationsId){
         logicManager.deleteReceivedNotifications(id,notificationsId);
     }
+
     /**
+     * Acceptance test in UserAdministrationInfo
      * get all the users for the admin
      * @param id - the id of the admin
      * @return - allt he users

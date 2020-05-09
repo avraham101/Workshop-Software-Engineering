@@ -279,7 +279,6 @@ class ViewDiscounts extends Component {
       output.push(
         <div>
           {this.renderRowOfDiscounts(index_key,keys.length)}
-          
         </div>
         )  
       index_key+=this.elementInRow;
