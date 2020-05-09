@@ -96,10 +96,10 @@ public class StoreController  {
      * use case 4.2.2.1 - update policy of a store
      */
 
-    @PutMapping("policy/{store}")
-    public ResponseEntity<?> updatePolicy(@PathVariable String store,
-                                          @RequestParam (name="id" ) int id,
-                                          @RequestBody String policyData){
+    @PostMapping("policy/add")
+    public ResponseEntity<?> updatePolicy( @RequestParam (name="store") String store,
+                                           @RequestParam (name="id" ) int id,
+                                           @RequestBody String policyData){
         Response<Boolean> response = SingleService.getInstance().upadtePolicy(id,policyData,store);
         return getResponseEntity(response);
     }
