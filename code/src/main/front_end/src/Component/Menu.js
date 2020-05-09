@@ -9,7 +9,6 @@ class Menu extends Component {
   constructor(props){
     super(props)
     this.fromPath = this.props.fromPath
-    this.prevState = this.props.state
     this.state = {
       color_0: '',
       color_1: '',
@@ -58,8 +57,8 @@ class Menu extends Component {
   }
 
   render() {
-    return (this.props.state==undefined)? this.renderGuest():
-           (this.props.state.logged==undefined)? this.renderGuest():
+    return (this.props.state===undefined)? this.renderGuest():
+           (this.props.state.logged===undefined)? this.renderGuest():
             <MenuSubscribe state ={this.props.state}/>
            
   }

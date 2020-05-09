@@ -4,7 +4,6 @@ class Input extends Component {
   
   render() {
     let border = '';
-    let error_msg = '';
     if(this.props.error!=null) {
       border='2px solid red';
     }

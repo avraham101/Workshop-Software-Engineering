@@ -29,8 +29,8 @@ class DivBetter extends Component {
 
 export default DivBetter;
 
-const style_sheet = {
-  backgroundColor: "#F9F9F9",
-  padding: 1,
-  width: "100%",
-};
+// const style_sheet = {
+//   backgroundColor: "#F9F9F9",
+//   padding: 1,
+//   width: "100%",
+// };

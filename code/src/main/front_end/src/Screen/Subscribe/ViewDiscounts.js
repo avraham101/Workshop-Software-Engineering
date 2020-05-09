@@ -27,11 +27,42 @@ class ViewDiscounts extends Component {
     this.renderRowOfDiscounts = this.renderRowOfDiscounts.bind(this);
     this.removeDiscount=this.removeDiscount.bind(this);
     this.deleteCallBack=this.deleteCallBack.bind(this);
+    this.init_permissions = this.init_permissions.bind(this);
+    this.canDeletePromise = this.canDeletePromise.bind(this);
+    this.flag = true;
     this.state = {
       mapped: false,
       map: {},
+      canDelete: false,
     };
     this.elementInRow = 3;
+  }
+
+  init_permissions() {
+    let id=this.props.location.state.id;
+    if(this.flag){
+      this.flag=false;
+      send('/home/permissions/'+this.props.location.state.storeName+'?id='+id, 'GET','',this.canDeletePromise);
+    }
+  }
+
+  canDeletePromise(received) {
+    if(received==null)
+      alert("Server Failed");
+    else{
+      let opt = ''+ received.reason;
+      if(opt === 'Success') {
+        let permissions = received.value;
+        this.setState({
+          canDelete: permissions.includes("OWNER")||permissions.includes("CRUD_POLICY_DISCOUNT")
+        });
+      }
+      else{
+        this.setState({
+          canDelete: false
+        });
+      }
+    }
   }
 
   /* get the map of discounts */
@@ -47,7 +78,8 @@ class ViewDiscounts extends Component {
           }
         else if(opt == 'Success') {
           this.setState({map:received.value,mapped:true});
-          }
+          this.init_permissions();
+        }
         }
       }
     send('/store/discount/get?store='+this.props.location.state.storeName,'GET','',promise)
@@ -209,7 +241,7 @@ class ViewDiscounts extends Component {
       return (
         <div>
             {this.renderDiscountByClass(b)}
-            <Button text="DELETE" onClick={()=>this.removeDiscount(keys[index])}></Button>
+            { this.state.canDelete? <Button text="DELETE" onClick={() => this.removeDiscount(keys[index])}/> : ""}
         </div>        
         )
     }
@@ -248,7 +280,7 @@ class ViewDiscounts extends Component {
           {this.renderRowOfDiscounts(i*this.elementInRow,keys.length)}
           
         </div>
-        )  
+        )
     }
     return output;
   }
@@ -258,10 +290,11 @@ class ViewDiscounts extends Component {
     let onBack= () => {
       pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state); 
     }
+    let storeName = this.props.location.state.storeName;
     return (
       <BackGrond>
         <Menu state={this.props.location.state} />
-        <Title title="View Discounts Manager"/>
+        <Title title={"View Discounts "+storeName}/>
         {this.renderDiscountsMap()}
         <div style={{float:'left', width:'100%'}}>
           <Button text="Back" onClick={onBack}/>

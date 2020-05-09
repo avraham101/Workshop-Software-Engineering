@@ -24,18 +24,19 @@ import BuyCart from './Screen/Guest/BuyCart';
 import EditManagerPermissions from "./Screen/Subscribe/EditManagerPermissions";
 import ViewAndReplyRequests from "./Screen/Subscribe/ViewAndReplyRequests";
 import WatchUserAndStoreHistory from './Screen/Subscribe/Admin/WatchUserAndStoreHistory';
-
-
 import SubscribeIndex from './Screen/Subscribe/SubscribetIndex';
 import EditProductInStore from './Screen/Subscribe/EditProudctInStore';
 import ViewDiscounts from './Screen/Subscribe/ViewDiscounts';
-
+import ManagePolicy from './Screen/Subscribe/ManagePolicy';
+import ViewPolicy from './Screen/Subscribe/ViewPolicy';
+import InitSystem from "./Screen/Subscribe/Admin/InitSystem";
 class App extends Component {
 
   render() {
     return (<Router history={history}>
             <Switch>
               <Route path="/admin/storehistory" component={withRouter(WatchUserAndStoreHistory)} exact/>
+              <Route path="/admin" component={withRouter(InitSystem)} exact/>
               <Route path="/register" component={withRouter(Register)} />
               <Route path="/searchAndFilter" component={withRouter(SearchAndFilterProducts)}/>
               <Route path="/login" component={withRouter(Login)} />
@@ -62,6 +63,8 @@ class App extends Component {
               <Route path="/viewAndReplyRequests" component={withRouter(ViewAndReplyRequests)} />
               <Route path="/watchUserAndStoreHistory" component={withRouter(WatchUserAndStoreHistory)} />
               <Route path="/editProduct" component={withRouter(EditProductInStore)} />
+              <Route path="/policy" component={withRouter(ManagePolicy)}/>
+              <Route path="/viewPolicies" component={withRouter(ViewPolicy)}/>
               <Route path="/subscribe" component={withRouter(SubscribeIndex)} />
               <Route path="/" component={withRouter(GuestIndex)} exact />
             </Switch>
