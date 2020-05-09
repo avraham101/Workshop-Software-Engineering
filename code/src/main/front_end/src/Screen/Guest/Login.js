@@ -46,7 +46,7 @@ class Login extends Component {
           state['name']= this.state.name;
           state['logged']=true;
           pass(this.props.history,'/subscribe',this.pathname, state) 
-          send('/home/notifications?id='+this.props.location.state.id,"GET",'',()=>[]) 
+          send('/home/notifications?id='+this.props.location.state.id,"GET",'',(r)=>alert(r.reason+' '+r.value)); 
         }
       }
     }
