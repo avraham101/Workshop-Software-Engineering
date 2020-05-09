@@ -1,12 +1,16 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.*;
+import AcceptanceTests.AcceptanceTestDataObjects.PermissionsTypeTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.ReviewTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 

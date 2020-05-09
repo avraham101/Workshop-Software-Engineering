@@ -1,6 +1,5 @@
 package Domain.PurchasePolicy.ComposePolicys;
 
-import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import Domain.Product;
 import Domain.PurchasePolicy.PurchasePolicy;

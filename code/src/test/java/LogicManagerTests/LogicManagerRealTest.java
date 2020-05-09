@@ -1,7 +1,7 @@
 package LogicManagerTests;
 
-import DataAPI.*;
 import Data.Data;
+import DataAPI.*;
 import Domain.*;
 import Domain.Discount.Discount;
 import Domain.Discount.RegularDiscount;
@@ -1066,11 +1066,17 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * get all the users for the admin
      */
-    @Test @Override
+    @Test
     public void testGetAllUsersNotAnAdmin() {
         setUpRegisteredUser();
         List<String> users = logicManager.getAllUsers(data.getId(Data.VALID)).getValue();
         assertTrue(users.isEmpty());
     }
+
+    @Test @Override
+    public void testGetAllUsers(){
+        super.testGetAllUsers();
+    }
+
 }
 

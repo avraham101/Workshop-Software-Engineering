@@ -5,14 +5,16 @@ import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.PriceRangeFilterTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.ProductNameFilterTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * use case 2.5 - Search product in store

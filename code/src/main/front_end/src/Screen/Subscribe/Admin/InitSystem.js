@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import BackGroud from '../../../Component/BackGrond';
-import Menu from '../../../Component/Menu';
 import Title from '../../../Component/Title';
 import Input from '../../../Component/Input';
 import Button from '../../../Component/Button';
@@ -77,7 +76,7 @@ class InitSystem extends Component {
         <Title title = 'Register Admin'/>
         <div>
           <Input title = 'User Name:' type="text" value={this.state.name} onChange={this.handleChangeName} />
-          <Input title = 'Password:' type="text" value={this.state.password} onChange={this.handleChangePassword} />
+          <Input title = 'Password:' type="password" value={this.state.password} onChange={this.handleChangePassword} />
           <Button text = 'Submit' onClick={this.handleSubmit}/>
         </div>
       </BackGroud>

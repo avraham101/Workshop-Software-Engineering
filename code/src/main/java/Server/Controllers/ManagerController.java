@@ -11,10 +11,8 @@ import com.google.gson.Gson;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Signature;
 import java.util.List;
 
 @RestController
@@ -56,7 +54,7 @@ public class ManagerController {
      * use case 4.6.1 - add permissions
      */
 
-    @PutMapping("permissions")
+    @PostMapping("permissions")
     public ResponseEntity<?> addPermission(@RequestParam(name="id" ) int id,
                                            @RequestBody String managerDataStr){
         ManagerData managerData = json.fromJson(managerDataStr,ManagerData.class);
@@ -69,7 +67,7 @@ public class ManagerController {
     /**
      * use case 4.6.2 - remove permissions
      */
-    @DeleteMapping("permissions")
+    @PostMapping("permissions/delete")
     public ResponseEntity<?> deletePermissions(@RequestParam(name="id" ) int id,
                                                @RequestBody String managerDataStr){
         ManagerData managerData = json.fromJson(managerDataStr,ManagerData.class);

@@ -5,7 +5,6 @@ import DataAPI.ProductIdData;
 import DataAPI.Response;
 import Service.SingleService;
 import com.google.gson.Gson;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

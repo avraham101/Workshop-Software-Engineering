@@ -422,12 +422,6 @@ public class ServiceAPI {
      * if regular manager -> empty list
      * not a manager -> null
      */
-    /**
-     * return all the permissions of a user by a store
-     * @param id - the id of the user
-     * @param storeName - the store name
-     * @return - list of user's permissions for given store
-     */
     public Response<Set<StorePermissionType>> getPermissionsForStore(int id, String storeName){
         return logicManager.getPermissionsForStore(id,storeName);
 
@@ -451,6 +445,13 @@ public class ServiceAPI {
         return logicManager.getManagersOfStoreUserManaged(id,storeName);
     }
 
+    public void setPublisher(Publisher pub) {
+        logicManager.setPublisher(pub);
+    }
+
+    public void deleteRecivedNotifications(int id,List<Integer> notificationsId){
+        logicManager.deleteReceivedNotifications(id,notificationsId);
+    }
     /**
      * get all the users for the admin
      * @param id - the id of the admin
@@ -460,11 +461,4 @@ public class ServiceAPI {
         return logicManager.getAllUsers(id);
     }
 
-    public void setPublisher(Publisher pub) {
-        logicManager.setPublisher(pub);
-    }
-
-    public void deleteRecivedNotifications(int id,List<Integer> notificationsId){
-        logicManager.deleteReceivedNotifications(id,notificationsId);
-    }
 }

@@ -34,10 +34,11 @@ public enum OpCode implements Serializable {
     No_Stores_To_Manage,
     Invalid_Policy,
     Not_Stands_In_Policy,
-    Reply_Request,
     User_Name_Already_Exist,
+    NOT_ADMIN,
+    Reply_Request,
     Removed_From_Management,
     Buy_Product,
-    NOT_ADMIN
+
 
 }

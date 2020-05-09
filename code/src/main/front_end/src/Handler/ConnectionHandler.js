@@ -33,5 +33,6 @@ export const send = async (path, method, msg, update) => {
 const receive = (buffer) => {
     //let out = Object.getOwnPropertyNames(buffer)
     let out = buffer.toString();
+    //alert(out)
     return JSON.parse(out);
 }

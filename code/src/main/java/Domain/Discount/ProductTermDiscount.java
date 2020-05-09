@@ -4,7 +4,6 @@ import Domain.Discount.Term.Term;
 import Domain.Product;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 public class ProductTermDiscount implements Discount {

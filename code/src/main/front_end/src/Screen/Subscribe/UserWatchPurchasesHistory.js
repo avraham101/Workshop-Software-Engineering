@@ -2,11 +2,9 @@ import React, {Component} from 'react';
 import BackGroud from '../../Component/BackGrond';
 import Menu from '../../Component/Menu';
 import Title from '../../Component/Title';
-import Purchases from '../../Component/Purchases'
 import Button from '../../Component/Button';
 import Input from '../../Component/Input';
 import {send} from '../../Handler/ConnectionHandler';
-import {pass} from '../../Utils/Utils'
 
 
 class UserWatchPurchasesHistory extends Component {

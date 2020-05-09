@@ -4,12 +4,19 @@ import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.Discount.Term.Term;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Systems.HashSystem;
+import Systems.LoggerSystem;
+import Systems.PaymentSystem.PaymentSystem;
+import Systems.PaymentSystem.ProxyPayment;
+import Systems.SupplySystem.ProxySupply;
+import Systems.SupplySystem.SupplySystem;
 import Publisher.Publisher;
 import Systems.*;
 import Systems.PaymentSystem.*;
 import Systems.SupplySystem.*;
 import Utils.Utils;
 import Utils.InterfaceAdapter;
+import Utils.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -529,14 +536,14 @@ public class LogicManager {
         User current=connectedUsers.get(id);
         if (storeName != null)
             store = stores.get(storeName);
-        if (store != null) {
-            Product product = store.getProduct(productName);
-            if (product != null && amount > 0 && amount <= product.getAmount()) {
-                product = product.clone();
-                //TODO check that the product is not in the basket
-                result = current.addProductToCart(store, product, amount);
-            }
+        if(store==null)
+            return new Response<>(false, OpCode.Store_Not_Found);
+        Product product = store.getProduct(productName);
+        if(product==null||amount <= 0 || amount > product.getAmount()){
+            return new Response<>(false, OpCode.Not_Found);
         }
+        product = product.clone();
+        result = current.addProductToCart(store, product, amount);
         if (result) {
             return new Response<>(true, OpCode.Success);
         }
@@ -870,7 +877,7 @@ public class LogicManager {
             System.out.println(ignored.getCause());
         }
         return null;
-     }
+    }
 
     /**
      * 4.2.1.2 - remove discount

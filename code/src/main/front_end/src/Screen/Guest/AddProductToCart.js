@@ -1,11 +1,9 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import BackGroud from "../../Component/BackGrond";
 import Menu from "../../Component/Menu";
-import Error from "../../Component/Error";
 import Title from "../../Component/Title";
 import Input from "../../Component/Input";
 import Button from "../../Component/Button";
-import history from "../history";
 import {send} from '../../Handler/ConnectionHandler';
 import {pass} from '../../Utils/Utils';
 
@@ -60,8 +58,16 @@ class AddProductToCart extends Component {
       alert("Server Failed");
     else {
       let opt = ''+ received.reason;
-      if(opt == 'Invalid_Product') {
+      if(opt == 'Not_Found') {
         alert("Product dosen't in the store any more. Went to menu");
+        pass(this.props.history,'/subscribe',this.pathname,this.props.location.state);
+      }
+      else if(opt == 'Invalid_Product') {
+        alert("Product is already in your cart, if you wasn't to add more please edit your cart. Went to menu");
+        pass(this.props.history,'/subscribe',this.pathname,this.props.location.state);
+      }
+      else if(opt == 'Store_Not_Found') {
+        alert("the store isn't exiist please try with a different store. Went to menu");
         pass(this.props.history,'/subscribe',this.pathname,this.props.location.state);
       }
       else if(opt == 'Success') {

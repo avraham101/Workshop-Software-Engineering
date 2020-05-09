@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
-import history from '../history';
 import BackGrond from '../../Component/BackGrond';
 import Title from '../../Component/Title';
 import Row from '../../Component/Row';
 import {send} from '../../Handler/ConnectionHandler';
-import {pass} from '../../Utils/Utils';
 import MenuSubscribe from '../../Component/MenuSubscribe';
-import {Notifications} from '../../Component/Notifications';
 class SubscribeIndex extends Component {
 
   constructor(props) {

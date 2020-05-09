@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -30,7 +29,6 @@ public class AdminController {
 
     @PostMapping("init")
     public ResponseEntity<?> initialStart(@RequestBody String string){
-        System.out.println(string);
         Gson json = new Gson();
         UserData user =  json.fromJson(string,UserData.class);
         Boolean state = SingleService.getInstance(user.getName(),user.getPassword()) !=null;

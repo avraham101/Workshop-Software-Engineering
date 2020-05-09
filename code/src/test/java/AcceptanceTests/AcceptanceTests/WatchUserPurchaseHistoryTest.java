@@ -4,11 +4,12 @@ import AcceptanceTests.AcceptanceTestDataObjects.PurchaseTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-
 
 import java.util.HashSet;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * use case 3.7 - watch purchase history

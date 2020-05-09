@@ -2,21 +2,16 @@ package PurchasePolicy;
 
 import Data.Data;
 import Data.TestData;
-import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
-import Domain.Permission;
-import Domain.PermissionType;
 import Domain.Product;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
-import Domain.Subscribe;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class BasketPurchasePolicyTest {
 

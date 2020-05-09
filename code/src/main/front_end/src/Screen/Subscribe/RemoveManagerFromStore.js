@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import BackGroud from "../../Component/BackGrond";
 import Menu from "../../Component/Menu";
 import Title from "../../Component/Title";
 import Button from "../../Component/Button";
-import history from "../history";
 import Row from "../../Component/Row";
 import {send} from '../../Handler/ConnectionHandler';
 import {pass} from '../../Utils/Utils'
@@ -152,9 +151,10 @@ class RemoveManagerFromStore extends Component {
               <div>
                   <Title title="Delete manager from store:"/>
                   {this.state.showManagers === false ? this.render_manager() : ""}
+                  {this.state.showManagers === false ? <Button text="Back" onClick={onBack}/> : ""}
                   {this.state.showManagers === true ? this.renderManagers() : ""}
                   {this.state.showManagers === true ? <Button text="Remove" onClick={this.handleSubmit}/> : ""}
-                  {this.state.showManagers === true ? <Button text="Cancel" onClick={this.handleCancel}/> : ""}
+                  {this.state.showManagers === true ? <Button text="Back" onClick={this.handleCancel}/> : ""}
               </div>
           </BackGroud>
       );

@@ -7,6 +7,7 @@ import Button from '../../Component/Button';
 import DivBetter from '../../Component/DivBetter'
 import {send} from '../../Handler/ConnectionHandler';
 import {pass} from '../../Utils/Utils';
+
 //4.1.2
 class ViewDeleteProductsInStore extends Component {
 

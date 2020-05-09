@@ -1,7 +1,5 @@
 package Stubs;
 
-import Domain.Subscribe;
-
 public class AdminStub extends SubscribeStub {
 
     public AdminStub(String userName, String password) {
