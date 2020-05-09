@@ -27,11 +27,43 @@ class ViewDiscounts extends Component {
     this.renderRowOfDiscounts = this.renderRowOfDiscounts.bind(this);
     this.removeDiscount=this.removeDiscount.bind(this);
     this.deleteCallBack=this.deleteCallBack.bind(this);
+    this.init_permissions = this.init_permissions.bind(this);
+    this.canDeletePromise = this.canDeletePromise.bind(this);
+    this.flag = false;
     this.state = {
       mapped: false,
       map: {},
+      canDelete: false,
     };
     this.elementInRow = 3;
+    this.init_permissions();
+  }
+
+  init_permissions() {
+    let id=this.props.location.state.id;
+    if(this.flag){
+      this.flag=false;
+      send('/home/permissions/'+this.props.location.state.storeName+'?id='+id, 'GET','',this.canDeletePromise);
+    }
+  }
+
+  canDeletePromise(received) {
+    if(received==null)
+      alert("Server Failed");
+    else{
+      let opt = ''+ received.reason;
+      if(opt === 'Success') {
+        let permissions = received.value;
+        this.setState({
+          canDelete: permissions.includes("OWNER")||permissions.includes("CRUD_POLICY_DISCOUNT")
+        });
+      }
+      else{
+        this.setState({
+          canDelete: false
+        });
+      }
+    }
   }
 
   /* get the map of discounts */
@@ -209,7 +241,7 @@ class ViewDiscounts extends Component {
       return (
         <div>
             {this.renderDiscountByClass(b)}
-            <Button text="DELETE" onClick={()=>this.removeDiscount(keys[index])}></Button>
+            { this.state.canDelete? <Button text="DELETE" onClick={() => this.removeDiscount(keys[index])}/> : ""}
         </div>        
         )
     }
