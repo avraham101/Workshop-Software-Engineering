@@ -129,6 +129,8 @@ class ManageDiscount extends Component {
     ) 
   }
 
+  /* */
+
   /*the function print the selected product and move him to Simple Discount or Term Discount */
   renderSelectedProduct(width) {
       let onClickSimple = () => {
