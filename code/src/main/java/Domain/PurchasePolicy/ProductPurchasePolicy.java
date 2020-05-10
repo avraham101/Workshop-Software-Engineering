@@ -28,7 +28,8 @@ public class ProductPurchasePolicy implements PurchasePolicy {
     @Override
     public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
         for (Product product: products.keySet()) {
-            if (!(products.get(product) <= maxAmountPerProduct.get(product.getName()))) {
+            if (maxAmountPerProduct.containsKey(product.getName())&&
+                    !(products.get(product) <= maxAmountPerProduct.get(product.getName()))) {
                 return false;
             }
         }

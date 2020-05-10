@@ -40,7 +40,7 @@ public class AndPolicy implements PurchasePolicy {
     @Override
     public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
         for (PurchasePolicy policy: policyList) {
-            if(! policy.standInPolicy(paymentData, country, products)) {
+            if(!policy.standInPolicy(paymentData, country, products)) {
                 return false;
             }
         }

@@ -78,7 +78,7 @@ class BuyCart extends Component {
             if(this.props.location.state.name===undefined)
               pass(this.props.history,'/',this.pathname,this.props.location.state)
             else
-            pass(this.props.history,'/subscribe',this.pathname,this.props.location.state)
+              pass(this.props.history,'/subscribe',this.pathname,this.props.location.state)
           }
           else if(opt == 'Invalid_Payment_Data') {
             alert('error: please fill your name and adress properly. Sorry.')
