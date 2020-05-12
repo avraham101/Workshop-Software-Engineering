@@ -359,7 +359,7 @@ public class ServiceAPI {
      * @param storeName
      * @return the request of the store to watch
      */
-    public Response<List<Request>> watchRequestsOfStore(int id,String storeName){
+    public Response<List<RequestData>> watchRequestsOfStore(int id,String storeName){
         return logicManager.viewStoreRequest(id,storeName);
     }
 
@@ -372,7 +372,7 @@ public class ServiceAPI {
      * @param storeName
      * @return the request with the apply
      */
-    public Response<Request> answerRequest(int id,int requestId,String content, String storeName){
+    public Response<RequestData> answerRequest(int id,int requestId,String content, String storeName){
         return logicManager.replayRequest(id,storeName,requestId,content);
     }
 

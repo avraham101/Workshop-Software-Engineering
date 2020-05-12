@@ -30,7 +30,8 @@ public class User {
      * @param state the new State to update
      */
     public void setState(UserState state) {
-        this.state = state;
+        if(state!=null)
+            this.state = state;
     }
 
     public String getUserName() {

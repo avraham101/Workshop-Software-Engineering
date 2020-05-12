@@ -5,9 +5,10 @@ import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.CategoryFilterTe
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.PriceRangeFilterTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.ProductNameFilterTestData;
+import AcceptanceTests.SystemMocks.PublisherMock;
 import DataAPI.*;
-import Domain.PermissionType;
-import Domain.Purchase;
+import DataAPI.PermissionType;
+import DataAPI.Purchase;
 import Domain.Request;
 import Domain.Review;
 import Service.ServiceAPI;
@@ -265,17 +266,17 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-4.9---------------------------------//
     @Override
     public HashSet<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName) {
-        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
+        List<RequestData> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
         List<ApplicationToStoreTestData> applications = buildApplicationsToStore(requests);
         return new HashSet<>(applications);
     }
 
     @Override
     public HashMap<ApplicationToStoreTestData, String> getUserApplicationsAndReplies(int id, String username, String storeName) {
-        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
+        List<RequestData> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
         HashMap<ApplicationToStoreTestData,String> appsAndReplies = new HashMap<>();
 
-        for(Request request : requests){
+        for(RequestData request : requests){
             if(request.getSenderName().equals(username)){
                 String reply = request.getComment();
                 ApplicationToStoreTestData application = buildApplicationToStore(request);
@@ -288,7 +289,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public List<ApplicationToStoreTestData> getUserApplications(int id,String username, String storeName) {
-        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
+        List<RequestData> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
         return buildApplicationsToStore(requests);
     }
 
@@ -354,6 +355,11 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public List<String> getAllUsers(int id) {
         return serviceAPI.getAllUsers(id).getValue();
+    }
+
+    @Override
+    public void setPublisher(PublisherMock publisherMock) {
+        serviceAPI.setPublisher(publisherMock);
     }
     //--------------------------get managers of store---------------------------------//
 
@@ -572,14 +578,14 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return null;
     }
 
-    private List<ReviewTestData> buildReviewsTestData(List<Review> reviews) {
+    private List<ReviewTestData> buildReviewsTestData(List<ReviewData> reviews) {
         List<ReviewTestData> reviewsTestData  = new ArrayList<>();
-        for(Review review : reviews)
+        for(ReviewData review : reviews)
             reviewsTestData.add(buildReviewTestData(review));
         return reviewsTestData;
     }
 
-    private ReviewTestData buildReviewTestData(Review review) {
+    private ReviewTestData buildReviewTestData(ReviewData review) {
         return new ReviewTestData(review.getWriter(),review.getContent());
     }
 
@@ -609,14 +615,14 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return serviceAPI.answerRequest(id,requestId, reply, storeName).getValue() != null;
     }
 
-    private List<ApplicationToStoreTestData> buildApplicationsToStore(List<Request> requests) {
+    private List<ApplicationToStoreTestData> buildApplicationsToStore(List<RequestData> requests) {
         List<ApplicationToStoreTestData> applications = new ArrayList<>();
-        for(Request request : requests)
+        for(RequestData request : requests)
             applications.add(buildApplicationToStore(request));
         return applications;
     }
 
-    private ApplicationToStoreTestData buildApplicationToStore(Request request) {
+    private ApplicationToStoreTestData buildApplicationToStore(RequestData request) {
         return new ApplicationToStoreTestData(request.getStoreName(),request.getSenderName(),request.getContent());
     }
 
@@ -648,60 +654,4 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //----------------------RealBridge aux functions--------------------------//
 
-//    public PurchaseTestData getPurchaseTestDataFromHistory(){
-//        List<Purchase>  history =  serviceAPI.watchMyPurchaseHistory();
-//        if(history==null)
-//            return null;
-//        HashMap<ProductTestData,Integer> productsAndAmountInPurchase = new HashMap<>();
-//        double totalCost=0;
-//        Date date = new Date();
-//        for (Purchase purchase: history) {
-//            List<ProductData> products = purchase.getProducts();
-//            for (ProductData product: products) {
-//                productsAndAmountInPurchase.put(buildProductTestData(product)
-//                        ,product.getAmount());
-//                totalCost+=product.getPriceAfterDiscount()*product.getAmount();
-//
-//            }
-//        }
-//        PurchaseTestData purchaseTestData = new PurchaseTestData
-//                (productsAndAmountInPurchase, date,totalCost);
-//        return  purchaseTestData;
-//    }
-
-
-//    public PurchaseTestData getPurchaseTestDataFromHistory(){
-//        List<Purchase>  history =  serviceAPI.watchMyPurchaseHistory();
-//        HashMap<ProductTestData,Integer> productsAndAmountInPurchase = new HashMap<>();
-//        double totalCost=0;
-//        Date date = new Date();
-//        for (Purchase purchase: history) {
-//            List<ProductData> products = purchase.getProducts();
-//            for (ProductData product: products) {
-//                productsAndAmountInPurchase.put(buildProductTestData(product)
-//                        ,product.getAmount());
-//                totalCost+=product.getPriceAfterDiscount()*product.getAmount();
-//
-//        for (Purchase purchase: purchaseHistory) {
-//            List<ProductData> products = purchase.getProducts();
-//            for (ProductData product: products) {
-//                productsAndAmountInPurchase.put(buildProductTestData(product)
-//                        ,product.getAmount());
-//            }
-//        }
-//
-//        PurchaseTestData purchaseTestData = new PurchaseTestData(productsAndAmountInPurchase,
-//                                                                date,
-//                                                                0.0);
-//        double totalAmount = purchaseTestData.calculateTotalAmount();
-//        purchaseTestData.setTotalAmount(totalAmount);
-//
-//        return purchaseTestData;
-//
-//
-//        }
-//        PurchaseTestData purchaseTestData = new PurchaseTestData
-//                (productsAndAmountInPurchase, date,totalCost);
-//        return  purchaseTestData;
-//    }
 }

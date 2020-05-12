@@ -4,6 +4,7 @@ import Data.Data;
 import Data.TestData;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
+import DataAPI.Purchase;
 import Domain.*;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
 import org.junit.Before;

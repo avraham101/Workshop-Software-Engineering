@@ -3,7 +3,7 @@ package Permission;
 import Data.Data;
 import Data.TestData;
 import Domain.Permission;
-import Domain.PermissionType;
+import DataAPI.PermissionType;
 import Domain.Subscribe;
 import org.junit.Before;
 import org.junit.Test;

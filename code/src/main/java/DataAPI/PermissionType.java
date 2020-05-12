@@ -1,4 +1,4 @@
-package Domain;
+package DataAPI;
 
 public enum PermissionType {
     PRODUCTS_INVENTORY,

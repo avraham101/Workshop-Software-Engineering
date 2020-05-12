@@ -21,16 +21,8 @@ public class Notification<T> {
         return value;
     }
 
-    public void setValue(T value) {
-        this.value = value;
-    }
-
     public OpCode getReason() {
         return reason;
-    }
-
-    public void setReason(OpCode reason) {
-        this.reason = reason;
     }
 
     public Integer getId() {

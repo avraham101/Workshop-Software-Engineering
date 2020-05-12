@@ -4,13 +4,14 @@ import AcceptanceTests.AcceptanceTestDataObjects.CartTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.PurchasePolicyTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
-import AcceptanceTests.SystemMocks.DeliverySystemMockAllPositive;
-import AcceptanceTests.SystemMocks.DeliverySystemMockCantDeliver;
-import AcceptanceTests.SystemMocks.PaymentSystemMockAllPositive;
-import AcceptanceTests.SystemMocks.PaymentSystemMockCantPay;
+import AcceptanceTests.SystemMocks.*;
+import DataAPI.Notification;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -40,11 +41,15 @@ public class BuyCartTest extends AcceptanceTests {
     @Test
     public void buyCartSuccess(){
         positiveSetUp();
+        PublisherMock publisherMock=new PublisherMock();
+        bridge.setPublisher(publisherMock);
         addProductToCart(1);
         boolean approval = bridge.buyCart(userId,validPayment,validDelivery);
         assertTrue(approval);
         CartTestData currCart = bridge.getUsersCart(userId);
         assertTrue(currCart.isEmpty());
+        //check notification
+        assertFalse(publisherMock.getNotificationList().isEmpty());
     }
 
     @Test

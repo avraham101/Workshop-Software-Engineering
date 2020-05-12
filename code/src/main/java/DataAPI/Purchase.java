@@ -1,4 +1,4 @@
-package Domain;
+package DataAPI;
 
 import DataAPI.ProductData;
 
@@ -27,32 +27,16 @@ public class Purchase {
         return storeName;
     }
 
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
-    }
-
     public LocalDateTime getDate() {
         return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
     }
 
     public String getBuyer() {
         return buyer;
     }
 
-    public void setBuyer(String buyer) {
-        this.buyer = buyer;
-    }
-
     public List<ProductData> getProduct() {
         return product;
-    }
-
-    public void setProduct(List<ProductData> product) {
-        this.product = product;
     }
 
     public void setPrice(double price) {

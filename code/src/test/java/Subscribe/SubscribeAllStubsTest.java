@@ -2,9 +2,7 @@ package Subscribe;
 
 import Data.Data;
 import Data.TestData;
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
+import DataAPI.*;
 import Domain.*;
 import Stubs.CartStub;
 import Systems.PaymentSystem.PaymentSystem;

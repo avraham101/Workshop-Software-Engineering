@@ -3,6 +3,7 @@ package Domain;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
+import DataAPI.Purchase;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -96,16 +97,8 @@ public class Basket {
         return store;
     }
 
-    public void setStore(Store store) {
-        this.store = store;
-    }
-
     public HashMap<Product, Integer> getProducts() {
         return products;
-    }
-
-    public void setProducts(HashMap<Product, Integer> products) {
-        this.products = products;
     }
 
     // ============================ getters & setters ============================ //

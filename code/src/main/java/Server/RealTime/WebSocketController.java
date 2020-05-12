@@ -3,7 +3,7 @@ package Server.RealTime;
 import java.security.Principal;
 import java.util.Map;
 
-import Publisher.Publisher;
+import Publisher.*;
 import Service.SingleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
@@ -23,7 +23,7 @@ public class WebSocketController {
 
     public WebSocketController(SimpMessageSendingOperations messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
-        pub = new Publisher(messagingTemplate);
+        pub = new Publisher(new Sender(messagingTemplate));
         SingleService.setPublisher(pub);
     }
 

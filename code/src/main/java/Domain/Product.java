@@ -1,6 +1,7 @@
 package Domain;
 
 import DataAPI.ProductData;
+import DataAPI.PurchaseType;
 import DataAPI.PurchaseTypeData;
 
 import java.util.ArrayList;
@@ -77,30 +78,14 @@ public class Product {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public PurchaseType getPurchaseType() {
         return purchaseType;
     }
 
-    public void setPurchases(PurchaseType purchases) {
-        this.purchaseType = purchases;
-    }
-
     public Category getCategory() { return category; }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
 
     public List<Review> getReviews() {
         return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
     }
 
     public int getAmount() {
@@ -108,7 +93,8 @@ public class Product {
     }
 
     public void setAmount(int amount) {
-        this.amount.set(amount);
+        if(amount>=0)
+            this.amount.set(amount);
     }
 
     public double getPrice() {
@@ -116,11 +102,8 @@ public class Product {
     }
 
     public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public void setPurchaseType(PurchaseType purchaseType) {
-        this.purchaseType = purchaseType;
+        if(price>=0)
+            this.price = price;
     }
 
     public ReentrantReadWriteLock.ReadLock getReadLock() {

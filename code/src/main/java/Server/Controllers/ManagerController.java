@@ -1,10 +1,6 @@
 package Server.Controllers;
 
-import DataAPI.ManagerData;
-import DataAPI.Response;
-import DataAPI.ResponseData;
-import DataAPI.StoreData;
-import Domain.Purchase;
+import DataAPI.*;
 import Domain.Request;
 import Service.SingleService;
 import com.google.gson.Gson;
@@ -97,7 +93,7 @@ public class ManagerController {
 
     @GetMapping("request/{store}")
     public ResponseEntity<?> getRequests(@PathVariable String store, @RequestParam (name="id" ) int id){
-        Response<List<Request>> response =SingleService.getInstance().watchRequestsOfStore(id,store);
+        Response<List<RequestData>> response =SingleService.getInstance().watchRequestsOfStore(id,store);
         return getResponseEntity(response);
 
     }
@@ -110,7 +106,7 @@ public class ManagerController {
     public  ResponseEntity<?> answerRequest(@PathVariable String store,@RequestParam (name="id" ) int id,
                                             @RequestBody String responseDataStr){
         ResponseData responseData = json.fromJson(responseDataStr,ResponseData.class);
-        Response<Request> response = SingleService.getInstance().answerRequest(id,responseData.getRequestId(),
+        Response<RequestData> response = SingleService.getInstance().answerRequest(id,responseData.getRequestId(),
                 responseData.getContent(),store);
         return getResponseEntity(response);
 

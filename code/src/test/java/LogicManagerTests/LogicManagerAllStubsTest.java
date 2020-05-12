@@ -820,6 +820,7 @@ public class LogicManagerAllStubsTest {
      */
     @Test
     public void testBuyCartPaymentNullName() {
+        setUpProductAddedToCart();
         // null name in payment
         PaymentData paymentData = data.getPaymentData(Data.NULL_NAME);
         String address = data.getDeliveryData(Data.VALID).getAddress();

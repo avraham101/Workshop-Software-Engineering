@@ -1,5 +1,7 @@
 package Domain;
 
+import DataAPI.PermissionType;
+
 import java.util.HashSet;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -24,7 +26,7 @@ public class Permission {
     }
 
     public Permission(Subscribe sub, HashSet<PermissionType> permissionTypes) {
-        this.owner = owner;
+        this.owner = sub;
         permissionType=permissionTypes;
         lock=new ReentrantReadWriteLock();
     }
@@ -35,16 +37,13 @@ public class Permission {
         return owner;
     }
 
-    public void setOwner(Subscribe owner) {
-        this.owner = owner;
-    }
-
     public Store getStore() {
         return store;
     }
 
     public void setStore(Store store) {
-        this.store = store;
+        if(store!=null)
+            this.store = store;
     }
 
     public HashSet<PermissionType> getPermissionType() {

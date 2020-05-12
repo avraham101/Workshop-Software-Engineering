@@ -2,6 +2,7 @@ package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.ApplicationToStoreTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import AcceptanceTests.SystemMocks.PublisherMock;
 import javafx.util.Pair;
 import org.junit.Before;
 import org.junit.Test;
@@ -84,6 +85,8 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
 
     @Test
     public void replyApplicationToStoreTestSuccess(){
+        PublisherMock publisherMock=new PublisherMock();
+        bridge.setPublisher(publisherMock);
         HashMap<ApplicationToStoreTestData,String> emptyAppAndRep = bridge.getUserApplicationsAndReplies(responder.getId(),asker.getUsername(),storeName);
         for(ApplicationToStoreTestData app : applications)
             assertFalse(emptyAppAndRep.containsKey(app));
@@ -96,6 +99,9 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
         }
         HashMap<ApplicationToStoreTestData,String> actualAppAndRep = bridge.getUserApplicationsAndReplies(responder.getId(), asker.getUsername(),storeName);
         assertEquals(applicationsAndReplies,actualAppAndRep);
+        //check notification
+        assertFalse(publisherMock.getNotificationList().isEmpty());
+
     }
 
     @Test

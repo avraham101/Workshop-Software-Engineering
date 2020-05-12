@@ -1,9 +1,7 @@
 package UserTests;
 
 import Data.Data;
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
+import DataAPI.*;
 import Domain.*;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
 import org.junit.Before;

@@ -6,6 +6,7 @@ import Domain.*;
 import Domain.Discount.Discount;
 import Domain.Discount.RegularDiscount;
 import Domain.PurchasePolicy.UserPurchasePolicy;
+import Stubs.StubPublisher;
 import Systems.HashSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
@@ -23,12 +24,16 @@ import static org.junit.Assert.*;
 public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
 
+    private StubPublisher publisher;
     @Before
     public void setUp() {
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
         init();
         currUser=connectedUsers.get(data.getId(Data.VALID));
+        publisher=new StubPublisher();
+        logicManager.setPublisher(publisher);
+
     }
 
     /**---------------------set-ups-------------------------------------------*/
@@ -386,6 +391,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 2.8 - test reserveCart Products
      * success tests
+     * notification
      */
     @Override
     protected void testSuccessBuyProducts() {
@@ -393,6 +399,16 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
         assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        //check notification
+        HashMap<Integer, List<Notification>> notifications=publisher.getNotificationList();
+        List<ProductData> productDataList= (List<ProductData>) notifications.get(data.getId(Data.VALID)).get(0).getValue();
+        ProductData expected=data.getProductData(Data.VALID);
+        ProductData actual=productDataList.get(0);
+        assertEquals(actual.getProductName(),expected.getProductName());
+        assertEquals(actual.getStoreName(),expected.getStoreName());
+        assertEquals(actual.getCategory(),expected.getCategory());
+        assertEquals(actual.getAmount(),expected.getAmount());
+        assertEquals(actual.getPrice(),expected.getPrice(),0.001);
     }
 
     /**
@@ -408,6 +424,141 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         contries.add("Israel");
         stores.get(data.getStore(Data.VALID).getName()).setPurchasePolicy(new UserPurchasePolicy(contries));
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        checkBuyDidntWork();
+    }
+
+    /**
+     * use case 2.8 - buy Cart
+     */
+    @Test @Override
+    public void testBuyCartPaymentSystemCrashed() {
+        super.testBuyCartPaymentSystemCrashed();
+        checkBuyDidntWork();
+    }
+
+    /**
+     * use case 2.8 - buy Cart
+     */
+    @Test
+    public void testBuyCartSupplySystemCrashed() {
+        super.testBuyCartSupplySystemCrashed();
+        checkBuyDidntWork();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartSupplySystemCrashedAndPaymentCancel() {
+        super.testBuyCartSupplySystemCrashedAndPaymentCancel();
+        checkBuyDidntWork();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartNullPayment(){
+        super.testBuyCartNullPayment();
+        checkBuyDidntWork();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartNullAddressPayment() {
+        super.testBuyCartNullAddressPayment();
+        checkBuyDidntWork();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartEmptyAddressPayment() {
+        super.testBuyCartEmptyAddressPayment();
+        checkBuyDidntWork();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartEmptyPayment() {
+        super.testBuyCartEmptyPayment();
+        checkBuyDidntWork();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartPaymentNullName() {
+        super.testBuyCartPaymentNullName();
+        checkBuyDidntWork();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartPaymentEmptyName(){
+        super.testBuyCartPaymentEmptyName();
+        checkBuyDidntWork();
+
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartNullAddress() {
+        super.testBuyCartNullAddress();
+        checkBuyDidntWork();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartEmptyAddress() {
+        super.testBuyCartEmptyAddress();
+        checkBuyDidntWork();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartEmptyCountry() {
+        super.testBuyCartEmptyCountry();
+        checkBuyDidntWork();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartNullCountry() {
+        super.testBuyCartNullCountry();
+        checkBuyDidntWork();
+    }
+
+    /**
+     * check cart didnt change
+     * check products in store didnt change
+     * check there are no notifications
+     */
+    private void checkBuyDidntWork() {
+        Cart cart=users.get(data.getSubscribe(Data.VALID).getName()).getCart();
+        assertEquals(cart.getBaskets().size(),1);
+        Basket basket=cart.getBaskets().get(data.getStore(Data.VALID).getName());
+        assertFalse(basket.getProducts().isEmpty());
+        Store store=stores.get(data.getStore(Data.VALID).getName());
+        assertEquals(store.getProducts().get(data.getProductData(Data.VALID).getProductName()).getAmount(),1);
+        //check no notifications
+        assertTrue(publisher.getNotificationList().isEmpty());
     }
 
     /**
@@ -848,19 +999,28 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * test use case 4.7 - remove manager
      * make user admin manage user niv(VALID2)
+     * notification
      * remove Admin from being manager and check that niv was removed from being a manager recursively
      */
     @Override
     protected void testRemoveManagerSuccess() {
         Subscribe sub=(Subscribe) currUser.getState();
         Permission p=sub.getGivenByMePermissions().get(0);
+        logicManager.login(data.getId(Data.ADMIN),data.getSubscribe(Data.ADMIN).getName(),data.getSubscribe(Data.ADMIN).getPassword());
         Subscribe niv=data.getSubscribe(Data.VALID2);
+        logicManager.login(data.getId(Data.VALID2),niv.getName(),niv.getPassword());
         String storeName=p.getStore().getName();
         //add another manager
         p.getOwner().addManager(niv,storeName);
         super.testRemoveManagerSuccess();
+        logicManager.setPublisher(this.publisher);
         assertFalse(niv.getPermissions().containsKey(storeName));
         assertFalse(p.getOwner().getPermissions().containsKey(storeName));
+        //check notifications
+        HashMap<Integer, List<Notification>> notifications=publisher.getNotificationList();
+        for(int i=0;i<=2;i+=2){
+            assertEquals(data.getStore(Data.VALID).getName(),notifications.get(i).get(0).getValue());
+        }
     }
 
     /**
@@ -879,9 +1039,18 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     private void testStoreViewRequestSuccess() {
         testAddRequest();
         StoreData storeData = data.getStore(Data.VALID);
-        List<Request> excepted = new LinkedList<>(stores.get(storeData.getName()).getRequests().values());
-        List<Request> actual = logicManager.viewStoreRequest(data.getId(Data.VALID), storeData.getName()).getValue();
-        assertTrue(excepted.containsAll(actual));
+        List<Request> requests=new LinkedList<>(stores.get(storeData.getName()).getRequests().values());
+        List<RequestData> excepted = new LinkedList<>();
+        for(Request r:requests)
+            excepted.add(new RequestData(r));
+        List<RequestData> actual = logicManager.viewStoreRequest(data.getId(Data.VALID), storeData.getName()).getValue();
+        for(int i=0;i<=1;i++){
+            assertEquals(actual.get(i).getStoreName(),excepted.get(i).getStoreName());
+            assertEquals(actual.get(i).getComment(),excepted.get(i).getComment());
+            assertEquals(actual.get(i).getContent(),excepted.get(i).getContent());
+            assertEquals(actual.get(i).getId(),excepted.get(i).getId());
+            assertEquals(actual.get(i).getSenderName(),excepted.get(i).getSenderName());
+        }
     }
 
     /**
@@ -902,17 +1071,25 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
     /**
      * part of test use case 4.9.2
+     * notification
      */
     private void testReplayRequestSuccess() {
         testAddRequest();
         Request request = data.getRequest(Data.VALID);
         //check the comment savePurchases
         StoreData storeData = data.getStore(Data.VALID);
-        Request actual = currUser.replayToRequest(request.getStoreName(), request.getId(),
+        RequestData actual = logicManager.replayRequest(data.getId(Data.VALID),request.getStoreName(), request.getId(),
                 "The milk is there, open your eyes!").getValue();
         Request excepted = stores.get(storeData.getName()).getRequests().get(request.getId());
         assertEquals(excepted.getId(),actual.getId());
         assertEquals(excepted.getComment(),actual.getComment());
+        //check notifications
+        HashMap<Integer, List<Notification>> notifications=publisher.getNotificationList();
+        Request notificationRequest= (Request) notifications.get(data.getId(Data.VALID)).get((0)).getValue();
+        assertEquals(data.getStore(Data.VALID).getName(),notificationRequest.getStoreName());
+        assertEquals(actual.getContent(),notificationRequest.getContent());
+        assertEquals(actual.getComment(),notificationRequest.getComment());
+        assertEquals(actual.getSenderName(),notificationRequest.getSenderName());
     }
 
     /**

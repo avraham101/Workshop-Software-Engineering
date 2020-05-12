@@ -3,6 +3,7 @@ package AcceptanceTests.AcceptanceTests;
 import AcceptanceTests.AcceptanceTestDataObjects.PermissionsTypeTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.PurchaseTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import AcceptanceTests.SystemMocks.PublisherMock;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,16 +50,23 @@ public class DeleteManagerTest extends AcceptanceTests{
 
     @Test
     public void deleteManagerSuccess(){
+        PublisherMock publisherMock=new PublisherMock();
+        bridge.setPublisher(publisherMock);
+        logoutAndLogin(firstManager);
+        logoutAndLogin(thirdManager);
         boolean approval = bridge.deleteManager(superUser.getId(),stores.get(0).getStoreName(), firstManager.getUsername());
         assertTrue(approval);
-        logoutAndLogin(firstManager);
+
         List<PurchaseTestData> isManager = bridge.getStorePurchasesHistory(firstManager.getId(),
                 stores.get(0).getStoreName());
         assertNull(isManager);
-        logoutAndLogin(thirdManager);
+
         isManager = bridge.getStorePurchasesHistory(thirdManager.getId(),
                 stores.get(0).getStoreName());
         assertNull(isManager);
+
+        //check notification
+        assertFalse(publisherMock.getNotificationList().isEmpty());
     }
 
     @Test

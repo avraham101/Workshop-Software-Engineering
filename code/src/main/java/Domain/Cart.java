@@ -2,6 +2,7 @@ package Domain;
 
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
+import DataAPI.Purchase;
 
 import java.util.HashMap;
 import java.util.LinkedList;
