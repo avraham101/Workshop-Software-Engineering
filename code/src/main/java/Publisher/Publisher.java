@@ -1,7 +1,6 @@
 package Publisher;
 
 import DataAPI.Notification;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 
 import java.util.ArrayList;
 
