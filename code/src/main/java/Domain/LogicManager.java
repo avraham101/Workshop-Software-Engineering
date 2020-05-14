@@ -11,12 +11,8 @@ import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
 import Systems.SupplySystem.SupplySystem;
 import Publisher.Publisher;
-import Systems.*;
-import Systems.PaymentSystem.*;
-import Systems.SupplySystem.*;
 import Utils.Utils;
 import Utils.InterfaceAdapter;
-import Utils.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -1079,16 +1075,20 @@ public class LogicManager {
      * @param storeName name of store to view request.
      * @return if the current user is manager or owner of the store the list , else empty list.
      */
-    public Response<List<Request>> viewStoreRequest(int id, String storeName) {
+    public Response<List<RequestData>> viewStoreRequest(int id, String storeName) {
         loggerSystem.writeEvent("LogicManager","viewStoreRequest",
                 "store owner view the requests of the store", new Object[] {storeName});
         User current=connectedUsers.get(id);
-        List<Request> requests = new LinkedList<>();
+        List<RequestData> requestDatas = new LinkedList<>();;
         if(storeName != null && stores.containsKey(storeName)) {
-            requests = current.viewRequest(storeName);
-            return new Response<>(requests,OpCode.Success);
+            List<Request> requests = current.viewRequest(storeName);
+            if(requests!=null){
+                for(Request r:requests)
+                    requestDatas.add(new RequestData(r));
+            }
+            return new Response<>(requestDatas,OpCode.Success);
         }
-        return new Response<>(requests,OpCode.Store_Not_Found);
+        return new Response<>(requestDatas,OpCode.Store_Not_Found);
     }
 
     /**
@@ -1099,7 +1099,7 @@ public class LogicManager {
      * @param content
      * @return true if replay, false else
      */
-    public Response<Request> replayRequest(int id, String storeName, int requestID, String content) {
+    public Response<RequestData> replayRequest(int id, String storeName, int requestID, String content) {
         loggerSystem.writeEvent("LogicManager","viewStoreRequest",
                 "store owner view the requests of the store", new Object[] {storeName});
         User current=connectedUsers.get(id);
@@ -1109,8 +1109,9 @@ public class LogicManager {
             if(request!=null){
                 Notification<Request> notification=new Notification<>(request,OpCode.Reply_Request);
                 subscribes.get(request.getSenderName()).sendNotification(notification);
+                return new Response<RequestData>(new RequestData(request),response.getReason());
             }
-            return response;
+            return new Response<RequestData>(null,response.getReason());
         }
 
         return new Response<>(null,OpCode.Store_Not_Found);

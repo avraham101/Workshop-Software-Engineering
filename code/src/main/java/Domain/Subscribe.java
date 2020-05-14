@@ -454,61 +454,25 @@ public class Subscribe extends UserState{
         return password;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public ConcurrentHashMap<String, Permission> getPermissions() {
         return permissions;
-    }
-
-    public void setPermissions(ConcurrentHashMap<String, Permission> permissions) {
-        this.permissions = permissions;
     }
 
     public List<Permission> getGivenByMePermissions() {
         return givenByMePermissions;
     }
 
-    public void setGivenByMePermissions(List<Permission> givenByMePermissions) {
-        this.givenByMePermissions = givenByMePermissions;
-    }
-
-    public List<Purchase> getPurchese() {
-        return purchases;
-    }
-
-    public void setPurchese(List<Purchase> purchases) {
-        this.purchases = purchases;
-    }
-
     public List<Request> getRequests() {
         return requests;
-    }
-
-    public void setRequests(List<Request> requests) {
-        this.requests = requests;
     }
 
     public List<Purchase> getPurchases() {
         return purchases;
     }
 
-    public void setPurchases(List<Purchase> purchases) {
-        this.purchases = purchases;
-    }
-
     @Override
     public List<Review> getReviews() {
         return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
     }
 
     public AtomicInteger getSessionNumber() {

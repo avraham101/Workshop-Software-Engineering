@@ -20,22 +20,14 @@ public class DeliveryData {
         return address;
     }
 
-    public void setAddress(String address) { this.address = address; }
 
     public List<ProductData> getProducts() {
         return products;
     }
 
-    public void setProducts(List<ProductData> products) {
-        this.products = products;
-    }
 
     public String getCountry() {
         return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     // ============================ getters & setters ============================ //

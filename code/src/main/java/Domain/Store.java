@@ -1,9 +1,6 @@
 package Domain;
 
-import DataAPI.Notification;
-import DataAPI.OpCode;
-import DataAPI.ProductData;
-import DataAPI.Response;
+import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
@@ -45,16 +42,8 @@ public class Store {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public PurchasePolicy getPurchasePolicy() {
@@ -62,7 +51,8 @@ public class Store {
     }
 
     public void setPurchasePolicy(PurchasePolicy purchasePolicy) {
-        this.purchasePolicy = purchasePolicy;
+        if(purchasePolicy!=null)
+            this.purchasePolicy = purchasePolicy;
     }
 
     public ConcurrentHashMap<Integer, Discount> getDiscount() {
@@ -73,36 +63,16 @@ public class Store {
         return products;
     }
 
-    public void setProducts(ConcurrentHashMap<String, Product> products) {
-        this.products = products;
-    }
-
     public ConcurrentHashMap<String, Category> getCategoryList() {
         return categoryList;
-    }
-
-    public void setCategoryList(ConcurrentHashMap<String, Category> categoryList) {
-        this.categoryList = categoryList;
     }
 
     public ConcurrentHashMap<Integer, Request> getRequests() {
         return requests;
     }
 
-    public void setRequests(ConcurrentHashMap<Integer, Request> requests) {
-        this.requests = requests;
-    }
-
     public ConcurrentHashMap<String, Permission> getPermissions() {
         return permissions;
-    }
-
-    public void setPermissions(ConcurrentHashMap<String, Permission> permissions) {
-        this.permissions = permissions;
-    }
-
-    public void setDiscount(ConcurrentHashMap<Integer, Discount> discounts) {
-        this.discountPolicy = discounts;
     }
 
     /**

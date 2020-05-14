@@ -1,7 +1,5 @@
 package DataAPI;
 
-import Domain.PermissionType;
-
 import java.util.List;
 
 public class ManagerData {
@@ -20,23 +18,12 @@ public class ManagerData {
         return storeName;
     }
 
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
-    }
-
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
     public List<PermissionType> getPermissions() {
         return permissions;
-    }
-
-    public void setPermissions(List<PermissionType> permissions) {
-        this.permissions = permissions;
     }
 }

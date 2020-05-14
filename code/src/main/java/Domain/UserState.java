@@ -22,10 +22,6 @@ public abstract class UserState {
         return cart;
     }
 
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
-
     public abstract String getName();
 
     public abstract String getPassword();
@@ -47,7 +43,6 @@ public abstract class UserState {
      */
     public CartData watchCartDetatils() {
         List<ProductData> products = new LinkedList<>();
-        double priceAfterDiscount = 0;
         double priceBeforeDiscount = 0;
         for (Basket basket: cart.getBaskets().values()) {
             HashMap<Product, Integer> map = basket.getProducts();
@@ -58,7 +53,7 @@ public abstract class UserState {
                 products.add(productData);
             }
         }
-        return new CartData(priceBeforeDiscount,priceAfterDiscount,products);
+        return new CartData(priceBeforeDiscount,products);
     }
 
     /**

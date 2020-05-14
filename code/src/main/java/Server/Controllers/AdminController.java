@@ -3,7 +3,7 @@ package Server.Controllers;
 import DataAPI.OpCode;
 import DataAPI.Response;
 import DataAPI.UserData;
-import Domain.Purchase;
+import DataAPI.Purchase;
 import Service.SingleService;
 import com.google.gson.Gson;
 import org.springframework.http.HttpHeaders;

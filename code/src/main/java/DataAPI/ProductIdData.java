@@ -15,23 +15,11 @@ public class ProductIdData {
         return productName;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
     public String getStoreName() {
         return storeName;
     }
 
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
-    }
-
     public Integer getAmount() {
         return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
     }
 }
