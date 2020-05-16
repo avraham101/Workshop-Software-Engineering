@@ -417,7 +417,7 @@ public class Subscribe extends UserState{
         Store store = permission.getStore();
         if(store!=null &&
                 store.getRequests().containsKey(requestID) &&
-                store.getRequests().get(requestID).getCommentReference().compareAndSet(null, content)) {
+                store.getRequests().get(requestID).setComment(content)) {
             return new Response<>(store.getRequests().get(requestID),OpCode.Success);
         }
         return new Response<>(null, OpCode.Dont_Have_Permission);

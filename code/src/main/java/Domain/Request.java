@@ -1,13 +1,31 @@
 package Domain;
 
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicReference;
+import javax.persistence.*;
 
-public class Request {
+@Entity
+@Table(name="request")
+public class Request implements Serializable {
 
+    public Request() {
+    }
+
+    @Column(name="sender",nullable = false)
     private String senderName;
+
+    @Id
+    @Column(name="store",nullable = false)
     private String storeName;
+
+    @Column(name="content",nullable = false)
     private String content;
-    private AtomicReference<String> comment;
+
+    @Column(name="comment")
+    private String comment;
+
+    @Id
+    @Column(name="id")
     private int id;
 
     public Request(String senderName, String storeName, String content,int id) {
@@ -15,7 +33,6 @@ public class Request {
         this.storeName=storeName;
         this.content = content;
         this.id=id;
-        comment=new AtomicReference<>(null);
     }
 
     // ============================ getters & setters ============================ //
@@ -23,6 +40,7 @@ public class Request {
     public String getSenderName() {
         return senderName;
     }
+
 
 
     public String getStoreName() {
@@ -33,9 +51,7 @@ public class Request {
         return content;
     }
 
-    public String getComment() {return comment.get();}
-
-    public AtomicReference<String> getCommentReference() {
+    public String getComment() {
         return comment;
     }
 
@@ -45,6 +61,14 @@ public class Request {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public synchronized boolean setComment(String comment) {
+        if(this.comment==null) {
+            this.comment = comment;
+            return true;
+        }
+        return false;
     }
 
     // ============================ getters & setters ============================ //

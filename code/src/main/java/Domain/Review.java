@@ -1,12 +1,28 @@
 package Domain;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Review {
+@Entity
+@Table(name="review")
+public class Review implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private Integer id;
+
+    @Column(name="writer")
     private String writer;
+
+    @Column(name="store")
     private String store;
+
+    @Column(name="productName")
     private String productName;
+
+    @Column(name="content")
     private String content;
 
     public Review(String writer, String store, String productName, String content) {
@@ -14,6 +30,9 @@ public class Review {
         this.store = store;
         this.productName = productName;
         this.content = content;
+    }
+
+    public Review() {
     }
 
     // ============================ getters & setters ============================ //

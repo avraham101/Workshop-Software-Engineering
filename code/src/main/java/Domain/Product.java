@@ -1,22 +1,51 @@
 package Domain;
 
 import DataAPI.ProductData;
-import DataAPI.PurchaseType;
 import DataAPI.PurchaseTypeData;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class Product {
-    private String name; //unique
-    private AtomicInteger amount;
+@Entity
+@Table(name="product")
+public class Product implements Serializable {
+
+    public Product() {
+    }
+
+    @Id
+    @Column(name="storeName",nullable = false)
+    private String store;
+
+    @Id
+    @Column(name="productName",nullable = false)
+    private String name;
+
+    @Column(name="amount",nullable = false)
+    private int amount;
+
+    @Column(name="price",nullable = false)
     private double price;
+
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="purchaseType",referencedColumnName = "purchaseType")
     private PurchaseType purchaseType;
+
+    @Transient
     private Category category;
+
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumns({
+                    @JoinColumn(name="store",referencedColumnName = "storeName"),
+                    @JoinColumn(name="productName",referencedColumnName = "productName")
+    })
     private List<Review> reviews;
+
+    @Transient
     private ReentrantReadWriteLock lock;
 
     public Product(ProductData productData, Category category) {
@@ -24,9 +53,10 @@ public class Product {
         this.purchaseType = createPurchaseType(productData.getPurchaseType());
         this.category = category;
         category.addProduct(this);
-        this.amount=new AtomicInteger(productData.getAmount());
+        this.amount=productData.getAmount();
         this.price=productData.getPrice();
         this.reviews=new ArrayList<>();
+        this.store=productData.getStoreName();
         lock=new ReentrantReadWriteLock();
     }
 
@@ -36,12 +66,13 @@ public class Product {
      */
     public Product(Product other) {
         this.name = other.name;
-        this.amount = new AtomicInteger(other.getAmount());
+        this.amount = other.getAmount();
         this.price = other.price;
         this.purchaseType = new PurchaseType();
         this.category = new Category(other.category.getName());
         this.reviews = new LinkedList<>();
         this.lock = new ReentrantReadWriteLock();
+        this.store=other.getStore();
     }
 
     /**
@@ -57,7 +88,7 @@ public class Product {
         category.removeProduct(name);
         this.category = category;
         category.addProduct(this);
-        this.amount=new AtomicInteger(productData.getAmount());
+        this.amount=productData.getAmount();
         this.price=productData.getPrice();
         getWriteLock().unlock();
     }
@@ -82,6 +113,11 @@ public class Product {
         return purchaseType;
     }
 
+    public void setPurchaseType(PurchaseType purchaseType) {
+        if(purchaseType!=null)
+            this.purchaseType = purchaseType;
+    }
+
     public Category getCategory() { return category; }
 
     public List<Review> getReviews() {
@@ -89,12 +125,12 @@ public class Product {
     }
 
     public int getAmount() {
-        return amount.get();
+        return amount;
     }
 
-    public void setAmount(int amount) {
+    public synchronized void setAmount(int amount) {
         if(amount>=0)
-            this.amount.set(amount);
+            this.amount=amount;
     }
 
     public double getPrice() {
@@ -104,6 +140,10 @@ public class Product {
     public void setPrice(double price) {
         if(price>=0)
             this.price = price;
+    }
+
+    public String getStore() {
+        return store;
     }
 
     public ReentrantReadWriteLock.ReadLock getReadLock() {
@@ -117,7 +157,7 @@ public class Product {
     // ============================ getters & setters ============================ //
 
     public boolean equal(ProductData product) {
-        return amount.get() == product.getAmount() &&
+        return amount == product.getAmount() &&
                 product.getPrice()==price &&
                 name.equals(product.getProductName()) &&
                 category.getName().equals(product.getCategory());

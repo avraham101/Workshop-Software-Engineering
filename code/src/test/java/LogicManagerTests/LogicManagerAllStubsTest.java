@@ -6,6 +6,7 @@ import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.*;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Persitent.RequestDao;
 import Stubs.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -1877,5 +1878,9 @@ public class LogicManagerAllStubsTest {
         assertTrue(users.contains(data.getSubscribe(Data.VALID).getName()));
     }
 
-
+    @Test
+    public void test(){
+        RequestDao r=new RequestDao();
+        //r.addRequest(new Request("yuvi","hanut","hello",1));
+    }
 }
