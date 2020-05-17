@@ -2,6 +2,7 @@ package Domain.PurchasePolicy;
 
 import DataAPI.PaymentData;
 import Domain.Product;
+import Domain.ProductInCart;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -26,8 +27,16 @@ public class SystemPurchasePolicy implements PurchasePolicy {
         return new LinkedList<>();
     }
 
+    /**
+     * check if the age is greater than the minimum age
+     * @param paymentData - the data of the payment
+     * @param country - the country of the user
+     * @param products - the products of the basket
+     * @return - true if stands in the policy
+     */
     @Override
-    public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
+    public boolean standInPolicy(PaymentData paymentData, String country,
+                                 HashMap<String, ProductInCart> products) {
         return (paymentData.getAge() >= age);
     }
 }

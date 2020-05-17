@@ -2,6 +2,7 @@ package Domain.PurchasePolicy.ComposePolicys;
 
 import DataAPI.PaymentData;
 import Domain.Product;
+import Domain.ProductInCart;
 import Domain.PurchasePolicy.PurchasePolicy;
 
 import java.util.HashMap;
@@ -37,8 +38,16 @@ public class XorPolicy implements PurchasePolicy {
         return products;
     }
 
+    /**
+     * check xor between policies
+     * @param paymentData - the data of the payment
+     * @param country - the country of the user
+     * @param products - the products of the basket
+     * @return - true if on;y one policy stands
+     */
     @Override
-    public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
+    public boolean standInPolicy(PaymentData paymentData, String country,
+                                 HashMap<String, ProductInCart> products) {
         int counter = 0;
         for (PurchasePolicy policy: policyList) {
             if(policy.standInPolicy(paymentData, country, products)) {
