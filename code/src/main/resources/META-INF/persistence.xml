@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+             xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+             http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+    <persistence-unit name="request" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>Domain.Request</class>
+        <properties>
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+            <!-- URL for DB -->
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/workshop
+            ?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;
+            useLegacyDatetimeCode=false&amp;serverTimezone=UTC" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+            <!-- Username -->
+            <property name="javax.persistence.jdbc.user" value="root" />
+            <!-- Password -->
+            <property name="javax.persistence.jdbc.password" value="yuval" />
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="product" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>Domain.Product</class>
+        <class>Domain.Category</class>
+        <class>Domain.PurchaseType</class>
+        <class>Domain.Discount.Discount</class>
+        <class>Domain.Discount.RegularDiscount</class>
+        <properties>
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+            <!-- URL for DB -->
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/workshop
+            ?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;
+            useLegacyDatetimeCode=false&amp;serverTimezone=UTC" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+            <!-- Username -->
+            <property name="javax.persistence.jdbc.user" value="root" />
+            <!-- Password -->
+            <property name="javax.persistence.jdbc.password" value="yuval" />
+        </properties>
+    </persistence-unit>
+</persistence>

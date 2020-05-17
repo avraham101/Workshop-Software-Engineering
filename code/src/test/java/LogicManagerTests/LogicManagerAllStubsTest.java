@@ -1886,6 +1886,9 @@ public class LogicManagerAllStubsTest {
 //        DiscountDao discountDao=new DiscountDao();
 //        discountDao.addDiscount(new RegularDiscount("pro",3));
         ProductDao productDao=new ProductDao();
-        productDao.main();
+        Product p=productDao.find(new Product("proc8","hanut"));
+        p.setAmount(52);
+        //p.addReview(new Review("wrt","hanut","proc8","hello"));
+        productDao.updateProduct(p);
     }
 }
