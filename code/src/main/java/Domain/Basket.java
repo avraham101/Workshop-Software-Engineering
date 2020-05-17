@@ -74,7 +74,7 @@ public class Basket {
         }
         String productName = product.getName();
         String storeName = this.store.getName();
-        ProductInCart productInCart = new ProductInCart(this.buyer, storeName, productName ,amount);
+        ProductInCart productInCart = new ProductInCart(this.buyer, storeName, productName ,amount, product.getPrice());
         products.put(productName, productInCart);
         return true;
     }
@@ -124,9 +124,7 @@ public class Basket {
      */
     public void cancel() {
         for(ProductInCart product: this.products.values()) {
-            String nameProduct = product.getProductName();
-            int amount = product.getAmount();
-            store.restoreAmount(nameProduct , amount);
+            store.restoreAmount(product);
         }
     }
 
@@ -137,7 +135,7 @@ public class Basket {
      * @param deliveryData the delivery data
      */
     public boolean buy(PaymentData paymentData, DeliveryData deliveryData) {
-        if(!store.getPurchasePolicy().standInPolicy(paymentData,deliveryData.getCountry(),products))
+        if(!store.policyCheck(paymentData,deliveryData.getCountry(),products))
             return false;
         List<ProductData> list = deliveryData.getProducts();
         //update delivery data

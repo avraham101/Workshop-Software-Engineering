@@ -12,8 +12,8 @@ import java.util.Set;
 public abstract class UserState {
     protected Cart cart;
 
-    public UserState() {
-        this.cart = new Cart();
+    public UserState(String buyer) {
+        this.cart = new Cart(buyer);
     }
 
     // ============================ getters & setters ============================ //
@@ -45,11 +45,13 @@ public abstract class UserState {
         List<ProductData> products = new LinkedList<>();
         double priceBeforeDiscount = 0;
         for (Basket basket: cart.getBaskets().values()) {
-            HashMap<Product, Integer> map = basket.getProducts();
-            for (Product product: map.keySet()) {
-                priceBeforeDiscount += product.getPrice()* map.get(product);
-                ProductData productData = new ProductData(product, basket.getStore().getName());
-                productData.setAmount(map.get(product));
+            Store store = basket.getStore();
+            HashMap<String, ProductInCart> map = basket.getProducts();
+            for (ProductInCart product: map.values()) {
+                priceBeforeDiscount += product.getPrice() * product.getAmount();
+                Product realProduct = store.getProduct(product.getProductName());
+                ProductData productData = new ProductData(realProduct, basket.getStore().getName());
+                productData.setAmount(product.getAmount());
                 products.add(productData);
             }
         }

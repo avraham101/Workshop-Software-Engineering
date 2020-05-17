@@ -6,12 +6,14 @@ public class ProductInCart {
     private String storeName;
     private String productName;
     private int amount;
+    private double price;
 
-    public ProductInCart(String buyer, String storeName, String productName, int amount) {
+    public ProductInCart(String buyer, String storeName, String productName, int amount, double price) {
         this.buyer = buyer;
         this.storeName = storeName;
         this.productName = productName;
         this.amount = amount;
+        this.price = price;
     }
 
     public void setAmount(int amount) {
@@ -24,5 +26,13 @@ public class ProductInCart {
 
     public int getAmount() {
         return amount;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

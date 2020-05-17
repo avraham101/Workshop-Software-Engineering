@@ -9,9 +9,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Cart {
+
+    private String buyer;
     private HashMap<String,Basket> baskets; // key is the store name and the value is the basket of the store
 
-    public Cart() {
+    public Cart(String buyer) {
         baskets=new HashMap<>();
     }
 
@@ -43,7 +45,7 @@ public class Cart {
     public boolean addProduct(Store store, Product product, int amount) {
         Basket basket = baskets.get(store.getName());
         if (basket == null) {
-            basket = new Basket(store);
+            basket = new Basket(store,this.buyer);
             baskets.put(store.getName(),basket);
         }
         return basket.addProduct(product, amount);

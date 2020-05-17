@@ -142,10 +142,11 @@ public class Store {
 
     /**
      * use case 2.8 - calculate the price of a basket
-     * @param products
+     * @param list - the products to calc from basket
      * @return calculate price of the products after discounts
      */
-    public double calculatePrice(HashMap<Product, Integer> products) {
+    public double calculatePrice(HashMap<String, ProductInCart> list) {
+        HashMap<Product, Integer> products = getSpecificProducts(list);
         double price=0;
         for(int discountId:discountPolicy.keySet()){
             Discount discount=discountPolicy.get(discountId);
@@ -197,12 +198,11 @@ public class Store {
 
     /**
      * use case 2.8 -reserveCart cart
-     * @param restores - the hashMap of reserved
+     * @param restores - the list of reserved
      */
-    private void restoreReservedProducts(HashMap<Product, Integer> restores) {
-        for(Product other: restores.keySet()) {
-            int amont = restores.get(other);
-            restoreAmount(other,amont);
+    private void restoreReservedProducts(List<ProductInCart> restores) {
+        for (ProductInCart product: restores) {
+            restoreAmount(product);
         }
     }
 
@@ -210,13 +210,12 @@ public class Store {
      * use case 2.8 -reserveCart cart
      * this function restore the amount of the product
      * @param other - the other product to return to the store
-     * @param amount - the amount to reserve
      */
-    public void restoreAmount(Product other, int amount) {
-        Product real = products.get(other.getName());
+    public void restoreAmount(ProductInCart other) {
+        Product real = products.get(other.getProductName());
         if(real!=null) {
             real.getWriteLock().lock();
-            real.setAmount(real.getAmount() + amount);
+            real.setAmount(real.getAmount() + other.getAmount());
             real.getWriteLock().unlock();
         }
     }
@@ -231,6 +230,19 @@ public class Store {
         synchronized (purchases) {
             this.purchases.add(purchase);
         }
+    }
+
+    /**
+     * use case 2.8: Buy Cart
+     * the function check the policy of the store
+     * @param paymentData - the payment data
+     * @param country - the country of the delivery
+     * @param list - the products in the basket
+     * @return true if succeed
+     */
+    public boolean policyCheck(PaymentData paymentData, String country, HashMap<String, ProductInCart> list) {
+        HashMap<Product, Integer> hashMap = getSpecificProducts(list);
+        return !getPurchasePolicy().standInPolicy(paymentData,country,hashMap);
     }
 
     /**
@@ -382,5 +394,22 @@ public class Store {
             Notification notification=new Notification(productData,OpCode.Buy_Product);
             permissions.get(manager).getOwner().sendNotification(notification);
         }
+    }
+
+    /**
+     * get hash map of specific real products and their amount in a basket
+     * @param list - hash map of products in cart
+     * @return - real products and their amount in a basket
+     */
+    private HashMap<Product, Integer> getSpecificProducts(HashMap<String, ProductInCart> list) {
+        HashMap<Product, Integer> output = new HashMap<>();
+        for (ProductInCart product: list.values()) {
+            Product realProduct = this.products.get(product.getProductName());
+            if (realProduct == null)
+                return null;
+            int amount = product.getAmount();
+            output.put(realProduct, amount);
+        }
+        return output;
     }
 }

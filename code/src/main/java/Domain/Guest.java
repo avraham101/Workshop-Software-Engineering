@@ -11,10 +11,11 @@ import java.util.Set;
 public class Guest extends UserState {
 
     public Guest() {
-        super();
+        super("Guest");
     }
 
     public Guest(Cart cart) {
+        super("Guest");
         this.cart = cart;
     }
 
@@ -51,7 +52,7 @@ public class Guest extends UserState {
     @Override
     public void savePurchase(String buyer) {
         this.cart.savePurchases(buyer);
-        this.cart = new Cart();
+        this.cart = new Cart("Guest");
     }
 
     /**
