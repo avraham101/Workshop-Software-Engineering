@@ -15,6 +15,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class Product implements Serializable {
 
     public Product() {
+        lock=new ReentrantReadWriteLock();
     }
 
     @Id
@@ -35,10 +36,15 @@ public class Product implements Serializable {
     @JoinColumn(name="purchaseType",referencedColumnName = "purchaseType")
     private PurchaseType purchaseType;
 
-    @Transient
+    @ManyToOne(cascade=CascadeType.PERSIST)
+    @JoinTable(name="category_product",
+            joinColumns ={@JoinColumn(name = "product", referencedColumnName="productName"),
+                    @JoinColumn(name="store", referencedColumnName="storeName")},
+                    inverseJoinColumns={@JoinColumn(name="category", referencedColumnName="name")}
+    )
     private Category category;
 
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumns({
                     @JoinColumn(name="store",referencedColumnName = "storeName"),
                     @JoinColumn(name="productName",referencedColumnName = "productName")
@@ -58,6 +64,11 @@ public class Product implements Serializable {
         this.reviews=new ArrayList<>();
         this.store=productData.getStoreName();
         lock=new ReentrantReadWriteLock();
+    }
+
+    public Product(String name,String store){
+        this.name=name;
+        this.store=store;
     }
 
     /**
@@ -119,6 +130,11 @@ public class Product implements Serializable {
     }
 
     public Category getCategory() { return category; }
+
+    public void setCategory(Category category) {
+        if(category!=null)
+            this.category = category;
+    }
 
     public List<Review> getReviews() {
         return reviews;

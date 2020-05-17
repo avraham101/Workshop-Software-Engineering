@@ -6,6 +6,7 @@ import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.*;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Persitent.ProductDao;
 import Persitent.RequestDao;
 import Stubs.*;
 import Systems.PaymentSystem.PaymentSystem;
@@ -1880,7 +1881,6 @@ public class LogicManagerAllStubsTest {
 
     @Test
     public void test(){
-        RequestDao r=new RequestDao();
-        //r.addRequest(new Request("yuvi","hanut","hello",1));
+
     }
 }

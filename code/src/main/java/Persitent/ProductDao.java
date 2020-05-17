@@ -7,20 +7,27 @@ import Domain.Category;
 import Domain.Product;
 import Domain.Review;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import java.io.Serializable;
+import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 
 public class ProductDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("product");
+    private CategoryDao categoryDao;
+    private PurchaseTypeDao purchaseTypeDao;
 
-    public static void main(String[] args){
-//        addProduct(new Product(new ProductData("proc2","hanut4","cat",
-//                new ArrayList<>(),3,5,PurchaseTypeData.IMMEDDIATE),new Category("cat")));
+    public ProductDao() {
+        this.categoryDao = new CategoryDao();
+        this.purchaseTypeDao = new PurchaseTypeDao();
+    }
+
+    //for test and expiriments
+    public void main(){
+//        addProduct(new Product(new ProductData("proc8","hanut","tko",
+//                new ArrayList<>(),3,5,PurchaseTypeData.IMMEDDIATE),new Category("tko")));
+        //Product p=categoryDao.find("tko");
+        Product p=find(new Product("proc8","hanut"));
 //        updateProduct("proc2","hanut4",
 //                new Review("yuv","hanut4","proc2","hello2"));
 //
@@ -29,8 +36,9 @@ public class ProductDao {
         ENTITY_MANAGER_FACTORY.close();
     }
 
-    public static void addProduct(Product product) {
-        product.getReviews().add(new Review("yuv","hanut4","proc2","hello"));
+    public void addProduct(Product product) {
+        boolean hasCat=categoryDao.find(product.getCategory().getName())!=null;
+        boolean hasPurchase=purchaseTypeDao.find(product.getPurchaseType())!=null;
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
@@ -38,23 +46,18 @@ public class ProductDao {
         EntityTransaction et = null;
 
         try {
+            if(hasPurchase){
+                PurchaseType purchaseType = em.getReference(PurchaseType.class, product.getPurchaseType().getPurchaseTypeData());
+                product.setPurchaseType(purchaseType);
+            }
+            if(hasCat){
+                Category cat=em.getReference(Category.class, product.getCategory().getName());
+                product.setCategory(cat);
+            }
             // Get transaction and start
             et = em.getTransaction();
             et.begin();
 
-            // Save the object
-            em.persist(product);
-            et.commit();
-        }
-        //if the permission type already exists
-        catch(javax.persistence.PersistenceException exp ){
-            if(et.isActive())
-                et.rollback();
-            PurchaseType purchaseType = em.getReference(PurchaseType.class, product.getPurchaseType().getPurchaseTypeData());
-            product.setPurchaseType(purchaseType);
-            et = em.getTransaction();
-
-            et.begin();
 
             // Save the object
             em.persist(product);
@@ -65,14 +68,14 @@ public class ProductDao {
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
+            //ex.printStackTrace();
         } finally {
             // Close EntityManager
             em.close();
         }
     }
 
-    public static void updateProduct(Product product){
+    public void updateProduct(Product product){
 
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
@@ -96,25 +99,58 @@ public class ProductDao {
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
+//            ex.printStackTrace();
         } finally {
             // Close EntityManager
             em.close();
         }
+
+
+
+    }
+
+    public void removeProduct(Product product){
+
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction et = null;
+
+        try {
+            // Get transaction and start
+            et = em.getTransaction();
+            et.begin();
+            Product p=em.find(Product.class,product);
+            em.remove(product);
+            et.commit();
+        } catch (Exception ex) {
+            // If there is an exception rollback changes
+            if (et != null) {
+                et.rollback();
+            }
+//            ex.printStackTrace();
+        } finally {
+            // Close EntityManager
+            em.close();
+        }
+
+
+
+    }
+
+    //@Transactional
+    public Product find(Product keys){
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        Product product = null;
+        try {
+            product=em.find(Product.class,keys);
+        }
+        catch(NoResultException ex) {
+            ex.printStackTrace();
+        }
+        finally {
+            em.close();
+        }
+        return product;
     }
 
 
-
-}
-
-class ProductKey implements Serializable {
-
-    String store;
-    String productName;
-
-    public ProductKey(String store, String productName){
-        this.productName=productName;
-        this.store=store;
-    }
-    //Override hascode and equals
 }
