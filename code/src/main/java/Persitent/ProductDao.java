@@ -1,15 +1,10 @@
 package Persitent;
 
-import DataAPI.ProductData;
 import Domain.PurchaseType;
-import DataAPI.PurchaseTypeData;
 import Domain.Category;
 import Domain.Product;
-import Domain.Review;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
-import java.util.ArrayList;
 
 public class ProductDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
@@ -128,10 +123,9 @@ public class ProductDao {
 
     }
 
-    //@Transactional
     public Product find(Product keys){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-        Product product = null;
+        Product product = new Product();
         try {
             product=em.find(Product.class,keys);
         }

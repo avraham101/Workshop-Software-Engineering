@@ -5,11 +5,8 @@ import Data.TestData;
 import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.*;
-import Domain.Discount.RegularDiscount;
 import Domain.PurchasePolicy.PurchasePolicy;
-import Persitent.DiscountDao;
 import Persitent.ProductDao;
-import Persitent.RequestDao;
 import Stubs.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -1888,7 +1885,7 @@ public class LogicManagerAllStubsTest {
         ProductDao productDao=new ProductDao();
         Product p=productDao.find(new Product("proc8","hanut"));
         p.setAmount(52);
-        //p.addReview(new Review("wrt","hanut","proc8","hello"));
+        p.addReview(new Review("wrt","hanut","proc8","hello"));
         productDao.updateProduct(p);
     }
 }

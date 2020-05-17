@@ -1,6 +1,6 @@
 package Stubs;
 
-import DataAPI.Notification;
+import Domain.Notification;
 import Publisher.Publisher;
 
 import java.util.ArrayList;

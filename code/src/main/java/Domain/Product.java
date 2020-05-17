@@ -15,7 +15,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class Product implements Serializable {
 
     public Product() {
-        lock=new ReentrantReadWriteLock();
+        this.lock=new ReentrantReadWriteLock();
     }
 
     @Id
@@ -52,7 +52,7 @@ public class Product implements Serializable {
     private List<Review> reviews;
 
     @Transient
-    private ReentrantReadWriteLock lock;
+    private final ReentrantReadWriteLock lock;
 
     public Product(ProductData productData, Category category) {
         this.name = productData.getProductName();
@@ -66,9 +66,10 @@ public class Product implements Serializable {
         lock=new ReentrantReadWriteLock();
     }
 
-    public Product(String name,String store){
+    public Product(String name, String store){
         this.name=name;
         this.store=store;
+        this.lock = new ReentrantReadWriteLock();;
     }
 
     /**
