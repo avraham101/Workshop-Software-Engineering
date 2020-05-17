@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class AndDiscount implements Discount {
+public class AndDiscount extends Discount {
     private List<Discount> discounts;
 
     public AndDiscount(List<Discount> discounts) {

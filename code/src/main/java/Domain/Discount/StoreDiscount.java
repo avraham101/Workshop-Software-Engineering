@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class StoreDiscount implements Discount {
+
+public class StoreDiscount extends Discount {
     private int minAmount;
     private double percentage;
 

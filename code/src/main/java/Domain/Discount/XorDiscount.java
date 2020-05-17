@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class XorDiscount implements Discount {
+public class XorDiscount extends Discount {
     private List<Discount> discounts;
 
     public XorDiscount(List<Discount> discounts) {

@@ -28,6 +28,8 @@ public class ProductDao {
 //                new ArrayList<>(),3,5,PurchaseTypeData.IMMEDDIATE),new Category("tko")));
         //Product p=categoryDao.find("tko");
         Product p=find(new Product("proc8","hanut"));
+        p.setAmount(81);
+        updateProduct(p);
 //        updateProduct("proc2","hanut4",
 //                new Review("yuv","hanut4","proc2","hello2"));
 //
@@ -84,15 +86,15 @@ public class ProductDao {
             // Get transaction and start
             et = em.getTransaction();
             et.begin();
-            ArrayList<String > keys=new ArrayList<>();
-            keys.add(product.getStore());
-            keys.add(product.getName());
-            Product p=em.find(Product.class,product);
-            ArrayList<Review> l=new ArrayList<>();
-            l.add(new Review("yuva","hanut4","proc2","hellohello"));
-            p.getReviews().addAll(l);
-            p.setAmount(5400);
-            //em.merge(product);
+//            ArrayList<String > keys=new ArrayList<>();
+//            keys.add(product.getStore());
+//            keys.add(product.getName());
+//            Product p=em.find(Product.class,product);
+//            ArrayList<Review> l=new ArrayList<>();
+//            l.add(new Review("yuva","hanut4","proc2","hellohello"));
+//            p.getReviews().addAll(l);
+//            p.setAmount(5400);
+            em.merge(product);
             et.commit();
         } catch (Exception ex) {
             // If there is an exception rollback changes

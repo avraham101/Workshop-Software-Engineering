@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class    OrDiscount implements Discount{
+public class    OrDiscount extends Discount{
 
     private List<Discount> discounts;
 

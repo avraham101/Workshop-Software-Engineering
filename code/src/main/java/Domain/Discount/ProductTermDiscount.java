@@ -6,7 +6,7 @@ import Domain.Product;
 import java.util.HashMap;
 import java.util.Set;
 
-public class ProductTermDiscount implements Discount {
+public class ProductTermDiscount extends Discount {
     private Term term;
     private String product;
     private int amount;

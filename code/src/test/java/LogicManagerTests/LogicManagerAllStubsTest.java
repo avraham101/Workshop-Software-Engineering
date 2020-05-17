@@ -5,7 +5,9 @@ import Data.TestData;
 import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.*;
+import Domain.Discount.RegularDiscount;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Persitent.DiscountDao;
 import Persitent.ProductDao;
 import Persitent.RequestDao;
 import Stubs.*;
@@ -1881,6 +1883,9 @@ public class LogicManagerAllStubsTest {
 
     @Test
     public void test(){
-
+//        DiscountDao discountDao=new DiscountDao();
+//        discountDao.addDiscount(new RegularDiscount("pro",3));
+        ProductDao productDao=new ProductDao();
+        productDao.main();
     }
 }
