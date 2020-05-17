@@ -2,7 +2,6 @@ package Domain.PurchasePolicy;
 
 import DataAPI.PaymentData;
 import Domain.Product;
-import Domain.ProductInCart;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +28,6 @@ public interface PurchasePolicy {
      * @param products - the products of the basket
      * @return - true if stand, false if not
      */
-    boolean standInPolicy(PaymentData paymentData, String country, HashMap<String, ProductInCart> products);
+    boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products);
 
 }
