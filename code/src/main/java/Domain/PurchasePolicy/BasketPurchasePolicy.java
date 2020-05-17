@@ -2,6 +2,7 @@ package Domain.PurchasePolicy;
 
 import DataAPI.PaymentData;
 import Domain.Product;
+import Domain.ProductInCart;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -26,10 +27,19 @@ public class BasketPurchasePolicy implements PurchasePolicy {
         return new LinkedList<>();
     }
 
+    /**
+     * check if the number of products is less than the maximum
+     * @param paymentData - the data of the payment
+     * @param country - the country of the user
+     * @param products - the products of the basket
+     * @return - true if stand in the policy
+     */
     @Override
-    public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
+    public boolean standInPolicy(PaymentData paymentData, String country,
+                                 HashMap<String, ProductInCart> products) {
         int counter = 0;
-        for (int amount: products.values()) {
+        for (ProductInCart product: products.values()) {
+            int amount = product.getAmount();
             counter += amount;
         }
         return (counter <= maxAmount);
