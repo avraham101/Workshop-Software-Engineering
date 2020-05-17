@@ -166,16 +166,16 @@ public class Store {
      * @param otherProducts - the products to remove from store
      * @return true if succeeded, otherwise false.
      */
-    public boolean reserveProducts(HashMap<Product, Integer> otherProducts) {
-        HashMap<Product, Integer> productsReserved = new HashMap<>();
+    public boolean reserveProducts(Collection<ProductInCart> otherProducts) {
         boolean output = true;
-        for(Product other: otherProducts.keySet()) {
-            int amount = otherProducts.get(other);
-            Product real = products.get(other.getName());
+        List<ProductInCart> productsReserved = new LinkedList<>();
+        for(ProductInCart productInCart: otherProducts) {
+            Product real = this.products.get(productInCart.getProductName());
             if(real!=null) {
+                int amount = productInCart.getAmount();
                 real.getWriteLock().lock();
                 if(amount<=real.getAmount()) {
-                    productsReserved.put(real,amount);
+                    productsReserved.add(productInCart);
                     real.setAmount(real.getAmount() - amount);
                     real.getWriteLock().unlock();
                 }
@@ -186,15 +186,13 @@ public class Store {
                 }
             }
             else {
-                return false;
+               output = false;
             }
-
         }
         if(!output) {
             restoreReservedProducts(productsReserved);
-            return false;
         }
-        return true;
+        return output;
     }
 
     /**

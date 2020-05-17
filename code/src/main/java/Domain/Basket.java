@@ -14,15 +14,17 @@ import java.util.Objects;
 public class Basket {
 
     private Store store; // the store of the basket
-    private HashMap<Product, Integer> products; // key is the product and the value is the amount of the product in thr basket
+    private String buyer; // the buyer name
+    private HashMap<String, ProductInCart> products; //key: Product Name value:Data
     private double price;
 
     /**
      * constructor
      * @param store - the store of the basket
      */
-    public Basket(Store store) {
+    public Basket(Store store, String buyer) {
         this.store = store;
+        this.buyer = buyer;
         this.products = new HashMap<>();
         this.price=0;
     }
@@ -35,9 +37,8 @@ public class Basket {
      */
     public boolean deleteProduct(String productName) {
         boolean result = false;
-        Product productToRemove = getProductByName(productName);
-        if (productToRemove != null) {
-            products.remove(productToRemove);
+        if (productName != null && this.products.get(productName)!=null) {
+            products.remove(productName);
             result = true;
         }
         return result;
@@ -52,9 +53,9 @@ public class Basket {
      */
     public boolean editAmount(String productName, int newAmount) {
         boolean result = false;
-        Product productToEdit = getProductByName(productName);
-        if (productToEdit != null) {
-            this.products.replace(productToEdit, newAmount);
+        ProductInCart productToEdit = this.products.get(productName);
+        if (newAmount<0 && productToEdit != null) {
+            productToEdit.setAmount(newAmount);
             result = true;
         }
         return result;
@@ -68,28 +69,16 @@ public class Basket {
      * @return - true if added, false if not
      */
     public boolean addProduct(Product product, int amount) {
-        for(Product p:products.keySet()){
-            if(p.getName().equals(product.getName()))
-                return false;
+        if(amount<0 && this.products.get(product.getName())!=null) {
+            return false;
         }
-        products.put(product,amount);
+        String productName = product.getName();
+        String storeName = this.store.getName();
+        ProductInCart productInCart = new ProductInCart(this.buyer, storeName, productName ,amount);
+        products.put(productName, productInCart);
         return true;
     }
 
-    /**
-     * get product by it's name
-     * @param productName - the name of the product
-     * @return - the product with the name given
-     */
-    private Product getProductByName(String productName) {
-        Product productToReturn = null;
-        for (Product product : products.keySet()) {
-            if (product.getName().equals(productName)) {
-                productToReturn = product;
-            }
-        }
-        return productToReturn;
-    }
 
     // ============================ getters & setters ============================ //
 
@@ -97,28 +86,35 @@ public class Basket {
         return store;
     }
 
-    public HashMap<Product, Integer> getProducts() {
+    public HashMap<String, ProductInCart> getProducts() {
         return products;
     }
 
     // ============================ getters & setters ============================ //
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Basket basket = (Basket) o;
-        return Objects.equals(store, basket.store) &&
+        return Double.compare(basket.price, price) == 0 &&
+                Objects.equals(store, basket.store) &&
+                Objects.equals(buyer, basket.buyer) &&
                 Objects.equals(products, basket.products);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(store, buyer, products, price);
+    }
 
     /**
      * use case 2.8 - purchase cart
      * the function reserveCart the basket
      */
     public boolean reservedBasket() {
-        return store.reserveProducts(products);
+        return store.reserveProducts(this.products.values());
     }
 
     /**
@@ -127,9 +123,10 @@ public class Basket {
      * assumption:  can't call this function with out calling reserveCart first.
      */
     public void cancel() {
-        for(Product p: products.keySet()) {
-            int amount = products.get(p);
-            store.restoreAmount(p, amount);
+        for(ProductInCart product: this.products.values()) {
+            String nameProduct = product.getProductName();
+            int amount = product.getAmount();
+            store.restoreAmount(nameProduct , amount);
         }
     }
 
@@ -142,24 +139,20 @@ public class Basket {
     public boolean buy(PaymentData paymentData, DeliveryData deliveryData) {
         if(!store.getPurchasePolicy().standInPolicy(paymentData,deliveryData.getCountry(),products))
             return false;
-        double price = paymentData.getTotalPrice();
         List<ProductData> list = deliveryData.getProducts();
         //update delivery data
-        for(Product p: products.keySet()) {
-            p.setAmount(products.get(p));
-            list.add(new ProductData(p, store.getName()));
+        for(ProductInCart productInCart: this.products.values()) {
+            Product product = this.store.getProduct(productInCart.getProductName());
+            String storeName = this.store.getName();
+            ProductData productData = new ProductData(product, storeName);
+            productData.setAmount(productInCart.getAmount());
+            list.add(productData);
         }
         //set the price to be after discounts
-        this.price=store.calculatePrice(productsClone());
-        paymentData.setTotalPrice(price+store.calculatePrice(productsClone()));
+        this.price=store.calculatePrice(this.products);
+        double paymentPrice = paymentData.getTotalPrice();
+        paymentData.setTotalPrice(paymentPrice+this.price);
         return true;
-    }
-
-    private HashMap<Product, Integer> productsClone() {
-        HashMap<Product,Integer> productAmountsClone=new HashMap<>();
-        for(Product p:products.keySet())
-            productAmountsClone.put(p.clone(),products.get(p));
-        return productAmountsClone;
     }
 
     /**
@@ -170,11 +163,11 @@ public class Basket {
     public Purchase savePurchase(String buyer) {
         String storeName = this.store.getName();
         List<ProductData> list = new LinkedList<>();
-        for(Product p:products.keySet()) {
-            int amount =  products.get(p);
-            ProductData temp = new ProductData(p,storeName);
-            temp.setAmount(amount);
-            list.add(temp);
+        for(ProductInCart productInCart: this.products.values()) {
+            Product productInStore = this.store.getProduct(productInCart.getProductName());
+            ProductData productData = new ProductData(productInStore, this.store.getName());
+            productData.setAmount(productInCart.getAmount());
+            list.add(productData);
         }
         Purchase purchase = new Purchase(storeName,buyer,list);
         purchase.setPrice(this.price);
