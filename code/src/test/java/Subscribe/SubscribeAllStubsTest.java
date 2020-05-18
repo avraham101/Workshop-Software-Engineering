@@ -28,7 +28,7 @@ public class SubscribeAllStubsTest {
     @Before
     public void setUp(){
         data = new TestData();
-        cart = new CartStub();
+        cart = new CartStub("Yuval");
         sub = new Subscribe("Yuval","Sabag",cart);
         initStore();
     }
