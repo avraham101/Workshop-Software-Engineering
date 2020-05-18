@@ -242,7 +242,7 @@ public class Store {
      */
     public boolean policyCheck(PaymentData paymentData, String country, HashMap<String, ProductInCart> list) {
         HashMap<Product, Integer> hashMap = getSpecificProducts(list);
-        return !getPurchasePolicy().standInPolicy(paymentData,country,hashMap);
+        return getPurchasePolicy().standInPolicy(paymentData,country,hashMap);
     }
 
     /**

@@ -86,18 +86,6 @@ public class BasketTest {
         assertFalse(basket.editAmount(null,5));
     }
 
-
-
-    /**
-     * use case 2.8 - reserveCart cart
-     */
-    @Test
-    public void testBuyBasket() {
-        setUpAddedToBasket();
-        Purchase result = basket.savePurchase(data.getSubscribe(Data.VALID).getName());
-        assertNotNull(result);
-    }
-
     /**
      * use case 2.8 cancel basket
      */
@@ -121,24 +109,25 @@ public class BasketTest {
         }
     }
 
+//TODO delete it
 
-    /**
-     * use case 2.8 buy basket
-     */
-    @Test
-    public void testBuySuccess() {
-        setUpAddedToBasket();
-        int price = 0;
-        List<ProductData> productDataList = new LinkedList<>();
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
-        assertTrue(basket.buy(paymentData, deliveryData));
-        for (ProductInCart product: basket.getProducts().values()) {
-            price += product.getPrice();
-            Product realProduct = store.getProduct(product.getProductName());
-            productDataList.add(new ProductData(realProduct, store.getName()));
-        }
-        assertTrue(deliveryData.getProducts().containsAll(productDataList));
-        assertEquals(price, paymentData.getTotalPrice(),0.01);
-    }
+//    /**
+//     * use case 2.8 buy basket
+//     */
+//    @Test
+//    public void testBuySuccess() {
+//        setUpAddedToBasket();
+//        int price = 0;
+//        List<ProductData> productDataList = new LinkedList<>();
+//        PaymentData paymentData = data.getPaymentData(Data.VALID);
+//        DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
+//        assertTrue(basket.buy(paymentData, deliveryData));
+//        for (ProductInCart product: basket.getProducts().values()) {
+//            price += product.getPrice();
+//            Product realProduct = store.getProduct(product.getProductName());
+//            productDataList.add(new ProductData(realProduct, store.getName()));
+//        }
+//        assertTrue(deliveryData.getProducts().containsAll(productDataList));
+//        assertEquals(price, paymentData.getTotalPrice(),0.01);
+//    }
 }

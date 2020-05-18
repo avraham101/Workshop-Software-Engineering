@@ -54,7 +54,7 @@ public class Basket {
     public boolean editAmount(String productName, int newAmount) {
         boolean result = false;
         ProductInCart productToEdit = this.products.get(productName);
-        if (newAmount<0 && productToEdit != null) {
+        if (newAmount>0 && productToEdit != null) {
             productToEdit.setAmount(newAmount);
             result = true;
         }
@@ -69,7 +69,7 @@ public class Basket {
      * @return - true if added, false if not
      */
     public boolean addProduct(Product product, int amount) {
-        if(amount<0 && this.products.get(product.getName())!=null) {
+        if(amount<0 || this.products.get(product.getName())!=null) {
             return false;
         }
         String productName = product.getName();

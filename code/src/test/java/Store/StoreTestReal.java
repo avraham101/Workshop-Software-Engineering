@@ -2,6 +2,7 @@ package Store;
 
 import Data.Data;
 import DataAPI.ProductData;
+import Domain.Discount.Discount;
 import Domain.Product;
 import Domain.ProductInCart;
 import org.junit.Test;
@@ -21,8 +22,9 @@ public class StoreTestReal extends StoreTestsAllStubs {
         setUpDiscountAdded();
         HashMap<String, ProductInCart> productAmount = data.getCart(Data.VALID);
         double expected = 0;
+        double discount = 1;
         for(ProductInCart productInCart: productAmount.values()) {
-            expected += productInCart.getAmount() * productInCart.getPrice();
+            expected += productInCart.getAmount() * productInCart.getPrice() - discount;
         }
         double price=store.calculatePrice(productAmount);
         assertEquals(price, expected,0.001);

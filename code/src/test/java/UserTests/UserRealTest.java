@@ -63,7 +63,7 @@ public class UserRealTest extends UserAllStubsTest{
         Store store = data.getRealStore(Data.VALID);
         Product p = data.getRealProduct(Data.VALID);
         assertTrue(user.addProductToCart(store,p,p.getAmount()));
-        assertTrue(user.getState().getCart().getBasket(store.getName()).getProducts().containsKey(p));
+        assertTrue(user.getState().getCart().getBasket(store.getName()).getProducts().containsKey(p.getName()));
     }
 
     /**

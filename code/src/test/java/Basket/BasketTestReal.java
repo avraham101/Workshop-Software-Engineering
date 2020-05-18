@@ -5,6 +5,7 @@ import Data.TestData;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
+import DataAPI.Purchase;
 import Domain.*;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
 import org.junit.Before;
@@ -42,7 +43,7 @@ public class BasketTestReal extends BasketTest{
     /**
      * use case 2.8 - reserveCart cart
      */
-    @Override @Test
+    @Test
     public void testBuySuccess() {
         setUpForBuy();
         int price = 0;
@@ -52,7 +53,7 @@ public class BasketTestReal extends BasketTest{
         assertTrue(basket.buy(paymentData, deliveryData));
         for (ProductInCart product: basket.getProducts().values()) {
             price += product.getPrice();
-            Product realProduct = store.getProduct(product.getProductName());
+            Product realProduct = basket.getStore().getProduct(product.getProductName());
             productDataList.add(new ProductData(realProduct , basket.getStore().getName()));
         }
         assertTrue(deliveryData.getProducts().containsAll(productDataList));
@@ -71,6 +72,16 @@ public class BasketTestReal extends BasketTest{
         assertFalse(basket.buy(paymentData, deliveryData));
         assertTrue(deliveryData.getProducts().isEmpty());
         assertEquals(0,paymentData.getTotalPrice(),0.001);
+    }
+
+    /**
+     * use case 2.8 - reserveCart cart
+     */
+    @Test
+    public void testBuyBasket() {
+        setUpAddedToBasket();
+        Purchase result = basket.savePurchase(data.getSubscribe(Data.VALID).getName());
+        assertNotNull(result);
     }
 
 

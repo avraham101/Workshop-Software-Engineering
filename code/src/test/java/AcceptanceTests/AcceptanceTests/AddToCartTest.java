@@ -31,7 +31,6 @@ public class AddToCartTest extends AcceptanceTests {
     @Test
     public void addToCartTestSuccessExistingBasket(){
         List<BasketTestData> baskets = cart0.getBaskets();
-
         for(BasketTestData basket : baskets){
             for(Map.Entry<ProductTestData,Integer> entry : basket.getProductsAndAmountInBasket().entrySet()){
                 ProductTestData productToAdd = entry.getKey();
