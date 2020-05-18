@@ -18,7 +18,13 @@ public class ProductPurchasePolicy implements PurchasePolicy {
 
     @Override
     public boolean isValid() {
-        return (amountPerProduct != null && !amountPerProduct.isEmpty());
+        if (amountPerProduct == null || amountPerProduct.isEmpty())
+            return false;
+        for (ProductMinMax minMax: amountPerProduct.values()) {
+            if (minMax.getMin() > minMax.getMax())
+                return false;
+        }
+        return true;
     }
 
     @Override
