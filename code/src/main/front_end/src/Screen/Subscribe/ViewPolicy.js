@@ -84,15 +84,18 @@ class ViewPolicy extends Component {
           </div>
         )
       case CLASS_PRODUCT:
-        let map = data.maxAmountPerProduct;
+        let map = data.amountPerProduct;
         let output = [];
         let keys = Object.getOwnPropertyNames(map) 
         keys.forEach(key => {
-          let amount = map[key];
+          let obj = map[key];
+          let min = obj.min; 
+          let max = obj.max;
           output.push(
             <div>
               <p style={{textAlign:'center'}}> Product: {key} </p>
-              <p style={{textAlign:'center'}}> Amount of product: {amount} </p>
+              <p style={{textAlign:'center'}}> Min Amount of product: {min} </p>
+              <p style={{textAlign:'center'}}> Max Amount of product: {max} </p>
             </div>
           )
         });
