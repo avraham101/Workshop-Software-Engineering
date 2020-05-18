@@ -18,7 +18,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     @Before
     public void setUp(){
         data = new TestData();
-        cart = new Cart();
+        cart = new Cart("Yuval");
         sub = new Subscribe("Yuval","Sabag", cart);
         super.initStore();
     }
@@ -31,11 +31,11 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         super.testAddProductToCart();
         Store store = data.getRealStore(Data.VALID);
         Product product = data.getRealProduct(Data.VALID);
-        HashMap<Product,Integer> products = cart.getBasket(store.getName()).getProducts();
+        HashMap<String,ProductInCart> products = cart.getBasket(store.getName()).getProducts();
         assertEquals(1,products.size());
-        Iterator<Product> iterator =  products.keySet().iterator();
-        Product real = iterator.next();
-        assertEquals(real.getName(),product.getName());
+        Iterator<ProductInCart> iterator =  products.values().iterator();
+        ProductInCart real = iterator.next();
+        assertEquals(real.getProductName(),product.getName());
     }
 
     /**
