@@ -1,6 +1,7 @@
 package Domain.PurchasePolicy;
 
 import DataAPI.PaymentData;
+import DataAPI.ProductMinMax;
 import Domain.Product;
 
 import java.util.HashMap;
@@ -9,26 +10,28 @@ import java.util.List;
 
 public class ProductPurchasePolicy implements PurchasePolicy {
 
-    private HashMap<String, Integer> maxAmountPerProduct;
+    private HashMap<String, ProductMinMax> amountPerProduct;
 
-    public ProductPurchasePolicy(HashMap<String, Integer> maxAmountPerProduct) {
-        this.maxAmountPerProduct = maxAmountPerProduct;
+    public ProductPurchasePolicy(HashMap<String, ProductMinMax> maxAmountPerProduct) {
+        this.amountPerProduct = maxAmountPerProduct;
     }
 
     @Override
     public boolean isValid() {
-        return (maxAmountPerProduct != null && !maxAmountPerProduct.isEmpty());
+        return (amountPerProduct != null && !amountPerProduct.isEmpty());
     }
 
     @Override
     public List<String> getProducts() {
-        return new LinkedList<>(maxAmountPerProduct.keySet());
+        return new LinkedList<>(amountPerProduct.keySet());
     }
 
     @Override
-    public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
+    public boolean standInPolicy(PaymentData paymentData, String country,
+                                 HashMap<Product, Integer> products) {
         for (Product product: products.keySet()) {
-            if (!(products.get(product) <= maxAmountPerProduct.get(product.getName()))) {
+            if (!(products.get(product) <= amountPerProduct.get(product.getName()).getMax()) ||
+                    !(products.get(product) >= amountPerProduct.get(product.getName()).getMin())){
                 return false;
             }
         }

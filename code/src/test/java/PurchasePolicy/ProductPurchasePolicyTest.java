@@ -48,6 +48,17 @@ public class ProductPurchasePolicyTest {
     }
 
     /**
+     * test for valid basket purchase policy - fail due small amount
+     */
+    @Test
+    public void testProductPurchasePolicyFailSmallAmount() {
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String country = data.getDeliveryData(Data.VALID).getCountry();
+        HashMap<Product, Integer> products = data.getProductsAndAmount(Data.SMALL_AMOUNT);
+        assertFalse(policy.standInPolicy(paymentData, country, products));
+    }
+
+    /**
      * check if the policy is indeed valid
      */
     @Test
