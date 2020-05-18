@@ -340,8 +340,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         ProductData productData = data.getProductData(Data.VALID);
         assertTrue(logicManager.deleteFromCart(data.getId(Data.VALID),productData.getProductName(),productData.getStoreName()).getValue());
         Basket basket=currUser.getState().getCart().getBasket(productData.getStoreName());
-        for(Product p:basket.getProducts().keySet())
-            assertFalse(p.equal(productData));
+        assertNull(basket.getProducts().get(productData.getProductName()));
     }
 
     /**
