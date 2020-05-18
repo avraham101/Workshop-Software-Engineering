@@ -3,6 +3,7 @@ package Store;
 import Data.Data;
 import DataAPI.ProductData;
 import Domain.Product;
+import Domain.ProductInCart;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -18,10 +19,13 @@ public class StoreTestReal extends StoreTestsAllStubs {
     @Test
     public void calculatePrice(){
         setUpDiscountAdded();
-        HashMap<Product,Integer> productsAmount=new HashMap<>();
-        productsAmount.put(data.getRealProduct(Data.VALID).clone(),3);
-        double price=store.calculatePrice(productsAmount);
-        assertEquals(price,27,0.001);
+        HashMap<String, ProductInCart> productAmount = data.getCart(Data.VALID);
+        double expected = 0;
+        for(ProductInCart productInCart: productAmount.values()) {
+            expected += productInCart.getAmount() * productInCart.getPrice();
+        }
+        double price=store.calculatePrice(productAmount);
+        assertEquals(price, expected,0.001);
     }
 
     /**

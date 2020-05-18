@@ -29,7 +29,7 @@ public class TestData {
     private HashMap<Data, PurchasePolicy> purchasePolicy;
     private HashMap<Data, HashMap<Product, Integer>> productsAndAmount;
     private HashMap<Data, BaseTerm> terms;
-
+    private HashMap<Data, HashMap<String, ProductInCart>> carts;
     /**
      * create data for tests
      */
@@ -49,6 +49,7 @@ public class TestData {
         setUpProductsAndAmountsData();
         setUpTerms();
         setUpDiscounts();
+        setUpCarts();
     }
 
     /**
@@ -344,6 +345,26 @@ public class TestData {
         purchasePolicy.put(Data.EMPTY_USER_PURCHASE_POLICY, new UserPurchasePolicy(new LinkedList<>()));
     }
 
+    private void setUpCarts(){
+        carts = new HashMap<>();
+        ProductData productData = getProductData(Data.VALID);
+        Subscribe subscribe = getSubscribe(Data.VALID);
+        HashMap<String, ProductInCart> valid = new HashMap<>();
+        valid.put(productData.getProductName(), new ProductInCart(subscribe.getName(), productData.getStoreName(), productData.getProductName(),
+                        productData.getAmount(),productData.getPrice()));
+        carts.put(Data.VALID, valid);
+        valid = new HashMap<>();
+        valid.put(productData.getProductName(), new ProductInCart(subscribe.getName(), productData.getStoreName(), productData.getProductName(),
+                productData.getAmount() * 2,productData.getPrice()));
+        carts.put(Data.LARGE_AMOUNT, valid);
+        valid = new HashMap<>();
+        productData = getProductData(Data.WRONG_NAME);
+        valid.put(productData.getProductName(), new ProductInCart(subscribe.getName(), productData.getStoreName(), productData.getProductName(),
+                productData.getAmount(),productData.getPrice()));
+        carts.put(Data.WRONG_PRODUCT, valid);
+
+    }
+
     // ============================ getters ============================ //
 
     public Subscribe getSubscribe(Data data) {
@@ -405,6 +426,8 @@ public class TestData {
     public PurchasePolicy getPurchasePolicy(Data data) {
         return purchasePolicy.get(data);
     }
+
+    public HashMap<String, ProductInCart> getCart(Data data) { return this.carts.get(data); }
 
     // ============================ getters ============================ //
 
