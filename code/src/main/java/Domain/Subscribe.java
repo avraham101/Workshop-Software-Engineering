@@ -27,10 +27,12 @@ public class Subscribe extends UserState{
     private ConcurrentLinkedQueue<Notification> notifications;
 
     public Subscribe(String userName, String password) {
+        super(userName);
         initSubscribe(userName,password);
     }
 
     public Subscribe(String userName, String password, Cart cart) {
+        super(userName);
         this.cart = cart;
         initSubscribe(userName,password);
     }
@@ -69,7 +71,7 @@ public class Subscribe extends UserState{
     @Override
     public void savePurchase(String buyer) {
         this.purchases.addAll(this.cart.savePurchases(buyer));
-        this.cart = new Cart();
+        this.cart = new Cart(this.userName);
     }
 
     /**

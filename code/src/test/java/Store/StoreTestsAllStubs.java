@@ -67,11 +67,8 @@ public class StoreTestsAllStubs {
     @Test
     public void testReserveProductsLargeAmount() {
         setUpProductAdded();
-        HashMap<Product, Integer> products = new HashMap<>();
-        Product product = data.getRealProduct(Data.VALID);
-        int amount = product.getAmount() + 1;
-        products.put(product, amount);
-        assertFalse(this.store.reserveProducts(products));
+        HashMap<String, ProductInCart> products = data.getCart(Data.LARGE_AMOUNT);
+        assertFalse(this.store.reserveProducts(products.values()));
     }
 
     /**
@@ -79,11 +76,8 @@ public class StoreTestsAllStubs {
      */
     @Test
     public void testReserveProductsProductNotInStore() {
-        HashMap<Product, Integer> products = new HashMap<>();
-        Product product = data.getRealProduct(Data.VALID);
-        int amount = product.getAmount();
-        products.put(product, amount);
-        assertFalse(this.store.reserveProducts(products));
+        HashMap<String, ProductInCart> products = data.getCart(Data.WRONG_PRODUCT);
+        assertFalse(this.store.reserveProducts(products.values()));
     }
 
     /**
@@ -92,13 +86,12 @@ public class StoreTestsAllStubs {
     @Test
     public void testReserveProductsProduct() {
         setUpProductAdded();
-        HashMap<Product, Integer> products = new HashMap<>();
-        Product product = data.getRealProduct(Data.VALID);
-        int amount = product.getAmount();
-        products.put(product, amount);
-        int amountInStore = store.getProduct(product.getName()).getAmount();
-        assertTrue(this.store.reserveProducts(products));
-        assertEquals(amountInStore - amount, store.getProduct(product.getName()).getAmount());
+        ProductData productData = data.getProductData(Data.VALID);
+        HashMap<String,ProductInCart> products = data.getCart(Data.VALID);
+        int amount = products.get(productData.getProductName()).getAmount();
+        int amountInStore = store.getProduct(productData.getProductName()).getAmount();
+        assertTrue(this.store.reserveProducts(products.values()));
+        assertEquals(amountInStore - amount, store.getProduct(productData.getProductName()).getAmount());
     }
 
     /**
@@ -110,10 +103,11 @@ public class StoreTestsAllStubs {
         ProductData p = data.getProductData(Data.VALID);
         Product product = store.getProduct(p.getProductName());
         int amount = product.getAmount();
-        this.store.restoreAmount(product,5);
+        ProductInCart productInCart = new ProductInCart("buyyer",p.getStoreName(),product.getName(),
+                5, product.getPrice());
+        this.store.restoreAmount(productInCart);
         assertEquals(amount + 5,product.getAmount());
         product.setAmount(product.getAmount() - 5);
-
     }
 
     /**

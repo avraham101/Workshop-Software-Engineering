@@ -22,8 +22,9 @@ public class CartTest {
 
     @Before
     public void setUp(){
-        cart = new Cart();
         testData = new TestData();
+        Subscribe subscribe = testData.getSubscribe(Data.VALID);
+        cart = new Cart(subscribe.getName());
     }
 
     /**-------------------------set-ups------------------------------*/
@@ -86,10 +87,10 @@ public class CartTest {
         int size = 0;
         double sum =0;
         for(Basket b:cart.getBaskets().values()) {
-            HashMap<Product,Integer> products = b.getProducts();
-            for(Product p:products.keySet()) {
-                int amount = products.get(p);
-                sum += amount * p.getPrice();
+            HashMap<String, ProductInCart> products = b.getProducts();
+            for(ProductInCart productInCart: products.values()) {
+                int amount = productInCart.getAmount();
+                sum += amount * productInCart.getPrice();
                 size++;
             }
         }

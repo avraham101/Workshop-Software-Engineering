@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class RegularDiscount implements Discount{
+
     private String product;
     private double percantage;
 
