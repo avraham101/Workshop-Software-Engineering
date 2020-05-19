@@ -1,17 +1,34 @@
 package Stubs;
 
 import DataAPI.OpCode;
+import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.Response;
 import Domain.Discount.Discount;
 import Domain.Permission;
+import Domain.ProductInCart;
 import Domain.Review;
 import Domain.Store;
+
+import java.util.HashMap;
 
 public class StoreStub extends Store {
 
     public StoreStub(String name, Permission permissions,String descrption) {
         super(name,permissions,descrption);
+    }
+
+    /**
+     * use case 2.8 - buy cart
+     * policy check
+     * @param paymentData - the payment data
+     * @param country - the country of the delivery
+     * @param list - the products in the basket
+     * @return
+     */
+    @Override
+    public boolean policyCheck(PaymentData paymentData, String country, HashMap<String, ProductInCart> list) {
+        return false;
     }
 
 

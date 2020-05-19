@@ -22,7 +22,7 @@ public class GuestTest {
     @Before
     public void setUp(){
         data=new TestData();
-        cart = new CartStub();
+        cart = new CartStub("Guest");
         guest=new Guest(cart);
     }
 
@@ -98,9 +98,9 @@ public class GuestTest {
         int size = 0;
         double sum =0;
         for(Basket b:cart.getBaskets().values()) {
-            HashMap<Product,Integer> products = b.getProducts();
-            for(Product p:products.keySet()) {
-                int amount = products.get(p);
+            HashMap<String,ProductInCart> products = b.getProducts();
+            for(ProductInCart p:products.values()) {
+                int amount = p.getAmount();
                 sum += amount * p.getPrice();
                 size++;
             }

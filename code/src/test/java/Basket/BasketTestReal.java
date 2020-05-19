@@ -5,10 +5,9 @@ import Data.TestData;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
-import Domain.Basket;
-import Domain.Product;
+import DataAPI.Purchase;
+import Domain.*;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
-import Domain.Store;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,7 +25,8 @@ public class BasketTestReal extends BasketTest{
     public void setUp() {
         data = new TestData();
         Store store = data.getRealStore(Data.VALID);
-        basket = new Basket(store);
+        String userName = data.getSubscribe(Data.VALID).getName();
+        basket = new Basket(store, userName);
     }
 
     /**------------------------------set-ups------------*/
@@ -43,7 +43,7 @@ public class BasketTestReal extends BasketTest{
     /**
      * use case 2.8 - reserveCart cart
      */
-    @Override @Test
+    @Test
     public void testBuySuccess() {
         setUpForBuy();
         int price = 0;
@@ -51,9 +51,10 @@ public class BasketTestReal extends BasketTest{
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
         assertTrue(basket.buy(paymentData, deliveryData));
-        for (Product product: basket.getProducts().keySet()) {
+        for (ProductInCart product: basket.getProducts().values()) {
             price += product.getPrice();
-            productDataList.add(new ProductData(product, basket.getStore().getName()));
+            Product realProduct = basket.getStore().getProduct(product.getProductName());
+            productDataList.add(new ProductData(realProduct , basket.getStore().getName()));
         }
         assertTrue(deliveryData.getProducts().containsAll(productDataList));
         assertEquals(price, paymentData.getTotalPrice(),0.01);
@@ -71,6 +72,16 @@ public class BasketTestReal extends BasketTest{
         assertFalse(basket.buy(paymentData, deliveryData));
         assertTrue(deliveryData.getProducts().isEmpty());
         assertEquals(0,paymentData.getTotalPrice(),0.001);
+    }
+
+    /**
+     * use case 2.8 - reserveCart cart
+     */
+    @Test
+    public void testBuyBasket() {
+        setUpAddedToBasket();
+        Purchase result = basket.savePurchase(data.getSubscribe(Data.VALID).getName());
+        assertNotNull(result);
     }
 
 

@@ -11,6 +11,10 @@ import java.util.List;
 
 public class CartStub extends Cart {
 
+    public CartStub(String buyer) {
+        super(buyer);
+    }
+
     /**
      * use case 2.7 - add product
      * @param store - the store to add to cart

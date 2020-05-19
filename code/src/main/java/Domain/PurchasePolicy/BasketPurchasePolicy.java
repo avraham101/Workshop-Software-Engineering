@@ -27,7 +27,8 @@ public class BasketPurchasePolicy implements PurchasePolicy {
     }
 
     @Override
-    public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
+    public boolean standInPolicy(PaymentData paymentData, String country,
+                                 HashMap<Product, Integer> products) {
         int counter = 0;
         for (int amount: products.values()) {
             counter += amount;

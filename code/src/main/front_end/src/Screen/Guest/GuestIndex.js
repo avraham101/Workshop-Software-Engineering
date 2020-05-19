@@ -32,7 +32,7 @@ class GuestIndex extends Component {
         this.setState({stores:received.value, flag:true})
       }
       else {
-        alert(opt+", Cant Add Product to Store");
+        alert("Cant Buy cart see code problem: "+opt);
       }
     }
   };
