@@ -3,9 +3,11 @@ package LogicManagerTests;
 import Data.Data;
 import Data.TestData;
 import DataAPI.*;
-import Domain.Discount.Discount;
+import Domain.Discount.*;
 import Domain.*;
+import Domain.Discount.Term.*;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Persitent.DiscountDao;
 import Persitent.ProductDao;
 import Stubs.*;
 import Systems.PaymentSystem.PaymentSystem;
@@ -18,6 +20,7 @@ import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -1880,12 +1883,16 @@ public class LogicManagerAllStubsTest {
 
     @Test
     public void test(){
-//        DiscountDao discountDao=new DiscountDao();
-//        discountDao.addDiscount(new RegularDiscount("pro",3));
-        ProductDao productDao=new ProductDao();
-        Product p=productDao.find(new Product("proc8","hanut"));
-        p.setAmount(52);
-        p.addReview(new Review("wrt","hanut","proc8","hello"));
-        productDao.updateProduct(p);
+        DiscountDao discountDao=new DiscountDao();
+       List<Discount> l=new ArrayList<>();
+       l.add(new RegularDiscount("prodsdaddd",99));
+       l.add(new StoreDiscount(440,35));
+       //discountDao.addDiscount(new AndDiscount(l));
+
+        List<Term> terms=new ArrayList<>();
+        terms.add(new BaseTerm("po",130));
+        l.add(new ProductTermDiscount(new OrTerm(terms), "pro",5));
+        discountDao.addDiscount(new XorDiscount(l));
+
     }
 }

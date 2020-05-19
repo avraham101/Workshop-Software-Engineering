@@ -30,6 +30,50 @@ CREATE TABLE `admin` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `and_discount`
+--
+
+DROP TABLE IF EXISTS `and_discount`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `and_discount` (
+  `id` int(11) NOT NULL,
+  KEY `and_discount_idx` (`id`),
+  CONSTRAINT `and_discount` FOREIGN KEY (`id`) REFERENCES `discount` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `and_term`
+--
+
+DROP TABLE IF EXISTS `and_term`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `and_term` (
+  `id` int(11) NOT NULL,
+  KEY `term_and_idx` (`id`),
+  CONSTRAINT `term_and` FOREIGN KEY (`id`) REFERENCES `term` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `base_term`
+--
+
+DROP TABLE IF EXISTS `base_term`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `base_term` (
+  `id` int(11) NOT NULL,
+  `product` varchar(45) NOT NULL,
+  `amount` int(11) NOT NULL,
+  KEY `term_base_idx` (`id`),
+  CONSTRAINT `term_base` FOREIGN KEY (`id`) REFERENCES `term` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `basket`
 --
 
@@ -102,20 +146,65 @@ DROP TABLE IF EXISTS `discount`;
 CREATE TABLE `discount` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `new_table`
+-- Table structure for table `discounts_inside_discounts`
 --
 
-DROP TABLE IF EXISTS `new_table`;
+DROP TABLE IF EXISTS `discounts_inside_discounts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `new_table` (
+CREATE TABLE `discounts_inside_discounts` (
+  `holder_id` int(11) NOT NULL,
+  `holdee_id` int(11) NOT NULL,
+  PRIMARY KEY (`holder_id`,`holdee_id`),
+  KEY `holdee_idx` (`holdee_id`),
+  CONSTRAINT `holdee` FOREIGN KEY (`holdee_id`) REFERENCES `discount` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `holder` FOREIGN KEY (`holder_id`) REFERENCES `discount` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `notification`
+--
+
+DROP TABLE IF EXISTS `notification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `notification` (
   `reason` varchar(45) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `or_discount`
+--
+
+DROP TABLE IF EXISTS `or_discount`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `or_discount` (
+  `id` int(11) NOT NULL,
+  KEY `or_discount_idx` (`id`),
+  CONSTRAINT `or_discount` FOREIGN KEY (`id`) REFERENCES `discount` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `or_term`
+--
+
+DROP TABLE IF EXISTS `or_term`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `or_term` (
+  `id` int(11) NOT NULL,
+  KEY `term_or_idx` (`id`),
+  CONSTRAINT `term_or` FOREIGN KEY (`id`) REFERENCES `term` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -156,6 +245,25 @@ CREATE TABLE `product` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `product_term_discount`
+--
+
+DROP TABLE IF EXISTS `product_term_discount`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_term_discount` (
+  `id` int(11) NOT NULL,
+  `product` varchar(45) NOT NULL,
+  `amount` int(11) NOT NULL,
+  `term_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `term_idx` (`term_id`),
+  CONSTRAINT `discount_term` FOREIGN KEY (`id`) REFERENCES `discount` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `term` FOREIGN KEY (`term_id`) REFERENCES `term` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `purchase_type`
 --
 
@@ -180,7 +288,7 @@ CREATE TABLE `regular_discount` (
   `product` varchar(45) NOT NULL,
   `percantage` double unsigned NOT NULL,
   KEY `regular_disc_idx` (`id`),
-  CONSTRAINT `reg` FOREIGN KEY (`id`) REFERENCES `discount` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `reg` FOREIGN KEY (`id`) REFERENCES `discount` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -246,7 +354,7 @@ CREATE TABLE `store_discount` (
   `percantage` double NOT NULL,
   `id` int(10) NOT NULL,
   KEY `id_idx` (`id`),
-  CONSTRAINT `id` FOREIGN KEY (`id`) REFERENCES `discount` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `id` FOREIGN KEY (`id`) REFERENCES `discount` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -263,6 +371,66 @@ CREATE TABLE `subscribe` (
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `term`
+--
+
+DROP TABLE IF EXISTS `term`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `term` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `terms_inside_terms`
+--
+
+DROP TABLE IF EXISTS `terms_inside_terms`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `terms_inside_terms` (
+  `holder_id` int(11) NOT NULL,
+  `holdee_id` int(11) NOT NULL,
+  PRIMARY KEY (`holder_id`,`holdee_id`),
+  KEY `holder_idx` (`holder_id`),
+  KEY `holder_term_idx` (`holder_id`),
+  KEY `term_holdee_idx` (`holdee_id`),
+  CONSTRAINT `term_holdee` FOREIGN KEY (`holdee_id`) REFERENCES `term` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `term_holder` FOREIGN KEY (`holder_id`) REFERENCES `term` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `xor_discount`
+--
+
+DROP TABLE IF EXISTS `xor_discount`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `xor_discount` (
+  `id` int(11) NOT NULL,
+  KEY `xor_discount_idx` (`id`),
+  CONSTRAINT `xor_discount` FOREIGN KEY (`id`) REFERENCES `discount` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `xor_term`
+--
+
+DROP TABLE IF EXISTS `xor_term`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `xor_term` (
+  `id` int(11) NOT NULL,
+  KEY `term_xor_idx` (`id`),
+  CONSTRAINT `term_xor` FOREIGN KEY (`id`) REFERENCES `term` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -273,4 +441,4 @@ CREATE TABLE `subscribe` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-17 22:04:14
+-- Dump completed on 2020-05-19 19:48:15

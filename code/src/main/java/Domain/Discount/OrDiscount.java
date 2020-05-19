@@ -2,17 +2,28 @@ package Domain.Discount;
 
 import Domain.Product;
 
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class    OrDiscount extends Discount{
+@Entity
+@Table(name="or_discount")
+public class OrDiscount extends Discount{
 
+    @OneToMany(cascade= CascadeType.ALL)
+    @JoinTable(name="discounts_inside_discounts",
+            joinColumns =@JoinColumn(name = "holder_id", referencedColumnName="id"),
+            inverseJoinColumns={@JoinColumn(name="holdee_id", referencedColumnName="id")}
+    )
     private List<Discount> discounts;
 
     public OrDiscount(List<Discount> discounts) {
         this.discounts = discounts;
+    }
+
+    public OrDiscount() {
     }
 
     @Override

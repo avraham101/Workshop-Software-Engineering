@@ -21,4 +21,8 @@ public abstract class Discount implements Serializable {
     public abstract boolean checkTerm(HashMap<Product, Integer> list);
     public abstract boolean isValid();
     public abstract Set<String> getProducts();
+
+    public Integer getId() {
+        return id;
+    }
 }

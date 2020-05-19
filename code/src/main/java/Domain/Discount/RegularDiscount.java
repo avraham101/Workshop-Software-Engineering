@@ -12,10 +12,6 @@ import java.util.Set;
 @Table(name="regular_discount")
 public class RegularDiscount extends Discount implements Serializable {
 
-    @Id
-    @Column(name="id")
-    protected Integer id;
-
     @Column(name="product")
     private String product;
 
