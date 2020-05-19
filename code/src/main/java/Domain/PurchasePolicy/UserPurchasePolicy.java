@@ -26,7 +26,8 @@ public class UserPurchasePolicy implements PurchasePolicy {
     }
 
     @Override
-    public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
+    public boolean standInPolicy(PaymentData paymentData, String country,
+                                 HashMap<Product, Integer> products) {
         return countries.contains(country);
     }
 }
