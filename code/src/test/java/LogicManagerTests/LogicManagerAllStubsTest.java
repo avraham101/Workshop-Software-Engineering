@@ -9,6 +9,8 @@ import Domain.Discount.Term.*;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Persitent.DiscountDao;
 import Persitent.ProductDao;
+import Persitent.StoreDao;
+import Persitent.SubscribeDao;
 import Stubs.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -1883,16 +1885,11 @@ public class LogicManagerAllStubsTest {
 
     @Test
     public void test(){
-        DiscountDao discountDao=new DiscountDao();
-       List<Discount> l=new ArrayList<>();
-       l.add(new RegularDiscount("prodsdaddd",99));
-       l.add(new StoreDiscount(440,35));
-       //discountDao.addDiscount(new AndDiscount(l));
-
-        List<Term> terms=new ArrayList<>();
-        terms.add(new BaseTerm("po",130));
-        l.add(new ProductTermDiscount(new OrTerm(terms), "pro",5));
-        discountDao.addDiscount(new XorDiscount(l));
-
+        SubscribeDao dao=new SubscribeDao();
+        Subscribe shmu=new Subscribe("yub","hat");
+//        dao.addSubscribe(shmu);
+        Store s=new Store("hanut",new Permission(shmu),"yuv");
+        StoreDao storeDao=new StoreDao();
+        storeDao.addStore(s);
     }
 }

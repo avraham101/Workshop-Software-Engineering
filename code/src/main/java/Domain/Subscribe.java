@@ -5,30 +5,60 @@ import Domain.Discount.Discount;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Publisher.Publisher;
 
+import javax.persistence.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+@Entity
+@Table(name="Subscribe")
 public class Subscribe extends UserState{
 
+    @Id
+    @Column(name="username")
     private String userName; //unique
+
+    @Column(name="password")
     private String password;
+
+    @Transient //TODO
     private ConcurrentHashMap<String, Permission> permissions; //map of <storeName, Domain.Permission>
+
+    @Transient //TODO
     private List<Permission> givenByMePermissions; //map of <storeName, Domain.Permission>
+
+    @Transient //TODO
     private List<Purchase> purchases;
+
+    @Transient //TODO
     private List<Request> requests;
+
+    @Transient //TODO
     private List<Review> reviews;
+
+    @Transient //TODO
     private AtomicInteger sessionNumber;
+
+    @Transient //TODO
     private AtomicInteger notificationNumber;
+
+    @Transient //TODO
     private ReentrantReadWriteLock lock;
+
+    @Transient //TODO
     private Publisher publisher;
+
+    @Transient //TODO
     private ConcurrentLinkedQueue<Notification> notifications;
 
     public Subscribe(String userName, String password) {
         super(userName);
         initSubscribe(userName,password);
+    }
+
+    public Subscribe() {
     }
 
     public Subscribe(String userName, String password, Cart cart) {

@@ -16,6 +16,9 @@ public abstract class UserState {
         this.cart = new Cart(buyer);
     }
 
+    public UserState() {
+    }
+
     // ============================ getters & setters ============================ //
 
     public Cart getCart() {

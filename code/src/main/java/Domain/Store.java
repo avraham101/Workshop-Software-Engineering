@@ -5,28 +5,47 @@ import Domain.Discount.Discount;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
 
+import javax.persistence.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Entity
+@Table(name="store")
 public class Store {
 
-    private String name; //unique
+    @Id
+    @Column(name="storename")
+    private String name;
+
+    @Column(name="description")
     private String description;
+
+    @Transient //TODO
     private PurchasePolicy purchasePolicy;
-    private AtomicInteger discountCounter;
+
+    @Transient //TODO
     private ConcurrentHashMap<Integer,Discount> discountPolicy;
+
+    @Transient //TODO
     private ConcurrentHashMap<String, Product> products;
+
+    @Transient //TODO
     private ConcurrentHashMap<String, Category> categoryList;
+
+    @Transient //TODO
     private ConcurrentHashMap<Integer, Request> requests;
+
+    @Transient //TODO
     private ConcurrentHashMap<String, Permission> permissions;
+
+    @Transient //TODO
     private List<Purchase> purchases;
 
     public Store(String name,Permission permission,String description) {
         this.name = name;
         this.description=description;
         this.purchasePolicy = new AndPolicy(new ArrayList<>());
-        discountCounter=new AtomicInteger(0);
         this.discountPolicy=new ConcurrentHashMap<>();
         this.permissions = new ConcurrentHashMap<>();
         this.permissions.put(permission.getOwner().getName(), permission);
@@ -34,6 +53,9 @@ public class Store {
         this.categoryList=new ConcurrentHashMap<>();
         this.requests= new ConcurrentHashMap<>();
         this.purchases = new LinkedList<>();
+    }
+
+    public Store() {
     }
 
     // ============================ getters & setters ============================ //
@@ -345,7 +367,7 @@ public class Store {
     public Response<Boolean> addDiscount(Discount discount) {
         if(!checkProducts(discount))
             return new Response<>(false,OpCode.Invalid_Product);
-        discountPolicy.putIfAbsent(discountCounter.getAndIncrement(),discount);
+        discountPolicy.putIfAbsent(discount.getId(),discount);
         return new Response<>(true,OpCode.Success);
     }
 
