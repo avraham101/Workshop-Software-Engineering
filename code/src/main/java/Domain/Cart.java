@@ -4,20 +4,33 @@ import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.Purchase;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-public class Cart {
+@Entity
+@Table(name = "cart")
+public class Cart implements Serializable {
 
+    @Id
+    @Column(name = "username")
     private String buyer;
-    private HashMap<String,Basket> baskets; // key is the store name and the value is the basket of the store
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @MapKey(name="store")
+    @JoinColumn(name="username", referencedColumnName = "username", updatable = false)
+    private Map<String,Basket> baskets; // key is the store name and the value is the basket of the store
+
+
+    public Cart(){}
 
     public Cart(String buyer) {
         baskets=new HashMap<>();
     }
 
-    public HashMap<String, Basket> getBaskets() {
+    public Map<String, Basket> getBaskets() {
         return baskets;
     }
 
