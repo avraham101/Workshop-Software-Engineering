@@ -1,9 +1,12 @@
 package AcceptanceTests.AcceptanceTests;
 
+import AcceptanceTests.AcceptanceTestDataObjects.DateTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.DiscountTestData;
 import org.junit.Before;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.Test;
+
+import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 
@@ -58,4 +61,42 @@ public class AdminRevenue extends AcceptanceTests{
         assertEquals(0, revenue, 0.001);
     }
 
+    @Test
+    public void testRevenueByDay() {
+        setUp();
+        DateTestData day = new DateTestData(LocalDate.now().getDayOfMonth(),
+                LocalDate.now().getMonthValue(),
+                LocalDate.now().getYear());
+        double revenue = bridge.getRevenueByDay(admin.getId(), day);
+        assertEquals(1.5, revenue, 0.001);
+    }
+
+    @Test
+    public void testRevenueByDayWithDiscount() {
+        setUpWithDicount();
+        DateTestData day = new DateTestData(LocalDate.now().getDayOfMonth(),
+                LocalDate.now().getMonthValue(),
+                LocalDate.now().getYear());
+        double revenue = bridge.getRevenueByDay(admin.getId(), day);
+        assertEquals(1.5 * 0.5, revenue, 0.001);
+    }
+
+    @Test
+    public void testRevenueByDayNotAdmin() {
+        setUp();
+        DateTestData day = new DateTestData(LocalDate.now().getDayOfMonth(),
+                LocalDate.now().getMonthValue(),
+                LocalDate.now().getYear());
+        double revenue = bridge.getRevenueByDay(users.get(1).getId(), day);
+        assertEquals(0, revenue, 0.001);
+    }
+
+    @Test
+    public void testRevenueByDayNotBuy() {
+        DateTestData day = new DateTestData(LocalDate.now().getDayOfMonth(),
+                LocalDate.now().getMonthValue(),
+                LocalDate.now().getYear());
+        double revenue = bridge.getRevenueByDay(admin.getId(), day);
+        assertEquals(0, revenue, 0.001);
+    }
 }
