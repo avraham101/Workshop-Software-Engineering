@@ -71,13 +71,13 @@ public class AdminController {
     }
 
     /**
-     * get all the users for the admin
+     * get the revenue today
      * @param id - the id of the admin
-     * @return - list of all the names of the users
+     * @return - the revenue today
      */
-    @GetMapping("allusers")
+    @GetMapping("todayRevenue")
     public ResponseEntity<?> getTodayRevenue(@RequestParam(name="id") int id ) {
-        Response<List<String>> response = SingleService.getInstance().getAllUsers(id);
+        Response<Double> response = SingleService.getInstance().getRevenueToday(id);
         return getResponseEntity(response);
     }
 
