@@ -14,7 +14,7 @@ class WatchRevenu extends Component {
       super();
       this.pathname = "/admin/watchRevenu";
       this.state = {
-        day_income:100,
+        day_income:undefined,
         i_day:undefined,
         i_month:undefined,
         i_year:undefined,
@@ -38,7 +38,22 @@ class WatchRevenu extends Component {
         let day = date.getDate();
         let month = date.getMonth() + 1;
         let year = date.getFullYear();
-        this.setState({day:day, month:month, year:year, i_day:day, i_month:month, i_year:year});
+        let id = this.props.location.state.id;
+        send('/admin/todayRevenue?id='+id,'GET','',(received)=>{
+          if(received){
+            let opt = ''+received.reason;
+            if(opt === "Success") {
+              this.setState({day:day, month:month, year:year, i_day:day, i_month:month, i_year:year,
+                day_income:received.value}); 
+            }
+            else if(opt==="Not_Found‏") {
+              alert("Nothing Bought On this Day");
+            }
+            else if(opt==="NOT_ADMIN‏") {
+              alert("Ha Great For You, you cant fool us!!!");
+            }
+          }
+        });
       }
     }
 
@@ -108,9 +123,27 @@ class WatchRevenu extends Component {
           alert('Cant Select A Day greater then the current Day');
         }
         else {
-          this.setState({ s_year:this.state.i_year, s_month:this.state.i_month, s_day:this.state.i_day,
-                          selected_day_income:100, //TODO
-                          i_year:this.state.year, i_month:this.state.month, i_day:this.state.day})
+          let msg = { day:this.state.i_day, month:this.state.i_month, year:this.state.i_year}; 
+          let id = this.props.location.state.id;
+          send('/admin/dayRevenue‏?id='+id,'GET',msg,(received)=>{
+            if(received){
+              let opt = ''+received.reason;
+              if(opt === "Success") {
+                this.setState({ s_year:this.state.i_year, s_month:this.state.i_month, s_day:this.state.i_day,
+                  selected_day_income:received.value, //TODO
+                  i_year:this.state.year, i_month:this.state.month, i_day:this.state.day})
+                }
+              else if(opt==="INVALID_DATE‏") {
+                alert("The date inserted isnt valid Date");
+              }
+              else if(opt==="Not_Found‏") {
+                alert("Nothing Bought On this Day");
+              }
+              else if(opt==="NOT_ADMIN‏") {
+                alert("Ha Great For You, you cant fool us!!!");
+              }
+            }
+          });
         }
       } 
       return (
