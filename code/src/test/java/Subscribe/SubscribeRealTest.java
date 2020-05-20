@@ -137,7 +137,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         assertEquals(storeData.getName(), store.getName());
         assertEquals(storeData.getDescription(),"description");
         //test Owner permissions
-        ConcurrentHashMap<String, Permission> permissions = sub.getPermissions();
+        ConcurrentHashMap<String, Permission> permissions =(ConcurrentHashMap<String, Permission>) sub.getPermissions();
         assertTrue(permissions.containsKey(store.getName()));
         Permission permission = permissions.get(store.getName());
         assertTrue(permission.getPermissionType().contains(PermissionType.OWNER));

@@ -1,12 +1,10 @@
 package Persitent;
 
 import Domain.Discount.Discount;
+import Domain.Store;
 import Domain.Subscribe;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 
 public class SubscribeDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
@@ -38,5 +36,21 @@ public class SubscribeDao {
             // Close EntityManager
             em.close();
         }
+    }
+
+    public Subscribe find(String userName){
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        Subscribe sub = null;
+        try {
+            sub=em.find(Subscribe.class,userName);
+            sub.initPermissions();
+        }
+        catch(NoResultException ex) {
+            ex.printStackTrace();
+        }
+        finally {
+            em.close();
+        }
+        return sub;
     }
 }

@@ -8,7 +8,6 @@ import Domain.PurchasePolicy.PurchasePolicy;
 import javax.persistence.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity
 @Table(name="store")
@@ -36,8 +35,11 @@ public class Store {
     @Transient //TODO
     private ConcurrentHashMap<Integer, Request> requests;
 
-    @Transient //TODO
-    private ConcurrentHashMap<String, Permission> permissions;
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @MapKeyColumn(name = "owner")
+    @JoinColumn(name="store",referencedColumnName = "storeName")
+    private Map<String, Permission> permissions;
+
 
     @Transient //TODO
     private List<Purchase> purchases;
@@ -93,8 +95,13 @@ public class Store {
         return requests;
     }
 
-    public ConcurrentHashMap<String, Permission> getPermissions() {
+
+    public Map<String, Permission> getPermissions() {
         return permissions;
+    }
+
+    public void initPermissions(){
+        this.permissions=new ConcurrentHashMap<>(this.permissions);
     }
 
     /**

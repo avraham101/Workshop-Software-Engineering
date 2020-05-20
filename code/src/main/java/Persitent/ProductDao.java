@@ -125,7 +125,7 @@ public class ProductDao {
 
     public Product find(Product keys){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-        Product product = new Product();
+        Product product = null;
         try {
             product=em.find(Product.class,keys);
         }

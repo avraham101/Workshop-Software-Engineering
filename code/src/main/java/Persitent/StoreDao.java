@@ -1,12 +1,10 @@
 package Persitent;
 
 import Domain.Discount.Discount;
+import Domain.Product;
 import Domain.Store;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 
 public class StoreDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
@@ -38,5 +36,21 @@ public class StoreDao {
             // Close EntityManager
             em.close();
         }
+    }
+
+    public Store find(String storeName){
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        Store store = null;
+        try {
+            store=em.find(Store.class,storeName);
+            store.initPermissions();
+        }
+        catch(NoResultException ex) {
+            ex.printStackTrace();
+        }
+        finally {
+            em.close();
+        }
+        return store;
     }
 }

@@ -23,8 +23,10 @@ public class Subscribe extends UserState{
     @Column(name="password")
     private String password;
 
-    @Transient //TODO
-    private ConcurrentHashMap<String, Permission> permissions; //map of <storeName, Domain.Permission>
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @MapKeyColumn(name = "store")
+    @JoinColumn(name="owner",referencedColumnName = "username")
+    private Map<String, Permission> permissions; //map of <storeName, Domain.Permission>
 
     @Transient //TODO
     private List<Permission> givenByMePermissions; //map of <storeName, Domain.Permission>
@@ -486,7 +488,7 @@ public class Subscribe extends UserState{
         return password;
     }
 
-    public ConcurrentHashMap<String, Permission> getPermissions() {
+    public Map<String, Permission> getPermissions() {
         return permissions;
     }
 
@@ -511,6 +513,10 @@ public class Subscribe extends UserState{
         return sessionNumber;
     }
 
+
+    public void initPermissions(){
+        this.permissions=new ConcurrentHashMap<>(this.permissions);
+    }
     /**
      * gets given user Status: admin/manager/regular
      * @return the user status
