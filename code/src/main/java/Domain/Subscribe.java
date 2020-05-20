@@ -48,16 +48,16 @@ public class Subscribe extends UserState{
     @JoinColumn(name="writer",referencedColumnName = "username",insertable = false,updatable = false)
     private List<Review> reviews;
 
-    @Transient //TODO
+    @Transient //TODO speak on it
     private AtomicInteger sessionNumber;
 
-    @Transient //TODO
+    @Transient //TODO remove when notifications
     private AtomicInteger notificationNumber;
 
-    @Transient //TODO
-    private ReentrantReadWriteLock lock;
+    @Transient
+    private final ReentrantReadWriteLock lock;
 
-    @Transient //TODO
+    @Transient
     private Publisher publisher;
 
     @Transient //TODO
@@ -66,20 +66,22 @@ public class Subscribe extends UserState{
     public Subscribe(String userName, String password) {
         super(userName);
         initSubscribe(userName,password);
+        lock = new ReentrantReadWriteLock();
     }
 
     public Subscribe() {
+        lock=new ReentrantReadWriteLock();
     }
 
     public Subscribe(String userName, String password, Cart cart) {
         super(userName);
         this.cart = cart;
         initSubscribe(userName,password);
+        lock = new ReentrantReadWriteLock();
     }
 
     private void initSubscribe(String userName, String password) {
         notifications=new ConcurrentLinkedQueue();
-        lock=new ReentrantReadWriteLock();
         this.userName = userName;
         this.password = password;
         permissions=new ConcurrentHashMap<>();
@@ -88,7 +90,7 @@ public class Subscribe extends UserState{
         requests=new ArrayList<>();
         reviews = new LinkedList<>();
         sessionNumber=new AtomicInteger(-1);
-         notificationNumber = new AtomicInteger(0);
+        notificationNumber = new AtomicInteger(0);
     }
 
     /**

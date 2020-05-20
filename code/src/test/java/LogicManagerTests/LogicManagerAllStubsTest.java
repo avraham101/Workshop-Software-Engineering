@@ -1903,17 +1903,54 @@ public class LogicManagerAllStubsTest {
     }
 
     @Test
-    public void remove(){
-//        StoreDao storeDao=new StoreDao();
-//        Store store=storeDao.find("hanut");
-//        storeDao.removeStore("hanut");
+    public void addStore(){
+        Subscribe shmu=new Subscribe("yuv","pa");
+        StoreDao storeDao=new StoreDao();
+        Permission p=new Permission(shmu);
+
+        Store s=storeDao.find("hanut");
+        p.setStore(s);
+        shmu.getPermissions().put("hanut",p);
+        shmu.addReview(new Review(shmu.getName(),s.getName(),"proc8","hello"));
+        //storeDao.addStore(s);
+    }
+
+    @Test
+    public void findSub(){
+        SubscribeDao subdao=new SubscribeDao();
+        Subscribe sub=subdao.find("yuv");
+        assertTrue(true);
+    }
+
+    @Test
+    public void findStore(){
+        StoreDao storeDao=new StoreDao();
+        Store s=storeDao.find("hanut");
+        assertTrue(true);
+    }
+
+    @Test
+    public void removeSubscribe(){
         SubscribeDao subdao=new SubscribeDao();
         subdao.remove("yuv");
+    }
+
+    @Test
+    public void removeStore(){
+        StoreDao storeDao=new StoreDao();
+        Store store=storeDao.find("hanut");
+        storeDao.removeStore("hanut");
     }
 
     @Test
     public void addRequest(){
                 RequestDao requestDao=new RequestDao();
         requestDao.addRequest(new Request("yuv","hanut","hello",0));
+    }
+
+    @Test
+    public void addDiscount(){
+        DiscountDao discountDao=new DiscountDao();
+        discountDao.addDiscount(new RegularDiscount("shok",8));
     }
 }
