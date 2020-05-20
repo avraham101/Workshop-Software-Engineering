@@ -3,13 +3,14 @@ package LogicManagerTests;
 import Data.Data;
 import Data.TestData;
 import DataAPI.*;
-import Domain.Discount.Discount;
+import Domain.Discount.*;
 import Domain.*;
-import Domain.Discount.RegularDiscount;
+import Domain.Discount.Term.*;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Persitent.DiscountDao;
 import Persitent.ProductDao;
-import Persitent.RequestDao;
+import Persitent.StoreDao;
+import Persitent.SubscribeDao;
 import Stubs.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -21,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -1883,12 +1885,14 @@ public class LogicManagerAllStubsTest {
 
     @Test
     public void test(){
-//        DiscountDao discountDao=new DiscountDao();
-//        discountDao.addDiscount(new RegularDiscount("pro",3));
-        ProductDao productDao=new ProductDao();
-        Product p=productDao.find(new Product("proc8","hanut"));
-        p.setAmount(52);
-        //p.addReview(new Review("wrt","hanut","proc8","hello"));
-        productDao.updateProduct(p);
+        SubscribeDao dao=new SubscribeDao();
+        Subscribe shmu=dao.find("yub");
+//        dao.addSubscribe(shmu);
+//        Permission p=new Permission(shmu);
+//        Store s=new Store("hanut",p,"yuv");
+//        p.setStore(s);
+        StoreDao storeDao=new StoreDao();
+        //Store store=storeDao.find("hanut");
+        assertTrue(true);
     }
 }

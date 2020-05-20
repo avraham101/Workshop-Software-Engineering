@@ -23,11 +23,7 @@
     </persistence-unit>
     <persistence-unit name="product" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>Domain.Product</class>
-        <class>Domain.Category</class>
-        <class>Domain.PurchaseType</class>
-        <class>Domain.Discount.Discount</class>
-        <class>Domain.Discount.RegularDiscount</class>
+
         <properties>
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
             <!-- URL for DB -->

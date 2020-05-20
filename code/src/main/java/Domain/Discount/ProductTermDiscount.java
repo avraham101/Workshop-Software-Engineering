@@ -3,13 +3,26 @@ package Domain.Discount;
 import Domain.Discount.Term.Term;
 import Domain.Product;
 
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Set;
 
+@Entity
+@Table(name="product_term_discount")
 public class ProductTermDiscount extends Discount {
+
+    @OneToOne(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name="term_id",referencedColumnName = "id")
     private Term term;
+
+    @Column(name="product")
     private String product;
+
+    @Column(name="amount")
     private int amount;
+
+    public ProductTermDiscount() {
+    }
 
     public ProductTermDiscount(Term term, String product, int amount) {
         this.term = term;

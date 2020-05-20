@@ -4,11 +4,8 @@ import Data.Data;
 import Data.TestData;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
-import Domain.Basket;
-import Domain.Cart;
-import Domain.Product;
+import Domain.*;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
-import Domain.Store;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +20,7 @@ public class GuestTestReal extends GuestTest{
     @Before
     public void setUp(){
         data = new TestData();
-        cart = new Cart();
+        cart = new Cart("Guest");
         guest = new Domain.Guest(cart);
     }
 
@@ -48,11 +45,11 @@ public class GuestTestReal extends GuestTest{
         super.testAddProductToCart();
         Store store = data.getRealStore(Data.VALID);
         Product product = data.getRealProduct(Data.VALID);
-        HashMap<Product,Integer> products = cart.getBasket(store.getName()).getProducts();
+        HashMap<String, ProductInCart> products = cart.getBasket(store.getName()).getProducts();
         assertEquals(1,products.size());
-        Iterator<Product> iterator =  products.keySet().iterator();
-        Product real = iterator.next();
-        assertEquals(real.getName(),product.getName());
+        Iterator<ProductInCart> iterator =  products.values().iterator();
+        ProductInCart real = iterator.next();
+        assertEquals(real.getProductName(),product.getName());
     }
 
     /**

@@ -1,9 +1,13 @@
-package DataAPI;
+package Domain;
+
+import DataAPI.OpCode;
 
 public class Notification<T> {
-    OpCode reason;
-    T value;
-    Integer id;
+
+    private OpCode reason;
+
+    private T value;
+    private Integer id;
 
     public Notification(T value, OpCode reason,Integer id) {
         this.value = value;

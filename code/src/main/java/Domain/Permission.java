@@ -2,20 +2,38 @@ package Domain;
 
 import DataAPI.PermissionType;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class Permission {
+@Entity
+@Table(name="permission")
+public class Permission implements Serializable {
 
+    @Id
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name="owner",referencedColumnName = "username")
     private Subscribe owner;
+
+    @Id
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name="store",referencedColumnName = "storename")
     private Store store;
+
+    @Transient
     private HashSet<PermissionType> permissionType;
+
+    @Transient
     private ReentrantReadWriteLock lock;
 
     public Permission(Subscribe owner) {
         this.owner = owner;
         permissionType=new HashSet<>();
         lock=new ReentrantReadWriteLock();
+    }
+
+    public Permission() {
     }
 
     public Permission(Subscribe owner, Store store) {

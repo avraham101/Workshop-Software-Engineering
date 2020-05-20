@@ -2,16 +2,28 @@ package Domain.Discount.Term;
 
 import Domain.Product;
 
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class XorTerm implements Term{
+@Entity
+@Table(name="xor_term")
+public class XorTerm extends Term{
+
+    @OneToMany(cascade= CascadeType.ALL)
+    @JoinTable(name="terms_inside_terms",
+            joinColumns =@JoinColumn(name = "holder_id", referencedColumnName="id"),
+            inverseJoinColumns={@JoinColumn(name="holdee_id", referencedColumnName="id")}
+    )
     private List<Term> terms;
 
     public XorTerm(List<Term> terms) {
         this.terms = terms;
+    }
+
+    public XorTerm() {
     }
 
     @Override

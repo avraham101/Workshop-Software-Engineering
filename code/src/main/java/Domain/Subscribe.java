@@ -5,32 +5,66 @@ import Domain.Discount.Discount;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Publisher.Publisher;
 
+import javax.persistence.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+@Entity
+@Table(name="Subscribe")
 public class Subscribe extends UserState{
 
+    @Id
+    @Column(name="username")
     private String userName; //unique
+
+    @Column(name="password")
     private String password;
-    private ConcurrentHashMap<String, Permission> permissions; //map of <storeName, Domain.Permission>
+
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @MapKeyColumn(name = "store")
+    @JoinColumn(name="owner",referencedColumnName = "username")
+    private Map<String, Permission> permissions; //map of <storeName, Domain.Permission>
+
+    @Transient //TODO
     private List<Permission> givenByMePermissions; //map of <storeName, Domain.Permission>
+
+    @Transient //TODO
     private List<Purchase> purchases;
+
+    @Transient //TODO
     private List<Request> requests;
+
+    @Transient //TODO
     private List<Review> reviews;
+
+    @Transient //TODO
     private AtomicInteger sessionNumber;
+
+    @Transient //TODO
     private AtomicInteger notificationNumber;
+
+    @Transient //TODO
     private ReentrantReadWriteLock lock;
+
+    @Transient //TODO
     private Publisher publisher;
+
+    @Transient //TODO
     private ConcurrentLinkedQueue<Notification> notifications;
 
     public Subscribe(String userName, String password) {
+        super(userName);
         initSubscribe(userName,password);
     }
 
+    public Subscribe() {
+    }
+
     public Subscribe(String userName, String password, Cart cart) {
+        super(userName);
         this.cart = cart;
         initSubscribe(userName,password);
     }
@@ -69,7 +103,7 @@ public class Subscribe extends UserState{
     @Override
     public void savePurchase(String buyer) {
         this.purchases.addAll(this.cart.savePurchases(buyer));
-        this.cart = new Cart();
+        this.cart = new Cart(this.userName);
     }
 
     /**
@@ -454,7 +488,7 @@ public class Subscribe extends UserState{
         return password;
     }
 
-    public ConcurrentHashMap<String, Permission> getPermissions() {
+    public Map<String, Permission> getPermissions() {
         return permissions;
     }
 
@@ -479,6 +513,10 @@ public class Subscribe extends UserState{
         return sessionNumber;
     }
 
+
+    public void initPermissions(){
+        this.permissions=new ConcurrentHashMap<>(this.permissions);
+    }
     /**
      * gets given user Status: admin/manager/regular
      * @return the user status

@@ -27,7 +27,8 @@ public class SystemPurchasePolicy implements PurchasePolicy {
     }
 
     @Override
-    public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
+    public boolean standInPolicy(PaymentData paymentData, String country,
+                                 HashMap<Product, Integer> products) {
         return (paymentData.getAge() >= age);
     }
 }

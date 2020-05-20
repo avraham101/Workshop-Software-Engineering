@@ -2,13 +2,25 @@ package Domain.Discount.Term;
 
 import Domain.Product;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BaseTerm implements Term{
+@Entity
+@Table(name="base_term")
+public class BaseTerm extends Term{
+
+    @Column(name="product")
     private String product;
+
+    @Column(name="amount")
     private int amount;
+
+    public BaseTerm() {
+    }
 
     public BaseTerm(String product, int amount) {
         this.product = product;

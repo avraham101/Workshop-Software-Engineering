@@ -18,7 +18,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     @Before
     public void setUp(){
         data = new TestData();
-        cart = new Cart();
+        cart = new Cart("Yuval");
         sub = new Subscribe("Yuval","Sabag", cart);
         super.initStore();
     }
@@ -31,11 +31,11 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         super.testAddProductToCart();
         Store store = data.getRealStore(Data.VALID);
         Product product = data.getRealProduct(Data.VALID);
-        HashMap<Product,Integer> products = cart.getBasket(store.getName()).getProducts();
+        HashMap<String,ProductInCart> products = cart.getBasket(store.getName()).getProducts();
         assertEquals(1,products.size());
-        Iterator<Product> iterator =  products.keySet().iterator();
-        Product real = iterator.next();
-        assertEquals(real.getName(),product.getName());
+        Iterator<ProductInCart> iterator =  products.values().iterator();
+        ProductInCart real = iterator.next();
+        assertEquals(real.getProductName(),product.getName());
     }
 
     /**
@@ -137,7 +137,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         assertEquals(storeData.getName(), store.getName());
         assertEquals(storeData.getDescription(),"description");
         //test Owner permissions
-        ConcurrentHashMap<String, Permission> permissions = sub.getPermissions();
+        ConcurrentHashMap<String, Permission> permissions =(ConcurrentHashMap<String, Permission>) sub.getPermissions();
         assertTrue(permissions.containsKey(store.getName()));
         Permission permission = permissions.get(store.getName());
         assertTrue(permission.getPermissionType().contains(PermissionType.OWNER));
