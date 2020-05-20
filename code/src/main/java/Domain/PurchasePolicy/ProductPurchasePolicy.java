@@ -36,6 +36,8 @@ public class ProductPurchasePolicy implements PurchasePolicy {
     public boolean standInPolicy(PaymentData paymentData, String country,
                                  HashMap<Product, Integer> products) {
         for (Product product: products.keySet()) {
+            if(amountPerProduct.get(product.getName())==null)
+                return false;
             if (!(products.get(product) <= amountPerProduct.get(product.getName()).getMax()) ||
                     !(products.get(product) >= amountPerProduct.get(product.getName()).getMin())){
                 return false;
