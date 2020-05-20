@@ -70,9 +70,23 @@ public class AdminController {
         return getResponseEntity(response);
     }
 
+    /**
+     * get all the users for the admin
+     * @param id - the id of the admin
+     * @return - list of all the names of the users
+     */
+    @GetMapping("allusers")
+    public ResponseEntity<?> getTodayRevenue(@RequestParam(name="id") int id ) {
+        Response<List<String>> response = SingleService.getInstance().getAllUsers(id);
+        return getResponseEntity(response);
+    }
+
+
     private ResponseEntity<?> getResponseEntity(Response<?> response) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
     }
+
+
 }
