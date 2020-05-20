@@ -63,4 +63,5 @@ public interface AcceptanceTestsBridge {
     List<String> getAllUsers(int id);
     void setPublisher(PublisherMock publisherMock);
     double getRevenueToday(int id);
+    //double getRevenueByDay(int id, DateTestData date);
 }

@@ -1289,11 +1289,16 @@ public class LogicManager {
     /**
      * get the revenue of the trading system by date
      * @param id - the id of the user
-     * @param date - the date
+     * @param data - the date
      * @return - the revenue on this date
      */
-    //TODO - call in the service
-    public Response<Double> getRevenueByDate(int id, LocalDate date) {
+    public Response<Double> getRevenueByDate(int id, DateData data) {
+        int year = data.getYear();
+        int month = data.getMonth();
+        int day = data.getDay();
+        if (!validDate(year, month, day))
+            return new Response<>(0.0, OpCode.INVALID_DATE);
+        LocalDate date = LocalDate.of(year, month, day);
         User current = connectedUsers.get(id);
         if (current != null && current.canWatchUserHistory()) {
             if (revenue.containsKey(date))
@@ -1302,6 +1307,19 @@ public class LogicManager {
                 return new Response<>(0.0, OpCode.Not_Found);
         }
         return new Response<>(0.0,OpCode.NOT_ADMIN);
+    }
+
+    /**
+     * check if the date is valid
+     * @param year - the year
+     * @param month - the month
+     * @param day - the day
+     * @return - true if valid
+     */
+    private boolean validDate(int year, int month, int day) {
+        if(year > LocalDate.now().getYear() || month < 0 || month > 12 || day < 0 || day > 31 || year < 0)
+            return false;
+        return true;
     }
 
     /**
