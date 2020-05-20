@@ -106,6 +106,23 @@ CREATE TABLE `cart` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `categories_in_store`
+--
+
+DROP TABLE IF EXISTS `categories_in_store`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `categories_in_store` (
+  `store` varchar(45) NOT NULL,
+  `category` varchar(45) NOT NULL,
+  PRIMARY KEY (`store`,`category`),
+  KEY `category_in_store_idx` (`category`),
+  CONSTRAINT `category_in_store` FOREIGN KEY (`category`) REFERENCES `category` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `store_cat` FOREIGN KEY (`store`) REFERENCES `store` (`storename`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `category`
 --
 
@@ -146,6 +163,23 @@ DROP TABLE IF EXISTS `discount`;
 CREATE TABLE `discount` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `discount_in_store`
+--
+
+DROP TABLE IF EXISTS `discount_in_store`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `discount_in_store` (
+  `discount_id` int(11) NOT NULL,
+  `store` varchar(45) NOT NULL,
+  PRIMARY KEY (`discount_id`,`store`),
+  KEY `store_discount_idx` (`store`),
+  CONSTRAINT `discount_store` FOREIGN KEY (`discount_id`) REFERENCES `discount` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `store_discount` FOREIGN KEY (`store`) REFERENCES `store` (`storename`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -243,7 +277,8 @@ CREATE TABLE `product` (
   `purchaseType` enum('IMMEDDIATE') NOT NULL,
   PRIMARY KEY (`storeName`,`productName`),
   KEY `purchaseType_idx` (`purchaseType`),
-  CONSTRAINT `purchaseType` FOREIGN KEY (`purchaseType`) REFERENCES `purchase_type` (`purchaseType`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `purchaseType` FOREIGN KEY (`purchaseType`) REFERENCES `purchase_type` (`purchaseType`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `store_product` FOREIGN KEY (`storeName`) REFERENCES `store` (`storename`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -447,4 +482,4 @@ CREATE TABLE `xor_term` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-20 20:53:21
+-- Dump completed on 2020-05-20 22:49:43
