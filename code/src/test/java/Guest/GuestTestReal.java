@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -45,7 +46,7 @@ public class GuestTestReal extends GuestTest{
         super.testAddProductToCart();
         Store store = data.getRealStore(Data.VALID);
         Product product = data.getRealProduct(Data.VALID);
-        HashMap<String, ProductInCart> products = cart.getBasket(store.getName()).getProducts();
+        Map<String, ProductInCart> products = cart.getBasket(store.getName()).getProducts();
         assertEquals(1,products.size());
         Iterator<ProductInCart> iterator =  products.values().iterator();
         ProductInCart real = iterator.next();

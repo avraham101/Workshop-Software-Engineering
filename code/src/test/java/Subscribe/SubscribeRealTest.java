@@ -31,7 +31,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         super.testAddProductToCart();
         Store store = data.getRealStore(Data.VALID);
         Product product = data.getRealProduct(Data.VALID);
-        HashMap<String,ProductInCart> products = cart.getBasket(store.getName()).getProducts();
+        Map<String,ProductInCart> products = cart.getBasket(store.getName()).getProducts();
         assertEquals(1,products.size());
         Iterator<ProductInCart> iterator =  products.values().iterator();
         ProductInCart real = iterator.next();

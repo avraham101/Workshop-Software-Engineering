@@ -174,7 +174,7 @@ public class Store {
      * @param list - the products to calc from basket
      * @return calculate price of the products after discounts
      */
-    public double calculatePrice(HashMap<String, ProductInCart> list) {
+    public double calculatePrice(Map<String, ProductInCart> list) {
         HashMap<Product, Integer> products = getSpecificProducts(list);
         double price=0;
         for(int discountId:discountPolicy.keySet()){
@@ -269,7 +269,7 @@ public class Store {
      * @param list - the products in the basket
      * @return true if succeed
      */
-    public boolean policyCheck(PaymentData paymentData, String country, HashMap<String, ProductInCart> list) {
+    public boolean policyCheck(PaymentData paymentData, String country, Map<String, ProductInCart> list) {
         HashMap<Product, Integer> hashMap = getSpecificProducts(list);
         return getPurchasePolicy().standInPolicy(paymentData,country,hashMap);
     }
@@ -430,7 +430,7 @@ public class Store {
      * @param list - hash map of products in cart
      * @return - real products and their amount in a basket
      */
-    private HashMap<Product, Integer> getSpecificProducts(HashMap<String, ProductInCart> list) {
+    private HashMap<Product, Integer> getSpecificProducts(Map<String, ProductInCart> list) {
         HashMap<Product, Integer> output = new HashMap<>();
         for (ProductInCart product: list.values()) {
             Product realProduct = this.products.get(product.getProductName());

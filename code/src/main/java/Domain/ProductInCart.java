@@ -1,12 +1,33 @@
 package Domain;
 
-public class ProductInCart {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
 
+@Entity
+@Table(name="products_in_baskets")
+public class ProductInCart implements Serializable {
+
+    @Id
+    @Column(name="buyer")
     private String buyer;
+
+    @Id
+    @Column(name="storename")
     private String storeName;
+
+    @Id
+    @Column(name="productname")
     private String productName;
+
+    @Column(name="amount")
     private int amount;
+    @Column(name="price")
     private double price;
+
+    public ProductInCart(){ }
 
     public ProductInCart(String buyer, String storeName, String productName, int amount, double price) {
         this.buyer = buyer;
