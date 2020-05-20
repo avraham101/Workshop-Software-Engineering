@@ -46,11 +46,15 @@ class WatchRevenu extends Component {
               this.setState({day:day, month:month, year:year, i_day:day, i_month:month, i_year:year,
                 day_income:received.value}); 
             }
-            else if(opt==="Not_Found‏") {
-              alert("Nothing Bought On this Day");
+            else if(opt==='Not_Found') {
+              this.setState({day:day, month:month, year:year, i_day:day, i_month:month, i_year:year,
+                day_income:0}); 
             }
-            else if(opt==="NOT_ADMIN‏") {
+            else if(opt==='NOT_ADMIN') {
               alert("Ha Great For You, you cant fool us!!!");
+            }
+            else {
+              alert(opt)
             }
           }
         });
@@ -125,22 +129,27 @@ class WatchRevenu extends Component {
         else {
           let msg = { day:this.state.i_day, month:this.state.i_month, year:this.state.i_year}; 
           let id = this.props.location.state.id;
-          send('/admin/dayRevenue‏?id='+id,'GET',msg,(received)=>{
+          send('/admin/daysRevenue?id='+id,'POST',msg,(received)=>{
             if(received){
               let opt = ''+received.reason;
               if(opt === "Success") {
                 this.setState({ s_year:this.state.i_year, s_month:this.state.i_month, s_day:this.state.i_day,
-                  selected_day_income:received.value, //TODO
+                  selected_day_income:received.value,
                   i_year:this.state.year, i_month:this.state.month, i_day:this.state.day})
                 }
-              else if(opt==="INVALID_DATE‏") {
+              else if(opt==='INVALID_DATE') {
                 alert("The date inserted isnt valid Date");
               }
-              else if(opt==="Not_Found‏") {
-                alert("Nothing Bought On this Day");
+              else if(opt==='Not_Found') {
+                this.setState({ s_year:this.state.i_year, s_month:this.state.i_month, s_day:this.state.i_day,
+                  selected_day_income:0, 
+                  i_year:this.state.year, i_month:this.state.month, i_day:this.state.day});
               }
-              else if(opt==="NOT_ADMIN‏") {
+              else if(opt==='NOT_ADMIN') {
                 alert("Ha Great For You, you cant fool us!!!");
+              }
+              else {
+                alert('In Day renenu with '+opt)
               }
             }
           });
