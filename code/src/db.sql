@@ -216,12 +216,15 @@ DROP TABLE IF EXISTS `permission`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `permission` (
-  `owner` varchar(45) NOT NULL,
   `store` varchar(45) NOT NULL,
-  PRIMARY KEY (`owner`,`store`),
-  KEY `store_idx` (`store`),
-  CONSTRAINT `owner` FOREIGN KEY (`owner`) REFERENCES `subscribe` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `store_sub` FOREIGN KEY (`store`) REFERENCES `store` (`storename`) ON DELETE CASCADE ON UPDATE CASCADE
+  `owner` varchar(45) NOT NULL,
+  `givenby` varchar(45) DEFAULT 'Null',
+  PRIMARY KEY (`store`,`owner`),
+  KEY `given_by_idx` (`givenby`),
+  KEY `sub_per_idx` (`owner`),
+  CONSTRAINT `given_by` FOREIGN KEY (`givenby`) REFERENCES `subscribe` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `store_per` FOREIGN KEY (`store`) REFERENCES `store` (`storename`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `sub_per` FOREIGN KEY (`owner`) REFERENCES `subscribe` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -300,13 +303,16 @@ DROP TABLE IF EXISTS `request`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `request` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `store` varchar(45) NOT NULL,
   `sender` varchar(45) NOT NULL,
   `content` varchar(45) NOT NULL,
   `comment` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`,`store`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  KEY `user_idx` (`sender`),
+  KEY `store_idx` (`store`),
+  CONSTRAINT `sotre_req` FOREIGN KEY (`store`) REFERENCES `store` (`storename`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -325,7 +331,7 @@ CREATE TABLE `review` (
   PRIMARY KEY (`id`),
   KEY `reviews_idx` (`store`,`productName`),
   CONSTRAINT `reviews` FOREIGN KEY (`store`, `productName`) REFERENCES `product` (`storeName`, `productName`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -441,4 +447,4 @@ CREATE TABLE `xor_term` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-20 11:09:29
+-- Dump completed on 2020-05-20 20:53:21
