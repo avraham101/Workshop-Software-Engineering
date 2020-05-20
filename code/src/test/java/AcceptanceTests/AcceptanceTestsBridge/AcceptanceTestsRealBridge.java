@@ -361,6 +361,11 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     public void setPublisher(PublisherMock publisherMock) {
         serviceAPI.setPublisher(publisherMock);
     }
+
+    @Override
+    public double getRevenueToday(int id) {
+        return serviceAPI.getRevenueToday(id).getValue();
+    }
     //--------------------------get managers of store---------------------------------//
 
 

@@ -365,4 +365,11 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
             realBridge.setPublisher(publisherMock);
 
     }
+
+    @Override
+    public double getRevenueToday(int id) {
+        if (realBridge != null)
+            return realBridge.getRevenueToday(id);
+        return 0.0;
+    }
 }

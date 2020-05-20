@@ -1254,5 +1254,43 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         super.testGetAllUsers();
     }
 
+    /**
+     * test the revenue of today
+     */
+    @Test
+    public void testRevenueToday() {
+        setUpBoughtProduct();
+        Subscribe sub = data.getSubscribe(Data.ADMIN);
+        logicManager.login(data.getId(Data.ADMIN),sub.getName(),sub.getPassword());
+        double actual = logicManager.getRevenueToday(data.getId(Data.ADMIN)).getValue();
+        assertEquals(10, actual, 0.001);
+        logicManager.logout(data.getId(Data.ADMIN));
+    }
+
+    /**
+     * test the revenue of today
+     */
+    @Test
+    public void testRevenueTodayNoBuy() {
+        setUpConnect();
+        Subscribe sub = data.getSubscribe(Data.ADMIN);
+        logicManager.login(data.getId(Data.ADMIN),sub.getName(),sub.getPassword());
+        double actual = logicManager.getRevenueToday(data.getId(Data.ADMIN)).getValue();
+        assertEquals(0, actual, 0.001);
+    }
+
+    /**
+     * test the revenue of today
+     * not an admin
+     */
+    @Test
+    public void testRevenueTodayNotAdmin() {
+        setUpBoughtProduct();
+        Subscribe sub = data.getSubscribe(Data.VALID);
+        logicManager.login(data.getId(Data.VALID),sub.getName(),sub.getPassword());
+        double actual = logicManager.getRevenueToday(data.getId(Data.ADMIN)).getValue();
+        assertEquals(0, actual, 0.001);
+        logicManager.logout(data.getId(Data.VALID));
+    }
 }
 
