@@ -32,12 +32,16 @@ public class Store {
     @Transient //TODO
     private ConcurrentHashMap<String, Category> categoryList;
 
-    @Transient //TODO
-    private ConcurrentHashMap<Integer, Request> requests;
+
+
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @MapKey(name = "id")
+    @JoinColumn(name="store",referencedColumnName = "storeName",updatable = false)
+    private Map<Integer, Request> requests;
 
     @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
     @MapKeyColumn(name = "owner")
-    @JoinColumn(name="store",referencedColumnName = "storeName")
+    @JoinColumn(name="store",referencedColumnName = "storeName",updatable = false)
     private Map<String, Permission> permissions;
 
 
@@ -91,7 +95,7 @@ public class Store {
         return categoryList;
     }
 
-    public ConcurrentHashMap<Integer, Request> getRequests() {
+    public Map<Integer, Request> getRequests() {
         return requests;
     }
 
@@ -100,8 +104,16 @@ public class Store {
         return permissions;
     }
 
+    //make permissions concurrent
     public void initPermissions(){
-        this.permissions=new ConcurrentHashMap<>(this.permissions);
+        this.requests=new ConcurrentHashMap<>(this.requests);
+        if(!(this.permissions instanceof ConcurrentHashMap)) {
+            this.permissions = new ConcurrentHashMap<>(this.permissions);
+            for (Permission p : this.permissions.values()){
+                p.getOwner().initPermissions();
+                p.getStore().initPermissions();
+            }
+        }
     }
 
     /**

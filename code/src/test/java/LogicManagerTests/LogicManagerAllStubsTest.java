@@ -7,10 +7,7 @@ import Domain.Discount.*;
 import Domain.*;
 import Domain.Discount.Term.*;
 import Domain.PurchasePolicy.PurchasePolicy;
-import Persitent.DiscountDao;
-import Persitent.ProductDao;
-import Persitent.StoreDao;
-import Persitent.SubscribeDao;
+import Persitent.*;
 import Stubs.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -1885,14 +1882,38 @@ public class LogicManagerAllStubsTest {
 
     @Test
     public void test(){
-        SubscribeDao dao=new SubscribeDao();
-        Subscribe shmu=dao.find("yub");
-//        dao.addSubscribe(shmu);
-//        Permission p=new Permission(shmu);
-//        Store s=new Store("hanut",p,"yuv");
-//        p.setStore(s);
+       SubscribeDao dao=new SubscribeDao();
         StoreDao storeDao=new StoreDao();
-        //Store store=storeDao.find("hanut");
+        Subscribe shmu=new Subscribe("yuv","pa");
+//        //shmu.addRequest(0,"hanut","hello");
+//        Subscribe shmu=dao.find("yuv");
+//        dao.addSubscribe(shmu);
+
+        Permission p=new Permission(shmu);
+
+        Store s=storeDao.find("hanut");
+        p.setStore(s);
+        shmu.getPermissions().put("hanut",p);
+        shmu.addReview(new Review(shmu.getName(),s.getName(),"proc8","hello"));
+        dao.addSubscribe(shmu);
+        //StoreDao storeDao=new StoreDao();
+//        storeDao.addStore(s);
+//        Store store=storeDao.find("hanut");
         assertTrue(true);
+    }
+
+    @Test
+    public void remove(){
+//        StoreDao storeDao=new StoreDao();
+//        Store store=storeDao.find("hanut");
+//        storeDao.removeStore("hanut");
+        SubscribeDao subdao=new SubscribeDao();
+        subdao.remove("yuv");
+    }
+
+    @Test
+    public void addRequest(){
+                RequestDao requestDao=new RequestDao();
+        requestDao.addRequest(new Request("yuv","hanut","hello",0));
     }
 }

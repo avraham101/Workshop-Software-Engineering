@@ -11,6 +11,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 @Table(name="permission")
 public class Permission implements Serializable {
 
+
     @Id
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name="owner",referencedColumnName = "username")
@@ -20,6 +21,9 @@ public class Permission implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name="store",referencedColumnName = "storename")
     private Store store;
+
+    @Column(name="givenby",nullable = true)
+    private String givenBy;
 
     @Transient
     private HashSet<PermissionType> permissionType;

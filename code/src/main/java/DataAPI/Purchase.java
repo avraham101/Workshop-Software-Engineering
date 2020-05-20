@@ -1,22 +1,27 @@
 package DataAPI;
 
 import DataAPI.ProductData;
+import Domain.ProductPeristentData;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
 
 public class Purchase {
 
     private String storeName;
     private String buyer;
-    private List<ProductData> product;
+    private List<ProductPeristentData> product;
     private LocalDateTime date;
     private double price;
 
     public Purchase(String storeName, String buyer, List<ProductData> product) {
         this.storeName = storeName;
         this.buyer = buyer;
-        this.product = product;
+        this.product=new ArrayList<>();
+        for(ProductData p:product)
+            this.product.add(new ProductPeristentData(p));
         this.date = LocalDateTime.now();
         this.price=0;
     }
@@ -35,7 +40,7 @@ public class Purchase {
         return buyer;
     }
 
-    public List<ProductData> getProduct() {
+    public List<ProductPeristentData> getProduct() {
         return product;
     }
 

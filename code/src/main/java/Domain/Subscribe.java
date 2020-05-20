@@ -4,6 +4,8 @@ import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Publisher.Publisher;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.*;
@@ -23,21 +25,27 @@ public class Subscribe extends UserState{
     @Column(name="password")
     private String password;
 
-    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade=CascadeType.ALL)
     @MapKeyColumn(name = "store")
-    @JoinColumn(name="owner",referencedColumnName = "username")
+    @JoinColumn(name="owner",referencedColumnName = "username",insertable = false,updatable = false)
     private Map<String, Permission> permissions; //map of <storeName, Domain.Permission>
 
-    @Transient //TODO
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="givenby",referencedColumnName = "username",insertable = false,updatable = false)
     private List<Permission> givenByMePermissions; //map of <storeName, Domain.Permission>
 
     @Transient //TODO
     private List<Purchase> purchases;
 
-    @Transient //TODO
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name="sender",referencedColumnName = "username",insertable = false,updatable = false)
     private List<Request> requests;
 
-    @Transient //TODO
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="writer",referencedColumnName = "username",insertable = false,updatable = false)
     private List<Review> reviews;
 
     @Transient //TODO
@@ -164,7 +172,7 @@ public class Subscribe extends UserState{
         lock.readLock().lock();
         for(Purchase p: purchases) {
             if(p.getStoreName().compareTo(storeName)==0) {
-                for(ProductData productData: p.getProduct()) {
+                for(ProductPeristentData productData: p.getProduct()) {
                     String productName = productData.getProductName();
                     if(productName.compareTo(other)==0) {
                         lock.readLock().unlock();
@@ -513,9 +521,15 @@ public class Subscribe extends UserState{
         return sessionNumber;
     }
 
-
+    //make permissions concurrent
     public void initPermissions(){
-        this.permissions=new ConcurrentHashMap<>(this.permissions);
+        if(!(this.permissions instanceof ConcurrentHashMap)) {
+            this.permissions = new ConcurrentHashMap<>(this.permissions);
+            for (Permission p : this.permissions.values()){
+                p.getOwner().initPermissions();
+                p.getStore().initPermissions();
+            }
+        }
     }
     /**
      * gets given user Status: admin/manager/regular

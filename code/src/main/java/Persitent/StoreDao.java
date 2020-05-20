@@ -5,10 +5,11 @@ import Domain.Product;
 import Domain.Store;
 
 import javax.persistence.*;
+import java.util.List;
 
 public class StoreDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("product");
+            .createEntityManagerFactory("store");
 
     public void addStore(Store store) {
         // The EntityManager class allows operations such as create, read, update, delete
@@ -52,5 +53,30 @@ public class StoreDao {
             em.close();
         }
         return store;
+    }
+
+    public void removeStore(String name){
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction et = null;
+        Store store = null;
+
+        try {
+            et = em.getTransaction();
+            et.begin();
+
+            store=em.find(Store.class,name);
+            em.remove(store);
+            et.commit();
+
+        }
+        catch(Exception ex) {
+            if (et != null) {
+                et.rollback();
+            }
+            ex.printStackTrace();
+        }
+        finally {
+            em.close();
+        }
     }
 }
