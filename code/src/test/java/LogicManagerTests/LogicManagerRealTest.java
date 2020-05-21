@@ -223,6 +223,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertEquals(1,products.size());
+
     }
 
     /**

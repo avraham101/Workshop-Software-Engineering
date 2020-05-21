@@ -4,6 +4,8 @@ import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Persitent.ProductDao;
+import Persitent.StoreDao;
 
 import javax.persistence.*;
 import java.util.*;
@@ -351,9 +353,13 @@ public class Store {
             categoryList.put(categoryName,new Category(categoryName));
         }
         Product product=new Product(productData,categoryList.get(categoryName));
+        ProductDao productDao = new ProductDao();
         boolean result=products.putIfAbsent(productData.getProductName(),product)==null;
-        if(result)
-            return new Response<>(true,OpCode.Success);
+        if(result) {
+            //todo change to storeDao
+            productDao.addProduct(product);
+            return new Response<>(true, OpCode.Success);
+        }
         return new Response<>(false,OpCode.Already_Exists);
     }
 

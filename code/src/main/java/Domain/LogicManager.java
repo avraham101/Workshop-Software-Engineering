@@ -817,11 +817,12 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","addProductToStore",
                 "add a product to store", new Object[] {productData});
         User current=connectedUsers.get(id);
+        StoreDao storeDao = new StoreDao();
         if(productData==null)
             return new Response<>(false,OpCode.Invalid_Product);
         if(!validProduct(productData))
             return new Response<>(false,OpCode.Invalid_Product);
-        if(stores.containsKey(productData.getStoreName()))
+        if(storeDao.find(productData.getStoreName()) != null)
             return current.addProductToStore(productData);
         return new Response<>(false,OpCode.Store_Not_Found);
     }
