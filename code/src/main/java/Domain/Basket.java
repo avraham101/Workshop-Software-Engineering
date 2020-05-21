@@ -26,7 +26,6 @@ public class Basket implements Serializable {
     @MapKey(name="storeName")
     @JoinColumns({
             @JoinColumn(name="buyer", referencedColumnName = "username", updatable = false),
-            //@JoinColumn(name="productname", referencedColumnName = "productName", updatable = false),
             @JoinColumn(name="storename", referencedColumnName = "storename", updatable = false)
     })
     private Map<String, ProductInCart> products; //key: Product Name value:Data

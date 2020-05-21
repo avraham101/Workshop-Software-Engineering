@@ -1,10 +1,9 @@
 package Persitent;
 
 import DataAPI.PermissionType;
-import Domain.Basket;
-import Domain.Permission;
-import Domain.Store;
-import Domain.Subscribe;
+import DataAPI.ProductData;
+import DataAPI.PurchaseTypeData;
+import Domain.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -24,6 +23,9 @@ public class BasketDao {
         List<PermissionType> perms = new ArrayList<PermissionType>(Arrays.asList(ps));
         Permission p = new Permission(new Subscribe("roy","roy"), new HashSet<>(perms));
         Basket b = new Basket(new Store("roy",p,"roy"),"roy");
+//        ProductData pd  = new ProductData("roy","roy","roy",null,0,0,PurchaseTypeData.IMMEDDIATE);
+//        Product pr = new Product(pd,new Category("roy"));
+//        b.addProduct(pr,0);
         BasketDao bdao = new BasketDao();
 //        bdao.addBasket(b);
         bdao.removeBasket(b);

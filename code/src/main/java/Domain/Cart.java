@@ -11,20 +11,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-@Entity
-@Table(name = "cart")
+//@Entity
+//@Table(name = "cart")
 public class Cart implements Serializable {
 
-    @Id
-    @Column(name = "username")
+    //@Id
+    //@Column(name = "username")
     private String buyer;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @MapKey(name="store")
-    @JoinColumn(name="username", referencedColumnName = "username", updatable = false)
+    //@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    //@MapKey(name="store")
+    //@JoinColumn(name="username", referencedColumnName = "username", updatable = false)
     private Map<String,Basket> baskets; // key is the store name and the value is the basket of the store
 
 
     public Cart(){
+        baskets = new HashMap<>();
+    }
+
+    public Cart(String buyer){
         baskets = new HashMap<>();
     }
 
