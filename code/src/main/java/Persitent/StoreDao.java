@@ -5,6 +5,7 @@ import Domain.Product;
 import Domain.Store;
 
 import javax.persistence.*;
+import java.util.LinkedList;
 import java.util.List;
 
 public class StoreDao extends Dao<Store>{
@@ -34,6 +35,20 @@ public class StoreDao extends Dao<Store>{
             em.close();
         }
         return store;
+    }
+
+    public List<Store> getAll() {
+        List<Store> output = new LinkedList<>();
+        List<String> storeNames = new LinkedList<>();
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        em.getTransaction().begin();
+        Query query = em.createQuery("SELECT storename FROM Domain.Store");
+        storeNames = query.getResultList();
+        for(String name:storeNames) {
+            if(name!=null)
+                output.add(find(name));
+        }
+        return output;
     }
 
     public void removeStore(String name){

@@ -46,25 +46,26 @@ public class LogicManagerAllStubsTest {
     protected SupplySystem supplySystem;
     protected TestData data;
 
-
+    /**
+     * Dao:
+     */
     private SubscribeDao subscribeDao;
+    private StoreDao storeDao;
+
     /**
      * Adding Stores must be in type StoreStub
      * example: stores.put(Key,new StoreStub(...))
      * Adding Users must be in type UserStub
      * example: users.put(Key, new UserStub(...))
      */
-
     @Before
     public void setUp() {
         //External Systems
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
+        subscribeDao = new SubscribeDao();
+        storeDao = new StoreDao();
         init();
-
-        //TODO remove this
-        //Subscribe subscribe = users.get(dataSubscribe.getName());
-        //users.put(subscribe.getName(), new SubscribeStub(subscribe.getName(), subscribe.getPassword()));
     }
 
     protected void init() {
@@ -106,6 +107,7 @@ public class LogicManagerAllStubsTest {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         logicManager.register(subscribe.getName(),subscribe.getPassword());
+        tearDownConnect();
     }
 
     /**
@@ -124,9 +126,9 @@ public class LogicManagerAllStubsTest {
         setUpLogedInUser();
         StoreData storeData = data.getStore(Data.VALID);
         logicManager.openStore(data.getId(Data.VALID), storeData);
-        Store store = stores.get(storeData.getName());
+        String storeName = storeData.getName();
         Permission permission = new Permission(data.getSubscribe(Data.VALID));
-        StoreStub storeStub = new StoreStub(store.getName(),permission,"description");
+        StoreStub storeStub = new StoreStub(storeName,permission,"description");
         permission.setStore(storeStub);
         stores.put(storeData.getName(),storeStub);
     }
@@ -300,6 +302,8 @@ public class LogicManagerAllStubsTest {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         assertTrue(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
+        subscribeDao.remove(subscribe.getName());
+        tearDownConnect();
     }
 
     /**
@@ -312,6 +316,7 @@ public class LogicManagerAllStubsTest {
         Subscribe subscribe = data.getSubscribe(Data.WRONG_NAME);
         assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
         assertFalse(users.containsKey(subscribe.getName()));
+        tearDownConnect();
     }
 
     /**
@@ -324,6 +329,7 @@ public class LogicManagerAllStubsTest {
         Subscribe subscribe = data.getSubscribe(Data.WRONG_PASSWORD);
         assertFalse(logicManager.register(subscribe.getName(), subscribe.getPassword()).getValue());
         assertFalse(users.containsKey(subscribe.getName()));
+        tearDownConnect();
     }
 
     /**
@@ -335,6 +341,7 @@ public class LogicManagerAllStubsTest {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.NULL);
         assertFalse(logicManager.register(subscribe.getName(), subscribe.getName()).getValue());
+        tearDownConnect();
     }
 
     /**
@@ -347,6 +354,8 @@ public class LogicManagerAllStubsTest {
         setUpRegisteredUser();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
+        tearDownRegisteredUser();
+        tearDownConnect();
     }
 
     /**
@@ -370,7 +379,10 @@ public class LogicManagerAllStubsTest {
     public void testLoginFailNull() {
         setUpRegisteredUser();
         Subscribe subscribe = data.getSubscribe(Data.NULL);
-        assertFalse((logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword())).getValue());
+        assertFalse((logicManager.login(data.getId(Data.VALID),
+                subscribe.getName(),
+                subscribe.getPassword())).getValue());
+        tearDownRegisteredUser();
     }
 
     /**
@@ -382,6 +394,7 @@ public class LogicManagerAllStubsTest {
         setUpRegisteredUser();
         Subscribe subscribe = data.getSubscribe(Data.WRONG_NAME);
         assertFalse((logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword())).getValue());
+        tearDownRegisteredUser();
     }
 
     /**
@@ -393,6 +406,7 @@ public class LogicManagerAllStubsTest {
         setUpRegisteredUser();
         Subscribe subscribe = data.getSubscribe(Data.WRONG_PASSWORD);
         assertFalse((logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword())).getValue());
+        tearDownRegisteredUser();
     }
 
     /**
@@ -406,6 +420,8 @@ public class LogicManagerAllStubsTest {
         Response<Boolean> response = logicManager.login(data.getId(Data.VALID), subscribe.getName(),
                 subscribe.getPassword());
         assertTrue(response.getValue());
+        logicManager.logout(data.getId(Data.VALID));
+        tearDownRegisteredUser();
     }
 
 
@@ -413,12 +429,14 @@ public class LogicManagerAllStubsTest {
      * use case 2.4.1 - view all stores details
      */
     @Test
+    @Transactional
     public void testViewDataStores() {
         setUpOpenedStore();
         List<StoreData> expected = new LinkedList<>();
         expected.add(data.getStore(Data.VALID));
         assertEquals(expected, logicManager.viewStores().getValue());
         assertNotEquals(null, logicManager.viewStores().getValue());
+        tearDownOpenStore();
     }
 
     /**
@@ -1991,11 +2009,56 @@ public class LogicManagerAllStubsTest {
         discountDao.addDiscount(new RegularDiscount("shok",8));
     }
 
-    @After
-    public void resetTables() {
-//        SubscribeDao subscribeDao = new SubscribeDao();
-//        subscribeDao.clearTable();
-//        StoreDao storeDao = new StoreDao();
-//        storeDao.clearTable();
+    @Test
+    public void testdb() {
+        assertTrue(true);
     }
+
+//    @After
+//    public void resetTables() {
+//        Subscribe other=data.getSubscribe(Data.VALID2);
+//        //SubscribeDao subscribeDao = new SubscribeDao();
+//        subscribeDao.remove(other.getName());
+//        subscribeDao.remove("Admin");
+//    }
+
+    /** ------------------------------- tear downs --------------- */
+
+    /**
+     * tear down connect
+     */
+    public void tearDownConnect() {
+        subscribeDao.remove("Admin");
+        subscribeDao.remove("Niv");
+        connectedUsers = new ConcurrentHashMap<>();
+        currUser = null;
+    }
+
+    /**
+     * tear down for register user
+     */
+    public void tearDownRegisteredUser() {
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        subscribeDao.remove(subscribe.getName());
+        tearDownConnect();
+    }
+
+    /**
+     * tear down for login
+     */
+    public void tearDownLogin() {
+        logicManager.logout(data.getId(Data.VALID));
+        tearDownRegisteredUser();
+    }
+
+    /**
+     * tear down for open store
+     */
+    public void tearDownOpenStore() {
+        stores = new ConcurrentHashMap<>();
+        StoreData storeData = data.getStore(Data.VALID);
+        storeDao.removeStore(storeData.getName());
+        tearDownLogin();
+    }
+
 }
