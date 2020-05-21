@@ -92,6 +92,20 @@ CREATE TABLE `basket` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `buy_notification`
+--
+
+DROP TABLE IF EXISTS `buy_notification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `buy_notification` (
+  `id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `buy_notification` FOREIGN KEY (`id`) REFERENCES `notification` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `cart`
 --
 
@@ -211,7 +225,7 @@ CREATE TABLE `notification` (
   `reason` varchar(45) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -293,9 +307,29 @@ CREATE TABLE `product` (
   `purchaseType` enum('IMMEDDIATE') NOT NULL,
   PRIMARY KEY (`storeName`,`productName`),
   KEY `purchaseType_idx` (`purchaseType`),
+  KEY `product_name_idx` (`productName`),
   CONSTRAINT `purchaseType` FOREIGN KEY (`purchaseType`) REFERENCES `purchase_type` (`purchaseType`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `store_product` FOREIGN KEY (`storeName`) REFERENCES `store` (`storename`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `product_for_purchase`
+--
+
+DROP TABLE IF EXISTS `product_for_purchase`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_for_purchase` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product` varchar(45) NOT NULL,
+  `category` varchar(45) NOT NULL,
+  `amount` int(11) NOT NULL,
+  `price` double NOT NULL,
+  `purchaseType` varchar(45) NOT NULL,
+  `store` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -318,6 +352,42 @@ CREATE TABLE `product_term_discount` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `productdata_inside_notification`
+--
+
+DROP TABLE IF EXISTS `productdata_inside_notification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `productdata_inside_notification` (
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`,`product_id`),
+  KEY `productdata_id_idx` (`product_id`),
+  CONSTRAINT `notification_buy` FOREIGN KEY (`id`) REFERENCES `notification` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `productdata_id` FOREIGN KEY (`product_id`) REFERENCES `product_for_purchase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `purchase`
+--
+
+DROP TABLE IF EXISTS `purchase`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `purchase` (
+  `storeName` varchar(45) NOT NULL,
+  `buyer` varchar(45) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `price` double NOT NULL,
+  PRIMARY KEY (`storeName`,`buyer`,`date`),
+  KEY `sub_purchase_idx` (`buyer`),
+  CONSTRAINT `store_purchase` FOREIGN KEY (`storeName`) REFERENCES `store` (`storename`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `sub_purchase` FOREIGN KEY (`buyer`) REFERENCES `subscribe` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `purchase_type`
 --
 
@@ -327,6 +397,25 @@ DROP TABLE IF EXISTS `purchase_type`;
 CREATE TABLE `purchase_type` (
   `purchaseType` enum('IMMEDDIATE') NOT NULL,
   PRIMARY KEY (`purchaseType`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `purchases_and_products`
+--
+
+DROP TABLE IF EXISTS `purchases_and_products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `purchases_and_products` (
+  `storeName` varchar(45) NOT NULL,
+  `buyer` varchar(45) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `id` int(11) NOT NULL,
+  PRIMARY KEY (`storeName`,`buyer`,`date`,`id`),
+  KEY `id_purchase_product_idx` (`id`),
+  CONSTRAINT `id_purchase_product` FOREIGN KEY (`id`) REFERENCES `product_for_purchase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `purchase_product` FOREIGN KEY (`storeName`, `buyer`, `date`) REFERENCES `purchase` (`storeName`, `buyer`, `date`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -347,6 +436,21 @@ CREATE TABLE `regular_discount` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `remove_notification`
+--
+
+DROP TABLE IF EXISTS `remove_notification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `remove_notification` (
+  `id` int(11) NOT NULL,
+  `store` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `remove_notification` FOREIGN KEY (`id`) REFERENCES `notification` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `request`
 --
 
@@ -363,6 +467,23 @@ CREATE TABLE `request` (
   KEY `user_idx` (`sender`),
   KEY `store_idx` (`store`),
   CONSTRAINT `sotre_req` FOREIGN KEY (`store`) REFERENCES `store` (`storename`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `request_notification`
+--
+
+DROP TABLE IF EXISTS `request_notification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `request_notification` (
+  `id` int(11) NOT NULL,
+  `request_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `request notification_idx` (`request_id`),
+  CONSTRAINT `request notification` FOREIGN KEY (`request_id`) REFERENCES `request` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `request_notification` FOREIGN KEY (`id`) REFERENCES `notification` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -416,6 +537,23 @@ CREATE TABLE `store_discount` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `subscibe_notifications`
+--
+
+DROP TABLE IF EXISTS `subscibe_notifications`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `subscibe_notifications` (
+  `username` varchar(45) NOT NULL,
+  `notfiication_id` int(11) NOT NULL,
+  PRIMARY KEY (`username`,`notfiication_id`),
+  KEY `noti_user_idx` (`notfiication_id`),
+  CONSTRAINT `noti_user` FOREIGN KEY (`notfiication_id`) REFERENCES `notification` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `user_noti` FOREIGN KEY (`username`) REFERENCES `subscribe` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `subscribe`
 --
 
@@ -424,7 +562,7 @@ DROP TABLE IF EXISTS `subscribe`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `subscribe` (
   `username` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
+  `password` varchar(512) NOT NULL,
   `sessionNumber` int(11) DEFAULT '-1',
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -499,4 +637,4 @@ CREATE TABLE `xor_term` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-21 10:42:12
+-- Dump completed on 2020-05-21 19:30:55
