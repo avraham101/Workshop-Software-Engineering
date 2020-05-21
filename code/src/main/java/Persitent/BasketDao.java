@@ -23,23 +23,26 @@ public class BasketDao {
         List<PermissionType> perms = new ArrayList<PermissionType>(Arrays.asList(ps));
         Permission p = new Permission(new Subscribe("roy","roy"), new HashSet<>(perms));
         Basket b = new Basket(new Store("roy",p,"roy"),"roy");
-//        ProductData pd  = new ProductData("roy","roy","roy",null,0,0,PurchaseTypeData.IMMEDDIATE);
-//        Product pr = new Product(pd,new Category("roy"));
-//        b.addProduct(pr,0);
+        ProductData pd  = new ProductData("roy","roy","roy",null,0,0,PurchaseTypeData.IMMEDDIATE);
+        Product pr = new Product(pd,new Category("roy"));
+        b.addProduct(pr,0);
+        Cart c = new Cart("roy");
+        c.getBaskets().put("roy",b);
+        Cart c2 = new Cart("yuval");
         BasketDao bdao = new BasketDao();
-//        bdao.addBasket(b);
-        bdao.removeBasket(b);
+//        bdao.addBasket(c);
+        bdao.removeBasket(c);
         ENTITY_MANAGER_FACTORY.close();
     }
 
-    public void addBasket(Basket basket){
+    public void addBasket(Cart cart){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
 
         try {
             et = em.getTransaction();
             et.begin();
-            em.persist(basket);
+            em.persist(cart);
             et.commit();
         }
         catch (Exception e){
@@ -52,15 +55,15 @@ public class BasketDao {
         }
     }
 
-    public void removeBasket(Basket basket){
+    public void removeBasket(Cart cart){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
 
         try{
             et = em.getTransaction();
             et.begin();
-            em.find(Basket.class, basket);
-            em.remove(basket);
+            Cart c = em.find(Cart.class, cart.getBuyer());
+            em.remove(em.contains(c) ? c : em.merge(c));
             et.commit();
         } catch (Exception e){
             if(et!=null)
