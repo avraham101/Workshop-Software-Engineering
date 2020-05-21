@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class ProductMinMax implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="policy_id")
     private Integer policyId;
     @Id
@@ -59,5 +59,21 @@ public class ProductMinMax implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Integer getPolicyId() {
+        return policyId;
+    }
+
+    public void setPolicyId(Integer policyId) {
+        this.policyId = policyId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 }

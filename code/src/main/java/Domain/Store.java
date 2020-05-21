@@ -23,21 +23,37 @@ public class Store {
     @Transient //TODO
     private PurchasePolicy purchasePolicy;
 
-    @Transient //TODO
-    private ConcurrentHashMap<Integer,Discount> discountPolicy;
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @MapKey(name = "id")
+    @JoinTable(name="discount_in_store",
+            joinColumns ={@JoinColumn(name = "store", referencedColumnName="storename")},
+            inverseJoinColumns={@JoinColumn(name="discount_id", referencedColumnName="id")}
+    )
+    private Map<Integer,Discount> discountPolicy;
 
-    @Transient //TODO
-    private ConcurrentHashMap<String, Product> products;
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @MapKey(name = "name")
+    @JoinColumn(name="storeName",referencedColumnName = "storename",updatable = false)
+    private Map<String, Product> products;
 
-    @Transient //TODO
-    private ConcurrentHashMap<String, Category> categoryList;
+    @OneToMany(cascade=CascadeType.PERSIST,fetch = FetchType.EAGER)
+    @MapKey(name = "name")
+    @JoinTable(name="categories_in_store",
+            joinColumns ={@JoinColumn(name = "store", referencedColumnName="storename")},
+            inverseJoinColumns={@JoinColumn(name="category", referencedColumnName="name")}
+    )
+    private Map<String, Category> categoryList;
 
-    @Transient //TODO
-    private ConcurrentHashMap<Integer, Request> requests;
+
+
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @MapKey(name = "id")
+    @JoinColumn(name="store",referencedColumnName = "storeName",updatable = false)
+    private Map<Integer, Request> requests;
 
     @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
     @MapKeyColumn(name = "owner")
-    @JoinColumn(name="store",referencedColumnName = "storeName")
+    @JoinColumn(name="store",referencedColumnName = "storeName",updatable = false)
     private Map<String, Permission> permissions;
 
 
@@ -79,19 +95,19 @@ public class Store {
             this.purchasePolicy = purchasePolicy;
     }
 
-    public ConcurrentHashMap<Integer, Discount> getDiscount() {
+    public Map<Integer, Discount> getDiscount() {
         return discountPolicy;
     }
 
-    public ConcurrentHashMap<String, Product> getProducts() {
+    public Map<String, Product> getProducts() {
         return products;
     }
 
-    public ConcurrentHashMap<String, Category> getCategoryList() {
+    public Map<String, Category> getCategoryList() {
         return categoryList;
     }
 
-    public ConcurrentHashMap<Integer, Request> getRequests() {
+    public Map<Integer, Request> getRequests() {
         return requests;
     }
 
@@ -100,8 +116,19 @@ public class Store {
         return permissions;
     }
 
+    //make permissions concurrent
     public void initPermissions(){
-        this.permissions=new ConcurrentHashMap<>(this.permissions);
+        this.requests=new ConcurrentHashMap<>(this.requests);
+        this.categoryList=new ConcurrentHashMap<>(this.categoryList);
+        this.products=new ConcurrentHashMap<>(products);
+        this.discountPolicy=new ConcurrentHashMap<>(discountPolicy);
+        if(!(this.permissions instanceof ConcurrentHashMap)) {
+            this.permissions = new ConcurrentHashMap<>(this.permissions);
+            for (Permission p : this.permissions.values()){
+                p.getOwner().initPermissions();
+                p.getStore().initPermissions();
+            }
+        }
     }
 
     /**

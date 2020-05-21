@@ -116,7 +116,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         assertEquals(currUser.getUserName(),subscribe.getName());
         //check session number
-        assertEquals(((Subscribe)currUser.getState()).getSessionNumber().get(),data.getId(Data.VALID));
+        assertEquals(Optional.ofNullable(((Subscribe) currUser.getState()).getSessionNumber()),data.getId(Data.VALID));
         try {
             HashSystem hashSystem = new HashSystem();
             String password = hashSystem.encrypt(subscribe.getPassword());
@@ -582,7 +582,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         setUpLogedInUser();
         Subscribe sub= (Subscribe) currUser.getState();
         super.testLogout();
-        assertEquals(sub.getSessionNumber().get(),-1);
+        assertEquals(Optional.ofNullable(sub.getSessionNumber()),-1);
     }
 
     /**

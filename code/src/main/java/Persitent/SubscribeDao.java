@@ -53,4 +53,25 @@ public class SubscribeDao {
         }
         return sub;
     }
+
+    public void remove(String username){
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction et = null;
+        Subscribe sub = null;
+
+        try {
+            et = em.getTransaction();
+            et.begin();
+            sub=em.find(Subscribe.class,username);
+            em.remove(sub);
+            et.commit();
+
+        }
+        catch(NoResultException ex) {
+            ex.printStackTrace();
+        }
+        finally {
+            em.close();
+        }
+    }
 }

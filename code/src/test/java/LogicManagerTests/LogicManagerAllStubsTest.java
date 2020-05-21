@@ -1905,7 +1905,7 @@ public class LogicManagerAllStubsTest {
     @Test
     public void deletePolicy(){
         PolicyDao pdao = new PolicyDao();
-        pdao.removePolicy(41);
+        pdao.removePolicy(105);
         assertTrue(true);
     }
 
@@ -1914,7 +1914,7 @@ public class LogicManagerAllStubsTest {
         PolicyDao pdao= new PolicyDao();
         List<String> lst = new ArrayList<>();
         lst.add("england");
-        //lst.add("usa");
+        lst.add("usa");
         PurchasePolicy usrp = new UserPurchasePolicy(lst);
         List<PurchasePolicy> lst1 = new ArrayList<>();
         lst1.add(usrp);
@@ -1938,11 +1938,26 @@ public class LogicManagerAllStubsTest {
     @Test
     public void addProductPolicy(){
         PolicyDao dao = new PolicyDao();
-        ProductMinMax minmax = new ProductMinMax("banana",7,0);
+        /*ProductMinMax minmax = new ProductMinMax("banana",7,0);
         HashMap<String,ProductMinMax> map = new HashMap<>();
         map.put("banana",minmax);
         ProductPurchasePolicy p = new ProductPurchasePolicy(map);
-        dao.addPolicy(p);
+        dao.addPolicy(p);*/
+        PurchasePolicy p1= dao.find(203);
         assertTrue(true);
+    }
+
+    @Test
+    public void testDis(){
+        Discount d = new RegularDiscount("banana",15 );
+        DiscountDao dao = new DiscountDao();
+        dao.addDiscount(d);
+
+    }
+    @Test
+    public void findDis(){
+        DiscountDao dao = new DiscountDao();
+        Discount d =dao.find(2);
+        int i=2;
     }
 }

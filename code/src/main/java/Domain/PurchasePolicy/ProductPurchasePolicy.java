@@ -15,10 +15,11 @@ import java.util.Map;
 @Table(name = "product_policy")
 public class ProductPurchasePolicy extends PurchasePolicy {
 
+
+
    @OneToMany(cascade= CascadeType.ALL,fetch = FetchType.EAGER)
-    //@ElementCollection
-    @MapKey(name = "productName")
-    @JoinColumn(name="policy_id",referencedColumnName = "id", updatable=false)
+   @MapKey(name = "productName")
+   @JoinColumn(name="policy_id",referencedColumnName = "id", updatable=false)
     private Map<String, ProductMinMax> amountPerProduct;
 
     public ProductPurchasePolicy(HashMap<String, ProductMinMax> maxAmountPerProduct) {

@@ -1,7 +1,6 @@
 package Domain;
 
 import java.io.Serializable;
-import java.util.concurrent.atomic.AtomicReference;
 import javax.persistence.*;
 
 @Entity
@@ -14,8 +13,7 @@ public class Request implements Serializable {
     @Column(name="sender",nullable = false)
     private String senderName;
 
-    @Id
-    @Column(name="store",nullable = false)
+    @Column(name="store")
     private String storeName;
 
     @Column(name="content",nullable = false)
@@ -25,14 +23,15 @@ public class Request implements Serializable {
     private String comment;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private int id;
+    private Integer id;
 
     public Request(String senderName, String storeName, String content,int id) {
         this.senderName = senderName;
         this.storeName=storeName;
         this.content = content;
-        this.id=id;
+        //this.id=id;
     }
 
     // ============================ getters & setters ============================ //
@@ -59,9 +58,9 @@ public class Request implements Serializable {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+//    public void setId(int id) {
+//        this.id = id;
+//    }
 
     public synchronized boolean setComment(String comment) {
         if(this.comment==null) {

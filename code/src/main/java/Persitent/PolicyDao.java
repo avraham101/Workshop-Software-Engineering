@@ -87,17 +87,16 @@ public class PolicyDao {
 
 
     }
-
-    public Policy find(int id){
+    public PurchasePolicy find(Integer id){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
-        Policy policy=null;
+        PurchasePolicy policy=null;
 
         try {
             // Get transaction and start
-            et = em.getTransaction();
-            et.begin();
-            policy=em.find(Policy.class,id);
+  //          et = em.getTransaction();
+//            et.begin();
+            policy=em.find(PurchasePolicy.class,id);
         } catch (Exception ex) {
         } finally {
             // Close EntityManager

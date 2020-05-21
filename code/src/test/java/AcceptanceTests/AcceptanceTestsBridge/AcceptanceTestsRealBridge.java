@@ -9,6 +9,7 @@ import AcceptanceTests.SystemMocks.PublisherMock;
 import DataAPI.*;
 import DataAPI.PermissionType;
 import DataAPI.Purchase;
+import Domain.ProductPeristentData;
 import Domain.Request;
 import Domain.Review;
 import Service.ServiceAPI;
@@ -503,8 +504,8 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
             Date date = new Date();
             for (Purchase purchase : history) {
                 HashMap<ProductTestData, Integer> productsAndAmountInPurchase = new HashMap<>();
-                List<ProductData> products = purchase.getProduct();
-                for (ProductData product : products) {
+                List<ProductPeristentData> products = purchase.getProduct();
+                for (ProductPeristentData product : products) {
                     productsAndAmountInPurchase.put(buildProductTestData(product)
                             , product.getAmount());
                     totalCost += product.getPrice() * product.getAmount();
@@ -519,6 +520,15 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
             return purchasesTestData;
         }
         return null;
+    }
+
+    private ProductTestData buildProductTestData(ProductPeristentData productData) {
+        String storeName = productData.getStore();
+        String productName = productData.getProductName();
+        int amountInStore = productData.getAmount();
+        double price = productData.getPrice();
+        String category = productData.getCategory();
+        return new ProductTestData(productName,storeName,amountInStore,price,category,null);
     }
 
     private ProductData buildProductData(ProductTestData product) {
