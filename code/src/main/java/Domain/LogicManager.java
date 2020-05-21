@@ -708,7 +708,7 @@ public class LogicManager {
             store = current.openStore(storeDetails);
             if(store != null) {
                 if(!this.storeDao.addStore(store))
-                    return new Response<>(true, OpCode.DB_Down);
+                    return new Response<>(false, OpCode.DB_Down);
                 return new Response<>(true, OpCode.Success);
             }
         }

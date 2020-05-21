@@ -155,10 +155,22 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override @Test
     public void testViewDataStores() {
-        super.testViewDataStores();
-        for (StoreData storeData : logicManager.viewStores().getValue()) {
-            assertTrue(stores.containsKey(storeData.getName()));
+        setUpOpenedStore();
+        List<StoreData> expected = new LinkedList<>();
+        expected.add(data.getStore(Data.VALID));
+        List<StoreData> storeDataList  = logicManager.viewStores().getValue();
+        assertNotEquals(null, storeDataList);
+        for (StoreData storeData : storeDataList) {
+            boolean result = false;
+            for(StoreData real: expected) {
+                if(real.getName().equals(storeData.getName())) {
+                    result = true;
+                    break;
+                }
+            }
+            assertTrue(result);
         }
+        tearDownOpenStore();
     }
 
     /**

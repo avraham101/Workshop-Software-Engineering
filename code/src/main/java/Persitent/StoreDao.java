@@ -13,7 +13,6 @@ public class StoreDao extends Dao<Store>{
             .createEntityManagerFactory("store");
 
     public boolean addStore(Store store) {
-        boolean output = false;
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         return super.add(em, store);
@@ -42,9 +41,9 @@ public class StoreDao extends Dao<Store>{
         List<String> storeNames = new LinkedList<>();
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         em.getTransaction().begin();
-        Query query = em.createQuery("SELECT storename FROM Domain.Store");
-        storeNames = query.getResultList();
-        for(String name:storeNames) {
+        Query query = em.createQuery("SELECT name FROM Domain.Store");
+        List<String> resultList = query.getResultList();
+        for(String name:resultList) {
             if(name!=null)
                 output.add(find(name));
         }
