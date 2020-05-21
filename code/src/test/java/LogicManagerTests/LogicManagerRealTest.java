@@ -111,6 +111,17 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * part of test use case 3.2 - Open Store
+     */
+    @Test
+    public void testOpenStoreReopen() {
+        //setUpLogedInUser();
+        testOpenStoreSucces();
+        StoreData storeData = data.getStore(Data.VALID);
+        assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
+    }
+
+    /**
      * part of test use case 2.3 - Login
      */
     @Test

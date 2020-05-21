@@ -1993,9 +1993,9 @@ public class LogicManagerAllStubsTest {
 
     @After
     public void resetTables() {
-        SubscribeDao subscribeDao = new SubscribeDao();
-        subscribeDao.clearTable();
-        StoreDao storeDao = new StoreDao();
-        storeDao.clearTable();
+//        SubscribeDao subscribeDao = new SubscribeDao();
+//        subscribeDao.clearTable();
+//        StoreDao storeDao = new StoreDao();
+//        storeDao.clearTable();
     }
 }
