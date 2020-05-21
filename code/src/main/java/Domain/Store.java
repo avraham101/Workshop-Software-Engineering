@@ -2,8 +2,10 @@ package Domain;
 
 import DataAPI.*;
 import Domain.Discount.Discount;
+import Domain.Notification.BuyNotification;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Domain.Notification.Notification;
 
 import javax.persistence.*;
 import java.util.*;
@@ -57,7 +59,8 @@ public class Store {
     private Map<String, Permission> permissions;
 
 
-    @Transient //TODO
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name="storeName",referencedColumnName = "storeName",updatable = false)
     private List<Purchase> purchases;
 
     public Store(String name,Permission permission,String description) {
@@ -447,7 +450,7 @@ public class Store {
 
     public void sendManagersNotifications(List<ProductData> productData) {
         for(String manager: permissions.keySet()){
-            Notification notification=new Notification(productData,OpCode.Buy_Product);
+            Notification notification=new BuyNotification(productData,OpCode.Buy_Product);
             permissions.get(manager).getOwner().sendNotification(notification);
         }
     }
