@@ -4,6 +4,8 @@ import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Publisher.Publisher;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.*;
@@ -13,6 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name="Subscribe")
 public class Subscribe extends UserState{
 
@@ -23,33 +26,39 @@ public class Subscribe extends UserState{
     @Column(name="password")
     private String password;
 
-    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade=CascadeType.ALL)
     @MapKeyColumn(name = "store")
-    @JoinColumn(name="owner",referencedColumnName = "username")
+    @JoinColumn(name="owner",referencedColumnName = "username",insertable = false,updatable = false)
     private Map<String, Permission> permissions; //map of <storeName, Domain.Permission>
 
-    @Transient //TODO
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="givenby",referencedColumnName = "username",insertable = false,updatable = false)
     private List<Permission> givenByMePermissions; //map of <storeName, Domain.Permission>
 
     @Transient //TODO
     private List<Purchase> purchases;
 
-    @Transient //TODO
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name="sender",referencedColumnName = "username",insertable = false,updatable = false)
     private List<Request> requests;
 
-    @Transient //TODO
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="writer",referencedColumnName = "username",insertable = false,updatable = false)
     private List<Review> reviews;
 
-    @Transient //TODO
-    private AtomicInteger sessionNumber;
+    @Column(name="sessionNumber")
+    private Integer sessionNumber;
 
-    @Transient //TODO
+    @Transient //TODO remove when notifications
     private AtomicInteger notificationNumber;
 
-    @Transient //TODO
-    private ReentrantReadWriteLock lock;
+    @Transient
+    private final ReentrantReadWriteLock lock;
 
-    @Transient //TODO
+    @Transient
     private Publisher publisher;
 
     @Transient //TODO
@@ -58,20 +67,22 @@ public class Subscribe extends UserState{
     public Subscribe(String userName, String password) {
         super(userName);
         initSubscribe(userName,password);
+        lock = new ReentrantReadWriteLock();
     }
 
     public Subscribe() {
+        lock=new ReentrantReadWriteLock();
     }
 
     public Subscribe(String userName, String password, Cart cart) {
         super(userName);
         this.cart = cart;
         initSubscribe(userName,password);
+        lock = new ReentrantReadWriteLock();
     }
 
     private void initSubscribe(String userName, String password) {
         notifications=new ConcurrentLinkedQueue();
-        lock=new ReentrantReadWriteLock();
         this.userName = userName;
         this.password = password;
         permissions=new ConcurrentHashMap<>();
@@ -79,8 +90,8 @@ public class Subscribe extends UserState{
         purchases=new ArrayList<>();
         requests=new ArrayList<>();
         reviews = new LinkedList<>();
-        sessionNumber=new AtomicInteger(-1);
-         notificationNumber = new AtomicInteger(0);
+        sessionNumber=-1;
+        notificationNumber = new AtomicInteger(0);
     }
 
     /**
@@ -114,7 +125,7 @@ public class Subscribe extends UserState{
     @Override
     public boolean logout(User user) {
         user.setState(new Guest());
-        sessionNumber.set(-1);
+        setSessionNumber(-1);
         return true;
     }
 
@@ -164,7 +175,7 @@ public class Subscribe extends UserState{
         lock.readLock().lock();
         for(Purchase p: purchases) {
             if(p.getStoreName().compareTo(storeName)==0) {
-                for(ProductData productData: p.getProduct()) {
+                for(ProductPeristentData productData: p.getProduct()) {
                     String productName = productData.getProductName();
                     if(productName.compareTo(other)==0) {
                         lock.readLock().unlock();
@@ -509,13 +520,27 @@ public class Subscribe extends UserState{
         return reviews;
     }
 
-    public AtomicInteger getSessionNumber() {
+    public synchronized Integer getSessionNumber() {
         return sessionNumber;
     }
 
+    public synchronized boolean setSessionNumber(Integer sessionNumber) {
+        if(sessionNumber==-1||this.sessionNumber!=-1) {
+            this.sessionNumber = sessionNumber;
+            return true;
+        }
+        return false;
+    }
 
+    //make permissions concurrent
     public void initPermissions(){
-        this.permissions=new ConcurrentHashMap<>(this.permissions);
+        if(!(this.permissions instanceof ConcurrentHashMap)) {
+            this.permissions = new ConcurrentHashMap<>(this.permissions);
+            for (Permission p : this.permissions.values()){
+                p.getOwner().initPermissions();
+                p.getStore().initPermissions();
+            }
+        }
     }
     /**
      * gets given user Status: admin/manager/regular
@@ -609,7 +634,7 @@ public class Subscribe extends UserState{
     }
 
     public void sendAllNotifications() {
-        int id=sessionNumber.get();
+        int id=getSessionNumber();
         if(!notifications.isEmpty()&&publisher!=null&&id!=-1) {
             publisher.update(String.valueOf(id), new ArrayList<Notification>(notifications));
         }

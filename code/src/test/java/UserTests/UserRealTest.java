@@ -173,7 +173,7 @@ public class UserRealTest extends UserAllStubsTest{
         setUpSubscribe();
         Subscribe sub= (Subscribe) user.getState();
         super.testLogoutSubscribe();
-        assertEquals(sub.getSessionNumber().get(),-1);
+        assertEquals(java.util.Optional.ofNullable(sub.getSessionNumber()),-1);
         assertTrue(user.getState() instanceof Guest);
     }
 

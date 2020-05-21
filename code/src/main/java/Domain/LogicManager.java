@@ -236,7 +236,7 @@ public class LogicManager {
         }
         Subscribe subscribe = this.subscribes.get(userName);
         User user= connectedUsers.get(id);
-        if(subscribe!=null&&subscribe.getSessionNumber().compareAndSet(-1,id)){
+        if(subscribe!=null&&subscribe.setSessionNumber(id)){
             try {
                 password = hashSystem.encrypt(password);
                 if (subscribe.getPassword().compareTo(password) == 0) {
