@@ -50,7 +50,7 @@ public class Subscribe extends UserState{
     private List<Review> reviews;
 
     @Transient //TODO speak on it
-    private AtomicInteger sessionNumber;
+    private Integer sessionNumber;
 
     @Transient //TODO remove when notifications
     private AtomicInteger notificationNumber;
@@ -90,7 +90,7 @@ public class Subscribe extends UserState{
         purchases=new ArrayList<>();
         requests=new ArrayList<>();
         reviews = new LinkedList<>();
-        sessionNumber=new AtomicInteger(-1);
+        sessionNumber=-1;
         notificationNumber = new AtomicInteger(0);
     }
 
@@ -125,7 +125,7 @@ public class Subscribe extends UserState{
     @Override
     public boolean logout(User user) {
         user.setState(new Guest());
-        sessionNumber.set(-1);
+        setSessionNumber(-1);
         return true;
     }
 
@@ -520,8 +520,16 @@ public class Subscribe extends UserState{
         return reviews;
     }
 
-    public AtomicInteger getSessionNumber() {
+    public synchronized Integer getSessionNumber() {
         return sessionNumber;
+    }
+
+    public synchronized boolean setSessionNumber(Integer sessionNumber) {
+        if(sessionNumber==-1||this.sessionNumber!=-1) {
+            this.sessionNumber = sessionNumber;
+            return true;
+        }
+        return false;
     }
 
     //make permissions concurrent
@@ -626,7 +634,7 @@ public class Subscribe extends UserState{
     }
 
     public void sendAllNotifications() {
-        int id=sessionNumber.get();
+        int id=getSessionNumber();
         if(!notifications.isEmpty()&&publisher!=null&&id!=-1) {
             publisher.update(String.valueOf(id), new ArrayList<Notification>(notifications));
         }
