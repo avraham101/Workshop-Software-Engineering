@@ -63,8 +63,6 @@ public class LogicManagerAllStubsTest {
         //External Systems
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
-        subscribeDao = new SubscribeDao();
-        storeDao = new StoreDao();
         init();
     }
 
@@ -954,16 +952,6 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * test use case 3.2 - Open Store
-     */
-    @Test
-    public void testOpenStore() {
-        setUpLogedInUser();
-        testOpenStoreSucces();
-        tearDownLogin();
-    }
-
-    /**
      * part of test use case 3.2 - Open Store
      */
     @Test
@@ -988,19 +976,6 @@ public class LogicManagerAllStubsTest {
         setUpLogedInUser();
         assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_DESCRIPTION)).getValue());
         tearDownLogin();
-    }
-
-    /**
-     * part of test use case 3.2 - Open Store
-     */
-    @Test
-    public void testOpenStoreSucces(){
-        setUpLogedInUser();
-        StoreData storeData = data.getStore(Data.VALID);
-        assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
-        storeDao.removeStore(storeData.getName());
-        tearDownLogin();
-
     }
 
     /**
@@ -2045,6 +2020,7 @@ public class LogicManagerAllStubsTest {
      */
     public void tearDownRegisteredUser() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
+        SubscribeDao subscribeDao = new SubscribeDao();
         subscribeDao.remove(subscribe.getName());
         tearDownConnect();
     }
@@ -2063,6 +2039,7 @@ public class LogicManagerAllStubsTest {
     public void tearDownOpenStore() {
         stores = new ConcurrentHashMap<>();
         StoreData storeData = data.getStore(Data.VALID);
+        StoreDao storeDao = new StoreDao();
         storeDao.removeStore(storeData.getName());
         tearDownLogin();
     }

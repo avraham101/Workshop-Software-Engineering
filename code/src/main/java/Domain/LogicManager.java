@@ -24,6 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LogicManager {
+
     private ConcurrentHashMap<String, Subscribe> subscribes;
     private ConcurrentHashMap<String, Store> stores;
     private ConcurrentHashMap<Integer,User> connectedUsers; //must be!! dont delete this
@@ -301,8 +302,8 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","viewStores",
                 "view the details of the stores in the system", new Object[] {});
         List<StoreData> data = new LinkedList<>();
-        for (String storeName: stores.keySet()) {
-            Store store = stores.get(storeName);
+        List<Store> stores = this.storeDao.getAll();
+        for (Store store: stores) {
             StoreData storeData = new StoreData(store.getName(),store.getDescription());
             data.add(storeData);
         }
@@ -707,7 +708,7 @@ public class LogicManager {
             store = current.openStore(storeDetails);
             if(store != null) {
                 if(!this.storeDao.addStore(store))
-                    return new Response<>(true, OpCode.DB_Down);
+                    return new Response<>(false, OpCode.DB_Down);
                 return new Response<>(true, OpCode.Success);
             }
         }

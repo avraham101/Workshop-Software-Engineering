@@ -6,6 +6,7 @@ import Domain.*;
 import Domain.Discount.Discount;
 import Domain.Discount.RegularDiscount;
 import Domain.PurchasePolicy.UserPurchasePolicy;
+import Persitent.StoreDao;
 import Stubs.StubPublisher;
 import Systems.HashSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -26,8 +27,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
 
     private StubPublisher publisher;
+    private StoreDao storeDao;
+
     @Before
     public void setUp() {
+        storeDao = new StoreDao();
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
         init();
@@ -103,12 +107,29 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertFalse(logicManager.login(data.getId(Data.VALID2), subscribe.getName(),subscribe.getPassword()).getValue());
     }
 
-    @Override
+    /**
+     * part of test use case 3.2 - Open Store
+     */
     @Test
     public void testOpenStoreSucces(){
-        super.testOpenStoreSucces();
-        //StoreData storeData = data.getStore(Data.VALID);
-        //assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
+        setUpLogedInUser();
+        StoreData storeData = data.getStore(Data.VALID);
+        assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
+        this.storeDao.removeStore(storeData.getName());
+        tearDownLogin();
+    }
+
+    /**
+     * part of test use case 3.2 - Open Store
+     */
+    @Test
+    public void testOpenStoreReopen() {
+        setUpLogedInUser();
+        StoreData storeData = data.getStore(Data.VALID);
+        assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
+        assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
+        this.storeDao.removeStore(storeData.getName());
+        tearDownLogin();
     }
 
     /**
@@ -145,10 +166,22 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override @Test
     public void testViewDataStores() {
-        super.testViewDataStores();
-        for (StoreData storeData : logicManager.viewStores().getValue()) {
-            assertTrue(stores.containsKey(storeData.getName()));
+        setUpOpenedStore();
+        List<StoreData> expected = new LinkedList<>();
+        expected.add(data.getStore(Data.VALID));
+        List<StoreData> storeDataList  = logicManager.viewStores().getValue();
+        assertNotEquals(null, storeDataList);
+        for (StoreData storeData : storeDataList) {
+            boolean result = false;
+            for(StoreData real: expected) {
+                if(real.getName().equals(storeData.getName())) {
+                    result = true;
+                    break;
+                }
+            }
+            assertTrue(result);
         }
+        tearDownOpenStore();
     }
 
     /**
@@ -609,45 +642,42 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
-     * test use case 3.2 - Open Store
-     */
-    @Override @Test
-    public void testOpenStore() {
-        super.testOpenStore();
-        testOpenStorePurchesAndDiscontPolicy();
-        testOpenStoreUserPermissions();
-        testOpenStoreStorePermissions();
-    }
-
-
-    /**
      * part of test use case 3.2 - Open Store
      */
-    private void testOpenStorePurchesAndDiscontPolicy() {
+    @Test
+    public void testOpenStorePurchesAndDiscontPolicy() {
+        setUpLogedInUser();
         StoreData storeData = data.getStore(Data.VALID);
         Store store = stores.get(storeData.getName());
         assertEquals(storeData.getDescription(),"description");
+        tearDownLogin();
     }
 
     /**
      * part of test use case 3.2 - Open Store
      */
-    private void testOpenStoreUserPermissions() {
+    @Test
+    public void testOpenStoreUserPermissions() {
+        setUpLogedInUser();
         StoreData storeData = data.getStore(Data.VALID);
         Subscribe subscribe = (Subscribe)currUser.getState();
         Permission permission = subscribe.getPermissions().get(storeData.getName());
         assertTrue(permission.getPermissionType().contains(PermissionType.OWNER));
+        tearDownLogin();
     }
 
     /**
      * part of test use case 3.2 - Open Store
      */
-    private void testOpenStoreStorePermissions() {
+    @Test
+    public void testOpenStoreStorePermissions() {
+        setUpLogedInUser();
         StoreData storeData = data.getStore(Data.VALID);
         Store store = stores.get(storeData.getName());
         assertTrue(store.getPermissions().containsKey(currUser.getUserName()));
         Permission p = store.getPermissions().get(currUser.getUserName());
         assertTrue(p.getPermissionType().contains(PermissionType.OWNER));
+        tearDownLogin();
     }
 
 
