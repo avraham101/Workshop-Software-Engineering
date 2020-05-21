@@ -3,6 +3,7 @@ package Domain;
 import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Persitent.SubscribeDao;
 import Publisher.Publisher;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -525,7 +526,11 @@ public class Subscribe extends UserState{
     }
 
     public synchronized boolean setSessionNumber(Integer sessionNumber) {
-        if(sessionNumber==-1||this.sessionNumber!=-1) {
+        if(sessionNumber!=-1 && this.sessionNumber==-1) { //login
+            this.sessionNumber = sessionNumber;
+            return true;
+        }
+        if(sessionNumber==-1 && this.sessionNumber!=-1) { //logout
             this.sessionNumber = sessionNumber;
             return true;
         }
@@ -660,6 +665,4 @@ public class Subscribe extends UserState{
         sendAllNotifications();
         return true;
     }
-
-
 }

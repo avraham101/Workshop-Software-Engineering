@@ -16,9 +16,15 @@ import Systems.SupplySystem.SupplySystem;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -289,6 +295,7 @@ public class LogicManagerAllStubsTest {
      * part of test use case 2.2 - Register
      */
     @Test
+    @Transactional
     public void testRegisterSuccess() {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
@@ -299,6 +306,7 @@ public class LogicManagerAllStubsTest {
      * part of test use case 2.2 - Register
      */
     @Test
+    @Transactional
     public void testRegisterFailWrongName() {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.WRONG_NAME);
@@ -310,6 +318,7 @@ public class LogicManagerAllStubsTest {
      * part of test use case 2.2 - Register
      */
     @Test
+    @Transactional
     public void testRegisterFailWrongPassword() {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.WRONG_PASSWORD);
@@ -321,6 +330,7 @@ public class LogicManagerAllStubsTest {
      * part of test use case 2.2 - Register
      */
     @Test
+    @Transactional
     public void testRegisterFailNull() {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.NULL);
@@ -331,6 +341,7 @@ public class LogicManagerAllStubsTest {
      * test a case that trying to register user twice
      */
     @Test
+    @Transactional
     public void testRegisterFailAlreadyRegistered(){
         setUpConnect();
         setUpRegisteredUser();
@@ -342,6 +353,7 @@ public class LogicManagerAllStubsTest {
      * test use case 2.3 - Login
      */
     @Test
+    //TODO NEED TO DELETE THIS
     public void testLogin() {
         setUpRegisteredUser();
         testLoginFailNull();
@@ -353,7 +365,10 @@ public class LogicManagerAllStubsTest {
     /**
      * part of use case 2.3 - Login
      */
-    private void testLoginFailNull() {
+    @Test
+    @Transactional
+    public void testLoginFailNull() {
+        setUpRegisteredUser();
         Subscribe subscribe = data.getSubscribe(Data.NULL);
         assertFalse((logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword())).getValue());
     }
@@ -361,7 +376,10 @@ public class LogicManagerAllStubsTest {
     /**
      * part of use case 2.3 - Login
      */
-    private void testLoginFailWrongName() {
+    @Test
+    @Transactional
+    public void testLoginFailWrongName() {
+        setUpRegisteredUser();
         Subscribe subscribe = data.getSubscribe(Data.WRONG_NAME);
         assertFalse((logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword())).getValue());
     }
@@ -369,7 +387,10 @@ public class LogicManagerAllStubsTest {
     /**
      * part of use case 2.3 - Login
      */
-    private void testLoginFailWrongPassword() {
+    @Test
+    @Transactional
+    public void testLoginFailWrongPassword() {
+        setUpRegisteredUser();
         Subscribe subscribe = data.getSubscribe(Data.WRONG_PASSWORD);
         assertFalse((logicManager.login(data.getId(Data.VALID), subscribe.getName(), subscribe.getPassword())).getValue());
     }
@@ -377,9 +398,14 @@ public class LogicManagerAllStubsTest {
     /**
      * part of use case 2.3 - Login
      */
-    protected void testLoginSuccess() {
+    @Test
+    @Transactional
+    public void testLoginSuccess() {
+        setUpRegisteredUser();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        assertTrue((logicManager.login(data.getId(Data.VALID), subscribe.getName(),subscribe.getPassword())).getValue());
+        Response<Boolean> response = logicManager.login(data.getId(Data.VALID), subscribe.getName(),
+                subscribe.getPassword());
+        assertTrue(response.getValue());
     }
 
 
@@ -1961,5 +1987,11 @@ public class LogicManagerAllStubsTest {
     public void addDiscount(){
         DiscountDao discountDao=new DiscountDao();
         discountDao.addDiscount(new RegularDiscount("shok",8));
+    }
+
+    @After
+    public void resetTables() {
+        SubscribeDao dao = new SubscribeDao();
+        dao.clearTable();
     }
 }

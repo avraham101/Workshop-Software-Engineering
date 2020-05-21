@@ -84,6 +84,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * test use case 2.3 - Login
      */
+    //TODO NEED TO DELETE THIS
     @Override @Test
     public void testLogin() {
         super.testLogin();
@@ -94,7 +95,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * part of test use case 2.3 - Login
      */
-    private void testLoginFailAlreadySubscribeLogged() {
+    @Test
+    public void testLoginFailAlreadySubscribeLogged() {
+        testLoginSuccess();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         assertFalse(logicManager.login(data.getId(Data.VALID2), subscribe.getName(),subscribe.getPassword()).getValue());
     }
@@ -102,7 +105,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * part of test use case 2.3 - Login
      */
+    @Test
     public void testLoginFailAlreadyUserLogged() {
+        testLoginSuccess();
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         assertFalse(logicManager.login(data.getId(Data.VALID), subscribe.getName(),subscribe.getPassword()).getValue());
     }
@@ -111,7 +116,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * part of test use case 2.3 - Login
      */
     @Override
-    protected void testLoginSuccess() {
+    public void testLoginSuccess() {
         super.testLoginSuccess();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         assertEquals(currUser.getUserName(),subscribe.getName());

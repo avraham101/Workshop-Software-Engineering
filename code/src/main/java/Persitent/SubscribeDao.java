@@ -6,7 +6,7 @@ import Domain.Subscribe;
 
 import javax.persistence.*;
 
-public class SubscribeDao {
+public class SubscribeDao extends Dao<Subscribe>{
 
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("product");
@@ -75,5 +75,19 @@ public class SubscribeDao {
         finally {
             em.close();
         }
+    }
+
+    public void clearTable() {
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        em.getTransaction().begin();
+        Query query = em.createQuery("DELETE FROM Domain.Subscribe s");
+        int rowsDeleted = query.executeUpdate();
+        System.out.println("entities deleted: " + rowsDeleted);
+        em.getTransaction().commit();
+        em.close();
+//
+//        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+//        Query query = em.createQuery("DELETE FROM admin");
+//        query.executeUpdate();
     }
 }

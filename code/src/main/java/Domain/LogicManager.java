@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class LogicManager {
     private ConcurrentHashMap<String, Subscribe> subscribes;
     private ConcurrentHashMap<String, Store> stores;
-    private ConcurrentHashMap<Integer,User> connectedUsers;
+    private ConcurrentHashMap<Integer,User> connectedUsers; //must be!! dont delete this
     private AtomicInteger usersIdCounter;
     private HashSystem hashSystem;
     private PaymentSystem paymentSystem;
@@ -249,13 +249,17 @@ public class LogicManager {
         if(!validName(userName) || !validPassword(password)) {
             return new Response<>(false, OpCode.Invalid_Login_Details);
         }
-        Subscribe subscribe = this.subscribes.get(userName);
-        User user= connectedUsers.get(id);
-        if(subscribe!=null&&subscribe.setSessionNumber(id)){
+        Subscribe subscribe = this.subscribeDao.find(userName);
+        User user = connectedUsers.get(id);
+        if(subscribe!=null && subscribe.setSessionNumber(id)){
             try {
                 password = hashSystem.encrypt(password);
                 if (subscribe.getPassword().compareTo(password) == 0) {
                     boolean output = user.login(subscribe);
+                    if(!output) {
+                        subscribe.setSessionNumber(-1);
+                    }
+                    this.subscribeDao.update(subscribe);
                     return new Response<>(output, OpCode.Success);
                 }
             } catch (NoSuchAlgorithmException e) {
