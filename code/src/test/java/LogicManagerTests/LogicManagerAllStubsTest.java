@@ -107,7 +107,6 @@ public class LogicManagerAllStubsTest {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         logicManager.register(subscribe.getName(),subscribe.getPassword());
-        tearDownConnect();
     }
 
     /**
@@ -291,6 +290,7 @@ public class LogicManagerAllStubsTest {
             assertEquals(id, logicManager.connectToSystem());
             assertTrue(this.connectedUsers.containsKey(id));
         }
+        this.connectedUsers = new ConcurrentHashMap<>();
     }
 
     /**
@@ -960,6 +960,7 @@ public class LogicManagerAllStubsTest {
     public void testOpenStore() {
         setUpLogedInUser();
         testOpenStoreSucces();
+        tearDownLogin();
     }
 
     /**
@@ -969,6 +970,7 @@ public class LogicManagerAllStubsTest {
     public void testOpenStoreNull() {
         setUpLogedInUser();
         assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL)).getValue());
+        tearDownLogin();
     }
 
     /**
@@ -978,12 +980,14 @@ public class LogicManagerAllStubsTest {
     public void testOpenStoreNullName() {
         setUpLogedInUser();
         assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_NAME)).getValue());
+        tearDownLogin();
     }
 
     @Test
     public void testOpenStoreNullDiscription() {
         setUpLogedInUser();
         assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_DESCRIPTION)).getValue());
+        tearDownLogin();
     }
 
     /**
@@ -994,6 +998,9 @@ public class LogicManagerAllStubsTest {
         setUpLogedInUser();
         StoreData storeData = data.getStore(Data.VALID);
         assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
+        storeDao.removeStore(storeData.getName());
+        tearDownLogin();
+
     }
 
     /**
@@ -1001,10 +1008,10 @@ public class LogicManagerAllStubsTest {
      */
     @Test
     public void testOpenStoreReopen() {
-        //setUpLogedInUser();
-        testOpenStoreSucces();
+        setUpOpenedStore();
         StoreData storeData = data.getStore(Data.VALID);
         assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
+        tearDownOpenStore();
     }
 
     /**
@@ -2014,13 +2021,13 @@ public class LogicManagerAllStubsTest {
         assertTrue(true);
     }
 
-//    @After
-//    public void resetTables() {
-//        Subscribe other=data.getSubscribe(Data.VALID2);
-//        //SubscribeDao subscribeDao = new SubscribeDao();
-//        subscribeDao.remove(other.getName());
-//        subscribeDao.remove("Admin");
-//    }
+    @After
+    public void resetTables() {
+        Subscribe other=data.getSubscribe(Data.VALID2);
+        SubscribeDao subscribeDao = new SubscribeDao();
+        subscribeDao.remove(other.getName());
+        subscribeDao.remove(data.getSubscribe(Data.ADMIN).getName());
+    }
 
     /** ------------------------------- tear downs --------------- */
 
@@ -2028,8 +2035,6 @@ public class LogicManagerAllStubsTest {
      * tear down connect
      */
     public void tearDownConnect() {
-        subscribeDao.remove("Admin");
-        subscribeDao.remove("Niv");
         connectedUsers = new ConcurrentHashMap<>();
         currUser = null;
     }
