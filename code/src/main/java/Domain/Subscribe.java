@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name="Subscribe")
 public class Subscribe extends UserState{
 

@@ -1919,6 +1919,9 @@ public class LogicManagerAllStubsTest {
     public void findSub(){
         SubscribeDao subdao=new SubscribeDao();
         Subscribe sub=subdao.find("yuv");
+        StoreDao storeDao=new StoreDao();
+        Store s=storeDao.find("hanut");
+        s.addRequest(new Request("yuv","hanut","hello",0));
         assertTrue(true);
     }
 

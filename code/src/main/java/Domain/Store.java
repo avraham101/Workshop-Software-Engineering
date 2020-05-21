@@ -123,7 +123,6 @@ public class Store {
         this.products=new ConcurrentHashMap<>(products);
         this.discountPolicy=new ConcurrentHashMap<>(discountPolicy);
         if(!(this.permissions instanceof ConcurrentHashMap)) {
-
             this.permissions = new ConcurrentHashMap<>(this.permissions);
             for (Permission p : this.permissions.values()){
                 p.getOwner().initPermissions();

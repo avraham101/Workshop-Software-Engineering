@@ -5,6 +5,7 @@ import DataAPI.PermissionType;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Entity
@@ -25,11 +26,15 @@ public class Permission implements Serializable {
     @Column(name="givenby",nullable = true)
     private String givenBy;
 
-    @Transient
-    private HashSet<PermissionType> permissionType;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name="permission_type",joinColumns = {@JoinColumn(name="store"),@JoinColumn(name="owner")})
+    @Enumerated(EnumType.STRING)
+    @Column(name="type")
+    private Set<PermissionType> permissionType;
 
     @Transient
-    private ReentrantReadWriteLock lock;
+    private final ReentrantReadWriteLock lock;
 
     public Permission(Subscribe owner) {
         this.owner = owner;
@@ -38,6 +43,7 @@ public class Permission implements Serializable {
     }
 
     public Permission() {
+        lock=new ReentrantReadWriteLock();
     }
 
     public Permission(Subscribe owner, Store store) {
