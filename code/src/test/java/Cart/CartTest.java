@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -87,7 +88,7 @@ public class CartTest {
         int size = 0;
         double sum =0;
         for(Basket b:cart.getBaskets().values()) {
-            HashMap<String, ProductInCart> products = b.getProducts();
+            Map<String, ProductInCart> products = b.getProducts();
             for(ProductInCart productInCart: products.values()) {
                 int amount = productInCart.getAmount();
                 sum += amount * productInCart.getPrice();

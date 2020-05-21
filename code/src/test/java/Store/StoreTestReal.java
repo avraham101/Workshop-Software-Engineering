@@ -2,8 +2,6 @@ package Store;
 
 import Data.Data;
 import DataAPI.ProductData;
-import Domain.Discount.Discount;
-import Domain.Product;
 import Domain.ProductInCart;
 import org.junit.Test;
 

@@ -4,10 +4,7 @@ import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.PurchasePolicy.PurchasePolicy;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class UserState {
     protected Cart cart;
@@ -49,7 +46,7 @@ public abstract class UserState {
         double priceBeforeDiscount = 0;
         for (Basket basket: cart.getBaskets().values()) {
             Store store = basket.getStore();
-            HashMap<String, ProductInCart> map = basket.getProducts();
+            Map<String, ProductInCart> map = basket.getProducts();
             for (ProductInCart product: map.values()) {
                 priceBeforeDiscount += product.getPrice() * product.getAmount();
                 Product realProduct = store.getProduct(product.getProductName());
