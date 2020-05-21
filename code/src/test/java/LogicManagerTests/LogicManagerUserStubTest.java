@@ -80,8 +80,8 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
      * test use case 3.2 - Open Store
      */
     @Override
-    public void testOpenStore() {
-        super.testOpenStore();
+    public void testOpenStoreSucces() {
+        super.testOpenStoreSucces();
         StoreData storeData = data.getStore(Data.VALID);
         Store store = stores.get(storeData.getName());
         //This test check if store added
