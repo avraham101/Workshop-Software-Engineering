@@ -49,8 +49,8 @@ public class LogicManagerAllStubsTest {
     /**
      * Dao:
      */
-    private SubscribeDao subscribeDao;
-    private StoreDao storeDao;
+    protected SubscribeDao subscribeDao;
+    protected StoreDao storeDao;
 
     /**
      * Adding Stores must be in type StoreStub
@@ -1095,6 +1095,7 @@ public class LogicManagerAllStubsTest {
         setUpOpenedStore();
         testAddRequestSuccess();
     }
+
 
      /**
      * part of use case 3.5 -add request

@@ -16,6 +16,7 @@ import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -617,6 +618,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         testOpenStoreUserPermissions();
         testOpenStoreStorePermissions();
     }
+
 
     /**
      * part of test use case 3.2 - Open Store
