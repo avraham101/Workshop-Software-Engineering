@@ -390,7 +390,8 @@ public class LogicManager {
      */
     private List<ProductData> searchNone() {
         List<ProductData> output = new LinkedList<>();
-        for(Store store: stores.values()) {
+        List<Store> stores = this.storeDao.getAll();
+        for(Store store: stores) {
             output.addAll(store.viewProductInStore());
         }
         return output;
@@ -403,7 +404,8 @@ public class LogicManager {
      */
     private List<ProductData> searchCategory(String value, int distance) {
         List<ProductData> output = new LinkedList<>();
-        for(Store store: stores.values()) {
+        List<Store> stores = storeDao.getAll();
+        for(Store store: stores) {
             for(Category category: store.getCategoryList().values()) {
                 String categoryName = category.getName();
                 if(Utils.editDistDP(categoryName,value,categoryName.length(),value.length())<= distance) {
@@ -423,7 +425,8 @@ public class LogicManager {
      */
     private List<ProductData> searchProductName(String value, int distance) {
         List<ProductData> output = new LinkedList<>();
-        for(Store store: stores.values()) {
+        List<Store> stores = storeDao.getAll();
+        for(Store store: stores) {
             for(ProductData product: store.viewProductInStore()) {
                 String productName = product.getProductName();
                 if(Utils.editDistDP(productName,value,productName.length(),value.length())<= distance) {
