@@ -1903,6 +1903,13 @@ public class LogicManagerAllStubsTest {
     }
 
     @Test
+    public void addSubscribe(){
+        SubscribeDao dao=new SubscribeDao();
+        Subscribe shmu=new Subscribe("yuv","pa");
+        dao.addSubscribe(shmu);
+    }
+
+    @Test
     public void addStore(){
         Subscribe shmu=new Subscribe("yuv","pa");
         StoreDao storeDao=new StoreDao();
@@ -1919,9 +1926,6 @@ public class LogicManagerAllStubsTest {
     public void findSub(){
         SubscribeDao subdao=new SubscribeDao();
         Subscribe sub=subdao.find("yuv");
-        StoreDao storeDao=new StoreDao();
-        Store s=storeDao.find("hanut");
-        s.addRequest(new Request("yuv","hanut","hello",0));
         assertTrue(true);
     }
 

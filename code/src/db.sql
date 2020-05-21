@@ -425,6 +425,7 @@ DROP TABLE IF EXISTS `subscribe`;
 CREATE TABLE `subscribe` (
   `username` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
+  `sessionNumber` int(11) DEFAULT '-1',
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -498,4 +499,4 @@ CREATE TABLE `xor_term` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-21 10:33:26
+-- Dump completed on 2020-05-21 10:42:12

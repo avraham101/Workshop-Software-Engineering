@@ -49,7 +49,7 @@ public class Subscribe extends UserState{
     @JoinColumn(name="writer",referencedColumnName = "username",insertable = false,updatable = false)
     private List<Review> reviews;
 
-    @Transient //TODO speak on it
+    @Column(name="sessionNumber")
     private Integer sessionNumber;
 
     @Transient //TODO remove when notifications
