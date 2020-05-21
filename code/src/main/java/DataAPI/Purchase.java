@@ -3,17 +3,38 @@ package DataAPI;
 import DataAPI.ProductData;
 import Domain.ProductPeristentData;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name="purchase")
+public class Purchase implements Serializable {
 
-public class Purchase {
-
+    @Id
+    @Column(name="storeName")
     private String storeName;
+
+    @Id
+    @Column(name="buyer")
     private String buyer;
+
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(name="purchases_and_products",
+            joinColumns ={@JoinColumn(name = "date", referencedColumnName="date"),
+                    @JoinColumn(name = "buyer", referencedColumnName="buyer"),
+                    @JoinColumn(name = "storeName", referencedColumnName="storeName")},
+            inverseJoinColumns={@JoinColumn(name="id", referencedColumnName="id")}
+    )
     private List<ProductPeristentData> product;
+
+    @Id
+    @Column(name="date")
     private LocalDateTime date;
+
+    @Column(name="price")
     private double price;
 
     public Purchase(String storeName, String buyer, List<ProductData> product) {
@@ -26,6 +47,8 @@ public class Purchase {
         this.price=0;
     }
 
+    public Purchase() {
+    }
     // ============================ getters & setters ============================ //
 
     public String getStoreName() {
