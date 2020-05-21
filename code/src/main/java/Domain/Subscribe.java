@@ -37,7 +37,9 @@ public class Subscribe extends UserState{
     @JoinColumn(name="givenby",referencedColumnName = "username",insertable = false,updatable = false)
     private List<Permission> givenByMePermissions; //map of <storeName, Domain.Permission>
 
-    @Transient //TODO
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade=CascadeType.DETACH)
+    @JoinColumn(name="buyer",referencedColumnName = "username",updatable = false)
     private List<Purchase> purchases;
 
     @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)

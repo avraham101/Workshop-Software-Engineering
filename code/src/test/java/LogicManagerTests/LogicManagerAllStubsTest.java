@@ -1911,15 +1911,16 @@ public class LogicManagerAllStubsTest {
 
     @Test
     public void addStore(){
-        Subscribe shmu=new Subscribe("yuv","pa");
+        SubscribeDao dao=new SubscribeDao();
+        Subscribe shmu=dao.find("yuv");
         StoreDao storeDao=new StoreDao();
         Permission p=new Permission(shmu);
 
-        Store s=storeDao.find("hanut");
+        Store s=new Store("hanut",p,"yuvdesc");
         p.setStore(s);
-        shmu.getPermissions().put("hanut",p);
-        shmu.addReview(new Review(shmu.getName(),s.getName(),"proc8","hello"));
-        //storeDao.addStore(s);
+        //shmu.getPermissions().put("hanut",p);
+        //shmu.addReview(new Review(shmu.getName(),s.getName(),"proc8","hello"));
+        storeDao.addStore(s);
     }
 
     @Test
@@ -1960,4 +1961,13 @@ public class LogicManagerAllStubsTest {
         DiscountDao discountDao=new DiscountDao();
         discountDao.addDiscount(new RegularDiscount("shok",8));
     }
+
+    @Test
+    public void addPurchase(){
+        PurchaseDao purchaseDao=new PurchaseDao();
+        List<ProductData> l=new ArrayList<>();
+        l.add(new ProductData("pro","stor","hey",new ArrayList<>(),5,6,PurchaseTypeData.IMMEDDIATE));
+        purchaseDao.add(new Purchase("hanut","yuv",l));
+    }
+
 }
