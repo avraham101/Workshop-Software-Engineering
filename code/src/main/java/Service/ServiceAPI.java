@@ -469,4 +469,23 @@ public class ServiceAPI {
     public Response<Boolean> getMyNotification(int id) {
        return logicManager.getMyNotification(id);
     }
+
+    /**
+     * get the revenue of the trading system today
+     * @param id - the id of the user
+     * @return - the revenue today
+     */
+    public Response<Double> getRevenueToday(int id) {
+        return logicManager.getRevenueToday(id);
+    }
+
+    /**
+     * return the revenue of the trading system bu given day
+     * @param id - the id of the user
+     * @param day - the day we want
+     * @return - the total revenue
+     */
+    public Response<Double> getRevenueByDay(int id, DateData day) {
+        return logicManager.getRevenueByDate(id, day);
+    }
 }

@@ -61,6 +61,7 @@ public interface AcceptanceTestsBridge {
     List<String> getAllManagersOfStore(String store);
     List<String> getManagersOfStoreIManaged(int id,String storeName);
     List<String> getAllUsers(int id);
-
     void setPublisher(PublisherMock publisherMock);
+    double getRevenueToday(int id);
+    double getRevenueByDay(int id, DateTestData date);
 }

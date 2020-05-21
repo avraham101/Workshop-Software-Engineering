@@ -30,11 +30,14 @@ import ViewDiscounts from './Screen/Subscribe/ViewDiscounts';
 import ManagePolicy from './Screen/Subscribe/ManagePolicy';
 import ViewPolicy from './Screen/Subscribe/ViewPolicy';
 import InitSystem from "./Screen/Subscribe/Admin/InitSystem";
+import WatchRevenu from './Screen/Subscribe/Admin/WatchRevenu';
+
 class App extends Component {
 
   render() {
     return (<Router history={history}>
             <Switch>
+              <Route path="/admin/watchRevenu" component={withRouter(WatchRevenu)}/>
               <Route path="/admin/storehistory" component={withRouter(WatchUserAndStoreHistory)} exact/>
               <Route path="/admin" component={withRouter(InitSystem)} exact/>
               <Route path="/register" component={withRouter(Register)} />

@@ -1,9 +1,6 @@
 package Server.Controllers;
 
-import DataAPI.OpCode;
-import DataAPI.Response;
-import DataAPI.UserData;
-import DataAPI.Purchase;
+import DataAPI.*;
 import Service.SingleService;
 import com.google.gson.Gson;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +14,12 @@ import java.util.List;
 @Controller
 @RequestMapping("admin")
 public class AdminController {
+
+    Gson json ;
+
+    public AdminController() {
+        json = new Gson();
+    }
 
     @RequestMapping
     public String getAdminPage(){
@@ -70,9 +73,36 @@ public class AdminController {
         return getResponseEntity(response);
     }
 
+    /**
+     * use case 6.6.1
+     * get the revenue today
+     * @param id - the id of the admin
+     * @return - the revenue today
+     */
+    @GetMapping("todayRevenue")
+    public ResponseEntity<?> getTodayRevenue(@RequestParam(name="id") int id ) {
+        Response<Double> response = SingleService.getInstance().getRevenueToday(id);
+        return getResponseEntity(response);
+    }
+
+    /**
+     * use case 6.6.2
+     * get the revenue of specific say
+     * @param id - the id of the admin
+     * @return - the revenue today
+     */
+    @PostMapping("daysRevenue")
+    public ResponseEntity<?> getRevenueByDay(@RequestParam(name="id") int id,@RequestBody String data) {
+        DateData date = json.fromJson(data, DateData.class);
+        Response<Double> response = SingleService.getInstance().getRevenueByDay(id, date);
+        return getResponseEntity(response);
+    }
+
     private ResponseEntity<?> getResponseEntity(Response<?> response) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
     }
+
+
 }
