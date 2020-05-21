@@ -6,6 +6,7 @@ import Domain.*;
 import Domain.Discount.Discount;
 import Domain.Discount.RegularDiscount;
 import Domain.PurchasePolicy.UserPurchasePolicy;
+import Domain.Notification.Notification;
 import Stubs.StubPublisher;
 import Systems.HashSystem;
 import Systems.PaymentSystem.ProxyPayment;

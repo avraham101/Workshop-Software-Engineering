@@ -3,7 +3,9 @@ package Domain;
 import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.Discount.Term.Term;
+import Domain.Notification.RequestNotification;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Domain.Notification.Notification;
 import Systems.HashSystem;
 import Systems.LoggerSystem;
 import Systems.PaymentSystem.PaymentSystem;
@@ -1107,7 +1109,7 @@ public class LogicManager {
             Response<Request> response=current.replayToRequest(storeName, requestID, content) ;
             Request request=response.getValue();
             if(request!=null){
-                Notification<Request> notification=new Notification<>(request,OpCode.Reply_Request);
+                Notification<Request> notification=new RequestNotification(request,OpCode.Reply_Request);
                 subscribes.get(request.getSenderName()).sendNotification(notification);
                 return new Response<RequestData>(new RequestData(request),response.getReason());
             }

@@ -6,6 +6,10 @@ import DataAPI.*;
 import Domain.Discount.*;
 import Domain.*;
 import Domain.Discount.Term.*;
+import Domain.Notification.BuyNotification;
+import Domain.Notification.Notification;
+import Domain.Notification.RemoveNotification;
+import Domain.Notification.RequestNotification;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Persitent.*;
 import Stubs.*;
@@ -1966,8 +1970,46 @@ public class LogicManagerAllStubsTest {
     public void addPurchase(){
         PurchaseDao purchaseDao=new PurchaseDao();
         List<ProductData> l=new ArrayList<>();
-        l.add(new ProductData("pro","stor","hey",new ArrayList<>(),5,6,PurchaseTypeData.IMMEDDIATE));
+        l.add(new ProductData("pro","hanut","hey",new ArrayList<>(),5,6,PurchaseTypeData.IMMEDDIATE));
         purchaseDao.add(new Purchase("hanut","yuv",l));
+    }
+
+    @Test
+    public void addRemoveNotification(){
+        RemoveNotification notification=new RemoveNotification("hanut",OpCode.Removed_From_Management);
+        NotificationDao dao=new NotificationDao();
+        dao.add(notification);
+    }
+
+    @Test
+    public void addRequestNotification(){
+        RequestDao requestDao=new RequestDao();
+        Request r=requestDao.find(1);
+        RequestNotification notification=new RequestNotification(r,OpCode.Reply_Request);
+        NotificationDao dao=new NotificationDao();
+        dao.add(notification);
+    }
+
+    @Test
+    public void addBuyNotification(){
+        List<ProductData> products=new ArrayList<>();
+        products.add(data.getProductData(Data.VALID));
+        BuyNotification notification=new BuyNotification(products,OpCode.Buy_Product);
+        NotificationDao dao=new NotificationDao();
+        dao.add(notification);
+    }
+
+    @Test
+    public void findNotification(){
+        NotificationDao dao=new NotificationDao();
+        Notification n=dao.find(4);
+        assertTrue(true);
+    }
+
+    @Test
+    public void removeNotification(){
+        NotificationDao dao=new NotificationDao();
+        dao.remove(4);
     }
 
 }

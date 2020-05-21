@@ -2,7 +2,9 @@ package Domain;
 
 import DataAPI.*;
 import Domain.Discount.Discount;
+import Domain.Notification.RemoveNotification;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Domain.Notification.Notification;
 import Publisher.Publisher;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -10,7 +12,9 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -54,9 +58,6 @@ public class Subscribe extends UserState{
     @Column(name="sessionNumber")
     private Integer sessionNumber;
 
-    @Transient //TODO remove when notifications
-    private AtomicInteger notificationNumber;
-
     @Transient
     private final ReentrantReadWriteLock lock;
 
@@ -64,7 +65,7 @@ public class Subscribe extends UserState{
     private Publisher publisher;
 
     @Transient //TODO
-    private ConcurrentLinkedQueue<Notification> notifications;
+    private List<Notification> notifications;
 
     public Subscribe(String userName, String password) {
         super(userName);
@@ -84,7 +85,7 @@ public class Subscribe extends UserState{
     }
 
     private void initSubscribe(String userName, String password) {
-        notifications=new ConcurrentLinkedQueue();
+        notifications=new CopyOnWriteArrayList<>();
         this.userName = userName;
         this.password = password;
         permissions=new ConcurrentHashMap<>();
@@ -93,7 +94,6 @@ public class Subscribe extends UserState{
         requests=new ArrayList<>();
         reviews = new LinkedList<>();
         sessionNumber=-1;
-        notificationNumber = new AtomicInteger(0);
     }
 
     /**
@@ -426,7 +426,7 @@ public class Subscribe extends UserState{
         //remove the permission from the store
         store.getPermissions().remove(userName);
         //TODO real time trough this
-        sendNotification( new Notification<>(storeName,OpCode.Removed_From_Management,notificationNumber.getAndIncrement()));
+        sendNotification( new RemoveNotification(storeName,OpCode.Removed_From_Management));
 
     }
     /**
@@ -536,6 +536,7 @@ public class Subscribe extends UserState{
 
     //make permissions concurrent
     public void initPermissions(){
+        this.notifications=new CopyOnWriteArrayList<>(this.notifications);
         if(!(this.permissions instanceof ConcurrentHashMap)) {
             this.permissions = new ConcurrentHashMap<>(this.permissions);
             for (Permission p : this.permissions.values()){
@@ -630,7 +631,6 @@ public class Subscribe extends UserState{
     }
 
     public void sendNotification(Notification<?> notification) {
-        notification.setId(notificationNumber.getAndIncrement());
         notifications.add(notification);
         sendAllNotifications();
     }
