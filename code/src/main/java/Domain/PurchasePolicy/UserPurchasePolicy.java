@@ -3,16 +3,26 @@ package Domain.PurchasePolicy;
 import DataAPI.PaymentData;
 import Domain.Product;
 
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserPurchasePolicy implements PurchasePolicy {
+@Entity
+@Table(name="user_policy")
+public class UserPurchasePolicy extends PurchasePolicy {
 
+    @ElementCollection
+   @CollectionTable(name="policy_country", joinColumns=@JoinColumn(name="id"))
+    @Column(name="country")
+    //@OrderColumn(name="country")
     private List<String> countries; // list of countries that can buy from the store
 
     public UserPurchasePolicy(List<String> countries) {
         this.countries = countries;
+    }
+
+    public UserPurchasePolicy() {
     }
 
     @Override

@@ -6,11 +6,11 @@ import DataAPI.*;
 import Domain.Discount.*;
 import Domain.*;
 import Domain.Discount.Term.*;
-import Domain.PurchasePolicy.PurchasePolicy;
-import Persitent.DiscountDao;
-import Persitent.ProductDao;
-import Persitent.StoreDao;
-import Persitent.SubscribeDao;
+import Domain.PurchasePolicy.*;
+import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
+import Domain.PurchasePolicy.ComposePolicys.OrPolicy;
+import Domain.PurchasePolicy.ComposePolicys.XorPolicy;
+import Persitent.*;
 import Stubs.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -22,10 +22,8 @@ import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.security.Policy;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.Assert.*;
@@ -1884,15 +1882,67 @@ public class LogicManagerAllStubsTest {
     }
 
     @Test
-    public void test(){
-        SubscribeDao dao=new SubscribeDao();
-        Subscribe shmu=dao.find("yub");
-//        dao.addSubscribe(shmu);
-//        Permission p=new Permission(shmu);
-//        Store s=new Store("hanut",p,"yuv");
-//        p.setStore(s);
-        StoreDao storeDao=new StoreDao();
-        //Store store=storeDao.find("hanut");
+    public void addAgePolicy(){
+//        SubscribeDao dao=new SubscribeDao();
+//        Subscribe shmu=dao.find("yub");
+////        dao.addSubscribe(shmu);
+////        Permission p=new Permission(shmu);
+////        Store s=new Store("hanut",p,"yuv");
+////        p.setStore(s);
+//        StoreDao storeDao=new StoreDao();
+//        //Store store=storeDao.find("hanut");
+//        assertTrue(true);
+
+        PolicyDao pdao= new PolicyDao();
+        SystemPurchasePolicy sysp = new SystemPurchasePolicy(7);
+        List<PurchasePolicy> lst = new ArrayList<>();
+        lst.add(sysp);
+        PurchasePolicy p = new OrPolicy(lst);
+        pdao.addPolicy(p);
+        assertTrue(true);
+    }
+
+    @Test
+    public void deletePolicy(){
+        PolicyDao pdao = new PolicyDao();
+        pdao.removePolicy(41);
+        assertTrue(true);
+    }
+
+    @Test
+    public void addCountryPolicy(){
+        PolicyDao pdao= new PolicyDao();
+        List<String> lst = new ArrayList<>();
+        lst.add("england");
+        //lst.add("usa");
+        PurchasePolicy usrp = new UserPurchasePolicy(lst);
+        List<PurchasePolicy> lst1 = new ArrayList<>();
+        lst1.add(usrp);
+        PurchasePolicy p = new AndPolicy(lst1);
+        //System.out.println(lst.size());
+        pdao.addPolicy(p);
+        assertTrue(true);
+    }
+
+    @Test
+    public void addBasket(){
+        PolicyDao pdao = new PolicyDao();
+        PurchasePolicy basketp = new BasketPurchasePolicy(25);
+        List<PurchasePolicy> lst1 = new ArrayList<>();
+        lst1.add(basketp);
+        PurchasePolicy p = new XorPolicy(lst1);
+        pdao.addPolicy(p);
+        assertTrue(true);
+    }
+
+    @Test
+    public void addProductPolicy(){
+        PolicyDao dao = new PolicyDao();
+        ProductMinMax minmax = new ProductMinMax("banana",7,0);
+        HashMap<String,ProductMinMax> map = new HashMap<>();
+        map.put("banana",minmax);
+        ProductPurchasePolicy p = new ProductPurchasePolicy(map);
+        dao.addPolicy(p);
         assertTrue(true);
     }
 }

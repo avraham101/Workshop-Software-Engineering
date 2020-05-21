@@ -3,17 +3,25 @@ package Domain.PurchasePolicy;
 import DataAPI.PaymentData;
 import Domain.Product;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+@Entity
+@Table(name = "system_policy")
+public class SystemPurchasePolicy extends PurchasePolicy {
 
-public class SystemPurchasePolicy implements PurchasePolicy {
-
+    @Column(name="age")
     private int age;
 
     public SystemPurchasePolicy(int age) {
         this.age = age;
+    }
+
+    public SystemPurchasePolicy() {
     }
 
     @Override

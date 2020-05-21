@@ -3,17 +3,29 @@ package Domain.PurchasePolicy.ComposePolicys;
 import DataAPI.PaymentData;
 import Domain.Product;
 import Domain.PurchasePolicy.PurchasePolicy;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
 
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-public class XorPolicy implements PurchasePolicy {
+@Entity
+@Table(name ="xor_policy")
+public class XorPolicy extends PurchasePolicy {
 
+    @OneToMany(cascade= CascadeType.ALL)
+    @JoinTable(name="policy_inside_policy",
+            joinColumns =@JoinColumn(name = "holder_id", referencedColumnName="id"),
+            inverseJoinColumns={@JoinColumn(name="holdee_id", referencedColumnName="id")}
+    )
     private List<PurchasePolicy> policyList;
 
     public XorPolicy(List<PurchasePolicy> policyList) {
         this.policyList = policyList;
+    }
+
+    public XorPolicy() {
     }
 
     @Override
