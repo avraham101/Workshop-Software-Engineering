@@ -107,7 +107,6 @@ public class LogicManagerAllStubsTest {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         logicManager.register(subscribe.getName(),subscribe.getPassword());
-        tearDownConnect();
     }
 
     /**
@@ -2014,13 +2013,13 @@ public class LogicManagerAllStubsTest {
         assertTrue(true);
     }
 
-//    @After
-//    public void resetTables() {
-//        Subscribe other=data.getSubscribe(Data.VALID2);
-//        //SubscribeDao subscribeDao = new SubscribeDao();
-//        subscribeDao.remove(other.getName());
-//        subscribeDao.remove("Admin");
-//    }
+    @After
+    public void resetTables() {
+        Subscribe other=data.getSubscribe(Data.VALID2);
+        SubscribeDao subscribeDao = new SubscribeDao();
+        subscribeDao.remove(other.getName());
+        subscribeDao.remove(data.getSubscribe(Data.ADMIN).getName());
+    }
 
     /** ------------------------------- tear downs --------------- */
 
@@ -2028,8 +2027,6 @@ public class LogicManagerAllStubsTest {
      * tear down connect
      */
     public void tearDownConnect() {
-        subscribeDao.remove("Admin");
-        subscribeDao.remove("Niv");
         connectedUsers = new ConcurrentHashMap<>();
         currUser = null;
     }
