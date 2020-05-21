@@ -153,7 +153,9 @@ public class Subscribe extends UserState{
      */
     @Override
     public boolean addReview(Review review) {
-        reviews.add(review);
+        reviews.add(review);//TODO maybe add review dao
+        SubscribeDao subscribeDao = new SubscribeDao();
+        subscribeDao.update(this);
         return true;
     }
 
@@ -163,6 +165,8 @@ public class Subscribe extends UserState{
      */
     public void removeReview(Review review) {
         reviews.remove(review);
+        SubscribeDao subscribeDao = new SubscribeDao();
+        subscribeDao.update(this);
     }
 
     /**
@@ -199,7 +203,9 @@ public class Subscribe extends UserState{
     @Override
     public Request addRequest(int requestId, String storeName, String content){
         Request request = new Request(userName, storeName, content,requestId);
+        SubscribeDao sDao = new SubscribeDao();
         requests.add(request);
+        sDao.update(this);
         return request;
     }
 

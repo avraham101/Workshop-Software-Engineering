@@ -4,11 +4,13 @@ import Data.Data;
 import Data.TestData;
 import DataAPI.*;
 import Domain.*;
+import Persitent.SubscribeDao;
 import Stubs.CartStub;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
 import Systems.SupplySystem.SupplySystem;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,12 +26,13 @@ public class SubscribeAllStubsTest {
     protected PaymentSystem paymentSystem;
     protected SupplySystem supplySystem;
     protected TestData data;
-
+    protected SubscribeDao subscribeDao = new SubscribeDao();
     @Before
     public void setUp(){
         data = new TestData();
         cart = new CartStub("Yuval");
         sub = new Subscribe("Yuval","Sabag",cart);
+       Boolean flag= subscribeDao.addSubscribe(sub);
         initStore();
     }
 
@@ -783,6 +786,11 @@ public class SubscribeAllStubsTest {
      */
     private void testWatchStoreHistorySuccess() {
         assertTrue(sub.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
+    }
+
+    @After
+    public void tearDown(){
+        subscribeDao.remove("Yuval");
     }
 
 
