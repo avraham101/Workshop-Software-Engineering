@@ -2,6 +2,7 @@ package Domain;
 
 import DataAPI.ProductData;
 import DataAPI.PurchaseTypeData;
+import Persitent.ProductDao;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -193,6 +194,8 @@ public class Product implements Serializable {
     public void addReview(Review review) {
         getWriteLock().lock();
         this.reviews.add(review);
+        ProductDao productDao = new ProductDao();
+        productDao.updateProduct(this);
         getWriteLock().unlock();
     }
 

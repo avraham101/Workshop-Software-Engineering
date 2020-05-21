@@ -707,8 +707,6 @@ public class LogicManager {
                 return new Response<>(false, OpCode.Store_Not_Found);
             store = current.openStore(storeDetails);
             if(store != null) {
-                if(!this.storeDao.addStore(store))
-                    return new Response<>(false, OpCode.DB_Down);
                 return new Response<>(true, OpCode.Success);
             }
         }
@@ -738,8 +736,8 @@ public class LogicManager {
                 "add a review for the product", new Object[] {storeName, productName, content});
         if(!validReview(storeName,productName,content))
             return new Response<>(false,OpCode.Invalid_Review);
-        User current=connectedUsers.get(id);
-        Store store = stores.get(storeName);
+        User current = connectedUsers.get(id);
+        Store store = storeDao.find(storeName);
         if(store==null) {
             return new Response<>(false,OpCode.Store_Not_Found);
         }
