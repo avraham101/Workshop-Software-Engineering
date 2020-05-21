@@ -424,7 +424,7 @@ DROP TABLE IF EXISTS `subscribe`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `subscribe` (
   `username` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
+  `password` varchar(512) NOT NULL,
   `sessionNumber` int(11) DEFAULT '-1',
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

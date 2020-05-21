@@ -4,6 +4,7 @@ import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.Discount.Term.Term;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Persitent.SubscribeDao;
 import Systems.HashSystem;
 import Systems.LoggerSystem;
 import Systems.PaymentSystem.PaymentSystem;
@@ -36,6 +37,11 @@ public class LogicManager {
     private Publisher publisher;
 
     /**
+     * Dao's
+     */
+    private SubscribeDao subscribeDao;
+
+    /**
      * test constructor, mock systems
      * @param userName
      * @param password
@@ -45,6 +51,7 @@ public class LogicManager {
      */
     public LogicManager(String userName, String password, ConcurrentHashMap<String, Subscribe> subscribes, ConcurrentHashMap<String, Store> stores,
                         ConcurrentHashMap<Integer,User> connectedUsers,PaymentSystem paymentSystem,SupplySystem supplySystem) throws Exception {
+        initDao();
         this.subscribes = subscribes;
         this.stores = stores;
         GsonBuilder builderDiscount = new GsonBuilder();
@@ -70,7 +77,8 @@ public class LogicManager {
                         "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
-            if(subscribes.isEmpty()&&!register(userName,password).getValue()) {
+            boolean output = this.subscribeDao.addSubscribe(new Admin(userName, password));
+            if(!output) {
                 loggerSystem.writeError("Logic manager", "constructor",
                         "Fail register",new Object[]{userName});
                 throw new Exception("Admin Register Crashed");
@@ -80,6 +88,7 @@ public class LogicManager {
         }
     }
 
+
     /**
      * use case 1.1 - Init Trading System
      * @param userName - the user name
@@ -87,6 +96,7 @@ public class LogicManager {
      * @throws Exception - system crashed exception
      */
     public LogicManager(String userName, String password) throws Exception {
+        initDao();
         subscribes = new ConcurrentHashMap<>();
         this.stores = new ConcurrentHashMap<>();
         usersIdCounter=new AtomicInteger(0);
@@ -114,7 +124,8 @@ public class LogicManager {
                         "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
-            if(subscribes.isEmpty()&&!register(userName,password).getValue()) {
+            boolean output = this.subscribeDao.addSubscribe(new Admin(userName, password));
+            if(!output) {
                 loggerSystem.writeError("Logic manager", "constructor",
                         "Fail register",new Object[]{userName});
                 throw new Exception("Admin Register Crashed");
@@ -137,6 +148,7 @@ public class LogicManager {
      * @throws Exception
      */
     public LogicManager(String userName, String password, PaymentSystem paymentSystem, SupplySystem supplySystem) throws Exception {
+        initDao();
         subscribes = new ConcurrentHashMap<>();
         stores = new ConcurrentHashMap<>();
         this.connectedUsers =new ConcurrentHashMap<>();
@@ -164,7 +176,8 @@ public class LogicManager {
                         "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
-            if(subscribes.isEmpty()&&!register(userName,password).getValue()) {
+            boolean output = this.subscribeDao.addSubscribe(new Admin(userName, password));
+            if(!output) {
                 loggerSystem.writeError("Logic manager", "constructor",
                         "Fail register",new Object[]{userName});
                 throw new Exception("Admin Register Crashed");
@@ -176,6 +189,10 @@ public class LogicManager {
             }
             throw new Exception("System crashed");
         }
+    }
+
+    private void initDao() {
+        this.subscribeDao = new SubscribeDao();
     }
 
     /**
@@ -208,15 +225,13 @@ public class LogicManager {
                     "Fail register the user",new Object[]{userName, password});
             return new Response<>(false, OpCode.Hash_Fail);
         }
-
-        if(this.subscribes.isEmpty())
-            subscribe = new Admin(userName, password);
-        else
-            subscribe = new Subscribe(userName, password);
-        boolean output = this.subscribes.putIfAbsent(userName,subscribe)==null;
-        subscribe.setPublisher(publisher);
-        if(output==true)
+        subscribe = new Subscribe(userName, password);
+        boolean output = this.subscribeDao.addSubscribe(subscribe);
+        //boolean output = this.subscribes.putIfAbsent(userName,subscribe)==null;
+        if(output) {
+            subscribe.setPublisher(publisher);
             return new Response<>(output, OpCode.Success);
+        }
         return new Response<>(output,OpCode.User_Name_Already_Exist);
     }
 

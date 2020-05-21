@@ -40,6 +40,8 @@ public class LogicManagerAllStubsTest {
     protected SupplySystem supplySystem;
     protected TestData data;
 
+
+    private SubscribeDao subscribeDao;
     /**
      * Adding Stores must be in type StoreStub
      * example: stores.put(Key,new StoreStub(...))
@@ -53,10 +55,10 @@ public class LogicManagerAllStubsTest {
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
         init();
-        //make sure we are using SubscribeStub
-        Subscribe dataSubscribe = data.getSubscribe(Data.ADMIN);
-        Subscribe subscribe = users.get(dataSubscribe.getName());
-        users.put(subscribe.getName(), new SubscribeStub(subscribe.getName(), subscribe.getPassword()));
+
+        //TODO remove this
+        //Subscribe subscribe = users.get(dataSubscribe.getName());
+        //users.put(subscribe.getName(), new SubscribeStub(subscribe.getName(), subscribe.getPassword()));
     }
 
     protected void init() {
