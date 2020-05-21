@@ -24,10 +24,8 @@ public class Cart implements Serializable {
     private Map<String,Basket> baskets; // key is the store name and the value is the basket of the store
 
 
-    public Cart(){}
-
-    public Cart(String buyer) {
-        baskets=new HashMap<>();
+    public Cart(){
+        baskets = new HashMap<>();
     }
 
     public Map<String, Basket> getBaskets() {
