@@ -102,6 +102,14 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertFalse(logicManager.login(data.getId(Data.VALID2), subscribe.getName(),subscribe.getPassword()).getValue());
     }
 
+    @Override
+    @Test
+    public void testOpenStoreSucces(){
+        super.testOpenStoreSucces();
+        //StoreData storeData = data.getStore(Data.VALID);
+        //assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
+    }
+
     /**
      * part of test use case 2.3 - Login
      */

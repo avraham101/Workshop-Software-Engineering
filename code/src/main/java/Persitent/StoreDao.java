@@ -7,36 +7,15 @@ import Domain.Store;
 import javax.persistence.*;
 import java.util.List;
 
-public class StoreDao {
+public class StoreDao extends Dao<Store>{
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("store");
 
-    public void addStore(Store store) {
+    public boolean addStore(Store store) {
+        boolean output = false;
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-
-        // Used to issue transactions on the EntityManager
-        EntityTransaction et = null;
-
-        try {
-            // Get transaction and start
-            et = em.getTransaction();
-            et.begin();
-
-            // Save the object
-            em.persist(store);
-            et.commit();
-        }
-        catch (Exception ex) {
-            // If there is an exception rollback changes
-            if (et != null) {
-                et.rollback();
-            }
-            ex.printStackTrace();
-        } finally {
-            // Close EntityManager
-            em.close();
-        }
+        return super.add(em, store);
     }
 
     public Store find(String storeName){
@@ -44,7 +23,9 @@ public class StoreDao {
         Store store = null;
         try {
             store=em.find(Store.class,storeName);
-            store.initPermissions();
+            if(store!=null) {
+                store.initPermissions();
+            }
         }
         catch(NoResultException ex) {
             ex.printStackTrace();
@@ -78,5 +59,15 @@ public class StoreDao {
         finally {
             em.close();
         }
+    }
+
+    public void clearTable() {
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        em.getTransaction().begin();
+        Query query = em.createQuery("DELETE FROM Domain.Store");
+        int rowsDeleted = query.executeUpdate();
+        //System.out.println("entities deleted: " + rowsDeleted);
+        em.getTransaction().commit();
+        em.close();
     }
 }

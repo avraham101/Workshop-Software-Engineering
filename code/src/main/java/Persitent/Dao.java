@@ -9,8 +9,36 @@ public class Dao<T> {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("product");
 
+    public boolean add(EntityManager em, T value) {
+        boolean output = false;
+        // Used to issue transactions on the EntityManager
+        EntityTransaction et = null;
+        try {
+            // Get transaction and start
+            et = em.getTransaction();
+            et.begin();
+            // Save the object
+            em.persist(value);
+            et.commit();
+            output = true;
+        }
+        catch (Exception ex) {
+            output = false;
+            // If there is an exception rollback changes
+            if (et != null) {
+                et.rollback();
+            }
+            //ex.printStackTrace();
+        } finally {
+            // Close EntityManager
+            em.close();
+        }
+        return output;
+    }
+
     //need to be the same subscribe as the find
-    public void update(T info) {
+    public boolean update(T info) {
+        boolean output = false;
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
         try {
@@ -19,17 +47,21 @@ public class Dao<T> {
             et.begin();
             em.merge(info);
             et.commit();
+            output = true;
         }
         catch (Exception ex) {
+            output = false;
             // If there is an exception rollback changes
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
         finally {
             // Close EntityManager
             em.close();
         }
+        return output;
     }
+
 }

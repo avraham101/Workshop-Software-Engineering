@@ -92,15 +92,6 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
     }
 
     /**
-     * part of test use case 3.2 - Open Store
-     */
-    @Override
-    protected void testOpenStoreSucces(){
-        StoreData storeData = data.getStore(Data.VALID);
-        assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
-    }
-
-    /**
      * part of use case 3.3 - write review
      * empty for overriding in extended class
      */

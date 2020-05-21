@@ -971,7 +971,9 @@ public class LogicManagerAllStubsTest {
     /**
      * part of test use case 3.2 - Open Store
      */
-    protected void testOpenStoreSucces(){
+    @Test
+    public void testOpenStoreSucces(){
+        setUpLogedInUser();
         StoreData storeData = data.getStore(Data.VALID);
         assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
     }
@@ -981,7 +983,7 @@ public class LogicManagerAllStubsTest {
      */
     @Test
     public void testOpenStoreReopen() {
-        setUpLogedInUser();
+        //setUpLogedInUser();
         testOpenStoreSucces();
         StoreData storeData = data.getStore(Data.VALID);
         assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
@@ -1991,7 +1993,9 @@ public class LogicManagerAllStubsTest {
 
     @After
     public void resetTables() {
-        SubscribeDao dao = new SubscribeDao();
-        dao.clearTable();
+        SubscribeDao subscribeDao = new SubscribeDao();
+        subscribeDao.clearTable();
+        StoreDao storeDao = new StoreDao();
+        storeDao.clearTable();
     }
 }

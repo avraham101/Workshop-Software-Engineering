@@ -4,6 +4,7 @@ import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.Discount.Term.Term;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Persitent.StoreDao;
 import Persitent.SubscribeDao;
 import Systems.HashSystem;
 import Systems.LoggerSystem;
@@ -40,6 +41,8 @@ public class LogicManager {
      * Dao's
      */
     private SubscribeDao subscribeDao;
+    private StoreDao storeDao;
+
 
     /**
      * test constructor, mock systems
@@ -87,7 +90,6 @@ public class LogicManager {
             throw new Exception("System crashed");
         }
     }
-
 
     /**
      * use case 1.1 - Init Trading System
@@ -193,6 +195,7 @@ public class LogicManager {
 
     private void initDao() {
         this.subscribeDao = new SubscribeDao();
+        this.storeDao = new StoreDao();
     }
 
     /**
@@ -259,7 +262,8 @@ public class LogicManager {
                     if(!output) {
                         subscribe.setSessionNumber(-1);
                     }
-                    this.subscribeDao.update(subscribe);
+                    if(!this.subscribeDao.update(subscribe))
+                        return new Response<>(false, OpCode.DB_Down);
                     return new Response<>(output, OpCode.Success);
                 }
             } catch (NoSuchAlgorithmException e) {
@@ -484,7 +488,6 @@ public class LogicManager {
         return productData;
     }
 
-
     /**
      * use case 2.7.1 - watch cart details
      * @return - the cart details
@@ -698,11 +701,13 @@ public class LogicManager {
         User current=connectedUsers.get(id);
         //prevent making two stores with the same name
         synchronized (openStoreLocker) {
-            if (stores.containsKey(storeDetails.getName()))
+            Store store = this.storeDao.find(storeDetails.getName());
+            if (store!=null)
                 return new Response<>(false, OpCode.Store_Not_Found);
-            Store store = current.openStore(storeDetails);
+            store = current.openStore(storeDetails);
             if(store != null) {
-                stores.put(store.getName(),store);
+                if(!this.storeDao.addStore(store))
+                    return new Response<>(true, OpCode.DB_Down);
                 return new Response<>(true, OpCode.Success);
             }
         }
