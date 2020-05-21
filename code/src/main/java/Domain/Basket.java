@@ -5,18 +5,37 @@ import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.Purchase;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.*;
 
+@Entity
+@Table(name = "basket")
+public class Basket implements Serializable {
 
-public class Basket {
-
+    @Id
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name="storename",referencedColumnName = "storename")
     private Store store; // the store of the basket
+
+    @Id
+    @Column(name = "username")
     private String buyer; // the buyer name
-    private HashMap<String, ProductInCart> products; //key: Product Name value:Data
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @MapKey(name="storeName")
+    @JoinColumns({
+            @JoinColumn(name="buyer", referencedColumnName = "username", updatable = false),
+            @JoinColumn(name="storename", referencedColumnName = "storename", updatable = false)
+    })
+    private Map<String, ProductInCart> products; //key: Product Name value:Data
+
+    @Column(name = "price")
     private double price;
+
+    public Basket(){
+
+    }
 
     /**
      * constructor
@@ -86,7 +105,7 @@ public class Basket {
         return store;
     }
 
-    public HashMap<String, ProductInCart> getProducts() {
+    public Map<String, ProductInCart> getProducts() {
         return products;
     }
 
