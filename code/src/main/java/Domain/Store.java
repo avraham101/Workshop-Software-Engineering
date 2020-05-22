@@ -6,6 +6,8 @@ import Domain.Notification.BuyNotification;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.Notification.Notification;
+import Persitent.DaoHolders.DaoHolder;
+import Persitent.DaoHolders.StoreDaoHolder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -70,6 +72,9 @@ public class Store {
     @JoinColumn(name="storeName",referencedColumnName = "storeName",updatable = false)
     private List<Purchase> purchases;
 
+    @Transient
+    private final StoreDaoHolder daos;
+
     public Store(String name,Permission permission,String description) {
         this.name = name;
         this.description=description;
@@ -81,9 +86,11 @@ public class Store {
         this.categoryList=new ConcurrentHashMap<>();
         this.requests= new ConcurrentHashMap<>();
         this.purchases = new LinkedList<>();
+        daos = new StoreDaoHolder();
     }
 
     public Store() {
+        daos = new StoreDaoHolder();
     }
 
     // ============================ getters & setters ============================ //

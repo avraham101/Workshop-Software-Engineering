@@ -6,6 +6,7 @@ import Domain.Discount.Term.Term;
 import Domain.Notification.RequestNotification;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.Notification.Notification;
+import Persitent.DaoHolders.DaoHolder;
 import Systems.HashSystem;
 import Systems.LoggerSystem;
 import Systems.PaymentSystem.PaymentSystem;
@@ -36,6 +37,7 @@ public class LogicManager {
     private final Object openStoreLocker=new Object();
     private Gson gson;
     private Publisher publisher;
+    private DaoHolder daos;
 
     /**
      * test constructor, mock systems
@@ -49,6 +51,7 @@ public class LogicManager {
                         ConcurrentHashMap<Integer,User> connectedUsers,PaymentSystem paymentSystem,SupplySystem supplySystem) throws Exception {
         this.subscribes = subscribes;
         this.stores = stores;
+        daos =new DaoHolder();
         GsonBuilder builderDiscount = new GsonBuilder();
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         builderDiscount.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
@@ -91,6 +94,7 @@ public class LogicManager {
     public LogicManager(String userName, String password) throws Exception {
         subscribes = new ConcurrentHashMap<>();
         this.stores = new ConcurrentHashMap<>();
+        daos =new DaoHolder();
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
         this.connectedUsers =new ConcurrentHashMap<>();
@@ -141,6 +145,7 @@ public class LogicManager {
     public LogicManager(String userName, String password, PaymentSystem paymentSystem, SupplySystem supplySystem) throws Exception {
         subscribes = new ConcurrentHashMap<>();
         stores = new ConcurrentHashMap<>();
+        daos =new DaoHolder();
         this.connectedUsers =new ConcurrentHashMap<>();
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);

@@ -5,6 +5,8 @@ import Domain.Discount.Discount;
 import Domain.Notification.RemoveNotification;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.Notification.Notification;
+import Persitent.DaoHolders.StoreDaoHolder;
+import Persitent.DaoHolders.SubscribeDaoHolder;
 import Publisher.Publisher;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -76,14 +78,19 @@ public class Subscribe extends UserState{
     )
     private List<Notification> notifications;
 
+    @Transient
+    private final SubscribeDaoHolder daos;
+
     public Subscribe(String userName, String password) {
         this.cart = new Cart(userName);
         initSubscribe(userName,password);
         lock = new ReentrantReadWriteLock();
+        daos=new SubscribeDaoHolder();
     }
 
     public Subscribe() {
         lock=new ReentrantReadWriteLock();
+        daos=new SubscribeDaoHolder();
     }
 
     @Override
@@ -95,6 +102,7 @@ public class Subscribe extends UserState{
         this.cart = cart;
         initSubscribe(userName,password);
         lock = new ReentrantReadWriteLock();
+        daos=new SubscribeDaoHolder();
     }
 
     private void initSubscribe(String userName, String password) {

@@ -12,23 +12,9 @@ public class ProductDao {
     private CategoryDao categoryDao;
     private PurchaseTypeDao purchaseTypeDao;
 
-    public ProductDao() {
-        this.categoryDao = new CategoryDao();
+    public ProductDao(CategoryDao categoryDao) {
+        this.categoryDao = categoryDao;
         this.purchaseTypeDao = new PurchaseTypeDao();
-    }
-
-    //for test and expiriments
-    public void main(){
-//        addProduct(new Product(new ProductData("proc8","hanut","tko",
-//                new ArrayList<>(),3,5,PurchaseTypeData.IMMEDDIATE),new Category("tko")));
-        //Product p=categoryDao.find("tko");
-        Product p=find(new Product("proc8","hanut"));
-//        updateProduct("proc2","hanut4",
-//                new Review("yuv","hanut4","proc2","hello2"));
-//
-//        updateProduct(new Product(new ProductData("proc2","hanut4","cat",
-//                new ArrayList<>(),7,5,PurchaseTypeData.IMMEDDIATE),new Category("cat")));
-        ENTITY_MANAGER_FACTORY.close();
     }
 
     public void addProduct(Product product) {

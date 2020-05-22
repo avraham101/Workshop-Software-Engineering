@@ -100,15 +100,16 @@ public class daoTest {
     @Test
     public void addStoreWith(){
         StoreDao storeDao=new StoreDao();
-        Store store=storeDao.find("Store");
+        Store store=storeDao.find("hanut");
         PolicyDao pdao= new PolicyDao();
-        List<String> lst = new ArrayList<>();
-        lst.add("england");
-        lst.add("usa");
-        PurchasePolicy usrp = new UserPurchasePolicy(lst);
-        store.addPolicy(usrp);
+        PurchasePolicy basketp = new BasketPurchasePolicy(25);
+        List<PurchasePolicy> lst1 = new ArrayList<>();
+        lst1.add(basketp);
+        PurchasePolicy p = new XorPolicy(lst1);
+        //pdao.addPolicy(p);
         //storeDao.update(store);
-        pdao.addPolicy(usrp);
+        //pdao.addPolicy(p);
+        store.addPolicy(p);
         storeDao.update(store);
     }
 
