@@ -1136,6 +1136,7 @@ public class LogicManagerAllStubsTest {
      * use case 4.1.1 - add product fail
      */
     @Test
+    @Transactional
     public void testAddProductFail(){
         setUpOpenedStore();
         testAddProductFailNullProduct();
@@ -1146,6 +1147,7 @@ public class LogicManagerAllStubsTest {
         testAddProductNegativeAmount();
         testAddProductNegativePrice();
         testAddProductNullPurchasePolicy();
+
     }
 
     /**

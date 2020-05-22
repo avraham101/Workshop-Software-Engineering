@@ -55,7 +55,7 @@ public class Dao<T> {
             if (et != null) {
                 et.rollback();
             }
-            //ex.printStackTrace();
+            ex.printStackTrace();
         }
         finally {
             // Close EntityManager

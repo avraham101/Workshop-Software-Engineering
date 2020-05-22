@@ -31,7 +31,8 @@ public class ProductDao {
         ENTITY_MANAGER_FACTORY.close();
     }
 
-    public void addProduct(Product product) {
+    public boolean addProduct(Product product) {
+        boolean output = false;
         boolean hasCat=categoryDao.find(product.getCategory().getName())!=null;
         boolean hasPurchase=purchaseTypeDao.find(product.getPurchaseType())!=null;
         // The EntityManager class allows operations such as create, read, update, delete
@@ -57,6 +58,7 @@ public class ProductDao {
             // Save the object
             em.persist(product);
             et.commit();
+            output = true;
         }
         catch (Exception ex) {
             // If there is an exception rollback changes
@@ -67,6 +69,7 @@ public class ProductDao {
         } finally {
             // Close EntityManager
             em.close();
+            return output;
         }
     }
 

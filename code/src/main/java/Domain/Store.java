@@ -359,8 +359,11 @@ public class Store {
         Product product=new Product(productData,categoryList.get(categoryName));
         boolean result=products.putIfAbsent(productData.getProductName(),product)==null;
         if(result) {
-            productDao.addProduct(product);
-            return new Response<>(true, OpCode.Success);
+            if(productDao.addProduct(product))
+                return new Response<>(true, OpCode.Success);
+            else
+                return new Response<>(false, OpCode.DB_Down);
+
         }
         return new Response<>(false,OpCode.Already_Exists);
     }

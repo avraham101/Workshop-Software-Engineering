@@ -775,6 +775,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
 
     /**
+     * use case 4.1.1
      * test adding product with name that is not unique
      */
     //TODO fix it
@@ -784,6 +785,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * use case 4.1.1
      * test that a product added to the store
      */
     @Test
@@ -794,6 +796,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * use case 4.1.1
      * test try adding product without being owner or manager of the store
      */
     @Test
@@ -810,6 +813,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * use case 4.1.1
      * test that user that has no CRUD permission or owner permission cant add products to store
      */
     @Test
