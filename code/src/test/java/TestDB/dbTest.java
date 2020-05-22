@@ -4,6 +4,7 @@ import Data.Data;
 import Data.TestData;
 import Domain.Store;
 import Domain.Subscribe;
+import Persitent.CategoryDao;
 import Persitent.ProductDao;
 import Persitent.StoreDao;
 import Persitent.SubscribeDao;
@@ -24,7 +25,7 @@ public class dbTest {
         data = new TestData();
         subscribeDao = new SubscribeDao();
         storeDao = new StoreDao();
-        productDao = new ProductDao();
+        productDao = new ProductDao(new CategoryDao());
     }
 
     @Test

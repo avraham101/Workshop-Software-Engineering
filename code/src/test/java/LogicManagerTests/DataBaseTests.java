@@ -6,17 +6,14 @@ import DataAPI.ProductData;
 import DataAPI.PurchaseTypeData;
 import DataAPI.StoreData;
 import Domain.*;
-import Persitent.ProductDao;
-import Persitent.ReviewDao;
-import Persitent.StoreDao;
-import Persitent.SubscribeDao;
+import Persitent.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 public class DataBaseTests {
 
     TestData data = new TestData();
     ReviewDao reviewDao = new ReviewDao();
-    ProductDao productDao = new ProductDao();
+    ProductDao productDao = new ProductDao(new CategoryDao());
     StoreDao storeDao = new StoreDao();
     SubscribeDao subscribeDao = new SubscribeDao();
 
