@@ -2,6 +2,7 @@ package Domain;
 
 import DataAPI.ProductData;
 import DataAPI.PurchaseTypeData;
+import Persitent.ReviewDao;
 import Persitent.ProductDao;
 
 import javax.persistence.*;
@@ -70,7 +71,7 @@ public class Product implements Serializable {
     public Product(String name, String store){
         this.name=name;
         this.store=store;
-        this.lock = new ReentrantReadWriteLock();;
+        this.lock = new ReentrantReadWriteLock();
     }
 
     /**
@@ -191,12 +192,13 @@ public class Product implements Serializable {
      * this function add the review to the product
      * @param review - the review
      */
-    public void addReview(Review review) {
+    public boolean addReview(Review review) {
         getWriteLock().lock();
         this.reviews.add(review);
-        ProductDao productDao = new ProductDao();
-        productDao.updateProduct(this);
         getWriteLock().unlock();
+
+        ReviewDao reviewDao = new ReviewDao();
+        return reviewDao.addReview(review);
     }
 
     /**
@@ -204,9 +206,11 @@ public class Product implements Serializable {
      * this function add the review to the product
      * @param review - the review
      */
-    public void removeReview(Review review) {
+    public boolean removeReview(Review review) {
         getWriteLock().lock();
         this.reviews.remove(review);
         getWriteLock().lock();
+        ReviewDao reviewDao = new ReviewDao();
+       return reviewDao.remove(review.getId());
     }
 }

@@ -9,6 +9,11 @@ import Domain.Notification.Notification;
 import Persitent.DaoHolders.StoreDaoHolder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import Persitent.ProductDao;
+import Persitent.ReviewDao;
+import Persitent.StoreDao;
+import Persitent.ProductDao;
+import Persitent.StoreDao;
 
 import javax.persistence.*;
 import java.util.*;
@@ -326,8 +331,8 @@ public class Store {
         Product p = products.get(review.getProductName());
         if(p==null) //Store as the product
             return false;
-        p.addReview(review);
-        return true;
+        return p.addReview(review);
+
     }
 
     /**
@@ -350,7 +355,6 @@ public class Store {
     public synchronized boolean addRequest(Request addRequest) {
         if(addRequest==null)
             return false;
-        requests.put(addRequest.getId(), addRequest);
         return true;
     }
 

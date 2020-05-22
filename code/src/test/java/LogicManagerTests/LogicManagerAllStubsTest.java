@@ -1094,10 +1094,6 @@ public class LogicManagerAllStubsTest {
         Request request = data.getRequest(Data.VALID);
         assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(),request.getContent()).getValue());
     }
-
-    /**
-     * part of use case 3.5 -add request
-     */
     @Test
     public void testAddRequestWrongName() {
         setUpOpenedStore();

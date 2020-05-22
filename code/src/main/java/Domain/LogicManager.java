@@ -746,14 +746,15 @@ public class LogicManager {
                 "add a review for the product", new Object[] {storeName, productName, content});
         if(!validReview(storeName,productName,content))
             return new Response<>(false,OpCode.Invalid_Review);
-        User current = connectedUsers.get(id);
+        User current=connectedUsers.get(id);
+        //Store store = stores.get(storeName);
         Store store = storeDao.find(storeName);
         if(store==null) {
             return new Response<>(false,OpCode.Store_Not_Found);
         }
         Review review = new Review(current.getUserName(),storeName,productName,content);
         boolean resultStore = store.addReview(review);
-        boolean resultUser = current.addReview(review);
+        boolean resultUser = current.addReview(review); //always true
         if(!resultStore && !resultUser)
             return new Response<>(false,OpCode.Cant_Add_Review);
         else if(!resultStore) {
@@ -792,7 +793,8 @@ public class LogicManager {
                 "add a request to the store", new Object[] {storeName, content});
         if (storeName == null || content == null || !stores.containsKey(storeName))
             return new Response<>(false,OpCode.Invalid_Request);
-        Store dest = stores.get(storeName);
+        Store dest = storeDao.find(storeName);
+      //Store dest = stores.get(storeName);
         User current = connectedUsers.get(id);
         int requestId = requestIdGenerator.incrementAndGet(); // generate request number sync
         Request request = current.addRequest(requestId, storeName, content);

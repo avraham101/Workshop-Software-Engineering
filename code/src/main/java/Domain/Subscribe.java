@@ -7,6 +7,8 @@ import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.Notification.Notification;
 import Persitent.DaoHolders.StoreDaoHolder;
 import Persitent.DaoHolders.SubscribeDaoHolder;
+import Persitent.RequestDao;
+import Persitent.ReviewDao;
 import Persitent.StoreDao;
 import Persitent.SubscribeDao;
 import Publisher.Publisher;
@@ -180,8 +182,8 @@ public class Subscribe extends UserState{
      */
     @Override
     public boolean addReview(Review review) {
-        reviews.add(review);
-        return true;
+        return reviews.add(review);
+
     }
 
     /**
@@ -227,7 +229,10 @@ public class Subscribe extends UserState{
     public Request addRequest(int requestId, String storeName, String content){
         Request request = new Request(userName, storeName, content,requestId);
         requests.add(request);
-        return request;
+        RequestDao requestDao = new RequestDao();
+        if(requestDao.addRequest(request))
+             return request;
+        return null;
     }
 
     /**
