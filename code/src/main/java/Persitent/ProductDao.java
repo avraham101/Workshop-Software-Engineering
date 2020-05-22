@@ -17,7 +17,7 @@ public class ProductDao {
         this.purchaseTypeDao = new PurchaseTypeDao();
     }
 
-    public void addProduct(Product product) {
+    public boolean addProduct(Product product) {
         boolean hasCat=categoryDao.find(product.getCategory().getName())!=null;
         boolean hasPurchase=purchaseTypeDao.find(product.getPurchaseType())!=null;
         // The EntityManager class allows operations such as create, read, update, delete
@@ -25,6 +25,7 @@ public class ProductDao {
 
         // Used to issue transactions on the EntityManager
         EntityTransaction et = null;
+        boolean output=false;
 
         try {
             if(hasPurchase){

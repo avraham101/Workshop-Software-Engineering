@@ -5,10 +5,7 @@ import Domain.Discount.Discount;
 import Domain.Notification.BuyNotification;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
-import Persitent.ProductDao;
-import Persitent.StoreDao;
 import Domain.Notification.Notification;
-import Persitent.DaoHolders.DaoHolder;
 import Persitent.DaoHolders.StoreDaoHolder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -372,7 +369,7 @@ public class Store {
         Product product=new Product(productData,categoryList.get(categoryName));
         boolean result=products.putIfAbsent(productData.getProductName(),product)==null;
         if(result) {
-            if(productDao.addProduct(product))
+            if(daos.getProductDao().addProduct(product))
                 return new Response<>(true, OpCode.Success);
             else
                 return new Response<>(false, OpCode.DB_Down);
