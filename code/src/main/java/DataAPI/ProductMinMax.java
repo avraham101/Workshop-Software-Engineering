@@ -9,13 +9,13 @@ import java.io.Serializable;
 public class ProductMinMax implements Serializable {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="policy_id")
-    private Integer policyId;
-    @Id
-   // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="pr_min_max_id")
+    private Integer id;
+
     @Column(name="product_name")
     private String productName;
+
     @Column(name="max")
     private int max; // max amount of product
     @Column(name="min")
@@ -50,23 +50,16 @@ public class ProductMinMax implements Serializable {
         this.min = min;
     }
 
-    private String id;
-
-    @Id
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getPolicyId() {
-        return policyId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setPolicyId(Integer policyId) {
-        this.policyId = policyId;
+    public void setId(Integer policyId) {
+        this.id = policyId;
     }
 
     public String getProductName() {

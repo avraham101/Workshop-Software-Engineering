@@ -12,7 +12,7 @@ import java.security.Policy;
 
 public class PolicyDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("product");
+            .createEntityManagerFactory("policy");
 
     public PolicyDao() {
     }
@@ -87,17 +87,14 @@ public class PolicyDao {
 
 
     }
-    public PurchasePolicy find(Integer id){
+    public PurchasePolicy find(int id){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
         PurchasePolicy policy=null;
-
         try {
-            // Get transaction and start
-  //          et = em.getTransaction();
-//            et.begin();
             policy=em.find(PurchasePolicy.class,id);
         } catch (Exception ex) {
+            ex.printStackTrace();
         } finally {
             // Close EntityManager
             em.close();

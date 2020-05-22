@@ -79,4 +79,26 @@ public class StoreDao {
             em.close();
         }
     }
+
+    public void update(Store s) {
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction et = null;
+
+        try {
+            // Get transaction and start
+            et = em.getTransaction();
+            et.begin();
+            em.merge(s);
+            et.commit();
+        } catch (Exception ex) {
+            // If there is an exception rollback changes
+            if (et != null) {
+                et.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            // Close EntityManager
+            em.close();
+        }
+    }
 }

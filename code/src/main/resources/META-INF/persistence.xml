@@ -53,5 +53,20 @@
             <property name="javax.persistence.jdbc.password" value="yuval" />
         </properties>
     </persistence-unit>
+    <persistence-unit name="policy" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <properties>
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+            <!-- URL for DB -->
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/workshop
+            ?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;
+            useLegacyDatetimeCode=false&amp;serverTimezone=UTC" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+            <!-- Username -->
+            <property name="javax.persistence.jdbc.user" value="root" />
+            <!-- Password -->
+            <property name="javax.persistence.jdbc.password" value="yuval" />
+        </properties>
+    </persistence-unit>
 
 </persistence>

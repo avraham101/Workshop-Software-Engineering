@@ -12,7 +12,7 @@ import java.util.Set;
 @Table(name="and_discount")
 public class AndDiscount extends Discount {
 
-    @OneToMany(cascade= CascadeType.ALL)
+    @OneToMany(cascade= CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name="discounts_inside_discounts",
             joinColumns =@JoinColumn(name = "holder_id", referencedColumnName="id"),
             inverseJoinColumns={@JoinColumn(name="holdee_id", referencedColumnName="id")}

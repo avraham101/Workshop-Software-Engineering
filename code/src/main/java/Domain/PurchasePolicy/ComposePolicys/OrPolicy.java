@@ -13,15 +13,18 @@ import java.util.List;
 @Table(name="or_policy")
 public class OrPolicy extends PurchasePolicy {
 
-    @OneToMany(cascade= CascadeType.ALL)
+    @OneToMany(cascade= CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name="policy_inside_policy",
-            joinColumns =@JoinColumn(name = "holder_id", referencedColumnName="id"),
-            inverseJoinColumns={@JoinColumn(name="holdee_id", referencedColumnName="id")}
+            joinColumns =@JoinColumn(name = "holder_id", referencedColumnName="pol_id"),
+            inverseJoinColumns={@JoinColumn(name="holdee_id", referencedColumnName="pol_id")}
     )
     private List<PurchasePolicy> policyList;
 
     public OrPolicy(List<PurchasePolicy> policyList) {
         this.policyList = policyList;
+    }
+
+    public OrPolicy() {
     }
 
     @Override

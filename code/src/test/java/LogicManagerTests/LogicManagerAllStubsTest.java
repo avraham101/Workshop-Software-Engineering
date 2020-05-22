@@ -7,14 +7,10 @@ import Domain.Discount.*;
 import Domain.*;
 import Domain.Discount.Term.*;
 import Domain.PurchasePolicy.*;
+import Domain.Notification.*;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.ComposePolicys.OrPolicy;
 import Domain.PurchasePolicy.ComposePolicys.XorPolicy;
-import Domain.Notification.BuyNotification;
-import Domain.Notification.Notification;
-import Domain.Notification.RemoveNotification;
-import Domain.Notification.RequestNotification;
-import Domain.PurchasePolicy.PurchasePolicy;
 import Persitent.*;
 import Stubs.*;
 import Systems.PaymentSystem.PaymentSystem;
@@ -26,11 +22,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.internal.matchers.Not;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.Assert.*;
@@ -1933,13 +1927,14 @@ public class LogicManagerAllStubsTest {
     }
 
     @Test
-    public void deletePolicy() {
-        PolicyDao pdao = new PolicyDao();
-        pdao.removePolicy(105);
-    }
     public void addSubscribe(){
         SubscribeDao dao=new SubscribeDao();
+        StoreDao storeDao=new StoreDao();
         Subscribe shmu=new Subscribe("yuv","pa");
+        Basket b=new Basket(storeDao.find("store"),"yuv");
+        ProductData p=data.getProductData(Data.VALID);
+        b.addProduct(new Product(p,new Category("cat")),3);
+        shmu.getCart().getBaskets().put("Store",b);
         dao.addSubscribe(shmu);
     }
 
@@ -1950,7 +1945,7 @@ public class LogicManagerAllStubsTest {
         StoreDao storeDao=new StoreDao();
         Permission p=new Permission(shmu);
 
-        Store s=new Store("hanut",p,"yuvdesc");
+        Store s=new Store("Store",p,"yuvdesc");
         p.setStore(s);
         //shmu.getPermissions().put("hanut",p);
         //shmu.addReview(new Review(shmu.getName(),s.getName(),"proc8","hello"));
@@ -1958,6 +1953,19 @@ public class LogicManagerAllStubsTest {
     }
 
 
+    @Test
+    public void addStoreWith(){
+        StoreDao storeDao=new StoreDao();
+        Store store=storeDao.find("Store");
+        PolicyDao pdao= new PolicyDao();
+        List<String> lst = new ArrayList<>();
+        lst.add("england");
+        lst.add("usa");
+        PurchasePolicy usrp = new UserPurchasePolicy(lst);
+        store.addPolicy(usrp);
+        storeDao.update(store);
+        //pdao.addPolicy(usrp);
+    }
 
     @Test
     public void findSub(){
@@ -1969,7 +1977,10 @@ public class LogicManagerAllStubsTest {
     @Test
     public void findStore(){
         StoreDao storeDao=new StoreDao();
-        Store s=storeDao.find("hanut");
+        Store s=storeDao.find("Store");
+        ProductData p=data.getProductData(Data.VALID);
+        s.getProducts().put(p.getProductName(),new Product(p,new Category("cat")));
+        storeDao.update(s);
         assertTrue(true);
     }
 
@@ -1983,7 +1994,6 @@ public class LogicManagerAllStubsTest {
             List<PurchasePolicy> lst1 = new ArrayList<>();
             lst1.add(usrp);
             PurchasePolicy p = new AndPolicy(lst1);
-            //System.out.println(lst.size());
             pdao.addPolicy(p);
             assertTrue(true);
         }
@@ -2014,12 +2024,11 @@ public class LogicManagerAllStubsTest {
         @Test
         public void addProductPolicy(){
             PolicyDao dao = new PolicyDao();
-        /*ProductMinMax minmax = new ProductMinMax("banana",7,0);
-        HashMap<String,ProductMinMax> map = new HashMap<>();
-        map.put("banana",minmax);
-        ProductPurchasePolicy p = new ProductPurchasePolicy(map);
-        dao.addPolicy(p);*/
-            PurchasePolicy p1= dao.find(203);
+            ProductMinMax minmax = new ProductMinMax("banana",7,0);
+            HashMap<String,ProductMinMax> map = new HashMap<>();
+            map.put("banana",minmax);
+            ProductPurchasePolicy p = new ProductPurchasePolicy(map);
+            dao.addPolicy(p);
             assertTrue(true);
         }
     @Test
@@ -2035,11 +2044,28 @@ public class LogicManagerAllStubsTest {
             dao.addDiscount(d);
 
         }
+
     @Test
     public void addDiscount(){
         DiscountDao discountDao=new DiscountDao();
         discountDao.addDiscount(new RegularDiscount("shok",8));
     }
+
+    @Test
+    public void findPolicy(){
+        int id=227;
+        PolicyDao policyDao=new PolicyDao();
+        PurchasePolicy p= policyDao.find(id);
+        assertTrue(true);
+    }
+
+    @Test
+    public void removePolicy(){
+        int id=227;
+        PolicyDao policyDao=new PolicyDao();
+        policyDao.removePolicy(id);
+    }
+
     @Test
     public void findDis(){
         DiscountDao dao = new DiscountDao();
@@ -2060,6 +2086,14 @@ public class LogicManagerAllStubsTest {
         RemoveNotification notification=new RemoveNotification("hanut",OpCode.Removed_From_Management);
         NotificationDao dao=new NotificationDao();
         dao.add(notification);
+    }
+
+    @Test
+    public void addSubscribeWith(){
+        SubscribeDao dao=new SubscribeDao();
+        //StoreDao storeDao=new StoreDao();
+        Subscribe shmu=new Subscribe("shhu","pa");
+        dao.addSubscribe(shmu);
     }
 
     @Test

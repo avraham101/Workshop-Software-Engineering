@@ -30,6 +30,10 @@ public class Subscribe extends UserState{
     @Column(name="password")
     private String password;
 
+    @OneToOne(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name="username",referencedColumnName = "username")
+    private Cart cart;
+
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade=CascadeType.ALL)
     @MapKeyColumn(name = "store")
@@ -64,11 +68,16 @@ public class Subscribe extends UserState{
     @Transient
     private Publisher publisher;
 
-    @Transient //TODO
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinTable(name="subscibe_notifications",
+            joinColumns ={@JoinColumn(name = "username", referencedColumnName="username")},
+            inverseJoinColumns={@JoinColumn(name="notfiication_id", referencedColumnName="id")}
+    )
     private List<Notification> notifications;
 
     public Subscribe(String userName, String password) {
-        super(userName);
+        this.cart = new Cart(userName);
         initSubscribe(userName,password);
         lock = new ReentrantReadWriteLock();
     }
@@ -77,8 +86,12 @@ public class Subscribe extends UserState{
         lock=new ReentrantReadWriteLock();
     }
 
+    @Override
+    public Cart getCart() {
+        return this.cart;
+    }
+
     public Subscribe(String userName, String password, Cart cart) {
-        super(userName);
         this.cart = cart;
         initSubscribe(userName,password);
         lock = new ReentrantReadWriteLock();
@@ -653,7 +666,6 @@ public class Subscribe extends UserState{
             }
         }
         this.notifications.removeAll(remove);
-        //notifications.removeIf(n ->notificationsId.contains(n.getId()));
 
     }
 

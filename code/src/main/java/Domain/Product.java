@@ -19,7 +19,7 @@ public class Product implements Serializable {
     }
 
     @Id
-    @Column(name="storeName",nullable = false)
+    @Column(name="storeName",nullable = false,updatable = false)
     private String store;
 
     @Id

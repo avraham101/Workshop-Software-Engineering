@@ -10,12 +10,18 @@ import java.util.Set;
 
 public class Guest extends UserState {
 
+    private Cart cart;
+
     public Guest() {
-        super("Guest");
+        this.cart=new Cart("Guest");
+    }
+
+    @Override
+    public Cart getCart() {
+        return this.cart;
     }
 
     public Guest(Cart cart) {
-        super("Guest");
         this.cart = cart;
     }
 

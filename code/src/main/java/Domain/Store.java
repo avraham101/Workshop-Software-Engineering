@@ -22,7 +22,12 @@ public class Store {
     @Column(name="description")
     private String description;
 
-    @Transient //TODO
+//    @OneToOne(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+//    @JoinTable(name="policy_in_store",
+//            joinColumns ={@JoinColumn(name = "store", referencedColumnName="storename")},
+//            inverseJoinColumns={@JoinColumn(name="pol_id", referencedColumnName="pol_id")}
+//    )
+    @Transient
     private PurchasePolicy purchasePolicy;
 
     @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
@@ -35,7 +40,7 @@ public class Store {
 
     @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
     @MapKey(name = "name")
-    @JoinColumn(name="storeName",referencedColumnName = "storename",updatable = false)
+    @JoinColumn(name="storeName",referencedColumnName = "storename",insertable=false,updatable = false)
     private Map<String, Product> products;
 
     @OneToMany(cascade=CascadeType.PERSIST,fetch = FetchType.EAGER)

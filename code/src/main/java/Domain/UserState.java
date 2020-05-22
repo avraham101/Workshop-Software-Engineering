@@ -7,20 +7,14 @@ import Domain.PurchasePolicy.PurchasePolicy;
 import java.util.*;
 
 public abstract class UserState {
-    protected Cart cart;
-
-    public UserState(String buyer) {
-        this.cart = new Cart(buyer);
-    }
+    //protected Cart cart;
 
     public UserState() {
     }
 
     // ============================ getters & setters ============================ //
 
-    public Cart getCart() {
-        return cart;
-    }
+    public abstract Cart getCart();
 
     public abstract String getName();
 
@@ -44,7 +38,7 @@ public abstract class UserState {
     public CartData watchCartDetatils() {
         List<ProductData> products = new LinkedList<>();
         double priceBeforeDiscount = 0;
-        for (Basket basket: cart.getBaskets().values()) {
+        for (Basket basket: getCart().getBaskets().values()) {
             Store store = basket.getStore();
             Map<String, ProductInCart> map = basket.getProducts();
             for (ProductInCart product: map.values()) {
@@ -66,7 +60,7 @@ public abstract class UserState {
      */
     public boolean deleteFromCart(String productName,String storeName) {
         boolean result = false;
-        Basket basket = cart.getBasket(storeName);
+        Basket basket = getCart().getBasket(storeName);
         if (basket != null) {
             result = basket.deleteProduct(productName);
         }
@@ -82,7 +76,7 @@ public abstract class UserState {
      */
     public boolean editProductInCart(String productName, String storeName, int newAmount) {
         boolean result = false;
-        Basket basket = cart.getBasket(storeName);
+        Basket basket = getCart().getBasket(storeName);
         if (basket != null && newAmount > 0) {
             result = basket.editAmount(productName, newAmount);
         }
@@ -97,7 +91,7 @@ public abstract class UserState {
      * @return - true if add, false if not
      */
     public boolean addProductToCart(Store store, Product product, int amount) {
-        return cart.addProduct(store, product,amount);
+        return getCart().addProduct(store, product,amount);
     }
 
     /**
@@ -105,7 +99,7 @@ public abstract class UserState {
      * @return true if the cart bought, otherwise false
      */
     public boolean reserveCart() {
-        return cart.reserveCart();
+        return getCart().reserveCart();
     }
 
     /**
@@ -115,7 +109,7 @@ public abstract class UserState {
      * @param deliveryData the delivery data
      */
     public boolean buyCart(PaymentData paymentData, DeliveryData deliveryData) {
-        return cart.buy(paymentData,deliveryData);
+        return getCart().buy(paymentData,deliveryData);
     }
 
     /**
@@ -123,7 +117,7 @@ public abstract class UserState {
      * the function Cancel Cart
      */
     public void cancelCart() {
-        cart.cancel();
+        getCart().cancel();
     }
 
     /**

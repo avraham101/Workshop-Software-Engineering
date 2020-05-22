@@ -16,10 +16,12 @@ import java.util.Map;
 public class ProductPurchasePolicy extends PurchasePolicy {
 
 
-
    @OneToMany(cascade= CascadeType.ALL,fetch = FetchType.EAGER)
    @MapKey(name = "productName")
-   @JoinColumn(name="policy_id",referencedColumnName = "id", updatable=false)
+   @JoinTable(name="min_max_and_policies",
+           joinColumns ={@JoinColumn(name = "pol_id", referencedColumnName="pol_id")},
+           inverseJoinColumns={@JoinColumn(name="min_max_id", referencedColumnName="pr_min_max_id")}
+   )
     private Map<String, ProductMinMax> amountPerProduct;
 
     public ProductPurchasePolicy(HashMap<String, ProductMinMax> maxAmountPerProduct) {

@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="regular_discount")
-public class RegularDiscount extends Discount implements Serializable {
+public class RegularDiscount extends Discount {
 
     @Column(name="product")
     private String product;
