@@ -47,12 +47,16 @@ public class SubscribeDao extends Dao<Subscribe>{
             et.commit();
 
         }
-        catch(NoResultException ex) {
-            ex.printStackTrace();
+        catch(Exception ex) {
         }
         finally {
             em.close();
         }
+    }
+
+
+    public boolean update(Subscribe info) {
+        return super.update(ENTITY_MANAGER_FACTORY.createEntityManager(), info);
     }
 
     public void clearTable() {

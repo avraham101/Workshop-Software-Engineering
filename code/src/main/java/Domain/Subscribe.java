@@ -169,8 +169,7 @@ public class Subscribe extends UserState{
         permission.setStore(store);
         permission.addType(PermissionType.OWNER); //Always true, store just created.
         permissions.put(store.getName(),permission);
-        StoreDao storeDao = new StoreDao();
-        if(!storeDao.addStore(store))
+        if(!daos.getStoreDao().addStore(store))
             return null;
         return store;
     }

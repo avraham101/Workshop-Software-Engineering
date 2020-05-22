@@ -72,8 +72,11 @@ public class LogicManagerAllStubsTest {
         init();
     }
 
+    @Transactional
     protected void init() {
         data=new TestData();
+        subscribeDao=new SubscribeDao();
+        storeDao=new StoreDao();
         users=new ConcurrentHashMap<>();
         stores=new ConcurrentHashMap<>();
         connectedUsers =new ConcurrentHashMap<>();
@@ -432,6 +435,7 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 2.4.1 - view all stores details
      */
+    //TODO to remove
     @Test
     @Transactional
     public void testViewDataStores() {
@@ -1003,6 +1007,7 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
         tearDownOpenStore();
     }
+    //TODO test open store working
 
     /**
      * use case 3.3 - write review
