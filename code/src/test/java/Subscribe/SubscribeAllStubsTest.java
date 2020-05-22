@@ -32,7 +32,7 @@ public class SubscribeAllStubsTest {
         data = new TestData();
         cart = new CartStub("Yuval");
         sub = new Subscribe("Yuval","Sabag",cart);
-       Boolean flag= subscribeDao.addSubscribe(sub);
+      // Boolean flag= subscribeDao.addSubscribe(sub);
         initStore();
     }
 
