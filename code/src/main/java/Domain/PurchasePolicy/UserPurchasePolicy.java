@@ -2,6 +2,8 @@ package Domain.PurchasePolicy;
 
 import DataAPI.PaymentData;
 import Domain.Product;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.HashMap;
@@ -12,7 +14,8 @@ import java.util.List;
 @Table(name="user_policy")
 public class UserPurchasePolicy extends PurchasePolicy {
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ElementCollection
     @CollectionTable(name="policy_country", joinColumns=@JoinColumn(name="id"))
     @Column(name="country")
     private List<String> countries; // list of countries that can buy from the store

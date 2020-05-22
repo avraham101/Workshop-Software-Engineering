@@ -6,6 +6,8 @@ import Domain.Notification.BuyNotification;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.Notification.Notification;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.*;
@@ -22,12 +24,11 @@ public class Store {
     @Column(name="description")
     private String description;
 
-//    @OneToOne(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
-//    @JoinTable(name="policy_in_store",
-//            joinColumns ={@JoinColumn(name = "store", referencedColumnName="storename")},
-//            inverseJoinColumns={@JoinColumn(name="pol_id", referencedColumnName="pol_id")}
-//    )
-    @Transient
+    @OneToOne(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(name="policy_in_store",
+            joinColumns ={@JoinColumn(name = "store", referencedColumnName="storename")},
+            inverseJoinColumns={@JoinColumn(name="pol_id", referencedColumnName="pol_id")}
+    )
     private PurchasePolicy purchasePolicy;
 
     @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
@@ -64,7 +65,8 @@ public class Store {
     private Map<String, Permission> permissions;
 
 
-    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name="storeName",referencedColumnName = "storeName",updatable = false)
     private List<Purchase> purchases;
 

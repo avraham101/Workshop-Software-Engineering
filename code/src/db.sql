@@ -376,7 +376,7 @@ DROP TABLE IF EXISTS `policy`;
 CREATE TABLE `policy` (
   `pol_id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`pol_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=228 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=229 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -881,4 +881,4 @@ CREATE TABLE `xor_term` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-22 17:39:49
+-- Dump completed on 2020-05-22 17:56:11
