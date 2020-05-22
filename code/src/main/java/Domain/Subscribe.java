@@ -72,7 +72,7 @@ public class Subscribe extends UserState{
         super(userName);
         initSubscribe(userName,password);
         lock = new ReentrantReadWriteLock();
-    }
+        }
 
     public Subscribe() {
         lock=new ReentrantReadWriteLock();
