@@ -11,7 +11,7 @@ public class RequestDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("request");
 
-    public void addRequest(Request request) {
+    public boolean addRequest(Request request) {
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         // Used to issue transactions on the EntityManager
@@ -31,10 +31,12 @@ public class RequestDao {
                 et.rollback();
             }
             ex.printStackTrace();
+            return false;
         } finally {
             // Close EntityManager
             em.close();
         }
+        return true;
 
     }
 }

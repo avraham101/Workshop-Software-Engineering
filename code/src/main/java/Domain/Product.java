@@ -3,6 +3,7 @@ package Domain;
 import DataAPI.ProductData;
 import DataAPI.PurchaseTypeData;
 import Persitent.ReviewDao;
+import Persitent.ProductDao;
 
 import javax.persistence.*;
 import java.io.Serializable;

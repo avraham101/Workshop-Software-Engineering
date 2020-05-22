@@ -17,6 +17,7 @@ import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -222,6 +223,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertEquals(1,products.size());
+
     }
 
     /**

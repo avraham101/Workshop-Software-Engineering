@@ -3,7 +3,9 @@ package Domain;
 import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Persitent.RequestDao;
 import Persitent.ReviewDao;
+import Persitent.StoreDao;
 import Persitent.SubscribeDao;
 import Publisher.Publisher;
 import org.hibernate.annotations.LazyCollection;
@@ -144,6 +146,9 @@ public class Subscribe extends UserState{
         permission.setStore(store);
         permission.addType(PermissionType.OWNER); //Always true, store just created.
         permissions.put(store.getName(),permission);
+        StoreDao storeDao = new StoreDao();
+        if(!storeDao.addStore(store))
+            return null;
         return store;
     }
 
@@ -200,10 +205,11 @@ public class Subscribe extends UserState{
     @Override
     public Request addRequest(int requestId, String storeName, String content){
         Request request = new Request(userName, storeName, content,requestId);
-        SubscribeDao sDao = new SubscribeDao();
         requests.add(request);
-        sDao.update(this);
-        return request;
+        RequestDao requestDao = new RequestDao();
+        if(requestDao.addRequest(request))
+             return request;
+        return null;
     }
 
     /**

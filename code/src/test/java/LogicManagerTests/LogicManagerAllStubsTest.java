@@ -49,8 +49,8 @@ public class LogicManagerAllStubsTest {
     /**
      * Dao:
      */
-    private SubscribeDao subscribeDao;
-    private StoreDao storeDao;
+    protected SubscribeDao subscribeDao;
+    protected StoreDao storeDao;
 
     /**
      * Adding Stores must be in type StoreStub
@@ -529,6 +529,7 @@ public class LogicManagerAllStubsTest {
         Filter filter = data.getFilter(Data.NULL_SEARCH);
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
+        tearDownProductAdded();
     }
 
     /**
@@ -540,6 +541,7 @@ public class LogicManagerAllStubsTest {
         Filter filter = data.getFilter(Data.NULL_VALUE);
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
+        tearDownProductAdded();
     }
 
     /**
@@ -551,6 +553,7 @@ public class LogicManagerAllStubsTest {
         Filter filter = data.getFilter(Data.NEGATIVE_MIN);
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
+        tearDownProductAdded();
     }
 
     /**
@@ -562,6 +565,7 @@ public class LogicManagerAllStubsTest {
         Filter filter = data.getFilter(Data.NEGATIVE_MAX);
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
+        tearDownProductAdded();
     }
 
     /**
@@ -573,7 +577,7 @@ public class LogicManagerAllStubsTest {
         Filter filter = data.getFilter(Data.NULL_CATEGORY);
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
-
+        tearDownProductAdded();
     }
 
     /**
@@ -585,6 +589,7 @@ public class LogicManagerAllStubsTest {
         Filter filter = data.getFilter(Data.NULL);
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
+        tearDownProductAdded();
     }
 
     /**
@@ -598,6 +603,7 @@ public class LogicManagerAllStubsTest {
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertTrue(products.isEmpty());
+        tearDownProductAdded();
     }
 
     /**
@@ -611,6 +617,7 @@ public class LogicManagerAllStubsTest {
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertTrue(products.isEmpty());
+        tearDownProductAdded();
     }
 
     /**
@@ -624,6 +631,7 @@ public class LogicManagerAllStubsTest {
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertTrue(products.isEmpty());
+        tearDownProductAdded();
     }
 
     /**
@@ -637,6 +645,7 @@ public class LogicManagerAllStubsTest {
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertTrue(products.isEmpty());
+        tearDownProductAdded();
     }
 
     /**
@@ -1071,6 +1080,7 @@ public class LogicManagerAllStubsTest {
         testAddRequestSuccess();
     }
 
+
      /**
      * part of use case 3.5 -add request
      */
@@ -1078,10 +1088,6 @@ public class LogicManagerAllStubsTest {
         Request request = data.getRequest(Data.VALID);
         assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(),request.getContent()).getValue());
     }
-
-    /**
-     * part of use case 3.5 -add request
-     */
     @Test
     public void testAddRequestWrongName() {
         setUpOpenedStore();
@@ -2041,6 +2047,18 @@ public class LogicManagerAllStubsTest {
         StoreDao storeDao = new StoreDao();
         storeDao.removeStore(storeData.getName());
         tearDownLogin();
+    }
+
+    /**
+     * tear down for product
+     */
+    public void tearDownProductAdded() {
+        setUpOpenedStore();
+        logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.VALID));
+        ProductData productData = data.getProductData(Data.VALID);
+        logicManager.removeProductFromStore(data.getId(Data.VALID),productData.getStoreName(),
+                productData.getProductName());
+        tearDownOpenStore();
     }
 
 }

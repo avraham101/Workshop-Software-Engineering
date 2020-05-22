@@ -7,6 +7,8 @@ import Domain.PurchasePolicy.PurchasePolicy;
 import Persitent.ProductDao;
 import Persitent.ReviewDao;
 import Persitent.StoreDao;
+import Persitent.ProductDao;
+import Persitent.StoreDao;
 
 import javax.persistence.*;
 import java.util.*;
@@ -337,9 +339,6 @@ public class Store {
     public synchronized boolean addRequest(Request addRequest) {
         if(addRequest==null)
             return false;
-        requests.put(addRequest.getId(), addRequest);
-        StoreDao sDao = new StoreDao();
-        sDao.update(this);
         return true;
     }
 
@@ -356,9 +355,13 @@ public class Store {
             categoryList.put(categoryName,new Category(categoryName));
         }
         Product product=new Product(productData,categoryList.get(categoryName));
+        ProductDao productDao = new ProductDao();
         boolean result=products.putIfAbsent(productData.getProductName(),product)==null;
-        if(result)
-            return new Response<>(true,OpCode.Success);
+        if(result) {
+            //todo change to storeDao
+            productDao.addProduct(product);
+            return new Response<>(true, OpCode.Success);
+        }
         return new Response<>(false,OpCode.Already_Exists);
     }
 
