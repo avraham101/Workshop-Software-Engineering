@@ -69,7 +69,7 @@ public class Product implements Serializable {
     public Product(String name, String store){
         this.name=name;
         this.store=store;
-        this.lock = new ReentrantReadWriteLock();;
+        this.lock = new ReentrantReadWriteLock();
     }
 
     /**
