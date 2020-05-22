@@ -19,18 +19,36 @@ public class DataBaseTests {
     ProductDao productDao = new ProductDao();
     StoreDao storeDao = new StoreDao();
     SubscribeDao subscribeDao = new SubscribeDao();
-    @Test
-    public void testReviewDao(){
-        Store store = new Store("kfc",new Permission(data.getSubscribe(Data.VALID)),"food");
+
+    public void reviewSetUp(Subscribe sub,Store store){
         assertTrue(subscribeDao.addSubscribe(data.getSubscribe(Data.VALID)));
         assertTrue(storeDao.addStore(store));
         Category cat = new Category("meat");
-        ProductData pData = new ProductData("chicken","kfc",
+        ProductData pData = new ProductData("chicken",store.getName(),
                 "meat",null,1,1, PurchaseTypeData.IMMEDDIATE);
         Product chicken = new Product(pData,cat);
         productDao.addProduct(chicken);
-        Review review = new Review("niv", "kfc","chicken","very good");
+
+    }
+    @Test
+    public void testReviewDaoAdd(){
+        Subscribe sub = data.getSubscribe(Data.VALID);
+        Store store = sub.openStore(data.getStore(Data.VALID));
+        //reviewSetUp(sub,store);
+        Review review = new Review(sub.getName(), store.getName(),"chicken","very good");
         assertTrue(reviewDao.addReview(review));
 
     }
+
+    @Test
+    public void testReviewDaoFind(){
+       Review review=  reviewDao.find(3);
+       assertNotNull(review);
+    }
+
+    @Test
+    public void testReviewDaoDelete(){
+        assertTrue( reviewDao.remove(3));
+    }
+
 }
