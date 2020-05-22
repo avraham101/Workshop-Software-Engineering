@@ -43,6 +43,7 @@ public class ProductDao {
             // Save the object
             em.persist(product);
             et.commit();
+            output = true;
         }
         catch (Exception ex) {
             // If there is an exception rollback changes
@@ -53,6 +54,7 @@ public class ProductDao {
         } finally {
             // Close EntityManager
             em.close();
+            return output;
         }
     }
 

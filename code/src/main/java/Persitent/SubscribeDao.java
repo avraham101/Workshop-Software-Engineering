@@ -6,36 +6,16 @@ import Domain.Subscribe;
 
 import javax.persistence.*;
 
-public class SubscribeDao {
+public class SubscribeDao extends Dao<Subscribe>{
+
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("product");
 
-    public void addSubscribe(Subscribe subscribe) {
+    public boolean addSubscribe(Subscribe subscribe) {
+        boolean output = false;
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-
-        // Used to issue transactions on the EntityManager
-        EntityTransaction et = null;
-
-        try {
-            // Get transaction and start
-            et = em.getTransaction();
-            et.begin();
-
-            // Save the object
-            em.persist(subscribe);
-            et.commit();
-        }
-        catch (Exception ex) {
-            // If there is an exception rollback changes
-            if (et != null) {
-                et.rollback();
-            }
-            ex.printStackTrace();
-        } finally {
-            // Close EntityManager
-            em.close();
-        }
+        return super.add(em,subscribe);
     }
 
     public Subscribe find(String userName){
@@ -73,5 +53,15 @@ public class SubscribeDao {
         finally {
             em.close();
         }
+    }
+
+    public void clearTable() {
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        em.getTransaction().begin();
+        Query query = em.createQuery("DELETE FROM Domain.Subscribe");
+        int rowsDeleted = query.executeUpdate();
+        //System.out.println("entities deleted: " + rowsDeleted);
+        em.getTransaction().commit();
+        em.close();
     }
 }

@@ -40,6 +40,5 @@ public enum OpCode implements Serializable {
     Removed_From_Management,
     Buy_Product,
     Add_Manager,
-
-
+    DB_Down,
 }

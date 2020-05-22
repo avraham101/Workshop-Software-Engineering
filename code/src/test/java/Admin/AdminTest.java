@@ -40,7 +40,7 @@ public class AdminTest  {
     }
 
     @Test
-    public void  testGetStatusRegularSuccess(){
+    public void testGetStatusRegularSuccess(){
         assertEquals(StatusTypeData.ADMIN,admin.getStatus());
     }
 

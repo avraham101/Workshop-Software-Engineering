@@ -7,6 +7,8 @@ import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.Notification.Notification;
 import Persitent.DaoHolders.StoreDaoHolder;
 import Persitent.DaoHolders.SubscribeDaoHolder;
+import Persitent.StoreDao;
+import Persitent.SubscribeDao;
 import Publisher.Publisher;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -165,6 +167,9 @@ public class Subscribe extends UserState{
         permission.setStore(store);
         permission.addType(PermissionType.OWNER); //Always true, store just created.
         permissions.put(store.getName(),permission);
+        StoreDao storeDao = new StoreDao();
+        if(!storeDao.addStore(store))
+            return null;
         return store;
     }
 
@@ -249,7 +254,10 @@ public class Subscribe extends UserState{
             return new Response<>(false, OpCode.Dont_Have_Permission);
         if(!permission.canAddProduct())
             return new Response<>(false, OpCode.Dont_Have_Permission);
-        return permission.getStore().addProduct(productData);
+        StoreDao storeDao = new StoreDao();
+        Store store = storeDao.find(permission.getStore().getName());
+        Response<Boolean> output = store.addProduct(productData);
+        return output;
     }
 
     /**
@@ -548,7 +556,11 @@ public class Subscribe extends UserState{
     }
 
     public synchronized boolean setSessionNumber(Integer sessionNumber) {
-        if(sessionNumber==-1||this.sessionNumber!=-1) {
+        if(sessionNumber!=-1 && this.sessionNumber==-1) { //login
+            this.sessionNumber = sessionNumber;
+            return true;
+        }
+        if(sessionNumber==-1 && this.sessionNumber!=-1) { //logout
             this.sessionNumber = sessionNumber;
             return true;
         }
@@ -682,6 +694,4 @@ public class Subscribe extends UserState{
         sendAllNotifications();
         return true;
     }
-
-
 }
