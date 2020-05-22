@@ -1126,14 +1126,7 @@ public class LogicManagerAllStubsTest {
         assertTrue(purchases.isEmpty());
     }
 
-    /**
-     * use case 4.1.1 - add product success
-     */
-    @Test
-    public void testAddProductSuccess() {
-        setUpOpenedStore();
-        assertTrue(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.VALID)).getValue());
-    }
+
 
     /**
      * use case 4.1.1 - add product fail

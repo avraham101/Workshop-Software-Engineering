@@ -65,6 +65,10 @@ public class Store {
     @Transient //TODO
     private List<Purchase> purchases;
 
+    @Transient
+    private ProductDao productDao = new ProductDao();
+
+
     public Store(String name,Permission permission,String description) {
         this.name = name;
         this.description=description;
@@ -355,10 +359,8 @@ public class Store {
             categoryList.put(categoryName,new Category(categoryName));
         }
         Product product=new Product(productData,categoryList.get(categoryName));
-        ProductDao productDao = new ProductDao();
         boolean result=products.putIfAbsent(productData.getProductName(),product)==null;
         if(result) {
-            //todo change to storeDao
             productDao.addProduct(product);
             return new Response<>(true, OpCode.Success);
         }
