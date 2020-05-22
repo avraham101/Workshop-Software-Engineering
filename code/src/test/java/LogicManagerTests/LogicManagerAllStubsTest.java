@@ -12,6 +12,7 @@ import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.ComposePolicys.OrPolicy;
 import Domain.PurchasePolicy.ComposePolicys.XorPolicy;
 import Persitent.*;
+import Persitent.DaoHolders.DaoHolder;
 import Stubs.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -51,12 +52,13 @@ public class LogicManagerAllStubsTest {
     protected PaymentSystem paymentSystem;
     protected SupplySystem supplySystem;
     protected TestData data;
+    protected DaoHolder daos;
 
-    /**
-     * Dao:
-     */
-    protected SubscribeDao subscribeDao;
-    protected StoreDao storeDao;
+//    /**
+//     * Dao:
+//     */
+//    protected SubscribeDao subscribeDao;
+//    protected StoreDao storeDao;
 
     /**
      * Adding Stores must be in type StoreStub
@@ -69,21 +71,20 @@ public class LogicManagerAllStubsTest {
         //External Systems
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
+        daos=new StubDaoHolder();
         init();
     }
 
     @Transactional
     protected void init() {
         data=new TestData();
-        subscribeDao=new SubscribeDao();
-        storeDao=new StoreDao();
         users=new ConcurrentHashMap<>();
         stores=new ConcurrentHashMap<>();
         connectedUsers =new ConcurrentHashMap<>();
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         try {
             logicManager = new LogicManager(subscribe.getName(), subscribe.getPassword(), users, stores,
-                    connectedUsers,paymentSystem,supplySystem);
+                    connectedUsers,paymentSystem,supplySystem,daos);
         } catch (Exception e) {
             fail();
         }
@@ -259,7 +260,7 @@ public class LogicManagerAllStubsTest {
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         try {
             LogicManager test = new LogicManager(subscribe.getName(), subscribe.getPassword(), users, stores,
-                    connectedUsers,paymentSystem,supplySystem);
+                    connectedUsers,paymentSystem,supplySystem,daos);
         } catch (Exception e) {
             assertTrue(true);
         }
@@ -282,7 +283,7 @@ public class LogicManagerAllStubsTest {
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         try {
             LogicManager test = new LogicManager(subscribe.getName(), subscribe.getPassword(), users, stores,
-                    connectedUsers,paymentSystem,supplySystem);
+                    connectedUsers,paymentSystem,supplySystem,daos);
         } catch (Exception e) {
             assertTrue(true);
         }
@@ -309,7 +310,7 @@ public class LogicManagerAllStubsTest {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         assertTrue(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
-        subscribeDao.remove(subscribe.getName());
+        daos.getSubscribeDao().remove(subscribe.getName());
         tearDownConnect();
     }
 
@@ -435,7 +436,6 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 2.4.1 - view all stores details
      */
-    //TODO to remove
     @Test
     @Transactional
     public void testViewDataStores() {

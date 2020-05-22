@@ -7,7 +7,9 @@ import Domain.Discount.Discount;
 import Domain.Discount.RegularDiscount;
 import Domain.PurchasePolicy.UserPurchasePolicy;
 import Domain.Notification.Notification;
+import Persitent.DaoHolders.DaoHolder;
 import Persitent.StoreDao;
+import Stubs.StubDaoHolder;
 import Stubs.StubPublisher;
 import Systems.HashSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -28,11 +30,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
 
     private StubPublisher publisher;
-    private StoreDao storeDao;
+
 
     @Before
     public void setUp() {
-        storeDao = new StoreDao();
+        daos=new DaoHolder();
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
         init();
@@ -121,7 +123,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         setUpLogedInUser();
         StoreData storeData = data.getStore(Data.VALID);
         assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
-        this.storeDao.removeStore(storeData.getName());
+        this.daos.getStoreDao().removeStore(storeData.getName());
         tearDownLogin();
     }
 
@@ -134,7 +136,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         StoreData storeData = data.getStore(Data.VALID);
         assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
         assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
-        this.storeDao.removeStore(storeData.getName());
+        this.daos.getStoreDao().removeStore(storeData.getName());
         tearDownLogin();
     }
 

@@ -52,10 +52,10 @@ public class LogicManager {
      * @throws Exception
      */
     public LogicManager(String userName, String password, ConcurrentHashMap<String, Subscribe> subscribes, ConcurrentHashMap<String, Store> stores,
-                        ConcurrentHashMap<Integer,User> connectedUsers,PaymentSystem paymentSystem,SupplySystem supplySystem) throws Exception {
+                        ConcurrentHashMap<Integer,User> connectedUsers,PaymentSystem paymentSystem,SupplySystem supplySystem,DaoHolder daoHolder) throws Exception {
         this.subscribes = subscribes;
         this.stores = stores;
-        daos =new DaoHolder();
+        daos =daoHolder;
         GsonBuilder builderDiscount = new GsonBuilder();
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         builderDiscount.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
