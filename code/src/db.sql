@@ -44,6 +44,21 @@ CREATE TABLE `and_discount` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `and_policy`
+--
+
+DROP TABLE IF EXISTS `and_policy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `and_policy` (
+  `pol_id` int(11) NOT NULL,
+  PRIMARY KEY (`pol_id`),
+  KEY `and_policy_idx` (`pol_id`),
+  CONSTRAINT `and_policy` FOREIGN KEY (`pol_id`) REFERENCES `policy` (`pol_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `and_term`
 --
 
@@ -92,6 +107,21 @@ CREATE TABLE `basket` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `basket_policy`
+--
+
+DROP TABLE IF EXISTS `basket_policy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `basket_policy` (
+  `max_amount` int(11) NOT NULL,
+  `pol_id` int(11) NOT NULL,
+  PRIMARY KEY (`pol_id`),
+  CONSTRAINT `basket_policy_id` FOREIGN KEY (`pol_id`) REFERENCES `policy` (`pol_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `buy_notification`
 --
 
@@ -114,8 +144,7 @@ DROP TABLE IF EXISTS `cart`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cart` (
   `username` varchar(45) NOT NULL,
-  PRIMARY KEY (`username`),
-  CONSTRAINT `user` FOREIGN KEY (`username`) REFERENCES `subscribe` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -215,6 +244,23 @@ CREATE TABLE `discounts_inside_discounts` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `min_max_and_policies`
+--
+
+DROP TABLE IF EXISTS `min_max_and_policies`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `min_max_and_policies` (
+  `pol_id` int(11) NOT NULL,
+  `min_max_id` int(11) NOT NULL,
+  PRIMARY KEY (`pol_id`,`min_max_id`),
+  KEY `min_max_idx` (`min_max_id`),
+  CONSTRAINT `min_max` FOREIGN KEY (`min_max_id`) REFERENCES `product_min_max` (`pr_min_max_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `policy_for_min_max` FOREIGN KEY (`pol_id`) REFERENCES `policy` (`pol_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `notification`
 --
 
@@ -225,7 +271,7 @@ CREATE TABLE `notification` (
   `reason` varchar(45) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -239,6 +285,21 @@ CREATE TABLE `or_discount` (
   `id` int(11) NOT NULL,
   KEY `or_discount_idx` (`id`),
   CONSTRAINT `or_discount` FOREIGN KEY (`id`) REFERENCES `discount` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `or_policy`
+--
+
+DROP TABLE IF EXISTS `or_policy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `or_policy` (
+  `pol_id` int(11) NOT NULL,
+  PRIMARY KEY (`pol_id`),
+  KEY `or_policy_idx` (`pol_id`),
+  CONSTRAINT `or_policy` FOREIGN KEY (`pol_id`) REFERENCES `policy` (`pol_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -293,6 +354,81 @@ CREATE TABLE `permission_type` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `pol`
+--
+
+DROP TABLE IF EXISTS `pol`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pol` (
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`p_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `policy`
+--
+
+DROP TABLE IF EXISTS `policy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `policy` (
+  `pol_id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`pol_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=228 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `policy_country`
+--
+
+DROP TABLE IF EXISTS `policy_country`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `policy_country` (
+  `id` int(11) NOT NULL,
+  `country` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`,`country`),
+  CONSTRAINT `policy_country_id` FOREIGN KEY (`id`) REFERENCES `user_policy` (`pol_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `policy_in_store`
+--
+
+DROP TABLE IF EXISTS `policy_in_store`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `policy_in_store` (
+  `store` varchar(45) NOT NULL,
+  `pol_id` int(11) NOT NULL,
+  PRIMARY KEY (`store`,`pol_id`),
+  KEY `pol_store_idx` (`pol_id`),
+  CONSTRAINT `pol_store` FOREIGN KEY (`pol_id`) REFERENCES `policy` (`pol_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `store_pol` FOREIGN KEY (`store`) REFERENCES `store` (`storename`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `policy_inside_policy`
+--
+
+DROP TABLE IF EXISTS `policy_inside_policy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `policy_inside_policy` (
+  `holder_id` int(11) NOT NULL,
+  `holdee_id` int(11) NOT NULL,
+  PRIMARY KEY (`holder_id`,`holdee_id`),
+  KEY `holdee_policy_idx` (`holdee_id`),
+  CONSTRAINT `holdee_policy` FOREIGN KEY (`holdee_id`) REFERENCES `policy` (`pol_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `holder_policy` FOREIGN KEY (`holder_id`) REFERENCES `policy` (`pol_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `product`
 --
 
@@ -329,7 +465,38 @@ CREATE TABLE `product_for_purchase` (
   `purchaseType` varchar(45) NOT NULL,
   `store` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `product_min_max`
+--
+
+DROP TABLE IF EXISTS `product_min_max`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_min_max` (
+  `min` int(11) NOT NULL,
+  `max` int(11) NOT NULL,
+  `product_name` varchar(45) NOT NULL,
+  `pr_min_max_id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`pr_min_max_id`),
+  KEY `product_policy_id_idx` (`pr_min_max_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `product_policy`
+--
+
+DROP TABLE IF EXISTS `product_policy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_policy` (
+  `pol_id` int(11) NOT NULL,
+  PRIMARY KEY (`pol_id`),
+  CONSTRAINT `produt_policy_id` FOREIGN KEY (`pol_id`) REFERENCES `policy` (`pol_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -365,6 +532,24 @@ CREATE TABLE `productdata_inside_notification` (
   KEY `productdata_id_idx` (`product_id`),
   CONSTRAINT `notification_buy` FOREIGN KEY (`id`) REFERENCES `notification` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `productdata_id` FOREIGN KEY (`product_id`) REFERENCES `product_for_purchase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `products_in_basket`
+--
+
+DROP TABLE IF EXISTS `products_in_basket`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `products_in_basket` (
+  `buyer` varchar(45) NOT NULL,
+  `storename` varchar(45) NOT NULL,
+  `productname` varchar(45) NOT NULL,
+  `amount` int(11) NOT NULL,
+  `price` double NOT NULL,
+  PRIMARY KEY (`buyer`,`storename`,`productname`),
+  CONSTRAINT `pib_store_buyer` FOREIGN KEY (`buyer`, `storename`) REFERENCES `basket` (`username`, `storename`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -569,6 +754,36 @@ CREATE TABLE `subscribe` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `system_pol`
+--
+
+DROP TABLE IF EXISTS `system_pol`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `system_pol` (
+  `p_id` int(11) NOT NULL,
+  `age` int(11) NOT NULL,
+  KEY `system_policy_idx` (`p_id`),
+  CONSTRAINT `system_policy` FOREIGN KEY (`p_id`) REFERENCES `pol` (`p_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `system_policy`
+--
+
+DROP TABLE IF EXISTS `system_policy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `system_policy` (
+  `pol_id` int(11) NOT NULL,
+  `age` int(11) NOT NULL,
+  KEY `pol_sys_idx` (`pol_id`),
+  CONSTRAINT `pol_sys` FOREIGN KEY (`pol_id`) REFERENCES `policy` (`pol_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `term`
 --
 
@@ -601,6 +816,20 @@ CREATE TABLE `terms_inside_terms` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `user_policy`
+--
+
+DROP TABLE IF EXISTS `user_policy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_policy` (
+  `pol_id` int(11) NOT NULL,
+  PRIMARY KEY (`pol_id`),
+  CONSTRAINT `user_policy_id` FOREIGN KEY (`pol_id`) REFERENCES `policy` (`pol_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `xor_discount`
 --
 
@@ -611,6 +840,21 @@ CREATE TABLE `xor_discount` (
   `id` int(11) NOT NULL,
   KEY `xor_discount_idx` (`id`),
   CONSTRAINT `xor_discount` FOREIGN KEY (`id`) REFERENCES `discount` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `xor_policy`
+--
+
+DROP TABLE IF EXISTS `xor_policy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `xor_policy` (
+  `pol_id` int(11) NOT NULL,
+  PRIMARY KEY (`pol_id`),
+  KEY `xor_policy_idx` (`pol_id`),
+  CONSTRAINT `xor_policy` FOREIGN KEY (`pol_id`) REFERENCES `policy` (`pol_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -637,4 +881,4 @@ CREATE TABLE `xor_term` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-21 19:30:55
+-- Dump completed on 2020-05-22 17:39:49
