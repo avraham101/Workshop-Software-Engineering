@@ -5,6 +5,7 @@ import Domain.Discount.Discount;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Persitent.ProductDao;
+import Persitent.ReviewDao;
 import Persitent.StoreDao;
 
 import javax.persistence.*;
@@ -312,10 +313,8 @@ public class Store {
         Product p = products.get(review.getProductName());
         if(p==null) //Store as the product
             return false;
-        p.addReview(review);
-        ProductDao pDao = new ProductDao();
-        pDao.updateProduct(p);
-        return true;
+        return p.addReview(review);
+
     }
 
     /**
@@ -328,8 +327,6 @@ public class Store {
         if(p!=null) {
             p.removeReview(review);
         }
-        ProductDao productDao = new ProductDao();
-        productDao.updateProduct(p);
     }
 
     /**

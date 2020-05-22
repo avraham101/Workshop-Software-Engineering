@@ -746,7 +746,7 @@ public class LogicManager {
         }
         Review review = new Review(current.getUserName(),storeName,productName,content);
         boolean resultStore = store.addReview(review);
-        boolean resultUser = current.addReview(review);
+        boolean resultUser = current.addReview(review); //always true
         if(!resultStore && !resultUser)
             return new Response<>(false,OpCode.Cant_Add_Review);
         else if(!resultStore) {

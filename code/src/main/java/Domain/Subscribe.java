@@ -3,6 +3,7 @@ package Domain;
 import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Persitent.ReviewDao;
 import Persitent.SubscribeDao;
 import Publisher.Publisher;
 import org.hibernate.annotations.LazyCollection;
@@ -153,10 +154,8 @@ public class Subscribe extends UserState{
      */
     @Override
     public boolean addReview(Review review) {
-        reviews.add(review);//TODO maybe add review dao
-        SubscribeDao subscribeDao = new SubscribeDao();
-        subscribeDao.update(this);
-        return true;
+        return reviews.add(review);
+
     }
 
     /**
@@ -165,8 +164,6 @@ public class Subscribe extends UserState{
      */
     public void removeReview(Review review) {
         reviews.remove(review);
-        SubscribeDao subscribeDao = new SubscribeDao();
-        subscribeDao.update(this);
     }
 
     /**

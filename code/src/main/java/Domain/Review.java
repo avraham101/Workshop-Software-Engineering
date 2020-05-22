@@ -35,7 +35,13 @@ public class Review implements Serializable {
     public Review() {
     }
 
+
     // ============================ getters & setters ============================ //
+
+
+    public Integer getId() {
+        return id;
+    }
 
     public String getStore() {
         return store;

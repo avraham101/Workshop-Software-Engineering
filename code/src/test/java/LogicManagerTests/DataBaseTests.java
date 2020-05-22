@@ -37,6 +37,7 @@ public class DataBaseTests {
         //reviewSetUp(sub,store);
         Review review = new Review(sub.getName(), store.getName(),"chicken","very good");
         assertTrue(reviewDao.addReview(review));
+        int i=7;
 
     }
 
