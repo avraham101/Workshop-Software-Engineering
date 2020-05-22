@@ -231,7 +231,10 @@ public class Subscribe extends UserState{
             return new Response<>(false, OpCode.Dont_Have_Permission);
         if(!permission.canAddProduct())
             return new Response<>(false, OpCode.Dont_Have_Permission);
-        return permission.getStore().addProduct(productData);
+        StoreDao storeDao = new StoreDao();
+        Store store = storeDao.find(permission.getStore().getName());
+        Response<Boolean> output = store.addProduct(productData);
+        return output;
     }
 
     /**

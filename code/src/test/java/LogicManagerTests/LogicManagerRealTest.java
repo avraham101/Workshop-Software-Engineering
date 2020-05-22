@@ -240,6 +240,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(1,products.size());
     }
 
+
     /**
      * part of use case 2.5 - view specific product
      */
@@ -772,20 +773,24 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(1,purchases.size());
     }
 
-    /**
-     * test use case 4.1.1 -add product to store
-     */
-    @Override @Test
-    public void testAddProductSuccess() {
-        super.testAddProductSuccess();
-        testAddProductWithSameName();
-    }
 
     /**
      * test adding product with name that is not unique
      */
-    private void testAddProductWithSameName() {
+    //TODO fix it
+    @Test
+    public void testAddProductWithSameName() {
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.SAME_NAME)).getValue());
+    }
+
+    /**
+     * test that a product added to the store
+     */
+    @Test
+    public void testAddProductToStore() {
+        setUpOpenedStore();
+        assertTrue(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.VALID)).getValue());
+        tearDownOpenStore();
     }
 
     /**
