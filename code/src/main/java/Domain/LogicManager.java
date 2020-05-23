@@ -549,7 +549,7 @@ public class LogicManager {
         Store store = null;
         User current=connectedUsers.get(id);
         if (storeName != null)
-            store = stores.get(storeName);
+            store = daos.getStoreDao().find(storeName);
         if(store==null)
             return new Response<>(false, OpCode.Store_Not_Found);
         Product product = store.getProduct(productName);

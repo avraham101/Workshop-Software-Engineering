@@ -3,7 +3,7 @@ package Persitent.DaoHolders;
 import Persitent.*;
 
 public class DaoHolder {
-    private BasketDao basketDao;
+    private CartDao cartDao;
     private CategoryDao categoryDao;
     private DiscountDao discountDao;
     private NotificationDao notificationDao;
@@ -15,7 +15,7 @@ public class DaoHolder {
     private SubscribeDao subscribeDao;
 
     public DaoHolder() {
-        basketDao=new BasketDao();
+        cartDao =new CartDao();
         categoryDao=new CategoryDao();
         discountDao=new DiscountDao();
         notificationDao=new NotificationDao();
@@ -27,8 +27,8 @@ public class DaoHolder {
         subscribeDao=new SubscribeDao();
     }
 
-    public BasketDao getBasketDao() {
-        return basketDao;
+    public CartDao getCartDao() {
+        return cartDao;
     }
 
     public CategoryDao getCategoryDao() {

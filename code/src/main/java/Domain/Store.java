@@ -194,7 +194,10 @@ public class Store {
      * @return - thr product if exist, null if not
      */
     public Product getProduct(String productName) {
-        return products.get(productName);
+        Product product=products.get(productName);
+        if(product==null)
+            product=daos.getProductDao().find(new Product(productName,name));
+        return product;
     }
 
     @Override
@@ -423,7 +426,8 @@ public class Store {
         if(!categoryList.containsKey(categoryName)){
             categoryList.put(categoryName,new Category(categoryName));
         }
-        old.edit(productData,categoryList.get(categoryName));
+        old=daos.getProductDao().find(old);
+        old.edit(productData);
         if(daos.getProductDao().updateProduct(old)) {
             products.put(old.getName(), old);
             return new Response<>(true,OpCode.Success);

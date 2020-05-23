@@ -135,6 +135,24 @@ public class Subscribe extends UserState{
 
 
     /**
+     * 2.7.4 add product to cart
+     * @param store - the store of the product
+     * @param product - the product to add
+     * @param amount - the amount of the product
+     * @return
+     */
+    @Override
+    public boolean addProductToCart(Store store, Product product, int amount) {
+        cart=daos.getCartDao().find(userName);
+        boolean output= super.addProductToCart(store, product, amount);
+        if(output){
+            daos.getCartDao().remove(cart);
+           return daos.getCartDao().add(cart);
+        }
+        return false;
+    }
+
+    /**
      * use case 2.8 - purchase cart and savePurchases
      * @param buyer - the name of the user
      */

@@ -93,15 +93,10 @@ public class Product implements Serializable {
      * use case 4.1.3 - edit product
      * clone function for edit product
      * @param productData
-     * @param category
      * parameters to get data from
      */
-    public void edit(ProductData productData, Category category) {
+    public void edit(ProductData productData) {
         getWriteLock().lock();
-        this.purchaseType = createPurchaseType(productData.getPurchaseType());
-        category.removeProduct(name);
-        this.category = category;
-        category.addProduct(this);
         this.amount=productData.getAmount();
         this.price=productData.getPrice();
         getWriteLock().unlock();
@@ -178,8 +173,7 @@ public class Product implements Serializable {
     public boolean equal(ProductData product) {
         return amount == product.getAmount() &&
                 product.getPrice()==price &&
-                name.equals(product.getProductName()) &&
-                category.getName().equals(product.getCategory());
+                name.equals(product.getProductName());
     }
 
     public Product clone() {

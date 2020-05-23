@@ -5,7 +5,7 @@ import Persitent.DaoHolders.DaoHolder;
 
 public class StubDaoHolder extends DaoHolder {
 
-    private BasketDao basketDao;
+    private CartDao cartDao;
     private CategoryDao categoryDao;
     private DiscountDao discountDao;
     private NotificationDao notificationDao;

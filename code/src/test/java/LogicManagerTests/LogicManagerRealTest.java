@@ -8,8 +8,6 @@ import Domain.Discount.RegularDiscount;
 import Domain.PurchasePolicy.UserPurchasePolicy;
 import Domain.Notification.Notification;
 import Persitent.DaoHolders.DaoHolder;
-import Persitent.StoreDao;
-import Stubs.StubDaoHolder;
 import Stubs.StubPublisher;
 import Systems.HashSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -421,7 +419,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         super.testAddProductToCart();
         testAddProductToCartBasketNull();
         testAddProductToCartValid();
+        tearDownProductAddedToCart();
     }
+
 
     /**
      * use case 2.7.4
@@ -432,6 +432,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertTrue(logicManager.addProductToCart(data.getId(Data.VALID),product.getProductName(),
                 product.getStoreName(), product.getAmount()).getValue());
         assertEquals(1, logicManager.watchCartDetails(data.getId(Data.VALID)).getValue().getProducts().size());
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -999,7 +1000,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
     }
 
-
     /**
      * use case 4.3 - manage owner - success
      */
@@ -1326,5 +1326,14 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         super.testGetAllUsers();
     }
 
+
+    /**
+     * tear down
+     */
+
+    private void tearDownProductAddedToCart() {
+        daos.getSubscribeDao().remove(data.getSubscribe(Data.VALID).getName());
+        tearDownOpenStore();
+    }
 }
 

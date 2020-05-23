@@ -14,7 +14,7 @@ import java.util.*;
 public class Basket implements Serializable {
 
     @Id
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH,fetch = FetchType.EAGER)
     @JoinColumn(name="storename",referencedColumnName = "storename")
     private Store store; // the store of the basket
 
