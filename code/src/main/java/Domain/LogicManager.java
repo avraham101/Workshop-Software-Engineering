@@ -86,7 +86,7 @@ public class LogicManager {
                         "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
-            boolean output = this.subscribeDao.addSubscribe(new Admin(userName, password));
+            boolean output = this.subscribeDao.addSubscribe(new Admin(userName, hashSystem.encrypt(password)));
             if(!output) {
                 loggerSystem.writeError("Logic manager", "constructor",
                         "Fail register",new Object[]{userName});

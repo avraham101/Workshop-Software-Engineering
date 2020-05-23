@@ -49,4 +49,17 @@ public class DataBaseTests {
         assertTrue( reviewDao.remove(3));
     }
 
+    @Test
+    public void addSub(){
+        Subscribe sub = new Subscribe("nvi","vvin");
+        SubscribeDao dao = new SubscribeDao();
+       assertTrue( dao.addSubscribe(sub));
+
+    }
+
+    @Test
+    public  void delSub(){
+        SubscribeDao dao = new SubscribeDao();
+        dao.remove("nvi");
+    }
 }
