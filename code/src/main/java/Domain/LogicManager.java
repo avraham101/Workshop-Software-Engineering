@@ -964,7 +964,7 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","updatePolicy",
                 "update the policy of the store", new Object[] {policyData,storeName});
         User current=connectedUsers.get(id);
-        Store store=stores.get(storeName);
+        Store store=daos.getStoreDao().find(storeName);
         if(store == null)
             return new Response<>(false,OpCode.Store_Not_Found);
         PurchasePolicy policy = makePolicyFromData(policyData);
@@ -980,11 +980,10 @@ public class LogicManager {
     public Response<String> viewPolicy(String storeName){
         loggerSystem.writeEvent("LogicManager","viewPolicy",
                 "view the policy of the store", new Object[] {storeName});
-        Store store=stores.get(storeName);
+        Store store=daos.getStoreDao().find(storeName);
         if(store==null)
             return new Response<>(null,OpCode.Store_Not_Found);
         PurchasePolicy policy = store.getPurchasePolicy();
-
         String output = gson.toJson(policy,PurchasePolicy.class);
         return new Response<>(output,OpCode.Success);
     }

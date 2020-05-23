@@ -1442,6 +1442,11 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testUpdatePolicy() {
         setUpProductAdded();
+        testUpdatePolicyTest();
+        tearDownOpenStore();
+    }
+
+    protected void testUpdatePolicyTest(){
         PurchasePolicy policy = data.getPurchasePolicy(Data.VALID_BASKET_PURCHASE_POLICY);
         GsonBuilder builderPolicy = new GsonBuilder();
         builderPolicy.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
@@ -1456,6 +1461,7 @@ public class LogicManagerAllStubsTest {
      * fail test with not existing store store
      */
     @Test
+    @Transactional
     public void testUpdatePolicyNotFoundStore() {
         setUpProductAdded();
         PurchasePolicy policy = null;
@@ -1505,12 +1511,18 @@ public class LogicManagerAllStubsTest {
                 data.getStore(Data.VALID).getName()).getValue());
     }
 
+    @Test
+    @Transactional
+    public void testViewStorePolicy(){
+        setUpPurchasePolicyAdded();
+        testViewStorePolicyTest();
+        tearDownOpenStore();
+    }
+
     /**
      * use case 4.2.2.2 - view the store policy
      */
-    @Test
-    public void testViewStorePolicy() {
-        setUpPurchasePolicyAdded();
+    protected void testViewStorePolicyTest() {
         assertNotNull(logicManager.viewPolicy(data.getStore(Data.VALID).getName()).getValue());
     }
 

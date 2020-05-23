@@ -1059,21 +1059,24 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 4.2.2.1 - update policy for the store
      */
-    @Test @Override
-    public void testUpdatePolicy() {
-        super.testUpdatePolicy();
-        Subscribe subscribe = ((Subscribe) currUser.getState());
+    @Override
+    protected void testUpdatePolicyTest() {
+        super.testUpdatePolicyTest();
+        Subscribe subscribe = daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
         Store store = subscribe.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
         assertNotNull(store.getPurchasePolicy());
     }
 
-    @Test @Override
-    public void testViewStorePolicy() {
-        super.testViewStorePolicy();
+    @Override
+    protected void testViewStorePolicyTest() {
         String store = data.getStore(Data.VALID).getName();
         String output = logicManager.viewPolicy(store).getValue();
         assertFalse(output.isEmpty());
+    }
 
+    @Test
+    public void testViewStorePolicy(){
+        super.testViewStorePolicy();
     }
 
     /**

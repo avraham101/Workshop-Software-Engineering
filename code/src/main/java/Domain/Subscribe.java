@@ -352,7 +352,10 @@ public class Subscribe extends UserState{
             return new Response<>(false, OpCode.Dont_Have_Permission);
         if(!permission.canCRUDPolicyAndDiscount())
             return new Response<>(false, OpCode.Dont_Have_Permission);
-        return permission.getStore().addPolicy(policy);
+        Response<Boolean> output= permission.getStore().addPolicy(policy);
+        if(output.getValue())
+            daos.getStoreDao().update(permission.getStore());
+        return output;
     }
 
     /**
