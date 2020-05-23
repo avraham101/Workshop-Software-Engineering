@@ -1040,6 +1040,13 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 4.5 - add manager
      */
+
+    @Test
+    @Override
+    public void testAddManagerToStore(){
+        super.testAddManagerToStore();
+    }
+
     @Override
     protected void testAddManagerStoreSuccess() {
         super.testAddManagerStoreSuccess();
@@ -1049,6 +1056,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 4.6.1 -add permission
      */
+    @Test
+    @Override
+    public void testAddPermission(){
+        super.testAddPermission();
+    }
+
     @Override
     protected void testAddPermissionSuccess() {
         super.testAddPermissionSuccess();
@@ -1060,6 +1073,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 4.6.2 - remove permission
      */
+    @Test
+    @Override
+    public void testRemovePermission(){
+        super.testRemovePermission();
+    }
     @Override
     protected void testRemovePermissionSuccess() {
         super.testRemovePermissionSuccess();

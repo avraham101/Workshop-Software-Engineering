@@ -167,10 +167,11 @@ public class Subscribe extends UserState{
         Permission permission = new Permission(this);
         Store store = new Store(storeDetails.getName(), permission,storeDetails.getDescription());
         permission.setStore(store);
-        permission.addType(PermissionType.OWNER); //Always true, store just created.
+       // permission.addType(PermissionType.OWNER); //Always true, store just created.
         permissions.put(store.getName(),permission);
         if(!daos.getStoreDao().addStore(store))
             return null;
+        permission.addType(PermissionType.OWNER); //Always true, store just created.
         return store;
     }
 
@@ -461,6 +462,7 @@ public class Subscribe extends UserState{
         permissions.remove(storeName);
         //remove the permission from the store
         store.getPermissions().remove(userName);
+        daos.getPermissionDao().removePermission(new Permission(this,store));
         //TODO real time trough this
         sendNotification( new RemoveNotification(storeName,OpCode.Removed_From_Management));
 

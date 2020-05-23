@@ -146,8 +146,9 @@ public class Permission implements Serializable {
      */
     public boolean removeType(PermissionType type){
         lock.writeLock().lock();
-        boolean result=permissionType.remove(type);
+        permissionType.remove(type);
         lock.writeLock().unlock();
+        boolean result = dao.deletePermissionType(this.store.getName(),this.owner.getName(),type);
         return result;
     }
 

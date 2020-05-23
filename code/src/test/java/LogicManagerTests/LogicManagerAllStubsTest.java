@@ -1592,7 +1592,8 @@ public class LogicManagerAllStubsTest {
         String storeName=data.getStore(Data.VALID).getName();
         //invalid storeName
         assertFalse(logicManager.addManager(data.getId(Data.VALID),userName,userName).getValue());
-        assertFalse(stores.get(storeName).getPermissions().containsKey(userName));
+        //assertFalse(stores.get(storeName).getPermissions().containsKey(userName));
+        assertFalse(daos.getStoreDao().find(storeName).getPermissions().containsKey(userName));
     }
 
     /**
@@ -1601,7 +1602,8 @@ public class LogicManagerAllStubsTest {
     private void testAddManagerToStoreFailUser(){
         String storeName=data.getStore(Data.VALID).getName();
         assertFalse(logicManager.addManager(data.getId(Data.VALID),storeName,storeName).getValue());
-        assertFalse(stores.get(storeName).getPermissions().containsKey(storeName));
+       // assertFalse(stores.get(storeName).getPermissions().containsKey(storeName));
+        assertFalse(daos.getStoreDao().find(storeName).getPermissions().containsKey(storeName));
     }
 
     /**
@@ -1690,6 +1692,7 @@ public class LogicManagerAllStubsTest {
         setUpPermissionsAdded();
         testRemovePermissionFail();
         testRemovePermissionSuccess();
+        tearDownPermissionAdded();
     }
 
     /**
@@ -2035,6 +2038,9 @@ public class LogicManagerAllStubsTest {
     public void tearDownManagerAdded(){
         tearDownOpenStore();
 
+    }
+    public void tearDownPermissionAdded(){
+        tearDownManagerAdded();
     }
 
 }

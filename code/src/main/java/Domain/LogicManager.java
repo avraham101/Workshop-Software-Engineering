@@ -1066,9 +1066,9 @@ public class LogicManager {
                 "store owner remove manager's permission", new Object[] {permissions, storeName, userName});
         if(!validList(permissions))
             return new Response<>(false,OpCode.Invalid_Permissions);
-        if(!subscribes.containsKey(userName))
+        if(daos.getSubscribeDao().find(userName)==null)
             return new Response<>(false,OpCode.User_Not_Found);
-        if(!stores.containsKey(storeName))
+        if(daos.getStoreDao().find(storeName)==null)
             return new Response<>(false,OpCode.Store_Not_Found);
         User current=connectedUsers.get(id);
         return current.removePermissions(permissions, storeName, userName);
@@ -1084,9 +1084,9 @@ public class LogicManager {
     public Response<Boolean> removeManager(int id,String userName, String storeName) {
         loggerSystem.writeEvent("LogicManager","removeManager",
                 "store owner remove manager", new Object[] {storeName, userName});
-        if(!subscribes.containsKey(userName))
+        if(daos.getSubscribeDao().find(userName)==null)
             return new Response<>(false,OpCode.User_Not_Found);
-        if(!stores.containsKey(storeName))
+        if(daos.getStoreDao().find(storeName)==null)
             return new Response<>(false,OpCode.Store_Not_Found);
         User current=connectedUsers.get(id);
         return current.removeManager(userName,storeName);
