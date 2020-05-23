@@ -1,8 +1,10 @@
 package Domain;
 
 import DataAPI.PermissionType;
+import Persitent.PermissionDao;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -35,15 +37,19 @@ public class Permission implements Serializable {
 
     @Transient
     private final ReentrantReadWriteLock lock;
+    @Transient
+    private final PermissionDao dao;
 
     public Permission(Subscribe owner) {
         this.owner = owner;
         permissionType=new HashSet<>();
         lock=new ReentrantReadWriteLock();
+        dao = new PermissionDao();
     }
 
     public Permission() {
         lock=new ReentrantReadWriteLock();
+        dao = new PermissionDao();
     }
 
     public Permission(Subscribe owner, Store store) {
@@ -51,12 +57,14 @@ public class Permission implements Serializable {
         this.store = store;
         permissionType=new HashSet<>();
         lock=new ReentrantReadWriteLock();
+        dao = new PermissionDao();
     }
 
     public Permission(Subscribe sub, HashSet<PermissionType> permissionTypes) {
         this.owner = sub;
         permissionType=permissionTypes;
         lock=new ReentrantReadWriteLock();
+        dao = new PermissionDao();
     }
 
     // ============================ getters & setters ============================ //
@@ -104,9 +112,15 @@ public class Permission implements Serializable {
             lock.writeLock().unlock();
             return false;
         }
-        if(type==PermissionType.OWNER)
+        if(type==PermissionType.OWNER) {
             permissionType.clear();
-        boolean result=this.permissionType.add(type);
+            for (PermissionType p: permissionType) {
+                dao.deletePermissionType(this.store.getName(),this.owner.getName(),p);
+            }
+
+        }
+        this.permissionType.add(type);
+        boolean result  = dao.addPermissionType(this.store.getName(),this.owner.getName(),type);
         lock.writeLock().unlock();
         return result;
     }

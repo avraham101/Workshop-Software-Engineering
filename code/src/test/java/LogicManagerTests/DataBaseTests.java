@@ -2,6 +2,7 @@ package LogicManagerTests;
 
 import Data.Data;
 import Data.TestData;
+import DataAPI.PermissionType;
 import DataAPI.ProductData;
 import DataAPI.PurchaseTypeData;
 import DataAPI.StoreData;
@@ -68,7 +69,7 @@ public class DataBaseTests {
     public  void delSub(){
         SubscribeDao dao = new SubscribeDao();
         dao.remove("Yuval");
-        //dao.remove("niv");
+        dao.remove("niv");
     }
 
     @Test
@@ -97,5 +98,22 @@ public class DataBaseTests {
         Permission per = dao.findPermission(new Permission(data.getSubscribe(Data.VALID2),store));
         assertTrue(dao.removePermission(per));
 
+    }
+
+    @Test
+    public void addPermissionType(){
+        PermissionDao dao = new PermissionDao();
+        assertTrue(dao.addPermissionType("Store","Yuval", PermissionType.CRUD_POLICY_DISCOUNT));
+       // Store store = storeDao.find("Store");
+     //   Permission per = dao.findPermission(new Permission(data.getSubscribe(Data.VALID),store));
+
+
+
+    }
+
+    @Test
+    public void deletePermissionType(){
+        PermissionDao dao = new PermissionDao();
+        assertTrue(dao.deletePermissionType("Store","Yuval",PermissionType.CRUD_POLICY_DISCOUNT));
     }
 }

@@ -1612,6 +1612,8 @@ public class LogicManagerAllStubsTest {
         setUpManagerAdded();
         testAddPermissionFail();
         testAddPermissionSuccess();
+        tearDownManagerAdded();
+
     }
 
     /**
@@ -2028,6 +2030,11 @@ public class LogicManagerAllStubsTest {
         logicManager.removeProductFromStore(data.getId(Data.VALID),productData.getStoreName(),
                 productData.getProductName());
         tearDownOpenStore();
+    }
+
+    public void tearDownManagerAdded(){
+        tearDownOpenStore();
+
     }
 
 }

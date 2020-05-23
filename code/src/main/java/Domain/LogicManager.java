@@ -1036,9 +1036,9 @@ public class LogicManager {
                 "store owner add a manager's permissions", new Object[] {permissions, storeName, userName});
         if(!validList(permissions))
             return new Response<>(false,OpCode.Invalid_Permissions);
-        if(!subscribes.containsKey(userName))
+        if(daos.getSubscribeDao().find(userName)==null)
             return new Response<>(false,OpCode.User_Not_Found);
-        if(!stores.containsKey(storeName))
+        if(daos.getStoreDao().find(storeName)==null)
             return new Response<>(false,OpCode.Store_Not_Found);
         User current=connectedUsers.get(id);
         return current.addPermissions(permissions, storeName, userName);
