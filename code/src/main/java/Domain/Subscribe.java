@@ -169,8 +169,7 @@ public class Subscribe extends UserState{
         permission.setStore(store);
         permission.addType(PermissionType.OWNER); //Always true, store just created.
         permissions.put(store.getName(),permission);
-        StoreDao storeDao = new StoreDao();
-        if(!storeDao.addStore(store))
+        if(!daos.getStoreDao().addStore(store))
             return null;
         return store;
     }
@@ -229,7 +228,7 @@ public class Subscribe extends UserState{
     public Request addRequest(int requestId, String storeName, String content){
         Request request = new Request(userName, storeName, content,requestId);
         requests.add(request);
-        RequestDao requestDao = new RequestDao();
+        RequestDao requestDao = daos.getRequestDao();
         if(requestDao.addRequest(request))
              return request;
         return null;
@@ -262,6 +261,8 @@ public class Subscribe extends UserState{
         StoreDao storeDao = new StoreDao();
         Store store = storeDao.find(permission.getStore().getName());
         Response<Boolean> output = store.addProduct(productData);
+        if(output.getValue())
+            permission.setStore(store);
         return output;
     }
 

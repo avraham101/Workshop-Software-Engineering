@@ -60,6 +60,6 @@ public class DataBaseTests {
     @Test
     public  void delSub(){
         SubscribeDao dao = new SubscribeDao();
-        dao.remove("nvi");
+        dao.remove("Yuval   ");
     }
 }

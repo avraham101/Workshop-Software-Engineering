@@ -7,7 +7,9 @@ import Domain.Discount.Discount;
 import Domain.Discount.RegularDiscount;
 import Domain.PurchasePolicy.UserPurchasePolicy;
 import Domain.Notification.Notification;
+import Persitent.DaoHolders.DaoHolder;
 import Persitent.StoreDao;
+import Stubs.StubDaoHolder;
 import Stubs.StubPublisher;
 import Systems.HashSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -28,11 +30,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
 
     private StubPublisher publisher;
-    private StoreDao storeDao;
+
 
     @Before
     public void setUp() {
-        storeDao = new StoreDao();
+        daos=new DaoHolder();
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
         init();
@@ -87,6 +89,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         logicManager.register(subscribe.getName(),subscribe.getPassword());
     }
 
+    @Test
+    @Override
+    public void testRegisterSuccess() {
+        super.testRegisterSuccess();
+    }
     /**
      * test use case 2.3 - Login
      */
@@ -116,7 +123,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         setUpLogedInUser();
         StoreData storeData = data.getStore(Data.VALID);
         assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
-        this.storeDao.removeStore(storeData.getName());
+        this.daos.getStoreDao().removeStore(storeData.getName());
         tearDownLogin();
     }
 
@@ -129,7 +136,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         StoreData storeData = data.getStore(Data.VALID);
         assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
         assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
-        this.storeDao.removeStore(storeData.getName());
+        this.daos.getStoreDao().removeStore(storeData.getName());
         tearDownLogin();
     }
 
@@ -790,6 +797,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * test that a product added to the store
      */
     @Test
+    @Transactional
     public void testAddProductToStore() {
         setUpOpenedStore();
         assertTrue(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.VALID)).getValue());
@@ -830,13 +838,19 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
 
+    @Test
+    @Override
+    public void testRemoveProductFromStore(){
+        super.testRemoveProductFromStore();
+    }
+
     /**
      * use case 4.1.2 test
      */
     @Override
     protected void testRemoveProductSuccess() {
         super.testRemoveProductSuccess();
-        Subscribe sub=(Subscribe)currUser.getState();
+        Subscribe sub=daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
         assertFalse(sub.getPermissions().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
 
@@ -847,7 +861,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     public void checkRemoveProductNotManager() {
         setUpProductAdded();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
-        Subscribe sub = ((Subscribe) currUser.getState());
+        Subscribe sub = daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
         Permission permission = sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         sub.getPermissions().clear();
@@ -863,7 +877,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     public void checkRemoveProductHasNoPermission() {
         setUpProductAdded();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
-        Subscribe sub = ((Subscribe) currUser.getState());
+        Subscribe sub = daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
         Permission permission = sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         permission.removeType(PermissionType.OWNER);
@@ -877,11 +891,13 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override @Test
     public void testEditProductSuccess() {
-        super.testEditProductSuccess();
+        setUpProductAdded();
+        assertTrue(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.EDIT)).getValue());
         ProductData product=data.getProductData(Data.EDIT);
-        Subscribe sub=(Subscribe) currUser.getState();
+        Subscribe sub=daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
         assertTrue(sub.getPermissions().get(product.getStoreName()).getStore()
                 .getProducts().get(product.getProductName()).equal(product));
+        tearDownOpenStore();
     }
 
     /**

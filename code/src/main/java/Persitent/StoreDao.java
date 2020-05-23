@@ -84,4 +84,7 @@ public class StoreDao extends Dao<Store>{
         em.close();
     }
 
+    public void update(Store store) {
+        super.update(ENTITY_MANAGER_FACTORY.createEntityManager(),store);
+    }
 }

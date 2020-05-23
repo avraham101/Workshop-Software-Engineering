@@ -5,9 +5,9 @@ import Domain.Subscribe;
 import javax.persistence.*;
 
 public class Dao<T> {
-
-    private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("product");
+//
+//    private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
+//            .createEntityManagerFactory("product");
 
     public boolean add(EntityManager em, T value) {
         boolean output = false;
@@ -37,9 +37,8 @@ public class Dao<T> {
     }
 
     //need to be the same subscribe as the find
-    public boolean update(T info) {
+    public boolean update(EntityManager em,T info) {
         boolean output = false;
-        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
         try {
             // Get transaction and start

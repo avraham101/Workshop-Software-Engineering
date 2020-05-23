@@ -2,6 +2,8 @@ package Domain;
 
 import DataAPI.ProductData;
 import DataAPI.PurchaseTypeData;
+import Persitent.DaoHolders.ProductDaoHolder;
+import Persitent.DaoHolders.StoreDaoHolder;
 import Persitent.ReviewDao;
 import Persitent.ProductDao;
 
@@ -18,6 +20,7 @@ public class Product implements Serializable {
 
     public Product() {
         this.lock=new ReentrantReadWriteLock();
+        daos = new ProductDaoHolder();
     }
 
     @Id
@@ -34,11 +37,11 @@ public class Product implements Serializable {
     @Column(name="price",nullable = false)
     private double price;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.ALL,fetch =FetchType.EAGER)
     @JoinColumn(name="purchaseType",referencedColumnName = "purchaseType")
     private PurchaseType purchaseType;
 
-    @ManyToOne(cascade=CascadeType.PERSIST)
+    @ManyToOne(cascade=CascadeType.PERSIST,fetch = FetchType.EAGER)
     @JoinTable(name="category_product",
             joinColumns ={@JoinColumn(name = "product", referencedColumnName="productName"),
                     @JoinColumn(name="store", referencedColumnName="storeName")},
@@ -56,6 +59,9 @@ public class Product implements Serializable {
     @Transient
     private final ReentrantReadWriteLock lock;
 
+    @Transient
+    private final ProductDaoHolder daos;
+
     public Product(ProductData productData, Category category) {
         this.name = productData.getProductName();
         this.purchaseType = createPurchaseType(productData.getPurchaseType());
@@ -66,12 +72,14 @@ public class Product implements Serializable {
         this.reviews=new ArrayList<>();
         this.store=productData.getStoreName();
         lock=new ReentrantReadWriteLock();
+        daos = new ProductDaoHolder();
     }
 
     public Product(String name, String store){
         this.name=name;
         this.store=store;
         this.lock = new ReentrantReadWriteLock();
+        daos = new ProductDaoHolder();
     }
 
     /**
@@ -87,6 +95,7 @@ public class Product implements Serializable {
         this.reviews = new LinkedList<>();
         this.lock = new ReentrantReadWriteLock();
         this.store=other.getStore();
+        daos = new ProductDaoHolder();
     }
 
     /**
@@ -197,7 +206,7 @@ public class Product implements Serializable {
         this.reviews.add(review);
         getWriteLock().unlock();
 
-        ReviewDao reviewDao = new ReviewDao();
+        ReviewDao reviewDao = daos.getReviewDao();
         return reviewDao.addReview(review);
     }
 
@@ -210,7 +219,7 @@ public class Product implements Serializable {
         getWriteLock().lock();
         this.reviews.remove(review);
         getWriteLock().lock();
-        ReviewDao reviewDao = new ReviewDao();
+        ReviewDao reviewDao = daos.getReviewDao();
        return reviewDao.remove(review.getId());
     }
 }
