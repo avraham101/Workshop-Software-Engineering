@@ -879,7 +879,7 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","addDiscountToStore",
                 "add discount to the store", new Object[] {discountData,storeName});
         User current=connectedUsers.get(id);
-        Store store=stores.get(storeName);
+        Store store=daos.getStoreDao().find(storeName);
         if(store==null)
             return new Response<>(false,OpCode.Store_Not_Found);
         Discount discount=makeDiscountFromData(discountData);
@@ -912,7 +912,7 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","removeDiscountToStore",
                 "remove discount from the store", new Object[] {discountId,storeName});
         User current=connectedUsers.get(id);
-        Store store=stores.get(storeName);
+        Store store=daos.getStoreDao().find(storeName);
         if(store==null)
             return new Response<>(false,OpCode.Store_Not_Found);
         return current.deleteDiscountFromStore(discountId,storeName);
@@ -925,7 +925,7 @@ public class LogicManager {
     public Response<HashMap<Integer,String>> viewDiscounts(String storeName){
         loggerSystem.writeEvent("LogicManager","viewDiscountsOfStore",
                 "view discount of the store", new Object[] {storeName});
-        Store store=stores.get(storeName);
+        Store store=daos.getStoreDao().find(storeName);
         if(store==null)
             return new Response<>(null,OpCode.Store_Not_Found);
         HashMap<Integer, Discount> discounts = new HashMap<>(store.getDiscount());

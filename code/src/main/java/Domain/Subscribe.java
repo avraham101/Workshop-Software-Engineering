@@ -322,7 +322,10 @@ public class Subscribe extends UserState{
             return new Response<>(false, OpCode.Dont_Have_Permission);
         if(!permission.canCRUDPolicyAndDiscount())
             return new Response<>(false, OpCode.Dont_Have_Permission);
-        return permission.getStore().addDiscount(discount);
+        Response<Boolean> output= permission.getStore().addDiscount(discount);
+        if(output.getValue())
+            daos.getStoreDao().update(permission.getStore());
+        return output;
     }
     /**
      * 4.2.1.2 - remove discount
@@ -336,7 +339,10 @@ public class Subscribe extends UserState{
             return new Response<>(false, OpCode.Dont_Have_Permission);
         if(!permission.canCRUDPolicyAndDiscount())
             return new Response<>(false, OpCode.Dont_Have_Permission);
-        return permission.getStore().deleteDiscount(discountId);
+        Response<Boolean> output= permission.getStore().deleteDiscount(discountId);
+        if(output.getValue())
+            daos.getStoreDao().update(permission.getStore());
+        return output;
     }
 
     @Override

@@ -177,7 +177,7 @@ public class LogicManagerAllStubsTest {
     /**
      * set up discount added to the store
      */
-    private void setUpDiscountAdded() {
+    protected void setUpDiscountAdded() {
         setUpProductAdded();
         Discount discount=data.getDiscounts(Data.VALID).get(0);
         GsonBuilder builderDiscount = new GsonBuilder();
@@ -1325,8 +1325,15 @@ public class LogicManagerAllStubsTest {
      * use case 4.2.1.1 -add discount to store
      */
     @Test
+    @Transactional
     public void testAddDiscountToStoreSuccess(){
         setUpProductAdded();
+        testAddDiscountToStoreSuccessTest();
+        tearDownProductAdded();
+    }
+
+    @Test
+    public void testAddDiscountToStoreSuccessTest(){
         Discount discount=data.getDiscounts(Data.VALID).get(0);
         GsonBuilder builderDiscount = new GsonBuilder();
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
@@ -1349,6 +1356,7 @@ public class LogicManagerAllStubsTest {
         String discountToAdd=discountGson.toJson(discount,Discount.class);
         assertFalse(logicManager.addDiscount(data.getId(Data.VALID),discountToAdd,
                 discountToAdd).getValue());
+        tearDownProductAdded();
     }
 
     /**
@@ -1364,6 +1372,7 @@ public class LogicManagerAllStubsTest {
         String discountToAdd=discountGson.toJson(discount,Discount.class);
         assertFalse(logicManager.addDiscount(data.getId(Data.VALID),discountToAdd,
                 data.getStore(Data.VALID).getName()).getValue());
+        tearDownProductAdded();
     }
 
     /**
@@ -1379,6 +1388,7 @@ public class LogicManagerAllStubsTest {
         String discountToAdd=discountGson.toJson(discount,Discount.class);
         assertFalse(logicManager.addDiscount(data.getId(Data.VALID),discountToAdd,
                 data.getStore(Data.VALID).getName()).getValue());
+        tearDownProductAdded();
     }
 
     /**
@@ -1389,17 +1399,10 @@ public class LogicManagerAllStubsTest {
         setUpProductAdded();
         assertFalse(logicManager.addDiscount(data.getId(Data.VALID),"string",
                 data.getStore(Data.VALID).getName()).getValue());
+        tearDownProductAdded();
     }
 
-    /**
-     * use case 4.2.1.2 -remove discount from store
-     */
-    @Test
-    public void testDeleteDiscountFromStoreSuccess(){
-        setUpDiscountAdded();
-        assertTrue(logicManager.deleteDiscountFromStore(data.getId(Data.VALID),0,
-                data.getStore(Data.VALID).getName()).getValue());
-    }
+
 
     /**
      * use case 4.2.1.2 -remove discount from store
@@ -1420,6 +1423,7 @@ public class LogicManagerAllStubsTest {
     public void testViewDiscountSuccess(){
         setUpDiscountAdded();
         assertNotNull(logicManager.viewDiscounts(data.getStore(Data.VALID).getName()).getValue());
+        tearDownOpenStore();
     }
 
     /**

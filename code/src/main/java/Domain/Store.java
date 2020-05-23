@@ -451,7 +451,8 @@ public class Store {
     public Response<Boolean> addDiscount(Discount discount) {
         if(!checkProducts(discount))
             return new Response<>(false,OpCode.Invalid_Product);
-        discountPolicy.putIfAbsent(discount.getId(),discount);
+        if(daos.getDiscountDao().addDiscount(discount))
+            discountPolicy.put(discount.getId(),discount);
         return new Response<>(true,OpCode.Success);
     }
 

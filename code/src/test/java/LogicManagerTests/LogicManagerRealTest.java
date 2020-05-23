@@ -1005,23 +1005,30 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 4.2.1.1 -add discount to store
      */
-    @Test @Override
-    public void testAddDiscountToStoreSuccess(){
-        super.testAddDiscountToStoreSuccess();
-        Subscribe sub = ((Subscribe) currUser.getState());
+    @Override
+    @Transactional
+    public void testAddDiscountToStoreSuccessTest() {
+        setUpProductAdded();
+        super.testAddDiscountToStoreSuccessTest();
+        Subscribe sub = daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
         Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
-        assertTrue(store.getDiscount().containsKey(0));
+        assertTrue(store.getDiscount().values().iterator().next() instanceof RegularDiscount);
+        tearDownOpenStore();
     }
 
     /**
      * use case 4.2.1.2 -remove discount from store
      */
     @Test
-    public void testDeleteDiscountFromStoreSuccess(){
-        super.testDeleteDiscountFromStoreSuccess();
-        Subscribe sub = ((Subscribe) currUser.getState());
+    public void testDeleteDiscountFromStoreSuccessTest(){
+        setUpDiscountAdded();
+        int discountId=daos.getStoreDao().find(data.getStore(Data.VALID).getName()).getDiscount().values().iterator().next().getId();
+        assertTrue(logicManager.deleteDiscountFromStore(data.getId(Data.VALID),discountId,
+                    data.getStore(Data.VALID).getName()).getValue());
+        Subscribe sub = daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
         Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
         assertTrue(store.getDiscount().isEmpty());
+        tearDownOpenStore();
     }
 
     /**
@@ -1030,21 +1037,23 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Test @Override
     public void testViewDiscountSuccess(){
-        super.testViewDiscountSuccess();
+        setUpDiscountAdded();
         String store=data.getStore(Data.VALID).getName();
+        int discountId=daos.getStoreDao().find(store).getDiscount().values().iterator().next().getId();
         HashMap<Integer, String> discounts =logicManager.viewDiscounts(store).getValue();
-        assertNotNull(discounts.get(0));
+        assertNotNull(discounts.get(discountId));
         try {
             GsonBuilder builderDiscount = new GsonBuilder();
             builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
             Gson discountGson = builderDiscount.create();
-            RegularDiscount discount = (RegularDiscount) (discountGson.fromJson(discounts.get(0),Discount.class));
+            RegularDiscount discount = (RegularDiscount) (discountGson.fromJson(discounts.get(discountId),Discount.class));
             assertEquals(discount.getProduct(),data.getProductData(Data.VALID).getProductName());
             assertEquals(discount.getPercantage(),10,0.001);
         }
         catch(Exception e){
             fail();
         }
+        tearDownOpenStore();
     }
 
     /**
