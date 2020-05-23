@@ -1092,6 +1092,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * notification
      * remove Admin from being manager and check that niv was removed from being a manager recursively
      */
+
+    @Override
+    @Test
+    public void testRemoveManager(){
+        super.testRemoveManager();
+    }
     @Override
     protected void testRemoveManagerSuccess() {
         Subscribe sub=(Subscribe) currUser.getState();

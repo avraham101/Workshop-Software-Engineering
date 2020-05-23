@@ -1732,6 +1732,7 @@ public class LogicManagerAllStubsTest {
         testRemoveManagerFailStore();
         testRemoveManagerFailUser();
         testRemoveManagerSuccess();
+        tearDownManagerAdded();
     }
 
     /**
