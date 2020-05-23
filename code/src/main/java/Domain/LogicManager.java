@@ -842,7 +842,7 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","addProductToStore",
                 "remove a product to store", new Object[] {storeName, productName});
         User current=connectedUsers.get(id);
-        if(!stores.containsKey(storeName))
+        if(daos.getStoreDao().find(storeName)==null)
             return new Response<>(false,OpCode.Store_Not_Found);
         return current.removeProductFromStore(storeName,productName);
     }
@@ -858,7 +858,7 @@ public class LogicManager {
         User current=connectedUsers.get(id);
         if(productData==null)
             return new Response<>(false,OpCode.Invalid_Product);
-        if(!stores.containsKey(productData.getStoreName()))
+        if(daos.getStoreDao().find(productData.getStoreName())==null)
             return new Response<>(false,OpCode.Store_Not_Found);
         if(validProduct(productData))
             return current.editProductFromStore(productData);

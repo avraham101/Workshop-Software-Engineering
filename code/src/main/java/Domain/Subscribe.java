@@ -261,6 +261,8 @@ public class Subscribe extends UserState{
         StoreDao storeDao = new StoreDao();
         Store store = storeDao.find(permission.getStore().getName());
         Response<Boolean> output = store.addProduct(productData);
+        if(output.getValue())
+            permission.setStore(store);
         return output;
     }
 

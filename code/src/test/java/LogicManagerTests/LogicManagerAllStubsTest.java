@@ -1221,6 +1221,7 @@ public class LogicManagerAllStubsTest {
         setUpProductAdded();
         testRemoveProductSuccess();
         testRemoveProductTwiceFail();
+        tearDownOpenStore();
     }
 
     /**
@@ -1238,6 +1239,7 @@ public class LogicManagerAllStubsTest {
     protected void testRemoveProductSuccess() {
         ProductData p=data.getProductData(Data.VALID);
         assertTrue(logicManager.removeProductFromStore(data.getId(Data.VALID),p.getStoreName(),p.getProductName()).getValue());
+
     }
 
     /**
@@ -1247,6 +1249,7 @@ public class LogicManagerAllStubsTest {
     public void testEditProductSuccess() {
         setUpProductAdded();
         assertTrue(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.EDIT)).getValue());
+        tearDownOpenStore();
     }
 
     /**
@@ -1263,6 +1266,7 @@ public class LogicManagerAllStubsTest {
         testEditProductNegativeAmount();
         testEditProductNegativePrice();
         testEditProductNullPurchasePolicy();
+        tearDownOpenStore();
     }
 
     /**

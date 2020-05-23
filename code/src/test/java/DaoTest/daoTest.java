@@ -162,7 +162,7 @@ public class daoTest {
     @Test
     public void removeStore(){
         StoreDao storeDao=new StoreDao();
-        Store store=storeDao.find("hanut");
+        //Store store=storeDao.find("hanut");
         storeDao.removeStore("Store");
     }
     @Test

@@ -59,7 +59,7 @@ public class ProductDao {
         }
     }
 
-    public void updateProduct(Product product){
+    public boolean updateProduct(Product product){
 
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
@@ -70,11 +70,13 @@ public class ProductDao {
             et.begin();
             em.merge(product);
             et.commit();
+            return true;
         } catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {
                 et.rollback();
             }
+            return false;
 //            ex.printStackTrace();
         } finally {
             // Close EntityManager
@@ -85,7 +87,7 @@ public class ProductDao {
 
     }
 
-    public void removeProduct(Product product){
+    public boolean removeProduct(Product product){
 
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
@@ -97,11 +99,13 @@ public class ProductDao {
             Product p=em.find(Product.class,product);
             em.remove(product);
             et.commit();
+            return true;
         } catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {
                 et.rollback();
             }
+            return false;
 //            ex.printStackTrace();
         } finally {
             // Close EntityManager

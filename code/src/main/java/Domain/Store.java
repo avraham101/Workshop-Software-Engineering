@@ -390,12 +390,21 @@ public class Store {
      */
     public Response<Boolean> removeProduct(String productName) {
         Product product=products.get(productName);
+        //check on db for updates
+        if(product==null)
+            product=daos.getProductDao().find(new Product(productName,name));
         if(product!=null) {
             product.getWriteLock().lock();
-            product.getCategory().removeProduct(productName);
-            products.remove(productName);
-            product.getWriteLock().unlock();
-            return new Response<>(true,OpCode.Success);
+            if(daos.getProductDao().removeProduct(product)) {
+                product.getCategory().removeProduct(productName);
+                products.remove(productName);
+                product.getWriteLock().unlock();
+                return new Response<>(true,OpCode.Success);
+            }
+            else{
+                product.getWriteLock().unlock();
+                return new Response<>(false,OpCode.Invalid_Product);
+            }
         }
         return new Response<>(false,OpCode.Invalid_Product);
     }
@@ -407,7 +416,7 @@ public class Store {
      * @return if the product was edited successfully
      */
     public Response<Boolean> editProduct(ProductData productData) {
-        Product old=products.get(productData.getProductName());
+        Product old=daos.getProductDao().find(new Product(productData.getProductName(),productData.getStoreName()));
         if(old==null)
             return new Response<>(false,OpCode.Invalid_Product);
         String categoryName=productData.getCategory();
@@ -415,7 +424,12 @@ public class Store {
             categoryList.put(categoryName,new Category(categoryName));
         }
         old.edit(productData,categoryList.get(categoryName));
-        return new Response<>(true,OpCode.Success);
+        if(daos.getProductDao().updateProduct(old)) {
+            products.put(old.getName(), old);
+            return new Response<>(true,OpCode.Success);
+        }
+        return new Response<>(false,OpCode.DB_Down);
+
     }
 
     /**

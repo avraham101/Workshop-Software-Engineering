@@ -34,11 +34,11 @@ public class Product implements Serializable {
     @Column(name="price",nullable = false)
     private double price;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.ALL,fetch =FetchType.EAGER)
     @JoinColumn(name="purchaseType",referencedColumnName = "purchaseType")
     private PurchaseType purchaseType;
 
-    @ManyToOne(cascade=CascadeType.PERSIST)
+    @ManyToOne(cascade=CascadeType.PERSIST,fetch = FetchType.EAGER)
     @JoinTable(name="category_product",
             joinColumns ={@JoinColumn(name = "product", referencedColumnName="productName"),
                     @JoinColumn(name="store", referencedColumnName="storeName")},
