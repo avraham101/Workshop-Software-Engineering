@@ -358,6 +358,7 @@ public class Subscribe extends UserState{
             lock.writeLock().lock();
             givenByMePermissions.add(newPermission);
             lock.writeLock().unlock();
+            daos.getPermissionDao().addPermission(newPermission);
             return new Response<>(true,OpCode.Success);
         }
         return new Response<>(false,OpCode.Already_Exists);

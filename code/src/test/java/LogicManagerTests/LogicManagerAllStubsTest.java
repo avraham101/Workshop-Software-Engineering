@@ -1017,6 +1017,7 @@ public class LogicManagerAllStubsTest {
         setUpBoughtProduct();
         testWriteReviewInvalid();
         testWriteReviewValid();
+
     }
 
     /**
@@ -1572,6 +1573,7 @@ public class LogicManagerAllStubsTest {
         testAddManagerToStoreFailStore();
         testAddManagerToStoreFailUser();
         testAddManagerStoreSuccess();
+        tearDownOpenStore();
     }
 
     /**
@@ -1973,6 +1975,7 @@ public class LogicManagerAllStubsTest {
         Subscribe other=data.getSubscribe(Data.VALID2);
         SubscribeDao subscribeDao = new SubscribeDao();
         subscribeDao.remove(other.getName());
+        subscribeDao.remove(data.getSubscribe(Data.VALID).getName());
         subscribeDao.remove(data.getSubscribe(Data.ADMIN).getName());
     }
 

@@ -23,7 +23,8 @@ public class SubscribeDao extends Dao<Subscribe>{
         Subscribe sub = null;
         try {
             sub=em.find(Subscribe.class,userName);
-            sub.initPermissions();
+            if(sub!=null)
+                sub.initPermissions();
         }
         catch(NoResultException ex) {
             ex.printStackTrace();

@@ -694,7 +694,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 3.3 - write review
      */
-    @Override @Test
+    @Override
+    @Test
     public void testWriteReview() {
         super.testWriteReview();
         testWriteReviewSuccess();

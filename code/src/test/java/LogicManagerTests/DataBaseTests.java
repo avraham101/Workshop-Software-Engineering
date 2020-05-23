@@ -27,6 +27,13 @@ public class DataBaseTests {
         productDao.addProduct(chicken);
 
     }
+
+    public void permissionSetUp(Subscribe sub,Store store){
+        assertTrue(subscribeDao.addSubscribe(sub));
+        assertTrue(storeDao.addStore(store));
+        assertTrue(subscribeDao.addSubscribe(data.getSubscribe(Data.VALID2)));
+
+    }
     @Test
     public void testReviewDaoAdd(){
         Subscribe sub = data.getSubscribe(Data.VALID);
@@ -60,6 +67,35 @@ public class DataBaseTests {
     @Test
     public  void delSub(){
         SubscribeDao dao = new SubscribeDao();
-        dao.remove("Yuval   ");
+        dao.remove("Yuval");
+        //dao.remove("niv");
+    }
+
+    @Test
+    public void delStore(){
+        storeDao.removeStore("Store");
+    }
+
+    @Test
+    public void addPermission(){
+        Subscribe sub = data.getSubscribe(Data.VALID);
+
+        //permissionSetUp(sub,store);
+        assertTrue(subscribeDao.addSubscribe(sub));
+        Store store = sub.openStore(data.getStore(Data.VALID));
+        assertTrue(subscribeDao.addSubscribe(data.getSubscribe(Data.VALID2)));
+        PermissionDao dao = new PermissionDao();
+        Permission per = new Permission(data.getSubscribe(Data.VALID2),store);
+        per.setGivenBy(sub.getName());
+        assertTrue(dao.addPermission(per));
+    }
+
+    @Test
+    public void delPermission(){
+        PermissionDao dao = new PermissionDao();
+        Store store = storeDao.find("Store");
+        Permission per = dao.findPermission(new Permission(data.getSubscribe(Data.VALID2),store));
+        assertTrue(dao.removePermission(per));
+
     }
 }

@@ -1014,12 +1014,14 @@ public class LogicManager {
     public Response<Boolean> addManager(int id,String userName, String storeName) {
         loggerSystem.writeEvent("LogicManager","addManager",
                 "store owner add a manager to the store", new Object[] {storeName, userName});
-        if(!subscribes.containsKey(userName))
+
+        if(daos.getSubscribeDao().find(userName)==null)
             return new Response<>(false,OpCode.User_Not_Found);
-        if(!stores.containsKey(storeName))
+        if( daos.getStoreDao().find(storeName)==null)
             return new Response<>(false,OpCode.Store_Not_Found);
         User current=connectedUsers.get(id);
-        return current.addManager(subscribes.get(userName),storeName);
+        Subscribe youngOwner = daos.getSubscribeDao().find(userName);
+        return current.addManager(youngOwner,storeName);
     }
 
     /**

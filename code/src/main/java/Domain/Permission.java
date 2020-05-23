@@ -61,6 +61,15 @@ public class Permission implements Serializable {
 
     // ============================ getters & setters ============================ //
 
+
+    public String getGivenBy() {
+        return givenBy;
+    }
+
+    public void setGivenBy(String givenBy) {
+        this.givenBy = givenBy;
+    }
+
     public Subscribe getOwner() {
         return owner;
     }
