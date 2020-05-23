@@ -24,7 +24,7 @@ public class Cart implements Serializable {
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.ALL)
-    @MapKey(name="store")
+    @MapKeyColumn(name="storename")
     @JoinColumn(name="username", referencedColumnName = "username", updatable = false)
     private Map<String,Basket> baskets; // key is the store name and the value is the basket of the store
 

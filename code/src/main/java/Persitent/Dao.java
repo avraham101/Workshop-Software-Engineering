@@ -23,7 +23,6 @@ public class Dao<T> {
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
         } finally {
             // Close EntityManager
             em.close();

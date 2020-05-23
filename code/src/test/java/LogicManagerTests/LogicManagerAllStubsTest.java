@@ -620,7 +620,7 @@ public class LogicManagerAllStubsTest {
      * part of use case 2.5 - view spesific products
      */
     @Test
-    public void testViewSpecificProducFilterProductName() {
+    public void testViewSpecificProductFilterProductName() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.PRODUCT_NAME);
@@ -767,24 +767,20 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.addProductToCart(data.getId(Data.VALID),product.getProductName(),product.getStoreName(),product.getAmount()).getValue());
     }
 
-    /**
-     * use case 2.8 - test reserve Cart Products
-     */
-    @Test
-    public void testBuyCart() {
-        setUpProductAddedToCart();
-        testSuccessBuyProducts();
-    }
 
     /**
      * use case 2.8 - test reserveCart Products
      * success tests
      */
+    @Test
+    @Transactional
     public void testSuccessBuyProducts() {
+        setUpProductAddedToCart();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address).getValue());
+        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address).getValue());
+        tearDownProductAdded();
     }
 
     /**

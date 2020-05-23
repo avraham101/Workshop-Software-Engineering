@@ -1,10 +1,14 @@
 package Persitent;
 
+import Domain.Admin;
 import Domain.Discount.Discount;
 import Domain.Store;
 import Domain.Subscribe;
 
 import javax.persistence.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 public class SubscribeDao extends Dao<Subscribe>{
 
@@ -67,5 +71,24 @@ public class SubscribeDao extends Dao<Subscribe>{
         //System.out.println("entities deleted: " + rowsDeleted);
         em.getTransaction().commit();
         em.close();
+    }
+
+    public List<Admin> getAllAdmins() {
+        List<Admin> output = new LinkedList<>();
+        try {
+            EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+            em.getTransaction().begin();
+            Query query = em.createQuery("SELECT Admin FROM Domain.Admin");
+            List<Admin> resultList = query.getResultList();
+            for (Admin admin : resultList) {
+                if (admin != null)
+                    output.add((Admin) find(admin.getName()));
+            }
+        }
+        catch (Exception e){
+
+        }
+        return output;
+
     }
 }
