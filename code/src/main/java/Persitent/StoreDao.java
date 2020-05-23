@@ -2,6 +2,7 @@ package Persitent;
 
 
 import Domain.Store;
+import Publisher.Publisher;
 
 import javax.persistence.*;
 import java.util.LinkedList;
@@ -87,4 +88,5 @@ public class StoreDao extends Dao<Store>{
     public void update(Store store) {
         super.update(ENTITY_MANAGER_FACTORY.createEntityManager(),store);
     }
+
 }

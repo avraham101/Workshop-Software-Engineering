@@ -1,6 +1,7 @@
 package Persitent.DaoHolders;
 
 import Persitent.*;
+import Publisher.Publisher;
 
 public class DaoHolder {
     private CartDao cartDao;
@@ -55,7 +56,6 @@ public class DaoHolder {
         return purchaseDao;
     }
 
-
     public RequestDao getRequestDao() {
         return requestDao;
     }
@@ -67,4 +67,5 @@ public class DaoHolder {
     public SubscribeDao getSubscribeDao() {
         return subscribeDao;
     }
+
 }

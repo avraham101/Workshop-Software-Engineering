@@ -8,6 +8,8 @@ import Domain.Discount.RegularDiscount;
 import Domain.PurchasePolicy.UserPurchasePolicy;
 import Domain.Notification.Notification;
 import Persitent.DaoHolders.DaoHolder;
+import Persitent.SubscribeDao;
+import Publisher.SinglePublisher;
 import Stubs.StubPublisher;
 import Systems.HashSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -38,7 +40,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         init();
         currUser=connectedUsers.get(data.getId(Data.VALID));
         publisher=new StubPublisher();
-        logicManager.setPublisher(publisher);
+        SinglePublisher.initPublisher(publisher);
 
     }
 
@@ -383,6 +385,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         List<ProductData> list = cartData.getProducts();
         assertEquals(1, list.size());
         assertEquals(list.get(0).getProductName(), productData.getProductName());
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -390,12 +393,15 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * success test
      */
     @Override @Test
+    @Transactional
     public void testDeleteProductFromCart() {
         setUpProductAddedToCart();
         ProductData productData = data.getProductData(Data.VALID);
         assertTrue(logicManager.deleteFromCart(data.getId(Data.VALID),productData.getProductName(),productData.getStoreName()).getValue());
-        Basket basket=currUser.getState().getCart().getBasket(productData.getStoreName());
+        Subscribe sub =daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
+        Basket basket=sub.getCart().getBasket(productData.getStoreName());
         assertNull(basket.getProducts().get(productData.getProductName()));
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -403,11 +409,13 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * success test
      */
     @Override @Test
+    @Transactional
     public void testEditProductsInCart() {
         setUpProductAddedToCart();
         ProductData productData = data.getProductData(Data.VALID);
         assertTrue(logicManager.editProductInCart(data.getId(Data.VALID),productData.getProductName(),productData.getStoreName(),2).getValue());
         assertEquals(2, logicManager.watchCartDetails(data.getId(Data.VALID)).getValue().getProducts().get(0).getAmount());
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -451,22 +459,27 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * notification
      */
     @Override
-    protected void testSuccessBuyProducts() {
+    @Test
+    @Transactional
+    public void testSuccessBuyProducts() {
+        setUpProductAddedToCart();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
         assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
         //check notification
         HashMap<Integer, List<Notification>> notifications=publisher.getNotificationList();
-        List<ProductData> productDataList= (List<ProductData>) notifications.get(data.getId(Data.VALID)).get(0).getValue();
+        List<ProductPeristentData> productDataList= (List<ProductPeristentData>) notifications.get(data.getId(Data.VALID)).get(0).getValue();
         ProductData expected=data.getProductData(Data.VALID);
-        ProductData actual=productDataList.get(0);
+        ProductPeristentData actual=productDataList.get(0);
         assertEquals(actual.getProductName(),expected.getProductName());
-        assertEquals(actual.getStoreName(),expected.getStoreName());
+        assertEquals(actual.getStore(),expected.getStoreName());
         assertEquals(actual.getCategory(),expected.getCategory());
         assertEquals(actual.getAmount(),expected.getAmount());
         assertEquals(actual.getPrice(),expected.getPrice(),0.001);
+        tearDownProductAddedToCart();
     }
+
 
     /**
      * use case 2.8 - test buy Cart
@@ -1084,7 +1097,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         //add another manager
         p.getOwner().addManager(niv,storeName);
         super.testRemoveManagerSuccess();
-        logicManager.setPublisher(this.publisher);
+        SinglePublisher.initPublisher(this.publisher);
         assertFalse(niv.getPermissions().containsKey(storeName));
         assertFalse(p.getOwner().getPermissions().containsKey(storeName));
         //check notifications
@@ -1335,5 +1348,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         daos.getSubscribeDao().remove(data.getSubscribe(Data.VALID).getName());
         tearDownOpenStore();
     }
+
+//    private void tearDownProductBought() {
+//        tearDownProductAddedToCart();
+//    }
 }
 

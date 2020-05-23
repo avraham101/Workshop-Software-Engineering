@@ -780,7 +780,7 @@ public class LogicManagerAllStubsTest {
      * use case 2.8 - test reserveCart Products
      * success tests
      */
-    protected void testSuccessBuyProducts() {
+    public void testSuccessBuyProducts() {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();

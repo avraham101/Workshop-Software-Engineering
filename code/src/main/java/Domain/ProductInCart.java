@@ -29,6 +29,18 @@ public class ProductInCart implements Serializable {
 
     public ProductInCart(){ }
 
+    /**
+     * pk constructor
+     * @param buyer
+     * @param storeName
+     * @param productName
+     */
+    public ProductInCart(String buyer, String storeName, String productName) {
+        this.buyer = buyer;
+        this.storeName = storeName;
+        this.productName = productName;
+    }
+
     public ProductInCart(String buyer, String storeName, String productName, int amount, double price) {
         this.buyer = buyer;
         this.storeName = storeName;

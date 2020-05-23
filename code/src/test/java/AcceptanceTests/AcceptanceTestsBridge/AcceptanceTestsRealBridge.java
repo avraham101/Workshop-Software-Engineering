@@ -12,6 +12,7 @@ import DataAPI.Purchase;
 import Domain.ProductPeristentData;
 import Domain.Request;
 import Domain.Review;
+import Publisher.SinglePublisher;
 import Service.ServiceAPI;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
@@ -360,7 +361,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public void setPublisher(PublisherMock publisherMock) {
-        serviceAPI.setPublisher(publisherMock);
+        SinglePublisher.initPublisher(publisherMock);
     }
     //--------------------------get managers of store---------------------------------//
 

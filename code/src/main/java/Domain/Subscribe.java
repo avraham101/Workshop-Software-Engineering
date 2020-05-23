@@ -5,23 +5,18 @@ import Domain.Discount.Discount;
 import Domain.Notification.RemoveNotification;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.Notification.Notification;
-import Persitent.DaoHolders.StoreDaoHolder;
 import Persitent.DaoHolders.SubscribeDaoHolder;
 import Persitent.RequestDao;
-import Persitent.ReviewDao;
 import Persitent.StoreDao;
-import Persitent.SubscribeDao;
 import Publisher.Publisher;
+import Publisher.SinglePublisher;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Entity
@@ -70,9 +65,6 @@ public class Subscribe extends UserState{
 
     @Transient
     private final ReentrantReadWriteLock lock;
-
-    @Transient
-    private Publisher publisher;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade=CascadeType.ALL)
@@ -682,18 +674,16 @@ public class Subscribe extends UserState{
     }
 
 
-
-    public void setPublisher(Publisher publisher) {
-        this.publisher=publisher;
-    }
-
     public void sendNotification(Notification<?> notification) {
-        notifications.add(notification);
-        sendAllNotifications();
+        if(daos.getNotificationDao().add(notification)) {
+            notifications.add(notification);
+            sendAllNotifications();
+        }
     }
 
     public void sendAllNotifications() {
         int id=getSessionNumber();
+        Publisher publisher= SinglePublisher.getInstance();
         if(!notifications.isEmpty()&&publisher!=null&&id!=-1) {
             publisher.update(String.valueOf(id), new ArrayList<Notification>(notifications));
         }

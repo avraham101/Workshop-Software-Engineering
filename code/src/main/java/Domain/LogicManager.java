@@ -21,6 +21,7 @@ import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,7 +40,6 @@ public class LogicManager {
     private AtomicInteger requestIdGenerator;
     private final Object openStoreLocker=new Object();
     private Gson gson;
-    private Publisher publisher;
     private DaoHolder daos;
 
 
@@ -226,7 +226,6 @@ public class LogicManager {
         boolean output = this.daos.getSubscribeDao().addSubscribe(subscribe);
         //boolean output = this.subscribes.putIfAbsent(userName,subscribe)==null;
         if(output) {
-            subscribe.setPublisher(publisher);
             return new Response<>(output, OpCode.Success);
         }
         return new Response<>(output,OpCode.User_Name_Already_Exist);
@@ -571,6 +570,7 @@ public class LogicManager {
      * @param addresToDeliver - the address do Deliver the purchase
      * @return true is the purchase succeeded, otherwise false
      */
+    @Transactional
     public Response<Boolean> purchaseCart(int id, String country, PaymentData paymentData, String addresToDeliver) {
         loggerSystem.writeEvent("LogicManager","purchaseCart",
                 "reserveCart the products in the cart", new Object[] {paymentData, addresToDeliver});
@@ -622,7 +622,7 @@ public class LogicManager {
             productsAndStores.get(p.getStoreName()).add(p);
         }
         for(String storeName:productsAndStores.keySet()){
-            Store store=stores.get(storeName);
+            Store store=daos.getStoreDao().find(storeName);
             store.sendManagersNotifications(productsAndStores.get(storeName));
         }
     }
@@ -1264,14 +1264,6 @@ public class LogicManager {
         }
         List<String> users = new LinkedList<>(this.subscribes.keySet());
         return new Response<>(users,OpCode.Success);
-    }
-
-    public void setPublisher(Publisher pub) {
-        for(String s: this.subscribes.keySet()) {
-            Subscribe sub = this.subscribes.get(s);
-            sub.setPublisher(pub);
-        }
-        this.publisher=pub;
     }
 
     public void deleteReceivedNotifications(int id, List<Integer> notificationsId) {
