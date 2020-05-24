@@ -141,7 +141,7 @@ public class LogicManager {
 
     /**
      * test constructor moc systems
-     * @param userName
+     * @param userName - the user name
      * @param password
      * @param paymentSystem
      * @param supplySystem
@@ -224,7 +224,6 @@ public class LogicManager {
         }
         subscribe = new Subscribe(userName, password);
         boolean output = this.daos.getSubscribeDao().addSubscribe(subscribe);
-        //boolean output = this.subscribes.putIfAbsent(userName,subscribe)==null;
         if(output) {
             return new Response<>(output, OpCode.Success);
         }

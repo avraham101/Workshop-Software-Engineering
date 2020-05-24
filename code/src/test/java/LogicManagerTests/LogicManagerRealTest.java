@@ -89,11 +89,20 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         logicManager.register(subscribe.getName(),subscribe.getPassword());
     }
 
+    /**
+     * use case 2.2 Register
+     */
     @Test
     @Override
     public void testRegisterSuccess() {
-        super.testRegisterSuccess();
+        setUpConnect();
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        assertTrue(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
+        daos.getSubscribeDao().remove(subscribe.getName());
+        tearDownConnect();
     }
+
+
     /**
      * test use case 2.3 - Login
      */
