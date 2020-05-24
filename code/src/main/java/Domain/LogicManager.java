@@ -781,12 +781,12 @@ public class LogicManager {
     public Response<Boolean> addRequest(int id,String storeName, String content) {
         loggerSystem.writeEvent("LogicManager","addRequest",
                 "add a request to the store", new Object[] {storeName, content});
-        if (storeName == null || content == null || !stores.containsKey(storeName))
-            return new Response<>(false,OpCode.Invalid_Request);
         Store dest = daos.getStoreDao().find(storeName);
-      //Store dest = stores.get(storeName);
+        if (storeName == null || content == null || dest==null)
+            return new Response<>(false,OpCode.Invalid_Request);
+
         User current = connectedUsers.get(id);
-        int requestId = requestIdGenerator.incrementAndGet(); // generate request number sync
+        int requestId = requestIdGenerator.incrementAndGet(); // generate request number sync //TODO maybe delete- auto generated
         Request request = current.addRequest(requestId, storeName, content);
         if (request == null) {
             return new Response<>(false,OpCode.Null_Request);
@@ -1107,7 +1107,7 @@ public class LogicManager {
                 "store owner view the requests of the store", new Object[] {storeName});
         User current=connectedUsers.get(id);
         List<RequestData> requestDatas = new LinkedList<>();;
-        if(storeName != null && stores.containsKey(storeName)) {
+        if(storeName != null && daos.getStoreDao().find(storeName)!=null) {
             List<Request> requests = current.viewRequest(storeName);
             if(requests!=null){
                 for(Request r:requests)

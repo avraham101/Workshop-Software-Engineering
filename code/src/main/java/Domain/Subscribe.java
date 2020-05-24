@@ -500,7 +500,7 @@ public class Subscribe extends UserState{
             return output;
         Permission permission = permissions.get(storeName);
         if(permission != null){
-            Store store = permission.getStore();
+            Store store = daos.getStoreDao().find(storeName);
             output = new LinkedList<>(store.getRequests().values());
         }
         return output;

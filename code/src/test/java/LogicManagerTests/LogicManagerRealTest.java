@@ -810,10 +810,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 3.5 -add request
      */
-    @Override
+    //@Override
+    //@Test
     public void testAddRequest(){
         setUpOpenedStore();
         testSubscribeAddRequestSuccess();
+        //super.testAddRequest();
     }
 
     /**
@@ -1214,7 +1216,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     private void testStoreViewRequestSuccess() {
         testAddRequest();
         StoreData storeData = data.getStore(Data.VALID);
-        List<Request> requests=new LinkedList<>(stores.get(storeData.getName()).getRequests().values());
+        Store store = daos.getStoreDao().find(storeData.getName());
+        List<Request> requests=new LinkedList<>(store.getRequests().values());
         List<RequestData> excepted = new LinkedList<>();
         for(Request r:requests)
             excepted.add(new RequestData(r));
