@@ -699,9 +699,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * logout twice from same user
      */
     @Test
-    public void logoutTwice(){
-        super.testLogout();
-        assertFalse(currUser.logout());
+    public void logoutTwice() {
+        setUpLogedInUser();
+        int id = data.getId(Data.VALID);
+        assertTrue(logicManager.logout(id).getValue());
+        assertFalse(logicManager.logout(id).getValue());
     }
 
     /**
