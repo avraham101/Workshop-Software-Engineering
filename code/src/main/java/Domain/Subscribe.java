@@ -537,7 +537,7 @@ public class Subscribe extends UserState{
                 request.setComment(content)) {
             daos.getRequestDao().update(request);
             Store storeToUpdate = Cache.getInstance().findStoreInCache(storeName);
-            if(store!=null)
+            if(storeToUpdate !=null)
                 storeToUpdate.getRequests().put(requestID,request);
             return new Response<>(store.getRequests().get(requestID),OpCode.Success);
         }
