@@ -709,10 +709,10 @@ public class LogicManager {
                 "open new store", new Object[] {storeDetails});
         if(!validStoreDetails(storeDetails))
             return new Response<>(false, OpCode.Invalid_Store_Details);
-        User current=connectedUsers.get(id);
+        User current = Cache.getInstance().findUser(id);
         //prevent making two stores with the same name
         synchronized (openStoreLocker) {
-            Store store = this.daos.getStoreDao().find(storeDetails.getName());
+            Store store = Cache.getInstance().findStore(storeDetails.getName());
             if (store!=null)
                 return new Response<>(false, OpCode.Store_Not_Found);
             store = current.openStore(storeDetails);
