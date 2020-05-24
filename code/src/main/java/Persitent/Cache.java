@@ -28,6 +28,13 @@ public class Cache {
         this.subscribes = new ConcurrentHashMap<>();
     }
 
+    public static Cache getInstance(){
+        if(instance==null){
+            instance = new Cache();
+        }
+        return instance;
+    }
+
     public User findUser(int id){
         return connectedUsers.get(id);
     }
@@ -62,10 +69,8 @@ public class Cache {
         }
     }
 
-    public static Cache getInstance(){
-        if(instance==null){
-            instance = new Cache();
-        }
-        return instance;
+
+    public void addConnectedUser(int newId, User user) {
+        this.connectedUsers.put(newId,user);
     }
 }

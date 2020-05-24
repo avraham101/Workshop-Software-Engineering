@@ -5,6 +5,7 @@ import Domain.Discount.Discount;
 import Domain.Discount.Term.Term;
 import Domain.Notification.RequestNotification;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Persitent.Cache;
 import Persitent.StoreDao;
 import Domain.Notification.Notification;
 import Persitent.DaoHolders.DaoHolder;
@@ -202,7 +203,7 @@ public class LogicManager {
      */
     public int connectToSystem() {
         int newId=usersIdCounter.getAndIncrement();
-        connectedUsers.put(newId,new User());
+        Cache.getInstance().addConnectedUser(newId,new User());
         return newId;
     }
 
@@ -250,8 +251,8 @@ public class LogicManager {
             return new Response<>(false, OpCode.Invalid_Login_Details);
         }
         Subscribe subscribe = this.daos.getSubscribeDao().find(userName);
-        User user = connectedUsers.get(id);
-        if(subscribe!=null && subscribe.setSessionNumber(id)){
+        User user = Cache.getInstance().findUser(id);
+        if(user!=null && subscribe!=null && subscribe.setSessionNumber(id)){
             try {
                 password = hashSystem.encrypt(password);
                 if (subscribe.getPassword().compareTo(password) == 0) {
