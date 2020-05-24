@@ -74,6 +74,8 @@ public class LogicManager {
                 throw new Exception("Supply System Crashed");
             }
             if(daos.getSubscribeDao().getAllAdmins().isEmpty()) {
+                HashSystem hashSystem = new HashSystem();
+                password = hashSystem.encrypt(password);
                 boolean output = this.daos.getSubscribeDao().addSubscribe(new Admin(userName, password));
                 if (!output) {
                     loggerSystem.writeError("Logic manager", "constructor",
@@ -119,6 +121,8 @@ public class LogicManager {
                 throw new Exception("Supply System Crashed");
             }
             if(!daos.getSubscribeDao().getAllAdmins().isEmpty()) {
+                HashSystem hashSystem = new HashSystem();
+                password = hashSystem.encrypt(password);
                 boolean output = this.daos.getSubscribeDao().addSubscribe(new Admin(userName, password));
                 if (!output) {
                     loggerSystem.writeError("Logic manager", "constructor",
@@ -170,6 +174,8 @@ public class LogicManager {
                 throw new Exception("Supply System Crashed");
             }
             if(!daos.getSubscribeDao().getAllAdmins().isEmpty()) {
+                HashSystem hashSystem = new HashSystem();
+                password = hashSystem.encrypt(password);
                 boolean output = this.daos.getSubscribeDao().addSubscribe(new Admin(userName, password));
                 if (!output) {
                     loggerSystem.writeError("Logic manager", "constructor",
