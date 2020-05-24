@@ -365,6 +365,7 @@ public class Store {
     public synchronized boolean addRequest(Request addRequest) {
         if(addRequest==null)
             return false;
+        requests.put(addRequest.getId(), addRequest);
         return true;
     }
 

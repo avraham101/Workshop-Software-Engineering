@@ -271,7 +271,7 @@ public class User {
      * @param storeName
      * @return
      */
-    public Response<Boolean> removeManager(String userName, String storeName) {
+    public Response<Boolean> removeManager(Subscribe userName, String storeName) {
         return state.removeManager(userName,storeName);
     }
 
@@ -279,8 +279,8 @@ public class User {
      * use case 4.9.1 - view request
      * @param storeName
      */
-    public List<Request> viewRequest(String storeName) {
-        return state.viewRequest(storeName);
+    public List<Request> viewRequest(Store store) {
+        return state.viewRequest(store);
     }
 
     /**

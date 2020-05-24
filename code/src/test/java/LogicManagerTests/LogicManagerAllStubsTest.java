@@ -1781,6 +1781,7 @@ public class LogicManagerAllStubsTest {
         testStoreViewRequestSuccess();
         testStoreViewRequestFailNullName();
         testStoreViewRequestFailWrongStore();
+        tearDownOpenStore();
 
     }
 

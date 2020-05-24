@@ -404,8 +404,12 @@ public class Subscribe extends UserState{
                 for(PermissionType type: permissions)
                     added=added|p.addType(type);
                 lock.readLock().unlock();
-                if(added)
-                    return new Response<>(true,OpCode.Success);
+                if(added) {
+                    Subscribe managerWithNewPermissions = Cache.getInstance().findSubscribe(userName);
+                    if(managerWithNewPermissions!=null)
+                        managerWithNewPermissions.permissions.put(storeName,p); //if he is logged in he will get permissions in real time
+                    return new Response<>(true, OpCode.Success);
+                }
                 return new Response<>(false,OpCode.Already_Exists);
             }
         }
@@ -429,8 +433,12 @@ public class Subscribe extends UserState{
                 for(PermissionType type: permissions)
                     removed=removed|p.removeType(type);
                 lock.readLock().unlock();
-                if(removed)
-                    return new Response<>(true,OpCode.Success);
+                if(removed) {
+                    Subscribe managerWithNewPermissions = Cache.getInstance().findSubscribe(userName);
+                    if(managerWithNewPermissions!=null)
+                        managerWithNewPermissions.permissions.put(storeName,p); //if he is logged in he will get permissions in real time
+                    return new Response<>(true, OpCode.Success);
+                }
                 return new Response<>(false,OpCode.Invalid_Permissions);
             }
         }
@@ -440,20 +448,22 @@ public class Subscribe extends UserState{
 
     /**
      * use case 4.7 - remove manager
-     * @param userName
+     * @param xManager
      * @param storeName
      * @return
      */
     @Override
-    public Response<Boolean>  removeManager(String userName, String storeName) {
+    public Response<Boolean>  removeManager(Subscribe xManager, String storeName) {
         if(!permissions.containsKey(storeName))
             return new Response<>(false,OpCode.Dont_Have_Permission);
 
         for(Permission p: givenByMePermissions) {
-            if (p.getStore().getName().equals(storeName) && p.getOwner().getName().equals(userName)) {
+            if (p.getStore().getName().equals(storeName) && p.getOwner().getName().equals(xManager.userName)) {
                 lock.writeLock().lock();
                 p.getOwner().removeManagerFromStore(storeName);
                 givenByMePermissions.remove(p);
+                xManager.getPermissions().remove(storeName);
+
                 lock.writeLock().unlock();
                 return new Response<>(true,OpCode.Success);
             }
@@ -491,17 +501,16 @@ public class Subscribe extends UserState{
     }
     /**
      * use case 4.9.1 - view request
-     * @param storeName
+     * @param store
      * @return
      */
     @Override
-    public List<Request> viewRequest(String storeName) {
+    public List<Request> viewRequest(Store store) {
         List<Request> output = new LinkedList<>();
-        if(storeName==null || !permissions.containsKey(storeName))
+        if( !permissions.containsKey(store.getName()))
             return output;
-        Permission permission = permissions.get(storeName);
+        Permission permission = permissions.get(store.getName());
         if(permission != null){
-            Store store = permission.getStore();
             output = new LinkedList<>(store.getRequests().values());
         }
         return output;
@@ -522,9 +531,14 @@ public class Subscribe extends UserState{
         if(permission == null)
             return new Response<>(null, OpCode.Dont_Have_Permission);
         Store store = permission.getStore();
+        Request request = store.getRequests().get(requestID);
         if(store!=null &&
-                store.getRequests().containsKey(requestID) &&
-                store.getRequests().get(requestID).setComment(content)) {
+                request!=null &&
+                request.setComment(content)) {
+            daos.getRequestDao().update(request);
+            Store storeToUpdate = Cache.getInstance().findStoreInCache(storeName);
+            if(store!=null)
+                storeToUpdate.getRequests().put(requestID,request);
             return new Response<>(store.getRequests().get(requestID),OpCode.Success);
         }
         return new Response<>(null, OpCode.Dont_Have_Permission);

@@ -8,7 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-public class RequestDao {
+public class RequestDao extends Dao<Request> {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("request");
 
@@ -57,5 +57,11 @@ public class RequestDao {
             em.close();
         }
         return r;
+    }
+
+    public boolean update(Request request){
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        return super.update(em,request);
+
     }
 }
