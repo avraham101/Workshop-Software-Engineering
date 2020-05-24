@@ -95,7 +95,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Test
     @Override
     public void testRegisterSuccess() {
-        super.testRegisterSuccess();
+        setUpConnect();
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        assertTrue(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
+        daos.getSubscribeDao().remove(subscribe.getName());
+        tearDownConnect();
     }
 
 
