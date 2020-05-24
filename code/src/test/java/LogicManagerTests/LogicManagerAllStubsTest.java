@@ -72,12 +72,12 @@ public class LogicManagerAllStubsTest {
         //External Systems
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
-        daos=new StubDaoHolder();
         init();
     }
 
     @Transactional
     protected void init() {
+        daos=new StubDaoHolder();
         data=new TestData();
         users=new ConcurrentHashMap<>();
         stores=new ConcurrentHashMap<>();

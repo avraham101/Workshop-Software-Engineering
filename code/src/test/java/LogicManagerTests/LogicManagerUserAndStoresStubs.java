@@ -28,11 +28,12 @@ public class LogicManagerUserAndStoresStubs extends LogicManagerAllStubsTest {
 
     /**
      * part of test: use case 2.2 - Register
+     * test that an admin indeed register to the system
      */
     @Test
     public void testAdminRegister() {
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
-        assertTrue(daos.getSubscribeDao().find(subscribe.getName()) instanceof Admin);
+        assertNotNull(daos.getSubscribeDao().find(subscribe.getName()));
     }
 
     /**
