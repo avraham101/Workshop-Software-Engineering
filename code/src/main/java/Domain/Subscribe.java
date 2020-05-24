@@ -5,6 +5,7 @@ import Domain.Discount.Discount;
 import Domain.Notification.RemoveNotification;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.Notification.Notification;
+import Persitent.Cache;
 import Persitent.DaoHolders.SubscribeDaoHolder;
 import Persitent.RequestDao;
 import Persitent.StoreDao;
@@ -270,7 +271,7 @@ public class Subscribe extends UserState{
         if(!permission.canAddProduct())
             return new Response<>(false, OpCode.Dont_Have_Permission);
         StoreDao storeDao = new StoreDao();
-        Store store = storeDao.find(permission.getStore().getName());
+        Store store = Cache.getInstance().findStore(permission.getStore().getName());
         Response<Boolean> output = store.addProduct(productData);
         if(output.getValue()) {
             daos.getStoreDao().update(store);

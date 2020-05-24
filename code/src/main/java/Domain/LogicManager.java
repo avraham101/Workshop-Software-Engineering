@@ -813,7 +813,7 @@ public class LogicManager {
     public Response<List<Purchase>> watchMyPurchaseHistory(int id) {
         loggerSystem.writeEvent("LogicManager","watchMyPurchaseHistory",
                 "user view his purchase history", new Object[] {});
-        User current=connectedUsers.get(id);
+        User current= Cache.getInstance().findUser(id);
         return current.watchMyPurchaseHistory();
     }
 
@@ -825,13 +825,13 @@ public class LogicManager {
     public Response<Boolean> addProductToStore(int id,ProductData productData) {
         loggerSystem.writeEvent("LogicManager","addProductToStore",
                 "add a product to store", new Object[] {productData});
-        User current=connectedUsers.get(id);
+        User current=Cache.getInstance().findUser(id);
         StoreDao storeDao = new StoreDao();
         if(productData==null)
             return new Response<>(false,OpCode.Invalid_Product);
         if(!validProduct(productData))
             return new Response<>(false,OpCode.Invalid_Product);
-        if(storeDao.find(productData.getStoreName()) != null)
+        if(Cache.getInstance().findStore(productData.getStoreName()) != null)
             return current.addProductToStore(productData);
         return new Response<>(false,OpCode.Store_Not_Found);
     }
@@ -855,8 +855,8 @@ public class LogicManager {
     public Response<Boolean> removeProductFromStore(int id,String storeName, String productName) {
         loggerSystem.writeEvent("LogicManager","addProductToStore",
                 "remove a product to store", new Object[] {storeName, productName});
-        User current=connectedUsers.get(id);
-        if(daos.getStoreDao().find(storeName)==null)
+        User current=Cache.getInstance().findUser(id);
+        if(Cache.getInstance().findStore(storeName)==null)
             return new Response<>(false,OpCode.Store_Not_Found);
         return current.removeProductFromStore(storeName,productName);
     }
