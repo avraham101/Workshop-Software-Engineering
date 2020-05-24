@@ -1,7 +1,6 @@
 package Persitent;
 
 import Domain.Discount.Discount;
-import Domain.Product;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -15,13 +14,14 @@ public class DiscountDao {
     public DiscountDao() {
     }
 
-    public void addDiscount(Discount discount) {
+    public boolean addDiscount(Discount discount) {
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
         // Used to issue transactions on the EntityManager
         EntityTransaction et = null;
 
+        boolean output=false;
         try {
             // Get transaction and start
             et = em.getTransaction();
@@ -30,17 +30,19 @@ public class DiscountDao {
             // Save the object
             em.persist(discount);
             et.commit();
+            output=true;
         }
         catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
+
         } finally {
             // Close EntityManager
             em.close();
         }
+        return output;
     }
 
     public void removeDiscount(int id){

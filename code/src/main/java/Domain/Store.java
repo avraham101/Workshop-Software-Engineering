@@ -9,11 +9,6 @@ import Domain.Notification.Notification;
 import Persitent.DaoHolders.StoreDaoHolder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import Persitent.ProductDao;
-import Persitent.ReviewDao;
-import Persitent.StoreDao;
-import Persitent.ProductDao;
-import Persitent.StoreDao;
 
 import javax.persistence.*;
 import java.util.*;
@@ -143,6 +138,8 @@ public class Store {
         this.categoryList=new ConcurrentHashMap<>(this.categoryList);
         this.products=new ConcurrentHashMap<>(products);
         this.discountPolicy=new ConcurrentHashMap<>(discountPolicy);
+        if(purchasePolicy==null)
+            purchasePolicy=new AndPolicy(new ArrayList<>());
         if(!(this.permissions instanceof ConcurrentHashMap)) {
             this.permissions = new ConcurrentHashMap<>(this.permissions);
             for (Permission p : this.permissions.values()){
@@ -194,7 +191,10 @@ public class Store {
      * @return - thr product if exist, null if not
      */
     public Product getProduct(String productName) {
-        return products.get(productName);
+        Product product=products.get(productName);
+        if(product==null)
+            product=daos.getProductDao().find(new Product(productName,name));
+        return product;
     }
 
     @Override
@@ -248,14 +248,23 @@ public class Store {
         boolean output = true;
         List<ProductInCart> productsReserved = new LinkedList<>();
         for(ProductInCart productInCart: otherProducts) {
-            Product real = this.products.get(productInCart.getProductName());
+
+            Product real = daos.getProductDao().find(new Product(productInCart.getProductName(),name));//this.products.get(productInCart.getProductName());
             if(real!=null) {
                 int amount = productInCart.getAmount();
                 real.getWriteLock().lock();
                 if(amount<=real.getAmount()) {
                     productsReserved.add(productInCart);
                     real.setAmount(real.getAmount() - amount);
-                    real.getWriteLock().unlock();
+                    if(daos.getProductDao().updateProduct(real)) {
+                        products.put(real.getName(), real);
+                        real.getWriteLock().unlock();
+                    }
+                    else{
+                        output = false;
+                        real.getWriteLock().unlock();
+                        break;
+                    }
                 }
                 else {
                     output = false;
@@ -293,6 +302,7 @@ public class Store {
         if(real!=null) {
             real.getWriteLock().lock();
             real.setAmount(real.getAmount() + other.getAmount());
+            daos.getProductDao().updateProduct(real);
             real.getWriteLock().unlock();
         }
     }
@@ -423,7 +433,8 @@ public class Store {
         if(!categoryList.containsKey(categoryName)){
             categoryList.put(categoryName,new Category(categoryName));
         }
-        old.edit(productData,categoryList.get(categoryName));
+        old=daos.getProductDao().find(old);
+        old.edit(productData);
         if(daos.getProductDao().updateProduct(old)) {
             products.put(old.getName(), old);
             return new Response<>(true,OpCode.Success);
@@ -440,7 +451,8 @@ public class Store {
     public Response<Boolean> addDiscount(Discount discount) {
         if(!checkProducts(discount))
             return new Response<>(false,OpCode.Invalid_Product);
-        discountPolicy.putIfAbsent(discount.getId(),discount);
+        if(daos.getDiscountDao().addDiscount(discount))
+            discountPolicy.put(discount.getId(),discount);
         return new Response<>(true,OpCode.Success);
     }
 

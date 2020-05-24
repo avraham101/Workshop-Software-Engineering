@@ -11,12 +11,12 @@ public class PurchaseDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("request");
 
-    public void add(Purchase purchase) {
+    public boolean add(Purchase purchase) {
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         // Used to issue transactions on the EntityManager
         EntityTransaction et = null;
-
+        boolean output=false;
         try {
             // Get transaction and start
             et = em.getTransaction();
@@ -25,15 +25,17 @@ public class PurchaseDao {
             // Save the customer object
             em.persist(purchase);
             et.commit();
+            output=true;
         } catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
+
         } finally {
             // Close EntityManager
             em.close();
         }
+        return output;
     }
 }

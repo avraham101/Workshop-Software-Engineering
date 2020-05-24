@@ -1,13 +1,8 @@
 package Persitent;
 
-import Domain.Subscribe;
-
 import javax.persistence.*;
 
 public class Dao<T> {
-//
-//    private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-//            .createEntityManagerFactory("product");
 
     public boolean add(EntityManager em, T value) {
         boolean output = false;
@@ -28,7 +23,6 @@ public class Dao<T> {
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
         } finally {
             // Close EntityManager
             em.close();
@@ -61,6 +55,44 @@ public class Dao<T> {
             em.close();
         }
         return output;
+    }
+
+    public boolean remove(EntityManager em, T value){
+        EntityTransaction et = null;
+        boolean output=false;
+        try{
+            et = em.getTransaction();
+            et.begin();
+            T val = (T) em.find(value.getClass(), value);
+            em.remove(em.contains(val) ? val : em.merge(val));
+            et.commit();
+            output=true;
+        } catch (Exception e){
+            if(et!=null)
+                et.rollback();
+            e.printStackTrace();
+        }
+        finally {
+            em.close();
+        }
+        return output;
+    }
+
+
+
+
+
+    public T find(EntityManager em,T value){
+        T val = null;
+        try {
+            val= (T) em.find(value.getClass(),value);
+        }
+        catch(NoResultException ex) {
+        }
+        finally {
+            em.close();
+        }
+        return val;
     }
 
 }

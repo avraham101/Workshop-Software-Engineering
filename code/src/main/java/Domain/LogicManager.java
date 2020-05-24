@@ -6,7 +6,6 @@ import Domain.Discount.Term.Term;
 import Domain.Notification.RequestNotification;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Persitent.StoreDao;
-import Persitent.SubscribeDao;
 import Domain.Notification.Notification;
 import Persitent.DaoHolders.DaoHolder;
 import Systems.HashSystem;
@@ -15,12 +14,12 @@ import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
 import Systems.SupplySystem.SupplySystem;
-import Publisher.Publisher;
 import Utils.Utils;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,7 +38,6 @@ public class LogicManager {
     private AtomicInteger requestIdGenerator;
     private final Object openStoreLocker=new Object();
     private Gson gson;
-    private Publisher publisher;
     private DaoHolder daos;
 
 
@@ -79,11 +77,13 @@ public class LogicManager {
                         "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
-            boolean output = this.daos.getSubscribeDao().addSubscribe(new Admin(userName, password));
-            if(!output) {
-                loggerSystem.writeError("Logic manager", "constructor",
-                        "Fail register",new Object[]{userName});
-                throw new Exception("Admin Register Crashed");
+            if(!daos.getSubscribeDao().getAllAdmins().isEmpty()) {
+                boolean output = this.daos.getSubscribeDao().addSubscribe(new Admin(userName, password));
+                if (!output) {
+                    loggerSystem.writeError("Logic manager", "constructor",
+                            "Fail register", new Object[]{userName});
+                    throw new Exception("Admin Register Crashed");
+                }
             }
         } catch (Exception e) {
             throw new Exception("System crashed");
@@ -125,11 +125,13 @@ public class LogicManager {
                         "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
-            boolean output = this.daos.getSubscribeDao().addSubscribe(new Admin(userName, password));
-            if(!output) {
-                loggerSystem.writeError("Logic manager", "constructor",
-                        "Fail register",new Object[]{userName});
-                throw new Exception("Admin Register Crashed");
+            if(!daos.getSubscribeDao().getAllAdmins().isEmpty()) {
+                boolean output = this.daos.getSubscribeDao().addSubscribe(new Admin(userName, password));
+                if (!output) {
+                    loggerSystem.writeError("Logic manager", "constructor",
+                            "Fail register", new Object[]{userName});
+                    throw new Exception("Admin Register Crashed");
+                }
             }
         } catch (Exception e) {
             if (loggerSystem != null){
@@ -177,11 +179,13 @@ public class LogicManager {
                         "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
-            boolean output = this.daos.getSubscribeDao().addSubscribe(new Admin(userName, password));
-            if(!output) {
-                loggerSystem.writeError("Logic manager", "constructor",
-                        "Fail register",new Object[]{userName});
-                throw new Exception("Admin Register Crashed");
+            if(!daos.getSubscribeDao().getAllAdmins().isEmpty()) {
+                boolean output = this.daos.getSubscribeDao().addSubscribe(new Admin(userName, password));
+                if (!output) {
+                    loggerSystem.writeError("Logic manager", "constructor",
+                            "Fail register", new Object[]{userName});
+                    throw new Exception("Admin Register Crashed");
+                }
             }
         } catch (Exception e) {
             if (loggerSystem != null){
@@ -226,7 +230,6 @@ public class LogicManager {
         boolean output = this.daos.getSubscribeDao().addSubscribe(subscribe);
         //boolean output = this.subscribes.putIfAbsent(userName,subscribe)==null;
         if(output) {
-            subscribe.setPublisher(publisher);
             return new Response<>(output, OpCode.Success);
         }
         return new Response<>(output,OpCode.User_Name_Already_Exist);
@@ -313,7 +316,7 @@ public class LogicManager {
                 "view the details of the stores in the system", new Object[] {storeName});
         if(storeName==null)
             return new Response<>(null,OpCode.Store_Not_Found);
-        Store store = stores.get(storeName);
+        Store store = daos.getStoreDao().find(storeName);
         if(store!=null) {
             List<ProductData> output = store.viewProductInStore();
             return new Response<>(output,OpCode.Success);
@@ -383,7 +386,7 @@ public class LogicManager {
      */
     private List<ProductData> searchNone() {
         List<ProductData> output = new LinkedList<>();
-        List<Store> stores = this.daos.getStoreDao().getAll();
+        List<Store> stores = daos.getStoreDao().getAll();
         for(Store store: stores) {
             output.addAll(store.viewProductInStore());
         }
@@ -549,7 +552,7 @@ public class LogicManager {
         Store store = null;
         User current=connectedUsers.get(id);
         if (storeName != null)
-            store = stores.get(storeName);
+            store = daos.getStoreDao().find(storeName);
         if(store==null)
             return new Response<>(false, OpCode.Store_Not_Found);
         Product product = store.getProduct(productName);
@@ -571,6 +574,7 @@ public class LogicManager {
      * @param addresToDeliver - the address do Deliver the purchase
      * @return true is the purchase succeeded, otherwise false
      */
+    @Transactional
     public Response<Boolean> purchaseCart(int id, String country, PaymentData paymentData, String addresToDeliver) {
         loggerSystem.writeEvent("LogicManager","purchaseCart",
                 "reserveCart the products in the cart", new Object[] {paymentData, addresToDeliver});
@@ -622,7 +626,7 @@ public class LogicManager {
             productsAndStores.get(p.getStoreName()).add(p);
         }
         for(String storeName:productsAndStores.keySet()){
-            Store store=stores.get(storeName);
+            Store store=daos.getStoreDao().find(storeName);
             store.sendManagersNotifications(productsAndStores.get(storeName));
         }
     }
@@ -875,7 +879,7 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","addDiscountToStore",
                 "add discount to the store", new Object[] {discountData,storeName});
         User current=connectedUsers.get(id);
-        Store store=stores.get(storeName);
+        Store store=daos.getStoreDao().find(storeName);
         if(store==null)
             return new Response<>(false,OpCode.Store_Not_Found);
         Discount discount=makeDiscountFromData(discountData);
@@ -908,7 +912,7 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","removeDiscountToStore",
                 "remove discount from the store", new Object[] {discountId,storeName});
         User current=connectedUsers.get(id);
-        Store store=stores.get(storeName);
+        Store store=daos.getStoreDao().find(storeName);
         if(store==null)
             return new Response<>(false,OpCode.Store_Not_Found);
         return current.deleteDiscountFromStore(discountId,storeName);
@@ -921,7 +925,7 @@ public class LogicManager {
     public Response<HashMap<Integer,String>> viewDiscounts(String storeName){
         loggerSystem.writeEvent("LogicManager","viewDiscountsOfStore",
                 "view discount of the store", new Object[] {storeName});
-        Store store=stores.get(storeName);
+        Store store=daos.getStoreDao().find(storeName);
         if(store==null)
             return new Response<>(null,OpCode.Store_Not_Found);
         HashMap<Integer, Discount> discounts = new HashMap<>(store.getDiscount());
@@ -960,7 +964,7 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","updatePolicy",
                 "update the policy of the store", new Object[] {policyData,storeName});
         User current=connectedUsers.get(id);
-        Store store=stores.get(storeName);
+        Store store=daos.getStoreDao().find(storeName);
         if(store == null)
             return new Response<>(false,OpCode.Store_Not_Found);
         PurchasePolicy policy = makePolicyFromData(policyData);
@@ -976,11 +980,10 @@ public class LogicManager {
     public Response<String> viewPolicy(String storeName){
         loggerSystem.writeEvent("LogicManager","viewPolicy",
                 "view the policy of the store", new Object[] {storeName});
-        Store store=stores.get(storeName);
+        Store store=daos.getStoreDao().find(storeName);
         if(store==null)
             return new Response<>(null,OpCode.Store_Not_Found);
         PurchasePolicy policy = store.getPurchasePolicy();
-
         String output = gson.toJson(policy,PurchasePolicy.class);
         return new Response<>(output,OpCode.Success);
     }
@@ -1266,14 +1269,6 @@ public class LogicManager {
         }
         List<String> users = new LinkedList<>(this.subscribes.keySet());
         return new Response<>(users,OpCode.Success);
-    }
-
-    public void setPublisher(Publisher pub) {
-        for(String s: this.subscribes.keySet()) {
-            Subscribe sub = this.subscribes.get(s);
-            sub.setPublisher(pub);
-        }
-        this.publisher=pub;
     }
 
     public void deleteReceivedNotifications(int id, List<Integer> notificationsId) {

@@ -21,7 +21,7 @@ public class WebSocketController {
     public WebSocketController(SimpMessageSendingOperations messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
         pub = new Publisher(new SpringSender(messagingTemplate));
-        SingleService.setPublisher(pub);
+        SinglePublisher.initPublisher(pub);
     }
 
     @MessageMapping("/hello")

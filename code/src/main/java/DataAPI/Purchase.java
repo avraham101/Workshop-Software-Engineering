@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="purchase")
@@ -76,4 +77,20 @@ public class Purchase implements Serializable {
     }
     // ============================ getters & setters ============================ //
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Purchase purchase = (Purchase) o;
+        return Double.compare(purchase.price, price) == 0 &&
+                Objects.equals(storeName, purchase.storeName) &&
+                Objects.equals(buyer, purchase.buyer) &&
+                Objects.equals(date, purchase.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(storeName, buyer, date, price);
+    }
 }

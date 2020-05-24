@@ -160,11 +160,22 @@ public class daoTest {
     }
 
     @Test
+    public void reset(){
+        SubscribeDao subdao=new SubscribeDao();
+        //subdao.remove("Admin");
+        subdao.remove("Yuval");
+        StoreDao storeDao=new StoreDao();
+        //Store store=storeDao.find("hanut");
+        storeDao.removeStore("Store");
+    }
+
+    @Test
     public void removeStore(){
         StoreDao storeDao=new StoreDao();
         //Store store=storeDao.find("hanut");
         storeDao.removeStore("Store");
     }
+
     @Test
     public void addProductPolicy(){
         PolicyDao dao = new PolicyDao();
