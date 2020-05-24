@@ -585,6 +585,7 @@ public class Subscribe extends UserState{
         return sessionNumber;
     }
 
+    @Override
     public synchronized boolean setSessionNumber(Integer sessionNumber) {
         if(sessionNumber!=-1 && this.sessionNumber==-1) { //login
             this.sessionNumber = sessionNumber;

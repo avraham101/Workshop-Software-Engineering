@@ -310,4 +310,13 @@ public abstract class UserState {
     public abstract void deleteReceivedNotifications(List<Integer> notificationsId);
 
     public abstract Boolean sendMyNotifications();
+
+    /**
+     * use case 3.1 logout
+     * @param sessionNumber
+     * @return false, this cant be done from guset
+     */
+    public boolean setSessionNumber(Integer sessionNumber) {
+        return false;
+    }
 }

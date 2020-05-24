@@ -976,8 +976,11 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testLogout() {
         setUpLogedInUser();
-        assertTrue(currUser.logout());
-        assertTrue(currUser.getState() instanceof Guest);
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        int id = data.getId(Data.VALID);
+        assertTrue(logicManager.logout(id).getValue());
+        Subscribe daoSubscribe = daos.getSubscribeDao().find(subscribe.getName());
+        assertEquals(-1, daoSubscribe.getSessionNumber().intValue());
     }
 
     /**
