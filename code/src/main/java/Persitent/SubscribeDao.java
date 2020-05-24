@@ -4,6 +4,7 @@ import Domain.Admin;
 import Domain.Discount.Discount;
 import Domain.Store;
 import Domain.Subscribe;
+import Domain.UserState;
 import org.hibernate.transform.Transformers;
 
 import javax.persistence.*;
@@ -59,7 +60,6 @@ public class SubscribeDao extends Dao<Subscribe>{
             em.close();
         }
     }
-
 
     public boolean update(Subscribe info) {
         return super.update(ENTITY_MANAGER_FACTORY.createEntityManager(), info);

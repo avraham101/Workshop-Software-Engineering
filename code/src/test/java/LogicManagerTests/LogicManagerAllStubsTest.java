@@ -124,7 +124,9 @@ public class LogicManagerAllStubsTest {
     protected void setUpLogedInUser(){
         setUpRegisteredUser();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        logicManager.login(data.getId(Data.VALID), subscribe.getName(),subscribe.getPassword());
+        Response<Boolean> response =  logicManager.login(data.getId(Data.VALID),
+                subscribe.getName(),subscribe.getPassword());
+        assertTrue(response.getValue());
     }
 
     /**
@@ -978,8 +980,11 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testLogout() {
         setUpLogedInUser();
-        assertTrue(currUser.logout());
-        assertTrue(currUser.getState() instanceof Guest);
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        int id = data.getId(Data.VALID);
+        assertTrue(logicManager.logout(id).getValue());
+        Subscribe daoSubscribe = daos.getSubscribeDao().find(subscribe.getName());
+        assertEquals(-1, daoSubscribe.getSessionNumber().intValue());
     }
 
     /**

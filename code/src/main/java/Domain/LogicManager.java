@@ -679,17 +679,16 @@ public class LogicManager {
     public Response<Boolean> logout(int id) {
         loggerSystem.writeEvent("LogicManager","logout",
                 "a user logout from the system", new Object[] {});
-        User current= Cache.getInstance().findUser(id);
-        Subscribe sub = daos.getSubscribeDao().find(current.getUserName());
-        boolean output;
-        output = current.logout();
-        if(sub != null){
-            if(output) {
-                if (!this.daos.getSubscribeDao().update(sub))
+        User current = Cache.getInstance().findUser(id);
+        if(current!=null) {
+            UserState sub = current.getState();
+            if (sub != null && current.logout()) {
+                if (!this.daos.getSubscribeDao().update((Subscribe)sub))
                     return new Response<>(false, OpCode.DB_Down);
+                return new Response<>(true, OpCode.Success);
             }
         }
-        return new Response<>(output, OpCode.Success);
+        return new Response<>(false, OpCode.User_Not_Found);
     }
 
     /**
