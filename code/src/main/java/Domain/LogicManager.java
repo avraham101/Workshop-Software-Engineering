@@ -141,7 +141,7 @@ public class LogicManager {
 
     /**
      * test constructor moc systems
-     * @param userName
+     * @param userName - the user name
      * @param password
      * @param paymentSystem
      * @param supplySystem
