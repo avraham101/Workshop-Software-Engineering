@@ -124,7 +124,9 @@ public class LogicManagerAllStubsTest {
     protected void setUpLogedInUser(){
         setUpRegisteredUser();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        logicManager.login(data.getId(Data.VALID), subscribe.getName(),subscribe.getPassword());
+        Response<Boolean> response =  logicManager.login(data.getId(Data.VALID),
+                subscribe.getName(),subscribe.getPassword());
+        assertTrue(response.getValue());
     }
 
     /**

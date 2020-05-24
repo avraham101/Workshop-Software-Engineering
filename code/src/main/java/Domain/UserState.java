@@ -316,7 +316,7 @@ public abstract class UserState {
      * @param sessionNumber
      * @return false, this cant be done from guset
      */
-    public boolean setSessionNumber(Integer sessionNumber) {
+    public synchronized boolean setSessionNumber(Integer sessionNumber) {
         return false;
     }
 }

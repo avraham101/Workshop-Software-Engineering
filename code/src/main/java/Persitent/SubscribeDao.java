@@ -65,18 +65,6 @@ public class SubscribeDao extends Dao<Subscribe>{
         return super.update(ENTITY_MANAGER_FACTORY.createEntityManager(), info);
     }
 
-    /**
-     * use case 3.1 - logout
-     * this function is for not using casting in logout use case
-     * logic Manager
-     * @param info
-     * @return false always
-     */
-    public boolean update(UserState info) {
-        System.out.println("Yuval i am right, this is half vistor");
-        return false;
-    }
-
     public void clearTable() {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         em.getTransaction().begin();
