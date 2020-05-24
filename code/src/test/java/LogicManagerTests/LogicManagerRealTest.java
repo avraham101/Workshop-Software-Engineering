@@ -707,7 +707,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         setUpLogedInUser();
         Subscribe sub= (Subscribe) currUser.getState();
         super.testLogout();
-        assertEquals(Optional.ofNullable(sub.getSessionNumber()),-1);
+        assertEquals(Optional.ofNullable(sub.getSessionNumber()),Optional.of(-1));
     }
 
     /**

@@ -684,7 +684,16 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","logout",
                 "a user logout from the system", new Object[] {});
         User current=connectedUsers.get(id);
-        boolean output = current.logout();
+        Subscribe sub = daos.getSubscribeDao().find(current.getUserName());
+        boolean output;
+        output = current.logout();
+        if(sub != null){
+            if(output) {
+                sub.setSessionNumber(-1);
+                if (!this.daos.getSubscribeDao().update(sub))
+                    return new Response<>(false, OpCode.DB_Down);
+            }
+        }
         return new Response<>(output, OpCode.Success);
     }
 
