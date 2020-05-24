@@ -41,6 +41,7 @@ public class LogicManager {
     private Gson gson;
     private DaoHolder daos;
 
+    //Niv
 
     /**
      * test constructor, mock systems
