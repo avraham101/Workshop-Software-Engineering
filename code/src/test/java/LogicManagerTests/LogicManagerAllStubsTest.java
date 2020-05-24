@@ -261,7 +261,9 @@ public class LogicManagerAllStubsTest {
                     stubPayment, supplySystem, daos);
             fail();
         } catch (Exception e) {
-            assertTrue(true);
+            //There is already one admin because of init
+            List<Admin> admins = daos.getSubscribeDao().getAllAdmins();
+            assertEquals(1, admins.size());
         }
     }
 
@@ -289,15 +291,15 @@ public class LogicManagerAllStubsTest {
         assertTrue(proxyPayment.connect());
         assertFalse(stubSupply.connect());
         data=new TestData();
-        users=new ConcurrentHashMap<>();
-        stores=new ConcurrentHashMap<>();
-        connectedUsers =new ConcurrentHashMap<>();
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         try {
-            LogicManager test = new LogicManager(subscribe.getName(), subscribe.getPassword(), paymentSystem,supplySystem,daos);
+            LogicManager test = new LogicManager(subscribe.getName(), subscribe.getPassword(),
+                    proxyPayment,stubSupply,daos);
             fail();
         } catch (Exception e) {
-            assertTrue(true);
+            //There is already one admin because of init
+            List<Admin> admins = daos.getSubscribeDao().getAllAdmins();
+            assertEquals(1, admins.size());
         }
     }
 
