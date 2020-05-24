@@ -985,6 +985,7 @@ public class LogicManagerAllStubsTest {
         assertTrue(logicManager.logout(id).getValue());
         Subscribe daoSubscribe = daos.getSubscribeDao().find(subscribe.getName());
         assertEquals(-1, daoSubscribe.getSessionNumber().intValue());
+        tearDownLogin();
     }
 
     /**
