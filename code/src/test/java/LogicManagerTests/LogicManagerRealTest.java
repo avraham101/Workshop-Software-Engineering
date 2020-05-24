@@ -693,7 +693,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         }
         tearDownProductAddedToCart();
     }
-    
+
 
     /**
      * logout twice from same user
