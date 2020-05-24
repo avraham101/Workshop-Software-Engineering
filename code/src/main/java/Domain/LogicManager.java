@@ -791,11 +791,15 @@ public class LogicManager {
     public Response<Boolean> addRequest(int id,String storeName, String content) {
         loggerSystem.writeEvent("LogicManager","addRequest",
                 "add a request to the store", new Object[] {storeName, content});
-        Store dest = daos.getStoreDao().find(storeName);
+      // Store dest = daos.getStoreDao().find(storeName);
+        Store dest = Cache.getInstance().findStore(storeName);
         if (storeName == null || content == null || dest==null)
             return new Response<>(false,OpCode.Invalid_Request);
 
-        User current = connectedUsers.get(id);
+        //User current = connectedUsers.get(id);
+        User current = Cache.getInstance().findUser(id);
+        if(current==null)
+            return new Response<>(false,OpCode.User_Not_Found);
         int requestId = requestIdGenerator.incrementAndGet(); // generate request number sync //TODO maybe delete- auto generated
         Request request = current.addRequest(requestId, storeName, content);
         if (request == null) {
@@ -1028,12 +1032,13 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","addManager",
                 "store owner add a manager to the store", new Object[] {storeName, userName});
 
-        if(daos.getSubscribeDao().find(userName)==null)
+        Subscribe youngOwner = Cache.getInstance().findSubscribe(userName);
+        if(youngOwner==null)
             return new Response<>(false,OpCode.User_Not_Found);
-        if( daos.getStoreDao().find(storeName)==null)
+        if( Cache.getInstance().findStore(storeName)==null)
             return new Response<>(false,OpCode.Store_Not_Found);
-        User current=connectedUsers.get(id);
-        Subscribe youngOwner = daos.getSubscribeDao().find(userName);
+        User current= Cache.getInstance().findUser(id);//connectedUsers.get(id);
+
         return current.addManager(youngOwner,storeName);
     }
 
@@ -1049,11 +1054,10 @@ public class LogicManager {
                 "store owner add a manager's permissions", new Object[] {permissions, storeName, userName});
         if(!validList(permissions))
             return new Response<>(false,OpCode.Invalid_Permissions);
-        if(daos.getSubscribeDao().find(userName)==null)
-            return new Response<>(false,OpCode.User_Not_Found);
-        if(daos.getStoreDao().find(storeName)==null)
-            return new Response<>(false,OpCode.Store_Not_Found);
-        User current=connectedUsers.get(id);
+        Response<Boolean> valid = storeUserValidity(userName,storeName);
+        if(!valid.getValue())
+            return valid;
+        User current=Cache.getInstance().findUser(id);
         return current.addPermissions(permissions, storeName, userName);
     }
 
@@ -1079,11 +1083,10 @@ public class LogicManager {
                 "store owner remove manager's permission", new Object[] {permissions, storeName, userName});
         if(!validList(permissions))
             return new Response<>(false,OpCode.Invalid_Permissions);
-        if(daos.getSubscribeDao().find(userName)==null)
-            return new Response<>(false,OpCode.User_Not_Found);
-        if(daos.getStoreDao().find(storeName)==null)
-            return new Response<>(false,OpCode.Store_Not_Found);
-        User current=connectedUsers.get(id);
+        Response<Boolean> valid = storeUserValidity(userName,storeName);
+        if(!valid.getValue())
+            return valid;
+        User current=Cache.getInstance().findUser(id);
         return current.removePermissions(permissions, storeName, userName);
     }
 
@@ -1097,12 +1100,24 @@ public class LogicManager {
     public Response<Boolean> removeManager(int id,String userName, String storeName) {
         loggerSystem.writeEvent("LogicManager","removeManager",
                 "store owner remove manager", new Object[] {storeName, userName});
-        if(daos.getSubscribeDao().find(userName)==null)
+        Subscribe xManager = Cache.getInstance().findSubscribe(userName);
+        if(xManager == null)
             return new Response<>(false,OpCode.User_Not_Found);
-        if(daos.getStoreDao().find(storeName)==null)
+        Response<Boolean> valid = storeUserValidity(userName,storeName);
+        if(!valid.getValue())
+            return valid;
+        User current=Cache.getInstance().findUser(id);
+        return current.removeManager(xManager,storeName);
+    }
+
+    public Response<Boolean> storeUserValidity(String userName,String storeName){
+        if(Cache.getInstance().findSubscribe(userName)==null)
+            return new Response<>(false,OpCode.User_Not_Found);
+        if(Cache.getInstance().findStore(storeName)==null)
             return new Response<>(false,OpCode.Store_Not_Found);
-        User current=connectedUsers.get(id);
-        return current.removeManager(userName,storeName);
+
+        return new Response<>(true,OpCode.Success);
+
     }
 
     /**
@@ -1115,10 +1130,11 @@ public class LogicManager {
     public Response<List<RequestData>> viewStoreRequest(int id, String storeName) {
         loggerSystem.writeEvent("LogicManager","viewStoreRequest",
                 "store owner view the requests of the store", new Object[] {storeName});
-        User current=connectedUsers.get(id);
-        List<RequestData> requestDatas = new LinkedList<>();;
-        if(storeName != null && daos.getStoreDao().find(storeName)!=null) {
-            List<Request> requests = current.viewRequest(storeName);
+        User current=Cache.getInstance().findUser(id);
+        List<RequestData> requestDatas = new LinkedList<>();
+        Store store;
+        if(storeName != null && (store=Cache.getInstance().findStore(storeName))!=null) {
+            List<Request> requests = current.viewRequest(store);
             if(requests!=null){
                 for(Request r:requests)
                     requestDatas.add(new RequestData(r));
@@ -1139,8 +1155,8 @@ public class LogicManager {
     public Response<RequestData> replayRequest(int id, String storeName, int requestID, String content) {
         loggerSystem.writeEvent("LogicManager","viewStoreRequest",
                 "store owner view the requests of the store", new Object[] {storeName});
-        User current=connectedUsers.get(id);
-        if (storeName!=null && stores.containsKey(storeName)){
+        User current=Cache.getInstance().findUser(id);
+        if (storeName!=null && Cache.getInstance().findStore(storeName)!=null ){
             Response<Request> response=current.replayToRequest(storeName, requestID, content) ;
             Request request=response.getValue();
             if(request!=null){

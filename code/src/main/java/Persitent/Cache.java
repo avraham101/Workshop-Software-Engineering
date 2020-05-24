@@ -35,19 +35,34 @@ public class Cache {
         return instance;
     }
 
+
+
     public User findUser(int id){
         return connectedUsers.get(id);
     }
 
-    public Subscribe findSubscribe(String username){
+
+    public Subscribe findSubscribe(String userName){
+
+        Subscribe sub = findSubscribeInCache(userName);
+        if(sub!=null)
+            return sub;
+        return subscribeDao.find(userName) ;
+    }
+
+    public Subscribe findSubscribeInCache(String userName){
         for(User user : this.connectedUsers.values())
-            if(user.getUserName().equals(username))
+            if(user.getUserName().equals(userName))
                 return (Subscribe) user.getState();
-        return null;
+            return null;
+    }
+
+    public Store findStoreInCache(String storeName){
+        return stores.get(storeName);
     }
 
     public Store findStore(String storeName){
-        Store store = stores.get(storeName);
+        Store store = findStoreInCache(storeName);
         if(store==null){
             store = storeDao.find(storeName);
             addToCache(store, storesQueue);
