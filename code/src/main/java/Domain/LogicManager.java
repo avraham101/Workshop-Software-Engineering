@@ -40,8 +40,7 @@ public class LogicManager {
     private final Object openStoreLocker=new Object();
     private Gson gson;
     private DaoHolder daos;
-
-    //Niv
+    
 
     /**
      * test constructor, mock systems
