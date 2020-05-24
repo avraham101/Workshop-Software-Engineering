@@ -41,27 +41,21 @@ public class LogicManager {
     private Gson gson;
     private DaoHolder daos;
 
-    //Niv
+
 
     /**
      * test constructor, mock systems
      * @param userName
      * @param password
-     * @param subscribes
-     * @param stores
      * @throws Exception
      */
-    public LogicManager(String userName, String password, ConcurrentHashMap<String, Subscribe> subscribes, ConcurrentHashMap<String, Store> stores,
-                        ConcurrentHashMap<Integer,User> connectedUsers,PaymentSystem paymentSystem,SupplySystem supplySystem,DaoHolder daoHolder) throws Exception {
-        this.subscribes = subscribes;
-        this.stores = stores;
+    public LogicManager(String userName, String password,PaymentSystem paymentSystem,SupplySystem supplySystem,DaoHolder daoHolder) throws Exception {
         daos =daoHolder;
         GsonBuilder builderDiscount = new GsonBuilder();
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         builderDiscount.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
         builderDiscount.registerTypeAdapter(Term.class,new InterfaceAdapter());
         gson = builderDiscount.create();
-        this.connectedUsers =connectedUsers;
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
         try {
@@ -79,7 +73,7 @@ public class LogicManager {
                         "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
-            if(!daos.getSubscribeDao().getAllAdmins().isEmpty()) {
+            if(daos.getSubscribeDao().getAllAdmins().isEmpty()) {
                 boolean output = this.daos.getSubscribeDao().addSubscribe(new Admin(userName, password));
                 if (!output) {
                     loggerSystem.writeError("Logic manager", "constructor",
@@ -99,12 +93,9 @@ public class LogicManager {
      * @throws Exception - system crashed exception
      */
     public LogicManager(String userName, String password) throws Exception {
-        subscribes = new ConcurrentHashMap<>();
-        this.stores = new ConcurrentHashMap<>();
         daos =new DaoHolder();
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
-        this.connectedUsers =new ConcurrentHashMap<>();
         GsonBuilder builderDiscount = new GsonBuilder();
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         builderDiscount.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
@@ -153,10 +144,7 @@ public class LogicManager {
      * @throws Exception
      */
     public LogicManager(String userName, String password, PaymentSystem paymentSystem, SupplySystem supplySystem) throws Exception {
-        subscribes = new ConcurrentHashMap<>();
-        stores = new ConcurrentHashMap<>();
         daos =new DaoHolder();
-        this.connectedUsers =new ConcurrentHashMap<>();
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
         GsonBuilder builderDiscount = new GsonBuilder();

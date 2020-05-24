@@ -24,6 +24,7 @@ import com.google.gson.GsonBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.internal.runners.statements.Fail;
 import org.mockito.internal.matchers.Not;
 
 import java.util.*;
@@ -83,8 +84,8 @@ public class LogicManagerAllStubsTest {
         connectedUsers =new ConcurrentHashMap<>();
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         try {
-            logicManager = new LogicManager(subscribe.getName(), subscribe.getPassword(), users, stores,
-                    connectedUsers,paymentSystem,supplySystem,daos);
+            logicManager = new LogicManager(subscribe.getName(), subscribe.getPassword(),
+                    new ProxyPayment(),new ProxySupply(),daos);
         } catch (Exception e) {
             fail();
         }
@@ -254,20 +255,31 @@ public class LogicManagerAllStubsTest {
         assertFalse(stubPayment.connect());
         assertTrue(proxySupply.connect());
         data=new TestData();
-        users=new ConcurrentHashMap<>();
-        stores=new ConcurrentHashMap<>();
-        connectedUsers =new ConcurrentHashMap<>();
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         try {
-            LogicManager test = new LogicManager(subscribe.getName(), subscribe.getPassword(), users, stores,
-                    connectedUsers,paymentSystem,supplySystem,daos);
+            LogicManager test = new LogicManager(subscribe.getName(), subscribe.getPassword(),
+                    stubPayment, supplySystem, daos);
+            fail();
         } catch (Exception e) {
             assertTrue(true);
         }
     }
 
     /**
-     * test: use case 1.1 - Init System
+     * test: use case 1.1 - init System
+     * the system check success connect
+     */
+    @Test
+    public void testInitSuccess() {
+        //the call for logic manger is in the @Before
+        Subscribe subscribe = data.getSubscribe(Data.ADMIN);
+        List<Admin> admins = daos.getSubscribeDao().getAllAdmins();
+        assertEquals(1, admins.size());
+        assertEquals(subscribe.getName(), admins.get(0).getName());
+    }
+
+    /**
+     * test: use case 1.1 - Init System Fail Supply System
      * checking for exception due to false connection output from the supply external system
      */
     @Test
@@ -282,8 +294,8 @@ public class LogicManagerAllStubsTest {
         connectedUsers =new ConcurrentHashMap<>();
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         try {
-            LogicManager test = new LogicManager(subscribe.getName(), subscribe.getPassword(), users, stores,
-                    connectedUsers,paymentSystem,supplySystem,daos);
+            LogicManager test = new LogicManager(subscribe.getName(), subscribe.getPassword(), paymentSystem,supplySystem,daos);
+            fail();
         } catch (Exception e) {
             assertTrue(true);
         }
