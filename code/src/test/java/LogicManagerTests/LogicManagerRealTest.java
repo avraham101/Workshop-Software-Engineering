@@ -103,25 +103,27 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
 
-    /**
-     * test use case 2.3 - Login
-     */
-    //TODO NEED TO DELETE THIS
-    @Override @Test
-    public void testLogin() {
-        super.testLogin();
-        testLoginFailAlreadyUserLogged();
-        testLoginFailAlreadySubscribeLogged();
-    }
+//    /**
+//     * test use case 2.3 - Login
+//     */
+//    //TODO NEED TO DELETE THIS
+//    @Override @Test
+//    public void testLogin() {
+//        super.testLogin();
+//        testLoginFailAlreadyUserLogged();
+//        testLoginFailAlreadySubscribeLogged();
+//    }
 
     /**
      * part of test use case 2.3 - Login
      */
     @Test
     public void testLoginFailAlreadySubscribeLogged() {
-        testLoginSuccess();
+        setUpLogedInUser();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        assertFalse(logicManager.login(data.getId(Data.VALID2), subscribe.getName(),subscribe.getPassword()).getValue());
+        assertFalse(logicManager.login(data.getId(Data.VALID2), subscribe.getName(),
+                subscribe.getPassword()).getValue());
+        tearDownLogin();
     }
 
     /**
