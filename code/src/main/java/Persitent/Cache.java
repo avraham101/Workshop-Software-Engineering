@@ -4,6 +4,8 @@ import Domain.Store;
 import Domain.Subscribe;
 import Domain.User;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -68,6 +70,16 @@ public class Cache {
             addToCache(store, storesQueue);
         }
         return store;
+    }
+
+    /**
+     * find all the stores in the system
+     * @return - list of all the stores
+     */
+    public List<Store> findAllStores() {
+        List<Store> storesList = new LinkedList<>();
+        storesList.add((Store) stores.values());
+        return storesList;
     }
 
     /**

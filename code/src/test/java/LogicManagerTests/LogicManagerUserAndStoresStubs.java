@@ -28,25 +28,25 @@ public class LogicManagerUserAndStoresStubs extends LogicManagerAllStubsTest {
 
     /**
      * part of test: use case 2.2 - Register
+     * test that an admin indeed register to the system
      */
     @Test
     public void testAdminRegister() {
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
-        assertTrue(users.get(subscribe.getName()) instanceof Admin);
+        assertNotNull(daos.getSubscribeDao().find(subscribe.getName()));
     }
 
     /**
      * part of test: use case 2.2 - Register
      */
-    @Override @Test
+    @Test
     public void testRegisterSuccess() {
-        super.testRegisterSuccess();
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
-        assertEquals(users.get(subscribe.getName()).getName(), subscribe.getName());
+        assertEquals(daos.getSubscribeDao().find(subscribe.getName()).getName(), subscribe.getName());
         try {
             HashSystem hashSystem = new HashSystem();
             String password = hashSystem.encrypt(subscribe.getPassword());
-            assertEquals(users.get(subscribe.getName()).getPassword(), password);
+            assertEquals(daos.getSubscribeDao().find(subscribe.getName()).getPassword(), password);
         } catch (Exception e) {
             fail();
         }

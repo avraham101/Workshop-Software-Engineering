@@ -4,6 +4,8 @@ import Domain.Admin;
 import Domain.Discount.Discount;
 import Domain.Store;
 import Domain.Subscribe;
+import Domain.UserState;
+import org.hibernate.transform.Transformers;
 
 import javax.persistence.*;
 import java.util.LinkedList;
@@ -59,7 +61,6 @@ public class SubscribeDao extends Dao<Subscribe>{
         }
     }
 
-
     public boolean update(Subscribe info) {
         return super.update(ENTITY_MANAGER_FACTORY.createEntityManager(), info);
     }
@@ -79,15 +80,16 @@ public class SubscribeDao extends Dao<Subscribe>{
         try {
             EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT Admin FROM Domain.Admin");
-            List<Admin> resultList = query.getResultList();
-            for (Admin admin : resultList) {
+            Query query = em.createNativeQuery("SELECT admin.username FROM admin");
+            List resultList = query.getResultList();
+            for (Object admin : resultList) {
                 if (admin != null)
-                    output.add((Admin) find(admin.getName()));
+                    output.add((Admin)find((String)admin));
             }
         }
         catch (Exception e){
-
+            e.printStackTrace();
+            return null;
         }
         return output;
 

@@ -24,6 +24,7 @@ import com.google.gson.GsonBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.internal.runners.statements.Fail;
 import org.mockito.internal.matchers.Not;
 
 import java.util.*;
@@ -71,20 +72,20 @@ public class LogicManagerAllStubsTest {
         //External Systems
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
-        daos=new StubDaoHolder();
         init();
     }
 
     @Transactional
     protected void init() {
+        daos=new StubDaoHolder();
         data=new TestData();
         users=new ConcurrentHashMap<>();
         stores=new ConcurrentHashMap<>();
         connectedUsers =new ConcurrentHashMap<>();
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         try {
-            logicManager = new LogicManager(subscribe.getName(), subscribe.getPassword(), users, stores,
-                    connectedUsers,paymentSystem,supplySystem,daos);
+            logicManager = new LogicManager(subscribe.getName(), subscribe.getPassword(),
+                    new ProxyPayment(),new ProxySupply(),daos);
         } catch (Exception e) {
             fail();
         }
@@ -123,7 +124,9 @@ public class LogicManagerAllStubsTest {
     protected void setUpLogedInUser(){
         setUpRegisteredUser();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        logicManager.login(data.getId(Data.VALID), subscribe.getName(),subscribe.getPassword());
+        Response<Boolean> response =  logicManager.login(data.getId(Data.VALID),
+                subscribe.getName(),subscribe.getPassword());
+        assertTrue(response.getValue());
     }
 
     /**
@@ -254,20 +257,33 @@ public class LogicManagerAllStubsTest {
         assertFalse(stubPayment.connect());
         assertTrue(proxySupply.connect());
         data=new TestData();
-        users=new ConcurrentHashMap<>();
-        stores=new ConcurrentHashMap<>();
-        connectedUsers =new ConcurrentHashMap<>();
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         try {
-            LogicManager test = new LogicManager(subscribe.getName(), subscribe.getPassword(), users, stores,
-                    connectedUsers,paymentSystem,supplySystem,daos);
+            LogicManager test = new LogicManager(subscribe.getName(), subscribe.getPassword(),
+                    stubPayment, supplySystem, daos);
+            fail();
         } catch (Exception e) {
-            assertTrue(true);
+            //There is already one admin because of init
+            List<Admin> admins = daos.getSubscribeDao().getAllAdmins();
+            assertEquals(1, admins.size());
         }
     }
 
     /**
-     * test: use case 1.1 - Init System
+     * test: use case 1.1 - init System
+     * the system check success connect
+     */
+    @Test
+    public void testInitSuccess() {
+        //the call for logic manger is in the @Before
+        Subscribe subscribe = data.getSubscribe(Data.ADMIN);
+        List<Admin> admins = daos.getSubscribeDao().getAllAdmins();
+        assertEquals(1, admins.size());
+        assertEquals(subscribe.getName(), admins.get(0).getName());
+    }
+
+    /**
+     * test: use case 1.1 - Init System Fail Supply System
      * checking for exception due to false connection output from the supply external system
      */
     @Test
@@ -277,15 +293,15 @@ public class LogicManagerAllStubsTest {
         assertTrue(proxyPayment.connect());
         assertFalse(stubSupply.connect());
         data=new TestData();
-        users=new ConcurrentHashMap<>();
-        stores=new ConcurrentHashMap<>();
-        connectedUsers =new ConcurrentHashMap<>();
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         try {
-            LogicManager test = new LogicManager(subscribe.getName(), subscribe.getPassword(), users, stores,
-                    connectedUsers,paymentSystem,supplySystem,daos);
+            LogicManager test = new LogicManager(subscribe.getName(), subscribe.getPassword(),
+                    proxyPayment,stubSupply,daos);
+            fail();
         } catch (Exception e) {
-            assertTrue(true);
+            //There is already one admin because of init
+            List<Admin> admins = daos.getSubscribeDao().getAllAdmins();
+            assertEquals(1, admins.size());
         }
     }
 
@@ -316,6 +332,7 @@ public class LogicManagerAllStubsTest {
 
     /**
      * part of test use case 2.2 - Register
+     * fail test - try to register with wrong user name
      */
     @Test
     @Transactional
@@ -323,12 +340,13 @@ public class LogicManagerAllStubsTest {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.WRONG_NAME);
         assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
-        assertFalse(users.containsKey(subscribe.getName()));
+        assertNull(daos.getSubscribeDao().find(subscribe.getName()));
         tearDownConnect();
     }
 
     /**
      * part of test use case 2.2 - Register
+     * fail test - try to register with wrong password
      */
     @Test
     @Transactional
@@ -336,7 +354,7 @@ public class LogicManagerAllStubsTest {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.WRONG_PASSWORD);
         assertFalse(logicManager.register(subscribe.getName(), subscribe.getPassword()).getValue());
-        assertFalse(users.containsKey(subscribe.getName()));
+        assertNull(daos.getSubscribeDao().find(subscribe.getName()));
         tearDownConnect();
     }
 
@@ -366,18 +384,18 @@ public class LogicManagerAllStubsTest {
         tearDownConnect();
     }
 
-    /**
-     * test use case 2.3 - Login
-     */
-    @Test
-    //TODO NEED TO DELETE THIS
-    public void testLogin() {
-        setUpRegisteredUser();
-        testLoginFailNull();
-        testLoginFailWrongName();
-        testLoginFailWrongPassword();
-        testLoginSuccess();
-    }
+//    /**
+//     * test use case 2.3 - Login
+//     */
+//    @Test
+//    //TODO NEED TO DELETE THIS
+//    public void testLogin() {
+//        setUpRegisteredUser();
+//        testLoginFailNull();
+//        testLoginFailWrongName();
+//        testLoginFailWrongPassword();
+//        testLoginSuccess();
+//    }
 
     /**
      * part of use case 2.3 - Login
@@ -962,8 +980,12 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testLogout() {
         setUpLogedInUser();
-        assertTrue(currUser.logout());
-        assertTrue(currUser.getState() instanceof Guest);
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        int id = data.getId(Data.VALID);
+        assertTrue(logicManager.logout(id).getValue());
+        Subscribe daoSubscribe = daos.getSubscribeDao().find(subscribe.getName());
+        assertEquals(-1, daoSubscribe.getSessionNumber().intValue());
+        tearDownLogin();
     }
 
     /**

@@ -162,8 +162,8 @@ public class Subscribe extends UserState{
      */
     @Override
     public boolean logout(User user) {
-        user.setState(new Guest());
         setSessionNumber(-1);
+        user.setState(new Guest());
         return true;
     }
 
@@ -600,6 +600,7 @@ public class Subscribe extends UserState{
         return sessionNumber;
     }
 
+    @Override
     public synchronized boolean setSessionNumber(Integer sessionNumber) {
         if(sessionNumber!=-1 && this.sessionNumber==-1) { //login
             this.sessionNumber = sessionNumber;
