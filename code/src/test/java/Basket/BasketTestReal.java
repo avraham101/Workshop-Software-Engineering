@@ -1,6 +1,6 @@
 package Basket;
 
-import Data.Data;
+import Data.*;
 import Data.TestData;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;

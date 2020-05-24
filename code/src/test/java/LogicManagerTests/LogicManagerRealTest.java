@@ -89,11 +89,16 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         logicManager.register(subscribe.getName(),subscribe.getPassword());
     }
 
+    /**
+     * use case 2.2 Register
+     */
     @Test
     @Override
     public void testRegisterSuccess() {
         super.testRegisterSuccess();
     }
+
+
     /**
      * test use case 2.3 - Login
      */

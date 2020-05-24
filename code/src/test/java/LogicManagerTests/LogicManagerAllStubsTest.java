@@ -316,6 +316,7 @@ public class LogicManagerAllStubsTest {
 
     /**
      * part of test use case 2.2 - Register
+     * fail test - try to register with wrong user name
      */
     @Test
     @Transactional
@@ -323,12 +324,13 @@ public class LogicManagerAllStubsTest {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.WRONG_NAME);
         assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
-        assertFalse(users.containsKey(subscribe.getName()));
+        assertNull(daos.getSubscribeDao().find(subscribe.getName()));
         tearDownConnect();
     }
 
     /**
      * part of test use case 2.2 - Register
+     * fail test - try to register with wrong password
      */
     @Test
     @Transactional
@@ -336,7 +338,7 @@ public class LogicManagerAllStubsTest {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.WRONG_PASSWORD);
         assertFalse(logicManager.register(subscribe.getName(), subscribe.getPassword()).getValue());
-        assertFalse(users.containsKey(subscribe.getName()));
+        assertNull(daos.getSubscribeDao().find(subscribe.getName()));
         tearDownConnect();
     }
 

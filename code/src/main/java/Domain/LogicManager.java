@@ -230,7 +230,6 @@ public class LogicManager {
         }
         subscribe = new Subscribe(userName, password);
         boolean output = this.daos.getSubscribeDao().addSubscribe(subscribe);
-        //boolean output = this.subscribes.putIfAbsent(userName,subscribe)==null;
         if(output) {
             return new Response<>(output, OpCode.Success);
         }
