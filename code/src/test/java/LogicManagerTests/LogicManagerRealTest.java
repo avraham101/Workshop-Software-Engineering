@@ -842,6 +842,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         List<Purchase> purchases = logicManager.watchMyPurchaseHistory(data.getId(Data.VALID)).getValue();
         assertNotNull(purchases);
         assertEquals(1,purchases.size());
+        tearDownOpenStore();
     }
 
 

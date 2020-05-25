@@ -1153,7 +1153,7 @@ public class LogicManagerAllStubsTest {
         List<Purchase> purchases = logicManager.watchMyPurchaseHistory(data.getId(Data.VALID)).getValue();
         assertNotNull(purchases);
         assertTrue(purchases.isEmpty());
-        tearDownProductAdded();
+        tearDownOpenStore();
     }
 
     /**
