@@ -1180,6 +1180,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
     @Override
     @Test
+    @Transactional
     public void testRemoveManager(){
         super.testRemoveManager();
     }
