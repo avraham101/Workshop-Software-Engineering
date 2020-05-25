@@ -256,6 +256,7 @@ public class LogicManager {
                     boolean output = user.login(subscribe);
                     if(!output) {
                         subscribe.setSessionNumber(-1);
+                        return new Response<>(false, OpCode.User_Not_Found);
                     }
                     if(!this.daos.getSubscribeDao().update(subscribe))
                         return new Response<>(false, OpCode.DB_Down);
