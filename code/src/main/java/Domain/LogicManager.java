@@ -40,7 +40,7 @@ public class LogicManager {
     private final Object openStoreLocker=new Object();
     private Gson gson;
     private DaoHolder daos;
-    private Cache cache = new Cache();
+    private Cache cache;
 
 
     /**
@@ -51,6 +51,7 @@ public class LogicManager {
      */
     public LogicManager(String userName, String password,PaymentSystem paymentSystem,SupplySystem supplySystem,DaoHolder daoHolder) throws Exception {
         daos =daoHolder;
+        cache = new Cache();
         GsonBuilder builderDiscount = new GsonBuilder();
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         builderDiscount.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
@@ -96,6 +97,7 @@ public class LogicManager {
      */
     public LogicManager(String userName, String password) throws Exception {
         daos =new DaoHolder();
+        cache = new Cache();
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
         GsonBuilder builderDiscount = new GsonBuilder();
@@ -149,6 +151,7 @@ public class LogicManager {
      */
     public LogicManager(String userName, String password, PaymentSystem paymentSystem, SupplySystem supplySystem) throws Exception {
         daos =new DaoHolder();
+        cache = new Cache();
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
         GsonBuilder builderDiscount = new GsonBuilder();

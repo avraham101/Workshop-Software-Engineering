@@ -16,7 +16,7 @@ public class Cache {
     private static SubscribeDao subscribeDao;
 
     public Cache(){
-        if(connectedUsers!=null) {
+        if(connectedUsers==null) {
             connectedUsers = new ConcurrentHashMap<>();
             subscribeDao = new SubscribeDao();
             subscribes = new ConcurrentHashMap<>();
@@ -43,7 +43,10 @@ public class Cache {
     }
 
     public User findUser(int id) {
-        return connectedUsers.get(id);
+        if(connectedUsers!=null) {
+            return connectedUsers.get(id);
+        }
+        return null;
     }
 
     public Subscribe findSubscribe(String userName) {
