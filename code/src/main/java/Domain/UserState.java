@@ -266,13 +266,13 @@ public abstract class UserState {
      * @param storeName
      * @return
      */
-    public abstract Response<Boolean> removeManager(String userName, String storeName);
+    public abstract Response<Boolean> removeManager(Subscribe userName, String storeName);
 
     /**
      * use case 4.9.1 - view request
-     * @param storeName
+     * @param store
      */
-    public abstract List<Request> viewRequest(String storeName);
+    public abstract List<Request> viewRequest(Store store);
 
     /**
      * use case 4.9.2 - replay to Request

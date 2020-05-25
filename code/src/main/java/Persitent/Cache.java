@@ -11,78 +11,56 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class Cache {
 
-    private static Cache instance;
-    private ConcurrentLinkedDeque<Store> storesQueue;
-    private ConcurrentHashMap<String, Store> stores;
-    private ConcurrentHashMap<Integer,User> connectedUsers;
-    private ConcurrentHashMap<String, Subscribe> subscribes;
-    private SubscribeDao subscribeDao;
-    private StoreDao storeDao;
+    private static ConcurrentHashMap<Integer,User> connectedUsers;
+    private static ConcurrentHashMap<String, Subscribe> subscribes;
+    private static SubscribeDao subscribeDao;
 
-    private int DEQUEUE_LIMIT = 8;
-
-    private Cache(){
-        this.storesQueue = new ConcurrentLinkedDeque<>();
-        this.stores = new ConcurrentHashMap<>();
-        this.connectedUsers = new ConcurrentHashMap<>();
-        this.subscribeDao = new SubscribeDao();
-        this.storeDao = new StoreDao();
-        this.subscribes = new ConcurrentHashMap<>();
-    }
-
-    public static Cache getInstance(){
-        if(instance==null){
-            instance = new Cache();
+    public Cache(){
+        if(connectedUsers==null) {
+            connectedUsers = new ConcurrentHashMap<>();
+            subscribeDao = new SubscribeDao();
+            subscribes = new ConcurrentHashMap<>();
         }
-        return instance;
     }
 
-    public User findUser(int id){
-        return connectedUsers.get(id);
+    public void addConnectedUser(int newId, User user) {
+        if(connectedUsers!=null) {
+            connectedUsers.put(newId, user);
+        }
     }
 
-    public Subscribe findSubscribe(String username){
-        for(User user : this.connectedUsers.values())
-            if(user.getUserName().equals(username))
-                return (Subscribe) user.getState();
+    /**
+     * assumption this funcition called only if user is logeed
+     * @param newId the id of the user
+     */
+    public synchronized boolean logedCounnectedUser(int newId) {
+        if(connectedUsers!=null) {
+            User user =  connectedUsers.get(newId);
+            subscribes.put(user.getUserName() ,(Subscribe)user.getState());
+            return true;
+        }
+        return false;
+    }
+
+    public User findUser(int id) {
+        if(connectedUsers!=null) {
+            return connectedUsers.get(id);
+        }
         return null;
     }
 
-    public Store findStore(String storeName){
-        Store store = stores.get(storeName);
-        if(store==null){
-            store = storeDao.find(storeName);
-            addToCache(store, storesQueue);
-        }
-        return store;
+    public Subscribe findSubscribe(String userName) {
+        Subscribe sub = findSubscribeInCache(userName);
+        if(sub!=null)
+            return sub;
+        return subscribeDao.find(userName) ;
     }
 
-    /**
-     * find all the stores in the system
-     * @return - list of all the stores
-     */
-    public List<Store> findAllStores() {
-        List<Store> storesList = new LinkedList<>();
-        storesList.add((Store) stores.values());
-        return storesList;
+    public Subscribe findSubscribeInCache(String userName){
+        for(User user : this.connectedUsers.values())
+            if(user.getUserName().equals(userName))
+                return (Subscribe) user.getState();
+            return null;
     }
 
-    /**
-     * add an item to the cache in the relevant queue
-     * @param value the item to add to cache
-     * @param queue the queue in the cache to add to
-     * @param <T> item's class
-     */
-    public <T> void addToCache(T value, ConcurrentLinkedDeque<T> queue){
-        if(value != null) {
-            if (queue.size() == DEQUEUE_LIMIT)
-                queue.removeFirst();
-            queue.addLast(value);
-        }
-    }
-
-
-    public void addConnectedUser(int newId, User user) {
-        this.connectedUsers.put(newId,user);
-    }
 }

@@ -176,7 +176,7 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public Response<Boolean> removeManager(String userName, String storeName) {
+    public Response<Boolean> removeManager(Subscribe userName, String storeName) {
         return new Response<>(true,OpCode.Success);
     }
 
@@ -215,9 +215,9 @@ public class UserStub extends User {
      * @param storeName
      */
     @Override
-    public List<Request> viewRequest(String storeName) {
+    public List<Request> viewRequest(Store storeName) {
         List<Request> requests = new LinkedList<>();
-        requests.add(new Request(getUserName(), storeName, "temp", 10));
+        requests.add(new Request(getUserName(), storeName.getName(), "temp", 10));
         return requests;
     }
 

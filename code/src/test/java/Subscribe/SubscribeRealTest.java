@@ -270,7 +270,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         String storeName=p.getStore().getName();
         //add another manager
         p.getOwner().addManager(niv,storeName);
-        assertTrue(sub.removeManager(data.getSubscribe(Data.ADMIN).getName(),data.getStore(Data.VALID).getName()).getValue());
+        assertTrue(sub.removeManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()).getValue());
         assertFalse(niv.getPermissions().containsKey(storeName));
         assertFalse(p.getOwner().getPermissions().containsKey(storeName));
 

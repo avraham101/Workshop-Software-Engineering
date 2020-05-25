@@ -126,30 +126,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         tearDownLogin();
     }
 
-    /**
-     * part of test use case 3.2 - Open Store
-     */
-    @Test
-    public void testOpenStoreSucces(){
-        setUpLogedInUser();
-        StoreData storeData = data.getStore(Data.VALID);
-        assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
-        this.daos.getStoreDao().removeStore(storeData.getName());
-        tearDownLogin();
-    }
 
-    /**
-     * part of test use case 3.2 - Open Store
-     */
-    @Test
-    public void testOpenStoreReopen() {
-        setUpLogedInUser();
-        StoreData storeData = data.getStore(Data.VALID);
-        assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
-        assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
-        this.daos.getStoreDao().removeStore(storeData.getName());
-        tearDownLogin();
-    }
 
     /**
      * part of test use case 2.3 - Login
@@ -710,11 +687,36 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * part of test use case 3.2 - Open Store
      */
     @Test
+    public void testOpenStoreSucces(){
+        setUpLogedInUser();
+        StoreData storeData = data.getStore(Data.VALID);
+        assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
+        this.daos.getStoreDao().removeStore(storeData.getName());
+        tearDownLogin();
+    }
+
+    /**
+     * part of test use case 3.2 - Open Store
+     */
+    @Test
+    public void testOpenStoreReopen() {
+        setUpLogedInUser();
+        StoreData storeData = data.getStore(Data.VALID);
+        assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
+        assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
+        this.daos.getStoreDao().removeStore(storeData.getName());
+        tearDownLogin();
+    }
+
+    /**
+     * part of test use case 3.2 - Open Store
+     */
+    @Test
     public void testOpenStorePurchesAndDiscontPolicy() {
         setUpLogedInUser();
         StoreData storeData = data.getStore(Data.VALID);
-        Store store = stores.get(storeData.getName());
-        assertEquals(storeData.getDescription(),"description");
+        Store store = this.daos.getStoreDao().find(storeData.getName());
+        assertEquals(store.getDescription(),"description");
         tearDownLogin();
     }
 
@@ -797,10 +799,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 3.5 -add request
      */
-    @Override
+    //@Override
+    //@Test
     public void testAddRequest(){
         setUpOpenedStore();
         testSubscribeAddRequestSuccess();
+        //super.testAddRequest();
     }
 
     /**
@@ -1201,7 +1205,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     private void testStoreViewRequestSuccess() {
         testAddRequest();
         StoreData storeData = data.getStore(Data.VALID);
-        List<Request> requests=new LinkedList<>(stores.get(storeData.getName()).getRequests().values());
+        Store store = daos.getStoreDao().find(storeData.getName());
+        List<Request> requests=new LinkedList<>(store.getRequests().values());
         List<RequestData> excepted = new LinkedList<>();
         for(Request r:requests)
             excepted.add(new RequestData(r));
