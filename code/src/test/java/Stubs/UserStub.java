@@ -206,7 +206,7 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public Request addRequest(int requestId,String storeName, String content) {
+    public Request addRequest(String storeName, String content) {
         return new Request(getUserName(), storeName, "temp", 10);
     }
 

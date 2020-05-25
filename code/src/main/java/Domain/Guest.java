@@ -111,7 +111,7 @@ public class Guest extends UserState {
      * @return true if success, false else
      */
     @Override
-    public Request addRequest(int requestId, String storeName, String content){
+    public Request addRequest(String storeName, String content){
         return null;
     }
 

@@ -1982,7 +1982,7 @@ public class LogicManagerAllStubsTest {
 
     @Test
     public void addRequest(){
-                RequestDao requestDao=new RequestDao();
+        RequestDao requestDao=new RequestDao();
         requestDao.addRequest(new Request("yuv","hanut","hello",0));
     }
 

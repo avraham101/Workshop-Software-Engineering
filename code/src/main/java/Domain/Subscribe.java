@@ -230,14 +230,13 @@ public class Subscribe extends UserState{
 
     /**
      * use case 3.5 - add request
-     * @param requestId
      * @param storeName - The id of the store
      * @param content - The content of the request
      * @return true if success, false else
      */
     @Override
-    public Request addRequest(int requestId, String storeName, String content){
-        Request request = new Request(userName, storeName, content,requestId);
+    public Request addRequest(String storeName, String content){
+        Request request = new Request(userName, storeName, content);
         requests.add(request);
         RequestDao requestDao = daos.getRequestDao();
         if(requestDao.addRequest(request))

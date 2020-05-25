@@ -801,12 +801,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 3.5 -add request
      */
-    //@Override
-    //@Test
+    @Override
+    @Test
     public void testAddRequest(){
-        setUpOpenedStore();
-        testSubscribeAddRequestSuccess();
-        //super.testAddRequest();
+//        setUpOpenedStore();
+//        testSubscribeAddRequestSuccess();
+        super.testAddRequest();
     }
 
     /**

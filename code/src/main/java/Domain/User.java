@@ -184,8 +184,8 @@ public class User {
      * @param content
      * @return
      */
-    public Request addRequest(int requestId, String storeName, String content) {
-        return state.addRequest(requestId,storeName, content); }
+    public Request addRequest(String storeName, String content) {
+        return state.addRequest(storeName, content); }
 
     /**
      * use case 3.7 - watch purchase history

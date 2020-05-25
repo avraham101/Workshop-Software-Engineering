@@ -175,12 +175,11 @@ public abstract class UserState {
 
     /**
      * use case 3.5 - add request
-     * @param requestId
      * @param storeName - The id of the store
      * @param content - The content of the request
      * @return request if success, null else
      */
-    public abstract Request addRequest(int requestId, String storeName, String content);
+    public abstract Request addRequest(String storeName, String content);
 
     /**
      * use case 3.7 - watch purchase history
