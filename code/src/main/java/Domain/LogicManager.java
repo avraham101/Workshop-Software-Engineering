@@ -249,7 +249,7 @@ public class LogicManager {
         }
         Subscribe subscribe = this.daos.getSubscribeDao().find(userName);
         User user = cache.findUser(id);
-        if(user!=null && subscribe!=null){
+        if(user!=null && subscribe!=null && subscribe.setSessionNumber(id)){
             try {
                 password = hashSystem.encrypt(password);
                 if (subscribe.getPassword().compareTo(password) == 0) {
