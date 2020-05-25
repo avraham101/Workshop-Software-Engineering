@@ -707,7 +707,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         StoreData storeData = data.getStore(Data.VALID);
         assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
         assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
-        this.daos.getStoreDao().removeStore(storeData.getName());
+        daos.getStoreDao().removeStore(storeData.getName());
         tearDownLogin();
     }
 
