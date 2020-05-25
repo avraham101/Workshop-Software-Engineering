@@ -1062,6 +1062,10 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertNotNull(store.getPurchasePolicy());
     }
 
+
+    /**
+     * use case 4.2.2.2 - view policy in the store
+     */
     @Override
     protected void testViewStorePolicyTest() {
         String store = data.getStore(Data.VALID).getName();
@@ -1074,25 +1078,25 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         super.testViewStorePolicy();
     }
 
-    /**
-     * use case 4.3 - manage owner - success
-     */
-    @Override
-    protected void testManageOwnerSuccess() {
-        super.testManageOwnerSuccess();
-        checkPermissions(Data.VALID2);
-    }
-
-    /**
-     * use case 4.3 - manage owner - fail
-     */
-    @Override
-    protected void testManageOwnerFail() {
-        super.testManageOwnerFail();
-        String sName=data.getStore(Data.VALID).getName();
-        assertFalse(logicManager.manageOwner(data.getId(Data.VALID),sName,sName).getValue());
-        assertFalse(stores.get(sName).getPermissions().containsKey(sName));
-    }
+//    /**
+//     * use case 4.3 - manage owner - success
+//     */
+//    @Override
+//    protected void testManageOwnerSuccess() {
+//        super.testManageOwnerSuccess();
+//        checkPermissions(Data.VALID2);
+//    }
+//
+//    /**
+//     * use case 4.3 - manage owner - fail
+//     */
+//    @Override
+//    protected void testManageOwnerFail() {
+//        super.testManageOwnerFail();
+//        String sName=data.getStore(Data.VALID).getName();
+//        assertFalse(logicManager.manageOwner(data.getId(Data.VALID),sName,sName).getValue());
+//        assertFalse(stores.get(sName).getPermissions().containsKey(sName));
+//    }
 
     /**
      * generic function for check when adding new permission that it was added to store and user correctly
