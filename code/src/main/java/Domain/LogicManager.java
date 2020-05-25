@@ -120,7 +120,7 @@ public class LogicManager {
                         "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
-            if(!daos.getSubscribeDao().getAllAdmins().isEmpty()) {
+            if(daos.getSubscribeDao().getAllAdmins().isEmpty()) {
                 HashSystem hashSystem = new HashSystem();
                 password = hashSystem.encrypt(password);
                 boolean output = this.daos.getSubscribeDao().addSubscribe(new Admin(userName, password));
@@ -173,7 +173,7 @@ public class LogicManager {
                         "Fail connection to supply system",new Object[]{userName});
                 throw new Exception("Supply System Crashed");
             }
-            if(!daos.getSubscribeDao().getAllAdmins().isEmpty()) {
+            if(daos.getSubscribeDao().getAllAdmins().isEmpty()) {
                 HashSystem hashSystem = new HashSystem();
                 password = hashSystem.encrypt(password);
                 boolean output = this.daos.getSubscribeDao().addSubscribe(new Admin(userName, password));
@@ -817,15 +817,19 @@ public class LogicManager {
     public Response<Boolean> addProductToStore(int id,ProductData productData) {
         loggerSystem.writeEvent("LogicManager","addProductToStore",
                 "add a product to store", new Object[] {productData});
-        User current=connectedUsers.get(id);
-        StoreDao storeDao = new StoreDao();
-        if(productData==null)
-            return new Response<>(false,OpCode.Invalid_Product);
-        if(!validProduct(productData))
-            return new Response<>(false,OpCode.Invalid_Product);
-        if(storeDao.find(productData.getStoreName()) != null)
-            return current.addProductToStore(productData);
-        return new Response<>(false,OpCode.Store_Not_Found);
+        Cache cache = Cache.getInstance();
+        User current = Cache.getInstance().findUser(id);
+        if (productData == null)
+            return new Response<>(false, OpCode.Invalid_Product);
+        if (!validProduct(productData))
+            return new Response<>(false, OpCode.Invalid_Product);
+        if(current!=null) {
+            StoreDao storeDao = new StoreDao();
+            if (storeDao.find(productData.getStoreName()) != null)
+                return current.addProductToStore(productData);
+            return new Response<>(false, OpCode.Store_Not_Found);
+        }
+        return new Response<>(false, OpCode.User_Not_Found);
     }
 
     /**
