@@ -707,7 +707,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         StoreData storeData = data.getStore(Data.VALID);
         assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
         assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
-        this.daos.getStoreDao().removeStore(storeData.getName());
+        daos.getStoreDao().removeStore(storeData.getName());
         tearDownLogin();
     }
 
@@ -802,12 +802,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 3.5 -add request
      */
-    //@Override
-    //@Test
+    @Override
+    @Test
     public void testAddRequest(){
-        setUpOpenedStore();
-        testSubscribeAddRequestSuccess();
-        //super.testAddRequest();
+//        setUpOpenedStore();
+//        testSubscribeAddRequestSuccess();
+        super.testAddRequest();
     }
 
     /**
