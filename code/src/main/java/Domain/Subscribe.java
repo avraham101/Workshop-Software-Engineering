@@ -397,8 +397,9 @@ public class Subscribe extends UserState{
             youngOwner.getPermissions().put(storeName, newPermission);
             lock.writeLock().lock();
             givenByMePermissions.add(newPermission);
-            lock.writeLock().unlock();
+            newPermission.setGivenBy(userName);
             daos.getPermissionDao().addPermission(newPermission);
+            lock.writeLock().unlock();
             return new Response<>(true,OpCode.Success);
         }
         return new Response<>(false,OpCode.Already_Exists);
