@@ -253,7 +253,7 @@ public class UserAllStubsTest {
     public void testAddRequestGuest() {
         setUpGuest();
         Request request = data.getRequest(Data.VALID);
-        assertNull(user.addRequest(request.getId(),request.getStoreName(),request.getComment())); }
+        assertNull(user.addRequest(request.getStoreName(),request.getComment())); }
 
     /**
      * test use case 3.5 - add request
@@ -262,7 +262,7 @@ public class UserAllStubsTest {
     public void testAddRequestSubscribe() {
         setUpOpenStore();
         Request request = data.getRequest(Data.VALID);
-        assertNotNull(user.addRequest(request.getId(),request.getStoreName(),request.getComment())); }
+        assertNotNull(user.addRequest(request.getStoreName(),request.getComment())); }
 
         /**
      * test use case 3.7 - watch purchases

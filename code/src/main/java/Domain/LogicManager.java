@@ -794,8 +794,7 @@ public class LogicManager {
         User current = cache.findUser(id);
         if(current==null)
             return new Response<>(false,OpCode.User_Not_Found);
-        int requestId = requestIdGenerator.incrementAndGet(); // generate request number sync //TODO maybe delete- auto generated
-        Request request = current.addRequest(requestId, storeName, content);
+        Request request = current.addRequest(storeName, content);
         if (request == null) {
             return new Response<>(false,OpCode.Null_Request);
         }

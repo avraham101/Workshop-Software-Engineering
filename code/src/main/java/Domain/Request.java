@@ -34,12 +34,17 @@ public class Request implements Serializable {
         //this.id=id;
     }
 
+    public Request(String userName, String storeName, String content) {
+        this.senderName = userName;
+        this.storeName=storeName;
+        this.content = content;
+    }
+
     // ============================ getters & setters ============================ //
 
     public String getSenderName() {
         return senderName;
     }
-
 
 
     public String getStoreName() {
@@ -57,10 +62,6 @@ public class Request implements Serializable {
     public int getId() {
         return id;
     }
-
-//    public void setId(int id) {
-//        this.id = id;
-//    }
 
     public synchronized boolean setComment(String comment) {
         if(this.comment==null) {
