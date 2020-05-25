@@ -768,7 +768,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     private void testWriteReviewSuccess() {
         Review review = data.getReview(Data.VALID);
         //check if the review is in store
-        Store store = stores.get(review.getStore());
+        Store store = daos.getStoreDao().find(review.getStore());
         Product p = store.getProduct(review.getProductName());
         //check if the review is in the product
         List<Review> reviewList = p.getReviews();
@@ -842,6 +842,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         List<Purchase> purchases = logicManager.watchMyPurchaseHistory(data.getId(Data.VALID)).getValue();
         assertNotNull(purchases);
         assertEquals(1,purchases.size());
+        tearDownOpenStore();
     }
 
 
@@ -872,6 +873,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * test try adding product without being owner or manager of the store
      */
     @Test
+    @Transactional
     public void testAddProductNotManagerOfStore() {
          setUpOpenedStore();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
@@ -889,6 +891,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * test that user that has no CRUD permission or owner permission cant add products to store
      */
     @Test
+    @Transactional
     public void testAddProductDontHavePermission() {
         setUpOpenedStore();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
@@ -903,6 +906,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
     @Test
     @Override
+    @Transactional
     public void testRemoveProductFromStore(){
         super.testRemoveProductFromStore();
     }
@@ -921,6 +925,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * part of use case 4.1.2 test
      */
     @Test
+    @Transactional
     public void checkRemoveProductNotManager() {
         setUpProductAdded();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
@@ -937,6 +942,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * part of use case 4.1.2 test
      */
     @Test
+    @Transactional
     public void checkRemoveProductHasNoPermission() {
         setUpProductAdded();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
@@ -953,6 +959,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * use case 4.1.3 edit product
      */
     @Override @Test
+    @Transactional
     public void testEditProductSuccess() {
         setUpProductAdded();
         assertTrue(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.EDIT)).getValue());
@@ -984,6 +991,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * edit product when not have crud products permission
      */
     @Test
+    @Transactional
     public void checkEditProductHasNoPermission() {
         setUpProductAdded();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
@@ -1015,6 +1023,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * use case 4.2.1.2 -remove discount from store
      */
     @Test
+    @Transactional
     public void testDeleteDiscountFromStoreSuccessTest(){
         setUpDiscountAdded();
         int discountId=daos.getStoreDao().find(data.getStore(Data.VALID).getName()).getDiscount().values().iterator().next().getId();
@@ -1062,6 +1071,10 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertNotNull(store.getPurchasePolicy());
     }
 
+
+    /**
+     * use case 4.2.2.2 - view policy in the store
+     */
     @Override
     protected void testViewStorePolicyTest() {
         String store = data.getStore(Data.VALID).getName();
@@ -1074,25 +1087,25 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         super.testViewStorePolicy();
     }
 
-    /**
-     * use case 4.3 - manage owner - success
-     */
-    @Override
-    protected void testManageOwnerSuccess() {
-        super.testManageOwnerSuccess();
-        checkPermissions(Data.VALID2);
-    }
-
-    /**
-     * use case 4.3 - manage owner - fail
-     */
-    @Override
-    protected void testManageOwnerFail() {
-        super.testManageOwnerFail();
-        String sName=data.getStore(Data.VALID).getName();
-        assertFalse(logicManager.manageOwner(data.getId(Data.VALID),sName,sName).getValue());
-        assertFalse(stores.get(sName).getPermissions().containsKey(sName));
-    }
+//    /**
+//     * use case 4.3 - manage owner - success
+//     */
+//    @Override
+//    protected void testManageOwnerSuccess() {
+//        super.testManageOwnerSuccess();
+//        checkPermissions(Data.VALID2);
+//    }
+//
+//    /**
+//     * use case 4.3 - manage owner - fail
+//     */
+//    @Override
+//    protected void testManageOwnerFail() {
+//        super.testManageOwnerFail();
+//        String sName=data.getStore(Data.VALID).getName();
+//        assertFalse(logicManager.manageOwner(data.getId(Data.VALID),sName,sName).getValue());
+//        assertFalse(stores.get(sName).getPermissions().containsKey(sName));
+//    }
 
     /**
      * generic function for check when adding new permission that it was added to store and user correctly
@@ -1274,9 +1287,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * test use case 4.10 and 6.4.2 -watch store history
      */
     @Override
-    protected void testWatchStoreHistorySuccess() {
+    @Test
+    public void testWatchStoreHistorySuccess() {
+        setUpBoughtProductAdminState();
         testWatchStoreHistorySuccessNotAdmin();
         testWatchStoreHistorySuccessWhenAdmin();
+        tearDownOpenStore();
     }
 
     /**

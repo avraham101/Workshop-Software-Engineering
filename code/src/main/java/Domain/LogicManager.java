@@ -19,6 +19,7 @@ import Utils.Utils;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import javassist.bytecode.Opcode;
 
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
@@ -256,6 +257,7 @@ public class LogicManager {
                     boolean output = user.login(subscribe);
                     if(!output) {
                         subscribe.setSessionNumber(-1);
+                        return new Response<>(false, OpCode.User_Not_Found);
                     }
                     if(!this.daos.getSubscribeDao().update(subscribe))
                         return new Response<>(false, OpCode.DB_Down);
@@ -762,7 +764,6 @@ public class LogicManager {
         return new Response<>(true,OpCode.Success);
     }
 
-
     /**
      * use case 3.3 - write review
      * the function return if a valid correct
@@ -1195,7 +1196,9 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","watchStorePurchasesHistory",
                 "admin watch a store purchase history", new Object[] {storeName});
         User current=cache.findUser(id);
-        Store store = this.stores.get(storeName);
+        if(current==null)
+            return new Response<>(null, OpCode.User_Not_Found);
+        Store store = daos.getStoreDao().find(storeName);
         if(store==null)
             return new Response<>(null,OpCode.Store_Not_Found);
         if (current.canWatchStoreHistory(storeName))

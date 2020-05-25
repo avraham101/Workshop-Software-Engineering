@@ -57,12 +57,6 @@ public class LogicManagerAllStubsTest {
     protected static DaoHolder daos;
     protected Cache cashe;
 
-//    /**
-//     * Dao:
-//     */
-//    protected SubscribeDao subscribeDao;
-//    protected StoreDao storeDao;
-
 
     @BeforeClass
     public static void beforeClass() throws Exception {
@@ -1153,9 +1147,8 @@ public class LogicManagerAllStubsTest {
         List<Purchase> purchases = logicManager.watchMyPurchaseHistory(data.getId(Data.VALID)).getValue();
         assertNotNull(purchases);
         assertTrue(purchases.isEmpty());
+        tearDownOpenStore();
     }
-
-
 
     /**
      * use case 4.1.1 - add product fail
@@ -1878,27 +1871,25 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * use case 6.4.2 , 4.10 - watch store history
-     */
-    @Test
-    public void testWatchStoreHistory(){
-        setUpBoughtProductAdminState();
-        testWatchStoreHistoryStoreNotExist();
-        testWatchStoreHistorySuccess();
-    }
-
-    /**
+     * use case 4.10
      * test store that not exist on users map
      */
-    private void testWatchStoreHistoryStoreNotExist() {
-        assertNull(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getSubscribe(Data.VALID).getName()).getValue());
+    @Test
+    public void testWatchStoreHistoryStoreNotExist() {
+        setUpBoughtProductAdminState();
+        assertNull(logicManager.watchStorePurchasesHistory(data.getId(Data.ADMIN), data.getSubscribe(Data.VALID).getName()).getValue());
+        tearDownOpenStore();
     }
 
     /**
+     * use case 4.10
      * test success
      */
-    protected void testWatchStoreHistorySuccess() {
-        assertNotNull(logicManager.watchStorePurchasesHistory(data.getId(Data.VALID), data.getStore(Data.VALID).getName()).getValue());
+    @Test
+    public void testWatchStoreHistorySuccess() {
+        setUpBoughtProductAdminState();
+        assertNotNull(logicManager.watchStorePurchasesHistory(data.getId(Data.ADMIN), data.getStore(Data.VALID).getName()).getValue());
+        tearDownOpenStore();
     }
 
     /**
@@ -1910,7 +1901,6 @@ public class LogicManagerAllStubsTest {
        Response<List<StoreData>> response =  logicManager.getStoresManagedByUser(data.getId(Data.VALID));
        assertNull(response.getValue());
        assertEquals(response.getReason(),OpCode.No_Stores_To_Manage);
-
     }
 
     @Test

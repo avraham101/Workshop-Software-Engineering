@@ -3,7 +3,6 @@ package Persitent.DaoHolders;
 import Persitent.*;
 
 public class ProductDaoHolder {
-    private ProductDao productDao;
     private PurchaseDao purchaseDao;
     private PurchaseTypeDao purchaseTypeDao;
     private RequestDao requestDao;
@@ -11,16 +10,11 @@ public class ProductDaoHolder {
     private ReviewDao reviewDao;
 
     public ProductDaoHolder() {
-        this.productDao = productDao;
-        this.purchaseDao = purchaseDao;
-        this.purchaseTypeDao = purchaseTypeDao;
-        this.requestDao = requestDao;
-        this.subscribeDao = subscribeDao;
-        this.reviewDao = reviewDao;
-    }
-
-    public ProductDao getProductDao() {
-        return productDao;
+        this.purchaseDao = new PurchaseDao();
+        this.purchaseTypeDao = new PurchaseTypeDao();
+        this.requestDao = new RequestDao();
+        this.subscribeDao = new SubscribeDao();
+        this.reviewDao = new ReviewDao();
     }
 
     public PurchaseDao getPurchaseDao() {
