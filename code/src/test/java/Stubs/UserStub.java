@@ -10,6 +10,14 @@ import java.util.List;
 
 public class UserStub extends User {
 
+    public UserStub(User user) {
+        this.setState(user.getState());
+    }
+
+    public UserStub() {
+        super();
+    }
+
     /**
      * use case 2.3 - Login
      * @param subscribe - The new Subscribe State
@@ -26,7 +34,8 @@ public class UserStub extends User {
      */
     @Override
     public boolean logout() {
-        return true;
+
+        return this.state instanceof Subscribe;
     }
 
     /**

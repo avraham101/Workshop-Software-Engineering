@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 public class User {
-    private UserState state;
+    protected UserState state;
 
     public User() {
         state=new Guest();

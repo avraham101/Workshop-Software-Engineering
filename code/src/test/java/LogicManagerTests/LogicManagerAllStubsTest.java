@@ -55,7 +55,7 @@ public class LogicManagerAllStubsTest {
     protected SupplySystem supplySystem;
     protected TestData data;
     protected static DaoHolder daos;
-    protected Cache cashe;
+    protected CacheStub cashe;
 
 
     @BeforeClass
@@ -74,7 +74,7 @@ public class LogicManagerAllStubsTest {
         //External Systems
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
-        this.cashe=new Cache();
+        this.cashe=new CacheStub();
         init();
     }
 
@@ -105,10 +105,10 @@ public class LogicManagerAllStubsTest {
         logicManager.connectToSystem();
         logicManager.connectToSystem();
         //work with the regular user has current user
-        connectedUsers.put(data.getId(Data.VALID),new UserStub());
-        connectedUsers.put(data.getId(Data.ADMIN),new UserStub());
-        connectedUsers.put(data.getId(Data.VALID2),new UserStub());
-        currUser=connectedUsers.get(data.getId(Data.VALID));
+        cashe.addConnectedUser(data.getId(Data.VALID),new UserStub());
+        cashe.addConnectedUser(data.getId(Data.ADMIN),new UserStub());
+        cashe.addConnectedUser(data.getId(Data.VALID2),new UserStub());
+        currUser=cashe.findUser(data.getId(Data.VALID));
     }
 
     /**
@@ -142,7 +142,7 @@ public class LogicManagerAllStubsTest {
         Permission permission = new Permission(data.getSubscribe(Data.VALID));
         StoreStub storeStub = new StoreStub(storeName,permission,"description");
         permission.setStore(storeStub);
-        stores.put(storeData.getName(),storeStub);
+        daos.getStoreDao().update(storeStub);
     }
 
     /**
@@ -253,6 +253,7 @@ public class LogicManagerAllStubsTest {
      * checking for exception due to false connection from the payment external system
      */
     @Test
+    @Transactional
     public void testFailPaymentSystem() {
         PaymentSystem stubPayment = new PaymentSystemStub();
         ProxySupply proxySupply = new ProxySupply();
@@ -276,6 +277,7 @@ public class LogicManagerAllStubsTest {
      * the system check success connect
      */
     @Test
+    @Transactional
     public void testInitSuccess() {
         //the call for logic manger is in the @Before
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
@@ -289,6 +291,7 @@ public class LogicManagerAllStubsTest {
      * checking for exception due to false connection output from the supply external system
      */
     @Test
+    @Transactional
     public void testFailSupplySystem() {
         ProxyPayment proxyPayment = new ProxyPayment();
         SupplySystem stubSupply = new SupplySystemStub();
@@ -458,27 +461,32 @@ public class LogicManagerAllStubsTest {
      * use case 2.4.2 - view the products in some store with valid data test
      */
     @Test
+    @Transactional
     public void testViewProductsInStore() {
         setUpProductAdded();
         List<ProductData> expected = new LinkedList<>();
         String storeName = data.getStore(Data.VALID).getName();
         assertEquals(expected, logicManager.viewProductsInStore(storeName).getValue());
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.4.2 - view the products in some store with valid data test
      */
     @Test
+    @Transactional
     public void testViewProductInStoreNotExists() {
         setUpProductAdded();
         String storeName = data.getStore(Data.WRONG_STORE).getName();
         assertNull(logicManager.viewProductsInStore(storeName).getValue());
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.4.2 - view the products in some store with valid data test
      */
     @Test
+    @Transactional
     public void testViewProductInStoreNull() {
         setUpProductAdded();
         String storeName = data.getStore(Data.NULL_STORE).getName();
@@ -489,6 +497,7 @@ public class LogicManagerAllStubsTest {
      * use case 2.4.2 - view the products in some store with null category test
      */
     @Test
+    @Transactional
     public void testViewProductsInStoreNullCategory() {
         setUpProductAdded();
         List<ProductData> expected = new LinkedList<>();
@@ -502,6 +511,7 @@ public class LogicManagerAllStubsTest {
      * use case 2.4.2 - view the products in some store with null name test
      */
     @Test
+    @Transactional
     public void testViewProductsInStoreNullCategoryName() {
         setUpProductAdded();
         List<ProductData> expected = new LinkedList<>();
@@ -515,6 +525,7 @@ public class LogicManagerAllStubsTest {
      * use case 2.4.2 - view the products in some store with null discount test
      */
     @Test
+    @Transactional
     public void testViewProductsInStoreNullDiscount() {
         setUpProductAdded();
         List<ProductData> expected = new LinkedList<>();
@@ -528,6 +539,7 @@ public class LogicManagerAllStubsTest {
      * use case 2.4.2 - view the products in some store with null purchase test
      */
     @Test
+    @Transactional
     public void testViewProductsInStoreNullPurchase() {
         setUpProductAdded();
         List<ProductData> expected = new LinkedList<>();

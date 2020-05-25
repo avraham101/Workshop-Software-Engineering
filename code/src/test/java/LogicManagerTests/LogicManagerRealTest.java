@@ -11,6 +11,7 @@ import Domain.Notification.Notification;
 import Persitent.Cache;
 import Persitent.DaoHolders.DaoHolder;
 import Publisher.SinglePublisher;
+import Stubs.CacheStub;
 import Stubs.StubPublisher;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
@@ -42,7 +43,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         daos=new DaoHolder();
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
-        cashe=new Cache();
+        cashe=new CacheStub();
         init();
         currUser=cashe.findUser(data.getId(Data.VALID));
         publisher=new StubPublisher();
