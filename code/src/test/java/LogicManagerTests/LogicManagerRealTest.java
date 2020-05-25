@@ -842,6 +842,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         List<Purchase> purchases = logicManager.watchMyPurchaseHistory(data.getId(Data.VALID)).getValue();
         assertNotNull(purchases);
         assertEquals(1,purchases.size());
+        tearDownOpenStore();
     }
 
 
@@ -1286,9 +1287,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * test use case 4.10 and 6.4.2 -watch store history
      */
     @Override
-    protected void testWatchStoreHistorySuccess() {
+    @Test
+    public void testWatchStoreHistorySuccess() {
+        setUpBoughtProductAdminState();
         testWatchStoreHistorySuccessNotAdmin();
         testWatchStoreHistorySuccessWhenAdmin();
+        tearDownOpenStore();
     }
 
     /**
