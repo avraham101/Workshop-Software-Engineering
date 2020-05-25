@@ -384,19 +384,6 @@ public class LogicManagerAllStubsTest {
         tearDownConnect();
     }
 
-//    /**
-//     * test use case 2.3 - Login
-//     */
-//    @Test
-//    //TODO NEED TO DELETE THIS
-//    public void testLogin() {
-//        setUpRegisteredUser();
-//        testLoginFailNull();
-//        testLoginFailWrongName();
-//        testLoginFailWrongPassword();
-//        testLoginSuccess();
-//    }
-
     /**
      * part of use case 2.3 - Login
      */

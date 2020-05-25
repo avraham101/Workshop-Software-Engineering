@@ -271,7 +271,7 @@ public class Subscribe extends UserState{
         if(!permission.canAddProduct())
             return new Response<>(false, OpCode.Dont_Have_Permission);
 
-        Store cashStore = Cache.getInstance().findStore(productData.getStoreName());
+        Store cashStore = daos.getStoreDao().find(productData.getStoreName());
         if(cashStore != null) {
 //            Permission storePermission = cashStore.getPermissions().get(this.getName());
 //            if(storePermission==null)
@@ -421,7 +421,8 @@ public class Subscribe extends UserState{
                     added=added|p.addType(type);
                 lock.readLock().unlock();
                 if(added) {
-                    Subscribe managerWithNewPermissions = Cache.getInstance().findSubscribe(userName);
+                    Cache cache = new Cache();
+                    Subscribe managerWithNewPermissions = cache.findSubscribe(userName);
                     if(managerWithNewPermissions!=null)
                         managerWithNewPermissions.permissions.put(storeName,p); //if he is logged in he will get permissions in real time
                     return new Response<>(true, OpCode.Success);
@@ -450,7 +451,8 @@ public class Subscribe extends UserState{
                     removed=removed|p.removeType(type);
                 lock.readLock().unlock();
                 if(removed) {
-                    Subscribe managerWithNewPermissions = Cache.getInstance().findSubscribe(userName);
+                    Cache cache = new Cache();
+                    Subscribe managerWithNewPermissions = cache.findSubscribe(userName);
                     if(managerWithNewPermissions!=null)
                         managerWithNewPermissions.permissions.put(storeName,p); //if he is logged in he will get permissions in real time
                     return new Response<>(true, OpCode.Success);
@@ -552,7 +554,8 @@ public class Subscribe extends UserState{
                 request!=null &&
                 request.setComment(content)) {
             daos.getRequestDao().update(request);
-            Store storeToUpdate = Cache.getInstance().findStoreInCache(storeName);
+
+            Store storeToUpdate = daos.getStoreDao().find(storeName);
             if(storeToUpdate !=null)
                 storeToUpdate.getRequests().put(requestID,request);
             return new Response<>(store.getRequests().get(requestID),OpCode.Success);
