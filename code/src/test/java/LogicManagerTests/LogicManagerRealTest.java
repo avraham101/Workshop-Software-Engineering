@@ -768,7 +768,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     private void testWriteReviewSuccess() {
         Review review = data.getReview(Data.VALID);
         //check if the review is in store
-        Store store = stores.get(review.getStore());
+        Store store = daos.getStoreDao().find(review.getStore());
         Product p = store.getProduct(review.getProductName());
         //check if the review is in the product
         List<Review> reviewList = p.getReviews();
