@@ -30,7 +30,6 @@ public class LogicManager {
 
     private ConcurrentHashMap<String, Subscribe> subscribes;
     private ConcurrentHashMap<String, Store> stores;
-    private ConcurrentHashMap<Integer,User> connectedUsers; //must be!! dont delete this
     private AtomicInteger usersIdCounter;
     private HashSystem hashSystem;
     private PaymentSystem paymentSystem;
@@ -49,9 +48,10 @@ public class LogicManager {
      * @param password
      * @throws Exception
      */
-    public LogicManager(String userName, String password,PaymentSystem paymentSystem,SupplySystem supplySystem,DaoHolder daoHolder) throws Exception {
+    public LogicManager(String userName, String password,PaymentSystem paymentSystem,
+                        SupplySystem supplySystem,DaoHolder daoHolder,Cache cashe) throws Exception {
         daos =daoHolder;
-        cache = new Cache();
+        this.cache = cashe;
         GsonBuilder builderDiscount = new GsonBuilder();
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         builderDiscount.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
@@ -494,7 +494,7 @@ public class LogicManager {
     public Response<CartData> watchCartDetails(int id) {
         loggerSystem.writeEvent("LogicManager","watchCartDetails",
                 "view the user cart data", new Object[] {});
-        User current = connectedUsers.get(id);
+        User current = cache.findUser(id);
         CartData output = current.watchCartDetatils();
         return new Response<>(output,OpCode.Success);
     }
@@ -509,7 +509,7 @@ public class LogicManager {
     public Response<Boolean> deleteFromCart(int id,String productName,String storeName){
         loggerSystem.writeEvent("LogicManager","deleteFromCart",
                 "delete product from the user cart", new Object[] {productName, storeName});
-        User current=connectedUsers.get(id);
+        User current=cache.findUser(id);
         boolean output = current.deleteFromCart(productName,storeName);
         if (output) {
             return new Response<>(true, OpCode.Success);
@@ -527,7 +527,7 @@ public class LogicManager {
     public Response<Boolean> editProductInCart(int id,String productName,String storeName,int newAmount) {
         loggerSystem.writeEvent("LogicManager","editProductInCart",
                 "edit the amount of a product in the cart", new Object[] {productName, storeName, newAmount});
-        User current=connectedUsers.get(id);
+        User current=cache.findUser(id);
         boolean output = current.editProductInCart(productName,storeName, newAmount);
 
         if (output) {
@@ -548,7 +548,7 @@ public class LogicManager {
                 "add a product to the cart", new Object[] {productName, storeName, amount});
         boolean result = false;
         Store store = null;
-        User current=connectedUsers.get(id);
+        User current=cache.findUser(id);
         if (storeName != null)
             store = daos.getStoreDao().find(storeName);
         if(store==null)
@@ -577,7 +577,7 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","purchaseCart",
                 "reserveCart the products in the cart", new Object[] {paymentData, addresToDeliver});
         //1) user get
-        User current = connectedUsers.get(id);
+        User current = cache.findUser(id);
         //2) validation check
         if (!validPaymentData(paymentData))
             return new Response<>(false, OpCode.Invalid_Payment_Data);
@@ -600,7 +600,7 @@ public class LogicManager {
      * @return true is the purchase succeeded, otherwise false
      */
     private Response<Boolean> buyAndPay(int id, PaymentData paymentData, DeliveryData deliveryData) {
-        User current = connectedUsers.get(id);
+        User current = cache.findUser(id);
         if(!current.buyCart(paymentData, deliveryData)){
             current.cancelCart();
             return new Response<>(false, OpCode.Not_Stands_In_Policy);
@@ -652,7 +652,7 @@ public class LogicManager {
      * @return true if worked, otherwise false.
      */
     private Response<Boolean> externalSystemsBuy(int id, PaymentData paymentData, DeliveryData deliveryData) {
-        User current = connectedUsers.get(id);
+        User current = cache.findUser(id);
         if(!paymentSystem.pay(paymentData)) {
             loggerSystem.writeError("Logic Manger","purchaseCart","Payment System Crashed",
                     new Object[] {id});
@@ -741,7 +741,7 @@ public class LogicManager {
                 "add a review for the product", new Object[] {storeName, productName, content});
         if(!validReview(storeName,productName,content))
             return new Response<>(false,OpCode.Invalid_Review);
-        User current=connectedUsers.get(id);
+        User current=cache.findUser(id);
         //Store store = stores.get(storeName);
         Store store = daos.getStoreDao().find(storeName);
         if(store==null) {
@@ -830,8 +830,7 @@ public class LogicManager {
         if (!validProduct(productData))
             return new Response<>(false, OpCode.Invalid_Product);
         if(current!=null) {
-            StoreDao storeDao = new StoreDao();
-            if (storeDao.find(productData.getStoreName()) != null)
+            if (daos.getStoreDao().find(productData.getStoreName()) != null)
                 return current.addProductToStore(productData);
             return new Response<>(false, OpCode.Store_Not_Found);
         }
@@ -871,7 +870,7 @@ public class LogicManager {
     public Response<Boolean> editProductFromStore(int id,ProductData productData) {
         loggerSystem.writeEvent("LogicManager","editProductFromStore",
                 "edit the product amount in the store", new Object[] {productData});
-        User current=connectedUsers.get(id);
+        User current=cache.findUser(id);
         if(productData==null)
             return new Response<>(false,OpCode.Invalid_Product);
         if(daos.getStoreDao().find(productData.getStoreName())==null)
@@ -890,7 +889,7 @@ public class LogicManager {
     public Response<Boolean> addDiscount(int id, String discountData, String storeName) {
         loggerSystem.writeEvent("LogicManager","addDiscountToStore",
                 "add discount to the store", new Object[] {discountData,storeName});
-        User current=connectedUsers.get(id);
+        User current=cache.findUser(id);
         Store store=daos.getStoreDao().find(storeName);
         if(store==null)
             return new Response<>(false,OpCode.Store_Not_Found);
@@ -923,7 +922,7 @@ public class LogicManager {
     public Response<Boolean> deleteDiscountFromStore(int id, int discountId, String storeName){
         loggerSystem.writeEvent("LogicManager","removeDiscountToStore",
                 "remove discount from the store", new Object[] {discountId,storeName});
-        User current=connectedUsers.get(id);
+        User current=cache.findUser(id);
         Store store=daos.getStoreDao().find(storeName);
         if(store==null)
             return new Response<>(false,OpCode.Store_Not_Found);
@@ -975,7 +974,7 @@ public class LogicManager {
     public Response<Boolean> updatePolicy(int id, String policyData, String storeName) {
         loggerSystem.writeEvent("LogicManager","updatePolicy",
                 "update the policy of the store", new Object[] {policyData,storeName});
-        User current=connectedUsers.get(id);
+        User current=cache.findUser(id);
         Store store=daos.getStoreDao().find(storeName);
         if(store == null)
             return new Response<>(false,OpCode.Store_Not_Found);
@@ -1013,7 +1012,7 @@ public class LogicManager {
             return new Response<>(false,OpCode.User_Not_Found);
         if(!stores.containsKey(storeName))
             return new Response<>(false,OpCode.Store_Not_Found);
-        User current=connectedUsers.get(id);
+        User current=cache.findUser(id);
         addManager(id,userName,storeName);
         List<PermissionType> types=new ArrayList<>();
         types.add(PermissionType.OWNER);
@@ -1177,7 +1176,7 @@ public class LogicManager {
     public Response<List<Purchase>> watchUserPurchasesHistory(int id, String userName) {
         loggerSystem.writeEvent("LogicManager","watchUserPurchasesHistory",
                 "admin watch a user purchase history", new Object[] {userName});
-        User current=connectedUsers.get(id);
+        User current=cache.findUser(id);
         Subscribe sub = this.subscribes.get(userName);
         if(sub==null)
             return new Response<>(null,OpCode.User_Not_Found);
@@ -1197,7 +1196,7 @@ public class LogicManager {
     public Response<List<Purchase>> watchStorePurchasesHistory(int id, String storeName) {
         loggerSystem.writeEvent("LogicManager","watchStorePurchasesHistory",
                 "admin watch a store purchase history", new Object[] {storeName});
-        User current=connectedUsers.get(id);
+        User current=cache.findUser(id);
         Store store = this.stores.get(storeName);
         if(store==null)
             return new Response<>(null,OpCode.Store_Not_Found);
@@ -1213,7 +1212,7 @@ public class LogicManager {
      * if user does not manage store return null
      */
     public Response<List<StoreData>> getStoresManagedByUser(int id){
-        User user = connectedUsers.get(id);
+        User user = cache.findUser(id);
         Response<List<StoreData>> response = new Response<>(null,OpCode.No_Stores_To_Manage);
         if(user==null)
             return response;
@@ -1243,7 +1242,7 @@ public class LogicManager {
      * not a manager -> null
      */
     public Response<Set<StorePermissionType>> getPermissionsForStore(int id, String storeName) {
-        User user = connectedUsers.get(id);
+        User user = cache.findUser(id);
         Response<Set<StorePermissionType>> response = new Response<>(null,OpCode.Dont_Have_Permission);
         if(user==null)
             return response;
@@ -1276,7 +1275,7 @@ public class LogicManager {
      */
     public Response<List<String>> getManagersOfStoreUserManaged(int id,String storeName){
         Store store=stores.get(storeName);
-        User current=connectedUsers.get(id);
+        User current=cache.findUser(id);
         if(store==null)
             return new Response<>(null,OpCode.Store_Not_Found);
         return current.getManagersOfStoreUserManaged(storeName);
@@ -1287,7 +1286,7 @@ public class LogicManager {
      * @return
      */
     public Response<List<String>> getAllUsers(int id) {
-        User current=connectedUsers.get(id);
+        User current=cache.findUser(id);
         if (!current.canWatchUserHistory()) {
             return new Response<>(new LinkedList<>(),OpCode.NOT_ADMIN);
         }
@@ -1296,13 +1295,13 @@ public class LogicManager {
     }
 
     public void deleteReceivedNotifications(int id, List<Integer> notificationsId) {
-        User current=connectedUsers.get(id);
+        User current=cache.findUser(id);
         current.deleteReceivedNotifications(notificationsId);
 
     }
 
     public Response<Boolean> getMyNotification(int id) {
-        User current = connectedUsers.get(id);
+        User current = cache.findUser(id);
         Boolean rep = current.sendMyNotification();
         Response<Boolean> response = new Response<>(rep,OpCode.Not_Login);
         if(rep){

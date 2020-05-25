@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.internal.runners.statements.Fail;
 import org.mockito.internal.matchers.Not;
@@ -53,13 +54,20 @@ public class LogicManagerAllStubsTest {
     protected PaymentSystem paymentSystem;
     protected SupplySystem supplySystem;
     protected TestData data;
-    protected DaoHolder daos;
+    protected static DaoHolder daos;
+    protected Cache cashe;
 
 //    /**
 //     * Dao:
 //     */
 //    protected SubscribeDao subscribeDao;
 //    protected StoreDao storeDao;
+
+
+    @BeforeClass
+    public static void beforeClass() throws Exception {
+        daos=new StubDaoHolder();
+    }
 
     /**
      * Adding Stores must be in type StoreStub
@@ -72,12 +80,12 @@ public class LogicManagerAllStubsTest {
         //External Systems
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
+        this.cashe=new Cache();
         init();
     }
 
     @Transactional
     protected void init() {
-        daos=new StubDaoHolder();
         data=new TestData();
         users=new ConcurrentHashMap<>();
         stores=new ConcurrentHashMap<>();
@@ -85,7 +93,7 @@ public class LogicManagerAllStubsTest {
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         try {
             logicManager = new LogicManager(subscribe.getName(), subscribe.getPassword(),
-                    new ProxyPayment(),new ProxySupply(),daos);
+                    paymentSystem,supplySystem,daos,cashe);
         } catch (Exception e) {
             fail();
         }
@@ -260,7 +268,7 @@ public class LogicManagerAllStubsTest {
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         try {
             LogicManager test = new LogicManager(subscribe.getName(), subscribe.getPassword(),
-                    stubPayment, supplySystem, daos);
+                    stubPayment, supplySystem, daos,cashe);
             fail();
         } catch (Exception e) {
             //There is already one admin because of init
@@ -296,7 +304,7 @@ public class LogicManagerAllStubsTest {
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         try {
             LogicManager test = new LogicManager(subscribe.getName(), subscribe.getPassword(),
-                    proxyPayment,stubSupply,daos);
+                    proxyPayment,stubSupply,daos,cashe);
             fail();
         } catch (Exception e) {
             //There is already one admin because of init
