@@ -270,14 +270,30 @@ public class Subscribe extends UserState{
             return new Response<>(false, OpCode.Dont_Have_Permission);
         if(!permission.canAddProduct())
             return new Response<>(false, OpCode.Dont_Have_Permission);
-        StoreDao storeDao = new StoreDao();
-        Store store = Cache.getInstance().findStore(permission.getStore().getName());
-        Response<Boolean> output = store.addProduct(productData);
-        if(output.getValue()) {
-            daos.getStoreDao().update(store);
-            permission.setStore(store);
+
+        Store cashStore = Cache.getInstance().findStore(productData.getStoreName());
+        if(cashStore != null) {
+//            Permission storePermission = cashStore.getPermissions().get(this.getName());
+//            if(storePermission==null)
+//                return new Response<>(false, OpCode.Dont_Have_Permission);
+//            if(!storePermission.canAddProduct())
+//                return new Response<>(false, OpCode.Dont_Have_Permission);
+            Response<Boolean> output = cashStore.addProduct(productData);
+            if(output.getValue()) {
+                daos.getStoreDao().update(cashStore);
+                permission.setStore(cashStore);
+            }
+            return output;
         }
-        return output;
+        return new Response<>(false,OpCode.Store_Not_Found);
+//        Store store = storeDao.find(permission.getStore().getName());
+//        Response<Boolean> output = store.addProduct(productData);
+//        if(output.getValue()) {
+//            daos.getStoreDao().update(store);
+//            permission.setStore(store);
+//
+//        }
+//        return output;
     }
 
     /**
