@@ -22,7 +22,7 @@ public class PermissionDao extends Dao<Permission> {
         return super.add(em,permission);
     }
 
-    public boolean removePermission(Permission perToDelete){
+    public boolean removePermissionFromSubscribe(Permission perToDelete){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
 
@@ -30,10 +30,9 @@ public class PermissionDao extends Dao<Permission> {
             et = em.getTransaction();
             et.begin();
             Permission permission = em.find(Permission.class,perToDelete);
-           // em.remove(permission);
-            em.remove(em.contains(permission) ? permission : em.merge(permission));
+            em.remove(permission);
+            //em.remove(em.contains(permission) ? permission : em.merge(permission));
             et.commit();
-
         }
         catch(Exception ex) {
             if (et != null) {
@@ -79,6 +78,12 @@ public class PermissionDao extends Dao<Permission> {
 
     et.commit();
       return x>0;
+    }
+
+    public void removePermissionFromSubscribe(Permission p, Subscribe subscribe) {
+        SubscribeDao dao=new SubscribeDao();
+        dao.remove(subscribe.getName());
+        dao.addSubscribe(subscribe);
     }
 
     public boolean deletePermissionType(String storeName, String owner, PermissionType type){

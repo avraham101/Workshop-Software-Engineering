@@ -16,16 +16,16 @@ public class Permission implements Serializable {
 
 
     @Id
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="owner",referencedColumnName = "username")
     private Subscribe owner;
 
     @Id
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="store",referencedColumnName = "storename")
     private Store store;
 
-    @Column(name="givenby",nullable = true)
+    @Column(name="givenby")
     private String givenBy;
 
 

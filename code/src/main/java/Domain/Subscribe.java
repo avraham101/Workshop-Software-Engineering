@@ -8,7 +8,6 @@ import Domain.Notification.Notification;
 import Persitent.Cache;
 import Persitent.DaoHolders.SubscribeDaoHolder;
 import Persitent.RequestDao;
-import Persitent.StoreDao;
 import Publisher.Publisher;
 import Publisher.SinglePublisher;
 import org.hibernate.annotations.LazyCollection;
@@ -483,7 +482,6 @@ public class Subscribe extends UserState{
                 p.getOwner().removeManagerFromStore(storeName);
                 givenByMePermissions.remove(p);
                 xManager.getPermissions().remove(storeName);
-
                 lock.writeLock().unlock();
                 return new Response<>(true,OpCode.Success);
             }
@@ -511,13 +509,15 @@ public class Subscribe extends UserState{
         lock.writeLock().unlock();
         Store store=permissions.get(storeName).getStore();
         //remove the permission from the user
+        Permission p=daos.getPermissionDao().findPermission(permissions.get(storeName));
         permissions.remove(storeName);
         //remove the permission from the store
         store.getPermissions().remove(userName);
-        daos.getPermissionDao().removePermission(new Permission(this,store));
+        removePermission(p);
         sendNotification( new RemoveNotification(storeName,OpCode.Removed_From_Management));
 
     }
+
     /**
      * use case 4.9.1 - view request
      * @param store
@@ -577,6 +577,10 @@ public class Subscribe extends UserState{
             return false;
         permissions.put(storeName,permission);
         return true;
+    }
+
+    private void removePermission(Permission p) {
+        daos.getPermissionDao().removePermissionFromSubscribe(p,this);
     }
 
     /**

@@ -80,9 +80,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override
     protected void setUpManagerAddedSubManagerAdded(){
         setUpPermissionsAdded();
-        currUser.setState(users.get(data.getSubscribe(Data.ADMIN).getName()));
-        logicManager.addManager(data.getId(Data.VALID),data.getSubscribe(Data.VALID2).getName(),data.getStore(Data.VALID).getName());
-        currUser.setState(users.get(data.getSubscribe(Data.VALID).getName()));
+        logicManager.login(data.getId(Data.ADMIN),data.getSubscribe(Data.ADMIN).getName(),data.getSubscribe(Data.ADMIN).getPassword());
+        logicManager.addManager(data.getId(Data.ADMIN),data.getSubscribe(Data.VALID2).getName(),data.getStore(Data.VALID).getName());
     }
     /**----------------------set-ups------------------------------------------*/
 
@@ -707,7 +706,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         StoreData storeData = data.getStore(Data.VALID);
         assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
         assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
-        this.daos.getStoreDao().removeStore(storeData.getName());
+        daos.getStoreDao().removeStore(storeData.getName());
         tearDownLogin();
     }
 
@@ -1184,24 +1183,22 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     public void testRemoveManager(){
         super.testRemoveManager();
     }
+
     @Override
     protected void testRemoveManagerSuccess() {
-        Subscribe sub=(Subscribe) currUser.getState();
-        Permission p=sub.getGivenByMePermissions().get(0);
-        logicManager.login(data.getId(Data.ADMIN),data.getSubscribe(Data.ADMIN).getName(),data.getSubscribe(Data.ADMIN).getPassword());
         Subscribe niv=data.getSubscribe(Data.VALID2);
         logicManager.login(data.getId(Data.VALID2),niv.getName(),niv.getPassword());
+        Subscribe sub=cashe.findSubscribe(data.getSubscribe(Data.VALID).getName());
+        Permission p=sub.getGivenByMePermissions().get(0);
         String storeName=p.getStore().getName();
-        //add another manager
-        p.getOwner().addManager(niv,storeName);
         super.testRemoveManagerSuccess();
         SinglePublisher.initPublisher(this.publisher);
         assertFalse(niv.getPermissions().containsKey(storeName));
         assertFalse(p.getOwner().getPermissions().containsKey(storeName));
         //check notifications
-        HashMap<Integer, List<Notification>> notifications=publisher.getNotificationList();
-        for(int i=0;i<=2;i+=2){
-            assertEquals(data.getStore(Data.VALID).getName(),notifications.get(i).get(0).getValue());
+        HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
+        for(List<Notification> n:notifications.values()){
+            assertEquals(data.getStore(Data.VALID).getName(),n.get(0).getValue());
         }
     }
 
