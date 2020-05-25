@@ -265,7 +265,8 @@ public class Subscribe extends UserState{
 
     @Override
     public Response<Boolean> addProductToStore(ProductData productData) {
-        Permission permission=permissions.get(productData.getStoreName());
+        String storeName=productData.getStoreName();
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
         if(permission==null)
             return new Response<>(false, OpCode.Dont_Have_Permission);
         if(!permission.canAddProduct())
@@ -304,12 +305,12 @@ public class Subscribe extends UserState{
      */
     @Override
     public Response<Boolean> removeProductFromStore(String storeName, String productName) {
-        Permission permission=permissions.get(storeName);
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
         if(permission==null)
             return new Response<>(false,OpCode.Dont_Have_Permission);
         if(!permission.canAddProduct())
             return new Response<>(false,OpCode.Dont_Have_Permission);
-        return permissions.get(storeName).getStore().removeProduct(productName);
+        return permission.getStore().removeProduct(productName);
     }
 
     /**
@@ -319,7 +320,7 @@ public class Subscribe extends UserState{
      */
     @Override
     public Response<Boolean> editProductFromStore(ProductData productData) {
-        Permission permission=permissions.get(productData.getStoreName());
+        Permission permission=daos.getStoreDao().find((productData.getStoreName())).getPermissions().get(userName);
         if(permission==null)
             return new Response<>(false, OpCode.Dont_Have_Permission);
         if(!permission.canAddProduct())
@@ -335,7 +336,7 @@ public class Subscribe extends UserState{
      */
     @Override
     public Response<Boolean> addDiscountToStore(String storeName, Discount discount) {
-        Permission permission=permissions.get(storeName);
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
         if(permission==null)
             return new Response<>(false, OpCode.Dont_Have_Permission);
         if(!permission.canCRUDPolicyAndDiscount())
@@ -352,7 +353,7 @@ public class Subscribe extends UserState{
      */
     @Override
     public Response<Boolean> deleteDiscountFromStore(int discountId, String storeName) {
-        Permission permission=permissions.get(storeName);
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
         if(permission==null)
             return new Response<>(false, OpCode.Dont_Have_Permission);
         if(!permission.canCRUDPolicyAndDiscount())
@@ -365,7 +366,7 @@ public class Subscribe extends UserState{
 
     @Override
     public Response<Boolean> updateStorePolicy(String storeName, PurchasePolicy policy) {
-        Permission permission=permissions.get(storeName);
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
         if(permission==null)
             return new Response<>(false, OpCode.Dont_Have_Permission);
         if(!permission.canCRUDPolicyAndDiscount())
@@ -384,7 +385,7 @@ public class Subscribe extends UserState{
      */
     @Override
     public Response<Boolean> addManager(Subscribe youngOwner, String storeName) {
-        Permission permission=permissions.get(storeName);
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
         if(permission==null)
             return new Response<>(false,OpCode.Dont_Have_Permission);
         Store store=permission.getStore();
@@ -513,7 +514,6 @@ public class Subscribe extends UserState{
         //remove the permission from the store
         store.getPermissions().remove(userName);
         daos.getPermissionDao().removePermission(new Permission(this,store));
-        //TODO real time trough this
         sendNotification( new RemoveNotification(storeName,OpCode.Removed_From_Management));
 
     }
@@ -527,7 +527,7 @@ public class Subscribe extends UserState{
         List<Request> output = new LinkedList<>();
         if( !permissions.containsKey(store.getName()))
             return output;
-        Permission permission = permissions.get(store.getName());
+        Permission permission = daos.getStoreDao().find(store).getPermissions().get(userName);
         if(permission != null){
             output = new LinkedList<>(store.getRequests().values());
         }
@@ -545,7 +545,7 @@ public class Subscribe extends UserState{
     public Response<Request> replayToRequest(String storeName, int requestID, String content) {
         if((storeName==null || content==null))
             return new Response<>(null, OpCode.InvalidRequest);
-        Permission permission = permissions.get(storeName);
+        Permission permission = daos.getStoreDao().find(storeName).getPermissions().get(userName);
         if(permission == null)
             return new Response<>(null, OpCode.Dont_Have_Permission);
         Store store = permission.getStore();
@@ -684,7 +684,7 @@ public class Subscribe extends UserState{
      */
     @Override
     public Set<StorePermissionType> getPermissionsForStore(String storeName) {
-     Permission permission = permissions.get(storeName);
+     Permission permission = daos.getStoreDao().find(storeName).getPermissions().get(userName);
      if(permission==null)
          return null;
      Set<StorePermissionType> permissionsForStore = new HashSet<>();
