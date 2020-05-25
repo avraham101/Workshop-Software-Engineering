@@ -763,7 +763,6 @@ public class LogicManager {
         return new Response<>(true,OpCode.Success);
     }
 
-
     /**
      * use case 3.3 - write review
      * the function return if a valid correct
