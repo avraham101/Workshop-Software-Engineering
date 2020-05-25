@@ -103,25 +103,27 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
 
-    /**
-     * test use case 2.3 - Login
-     */
-    //TODO NEED TO DELETE THIS
-    @Override @Test
-    public void testLogin() {
-        super.testLogin();
-        testLoginFailAlreadyUserLogged();
-        testLoginFailAlreadySubscribeLogged();
-    }
+//    /**
+//     * test use case 2.3 - Login
+//     */
+//    //TODO NEED TO DELETE THIS
+//    @Override @Test
+//    public void testLogin() {
+//        super.testLogin();
+//        testLoginFailAlreadyUserLogged();
+//        testLoginFailAlreadySubscribeLogged();
+//    }
 
     /**
      * part of test use case 2.3 - Login
      */
     @Test
     public void testLoginFailAlreadySubscribeLogged() {
-        testLoginSuccess();
+        setUpLogedInUser();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        assertFalse(logicManager.login(data.getId(Data.VALID2), subscribe.getName(),subscribe.getPassword()).getValue());
+        assertFalse(logicManager.login(data.getId(Data.VALID2), subscribe.getName(),
+                subscribe.getPassword()).getValue());
+        tearDownLogin();
     }
 
     /**
@@ -154,29 +156,13 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Test
     public void testLoginFailAlreadyUserLogged() {
-        testLoginSuccess();
-        Subscribe subscribe = data.getSubscribe(Data.ADMIN);
-        assertFalse(logicManager.login(data.getId(Data.VALID), subscribe.getName(),subscribe.getPassword()).getValue());
+        setUpLogedInUser();
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        assertFalse(logicManager.login(data.getId(Data.VALID), subscribe.getName(),
+                subscribe.getPassword()).getValue());
+        tearDownLogin();
     }
 
-    /**
-     * part of test use case 2.3 - Login
-     */
-    @Override
-    public void testLoginSuccess() {
-        super.testLoginSuccess();
-        Subscribe subscribe = data.getSubscribe(Data.VALID);
-        assertEquals(currUser.getUserName(),subscribe.getName());
-        //check session number
-        assertEquals(Optional.ofNullable(((Subscribe) currUser.getState()).getSessionNumber()),data.getId(Data.VALID));
-        try {
-            HashSystem hashSystem = new HashSystem();
-            String password = hashSystem.encrypt(subscribe.getPassword());
-            assertEquals(password, currUser.getPassword());
-        } catch (Exception e) {
-            fail();
-        }
-    }
 
     /**
      * use case 2.4.1 - view all stores details
@@ -708,24 +694,16 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         tearDownProductAddedToCart();
     }
 
-    /**
-     * test: use case 3.1 - Logout
-     */
-    @Override @Test
-    public void testLogout() {
-        setUpLogedInUser();
-        Subscribe sub= (Subscribe) currUser.getState();
-        super.testLogout();
-        assertEquals(Optional.ofNullable(sub.getSessionNumber()),Optional.of(-1));
-    }
 
     /**
      * logout twice from same user
      */
     @Test
-    public void logoutTwice(){
-        super.testLogout();
-        assertFalse(currUser.logout());
+    public void logoutTwice() {
+        setUpLogedInUser();
+        int id = data.getId(Data.VALID);
+        assertTrue(logicManager.logout(id).getValue());
+        assertFalse(logicManager.logout(id).getValue());
     }
 
     /**

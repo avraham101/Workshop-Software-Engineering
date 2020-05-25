@@ -256,7 +256,7 @@ public class LogicManager {
                     }
                     if(!this.daos.getSubscribeDao().update(subscribe))
                         return new Response<>(false, OpCode.DB_Down);
-                    return new Response<>(output, OpCode.Success);
+                    return new Response<>(true, OpCode.Success);
                 }
             } catch (NoSuchAlgorithmException e) {
                 loggerSystem.writeError("Logic manager", "login",
@@ -293,7 +293,8 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","viewStores",
                 "view the details of the stores in the system", new Object[] {});
         List<StoreData> data = new LinkedList<>();
-        List<Store> stores = this.daos.getStoreDao().getAll();
+        List<Store> stores = Cache.getInstance().findAllStores();
+        //List<Store> stores = this.daos.getStoreDao().getAll();
         for (Store store: stores) {
             StoreData storeData = new StoreData(store.getName(),store.getDescription());
             data.add(storeData);
