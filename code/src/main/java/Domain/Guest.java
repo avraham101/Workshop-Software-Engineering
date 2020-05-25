@@ -224,26 +224,40 @@ public class Guest extends UserState {
         return new Response<>(false,OpCode.Not_Login);
     }
 
-    /**
-     * use case 4.7 - remove manager
-     * @param userName
-     * @param storeName
-     * @return
-     */
     @Override
-    public Response<Boolean>  removeManager(String userName, String storeName) {
-        return new Response<>(false,OpCode.Not_Login);
+    public Response<Boolean> removeManager(Subscribe userName, String storeName) {
+        return null;
     }
 
-    /**
-     * use case 4.9.1 - view request
-     * @param storeName
-     * @return
-     */
     @Override
-    public List<Request> viewRequest(String storeName) {
-        return new LinkedList<>();
+    public List<Request> viewRequest(Store store) {
+        return null;
     }
+
+
+    //TODO fix this
+//    /**
+//     * use case 4.7 - remove manager
+//     * @param userName
+//     * @param storeName
+//     * @return
+//     */
+//    @Override
+//    public Response<Boolean> removeManager(String userName, String storeName) {
+//        return new Response<>(false,OpCode.Not_Login);
+//    }
+//
+//
+//    //TODO - fix this
+//    /**
+//     * use case 4.9.1 - view request
+//     * @param storeName
+//     * @return
+//     */
+//    @Override
+//    public List<Request> viewRequest(String storeName) {
+//        return new LinkedList<>();
+//    }
 
     /**
      * use case 4.9.2 - reply request
