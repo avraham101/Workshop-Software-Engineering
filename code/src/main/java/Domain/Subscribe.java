@@ -570,7 +570,12 @@ public class Subscribe extends UserState{
      */
     @Override
     public boolean canWatchStoreHistory(String storeName) {
-        return permissions.containsKey(storeName);
+        Store store = daos.getStoreDao().find(storeName);
+        Permission permission = store.getPermissions().get(this.userName);
+        if(permission==null)
+            return false;
+        permissions.put(storeName,permission);
+        return true;
     }
 
     /**

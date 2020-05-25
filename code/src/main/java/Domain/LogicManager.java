@@ -19,6 +19,7 @@ import Utils.Utils;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import javassist.bytecode.Opcode;
 
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
@@ -1196,7 +1197,9 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","watchStorePurchasesHistory",
                 "admin watch a store purchase history", new Object[] {storeName});
         User current=cache.findUser(id);
-        Store store = this.stores.get(storeName);
+        if(current==null)
+            return new Response<>(null, OpCode.User_Not_Found);
+        Store store = daos.getStoreDao().find(storeName);
         if(store==null)
             return new Response<>(null,OpCode.Store_Not_Found);
         if (current.canWatchStoreHistory(storeName))
