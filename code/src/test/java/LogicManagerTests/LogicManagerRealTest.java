@@ -5,19 +5,20 @@ import DataAPI.*;
 import Domain.*;
 import Domain.Discount.Discount;
 import Domain.Discount.RegularDiscount;
+import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.PurchasePolicy.UserPurchasePolicy;
 import Domain.Notification.Notification;
+import Persitent.Cache;
 import Persitent.DaoHolders.DaoHolder;
-import Persitent.SubscribeDao;
 import Publisher.SinglePublisher;
 import Stubs.StubPublisher;
-import Systems.HashSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.transaction.Transactional;
@@ -31,14 +32,19 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
     private StubPublisher publisher;
 
+    @BeforeClass
+    public static void beforeClass() throws Exception {
+        daos=new DaoHolder();
+    }
 
     @Before
     public void setUp() {
         daos=new DaoHolder();
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
+        cashe=new Cache();
         init();
-        currUser=connectedUsers.get(data.getId(Data.VALID));
+        currUser=cashe.findUser(data.getId(Data.VALID));
         publisher=new StubPublisher();
         SinglePublisher.initPublisher(publisher);
 
@@ -55,7 +61,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         logicManager.connectToSystem();
         logicManager.connectToSystem();
         //work with the regular user has current user
-        currUser=connectedUsers.get(data.getId(Data.VALID));
+        currUser=cashe.findUser(data.getId(Data.VALID));
     }
 
     @Override
@@ -94,6 +100,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Test
     @Override
+    @Transactional
     public void testRegisterSuccess() {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
@@ -102,17 +109,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         tearDownConnect();
     }
 
-
-//    /**
-//     * test use case 2.3 - Login
-//     */
-//    //TODO NEED TO DELETE THIS
-//    @Override @Test
-//    public void testLogin() {
-//        super.testLogin();
-//        testLoginFailAlreadyUserLogged();
-//        testLoginFailAlreadySubscribeLogged();
-//    }
 
     /**
      * part of test use case 2.3 - Login
@@ -145,6 +141,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * use case 2.4.1 - view all stores details
      */
     @Override @Test
+    @Transactional
     public void testViewDataStores() {
         setUpOpenedStore();
         List<StoreData> expected = new LinkedList<>();
@@ -479,6 +476,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartInvalidCountry() {
         setUpProductAddedToCart();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
@@ -486,7 +484,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         String country = data.getDeliveryData(Data.INVALID_COUNTRY).getCountry();
         List<String> contries=new ArrayList<>();
         contries.add("Israel");
-        stores.get(data.getStore(Data.VALID).getName()).setPurchasePolicy(new UserPurchasePolicy(contries));
+        PurchasePolicy policy = new UserPurchasePolicy(contries);
+        GsonBuilder builderPolicy = new GsonBuilder();
+        builderPolicy.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
+        Gson policyGson = builderPolicy.create();
+        String policyToAdd = policyGson.toJson(policy, PurchasePolicy.class);
+        logicManager.updatePolicy(data.getId(Data.VALID),policyToAdd,data.getStore(Data.VALID).getName());
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
         checkBuyDidntWork();
     }
@@ -687,11 +690,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * part of test use case 3.2 - Open Store
      */
     @Test
-    public void testOpenStoreSucces(){
+    public void testOpenStoreSuccess(){
         setUpLogedInUser();
         StoreData storeData = data.getStore(Data.VALID);
         assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
-        this.daos.getStoreDao().removeStore(storeData.getName());
+        daos.getStoreDao().removeStore(storeData.getName());
         tearDownLogin();
     }
 
@@ -715,7 +718,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     public void testOpenStorePurchesAndDiscontPolicy() {
         setUpLogedInUser();
         StoreData storeData = data.getStore(Data.VALID);
-        Store store = this.daos.getStoreDao().find(storeData.getName());
+        Store store = daos.getStoreDao().find(storeData.getName());
         assertEquals(store.getDescription(),"description");
         tearDownLogin();
     }
