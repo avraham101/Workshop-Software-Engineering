@@ -527,9 +527,9 @@ public class Subscribe extends UserState{
         List<Request> output = new LinkedList<>();
         if( !permissions.containsKey(store.getName()))
             return output;
-        Permission permission = daos.getStoreDao().find(store).getPermissions().get(userName);
+        Permission permission = daos.getStoreDao().find(store.getName()).getPermissions().get(userName);
         if(permission != null){
-            output = new LinkedList<>(store.getRequests().values());
+            output = new LinkedList<>(permission.getStore().getRequests().values());
         }
         return output;
     }
