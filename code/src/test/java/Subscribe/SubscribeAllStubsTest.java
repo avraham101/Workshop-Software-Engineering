@@ -113,8 +113,11 @@ public class SubscribeAllStubsTest {
      */
     private void setUpDiscountAdded() {
         setUpProductAdded();
-        sub.addDiscountToStore(data.getStore(Data.VALID).getName(),
-                data.getDiscounts(Data.VALID).get(0));
+        StoreData storeData = data.getStore(Data.VALID);
+        List <Discount> discounts = data.getDiscounts(Data.VALID);
+        Response<Boolean> response = this.subscribe.addDiscountToStore(storeData.getName(), discounts.get(0));
+        if(!response.getValue())
+            fail();
     }
 
     /**
@@ -511,14 +514,19 @@ public class SubscribeAllStubsTest {
         tearDownStore();
     }
 
-
     /**
      * use case 4.2.1.2 -remove product from store
      */
     @Test
     public void testRemoveDiscountFromStoreSuccess(){
         setUpDiscountAdded();
-        assertTrue(sub.deleteDiscountFromStore(0,data.getStore(Data.VALID).getName()).getValue());
+        StoreData storeData = data.getStore(Data.VALID);
+        List <Discount> discounts = data.getDiscounts(Data.VALID);
+        Discount discount = discounts.get(0);
+        assertTrue(this.subscribe.deleteDiscountFromStore(discount.getId(), storeData.getName()).getValue());
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertTrue(store.getDiscount().values().isEmpty());
+        tearDownStore();
     }
 
     /**
