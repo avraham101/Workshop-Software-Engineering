@@ -7,6 +7,9 @@ import javafx.util.Pair;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.springframework.test.context.event.annotation.AfterTestClass;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,8 +43,8 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
     }
 
     private void setUpApplicationsAndReplies() {
-        this.applications = new HashSet<>();
-        this.applicationsAndReplies = new HashMap<>();
+        applications = new HashSet<>();
+        applicationsAndReplies = new HashMap<>();
 
         applications.add(new ApplicationToStoreTestData(storeName,asker.getUsername(),"app0"));
         applications.add(new ApplicationToStoreTestData(storeName,asker.getUsername(),"app1"));
@@ -145,14 +148,14 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
 
     @After
     public void tearDown() {
-        removeStores(stores);
-        removeUser(responder.getUsername());
-        removeUser(asker.getUsername());
         tearDownApplicationsAndReplies();
+        removeUser(asker.getUsername());
+        removeUser(responder.getUsername());
+        removeStores(stores);
     }
 
     private void tearDownApplicationsAndReplies() {
-        this.applications.clear();
-        this.applicationsAndReplies.clear();
+        applications=new HashSet<>();
+        applicationsAndReplies=new HashMap<>();
     }
 }
