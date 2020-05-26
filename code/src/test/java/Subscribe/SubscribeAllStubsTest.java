@@ -679,16 +679,21 @@ public class SubscribeAllStubsTest {
      */
     @Test
     public void testAddPermissionNotManager() {
-        setUpManagerAdded();
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        Store store=permission.getStore();
-        sub.getPermissions().clear();
-        assertFalse(sub.addPermissions(data.getPermissionTypeList(),
-                data.getSubscribe(Data.ADMIN).getName(),validStoreName).getValue());
-        assertFalse(store.getPermissions().get(data.getSubscribe(Data.ADMIN).getName()).getPermissionType().
-                containsAll(data.getPermissionTypeList()));
-        sub.getPermissions().put(validStoreName,permission);
+        setUpDiscountAdded();
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
+        String validStoreName = data.getProductData(Data.VALID).getStoreName();
+        List<PermissionType> permissionList = data.getPermissionTypeList();
+        assertFalse(sub.addPermissions(permissionList, admin.getName(),validStoreName).getValue());
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertEquals(1,store.getPermissions().values().size());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
         tearDownStore();
     }
 
