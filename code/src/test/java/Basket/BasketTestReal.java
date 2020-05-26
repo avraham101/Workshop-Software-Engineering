@@ -2,10 +2,7 @@ package Basket;
 
 import Data.*;
 import Data.TestData;
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
-import DataAPI.Purchase;
+import DataAPI.*;
 import Domain.*;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
 import org.junit.Before;
@@ -46,7 +43,11 @@ public class BasketTestReal extends BasketTest{
      */
     @Test
     public void testBuyNotStandsInPolicy(){
-        basket.getStore().setPurchasePolicy(new BasketPurchasePolicy(0));
+        setUpProductAddedToBasket();
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        store.setPurchasePolicy(new BasketPurchasePolicy(0));
+        daoHolder.getStoreDao().update(store);
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
         assertFalse(basket.buy(paymentData, deliveryData));
