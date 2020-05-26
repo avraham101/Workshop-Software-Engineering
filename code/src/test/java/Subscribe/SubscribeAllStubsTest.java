@@ -7,6 +7,7 @@ import Domain.*;
 import Drivers.LogicManagerDriver;
 import Persitent.Cache;
 import Persitent.DaoHolders.DaoHolder;
+import Persitent.StoreDao;
 import Persitent.SubscribeDao;
 import Stubs.CartStub;
 import Systems.PaymentSystem.PaymentSystem;
@@ -45,21 +46,25 @@ public class SubscribeAllStubsTest {
         } catch (Exception e){
             fail();
         }
-        setUpSubscribe();
     }
 
     private void setUpSubscribe() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        logicManagerDriver.register(subscribe.getName(),subscribe.getPassword());
-        this.subscribe =  cache.findSubscribe(subscribe.getName());
-    }
-
-    public void setUpLoginSubscribe() {
-        int id = logicManagerDriver.connectToSystem();
-        this.logicManagerDriver.login(id,subscribe.getName(),subscribe.getPassword());
+        Response<Boolean> response = logicManagerDriver.register(subscribe.getName(),subscribe.getPassword());
+        if(!response.getValue())
+            fail();
         this.subscribe = cache.findSubscribe(subscribe.getName());
     }
 
+    public void setUpLoginSubscribe() {
+        setUpSubscribe();
+        int id = logicManagerDriver.connectToSystem();
+        Subscribe sub = data.getSubscribe(Data.VALID);
+        Response<Boolean> response = this.logicManagerDriver.login(id,sub.getName(), sub.getPassword());
+        if(!response.getValue())
+            fail();
+        this.subscribe = cache.findSubscribe(subscribe.getName());
+    }
 
     /**
      * set up to open a store
@@ -68,6 +73,13 @@ public class SubscribeAllStubsTest {
         setUpLoginSubscribe();
         StoreData storeData = data.getStore(Data.VALID);
         this.logicManagerDriver.openStore(this.subscribe.getSessionNumber(),storeData);
+    }
+
+    protected void tearDownStore() {
+        tearDown();
+        StoreData storeData = data.getStore(Data.VALID);
+        StoreDao storeDao = daoHolder.getStoreDao();
+        storeDao.removeStore(storeData.getName());
     }
 
     /**
@@ -92,7 +104,7 @@ public class SubscribeAllStubsTest {
      */
     private void setUpProductAdded(){
         setUpStoreOpened();
-        sub.addProductToStore(data.getProductData(Data.VALID));
+        subscribe.addProductToStore(data.getProductData(Data.VALID));
     }
 
     /**
@@ -169,8 +181,9 @@ public class SubscribeAllStubsTest {
      */
     @Test
     public void loginTest() {
-        assertFalse(subscribe.login(new User(),data.getSubscribe(Data.ADMIN)));
-        assertNotEquals(subscribe.getName(),data.getSubscribe(Data.ADMIN).getName());
+        setUpSubscribe();
+        assertFalse(subscribe.login(new User(), data.getSubscribe(Data.VALID)));
+        assertEquals(subscribe.getName(), data.getSubscribe(Data.VALID).getName());
     }
 
     /**
@@ -179,9 +192,12 @@ public class SubscribeAllStubsTest {
     @Test
     public void testAddProductToCart() {
         setUpProductAdded();
-        Store store = data.getRealStore(Data.VALID);
-        Product product = data.getRealProduct(Data.VALID);
-        assertTrue(sub.addProductToCart(store,product,product.getAmount()));
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        ProductData productData = data.getProductData(Data.VALID);
+        Product product = store.getProduct(productData.getProductName());
+        assertTrue(subscribe.addProductToCart(store,product,product.getAmount()));
+        tearDownStore();
     }
 
     /**
@@ -812,9 +828,13 @@ public class SubscribeAllStubsTest {
     @After
     public void tearDown(){
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        daoHolder.getSubscribeDao().remove(subscribe.getName());
+        try {
+            daoHolder.getSubscribeDao().remove(subscribe.getName());
+        }catch (Exception e) {}
         subscribe = data.getSubscribe(Data.ADMIN);
-        daoHolder.getSubscribeDao().remove(subscribe.getName());
+        try {
+            daoHolder.getSubscribeDao().remove(subscribe.getName());
+        }catch (Exception e){}
     }
 
 }
