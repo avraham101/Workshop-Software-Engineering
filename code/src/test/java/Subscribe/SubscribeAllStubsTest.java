@@ -351,43 +351,29 @@ public class SubscribeAllStubsTest {
         logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
         ProductData productData = data.getProductData(Data.VALID);
         assertFalse(sub.addProductToStore(productData).getValue());
-
         daoHolder.getSubscribeDao().remove(sub.getName());
         tearDownStore();
     }
 
     /**
-     * test 4.1.2 - remove product
+     * part of test 4.1.2 - remove product
      */
     @Test
-    public void removeProductFromStoreTest(){
+    public void checkRemoveProductSuccess() {
         setUpProductAdded();
-        checkRemoveProductFail();
-        checkRemoveProductSuccess();
-    }
-
-    /**
-     * part of test 4.1.2 - remove product
-     */
-    protected void checkRemoveProductSuccess() {
         String storeName=data.getProductData(Data.VALID).getStoreName();
         String productName=data.getProductData(Data.VALID).getProductName();
-        assertTrue(sub.removeProductFromStore(storeName, productName).getValue());
-        assertFalse(sub.getPermissions().get(storeName).getStore().getProducts().containsKey(productName));
+        assertTrue(this.subscribe.removeProductFromStore(storeName, productName).getValue());
+        tearDownStore();
     }
+
 
     /**
      * part of test 4.1.2 - remove product
      */
-    private void checkRemoveProductFail() {
-        checkRemoveProductHasNoPermission();
-        checkRemoveProductNotManager();
-    }
-
-    /**
-     * part of test 4.1.2 - remove product
-     */
-    private void checkRemoveProductNotManager() {
+    @Test
+    public void checkRemoveProductNotManager() {
+        setUpProductAdded();
         String validStoreName=data.getProductData(Data.VALID).getStoreName();
         Permission permission=sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
@@ -395,12 +381,15 @@ public class SubscribeAllStubsTest {
         assertFalse(sub.removeProductFromStore(data.getProductData(Data.VALID).getProductName(),validStoreName).getValue());
         sub.getPermissions().put(validStoreName,permission);
         assertTrue(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+        tearDownStore();
     }
 
     /**
      * part of test 4.1.2 - remove product
      */
-    private void checkRemoveProductHasNoPermission() {
+    @Test
+    public void checkRemoveProductHasNoPermission() {
+        setUpProductAdded();
         String validStoreName=data.getProductData(Data.VALID).getStoreName();
         Permission permission=sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
@@ -408,6 +397,7 @@ public class SubscribeAllStubsTest {
         assertFalse(sub.removeProductFromStore(data.getProductData(Data.VALID).getProductName(),validStoreName).getValue());
         permission.addType(PermissionType.OWNER);
         assertTrue(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+        tearDownStore();
     }
 
     /**
