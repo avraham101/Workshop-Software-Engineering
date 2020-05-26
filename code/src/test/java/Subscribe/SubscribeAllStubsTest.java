@@ -259,8 +259,10 @@ public class SubscribeAllStubsTest {
     @Test
     public void openStoreTest() {
         setUpLoginSubscribe();
-        Store store = this.subscribe.openStore(data.getStore(Data.VALID));
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = this.subscribe.openStore(storeData);
         assertNotNull(store);
+        assertEquals(storeData.getName(), store.getName());
         tearDownStore();
     }
 
@@ -269,11 +271,13 @@ public class SubscribeAllStubsTest {
      */
     @Test
     public void testWriteReviewSubscribe() {
+        setUpStoreOpened();
         Review review = data.getReview(Data.VALID);
-        assertTrue(sub.addReview(review));
-        List<Review> reviewList = sub.getReviews();
+        assertTrue(subscribe.addReview(review));
+        List<Review> reviewList = subscribe.getReviews();
         assertEquals(1, reviewList.size());
         assertEquals(review, reviewList.get(0));
+        tearDownStore();
     }
 
     /**
