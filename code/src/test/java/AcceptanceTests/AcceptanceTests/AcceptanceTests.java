@@ -226,6 +226,7 @@ public class AcceptanceTests {
             registerAndLogin(owner);
             bridge.openStore(owner.getId(),store.getStoreName());
             bridge.appointOwnerToStore(owner.getId(),store.getStoreName(),admin.getUsername());
+            bridge.logout(owner.getId());
         }
 
         bridge.logout(admin.getId());
