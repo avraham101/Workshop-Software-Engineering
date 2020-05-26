@@ -52,6 +52,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
     /**---------------------set-ups-------------------------------------------*/
 
+
     /**
      * set up connect
      */
@@ -85,7 +86,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
     /**----------------------set-ups------------------------------------------*/
 
-    /**
+
+
+     /**
      * set up for register a user
      */
     private void setUpRegisteredUser(){
@@ -378,6 +381,22 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(1, list.size());
         assertEquals(list.get(0).getProductName(), productData.getProductName());
         tearDownProductAddedToCart();
+    }
+
+    /**
+     * use case 2.7.1 fail when the product is null
+     */
+    protected void testWatchCartDetailsNull() {
+        CartData cartData = logicManager.watchCartDetails(data.getId(Data.VALID)).getValue();
+        assertNotNull(cartData.getProducts().get(0));
+    }
+
+    /**
+     * use case 2.7.1 fail when the basket is null
+     */
+    protected void testWatchCartDetailsNullStore() {
+        CartData cartData = logicManager.watchCartDetails(data.getId(Data.VALID)).getValue();
+        assertNotNull(cartData.getProducts().get(0).getStoreName());
     }
 
     /**
@@ -841,7 +860,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(temp.getComment(), request.getComment());
     }
 
-    /**
+     /**
      * use case 3.7 - watch purchase history
      */
     @Override @Test

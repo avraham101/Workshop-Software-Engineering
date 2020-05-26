@@ -1251,7 +1251,7 @@ public class LogicManager {
     public Response<Set<StorePermissionType>> getPermissionsForStore(int id, String storeName) {
         User user = cache.findUser(id);
         Response<Set<StorePermissionType>> response = new Response<>(null,OpCode.Dont_Have_Permission);
-        if(user==null)
+        if(user==null||daos.getStoreDao().find(storeName)==null)
             return response;
         Set<StorePermissionType> userStorePermissions = user.getPermissionsForStore(storeName);
         if(userStorePermissions!=null){

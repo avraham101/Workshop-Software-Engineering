@@ -27,8 +27,7 @@ public class StoreDao extends Dao<Store>{
                 store.initPermissions();
             }
         }
-        catch(NoResultException ex) {
-            ex.printStackTrace();
+        catch(Exception ex) {
         }
         finally {
             em.close();

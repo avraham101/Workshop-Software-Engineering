@@ -140,7 +140,7 @@ public class Subscribe extends UserState{
         boolean output= super.addProductToCart(store, product, amount);
         if(output){
             daos.getCartDao().remove(cart);
-           return daos.getCartDao().add(cart);
+            return daos.getCartDao().add(cart);
         }
         return false;
     }
@@ -178,7 +178,7 @@ public class Subscribe extends UserState{
         Permission permission = new Permission(this);
         Store store = new Store(storeDetails.getName(), permission,storeDetails.getDescription());
         permission.setStore(store);
-       // permission.addType(PermissionType.OWNER); //Always true, store just created.
+        // permission.addType(PermissionType.OWNER); //Always true, store just created.
         permissions.put(store.getName(),permission);
         if(!daos.getStoreDao().addStore(store))
             return null;
@@ -241,7 +241,7 @@ public class Subscribe extends UserState{
         requests.add(request);
         RequestDao requestDao = daos.getRequestDao();
         if(requestDao.addRequest(request))
-             return request;
+            return request;
         return null;
     }
 
@@ -694,26 +694,26 @@ public class Subscribe extends UserState{
      */
     @Override
     public Set<StorePermissionType> getPermissionsForStore(String storeName) {
-     Permission permission = daos.getStoreDao().find(storeName).getPermissions().get(userName);
-     if(permission==null)
-         return null;
-     Set<StorePermissionType> permissionsForStore = new HashSet<>();
-     HashSet<PermissionType> permissionTypes= permission.getPermissionType();
-     if(permissionTypes.contains(PermissionType.OWNER)){
-         permissionsForStore.add(StorePermissionType.OWNER);
-         return permissionsForStore;
-     }
-     if(permission.canAddProduct())
-         permissionsForStore.add(StorePermissionType.PRODUCTS_INVENTORY);
-     if(permission.canAddOwner())
-         permissionsForStore.add(StorePermissionType.ADD_OWNER);
-     if(permission.canAddManager())
-         permissionsForStore.add(StorePermissionType.ADD_MANAGER);
-     if(!givenByMePermissions.isEmpty())
-         permissionsForStore.add(StorePermissionType.DELETE_MANAGER);
-     if(permissionTypes.contains(PermissionType.CRUD_POLICY_DISCOUNT))
-         permissionsForStore.add(StorePermissionType.CRUD_POLICY_DISCOUNT);
-     return permissionsForStore;
+        Permission permission = daos.getStoreDao().find(storeName).getPermissions().get(userName);
+        if(permission==null)
+            return null;
+        Set<StorePermissionType> permissionsForStore = new HashSet<>();
+        HashSet<PermissionType> permissionTypes= permission.getPermissionType();
+        if(permissionTypes.contains(PermissionType.OWNER)){
+            permissionsForStore.add(StorePermissionType.OWNER);
+            return permissionsForStore;
+        }
+        if(permission.canAddProduct())
+            permissionsForStore.add(StorePermissionType.PRODUCTS_INVENTORY);
+        if(permission.canAddOwner())
+            permissionsForStore.add(StorePermissionType.ADD_OWNER);
+        if(permission.canAddManager())
+            permissionsForStore.add(StorePermissionType.ADD_MANAGER);
+        if(!givenByMePermissions.isEmpty())
+            permissionsForStore.add(StorePermissionType.DELETE_MANAGER);
+        if(permissionTypes.contains(PermissionType.CRUD_POLICY_DISCOUNT))
+            permissionsForStore.add(StorePermissionType.CRUD_POLICY_DISCOUNT);
+        return permissionsForStore;
 
     }
 
