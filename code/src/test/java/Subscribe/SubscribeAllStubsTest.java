@@ -777,6 +777,9 @@ public class SubscribeAllStubsTest {
         StoreData storeData = data.getStore(Data.VALID);
         Subscribe admin = data.getSubscribe(Data.ADMIN);
         assertTrue(this.subscribe.removePermissions(list, storeData.getName(),admin.getName()).getValue());
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertEquals(2,store.getPermissions().values().size());
+
         tearDownStore();
     }
 
