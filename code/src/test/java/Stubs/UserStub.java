@@ -18,6 +18,11 @@ public class UserStub extends User {
         super();
     }
 
+    @Override
+    public UserState getState() {
+        return new Subscribe("test","test");
+    }
+
     /**
      * use case 2.3 - Login
      * @param subscribe - The new Subscribe State
@@ -28,14 +33,24 @@ public class UserStub extends User {
         return true;
     }
 
+
+    @Override
+    public boolean reservedCart() {
+        return true;
+    }
+
+    @Override
+    public void savePurchase(String buyer) {
+    }
+
     /**
      * use case 3.1 - Logout
      * @return true if the user state changed back to guest
      */
     @Override
     public boolean logout() {
-
-        return this.state instanceof Subscribe;
+        this.state=new Subscribe("hu","mu");
+        return true;
     }
 
     /**

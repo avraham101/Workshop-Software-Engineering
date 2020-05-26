@@ -43,7 +43,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         daos=new DaoHolder();
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
-        cashe=new CacheStub();
+        cashe=new Cache();
         init();
         currUser=cashe.findUser(data.getId(Data.VALID));
         publisher=new StubPublisher();
@@ -758,6 +758,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Test
     public void testWriteReview() {
         super.testWriteReview();
+    }
+
+    @Override
+    protected void testWriteReviewTest(){
+        super.testWriteReviewTest();
         testWriteReviewSuccess();
         testWriteReviewProductDidntPurchased();
     }
