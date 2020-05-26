@@ -40,7 +40,6 @@ public class StoreDao extends Dao<Store>{
         List<Store> output = new LinkedList<>();
         List<String> storeNames = new LinkedList<>();
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-        em.getTransaction().begin();
         Query query = em.createQuery("SELECT name FROM Domain.Store");
         List<String> resultList = query.getResultList();
         for(String name:resultList) {
@@ -77,11 +76,9 @@ public class StoreDao extends Dao<Store>{
 
     public void clearTable() {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-        em.getTransaction().begin();
         Query query = em.createQuery("DELETE FROM Domain.Store");
         int rowsDeleted = query.executeUpdate();
         //System.out.println("entities deleted: " + rowsDeleted);
-        em.getTransaction().commit();
         em.close();
     }
 
