@@ -3,6 +3,7 @@ package AcceptanceTests.AcceptanceTests;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ReviewTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -113,7 +114,7 @@ public class EditStore extends AcceptanceTests {
         ProductTestData product = stores.get(0).getProducts().get(0);
         product.setAmountInStore(10);
         product.setPrice(100);
-        product.setCategory("newCategory");
+        product.setCategory("Dairy");
         boolean approval = bridge.editProductInStore(superUser.getId(),product);
         assertTrue(approval);
         StoreTestData store = bridge.getStoreInfoByName( stores.get(0).getStoreName());
@@ -145,6 +146,10 @@ public class EditStore extends AcceptanceTests {
         boolean approval = bridge.editProductInStore(superUser.getId(),product);
         assertFalse(approval);
     }
-
+    @After
+    public void tearDown(){
+        removeStores(stores);
+        removeUser(superUser.getUsername());
+    }
 
 }

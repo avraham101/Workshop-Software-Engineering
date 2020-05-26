@@ -8,23 +8,6 @@ public class CartDao extends Dao<Cart> {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("product");
 
-//    public static void main(String[] args){
-//        PermissionType[] ps = {PermissionType.OWNER};
-//        List<PermissionType> perms = new ArrayList<PermissionType>(Arrays.asList(ps));
-//        Permission p = new Permission(new Subscribe("roy","roy"), new HashSet<>(perms));
-//        Basket b = new Basket(new Store("roy",p,"roy"),"roy");
-//        ProductData pd  = new ProductData("roy","roy","roy",null,0,0,PurchaseTypeData.IMMEDDIATE);
-//        Product pr = new Product(pd,new Category("roy"));
-//        b.addProduct(pr,0);
-//        Cart c = new Cart("roy");
-//        c.getBaskets().put("roy",b);
-//        Cart c2 = new Cart("yuval");
-//        BasketDao bdao = new BasketDao();
-////        bdao.addBasket(c);
-//        bdao.removeBasket(c);
-//        ENTITY_MANAGER_FACTORY.close();
-//    }
-
     public boolean add(Cart cart){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
