@@ -174,23 +174,38 @@ public class BasketTest {
     }
 
     /**
+     * use case 2.7.3 - edit product
+     * test edit amount of product in a basket
+     */
+    @Test
+    public void testEditAmountFromBasketWrongProductName() {
+        setUpProductAddedToBasket();
+        ProductData productData = data.getProductData(Data.WRONG_NAME);
+        assertFalse(basket.editAmount(productData.getProductName(),productData.getAmount()));
+    }
+
+    /**
      * use case 2.8 cancel basket
      */
     @Test
     public void testCancelBasket() {
+        setUpProductAddedToBasket();
         List<Integer> amountInBasket = new LinkedList<>();
         List<Integer> amountInStore = new LinkedList<>();
-        for (ProductInCart product : basket.getProducts().values()) {
-            amountInBasket.add(product.getAmount());
+        HashMap<ProductData, Integer> products = data.getProductsInBasket(Data.VALID);
+        for (Integer amount: products.values()) {
+            amountInBasket.add(amount);
         }
-        for (ProductInCart product : basket.getProducts().values()) {
-            Product productInStore = this.store.getProduct(product.getProductName());
-            amountInStore.add(productInStore.getAmount());
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        for (Product product : store.getProducts().values()) {
+            amountInStore.add(product.getAmount());
         }
         int i = 0;
         this.basket.cancel();
-        for (ProductInCart product : basket.getProducts().values()) {
-            Product productInStore = this.store.getProduct(product.getProductName());
+        store = daoHolder.getStoreDao().find(storeData.getName());
+        for (ProductData product : products.keySet()) {
+            Product productInStore = store.getProduct(product.getProductName());
             assertEquals(productInStore.getAmount(), amountInBasket.get(i) + amountInStore.get(i));
             i += 1;
         }
