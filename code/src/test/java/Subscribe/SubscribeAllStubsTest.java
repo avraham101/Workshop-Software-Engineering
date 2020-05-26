@@ -447,7 +447,14 @@ public class SubscribeAllStubsTest {
     @Test
     public void testSuccessEditProduct(){
         setUpProductAdded();
-        assertTrue(sub.editProductFromStore(data.getProductData(Data.EDIT)).getValue());
+        ProductData productData = data.getProductData(Data.EDIT);
+        assertTrue(this.subscribe.editProductFromStore(productData).getValue());
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        Product product = store.getProduct(productData.getProductName());
+        assertNotNull(product);
+        assertEquals(productData.getPrice(), product.getPrice(),0.01);
+        assertEquals(productData.getAmount(), product.getAmount());
         tearDownStore();
     }
 
