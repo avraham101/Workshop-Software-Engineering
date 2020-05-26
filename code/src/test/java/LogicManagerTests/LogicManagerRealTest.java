@@ -416,7 +416,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override @Test
     public void testAddProductToCart() {
-        super.testAddProductToCart();
+        setUpProductAdded();
         testAddProductToCartBasketNull();
         testAddProductToCartValid();
         tearDownProductAddedToCart();
@@ -492,6 +492,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         logicManager.updatePolicy(data.getId(Data.VALID),policyToAdd,data.getStore(Data.VALID).getName());
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
         checkBuyDidntWork();
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -709,7 +710,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
         assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
         daos.getStoreDao().removeStore(storeData.getName());
-        tearDownLogin();
+        tearDownOpenStore();
     }
 
     /**
@@ -729,12 +730,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Test
     public void testOpenStoreUserPermissions() {
-        setUpLogedInUser();
+        setUpOpenedStore();
         StoreData storeData = data.getStore(Data.VALID);
         Subscribe subscribe = (Subscribe)currUser.getState();
         Permission permission = subscribe.getPermissions().get(storeData.getName());
         assertTrue(permission.getPermissionType().contains(PermissionType.OWNER));
-        tearDownLogin();
+        tearDownOpenStore();
     }
 
     /**
@@ -888,9 +889,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Permission permission = sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         sub.getPermissions().clear();
+        daos.getSubscribeDao().remove(sub.getName());
+        daos.getSubscribeDao().addSubscribe(sub);
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.VALID)).getValue());
-        sub.getPermissions().put(validStoreName,permission);
         assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+        tearDownOpenStore();
     }
 
     /**
@@ -906,9 +909,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Permission permission = sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         permission.removeType(PermissionType.OWNER);
+        daos.getSubscribeDao().remove(sub.getName());
+        daos.getSubscribeDao().addSubscribe(sub);
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.VALID)).getValue());
-        permission.addType(PermissionType.OWNER);
-        assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+        assertFalse(daos.getStoreDao().find(store.getName()).getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+        tearDownOpenStore();
     }
 
     @Test
@@ -940,9 +945,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Permission permission = sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         sub.getPermissions().clear();
-        assertFalse(sub.removeProductFromStore(data.getProductData(Data.VALID).getProductName(),validStoreName).getValue());
+        daos.getSubscribeDao().remove(sub.getName());
+        daos.getSubscribeDao().addSubscribe(sub);
+        assertFalse(logicManager.removeProductFromStore(data.getId(Data.VALID),data.getProductData(Data.VALID).getProductName(),validStoreName).getValue());
         sub.getPermissions().put(validStoreName,permission);
-        assertTrue(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+        assertTrue(daos.getStoreDao().find(store.getName()).getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+        tearDownOpenStore();
     }
 
     /**
@@ -1353,7 +1361,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Transactional
     public void testGetManagersOfStoreFailStoreNotExist(){
         setUpLogedInUser();
-        StoreData storeData = data.getStore(Data.WRONG_NAME);
+        StoreData storeData = data.getStore(Data.WRONG_STORE);
         assertNull(logicManager.getManagersOfStore(storeData.getName()).getValue());
         tearDownLogin();
     }

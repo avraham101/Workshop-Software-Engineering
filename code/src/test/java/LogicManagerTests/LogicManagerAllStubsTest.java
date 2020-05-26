@@ -778,11 +778,17 @@ public class LogicManagerAllStubsTest {
      *  use case 2.7.4 - add product to cart
      */
     @Test
+    public void testAddProductToCartTest(){
+        testAddProductToCart();
+        tearDownOpenStore();
+    }
+
     public void testAddProductToCart() {
         setUpProductAdded();
         testAddProductToCartInvalidStore();
-        tearDownOpenStore();
     }
+
+
 
     /**
      * part of use case 2.7.4 - add product to cart
