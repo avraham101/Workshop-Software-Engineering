@@ -1144,7 +1144,7 @@ public class LogicManagerAllStubsTest {
      * part of use case 3.3 - write review with wrong store
      */
     private void testWriteReviewInvalidWrongStore() {
-    Review review = data.getReview(Data.WRONG_STORE);
+        Review review = data.getReview(Data.WRONG_STORE);
         assertFalse(logicManager.addReview(data.getId(Data.VALID), review.getStore(),review.getProductName(),review.getContent()).getValue());
     }
 
@@ -1171,13 +1171,12 @@ public class LogicManagerAllStubsTest {
     }
 
 
-     /**
+    /**
      * part of use case 3.5 -add request
      */
-     protected void testAddRequestSuccess() {
+    private void testAddRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
         assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(),request.getContent()).getValue());
-        daos.getRequestDao().removeRequest(request.getId());
     }
     @Test
     public void testAddRequestWrongName() {
@@ -1695,7 +1694,7 @@ public class LogicManagerAllStubsTest {
     private void testAddManagerToStoreFailUser(){
         String storeName=data.getStore(Data.VALID).getName();
         assertFalse(logicManager.addManager(data.getId(Data.VALID),storeName,storeName).getValue());
-       // assertFalse(stores.get(storeName).getPermissions().containsKey(storeName));
+        // assertFalse(stores.get(storeName).getPermissions().containsKey(storeName));
         assertFalse(daos.getStoreDao().find(storeName).getPermissions().containsKey(storeName));
     }
 
@@ -1720,10 +1719,10 @@ public class LogicManagerAllStubsTest {
      * 4. list with null
      */
     private void testAddPermissionFail() {
-       testAddPermissionFailWrongUserName();
-       testAddPermissionFailWrongStoreName();
-       testAddPermissionFailWrongNullPermissions();
-       testAddPermissionFailWrongPermissionListWithNull();
+        testAddPermissionFailWrongUserName();
+        testAddPermissionFailWrongStoreName();
+        testAddPermissionFailWrongNullPermissions();
+        testAddPermissionFailWrongPermissionListWithNull();
     }
 
     /**
@@ -1969,9 +1968,9 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testGetMyStoresFailNoStores(){
         setUpLogedInUser();
-       Response<List<StoreData>> response =  logicManager.getStoresManagedByUser(data.getId(Data.VALID));
-       assertNull(response.getValue());
-       assertEquals(response.getReason(),OpCode.No_Stores_To_Manage);
+        Response<List<StoreData>> response =  logicManager.getStoresManagedByUser(data.getId(Data.VALID));
+        assertNull(response.getValue());
+        assertEquals(response.getReason(),OpCode.No_Stores_To_Manage);
     }
 
     @Test
