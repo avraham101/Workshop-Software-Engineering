@@ -31,7 +31,7 @@ public class Basket implements Serializable {
     private String buyer; // the buyer name
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @MapKey(name="storeName")
+    @MapKey(name="productName")
     @JoinColumns({
             @JoinColumn(name="buyer", referencedColumnName = "username", updatable = false),
             @JoinColumn(name="storename", referencedColumnName = "storename", updatable = false)
@@ -41,8 +41,7 @@ public class Basket implements Serializable {
     @Column(name = "price")
     private double price;
 
-    public Basket(){
-
+    public Basket() {
         productInCartDao = new ProductInCartDao();
         storeDao = new StoreDao();
     }
@@ -67,7 +66,7 @@ public class Basket implements Serializable {
      * @return - true if removed, false if not
      */
     public boolean deleteProduct(String productName) {
-        store =storeDao.find(store.getName());
+        store = storeDao.find(store.getName());
         boolean result = false;
         if (productName != null && this.products.get(productName)!=null) {
             ProductInCart key=new ProductInCart(buyer, store.getName(), productName);
@@ -108,7 +107,7 @@ public class Basket implements Serializable {
      * @return - true if added, false if not
      */
     public boolean addProduct(Product product, int amount) {
-        store =storeDao.find(store.getName());
+        store = storeDao.find(store.getName());
         if(amount<0 || this.products.get(product.getName())!=null) {
             return false;
         }
@@ -200,7 +199,7 @@ public class Basket implements Serializable {
      * @return the purchase bought
      */
     public Purchase savePurchase(String buyer) {
-        store =storeDao.find(store.getName());
+        store = storeDao.find(store.getName());
         String storeName = this.store.getName();
         List<ProductData> list = new LinkedList<>();
         for(ProductInCart productInCart: this.products.values()) {

@@ -21,6 +21,7 @@ public class AdminTest  {
         data=new TestData();
         Subscribe s=data.getSubscribe(Data.ADMIN);
         admin=new Admin(s.getName(),s.getPassword());
+
     }
 
     /**

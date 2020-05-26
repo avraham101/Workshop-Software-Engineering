@@ -168,7 +168,8 @@ public class TestData {
     private void setUpBasketData() {
         basket = new HashMap<Data, HashMap<ProductData, Integer>>();
         HashMap <ProductData, Integer> productsInBasket = new HashMap<>();
-        productsInBasket.put(productsData.get(Data.VALID), 100);
+        ProductData productData =  productsData.get(Data.VALID);
+        productsInBasket.put( productData, productData.getAmount());
         basket.put(Data.VALID, productsInBasket);
     }
 
