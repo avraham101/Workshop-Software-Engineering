@@ -1161,7 +1161,9 @@ public class LogicManager {
             Request request=response.getValue();
             if(request!=null){
                 Notification<Request> notification=new RequestNotification(request,OpCode.Reply_Request);
-                cache.findSubscribe(request.getSenderName()).sendNotification(notification);
+                Subscribe sub=cache.findSubscribe(request.getSenderName());
+                if(sub!=null)
+                    sub.sendNotification(notification);
                 return new Response<RequestData>(new RequestData(request),response.getReason());
             }
             return new Response<RequestData>(null,response.getReason());

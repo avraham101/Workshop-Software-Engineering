@@ -18,6 +18,8 @@ public class CacheStub extends Cache {
 
     @Override
     public Subscribe findSubscribe(String userName) {
+        if(userName==null||userName.equals("Store"))
+            return null;
         return new Subscribe("yuv","al");
     }
 }

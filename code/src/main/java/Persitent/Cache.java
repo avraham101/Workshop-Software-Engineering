@@ -45,4 +45,7 @@ public class Cache {
             return null;
     }
 
+    public void resetList() {
+        connectedUsers.clear();
+    }
 }
