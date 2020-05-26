@@ -151,4 +151,8 @@ public class Cart implements Serializable {
         }
         return purchases;
     }
+
+    public void setBasket(String name, Basket basket) {
+        this.baskets.put(name,basket);
+    }
 }
