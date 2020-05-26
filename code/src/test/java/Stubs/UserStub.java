@@ -10,6 +10,19 @@ import java.util.List;
 
 public class UserStub extends User {
 
+    public UserStub(User user) {
+        this.setState(user.getState());
+    }
+
+    public UserStub() {
+        super();
+    }
+
+    @Override
+    public UserState getState() {
+        return new Subscribe("test","test");
+    }
+
     /**
      * use case 2.3 - Login
      * @param subscribe - The new Subscribe State
@@ -20,12 +33,23 @@ public class UserStub extends User {
         return true;
     }
 
+
+    @Override
+    public boolean reservedCart() {
+        return true;
+    }
+
+    @Override
+    public void savePurchase(String buyer) {
+    }
+
     /**
      * use case 3.1 - Logout
      * @return true if the user state changed back to guest
      */
     @Override
     public boolean logout() {
+        this.state=new Subscribe("hu","mu");
         return true;
     }
 
@@ -206,7 +230,7 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public Request addRequest(int requestId,String storeName, String content) {
+    public Request addRequest(String storeName, String content) {
         return new Request(getUserName(), storeName, "temp", 10);
     }
 

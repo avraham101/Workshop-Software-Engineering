@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Cache {
 
-    private static ConcurrentHashMap<Integer,User> connectedUsers;
+    protected static ConcurrentHashMap<Integer,User> connectedUsers;
     private static ConcurrentHashMap<String, Subscribe> subscribes;
     private static SubscribeDao subscribeDao;
 

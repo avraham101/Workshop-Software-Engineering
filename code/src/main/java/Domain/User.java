@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 public class User {
-    private UserState state;
+    protected UserState state;
 
     public User() {
         state=new Guest();
@@ -184,8 +184,8 @@ public class User {
      * @param content
      * @return
      */
-    public Request addRequest(int requestId, String storeName, String content) {
-        return state.addRequest(requestId,storeName, content); }
+    public Request addRequest(String storeName, String content) {
+        return state.addRequest(storeName, content); }
 
     /**
      * use case 3.7 - watch purchase history

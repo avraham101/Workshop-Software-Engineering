@@ -5,7 +5,6 @@ import Data.TestData;
 import DataAPI.PermissionType;
 import DataAPI.ProductData;
 import DataAPI.PurchaseTypeData;
-import DataAPI.StoreData;
 import Domain.*;
 import Persitent.*;
 import org.junit.Test;
@@ -96,7 +95,7 @@ public class DataBaseTests {
         PermissionDao dao = new PermissionDao();
         Store store = storeDao.find("Store");
         Permission per = dao.findPermission(new Permission(data.getSubscribe(Data.VALID2),store));
-        assertTrue(dao.removePermission(per));
+        assertTrue(dao.removePermissionFromSubscribe(per));
 
     }
 

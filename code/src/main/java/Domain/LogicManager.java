@@ -686,7 +686,7 @@ public class LogicManager {
         if(current!=null) {
             UserState sub = current.getState();
             if (sub != null && current.logout()) {
-                if (!this.daos.getSubscribeDao().update((Subscribe)sub))
+                if (!daos.getSubscribeDao().update((Subscribe)sub))
                     return new Response<>(false, OpCode.DB_Down);
                 return new Response<>(true, OpCode.Success);
             }
@@ -795,8 +795,7 @@ public class LogicManager {
         User current = cache.findUser(id);
         if(current==null)
             return new Response<>(false,OpCode.User_Not_Found);
-        int requestId = requestIdGenerator.incrementAndGet(); // generate request number sync //TODO maybe delete- auto generated
-        Request request = current.addRequest(requestId, storeName, content);
+        Request request = current.addRequest(storeName, content);
         if (request == null) {
             return new Response<>(false,OpCode.Null_Request);
         }

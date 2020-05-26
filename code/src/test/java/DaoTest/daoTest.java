@@ -74,7 +74,7 @@ public class daoTest {
     public void addSubscribe(){
         SubscribeDao dao=new SubscribeDao();
         StoreDao storeDao=new StoreDao();
-        Subscribe shmu=new Admin("Admin","Admin");
+        Subscribe shmu=new Admin("yuv","Admin");
 //        Basket b=new Basket(storeDao.find("store"),"yuv");
 //        ProductData p=data.getProductData(Data.VALID);
 //        b.addProduct(new Product(p,new Category("cat")),3);
@@ -94,6 +94,27 @@ public class daoTest {
         //shmu.getPermissions().put("hanut",p);
         //shmu.addReview(new Review(shmu.getName(),s.getName(),"proc8","hello"));
         storeDao.addStore(s);
+    }
+
+    @Test
+    public void removePermission(){
+        PermissionDao daop=new PermissionDao();
+        SubscribeDao dao=new SubscribeDao();
+        Subscribe shmu=dao.find("yuv");
+        Permission p=shmu.getPermissions().get("Store");
+        StoreDao storeDao=new StoreDao();
+        Store store=storeDao.find("Store");
+        store.getPermissions().remove("yuv");
+        daop.removePermissionFromSubscribe(p);
+        storeDao.update(store);
+
+        shmu.getPermissions().remove("Store");
+        dao.update(shmu);
+
+//        daop.removePermission(new Permission(dao.find("yuv"),
+//                storeDao.find("Store")));
+
+
     }
 
 
@@ -164,6 +185,9 @@ public class daoTest {
         SubscribeDao subdao=new SubscribeDao();
         //subdao.remove("Admin");
         subdao.remove("Yuval");
+        subdao.remove("Admin");
+        subdao.remove("Niv");
+        subdao.remove("yuv");
         StoreDao storeDao=new StoreDao();
         //Store store=storeDao.find("hanut");
         storeDao.removeStore("Store");

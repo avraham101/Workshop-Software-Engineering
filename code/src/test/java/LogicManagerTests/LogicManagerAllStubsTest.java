@@ -74,7 +74,7 @@ public class LogicManagerAllStubsTest {
         //External Systems
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
-        this.cashe=new Cache();
+        this.cashe=new CacheStub();
         init();
     }
 
@@ -105,10 +105,10 @@ public class LogicManagerAllStubsTest {
         logicManager.connectToSystem();
         logicManager.connectToSystem();
         //work with the regular user has current user
-        connectedUsers.put(data.getId(Data.VALID),new UserStub());
-        connectedUsers.put(data.getId(Data.ADMIN),new UserStub());
-        connectedUsers.put(data.getId(Data.VALID2),new UserStub());
-        currUser=connectedUsers.get(data.getId(Data.VALID));
+        cashe.addConnectedUser(data.getId(Data.VALID),new UserStub());
+        cashe.addConnectedUser(data.getId(Data.ADMIN),new UserStub());
+        cashe.addConnectedUser(data.getId(Data.VALID2),new UserStub());
+        currUser=cashe.findUser(data.getId(Data.VALID));
     }
 
     /**
@@ -142,7 +142,7 @@ public class LogicManagerAllStubsTest {
         Permission permission = new Permission(data.getSubscribe(Data.VALID));
         StoreStub storeStub = new StoreStub(storeName,permission,"description");
         permission.setStore(storeStub);
-        stores.put(storeData.getName(),storeStub);
+        daos.getStoreDao().update(storeStub);
     }
 
     /**
@@ -253,6 +253,7 @@ public class LogicManagerAllStubsTest {
      * checking for exception due to false connection from the payment external system
      */
     @Test
+    @Transactional
     public void testFailPaymentSystem() {
         PaymentSystem stubPayment = new PaymentSystemStub();
         ProxySupply proxySupply = new ProxySupply();
@@ -276,6 +277,7 @@ public class LogicManagerAllStubsTest {
      * the system check success connect
      */
     @Test
+    @Transactional
     public void testInitSuccess() {
         //the call for logic manger is in the @Before
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
@@ -289,6 +291,7 @@ public class LogicManagerAllStubsTest {
      * checking for exception due to false connection output from the supply external system
      */
     @Test
+    @Transactional
     public void testFailSupplySystem() {
         ProxyPayment proxyPayment = new ProxyPayment();
         SupplySystem stubSupply = new SupplySystemStub();
@@ -458,37 +461,44 @@ public class LogicManagerAllStubsTest {
      * use case 2.4.2 - view the products in some store with valid data test
      */
     @Test
+    @Transactional
     public void testViewProductsInStore() {
         setUpProductAdded();
         List<ProductData> expected = new LinkedList<>();
         String storeName = data.getStore(Data.VALID).getName();
         assertEquals(expected, logicManager.viewProductsInStore(storeName).getValue());
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.4.2 - view the products in some store with valid data test
      */
     @Test
+    @Transactional
     public void testViewProductInStoreNotExists() {
         setUpProductAdded();
         String storeName = data.getStore(Data.WRONG_STORE).getName();
         assertNull(logicManager.viewProductsInStore(storeName).getValue());
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.4.2 - view the products in some store with valid data test
      */
     @Test
+    @Transactional
     public void testViewProductInStoreNull() {
         setUpProductAdded();
         String storeName = data.getStore(Data.NULL_STORE).getName();
         assertNull(logicManager.viewProductsInStore(storeName).getValue());
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.4.2 - view the products in some store with null category test
      */
     @Test
+    @Transactional
     public void testViewProductsInStoreNullCategory() {
         setUpProductAdded();
         List<ProductData> expected = new LinkedList<>();
@@ -496,12 +506,14 @@ public class LogicManagerAllStubsTest {
         expected.add(data.getProductData(Data.NULL_CATEGORY));
         assertNotEquals(expected, logicManager.viewProductsInStore(storeName).getValue());
         expected.remove(data.getProductData(Data.NULL_CATEGORY));
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.4.2 - view the products in some store with null name test
      */
     @Test
+    @Transactional
     public void testViewProductsInStoreNullCategoryName() {
         setUpProductAdded();
         List<ProductData> expected = new LinkedList<>();
@@ -509,12 +521,14 @@ public class LogicManagerAllStubsTest {
         expected.add(data.getProductData((Data.NULL_NAME)));
         assertNotEquals(expected, logicManager.viewProductsInStore(storeName).getValue());
         expected.remove(data.getProductData((Data.NULL_NAME)));
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.4.2 - view the products in some store with null discount test
      */
     @Test
+    @Transactional
     public void testViewProductsInStoreNullDiscount() {
         setUpProductAdded();
         List<ProductData> expected = new LinkedList<>();
@@ -522,12 +536,14 @@ public class LogicManagerAllStubsTest {
         expected.add(data.getProductData((Data.NULL_DISCOUNT)));
         assertNotEquals(expected, logicManager.viewProductsInStore(storeName).getValue());
         expected.remove(data.getProductData((Data.NULL_DISCOUNT)));
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.4.2 - view the products in some store with null purchase test
      */
     @Test
+    @Transactional
     public void testViewProductsInStoreNullPurchase() {
         setUpProductAdded();
         List<ProductData> expected = new LinkedList<>();
@@ -535,84 +551,92 @@ public class LogicManagerAllStubsTest {
         expected.add(data.getProductData((Data.NULL_PURCHASE)));
         assertNotEquals(expected, logicManager.viewProductsInStore(storeName).getValue());
         expected.remove(data.getProductData((Data.NULL_PURCHASE)));
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 2.5 - view specific product
      */
     @Test
+    @Transactional
     public void testViewSpecificProductWrongSearch() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NULL_SEARCH);
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
-        tearDownProductAdded();
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 2.5 - view spesific products
      */
     @Test
+    @Transactional
     public void testViewSpecificProductWrongFilterNullValue() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NULL_VALUE);
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
-        tearDownProductAdded();
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 2.5 - view spesific products
      */
     @Test
+    @Transactional
     public void testViewSpecificProductWrongFilterNegativeMin() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NEGATIVE_MIN);
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
-        tearDownProductAdded();
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 2.5 - view spesific products
      */
     @Test
+    @Transactional
     public void testViewSpecificProductWrongFilterNegativeMax() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NEGATIVE_MAX);
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
-        tearDownProductAdded();
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 2.5 - view spesific products
      */
     @Test
+    @Transactional
     public void testViewSpecificProductWrongFilterNullCategory() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NULL_CATEGORY);
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
-        tearDownProductAdded();
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 2.5 - view spesific products
      */
     @Test
+    @Transactional
     public void testViewSpecificProductWrongFilterNull() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.NULL);
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertTrue(products.isEmpty());
-        tearDownProductAdded();
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 2.5 - view spesific products
      */
     @Test
+    @Transactional
     public void testViewSpecificProductFilterNone() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
@@ -620,13 +644,14 @@ public class LogicManagerAllStubsTest {
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertTrue(products.isEmpty());
-        tearDownProductAdded();
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 2.5 - view spesific products
      */
     @Test
+    @Transactional
     public void testViewSpecificProductFilterProductName() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
@@ -634,13 +659,14 @@ public class LogicManagerAllStubsTest {
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertTrue(products.isEmpty());
-        tearDownProductAdded();
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 2.5 - view spesific products
      */
     @Test
+    @Transactional
     public void testViewSpecificProductFilterKeyWord() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
@@ -648,13 +674,14 @@ public class LogicManagerAllStubsTest {
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertTrue(products.isEmpty());
-        tearDownProductAdded();
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 2.5 - view spesific products
      */
     @Test
+    @Transactional
     public void testViewSpecificProductFilterCategory() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
@@ -662,17 +689,19 @@ public class LogicManagerAllStubsTest {
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertTrue(products.isEmpty());
-        tearDownProductAdded();
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.7.1 fails tests
      */
     @Test
+    @Transactional
     public void testWatchCartDetails() {
         setUpProductAddedToCart();
         testWatchCartDetailsNull();
         testWatchCartDetailsNullStore();
+        tearDownOpenStore();
     }
 
     /**
@@ -698,10 +727,12 @@ public class LogicManagerAllStubsTest {
      * fails tests
      */
     @Test
+    @Transactional
     public void testDeleteProductFromCart() {
         setUpProductAddedToCart();
         testDeleteProductFromCartBasketIsNull();
         testDeleteProductFromCartProductIsNull();
+        tearDownOpenStore();
     }
 
     /**
@@ -726,11 +757,13 @@ public class LogicManagerAllStubsTest {
      * use case 2.7.3 fail tests
      */
     @Test
+    @Transactional
     public void testEditProductsInCart() {
         setUpProductAddedToCart();
         testEditProductsInCartBasketIsNull();
         testEditProductsInCartNegativeAmount();
         testEditProductsInCartProductIsNull();
+        tearDownOpenStore();
     }
 
     /**
@@ -761,9 +794,11 @@ public class LogicManagerAllStubsTest {
      *  use case 2.7.4 - add product to cart
      */
     @Test
+    @Transactional
     public void testAddProductToCart() {
         setUpProductAdded();
         testAddProductToCartInvalidStore();
+        tearDownOpenStore();
     }
 
     /**
@@ -787,13 +822,14 @@ public class LogicManagerAllStubsTest {
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
         assertTrue(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address).getValue());
-        tearDownProductAdded();
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.8 - buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartPaymentSystemCrashed() {
         paymentSystem = new PaymentSystemStubPay();
         init();
@@ -802,6 +838,7 @@ public class LogicManagerAllStubsTest {
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address).getValue());
+        tearDownOpenStore();
     }
 
     /**
@@ -816,12 +853,14 @@ public class LogicManagerAllStubsTest {
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartSupplySystemCrashedAndPaymentCancel() {
         paymentSystem = new PaymentSystemStubCancel();
         supplySystem = new SupplySystemStubDeliver();
@@ -831,24 +870,29 @@ public class LogicManagerAllStubsTest {
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        tearDownOpenStore();
+
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartNullPayment(){
         setUpProductAddedToCart();
         // null data payment
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID),country, null, address).getValue());
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartNullAddressPayment() {
         setUpProductAddedToCart();
         // null address in payment
@@ -856,12 +900,14 @@ public class LogicManagerAllStubsTest {
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address).getValue());
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartEmptyAddressPayment() {
         setUpProductAddedToCart();
         // empty address in payment
@@ -869,12 +915,14 @@ public class LogicManagerAllStubsTest {
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address).getValue());
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartEmptyPayment() {
         setUpProductAddedToCart();
         // empty payment
@@ -882,12 +930,14 @@ public class LogicManagerAllStubsTest {
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address).getValue());
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartPaymentNullName() {
         setUpProductAddedToCart();
         // null name in payment
@@ -895,12 +945,14 @@ public class LogicManagerAllStubsTest {
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartPaymentEmptyName(){
         setUpProductAddedToCart();
         // empty name in payment
@@ -908,6 +960,7 @@ public class LogicManagerAllStubsTest {
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        tearDownOpenStore();
 
     }
 
@@ -915,6 +968,7 @@ public class LogicManagerAllStubsTest {
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartNullAddress() {
         setUpProductAddedToCart();
         // null address
@@ -922,12 +976,14 @@ public class LogicManagerAllStubsTest {
         String address = data.getDeliveryData(Data.NULL_ADDRESS).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country,paymentData, address).getValue());
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartEmptyAddress() {
         setUpProductAddedToCart();
         // empty address
@@ -935,12 +991,14 @@ public class LogicManagerAllStubsTest {
         String address = data.getDeliveryData(Data.EMPTY_ADDRESS).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartEmptyCountry() {
         setUpProductAddedToCart();
         // empty country
@@ -948,12 +1006,14 @@ public class LogicManagerAllStubsTest {
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.EMPTY_COUNTRY).getCountry();
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartNullCountry() {
         setUpProductAddedToCart();
         // null country
@@ -961,18 +1021,20 @@ public class LogicManagerAllStubsTest {
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.NULL_COUNTRY).getCountry();
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        tearDownOpenStore();
     }
 
     /**
      * test: use case 3.1 - Logout
      */
     @Test
+    @Transactional
     public void testLogout() {
         setUpLogedInUser();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         int id = data.getId(Data.VALID);
         assertTrue(logicManager.logout(id).getValue());
-        Subscribe daoSubscribe = daos.getSubscribeDao().find(subscribe.getName());
+        Subscribe daoSubscribe = cashe.findSubscribe(subscribe.getName());
         assertEquals(-1, daoSubscribe.getSessionNumber().intValue());
         tearDownLogin();
     }
@@ -981,6 +1043,7 @@ public class LogicManagerAllStubsTest {
      * part of test use case 3.2 - Open Store
      */
     @Test
+    @Transactional
     public void testOpenStoreNull() {
         setUpLogedInUser();
         assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL)).getValue());
@@ -991,6 +1054,7 @@ public class LogicManagerAllStubsTest {
      * part of test use case 3.2 - Open Store
      */
     @Test
+    @Transactional
     public void testOpenStoreNullName() {
         setUpLogedInUser();
         assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_NAME)).getValue());
@@ -998,6 +1062,7 @@ public class LogicManagerAllStubsTest {
     }
 
     @Test
+    @Transactional
     public void testOpenStoreNullDiscription() {
         setUpLogedInUser();
         assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.NULL_DESCRIPTION)).getValue());
@@ -1008,23 +1073,27 @@ public class LogicManagerAllStubsTest {
      * part of test use case 3.2 - Open Store
      */
     @Test
+    @Transactional
     public void testOpenStoreReopen() {
         setUpOpenedStore();
         StoreData storeData = data.getStore(Data.VALID);
         assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
         tearDownOpenStore();
     }
-    //TODO test open store working
 
+    @Transactional
+    @Test
+    public void testWriteReview(){
+        setUpBoughtProduct();
+        testWriteReviewTest();
+        tearDownOpenStore();
+    }
     /**
      * use case 3.3 - write review
      */
-    @Test
-    public void testWriteReview() {
-        setUpBoughtProduct();
+    protected void testWriteReviewTest() {
         testWriteReviewInvalid();
         testWriteReviewValid();
-
     }
 
     /**
@@ -1035,6 +1104,7 @@ public class LogicManagerAllStubsTest {
         testWriteReviewInvalidNullPoduct();
         testWriteReviewInvalidNullContent();
         testWriteReviewInvalidEmptyContent();
+        testWriteReviewInvalidWrongStore();
     }
 
 

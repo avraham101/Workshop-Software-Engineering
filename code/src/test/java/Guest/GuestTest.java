@@ -145,7 +145,7 @@ public class GuestTest {
     @Test
     public void addRequest() {
         Request request = data.getRequest(Data.WRONG_STORE);
-        assertNull(guest.addRequest(request.getId(), request.getStoreName(), request.getContent()));
+        assertNull(guest.addRequest(request.getStoreName(), request.getContent()));
     }
 
     /**
