@@ -12,6 +12,7 @@ import DataAPI.Purchase;
 import Domain.ProductPeristentData;
 import Domain.Request;
 import Domain.Review;
+import Persitent.SubscribeDao;
 import Publisher.SinglePublisher;
 import Service.ServiceAPI;
 import Systems.PaymentSystem.PaymentSystem;
@@ -363,6 +364,12 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     public void setPublisher(PublisherMock publisherMock) {
         SinglePublisher.initPublisher(publisherMock);
     }
+    //---------------------------------DB related----------------------------------//
+    @Override
+    public void removeUser(String username) {
+        SubscribeDao subscribeDao = new SubscribeDao();
+        subscribeDao.remove(username);
+    }
     //--------------------------get managers of store---------------------------------//
 
 
@@ -376,7 +383,8 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public void resetSystem() {
         try {
-            this.serviceAPI = new ServiceAPI("admin", "admin");
+//            this.serviceAPI = new ServiceAPI("admin", "admin");
+            this.serviceAPI = null;
         }catch (Exception e)
         {
             e.printStackTrace();

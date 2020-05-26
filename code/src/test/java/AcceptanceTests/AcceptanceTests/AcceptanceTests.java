@@ -299,8 +299,17 @@ public class AcceptanceTests {
         this.supplySystem = supplySystem;
     }
 
+    protected void removeUser(String username){
+        this.bridge.removeUser(username);
+    }
+    protected void removeUsers(List<String> users){
+        for(String user : users)
+            removeUser(user);
+    }
+
     @After
     public  void tearDownAll(){
+        removeUsers(Arrays.asList(admin.getUsername(),users.get(0).getUsername(),users.get(1).getUsername()));
         bridge.resetSystem();
     }
 }

@@ -53,9 +53,10 @@ public class Cache {
     }
 
     public Subscribe findSubscribeInCache(String userName){
-        for(User user : connectedUsers.values())
-            if(user.getUserName().equals(userName))
+        for(User user : connectedUsers.values()) {
+            if (user!=null && user.getUserName()!=null && user.getUserName().equals(userName))
                 return (Subscribe) user.getState();
+        }
             return null;
     }
 

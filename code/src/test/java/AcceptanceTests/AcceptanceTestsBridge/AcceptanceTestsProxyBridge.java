@@ -365,4 +365,10 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
             realBridge.setPublisher(publisherMock);
 
     }
+    //----------------------------------DB related------------------------//
+    @Override
+    public void removeUser(String username) {
+        if(realBridge!=null)
+            realBridge.removeUser(username);
+    }
 }
