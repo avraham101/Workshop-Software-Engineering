@@ -16,6 +16,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -142,11 +143,33 @@ public class BasketTest {
      */
     @Test
     public void testEditAmountFromBasket() {
+        setUpProductAddedToBasket();
+        int new_amount = 10;
         HashMap<ProductData, Integer> products = data.getProductsInBasket(Data.VALID);
         for (ProductData productData: products.keySet()) {
             String productName = productData.getProductName();
-            assertTrue(basket.editAmount(productName,5));
+            assertTrue(basket.editAmount(productName, new_amount));
         }
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        StoreData storeData = data.getStore(Data.VALID);
+        Cart cart =  daoHolder.getCartDao().find(subscribe.getName());
+        Basket basket =  cart.getBasket(storeData.getName());
+        assertNotNull(basket);
+        Map<String, ProductInCart> basketProducts = basket.getProducts();
+        for (ProductData productData: products.keySet()) {
+            assertTrue(basketProducts.containsKey(productData.getProductName()));
+            int amount = basketProducts.get(productData.getProductName()).getAmount();
+            assertEquals(new_amount, amount);
+        }
+    }
+
+    /**
+     * use case 2.7.3 - edit product
+     * test edit amount of product in a basket
+     */
+    @Test
+    public void testEditAmountFromBasketNullProduct() {
+        setUpProductAddedToBasket();
         assertFalse(basket.editAmount(null,5));
     }
 

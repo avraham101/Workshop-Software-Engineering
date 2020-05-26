@@ -31,7 +31,7 @@ public class Basket implements Serializable {
     private String buyer; // the buyer name
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @MapKey(name="storeName")
+    @MapKey(name="productName")
     @JoinColumns({
             @JoinColumn(name="buyer", referencedColumnName = "username", updatable = false),
             @JoinColumn(name="storename", referencedColumnName = "storename", updatable = false)
