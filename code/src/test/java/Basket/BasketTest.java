@@ -75,7 +75,7 @@ public class BasketTest {
             fail();
     }
 
-    private void setUpProductAddedToBasket() {
+    protected void setUpProductAddedToBasket() {
         HashMap<ProductData, Integer> products = data.getProductsInBasket(Data.VALID);
         for (ProductData productData: products.keySet()) {
             Product product = new Product(productData,new Category(productData.getCategory()));

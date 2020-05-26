@@ -12,6 +12,7 @@ import Persitent.Cache;
 import Persitent.DaoHolders.DaoHolder;
 import Publisher.SinglePublisher;
 import Stubs.CacheStub;
+import Stubs.StoreStub;
 import Stubs.StubPublisher;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
@@ -811,8 +812,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Test
     public void testAddRequest(){
 //        setUpOpenedStore();
-//        testSubscribeAddRequestSuccess();
         super.testAddRequest();
+//        tearDownOpenStore();
     }
 
     /**
@@ -1212,18 +1213,18 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 4.9.1 - view request
      */
-    @Override @Test
-    public void testStoreViewRequest(){
-        super.testStoreViewRequest();
-        testStoreViewRequestSuccess();
-        testStoreViewRequestFail();
-    }
+//    @Override @Test
+//    public void testStoreViewRequest(){
+//        testStoreViewRequestSuccess();
+//        testStoreViewRequestFail();
+//    }
 
     /**
      * part of use case 4.9.1 - view request
      */
-    private void testStoreViewRequestSuccess() {
-        testAddRequest();
+    @Test
+    public void testStoreViewRequestSuccess() {
+        setUpRequestAdded();
         StoreData storeData = data.getStore(Data.VALID);
         Store store = daos.getStoreDao().find(storeData.getName());
         List<Request> requests=new LinkedList<>(store.getRequests().values());
@@ -1231,20 +1232,26 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         for(Request r:requests)
             excepted.add(new RequestData(r));
         List<RequestData> actual = logicManager.viewStoreRequest(data.getId(Data.VALID), storeData.getName()).getValue();
-        for(int i=0;i<=1;i++){
+        for(int i=0;i<1;i++){
             assertEquals(actual.get(i).getStoreName(),excepted.get(i).getStoreName());
             assertEquals(actual.get(i).getComment(),excepted.get(i).getComment());
             assertEquals(actual.get(i).getContent(),excepted.get(i).getContent());
             assertEquals(actual.get(i).getId(),excepted.get(i).getId());
             assertEquals(actual.get(i).getSenderName(),excepted.get(i).getSenderName());
         }
+        daos.getRequestDao().removeRequest(requests.get(0).getId());
+        store.getRequests().clear();
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 4.9.1 - view request
      */
-    private void testStoreViewRequestFail() {
+    @Test
+    public void testStoreViewRequestFail() {
+        setUpOpenedStore();
         assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), data.getStore(Data.NULL_NAME).getName()).getValue().isEmpty());
+        tearDownOpenStore();
     }
 
     /**

@@ -2,6 +2,7 @@ package Persitent;
 
 import Domain.Discount.Discount;
 import Domain.Request;
+import Domain.Store;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -57,6 +58,31 @@ public class RequestDao extends Dao<Request> {
             em.close();
         }
         return r;
+    }
+
+    public void removeRequest(int id){
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction et = null;
+        Request request = null;
+
+        try {
+            et = em.getTransaction();
+            et.begin();
+
+            request=em.find(Request.class,id);
+            em.remove(request);
+            et.commit();
+
+        }
+        catch(Exception ex) {
+            if (et != null) {
+                et.rollback();
+            }
+            ex.printStackTrace();
+        }
+        finally {
+            em.close();
+        }
     }
 
     public boolean update(Request request){

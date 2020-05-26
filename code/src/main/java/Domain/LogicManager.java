@@ -1130,14 +1130,16 @@ public class LogicManager {
                 "store owner view the requests of the store", new Object[] {storeName});
         User current = cache.findUser(id);
         List<RequestData> requestDatas = new LinkedList<>();
-        Store store = daos.getStoreDao().find(storeName);;
-        if(storeName != null && store!=null) {
-            List<Request> requests = current.viewRequest(store);
-            if(requests!=null){
-                for(Request r:requests)
-                    requestDatas.add(new RequestData(r));
+        if(storeName != null) {
+            Store store = daos.getStoreDao().find(storeName);
+            if (store != null) {
+                List<Request> requests = current.viewRequest(store);
+                if (requests != null) {
+                    for (Request r : requests)
+                        requestDatas.add(new RequestData(r));
+                }
+                return new Response<>(requestDatas, OpCode.Success);
             }
-            return new Response<>(requestDatas,OpCode.Success);
         }
         return new Response<>(requestDatas,OpCode.Store_Not_Found);
     }
