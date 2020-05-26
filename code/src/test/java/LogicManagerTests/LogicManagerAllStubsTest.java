@@ -1886,21 +1886,10 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testStoreViewRequest(){
         setUpRequestAdded();
-        //testStoreViewRequestSuccess();
         testStoreViewRequestFailNullName();
         testStoreViewRequestFailWrongStore();
         tearDownOpenStore();
-
     }
-
-//    /**
-//     * part of use case 4.9.1 -view request
-//     */
-//    private void testStoreViewRequestSuccess() {
-//        Request request = data.getRequest(Data.VALID);
-//        assertFalse(currUser.viewRequest(request.getStoreName()).isEmpty());
-//    }
-    //TODO fix this
 
     /**
      * part of use case 4.9.1 -view request

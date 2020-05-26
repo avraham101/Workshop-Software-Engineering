@@ -1,5 +1,6 @@
 package Stubs;
 
+import Domain.Subscribe;
 import Domain.User;
 import Persitent.Cache;
 
@@ -14,4 +15,9 @@ public class CacheStub extends Cache {
         return null;
     }
 
+
+    @Override
+    public Subscribe findSubscribe(String userName) {
+        return new Subscribe("yuv","al");
+    }
 }

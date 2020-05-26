@@ -1194,6 +1194,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     @Override
+    @Transactional
     protected void testRemoveManagerSuccess() {
         Subscribe niv=data.getSubscribe(Data.VALID2);
         logicManager.login(data.getId(Data.VALID2),niv.getName(),niv.getPassword());
@@ -1214,16 +1215,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 4.9.1 - view request
      */
-//    @Override @Test
-//    public void testStoreViewRequest(){
-//        testStoreViewRequestSuccess();
-//        testStoreViewRequestFail();
-//    }
-
-    /**
-     * part of use case 4.9.1 - view request
-     */
     @Test
+    @Transactional
     public void testStoreViewRequestSuccess() {
         setUpRequestAdded();
         StoreData storeData = data.getStore(Data.VALID);
@@ -1249,6 +1242,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * part of use case 4.9.1 - view request
      */
     @Test
+    @Transactional
     public void testStoreViewRequestFail() {
         setUpOpenedStore();
         assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), data.getStore(Data.NULL_NAME).getName()).getValue().isEmpty());
