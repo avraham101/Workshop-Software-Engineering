@@ -118,7 +118,6 @@ public class StoreTestReal extends StoreTestsAllStubs {
     /**
      * use case 2.8 - test product valid:
      */
-    //TODO
     @Test
     public void testReserveProductsProduct() {
         ProductData productData = data.getProductData(Data.VALID);
