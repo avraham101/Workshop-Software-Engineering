@@ -287,12 +287,12 @@ public class SubscribeAllStubsTest {
     public void testAddRequest(){
         setUpStoreOpened();
         Request excepted = data.getRequest(Data.VALID);
-        Request actual = sub.addRequest(excepted.getStoreName(), excepted.getContent());
-        assertEquals(excepted.getId(), actual.getId());
+        Request actual = subscribe.addRequest(excepted.getStoreName(), excepted.getContent());
         assertEquals(excepted.getSenderName(),actual.getSenderName());
         assertEquals(excepted.getStoreName(), actual.getStoreName());
         assertEquals(excepted.getContent(), actual.getContent());
         assertEquals(excepted.getComment(), actual.getComment());
+        tearDownStore();
     }
 
     /**
