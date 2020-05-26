@@ -26,6 +26,7 @@ public class BasketTestReal extends BasketTest{
      */
     @Test
     public void testBuySuccess() {
+        setUpProductAddedToBasket();
         int price = 0;
         List<ProductData> productDataList = new LinkedList<>();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
