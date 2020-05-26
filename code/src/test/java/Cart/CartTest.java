@@ -83,8 +83,6 @@ public class CartTest {
             cartDao.remove(cart);
     }
 
-    /**-------------------------set-ups------------------------------*/
-
     /**
      *  prepare product in the cart
      */
@@ -114,8 +112,6 @@ public class CartTest {
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
         cart.buy(paymentData, deliveryData);
     }
-
-    /**-------------------------set-ups------------------------------*/
 
     /**
      * use case 2.7 - add product to cart
