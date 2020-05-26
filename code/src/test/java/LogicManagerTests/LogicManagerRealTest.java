@@ -805,9 +805,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override
     @Test
     public void testAddRequest(){
-//        setUpOpenedStore();
-//        testSubscribeAddRequestSuccess();
-        super.testAddRequest();
+        setUpOpenedStore();
+        super.testAddRequestSuccess();
+        tearDownOpenStore();
     }
 
     /**
@@ -1450,6 +1450,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         tearDownOpenStore();
     }
 
+//    public void setUpOpenedStore(){
+//
+//    }
 //    private void tearDownProductBought() {
 //        tearDownProductAddedToCart();
 //    }

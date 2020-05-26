@@ -1116,9 +1116,10 @@ public class LogicManagerAllStubsTest {
      /**
      * part of use case 3.5 -add request
      */
-     private void testAddRequestSuccess() {
+     protected void testAddRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
         assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(),request.getContent()).getValue());
+        daos.getRequestDao().removeRequest(request.getId());
     }
     @Test
     public void testAddRequestWrongName() {
