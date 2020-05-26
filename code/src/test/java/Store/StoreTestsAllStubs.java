@@ -92,15 +92,7 @@ public class StoreTestsAllStubs {
 
 
 
-    /**
-     * test case that not need to add new category
-     */
-    @Test
-    public void testAddProductHasCategory() {
-        ProductData p=data.getProductData(Data.VALID);
-        store.getProducts().remove(p.getProductName());
-        assertTrue(store.addProduct(data.getProductData(Data.VALID)).getValue());
-    }
+
 
 
 
