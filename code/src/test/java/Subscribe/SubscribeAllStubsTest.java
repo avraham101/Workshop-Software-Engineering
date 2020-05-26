@@ -327,16 +327,8 @@ public class SubscribeAllStubsTest {
      * test use case 4.1.1 - add product
      */
     @Test
-    public void addProductToStoreTestFail() {
+    public void testAddProductDontHavePermission() {
         setUpStoreOpened();
-        testAddProductNotManagerOfStore();
-        testAddProductDontHavePermission();
-    }
-
-    /**
-     * part of test use case 4.1.1 - add product
-     */
-    private void testAddProductDontHavePermission() {
         String validStoreName=data.getProductData(Data.VALID).getStoreName();
         Permission permission=sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
@@ -344,19 +336,24 @@ public class SubscribeAllStubsTest {
         assertFalse(sub.addProductToStore(data.getProductData(Data.VALID)).getValue());
         permission.addType(PermissionType.OWNER);
         assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+        tearDownStore();
     }
 
     /**
-     * part of test use case 4.1.1 - add product
+     * test use case 4.1.1 - add product
      */
-    private void testAddProductNotManagerOfStore() {
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        Store store=permission.getStore();
-        sub.getPermissions().clear();
-        assertFalse(sub.addProductToStore(data.getProductData(Data.VALID)).getValue());
-        sub.getPermissions().put(validStoreName,permission);
-        assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+    @Test
+    public void testAddProductNotManagerOfStore() {
+        setUpStoreOpened();
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+        ProductData productData = data.getProductData(Data.VALID);
+        assertFalse(sub.addProductToStore(productData).getValue());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
     }
 
     /**
