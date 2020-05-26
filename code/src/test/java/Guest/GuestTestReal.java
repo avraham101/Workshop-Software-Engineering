@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -83,6 +84,11 @@ public class GuestTestReal extends GuestTest{
         ProductData productData = data.getProductData(Data.VALID);
         Product product = store.getProduct(productData.getProductName());
         guest.addProductToCart(store,product,product.getAmount());
+    }
+
+    private void setUpReserveCart() {
+        setUpCart();
+        guest.reserveCart();
     }
 
     private void tearDownStore() {
@@ -181,44 +187,53 @@ public class GuestTestReal extends GuestTest{
      */
     @Test
     public void testSavePurchase() {
-        setUpSave();
-        Store store = null;
-        int storeExpected = 0;
-        for(Basket basket: guest.getCart().getBaskets().values()) {
-            store = basket.getStore();
-            storeExpected = store.getPurchases().size() + 1;
-            break;
-        }
+        setUpReserveCart();
         guest.savePurchase(guest.getName());
-        assertEquals(storeExpected, store.getPurchases().size());
+        StoreData storeData = data.getStore(Data.VALID);
+        Store realStore = daoHolder.getStoreDao().find(storeData.getName());
+        assertEquals(0, realStore.getPurchases().size());
         assertTrue(guest.getCart().getBaskets().isEmpty());
+        tearDownStore();
     }
 
     /**
      * use case - 2.8 buy cart
      */
     @Test
-    public void testBuyCart(){
-        setUpBuy();
+    @Override
+    public void testBuyCart() {
+        setUpReserveCart();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
         guest.getCart().getBaskets().get(data.getStore(Data.VALID).getName()).getStore().setPurchasePolicy(
                 new BasketPurchasePolicy(0));
-        assertFalse(guest.buyCart(paymentData,deliveryData));
-        assertEquals(0,paymentData.getTotalPrice(),0.001);
-        assertTrue(deliveryData.getProducts().isEmpty());
+        assertTrue(guest.buyCart(paymentData,deliveryData));
+        tearDownStore();
     }
 
 
     @Test
-    public void testGetMyManagedStoresNoStoresSuccess(){
-
+    public void testGetMyManagedStoresNoStoresSuccess() {
         assertNull(guest.getMyManagedStores());
     }
 
     @Test
-    public void testGetPermissionsForStoreSuccess(){
+    public void testGetPermissionsForStoreSuccess() {
         assertNull(guest.getPermissionsForStore(data.getStore(Data.VALID).getName()));
     }
+
+    /**
+     * test use case 4.5
+     */
+    @Test
+    @Override
+    public void testAddManager() {
+        setUpStore();
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        StoreData storeData = data.getStore(Data.VALID);
+        assertFalse(guest.addManager(subscribe, storeData.getName()).getValue());
+        tearDownStore();
+    }
+
 
 }
