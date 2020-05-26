@@ -312,7 +312,15 @@ public class SubscribeAllStubsTest {
     @Test
     public void addProductToStoreTestSuccess(){
         setUpStoreOpened();
-        assertTrue(sub.addProductToStore(data.getProductData(Data.VALID)).getValue());
+        ProductData productData = data.getProductData(Data.VALID);
+        assertTrue(subscribe.addProductToStore(productData).getValue());
+
+        Store store = daoHolder.getStoreDao().find(productData.getStoreName());
+        Product product = store.getProduct(productData.getProductName());
+        assertNotNull(product);
+        assertEquals(productData.getProductName(), product.getName());
+        assertEquals(productData.getAmount(), product.getAmount());
+        tearDownStore();
     }
 
     /**
