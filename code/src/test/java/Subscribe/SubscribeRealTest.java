@@ -256,7 +256,9 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      * check use case 4.6.2 - remove permissions
      */
     @Override
-    protected void testRemovePermissionSuccess() {
+    @Test
+    public void testRemovePermissionSuccess() {
+        //TODO
         super.testRemovePermissionSuccess();
         assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType().
                 isEmpty());

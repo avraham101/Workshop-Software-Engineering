@@ -33,10 +33,6 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
     /**
      *  use case 2.7.4 - add product to cart
      */
-    @Override
-    public void testAddProductToCart() {
-        super.testAddProductToCart();
-    }
 
     @Override
     protected void testAddProductToCartInvalidStore(){
