@@ -1,4 +1,4 @@
-package LogicManagerTests;
+package DaoTest;
 
 import Data.Data;
 import Data.TestData;

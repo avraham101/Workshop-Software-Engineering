@@ -4,6 +4,7 @@ import Data.Data;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.Store;
+import Stubs.CacheStub;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,6 +14,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
 
     @Before
     public void setUp() {
+        this.cashe=new CacheStub();
         super.setUp();
     }
 
@@ -34,6 +36,11 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
     @Override
     public void testAddProductToCart() {
         super.testAddProductToCart();
+    }
+
+    @Override
+    protected void testAddProductToCartInvalidStore(){
+        super.testAddProductToCartInvalidStore();
         testAddProductToCartNullProduct();
         testAddProductToCartNegativeAmount();
         testAddProductToCartZeroAmount();
@@ -93,6 +100,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
         setUpManagerAddedSubManagerAdded();
         assertNull(logicManager.getManagersOfStoreUserManaged(data.getId(Data.VALID),
                 data.getSubscribe(Data.VALID).getName()).getValue());
+        tearDownOpenStore();
     }
 
 

@@ -543,8 +543,8 @@ public class Subscribe extends UserState{
      * @return
      */
     @Override
-    public Response<Request> replayToRequest(String storeName, int requestID, String content) {
-        if((storeName==null || content==null))
+    public Response<Request> replayToRequest(String storeName, Integer requestID, String content) {
+        if(requestID==null || storeName==null || content==null)
             return new Response<>(null, OpCode.InvalidRequest);
         Permission permission = daos.getStoreDao().find(storeName).getPermissions().get(userName);
         if(permission == null)
