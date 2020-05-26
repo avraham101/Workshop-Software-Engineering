@@ -733,7 +733,6 @@ public class SubscribeAllStubsTest {
         List<PermissionType> permissionList = data.getPermissionTypeList();
 
         assertFalse(sub.removePermissions(permissionList, admin.getName(),validStoreName).getValue());
-
         Store store = daoHolder.getStoreDao().find(storeData.getName());
         assertEquals(2,store.getPermissions().values().size());
 
@@ -747,15 +746,24 @@ public class SubscribeAllStubsTest {
     @Test
     public void testRemovePermissionDontHavePermission() {
         setUpAddedPermissions();
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+
+        logicManagerDriver.addManager(0,sub.getName(),storeData.getName());
+
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
-        Permission permission = sub.getPermissions().get(validStoreName);
-        Store store=permission.getStore();
-        permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.addPermissions(data.getPermissionTypeList(),
-                data.getSubscribe(Data.ADMIN).getName(),validStoreName).getValue());
-        assertTrue(store.getPermissions().get(data.getSubscribe(Data.ADMIN).getName()).getPermissionType().
-                containsAll(data.getPermissionTypeList()));
-        permission.addType(PermissionType.OWNER);
+        List<PermissionType> permissionList = data.getPermissionTypeList();
+
+        assertFalse(sub.removePermissions(permissionList, admin.getName(),validStoreName).getValue());
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertEquals(3,store.getPermissions().values().size());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
         tearDownStore();
     }
 
