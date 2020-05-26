@@ -8,7 +8,10 @@ public class CacheStub extends Cache {
 
     @Override
     public User findUser(int id) {
-        return new UserStub(super.findUser(id));
+        User user=super.findUser(id);
+        if(user!=null)
+            return new UserStub();
+        return null;
     }
 
 }

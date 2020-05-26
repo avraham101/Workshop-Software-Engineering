@@ -1334,43 +1334,58 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * tests for getManagersOfStore
+     * fail not existing store in the system
+     */
+    @Test
+    @Transactional
+    public void testGetManagersOfStoreFailStoreNotExist(){
+        setUpLogedInUser();
+        StoreData storeData = data.getStore(Data.WRONG_NAME);
+        assertNull(logicManager.getManagersOfStore(storeData.getName()).getValue());
+        tearDownLogin();
+    }
+
+    /**
      * tests for GetStoresManagedByUsers
      */
 
     @Test
+    @Transactional
     public void testGetStoresManagedByUsersOwnerSuccess(){
         setUpOpenedStore();
         Response<List<StoreData>> response= logicManager.getStoresManagedByUser(data.getId(Data.VALID));
         assertNotNull(response.getValue());
         assertEquals(response.getReason(),OpCode.Success);
-
-
+        tearDownOpenStore();
     }
 
     @Test
+    @Transactional
     public void testGetStoresManagedByUsersGuestFail(){
         setUpConnect();
         Response<List<StoreData>> response= logicManager.getStoresManagedByUser(data.getId(Data.VALID));
         assertNull(response.getValue());
         assertEquals(response.getReason(),OpCode.No_Stores_To_Manage);
+        tearDownRegisteredUser();
 
     }
 
     @Test
+    @Transactional
     public void testGetStoresManagedByUsersNotManagerFail(){
         setUpLogedInUser();
         Response<List<StoreData>> response= logicManager.getStoresManagedByUser(data.getId(Data.VALID));
         assertNull(response.getValue());
         assertEquals(response.getReason(),OpCode.No_Stores_To_Manage);
-
-
+        tearDownLogin();
     }
 
     /**
      *  tests for getPermissionsForStore
      */
-
     @Test
+    @Transactional
     public void  testGetPermissionsForStoreOwnerSuccess(){
         setUpOpenedStore();
         StoreData storeData = data.getStore(Data.VALID);
@@ -1379,9 +1394,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
                         storeData.getName());
         assertTrue(response.getValue().contains(StorePermissionType.OWNER));
         assertEquals(response.getReason(),OpCode.Success);
-
+        tearDownOpenStore();
     }
+
+
     @Test
+    @Transactional
     public void testGetPermissionsForStoreFailUserNotExist(){
         StoreData storeData = data.getStore(Data.VALID);
         Response<Set<StorePermissionType>> response=
@@ -1389,16 +1407,18 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
                         storeData.getName());
         assertNull(response.getValue());
         assertEquals(response.getReason(),OpCode.Dont_Have_Permission);
+        tearDownRegisteredUser();
     }
 
     @Test
+    @Transactional
     public void testGetPermissionsForStoreFailStoreNotExist(){
         Response<Set<StorePermissionType>> response=
                 logicManager.getPermissionsForStore(data.getId(Data.VALID),
                         "invalidStore");
         assertNull(response.getValue());
         assertEquals(response.getReason(),OpCode.Dont_Have_Permission);
-
+        tearDownRegisteredUser();
     }
 
     /**
@@ -1406,6 +1426,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * success
      */
     @Test
+    @Transactional
     public void  testGetManagersOfStoreSuccess(){
         setUpManagerAddedSubManagerAdded();
         StoreData storeData = data.getStore(Data.VALID);
@@ -1415,12 +1436,14 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         expectedManager.add(data.getSubscribe(Data.ADMIN).getName());
         List<String> mangers=logicManager.getManagersOfStore(storeData.getName()).getValue();
         assertEquals(expectedManager,mangers);
+        tearDownManagerAdded();
     }
 
     /**
      * getManagersOfStoreUserManaged tests
      */
     @Test
+    @Transactional
     public void getManagersOfStoreUserManagedSuccess(){
         setUpManagerAddedSubManagerAdded();
         List<String> managers=logicManager.getManagersOfStoreUserManaged(data.getId(Data.VALID),
@@ -1428,16 +1451,19 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         List<String> expectedManagers=new LinkedList<>();
         expectedManagers.add(data.getSubscribe(Data.ADMIN).getName());
         assertEquals(managers,expectedManagers);
+        tearDownManagerAdded();
     }
 
     /**
      * get all the users for the admin
      */
     @Test
+    @Transactional
     public void testGetAllUsersNotAnAdmin() {
         setUpRegisteredUser();
         List<String> users = logicManager.getAllUsers(data.getId(Data.VALID)).getValue();
         assertTrue(users.isEmpty());
+        tearDownRegisteredUser();
     }
 
     @Test @Override
@@ -1455,8 +1481,5 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         tearDownOpenStore();
     }
 
-//    private void tearDownProductBought() {
-//        tearDownProductAddedToCart();
-//    }
 }
 
