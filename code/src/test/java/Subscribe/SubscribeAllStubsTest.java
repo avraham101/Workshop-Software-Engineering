@@ -188,6 +188,13 @@ public class SubscribeAllStubsTest {
         ProductData productData = data.getProductData(Data.VALID);
         Product product = store.getProduct(productData.getProductName());
         assertTrue(subscribe.addProductToCart(store,product,product.getAmount()));
+
+        Basket basket = subscribe.getCart().getBasket(storeData.getName());
+        assertNotNull(basket);
+        ProductInCart productInCart = basket.getProducts().get(productData.getProductName());
+        assertNotNull(productInCart);
+        assertEquals(productData.getAmount(), productInCart.getAmount());
+
         tearDownStore();
     }
 
@@ -198,6 +205,19 @@ public class SubscribeAllStubsTest {
     public void testReservedCart() {
         setUpReserved();
         assertTrue(subscribe.reserveCart());
+
+        StoreData storeData = data.getStore(Data.VALID);
+        ProductData productData = data.getProductData(Data.VALID);
+        Basket basket = subscribe.getCart().getBasket(storeData.getName());
+        assertNotNull(basket);
+        ProductInCart productInCart = basket.getProducts().get(productData.getProductName());
+        assertNotNull(productInCart);
+        assertEquals(productData.getAmount(), productInCart.getAmount());
+
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        Product product = store.getProduct(productData.getProductName());
+        assertEquals(0, product.getAmount());
+
         tearDownStore();
     }
 
