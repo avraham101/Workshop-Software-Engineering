@@ -4,6 +4,7 @@ import Data.Data;
 import Data.TestData;
 import DataAPI.*;
 import Domain.*;
+import Drivers.LogicManagerDriver;
 import Persitent.*;
 import Persitent.DaoHolders.DaoHolder;
 import Stubs.StoreStub;
@@ -26,7 +27,7 @@ import static org.junit.Assert.*;
 public class BasketTest {
 
     protected TestData data;
-    protected LogicDriver logicDriver;
+    protected LogicManagerDriver logicDriver;
     protected DaoHolder daoHolder;
     protected Basket basket;
     protected Store store;
@@ -37,7 +38,7 @@ public class BasketTest {
         data = new TestData();
         daoHolder = new DaoHolder();
         try {
-            logicDriver = new LogicDriver();
+            logicDriver = new LogicManagerDriver();
         } catch (Exception e) {
             fail();
         }
@@ -209,13 +210,5 @@ public class BasketTest {
             assertEquals(productInStore.getAmount(), amountInBasket.get(i) + amountInStore.get(i));
             i += 1;
         }
-    }
-}
-
-class LogicDriver extends LogicManager{
-
-    public LogicDriver() throws Exception {
-        super("Admin", "Admin", new ProxyPayment(), new ProxySupply(), new DaoHolder(),
-                new Cache());
     }
 }

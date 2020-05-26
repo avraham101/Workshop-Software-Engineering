@@ -2,15 +2,15 @@ package Cart;
 
 import Data.Data;
 import Data.TestData;
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
-import DataAPI.Purchase;
+import DataAPI.*;
 import Domain.*;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
+import Drivers.LogicManagerDriver;
+import Persitent.Dao;
+import Persitent.DaoHolders.DaoHolder;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,13 +19,48 @@ import static org.junit.Assert.*;
 public class CartTest {
 
     private Domain.Cart cart;
-    private TestData testData;
+    private TestData data;
+    private DaoHolder daoHolder;
+    private LogicManagerDriver logicDriver;
+    private int id;
 
     @Before
     public void setUp(){
-        testData = new TestData();
-        Subscribe subscribe = testData.getSubscribe(Data.VALID);
-        cart = new Cart(subscribe.getName());
+        data = new TestData();
+        daoHolder = new DaoHolder();
+        try {
+            logicDriver = new LogicManagerDriver();
+        } catch (Exception e) {
+            fail();
+        }
+        setUpStore();
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        Subscribe real = daoHolder.getSubscribeDao().find(subscribe.getName());
+        cart = real.getCart();
+    }
+
+    private void setUpStore() {
+        //int id = data.getId(Data.VALID);
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        ProductData productData = data.getProductData(Data.VALID);
+        StoreData storeData = data.getStore(Data.VALID);
+        this.id = logicDriver.connectToSystem();
+        Response<Boolean> response = logicDriver.register(subscribe.getName(), subscribe.getPassword());
+        if(response.getValue()) {
+            response = logicDriver.login(id, subscribe.getName(), subscribe.getPassword());
+            if(response.getValue()) {
+                response = logicDriver.openStore(id, storeData);
+                if(response.getValue()) {
+                    response = logicDriver.addProductToStore(id, productData);
+                }
+                else
+                    fail();
+            }
+            else
+                fail();
+        }
+        else
+            fail();
     }
 
     /**-------------------------set-ups------------------------------*/
@@ -33,9 +68,11 @@ public class CartTest {
     /**
      *  prepare product in the cart
      */
-    private void setUpProductAdded(){
-        Store store = testData.getRealStore(Data.VALID);
-        Product product = testData.getRealProduct(Data.VALID);
+    private void setUpProductAdded() {
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        ProductData productData = data.getProductData(Data.VALID);
+        Product product = store.getProduct(productData.getProductName());
         cart.addProduct(store,product,product.getAmount());
     }
 
@@ -53,8 +90,8 @@ public class CartTest {
     private void setUpSave() {
         setUpProductAdded();
         cart.reserveCart();
-        PaymentData paymentData = testData.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = testData.getDeliveryData(Data.VALID);
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
         cart.buy(paymentData, deliveryData);
     }
 
@@ -65,9 +102,17 @@ public class CartTest {
      */
     @Test
     public void testAddProduct() {
-        Store store = testData.getRealStore(Data.VALID);
-        Product product = testData.getRealProduct(Data.VALID);
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        ProductData productData = data.getProductData(Data.VALID);
+        Product product = store.getProduct(productData.getProductName());
         assertTrue(cart.addProduct(store,product,product.getAmount()));
+        Basket basket = cart.getBasket(storeData.getName());
+        assertNotNull(basket);
+        Map<String,ProductInCart> productInBasket = basket.getProducts();
+        assertTrue(productInBasket.containsKey(productData.getProductName()));
+        ProductInCart productInCart = productInBasket.get(productData.getProductName());
+        assertEquals(product.getAmount(), productInCart.getAmount());
     }
 
     /**
@@ -95,8 +140,8 @@ public class CartTest {
                 size++;
             }
         }
-        PaymentData paymentData = testData.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = testData.getDeliveryData(Data.VALID2);
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
         assertTrue(cart.buy(paymentData, deliveryData));
         assertEquals(sum,paymentData.getTotalPrice(),0.001);
         assertEquals(size,deliveryData.getProducts().size());
@@ -109,10 +154,10 @@ public class CartTest {
     @Test
     public void testBuyCartPolicyFail(){
         setUpBuy();
-        cart.getBaskets().get(testData.getStore(Data.VALID).getName()).getStore().setPurchasePolicy(
+        cart.getBaskets().get(data.getStore(Data.VALID).getName()).getStore().setPurchasePolicy(
                 new BasketPurchasePolicy(0));
-        PaymentData paymentData = testData.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = testData.getDeliveryData(Data.VALID2);
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
         assertFalse(cart.buy(paymentData,deliveryData));
         assertTrue(deliveryData.getProducts().isEmpty());
         assertEquals(paymentData.getTotalPrice(),0,0.001);
@@ -167,7 +212,7 @@ public class CartTest {
     public void testSavePurchases() {
         setUpSave();
         int size = cart.getBaskets().size();
-        String name = testData.getSubscribe(Data.VALID).getName();
+        String name = data.getSubscribe(Data.VALID).getName();
         List<Purchase> list = cart.savePurchases(name);
         assertNotNull(list);
         assertEquals(size, list.size());
