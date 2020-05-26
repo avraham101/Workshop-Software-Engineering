@@ -29,10 +29,6 @@ public class BasketTestReal extends BasketTest{
         basket = new Basket(store, userName);
     }
 
-
-    /**------------------------------set-ups------------*/
-
-
     /**
      * use case 2.8 - reserveCart cart
      */
@@ -73,7 +69,5 @@ public class BasketTestReal extends BasketTest{
         Purchase result = basket.savePurchase(data.getSubscribe(Data.VALID).getName());
         assertNotNull(result);
     }
-
-
 
 }
