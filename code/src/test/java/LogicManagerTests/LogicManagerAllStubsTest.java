@@ -265,6 +265,7 @@ public class LogicManagerAllStubsTest {
             List<Admin> admins = daos.getSubscribeDao().getAllAdmins();
             assertEquals(1, admins.size());
         }
+        tearDownRegisteredUser();
     }
 
     /**
@@ -279,6 +280,7 @@ public class LogicManagerAllStubsTest {
         List<Admin> admins = daos.getSubscribeDao().getAllAdmins();
         assertEquals(1, admins.size());
         assertEquals(subscribe.getName(), admins.get(0).getName());
+        tearDownRegisteredUser();
     }
 
     /**
@@ -303,6 +305,7 @@ public class LogicManagerAllStubsTest {
             List<Admin> admins = daos.getSubscribeDao().getAllAdmins();
             assertEquals(1, admins.size());
         }
+        tearDownRegisteredUser();
     }
 
     /**
@@ -314,6 +317,7 @@ public class LogicManagerAllStubsTest {
             assertEquals(id, logicManager.connectToSystem());
             assertNotNull(cashe.findUser(id));
         }
+        tearDownRegisteredUser();
     }
 
     /**
@@ -693,19 +697,17 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 2.7.1 fail when the product is null
      */
-    private void testWatchCartDetailsNull() {
-        ProductData productData = data.getProductData(Data.NULL_PRODUCT);
+    protected void testWatchCartDetailsNull() {
         CartData cartData = logicManager.watchCartDetails(data.getId(Data.VALID)).getValue();
-        assertFalse(cartData.getProducts().contains(productData));
+        assertTrue(cartData.getProducts().isEmpty());
     }
 
     /**
      * use case 2.7.1 fail when the basket is null
      */
-    private void testWatchCartDetailsNullStore() {
-        ProductData productData = data.getProductData(Data.NULL_STORE);
+    protected void testWatchCartDetailsNullStore() {
         CartData cartData = logicManager.watchCartDetails(data.getId(Data.VALID)).getValue();
-        assertFalse(cartData.getProducts().contains(productData));
+        assertTrue(cartData.getProducts().isEmpty());
     }
 
     /**
@@ -2025,7 +2027,7 @@ public class LogicManagerAllStubsTest {
         setUpOpenedStore();
         StoreData storeData = data.getStore(Data.VALID);
         Response<Set<StorePermissionType>> response=
-                logicManager.getPermissionsForStore(data.getId(Data.VALID),
+                logicManager.getPermissionsForStore(data.getId(Data.ADMIN),
                         storeData.getName());
         assertNull(response.getValue());
         assertEquals(response.getReason(),OpCode.Dont_Have_Permission);
