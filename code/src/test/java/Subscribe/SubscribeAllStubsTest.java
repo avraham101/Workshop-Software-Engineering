@@ -427,14 +427,17 @@ public class SubscribeAllStubsTest {
     @Test
     public void checkEditProductHasNoPermission() {
         setUpProductAdded();
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+
+        logicManagerDriver.addManager(0,sub.getName(),storeData.getName());
+
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
         ProductData pData=data.getProductData(Data.EDIT);
-        Store store=permission.getStore();
-        permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.editProductFromStore(data.getProductData(Data.VALID)).getValue());
-        assertFalse(store.getProducts().get(pData.getProductName()).equal(pData));
-        permission.addType(PermissionType.OWNER);
+        assertFalse(sub.editProductFromStore(pData).getValue());
+        daoHolder.getSubscribeDao().remove(sub.getName());
         tearDownStore();
     }
 
