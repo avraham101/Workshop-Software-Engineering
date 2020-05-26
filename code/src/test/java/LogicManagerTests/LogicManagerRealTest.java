@@ -810,32 +810,33 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override
     @Test
     public void testAddRequest(){
-//        setUpOpenedStore();
-//        testSubscribeAddRequestSuccess();
         super.testAddRequest();
     }
 
     /**
      * part of use case 3.5 -add request
      */
-    private void testSubscribeAddRequestSuccess() {
+    @Override
+    protected void testAddRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
         assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(), request.getContent()).getValue());
 
         // check request saved in the store and user.
         StoreData storeData = data.getStore(Data.VALID);
 
-        Store store = stores.get(storeData.getName());
-        assertEquals(store.getRequests().get(request.getId()).getSenderName(), request.getSenderName());
-        assertEquals(store.getRequests().get(request.getId()).getStoreName(), request.getStoreName());
-        assertEquals(store.getRequests().get(request.getId()).getContent(), request.getContent());
-        assertEquals(store.getRequests().get(request.getId()).getComment(), request.getComment());
+        Store store = daos.getStoreDao().find(storeData.getName());
+        Request temp=store.getRequests().values().iterator().next();
+        assertEquals(temp.getSenderName(), request.getSenderName());
+        assertEquals(temp.getStoreName(), request.getStoreName());
+        assertEquals(temp.getContent(), request.getContent());
+        assertEquals(temp.getComment(), request.getComment());
 
-        Subscribe subscribe = users.get(currUser.getUserName());
-        assertEquals(subscribe.getRequests().get(0).getSenderName(), request.getSenderName());
-        assertEquals(subscribe.getRequests().get(0).getStoreName(), request.getStoreName());
-        assertEquals(subscribe.getRequests().get(0).getContent(), request.getContent());
-        assertEquals(subscribe.getRequests().get(0).getComment(), request.getComment());
+        Subscribe subscribe = cashe.findSubscribe(currUser.getUserName());
+        temp=subscribe.getRequests().get(0);
+        assertEquals(temp.getSenderName(), request.getSenderName());
+        assertEquals(temp.getStoreName(), request.getStoreName());
+        assertEquals(temp.getContent(), request.getContent());
+        assertEquals(temp.getComment(), request.getComment());
     }
 
     /**
