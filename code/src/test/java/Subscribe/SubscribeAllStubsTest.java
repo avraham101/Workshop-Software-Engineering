@@ -773,8 +773,10 @@ public class SubscribeAllStubsTest {
     @Test
     public void testRemovePermissionSuccess() {
         setUpAddedPermissions();
-        assertTrue(sub.removePermissions(data.getPermissionTypeList(),
-                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()).getValue());
+        List<PermissionType> list = data.getPermissionTypeList();
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
+        assertTrue(this.subscribe.removePermissions(list, storeData.getName(),admin.getName()).getValue());
         tearDownStore();
     }
 
