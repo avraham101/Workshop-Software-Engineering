@@ -4,7 +4,12 @@ import Data.Data;
 import Data.TestData;
 import DataAPI.*;
 import Domain.*;
+import Persitent.*;
+import Persitent.DaoHolders.DaoHolder;
 import Stubs.StoreStub;
+import Systems.PaymentSystem.ProxyPayment;
+import Systems.SupplySystem.ProxySupply;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,28 +25,88 @@ import static org.junit.Assert.*;
 public class BasketTest {
 
     protected TestData data;
+    protected LogicDriver logicDriver;
+    protected DaoHolder daoHolder;
     protected Basket basket;
     protected Store store;
+    protected int id;
 
     @Before
     public void setUp() {
         data = new TestData();
-        initStore();
-        String userName = data.getSubscribe(Data.VALID).getName();
-        basket = new Basket(store, userName);
-    }
-
-    private void initStore() {
-        Permission permission = new Permission(data.getSubscribe(Data.VALID));
+        daoHolder = new DaoHolder();
+        try {
+            logicDriver = new LogicDriver();
+        } catch (Exception e) {
+            fail();
+        }
+        setUpStore();
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
         StoreData storeData = data.getStore(Data.VALID);
-        store = new StoreStub(storeData.getName(),permission,"description");
-        permission.setStore(store);
+        Cache cache = new Cache();
+        Subscribe real = (Subscribe)cache.findUser(this.id).getState();
+        Store store = real.getPermissions().get(storeData.getName()).getStore();
+        this.basket = new Basket( store, subscribe.getName());
+//        real.getCart().setBasket(storeData.getName(),this.basket);
     }
 
-    /**--------------set-ups----------------------*/
-    protected void setUpAddedToBasket(){
-        Product product = data.getRealProduct(Data.VALID);
-        basket.addProduct(product, product.getAmount());
+    private void setUpStore() {
+        //int id = data.getId(Data.VALID);
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        ProductData productData = data.getProductData(Data.VALID);
+        StoreData storeData = data.getStore(Data.VALID);
+        this.id = logicDriver.connectToSystem();
+        Response<Boolean> response = logicDriver.register(subscribe.getName(), subscribe.getPassword());
+        if(response.getValue()) {
+            response = logicDriver.login(id, subscribe.getName(), subscribe.getPassword());
+            if(response.getValue()) {
+                response = logicDriver.openStore(id, storeData);
+                if(response.getValue()) {
+                    response = logicDriver.addProductToStore(id, productData);
+                }
+                else
+                    fail();
+            }
+            else
+                fail();
+        }
+        else
+            fail();
+    }
+
+    private void setUpProductAddedToBasket() {
+        HashMap<ProductData, Integer> products = data.getProductsInBasket(Data.VALID);
+        for (ProductData productData: products.keySet()) {
+            Product product = new Product(productData,new Category(productData.getCategory()));
+            if(!basket.addProduct(product, product.getAmount()))
+                fail();
+        }
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        CartDao cartDao = daoHolder.getCartDao();
+        Cart cart = cartDao.find(subscribe.getName());
+        if(cart==null)
+            fail();
+        cartDao.remove(cart);
+        StoreData storeData = data.getStore(Data.VALID);
+        cart.setBasket(storeData.getName(),this.basket);
+        if(!cartDao.add(cart))
+            fail();
+    }
+
+    @After
+    public void tearDownStore() {
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        SubscribeDao subscribeDao = daoHolder.getSubscribeDao();
+        subscribeDao.remove(subscribe.getName());
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
+        subscribeDao.remove(admin.getName());
+        StoreData storeData = data.getStore(Data.VALID);
+        StoreDao storeDao = daoHolder.getStoreDao();
+        storeDao.removeStore(storeData.getName());
+        CartDao cartDao = daoHolder.getCartDao();
+        Cart cart = cartDao.find(subscribe.getName());
+        if(cart!=null)
+            cartDao.remove(cart);
     }
 
     /**
@@ -52,7 +117,7 @@ public class BasketTest {
     public void teatAddToBasket() {
         HashMap<ProductData, Integer> products = data.getProductsInBasket(Data.VALID);
         for (ProductData productData: products.keySet()) {
-            Product product = data.getRealProduct(Data.VALID);
+            Product product = new Product(productData,new Category(productData.getCategory()));
             assertTrue(basket.addProduct(product, product.getAmount()));
         }
     }
@@ -63,10 +128,10 @@ public class BasketTest {
      */
     @Test
     public void testDeleteFromBasket() {
-        setUpAddedToBasket();
+        setUpProductAddedToBasket();
         HashMap<ProductData, Integer> products = data.getProductsInBasket(Data.VALID);
         for (ProductData productData: products.keySet()) {
-            Product product = new Product(productData,new Category(""));
+            Product product = new Product(productData,new Category(productData.getCategory()));
             assertTrue(basket.deleteProduct(product.getName()));
         }
     }
@@ -77,7 +142,6 @@ public class BasketTest {
      */
     @Test
     public void testEditAmountFromBasket() {
-        setUpAddedToBasket();
         HashMap<ProductData, Integer> products = data.getProductsInBasket(Data.VALID);
         for (ProductData productData: products.keySet()) {
             String productName = productData.getProductName();
@@ -108,26 +172,12 @@ public class BasketTest {
             i += 1;
         }
     }
+}
 
-//TODO delete it
+class LogicDriver extends LogicManager{
 
-//    /**
-//     * use case 2.8 buy basket
-//     */
-//    @Test
-//    public void testBuySuccess() {
-//        setUpAddedToBasket();
-//        int price = 0;
-//        List<ProductData> productDataList = new LinkedList<>();
-//        PaymentData paymentData = data.getPaymentData(Data.VALID);
-//        DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
-//        assertTrue(basket.buy(paymentData, deliveryData));
-//        for (ProductInCart product: basket.getProducts().values()) {
-//            price += product.getPrice();
-//            Product realProduct = store.getProduct(product.getProductName());
-//            productDataList.add(new ProductData(realProduct, store.getName()));
-//        }
-//        assertTrue(deliveryData.getProducts().containsAll(productDataList));
-//        assertEquals(price, paymentData.getTotalPrice(),0.01);
-//    }
+    public LogicDriver() throws Exception {
+        super("Admin", "Admin", new ProxyPayment(), new ProxySupply(), new DaoHolder(),
+                new Cache());
+    }
 }
