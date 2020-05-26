@@ -4,6 +4,9 @@ import Data.Data;
 import Data.TestData;
 import DataAPI.*;
 import Domain.*;
+import Drivers.LogicManagerDriver;
+import Persitent.Cache;
+import Persitent.DaoHolders.DaoHolder;
 import Persitent.SubscribeDao;
 import Stubs.CartStub;
 import Systems.PaymentSystem.PaymentSystem;
@@ -27,28 +30,44 @@ public class SubscribeAllStubsTest {
     protected PaymentSystem paymentSystem;
     protected SupplySystem supplySystem;
     protected TestData data;
-    protected SubscribeDao subscribeDao = new SubscribeDao();
+    protected DaoHolder daoHolder;
+    protected Cache cache;
+    protected LogicManagerDriver logicManagerDriver;
+    protected Subscribe subscribe;
+
     @Before
     public void setUp(){
         data = new TestData();
-        cart = new CartStub("Yuval");
-        sub = new Subscribe("Yuval","Sabag",cart);
-      // Boolean flag= subscribeDao.addSubscribe(sub);
-        initStore();
+        daoHolder = new DaoHolder();
+        cache = new Cache();
+        try {
+            logicManagerDriver = new LogicManagerDriver();
+        } catch (Exception e){
+            fail();
+        }
+        setUpSubscribe();
     }
 
-    /**--------------------------------set-ups-------------------------------------------------------------------*/
-
-    protected void initStore() {
-        paymentSystem = new ProxyPayment();
-        supplySystem = new ProxySupply();
+    private void setUpSubscribe() {
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        logicManagerDriver.register(subscribe.getName(),subscribe.getPassword());
+        this.subscribe =  cache.findSubscribe(subscribe.getName());
     }
+
+    public void setUpLoginSubscribe() {
+        int id = logicManagerDriver.connectToSystem();
+        this.logicManagerDriver.login(id,subscribe.getName(),subscribe.getPassword());
+        this.subscribe = cache.findSubscribe(subscribe.getName());
+    }
+
 
     /**
      * set up to open a store
      */
     protected void setUpStoreOpened(){
-        sub.openStore(data.getStore(Data.VALID));
+        setUpLoginSubscribe();
+        StoreData storeData = data.getStore(Data.VALID);
+        this.logicManagerDriver.openStore(this.subscribe.getSessionNumber(),storeData);
     }
 
     /**
@@ -144,16 +163,14 @@ public class SubscribeAllStubsTest {
         sub.addRequest(excepted.getStoreName(), excepted.getContent());
     }
 
-    /**--------------------------------set-ups-------------------------------------------------------------------*/
-
     /**
      * part of test use case 2.3 - Login.
      * test login where all fields are stubs
      */
     @Test
     public void loginTest() {
-        assertFalse(sub.login(new User(),data.getSubscribe(Data.ADMIN)));
-        assertNotEquals(sub.getName(),data.getSubscribe(Data.ADMIN).getName());
+        assertFalse(subscribe.login(new User(),data.getSubscribe(Data.ADMIN)));
+        assertNotEquals(subscribe.getName(),data.getSubscribe(Data.ADMIN).getName());
     }
 
     /**
@@ -794,9 +811,10 @@ public class SubscribeAllStubsTest {
 
     @After
     public void tearDown(){
-        subscribeDao.remove("Yuval");
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        daoHolder.getSubscribeDao().remove(subscribe.getName());
+        subscribe = data.getSubscribe(Data.ADMIN);
+        daoHolder.getSubscribeDao().remove(subscribe.getName());
     }
-
-
 
 }

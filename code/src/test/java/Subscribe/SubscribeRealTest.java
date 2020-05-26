@@ -20,7 +20,6 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         data = new TestData();
         cart = new Cart("Yuval");
         sub = new Subscribe("Yuval","Sabag", cart);
-        super.initStore();
     }
 
     /**
