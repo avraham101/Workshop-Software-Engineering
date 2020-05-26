@@ -6,7 +6,10 @@ import DataAPI.ProductData;
 import Domain.Review;
 import Domain.*;
 import Domain.Discount.Discount;
+import Drivers.LogicManagerDriver;
+import Persitent.DaoHolders.DaoHolder;
 import Stubs.ProductStub;
+import Stubs.StoreStub;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,11 +21,13 @@ import static org.junit.Assert.*;
 public class StoreTestsAllStubs {
     protected Store store;
     protected TestData data;
+    protected LogicManagerDriver logicDriver;
+    protected DaoHolder daoHolder;
 
     @Before
     public void setUp(){
         data=new TestData();
-        store=new Store(data.getStore(Data.VALID).getName(),
+        store=new StoreStub(data.getStore(Data.VALID).getName(),
                 new Permission(data.getSubscribe(Data.VALID)),"description");
     }
 
