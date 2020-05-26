@@ -9,6 +9,7 @@ import Domain.Notification.*;
 import Domain.PurchasePolicy.*;
 import Domain.PurchasePolicy.ComposePolicys.*;
 import Persitent.*;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -304,5 +305,32 @@ public class daoTest {
     public void removeNotification(){
         NotificationDao dao=new NotificationDao();
         dao.remove(4);
+    }
+
+
+    @Test
+    public void addRequestOne(){
+        RequestDao requestDao=new RequestDao();
+        requestDao.addRequest(new Request("yuv","hanut","hello",0));
+    }
+
+    @Test
+    public void addDiscountOne(){
+        DiscountDao discountDao=new DiscountDao();
+        discountDao.addDiscount(new RegularDiscount("shok",8));
+    }
+
+    @Test
+    public void testdb() {
+        assertTrue(true);
+    }
+
+    @After
+    public void resetTables() {
+        Subscribe other=data.getSubscribe(Data.VALID2);
+        SubscribeDao subscribeDao = new SubscribeDao();
+        subscribeDao.remove(other.getName());
+        subscribeDao.remove(data.getSubscribe(Data.VALID).getName());
+        subscribeDao.remove(data.getSubscribe(Data.ADMIN).getName());
     }
 }

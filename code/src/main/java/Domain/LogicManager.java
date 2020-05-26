@@ -6,7 +6,6 @@ import Domain.Discount.Term.Term;
 import Domain.Notification.RequestNotification;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Persitent.Cache;
-import Persitent.StoreDao;
 import Domain.Notification.Notification;
 import Persitent.DaoHolders.DaoHolder;
 import Systems.HashSystem;
@@ -19,7 +18,6 @@ import Utils.Utils;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import javassist.bytecode.Opcode;
 
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
@@ -29,8 +27,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class LogicManager {
 
-    private ConcurrentHashMap<String, Subscribe> subscribes;
-    private ConcurrentHashMap<String, Store> stores;
     private AtomicInteger usersIdCounter;
     private HashSystem hashSystem;
     private PaymentSystem paymentSystem;
@@ -686,6 +682,8 @@ public class LogicManager {
         if(current!=null) {
             UserState sub = current.getState();
             if (sub != null && current.logout()) {
+                sub = cache.findSubscribe(sub.getName());
+                sub.setSessionNumber(-1);
                 if (!daos.getSubscribeDao().update((Subscribe)sub))
                     return new Response<>(false, OpCode.DB_Down);
                 return new Response<>(true, OpCode.Success);
@@ -1007,9 +1005,9 @@ public class LogicManager {
     public Response<Boolean> manageOwner(int id,String storeName, String userName) {
         loggerSystem.writeEvent("LogicManager","manageOwner",
                 "store owner add a owner to the store", new Object[] {storeName, userName});
-        if(!subscribes.containsKey(userName))
+        if(cache.findSubscribe(userName)==null)
             return new Response<>(false,OpCode.User_Not_Found);
-        if(!stores.containsKey(storeName))
+        if(daos.getStoreDao().find(storeName)==null)
             return new Response<>(false,OpCode.Store_Not_Found);
         User current=cache.findUser(id);
         addManager(id,userName,storeName);
@@ -1128,14 +1126,16 @@ public class LogicManager {
                 "store owner view the requests of the store", new Object[] {storeName});
         User current = cache.findUser(id);
         List<RequestData> requestDatas = new LinkedList<>();
-        Store store = daos.getStoreDao().find(storeName);;
-        if(storeName != null && store!=null) {
-            List<Request> requests = current.viewRequest(store);
-            if(requests!=null){
-                for(Request r:requests)
-                    requestDatas.add(new RequestData(r));
+        if(storeName != null) {
+            Store store = daos.getStoreDao().find(storeName);
+            if (store != null) {
+                List<Request> requests = current.viewRequest(store);
+                if (requests != null) {
+                    for (Request r : requests)
+                        requestDatas.add(new RequestData(r));
+                }
+                return new Response<>(requestDatas, OpCode.Success);
             }
-            return new Response<>(requestDatas,OpCode.Success);
         }
         return new Response<>(requestDatas,OpCode.Store_Not_Found);
     }
@@ -1148,7 +1148,7 @@ public class LogicManager {
      * @param content
      * @return true if replay, false else
      */
-    public Response<RequestData> replayRequest(int id, String storeName, int requestID, String content) {
+    public Response<RequestData> replayRequest(int id, String storeName, Integer requestID, String content) {
         loggerSystem.writeEvent("LogicManager","viewStoreRequest",
                 "store owner view the requests of the store", new Object[] {storeName});
         User current = cache.findUser(id);
@@ -1157,7 +1157,7 @@ public class LogicManager {
             Request request=response.getValue();
             if(request!=null){
                 Notification<Request> notification=new RequestNotification(request,OpCode.Reply_Request);
-                subscribes.get(request.getSenderName()).sendNotification(notification);
+                cache.findSubscribe(request.getSenderName()).sendNotification(notification);
                 return new Response<RequestData>(new RequestData(request),response.getReason());
             }
             return new Response<RequestData>(null,response.getReason());
@@ -1176,7 +1176,7 @@ public class LogicManager {
         loggerSystem.writeEvent("LogicManager","watchUserPurchasesHistory",
                 "admin watch a user purchase history", new Object[] {userName});
         User current=cache.findUser(id);
-        Subscribe sub = this.subscribes.get(userName);
+        Subscribe sub = cache.findSubscribe(userName);
         if(sub==null)
             return new Response<>(null,OpCode.User_Not_Found);
         if (current.canWatchUserHistory()) {
@@ -1263,7 +1263,7 @@ public class LogicManager {
      * @return managers of specific store
      */
     public Response<List<String>> getManagersOfStore(String storeName) {
-        Store store=stores.get(storeName);
+        Store store=daos.getStoreDao().find(storeName);
         if(store==null)
             return new Response<>(null,OpCode.Store_Not_Found);
         List<String> managers=new ArrayList<>(store.getPermissions().keySet());
@@ -1275,7 +1275,7 @@ public class LogicManager {
      * @return managers of specific store
      */
     public Response<List<String>> getManagersOfStoreUserManaged(int id,String storeName){
-        Store store=stores.get(storeName);
+        Store store=daos.getStoreDao().find(storeName);
         User current=cache.findUser(id);
         if(store==null)
             return new Response<>(null,OpCode.Store_Not_Found);
@@ -1291,7 +1291,7 @@ public class LogicManager {
         if (!current.canWatchUserHistory()) {
             return new Response<>(new LinkedList<>(),OpCode.NOT_ADMIN);
         }
-        List<String> users = new LinkedList<>(this.subscribes.keySet());
+        List<String> users = new LinkedList<>(daos.getSubscribeDao().getAllUserName());
         return new Response<>(users,OpCode.Success);
     }
 

@@ -24,6 +24,8 @@ public class User {
         return state;
     }
 
+
+
     /**
      * The function update the user state.
      * use case 2.3 - Login
@@ -290,7 +292,7 @@ public class User {
      * @param content
      * @return request if replay, null else
      */
-    public Response<Request> replayToRequest(String storeName, int requestID, String content) {
+    public Response<Request> replayToRequest(String storeName, Integer requestID, String content) {
         return state.replayToRequest(storeName, requestID, content);
     }
 

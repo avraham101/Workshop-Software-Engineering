@@ -1,4 +1,4 @@
-package TestDB;
+package DaoTest;
 
 import Data.Data;
 import Data.TestData;

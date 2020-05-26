@@ -8,6 +8,7 @@ import Domain.Notification.Notification;
 import Persitent.Cache;
 import Persitent.DaoHolders.SubscribeDaoHolder;
 import Persitent.RequestDao;
+import Persitent.SubscribeDao;
 import Publisher.Publisher;
 import Publisher.SinglePublisher;
 import org.hibernate.annotations.LazyCollection;
@@ -161,7 +162,7 @@ public class Subscribe extends UserState{
      */
     @Override
     public boolean logout(User user) {
-        setSessionNumber(-1);
+        //setSessionNumber(-1);
         user.setState(new Guest());
         return true;
     }
@@ -542,8 +543,8 @@ public class Subscribe extends UserState{
      * @return
      */
     @Override
-    public Response<Request> replayToRequest(String storeName, int requestID, String content) {
-        if((storeName==null || content==null))
+    public Response<Request> replayToRequest(String storeName, Integer requestID, String content) {
+        if(requestID==null || storeName==null || content==null)
             return new Response<>(null, OpCode.InvalidRequest);
         Permission permission = daos.getStoreDao().find(storeName).getPermissions().get(userName);
         if(permission == null)

@@ -323,6 +323,7 @@ public class TestData {
         requests.put(Data.NULL_NAME, new Request(users.get(Data.VALID).getName(), stores.get(Data.NULL_NAME).getName(), "where is the milk in this store?", 1));
         requests.put(Data.NULL_CONTENT, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), null, 1));
         requests.put(Data.WRONG_ID, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), "where is the milk in this store?", -1));
+        requests.put(Data.WRONG_ID2,new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), "where is the milk in this store?", -2));
     }
 
     /**

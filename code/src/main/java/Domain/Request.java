@@ -71,6 +71,10 @@ public class Request implements Serializable {
         return false;
     }
 
+    public void setId(int id) {
+        this.id=id;
+    }
+
     // ============================ getters & setters ============================ //
 
 }

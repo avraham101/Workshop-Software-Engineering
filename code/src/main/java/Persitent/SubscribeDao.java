@@ -94,4 +94,18 @@ public class SubscribeDao extends Dao<Subscribe>{
         return output;
 
     }
+
+    public List<String> getAllUserName() {
+        List<String> output = new LinkedList<>();
+        try {
+            EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+            em.getTransaction().begin();
+            Query query = em.createNativeQuery("SELECT Subscribe.username FROM Subscribe");
+            output = query.getResultList();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return output;
+    }
 }

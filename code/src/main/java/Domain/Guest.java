@@ -267,7 +267,7 @@ public class Guest extends UserState {
      * @return
      */
     @Override
-    public Response<Request> replayToRequest(String storeName, int requestID, String content) {
+    public Response<Request> replayToRequest(String storeName, Integer requestID, String content) {
         return new Response<>(null,OpCode.Not_Login);
     }
 

@@ -219,16 +219,17 @@ public class AcceptanceTests {
 
     protected  void addStores(List<StoreTestData> stores){
         bridge.register(admin.getUsername(),admin.getPassword());
-        bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
+        boolean log = bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
 
         for(StoreTestData store : stores) {
             UserTestData owner = store.getStoreOwner();
             registerAndLogin(owner);
             bridge.openStore(owner.getId(),store.getStoreName());
             bridge.appointOwnerToStore(owner.getId(),store.getStoreName(),admin.getUsername());
+            bridge.logout(owner.getId());
         }
 
-        bridge.logout(admin.getId());
+        log = bridge.logout(admin.getId());
     }
 
 
