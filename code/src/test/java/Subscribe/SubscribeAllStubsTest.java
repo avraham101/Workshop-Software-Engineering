@@ -300,7 +300,8 @@ public class SubscribeAllStubsTest {
      */
     @Test
     public void testWatchPurchasesEmpty() {
-        List<Purchase> list = sub.watchMyPurchaseHistory().getValue();
+        setUpLoginSubscribe();
+        List<Purchase> list = subscribe.watchMyPurchaseHistory().getValue();
         assertNotNull(list);
         assertTrue(list.isEmpty());
     }
