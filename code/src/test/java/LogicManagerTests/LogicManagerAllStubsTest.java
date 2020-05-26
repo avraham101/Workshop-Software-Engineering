@@ -210,7 +210,7 @@ public class LogicManagerAllStubsTest {
     /**
      * set up for a state where a valid request was added for a valid store
      */
-    private void setUpRequestAdded(){
+    protected void setUpRequestAdded(){
         setUpOpenedStore();
         Request request = data.getRequest(Data.VALID);
         logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(),request.getContent());

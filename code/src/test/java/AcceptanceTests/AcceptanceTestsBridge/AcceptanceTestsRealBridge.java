@@ -414,8 +414,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     public void addProducts(int id,List<ProductTestData> products) {
         for(ProductTestData productTestData : products){
             ProductData productData = buildProductData(productTestData);
-            boolean test=serviceAPI.addProductToStore(id,productData).getValue();
-            int t =3;
+            serviceAPI.addProductToStore(id,productData);
         }
     }
 

@@ -199,7 +199,7 @@ public class Basket implements Serializable {
      * @return the purchase bought
      */
     public Purchase savePurchase(String buyer) {
-        store =storeDao.find(store.getName());
+        store = storeDao.find(store.getName());
         String storeName = this.store.getName();
         List<ProductData> list = new LinkedList<>();
         for(ProductInCart productInCart: this.products.values()) {

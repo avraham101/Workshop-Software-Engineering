@@ -8,6 +8,7 @@ import Domain.Notification.Notification;
 import Persitent.Cache;
 import Persitent.DaoHolders.SubscribeDaoHolder;
 import Persitent.RequestDao;
+import Persitent.SubscribeDao;
 import Publisher.Publisher;
 import Publisher.SinglePublisher;
 import org.hibernate.annotations.LazyCollection;
@@ -161,7 +162,7 @@ public class Subscribe extends UserState{
      */
     @Override
     public boolean logout(User user) {
-        setSessionNumber(-1);
+        //setSessionNumber(-1);
         user.setState(new Guest());
         return true;
     }
