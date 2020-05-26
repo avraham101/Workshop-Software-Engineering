@@ -193,12 +193,11 @@ public class StoreTestReal extends StoreTestsAllStubs {
      */
     @Override
     @Test
-    //todo - dont know why it dont delete
     public void testSuccessRemoveProduct() {
         Product productToRemove = data.getRealProduct(Data.VALID);
-        Product product = daoHolder.getProductDao().find(productToRemove);
-        store.removeProduct(product.getName());
-        store = daoHolder.getStoreDao().find(data.getRealStore(Data.VALID).getName());
+        store.removeProduct(productToRemove.getName());
+        daoHolder.getStoreDao().update(store);
+        store = daoHolder.getStoreDao().find(store.getName());
         assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
 
