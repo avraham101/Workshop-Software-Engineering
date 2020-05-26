@@ -29,23 +29,11 @@ public class BasketTestReal extends BasketTest{
         basket = new Basket(store, userName);
     }
 
-    /**------------------------------set-ups------------*/
-    /**
-     * set up for checking buying product
-     */
-    private void setUpForBuy(){
-        setUpAddedToBasket();
-    }
-
-    /**------------------------------set-ups------------*/
-
-
     /**
      * use case 2.8 - reserveCart cart
      */
     @Test
     public void testBuySuccess() {
-        setUpForBuy();
         int price = 0;
         List<ProductData> productDataList = new LinkedList<>();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
@@ -65,7 +53,6 @@ public class BasketTestReal extends BasketTest{
      */
     @Test
     public void testBuyNotStandsInPolicy(){
-        setUpForBuy();
         basket.getStore().setPurchasePolicy(new BasketPurchasePolicy(0));
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
@@ -79,11 +66,8 @@ public class BasketTestReal extends BasketTest{
      */
     @Test
     public void testBuyBasket() {
-        setUpAddedToBasket();
         Purchase result = basket.savePurchase(data.getSubscribe(Data.VALID).getName());
         assertNotNull(result);
     }
-
-
 
 }

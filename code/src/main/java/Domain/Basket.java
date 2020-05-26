@@ -41,8 +41,7 @@ public class Basket implements Serializable {
     @Column(name = "price")
     private double price;
 
-    public Basket(){
-
+    public Basket() {
         productInCartDao = new ProductInCartDao();
         storeDao = new StoreDao();
     }
@@ -67,7 +66,7 @@ public class Basket implements Serializable {
      * @return - true if removed, false if not
      */
     public boolean deleteProduct(String productName) {
-        store =storeDao.find(store.getName());
+        store = storeDao.find(store.getName());
         boolean result = false;
         if (productName != null && this.products.get(productName)!=null) {
             ProductInCart key=new ProductInCart(buyer, store.getName(), productName);
@@ -108,7 +107,7 @@ public class Basket implements Serializable {
      * @return - true if added, false if not
      */
     public boolean addProduct(Product product, int amount) {
-        store =storeDao.find(store.getName());
+        store = storeDao.find(store.getName());
         if(amount<0 || this.products.get(product.getName())!=null) {
             return false;
         }

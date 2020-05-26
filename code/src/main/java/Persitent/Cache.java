@@ -1,13 +1,9 @@
 package Persitent;
 
-import Domain.Store;
 import Domain.Subscribe;
 import Domain.User;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class Cache {
 
@@ -57,9 +53,10 @@ public class Cache {
     }
 
     public Subscribe findSubscribeInCache(String userName){
-        for(User user : connectedUsers.values())
-            if(user.getUserName()!=null&&user.getUserName().equals(userName))
+        for(User user : connectedUsers.values()) {
+            if (user!=null && user.getUserName()!=null && user.getUserName().equals(userName))
                 return (Subscribe) user.getState();
+        }
             return null;
     }
 

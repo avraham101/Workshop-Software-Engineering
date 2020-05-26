@@ -1171,10 +1171,10 @@ public class LogicManagerAllStubsTest {
     }
 
 
-     /**
+    /**
      * part of use case 3.5 -add request
      */
-     private void testAddRequestSuccess() {
+    private void testAddRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
         assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(),request.getContent()).getValue());
     }
