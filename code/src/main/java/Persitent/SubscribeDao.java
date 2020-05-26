@@ -49,10 +49,9 @@ public class SubscribeDao extends Dao<Subscribe>{
             sub=em.find(Subscribe.class,username);
             em.remove(sub);
             et.commit();
-
         }
         catch(Exception ex) {
-            if(et!=null)
+            if (et != null)
                 et.rollback();
         }
         finally {

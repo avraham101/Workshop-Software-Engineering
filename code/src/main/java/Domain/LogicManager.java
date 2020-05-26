@@ -401,7 +401,11 @@ public class LogicManager {
                 String categoryName = category.getName();
                 if(Utils.editDistDP(categoryName,value,categoryName.length(),value.length())<= distance) {
                     for(Product p : category.getProducts()) {
-                        output.add(new ProductData(p,store.getName()));
+                        if(p.getStore().equals(store.getName())) {
+                            ProductData toAdd = new ProductData(p, store.getName());
+                            if (!output.contains(toAdd))
+                                output.add(toAdd);
+                        }
                     }
                 }
             }
