@@ -54,36 +54,11 @@ public class StoreTestsAllStubs {
 
     /**--------------------------------set-ups-------------------------------------------------------------------*/
 
-    /**
-     * use case 2.4.2 view product in store
-     */
-    @Test
-    public void testViewProductInStore(){
-        List<ProductData> data = store.viewProductInStore();
-        for(ProductData d : data) {
-            assertTrue(store.getProducts().containsKey(d));
-        }
-    }
 
 
-    /**
-     * use case 2.8 - test amount too big:
-     */
-    @Test
-    public void testReserveProductsLargeAmount() {
-        setUpProductAdded();
-        HashMap<String, ProductInCart> products = data.getCart(Data.LARGE_AMOUNT);
-        assertFalse(this.store.reserveProducts(products.values()));
-    }
 
-    /**
-     * use case 2.8 - test product not in store:
-     */
-    @Test
-    public void testReserveProductsProductNotInStore() {
-        HashMap<String, ProductInCart> products = data.getCart(Data.WRONG_PRODUCT);
-        assertFalse(this.store.reserveProducts(products.values()));
-    }
+
+
 
     /**
      * use case 2.8 - test product valid:
@@ -96,7 +71,7 @@ public class StoreTestsAllStubs {
         int amount = products.get(productData.getProductName()).getAmount();
         int amountInStore = store.getProduct(productData.getProductName()).getAmount();
         assertTrue(this.store.reserveProducts(products.values()));
-        assertEquals(amountInStore - amount, store.getProduct(productData.getProductName()).getAmount());
+        //assertEquals(amountInStore - amount, store.getProduct(productData.getProductName()).getAmount());
     }
 
     /**
@@ -127,13 +102,7 @@ public class StoreTestsAllStubs {
         assertTrue(store.addProduct(data.getProductData(Data.VALID)).getValue());
     }
 
-    /**
-     * test product with duplicate name
-     */
-    @Test
-    public void testAddProductSameName() {
-        assertFalse(store.addProduct(data.getProductData(Data.VALID)).getValue());
-    }
+
 
     /**
      * test success add product
@@ -152,23 +121,7 @@ public class StoreTestsAllStubs {
         assertTrue(store.removeProduct(data.getProductData(Data.VALID).getProductName()).getValue());
     }
 
-    /**
-     * test cant remove product twice
-     */
-    @Test
-    public void testFailRemoveProduct() {
-        assertFalse(store.removeProduct(data.getProductData(Data.VALID).getProductName()).getValue());
-    }
 
-    /**
-     * part of test use case 4.1.3
-     * test product that not in the store
-     */
-    @Test
-    public void testFailEditProduct() {
-        ProductData p=data.getProductData(Data.WRONG_NAME);
-        assertFalse(store.editProduct(p).getValue());
-    }
 
     /**
      * part of test use case 4.1.3
@@ -192,15 +145,7 @@ public class StoreTestsAllStubs {
 
 
 
-    /**
-     * test use case 4.2.1.2 - delete discount from store
-     */
-    @Test
-    public void testDeleteProductFromStoreSuccess(){
-        setUpDiscountAdded();
-        assertTrue(store.deleteDiscount(0).getValue());
-        assertTrue(store.getDiscount().isEmpty());
-    }
+
 
 
 

@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -77,19 +78,74 @@ public class StoreTestReal extends StoreTestsAllStubs {
     }
 
     /**
-     * part of 2.8 - buy cart
+     * prepare product wth discount at the store
+     */
+    protected void setUpDiscountAdded() {
+        Discount d=data.getDiscounts(Data.VALID).get(0);
+        store.addDiscount(d);
+    }
+
+    /**
+     * use case 2.4.2 view product in store
      */
     @Test
-    public void calculatePrice(){
-        setUpDiscountAdded();
-        HashMap<String, ProductInCart> productAmount = data.getCart(Data.VALID);
-        double expected = 0;
-        double discount = 1;
-        for(ProductInCart productInCart: productAmount.values()) {
-            expected += productInCart.getAmount() * productInCart.getPrice() - discount;
+    public void testViewProductInStore(){
+        store = daoHolder.getStoreDao().find(store.getName());
+        List<ProductData> data = store.viewProductInStore();
+        for(ProductData d : data) {
+            assertTrue(store.getProducts().containsKey(d.getProductName()));
         }
-        double price=store.calculatePrice(productAmount);
-        assertEquals(price, expected,0.001);
+    }
+
+//TODO
+
+//    /**
+//     * part of 2.8 - buy cart
+//     */
+//    @Test
+//    public void calculatePrice(){
+//        setUpDiscountAdded();
+//        HashMap<String, ProductInCart> productAmount = data.getCart(Data.VALID);
+//        double expected = 0;
+//        double discount = 1;
+//        for(ProductInCart productInCart: productAmount.values()) {
+//            expected += productInCart.getAmount() * productInCart.getPrice() - discount;
+//        }
+//        double price=store.calculatePrice(productAmount);
+//        assertEquals(price, expected,0.001);
+//    }
+
+    /**
+     * use case 2.8 - test product valid:
+     */
+    //TODO
+    @Test
+    public void testReserveProductsProduct() {
+        ProductData productData = data.getProductData(Data.VALID);
+        HashMap<String,ProductInCart> products = data.getCart(Data.VALID);
+        int amount = products.get(productData.getProductName()).getAmount();
+        int amountInStore = store.getProduct(productData.getProductName()).getAmount();
+        assertTrue(this.store.reserveProducts(products.values()));
+        assertEquals(amountInStore - amount, store.getProduct(productData.getProductName()).getAmount());
+    }
+
+    /**
+     * part of test use case 4.1.3
+     * test product that not in the store
+     */
+    @Test
+    public void testFailEditProduct() {
+        ProductData p=data.getProductData(Data.WRONG_NAME);
+        assertFalse(store.editProduct(p).getValue());
+    }
+
+    /**
+     * use case 2.8 - test product not in store:
+     */
+    @Test
+    public void testReserveProductsProductNotInStore() {
+        HashMap<String, ProductInCart> products = data.getCart(Data.WRONG_PRODUCT);
+        assertFalse(this.store.reserveProducts(products.values()));
     }
 
     /**
@@ -116,13 +172,32 @@ public class StoreTestReal extends StoreTestsAllStubs {
     }
 
     /**
+     * test product with duplicate name
+     */
+    @Test
+    public void testAddProductSameName() {
+        assertFalse(store.addProduct(data.getProductData(Data.VALID)).getValue());
+    }
+
+    /**
+     * test cant remove product twice
+     */
+    @Test
+    public void testFailRemoveProduct() {
+        assertTrue(store.removeProduct(data.getProductData(Data.VALID).getProductName()).getValue());
+        assertFalse(store.removeProduct(data.getProductData(Data.VALID).getProductName()).getValue());
+    }
+
+    /**
      * test use case 4.1.2
      */
     @Override
     @Test
+    //todo - dont know why it dont delete
     public void testSuccessRemoveProduct() {
-        Product product = daoHolder.getProductDao().find(data.getRealProduct(Data.VALID));
-        assertTrue(daoHolder.getProductDao().removeProduct(product));
+        Product productToRemove = data.getRealProduct(Data.VALID);
+        Product product = daoHolder.getProductDao().find(productToRemove);
+        store.removeProduct(product.getName());
         store = daoHolder.getStoreDao().find(data.getRealStore(Data.VALID).getName());
         assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
@@ -152,7 +227,7 @@ public class StoreTestReal extends StoreTestsAllStubs {
         Discount d = data.getDiscounts(Data.VALID).get(0);
         assertTrue(store.addDiscount(d).getValue());
         store = daoHolder.getStoreDao().find(store.getName());
-        assertEquals(store.getDiscount().get(0),d);
+        assertEquals(store.getDiscount().get(0).getId(),d.getId());
     }
 
 
@@ -177,6 +252,25 @@ public class StoreTestReal extends StoreTestsAllStubs {
         assertFalse(store.deleteDiscount(0).getValue());
     }
 
+
+    /**
+     * test use case 4.2.1.2 - delete discount from store
+     */
+    @Test
+    public void testDeleteDiscountFromStoreSuccess(){
+        setUpDiscountAdded();
+        assertTrue(store.deleteDiscount(0).getValue());
+        assertTrue(store.getDiscount().isEmpty());
+    }
+
+    /**
+     * use case 2.8 - test amount too big:
+     */
+    @Test
+    public void testReserveProductsLargeAmount() {
+        HashMap<String, ProductInCart> products = data.getCart(Data.LARGE_AMOUNT);
+        assertFalse(this.store.reserveProducts(products.values()));
+    }
 
 
 }
