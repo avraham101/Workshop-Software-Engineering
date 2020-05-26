@@ -20,7 +20,6 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         data = new TestData();
         cart = new Cart("Yuval");
         sub = new Subscribe("Yuval","Sabag", cart);
-        super.initStore();
     }
 
     /**
@@ -171,7 +170,9 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      * use case 4.1.3 - edit product
      */
     @Override
-    protected void testSuccessEditProduct() {
+    @Test
+    public void testSuccessEditProduct() {
+        //TODO
         super.testSuccessEditProduct();
         ProductData product=data.getProductData(Data.EDIT);
         assertTrue(sub.getPermissions().get(product.getStoreName()).getStore()
@@ -205,7 +206,9 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      */
 
     @Override
-    protected void testAddManagerStoreSuccess() {
+    @Test
+    public void testAddManagerStoreSuccess() {
+        //TODO
         super.testAddManagerStoreSuccess();
         assertTrue(sub.getGivenByMePermissions().get(0).getStore().getPermissions()
                 .containsKey(data.getSubscribe(Data.ADMIN).getName()));
@@ -222,9 +225,9 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     /**
      * check use case 4.6.1 - add permission
      */
-    @Override @Test
+    @Test
     public void testAddPermissions() {
-        super.testAddPermissions();
+        //TODO
         testAddPermissionTwiceFail();
     }
 
@@ -241,7 +244,9 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      * test the permission was really added
      */
     @Override
-    protected void testAddPermissionSuccess() {
+    @Test
+    public void testAddPermissionSuccess() {
+        //TODO
         super.testAddPermissionSuccess();
         assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType().
                 containsAll(data.getPermissionTypeList()));

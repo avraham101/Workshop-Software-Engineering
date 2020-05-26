@@ -3,6 +3,7 @@ package LogicManagerTests;
 import Data.Data;
 import Domain.Admin;
 import Domain.Subscribe;
+import Stubs.CacheStub;
 import Stubs.UserStub;
 import Systems.HashSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -23,6 +24,7 @@ public class LogicManagerUserAndStoresStubs extends LogicManagerAllStubsTest {
         currUser=new UserStub();
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
+        this.cashe=new CacheStub();
         init();
     }
 
@@ -32,8 +34,10 @@ public class LogicManagerUserAndStoresStubs extends LogicManagerAllStubsTest {
      */
     @Test
     public void testAdminRegister() {
+        setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         assertNotNull(daos.getSubscribeDao().find(subscribe.getName()));
+        tearDownConnect();
     }
 
     /**
@@ -41,6 +45,7 @@ public class LogicManagerUserAndStoresStubs extends LogicManagerAllStubsTest {
      */
     @Test
     public void testRegisterSuccess() {
+        setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.ADMIN);
         assertEquals(daos.getSubscribeDao().find(subscribe.getName()).getName(), subscribe.getName());
         try {
@@ -50,6 +55,7 @@ public class LogicManagerUserAndStoresStubs extends LogicManagerAllStubsTest {
         } catch (Exception e) {
             fail();
         }
+        tearDownRegisteredUser();
     }
 
 }
