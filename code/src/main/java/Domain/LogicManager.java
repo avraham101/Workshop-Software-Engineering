@@ -6,7 +6,6 @@ import Domain.Discount.Term.Term;
 import Domain.Notification.RequestNotification;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Persitent.Cache;
-import Persitent.StoreDao;
 import Domain.Notification.Notification;
 import Persitent.DaoHolders.DaoHolder;
 import Systems.HashSystem;
@@ -19,7 +18,6 @@ import Utils.Utils;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import javassist.bytecode.Opcode;
 
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
@@ -1150,7 +1148,7 @@ public class LogicManager {
      * @param content
      * @return true if replay, false else
      */
-    public Response<RequestData> replayRequest(int id, String storeName, int requestID, String content) {
+    public Response<RequestData> replayRequest(int id, String storeName, Integer requestID, String content) {
         loggerSystem.writeEvent("LogicManager","viewStoreRequest",
                 "store owner view the requests of the store", new Object[] {storeName});
         User current = cache.findUser(id);

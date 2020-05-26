@@ -280,7 +280,7 @@ public abstract class UserState {
      * @param content
      * @return Request if replay, null else
      */
-    public abstract Response<Request> replayToRequest(String storeName, int requestID, String content);
+    public abstract Response<Request> replayToRequest(String storeName, Integer requestID, String content);
 
 
     /**
