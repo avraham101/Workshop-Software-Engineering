@@ -229,10 +229,6 @@ public class AcceptanceTests {
         }
 
         bridge.logout(admin.getId());
-
-
-
-
     }
 
 
@@ -299,8 +295,35 @@ public class AcceptanceTests {
         this.supplySystem = supplySystem;
     }
 
+    protected void removeUser(String username){
+        this.bridge.removeUser(username);
+    }
+    protected void removeUsers(List<String> users){
+        for(String user : users)
+            removeUser(user);
+    }
+
+    protected void removeProduct(ProductTestData product){
+        this.bridge.removeProduct(product);
+    }
+
+    protected void removeProducts(List<ProductTestData> products){
+        for(ProductTestData product : products)
+            removeProduct(product);
+    }
+
+    protected void removeStore(StoreTestData store){
+        this.bridge.removeStore(store);
+    }
+
+    protected void removeStores(List<StoreTestData> stores){
+        for(StoreTestData store : stores)
+            removeStore(store);
+    }
+
     @After
     public  void tearDownAll(){
+        removeUsers(Arrays.asList(admin.getUsername(),users.get(0).getUsername(),users.get(1).getUsername()));
         bridge.resetSystem();
     }
 }

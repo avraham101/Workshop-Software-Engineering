@@ -12,6 +12,10 @@ import DataAPI.Purchase;
 import Domain.ProductPeristentData;
 import Domain.Request;
 import Domain.Review;
+import Persitent.CategoryDao;
+import Persitent.ProductDao;
+import Persitent.StoreDao;
+import Persitent.SubscribeDao;
 import Publisher.SinglePublisher;
 import Service.ServiceAPI;
 import Systems.PaymentSystem.PaymentSystem;
@@ -232,7 +236,10 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------Use-Case-4.3---------------------------------//
     @Override
     public boolean appointOwnerToStore(int id,String storeName, String username) {
-        return serviceAPI.manageOwner(id,storeName,username).getValue();
+        boolean addManager = serviceAPI.addManagerToStore(id,storeName,username).getValue();
+        List<PermissionType> ownerPermission = new ArrayList<>(Collections.singletonList(PermissionType.OWNER));
+        boolean addPermission = serviceAPI.addPermissions(id, ownerPermission, storeName, username).getValue();
+        return addManager & addPermission;
     }
     //---------------------------Use-Case-4.3---------------------------------//
 
@@ -363,6 +370,24 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     public void setPublisher(PublisherMock publisherMock) {
         SinglePublisher.initPublisher(publisherMock);
     }
+    //---------------------------------DB related----------------------------------//
+    @Override
+    public void removeUser(String username) {
+        SubscribeDao subscribeDao = new SubscribeDao();
+        subscribeDao.remove(username);
+    }
+
+    @Override
+    public void removeProduct(ProductTestData productTestData) {
+        ProductDao productDao = new ProductDao(new CategoryDao());
+        productDao.removeProduct(productTestData.getProductName(), productTestData.getStoreName());
+    }
+
+    @Override
+    public void removeStore(StoreTestData store) {
+        StoreDao storeDao = new StoreDao();
+        storeDao.removeStore(store.getStoreName());
+    }
     //--------------------------get managers of store---------------------------------//
 
 
@@ -376,7 +401,8 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public void resetSystem() {
         try {
-            this.serviceAPI = new ServiceAPI("admin", "admin");
+//            this.serviceAPI = new ServiceAPI("admin", "admin");
+            this.serviceAPI = null;
         }catch (Exception e)
         {
             e.printStackTrace();

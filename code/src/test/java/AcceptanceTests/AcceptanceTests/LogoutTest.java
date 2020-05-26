@@ -1,5 +1,6 @@
 package AcceptanceTests.AcceptanceTests;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,8 +32,13 @@ public class LogoutTest extends AcceptanceTests {
         assertFalse(isLoggedOut);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void logoutTestFailInvalidId(){
-        bridge.logout(-1);
+        assertFalse(bridge.logout(-1));
+    }
+
+    @After
+    public void tearDown(){
+        removeUser(superUser.getUsername());
     }
 }

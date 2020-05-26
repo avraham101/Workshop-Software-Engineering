@@ -50,6 +50,7 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
 
 
 
+
     @Override
     public boolean logout(int id) {
         if(realBridge!=null)
@@ -364,5 +365,23 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
         if (realBridge != null)
             realBridge.setPublisher(publisherMock);
 
+    }
+    //----------------------------------DB related------------------------//
+    @Override
+    public void removeUser(String username) {
+        if(realBridge!=null)
+            realBridge.removeUser(username);
+    }
+
+    @Override
+    public void removeProduct(ProductTestData product) {
+        if(realBridge != null)
+            realBridge.removeProduct(product);
+    }
+
+    @Override
+    public void removeStore(StoreTestData store) {
+        if(realBridge != null)
+            realBridge.removeStore(store);
     }
 }

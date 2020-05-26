@@ -61,6 +61,8 @@ public interface AcceptanceTestsBridge {
     List<String> getAllManagersOfStore(String store);
     List<String> getManagersOfStoreIManaged(int id,String storeName);
     List<String> getAllUsers(int id);
-
     void setPublisher(PublisherMock publisherMock);
+    void removeUser(String username);
+    void removeProduct(ProductTestData product);
+    void removeStore(StoreTestData store);
 }
