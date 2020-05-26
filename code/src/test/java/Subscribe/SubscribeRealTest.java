@@ -225,9 +225,9 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     /**
      * check use case 4.6.1 - add permission
      */
-    @Override @Test
+    @Test
     public void testAddPermissions() {
-        super.testAddPermissions();
+        //TODO
         testAddPermissionTwiceFail();
     }
 
@@ -244,7 +244,9 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      * test the permission was really added
      */
     @Override
-    protected void testAddPermissionSuccess() {
+    @Test
+    public void testAddPermissionSuccess() {
+        //TODO
         super.testAddPermissionSuccess();
         assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType().
                 containsAll(data.getPermissionTypeList()));

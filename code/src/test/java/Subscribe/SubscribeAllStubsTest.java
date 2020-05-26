@@ -652,32 +652,34 @@ public class SubscribeAllStubsTest {
      * test use case 4.6.1 - add permissions to manager
      */
     @Test
-    public void testAddPermissions(){
-        setUpManagerAdded();
-        testAddPermissionNotManager();
-        testAddPermissionDontHavePermission();
-        testAddPermissionSuccess();
-    }
+    public void testAddPermissionDontHavePermission() {
+        setUpDiscountAdded();
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
 
-    /**
-     * part of test use case 4.6.1 - add permissions to manager
-     */
-    private void testAddPermissionDontHavePermission() {
+        logicManagerDriver.addManager(0,sub.getName(),storeData.getName());
+
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
-        Permission permission = sub.getPermissions().get(validStoreName);
-        Store store=permission.getStore();
-        permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.addPermissions(data.getPermissionTypeList(),
-                data.getSubscribe(Data.ADMIN).getName(),validStoreName).getValue());
-        assertFalse(store.getPermissions().get(data.getSubscribe(Data.ADMIN).getName()).getPermissionType().
-                containsAll(data.getPermissionTypeList()));
-        permission.addType(PermissionType.OWNER);
+        List<PermissionType> permissionList = data.getPermissionTypeList();
+        assertFalse(sub.addPermissions(permissionList, admin.getName(),validStoreName).getValue());
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertEquals(2,store.getPermissions().values().size());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
     }
 
     /**
-     * part of test use case 4.6.1 - add permissions to manager
+     * test use case 4.6.1 - add permissions to manager
      */
-    private void testAddPermissionNotManager() {
+    @Test
+    public void testAddPermissionNotManager() {
+        setUpManagerAdded();
         String validStoreName=data.getProductData(Data.VALID).getStoreName();
         Permission permission=sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
@@ -687,14 +689,18 @@ public class SubscribeAllStubsTest {
         assertFalse(store.getPermissions().get(data.getSubscribe(Data.ADMIN).getName()).getPermissionType().
                 containsAll(data.getPermissionTypeList()));
         sub.getPermissions().put(validStoreName,permission);
+        tearDownStore();
     }
 
     /**
-     * part of test use case 4.6.1 - add permissions to manager
+     * test use case 4.6.1 - add permissions to manager
      */
-    protected void testAddPermissionSuccess() {
+    @Test
+    public void testAddPermissionSuccess() {
+        setUpManagerAdded();
         assertTrue(sub.addPermissions(data.getPermissionTypeList(),
                 data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()).getValue());
+        tearDownStore();
     }
 
     /**
