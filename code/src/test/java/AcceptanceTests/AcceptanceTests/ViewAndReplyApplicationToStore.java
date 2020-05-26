@@ -4,8 +4,12 @@ import AcceptanceTests.AcceptanceTestDataObjects.ApplicationToStoreTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import AcceptanceTests.SystemMocks.PublisherMock;
 import javafx.util.Pair;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.springframework.test.context.event.annotation.AfterTestClass;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,8 +43,8 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
     }
 
     private void setUpApplicationsAndReplies() {
-        this.applications = new HashSet<>();
-        this.applicationsAndReplies = new HashMap<>();
+        applications = new HashSet<>();
+        applicationsAndReplies = new HashMap<>();
 
         applications.add(new ApplicationToStoreTestData(storeName,asker.getUsername(),"app0"));
         applications.add(new ApplicationToStoreTestData(storeName,asker.getUsername(),"app1"));
@@ -142,4 +146,16 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
         assertFalse(emptyAppAndRep.containsKey(wrongApplication.getKey()));
     }
 
+    @After
+    public void tearDown() {
+        tearDownApplicationsAndReplies();
+        removeUser(asker.getUsername());
+        removeUser(responder.getUsername());
+        removeStores(stores);
+    }
+
+    private void tearDownApplicationsAndReplies() {
+        applications=new HashSet<>();
+        applicationsAndReplies=new HashMap<>();
+    }
 }
