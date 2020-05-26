@@ -535,13 +535,20 @@ public class SubscribeAllStubsTest {
     @Test
     public void checkRemoveDiscountFromStoreNotManager() {
         setUpDiscountAdded();
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        Store store=permission.getStore();
-        sub.getPermissions().clear();
-        assertFalse(sub.deleteDiscountFromStore(0,store.getName()).getValue());
-        assertFalse(store.getDiscount().isEmpty());
-        sub.getPermissions().put(validStoreName,permission);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+
+        StoreData storeData = data.getStore(Data.VALID);
+        List <Discount> discounts = data.getDiscounts(Data.VALID);
+        Discount discount = discounts.get(0);
+        assertFalse(sub.deleteDiscountFromStore(discount.getId(), storeData.getName()).getValue());
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertFalse(store.getDiscount().values().isEmpty());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
     }
 
     /**
