@@ -88,7 +88,11 @@ public class SubscribeAllStubsTest {
      */
     protected void setUpManagerAdded(){
         setUpStoreOpened();
-        sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName());
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
+        StoreData storeData = data.getStore(Data.VALID);
+        Response<Boolean> response = logicManagerDriver.addManager(0,admin.getName(),storeData.getName());
+        if(!response.getValue())
+            fail();
     }
 
     /**
@@ -703,8 +707,10 @@ public class SubscribeAllStubsTest {
     @Test
     public void testAddPermissionSuccess() {
         setUpManagerAdded();
-        assertTrue(sub.addPermissions(data.getPermissionTypeList(),
-                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()).getValue());
+        List<PermissionType> list = data.getPermissionTypeList();
+        StoreData storeData= data.getStore(Data.VALID);
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
+        assertTrue(this.subscribe.addPermissions(list, storeData.getName(),admin.getName()).getValue());
         tearDownStore();
     }
 
