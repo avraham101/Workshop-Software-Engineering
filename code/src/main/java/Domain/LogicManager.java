@@ -686,6 +686,8 @@ public class LogicManager {
         if(current!=null) {
             UserState sub = current.getState();
             if (sub != null && current.logout()) {
+                sub = cache.findSubscribe(sub.getName());
+                sub.setSessionNumber(-1);
                 if (!daos.getSubscribeDao().update((Subscribe)sub))
                     return new Response<>(false, OpCode.DB_Down);
                 return new Response<>(true, OpCode.Success);

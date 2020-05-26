@@ -24,6 +24,8 @@ public class User {
         return state;
     }
 
+
+
     /**
      * The function update the user state.
      * use case 2.3 - Login
