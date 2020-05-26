@@ -170,7 +170,9 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      * use case 4.1.3 - edit product
      */
     @Override
-    protected void testSuccessEditProduct() {
+    @Test
+    public void testSuccessEditProduct() {
+        //TODO
         super.testSuccessEditProduct();
         ProductData product=data.getProductData(Data.EDIT);
         assertTrue(sub.getPermissions().get(product.getStoreName()).getStore()

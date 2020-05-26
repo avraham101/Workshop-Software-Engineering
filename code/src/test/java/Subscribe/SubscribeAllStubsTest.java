@@ -409,38 +409,24 @@ public class SubscribeAllStubsTest {
      * test use case 4.1.3 - edit product
      */
     @Test
-    public void testEditProduct(){
+    public void checkEditProductNotManager() {
         setUpProductAdded();
-        testFailEditProduct();
-        testSuccessEditProduct();
-    }
-
-    /**
-     * part of test use case 4.1.3 - edit product
-     */
-    private void testFailEditProduct() {
-        checkEditProductHasNoPermission();
-        checkEditProductNotManager();
-    }
-
-    /**
-     * part of test use case 4.1.3 - edit product
-     */
-    private void checkEditProductNotManager() {
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
         ProductData pData=data.getProductData(Data.EDIT);
-        Store store=permission.getStore();
-        sub.getPermissions().clear();
         assertFalse(sub.editProductFromStore(pData).getValue());
-        assertFalse(store.getProducts().get(pData.getProductName()).equal(pData));
-        sub.getPermissions().put(validStoreName,permission);
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
     }
 
     /**
-     * part of test use case 4.1.3 - edit product
+     * test use case 4.1.3 - edit product
      */
-    private void checkEditProductHasNoPermission() {
+    @Test
+    public void checkEditProductHasNoPermission() {
+        setUpProductAdded();
         String validStoreName=data.getProductData(Data.VALID).getStoreName();
         Permission permission=sub.getPermissions().get(validStoreName);
         ProductData pData=data.getProductData(Data.EDIT);
@@ -449,13 +435,17 @@ public class SubscribeAllStubsTest {
         assertFalse(sub.editProductFromStore(data.getProductData(Data.VALID)).getValue());
         assertFalse(store.getProducts().get(pData.getProductName()).equal(pData));
         permission.addType(PermissionType.OWNER);
+        tearDownStore();
     }
 
     /**
      * part of test use case 4.1.3 - edit product
      */
-    protected void testSuccessEditProduct(){
+    @Test
+    public void testSuccessEditProduct(){
+        setUpProductAdded();
         assertTrue(sub.editProductFromStore(data.getProductData(Data.EDIT)).getValue());
+        tearDownStore();
     }
 
     /**
