@@ -4,6 +4,7 @@ import AcceptanceTests.AcceptanceTestDataObjects.ApplicationToStoreTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import AcceptanceTests.SystemMocks.PublisherMock;
 import javafx.util.Pair;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -142,4 +143,16 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
         assertFalse(emptyAppAndRep.containsKey(wrongApplication.getKey()));
     }
 
+    @After
+    public void tearDown() {
+        removeStores(stores);
+        removeUser(responder.getUsername());
+        removeUser(asker.getUsername());
+        tearDownApplicationsAndReplies();
+    }
+
+    private void tearDownApplicationsAndReplies() {
+        this.applications.clear();
+        this.applicationsAndReplies.clear();
+    }
 }
