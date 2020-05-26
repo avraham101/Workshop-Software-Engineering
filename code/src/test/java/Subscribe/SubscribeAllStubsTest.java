@@ -576,40 +576,38 @@ public class SubscribeAllStubsTest {
         tearDownStore();
     }
 
-
+    /**
+     * use case 4.5 add manager
+     * test we cant add manager twice
+     */
+    @Test
+    public void testAlreadyManager() {
+        setUpStoreOpened();
+        assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()).getValue());
+        tearDownStore();
+    }
 
     /**
      * use case 4.5 add manager
      */
     @Test
-    public void testAddManagerToStore(){
+    public void testAddManagerStoreSuccess() {
         setUpStoreOpened();
-        testAddManagerToStoreFail();
-        testAddManagerStoreSuccess();
-        testAlreadyManager();
-    }
-
-    /**
-     * part of use case 4.5 add manager
-     * test we cant add manager twice
-     */
-    private void testAlreadyManager() {
-        assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()).getValue());
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
+        StoreData storeData = data.getStore(Data.VALID);
+        assertTrue(subscribe.addManager(admin,storeData.getName()).getValue());
+        tearDownStore();
     }
 
     /**
      * part of use case 4.5 add manager
      */
-    protected void testAddManagerStoreSuccess() {
-        assertTrue(sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()).getValue());
-    }
-
-    /**
-     * part of use case 4.5 add manager
-     */
-    private void testAddManagerToStoreFail() {
+    @Test
+    public void testAddManagerToStoreFail() {
+        setUpStoreOpened();
         checkAddManagerHasNoPermission();
         checkAddManagerNotOwner();
+        tearDownStore();
     }
 
     /**

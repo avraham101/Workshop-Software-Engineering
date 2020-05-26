@@ -206,7 +206,9 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      */
 
     @Override
-    protected void testAddManagerStoreSuccess() {
+    @Test
+    public void testAddManagerStoreSuccess() {
+        //TODO
         super.testAddManagerStoreSuccess();
         assertTrue(sub.getGivenByMePermissions().get(0).getStore().getPermissions()
                 .containsKey(data.getSubscribe(Data.ADMIN).getName()));
