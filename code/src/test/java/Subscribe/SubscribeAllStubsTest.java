@@ -119,20 +119,11 @@ public class SubscribeAllStubsTest {
     /**
      * set up a valid cart with a valid product
      */
-    private void setUpProductAddedToCart(){
+    public void setUpReserved(){
         setUpProductAdded();
         Store store = data.getRealStore(Data.VALID);
         Product product = data.getRealProduct(Data.VALID);
-        sub.addProductToCart(store,product,product.getAmount());
-    }
-
-    /**
-     * set up for Reserved
-     */
-    protected void setUpReserved() {
-        Store store = data.getRealStore(Data.VALID);
-        Product product = data.getRealProduct(Data.VALID);
-        sub.addProductToCart(store,product,product.getAmount());
+        this.subscribe.addProductToCart(store,product,product.getAmount());
     }
 
     /**
@@ -206,7 +197,8 @@ public class SubscribeAllStubsTest {
     @Test
     public void testReservedCart() {
         setUpReserved();
-        assertFalse(sub.reserveCart());
+        assertTrue(subscribe.reserveCart());
+        tearDownStore();
     }
 
     /**
