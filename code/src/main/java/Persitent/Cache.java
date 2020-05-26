@@ -8,14 +8,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Cache {
 
     protected static ConcurrentHashMap<Integer,User> connectedUsers;
-    private static ConcurrentHashMap<String, Subscribe> subscribes;
     private static SubscribeDao subscribeDao;
 
     public Cache(){
         if(connectedUsers==null) {
             connectedUsers = new ConcurrentHashMap<>();
             subscribeDao = new SubscribeDao();
-            subscribes = new ConcurrentHashMap<>();
         }
     }
 
@@ -23,19 +21,6 @@ public class Cache {
         if(connectedUsers!=null) {
             connectedUsers.put(newId, user);
         }
-    }
-
-    /**
-     * assumption this funcition called only if user is logeed
-     * @param newId the id of the user
-     */
-    public synchronized boolean logedCounnectedUser(int newId) {
-        if(connectedUsers!=null) {
-            User user =  connectedUsers.get(newId);
-            subscribes.put(user.getUserName() ,(Subscribe)user.getState());
-            return true;
-        }
-        return false;
     }
 
     public User findUser(int id) {

@@ -61,4 +61,7 @@ public enum Data{
     EMPTY_USER_PURCHASE_POLICY,
     SMALL_AMOUNT,
     MIN_GREATER_THAN_MAX,
+    WRONG_ID2,
+    ;
+
 }
