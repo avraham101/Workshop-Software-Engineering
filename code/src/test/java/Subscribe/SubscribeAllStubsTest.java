@@ -4,6 +4,7 @@ import Data.Data;
 import Data.TestData;
 import DataAPI.*;
 import Domain.*;
+import Domain.Discount.Discount;
 import Drivers.LogicManagerDriver;
 import Persitent.Cache;
 import Persitent.DaoHolders.DaoHolder;
@@ -464,8 +465,10 @@ public class SubscribeAllStubsTest {
     @Test
     public void testAddDiscountToStoreSuccess(){
         setUpProductAdded();
-        assertTrue(sub.addDiscountToStore(data.getStore(Data.VALID).getName(),
-                data.getDiscounts(Data.VALID).get(0)).getValue());
+        StoreData storeData = data.getStore(Data.VALID);
+        List <Discount> discounts = data.getDiscounts(Data.VALID);
+        assertTrue(this.subscribe.addDiscountToStore(storeData.getName(), discounts.get(0)).getValue());
+        tearDownStore();
     }
 
     /**
