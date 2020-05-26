@@ -2,10 +2,15 @@ package Guest;
 
 import Data.Data;
 import Data.TestData;
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
+import DataAPI.*;
 import Domain.*;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
+import Drivers.LogicManagerDriver;
+import Persitent.Cache;
+import Persitent.CartDao;
+import Persitent.DaoHolders.DaoHolder;
+import Persitent.StoreDao;
+import Persitent.SubscribeDao;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,15 +22,27 @@ import static org.junit.Assert.*;
 
 public class GuestTestReal extends GuestTest{
 
+    private int id;
+    private DaoHolder daoHolder;
+    private LogicManagerDriver logicDriver;
+
     @Override
     @Before
     public void setUp(){
         data = new TestData();
         cart = new Cart("Guest");
         guest = new Domain.Guest(cart);
+        daoHolder = new DaoHolder();
+        try {
+            logicDriver = new LogicManagerDriver();
+        } catch ( Exception e){
+            fail();
+        }
+        this.id = logicDriver.connectToSystem();
+        Cache cache = new Cache();
+        User current = cache.findUser(this.id);
+        this.cart = current.getState().getCart();
     }
-
-    /**------------set-ups-------------------*/
 
     /**
      * add valid product to the cart
@@ -36,21 +53,77 @@ public class GuestTestReal extends GuestTest{
         guest.addProductToCart(store,product,product.getAmount());
     }
 
-    /**------------set-ups-------------------*/
+    private void setUpStore() {
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        ProductData productData = data.getProductData(Data.VALID);
+        StoreData storeData = data.getStore(Data.VALID);
+        int id = logicDriver.connectToSystem();
+        Response<Boolean> response = logicDriver.register(subscribe.getName(), subscribe.getPassword());
+        if(response.getValue()) {
+            response = logicDriver.login(id, subscribe.getName(), subscribe.getPassword());
+            if(response.getValue()) {
+                response = logicDriver.openStore(id, storeData);
+                if(response.getValue()) {
+                    response = logicDriver.addProductToStore(id, productData);
+                }
+                else
+                    fail();
+            }
+            else
+                fail();
+        }
+        else
+            fail();
+    }
+
+    private void setUpCart() {
+        setUpStore();
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        ProductData productData = data.getProductData(Data.VALID);
+        Product product = store.getProduct(productData.getProductName());
+        guest.addProductToCart(store,product,product.getAmount());
+    }
+
+    private void tearDownStore() {
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        SubscribeDao subscribeDao = daoHolder.getSubscribeDao();
+        subscribeDao.remove(subscribe.getName());
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
+        subscribeDao.remove(admin.getName());
+        StoreData storeData = data.getStore(Data.VALID);
+        StoreDao storeDao = daoHolder.getStoreDao();
+        storeDao.removeStore(storeData.getName());
+        CartDao cartDao = daoHolder.getCartDao();
+        Cart cart = cartDao.find(subscribe.getName());
+        if(cart!=null)
+            cartDao.remove(cart);
+    }
 
     /**
      * use case 2.7 add to cart
      */
     @Override @Test
     public void testAddProductToCart() {
-        super.testAddProductToCart();
-        Store store = data.getRealStore(Data.VALID);
-        Product product = data.getRealProduct(Data.VALID);
-        Map<String, ProductInCart> products = cart.getBasket(store.getName()).getProducts();
-        assertEquals(1,products.size());
-        Iterator<ProductInCart> iterator =  products.values().iterator();
-        ProductInCart real = iterator.next();
-        assertEquals(real.getProductName(),product.getName());
+        setUpStore();
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store =  daoHolder.getStoreDao().find(storeData.getName());
+        ProductData productData = data.getProductData(Data.VALID);
+        Product product = store.getProduct(productData.getProductName());
+
+        Cache cache = new Cache();
+        User geust = cache.findUser(id);
+        assertTrue(geust.addProductToCart(store,product,product.getAmount()));
+
+        Cart cart = geust.getState().getCart();
+        Basket basket =  cart.getBaskets().get(store.getName());
+        assertNotNull(basket);
+        Map<String,ProductInCart> map = basket.getProducts();
+        assertTrue(map.containsKey(product.getName()));
+        ProductInCart productInCart = map.get(product.getName());
+        assertEquals(product.getAmount(), productInCart.getAmount());
+
+        tearDownStore();
     }
 
     /**
@@ -58,8 +131,20 @@ public class GuestTestReal extends GuestTest{
      */
     @Override @Test
     public void testReservedCart() {
-        setUpReserved();
+        setUpCart();
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        ProductData productData = data.getProductData(Data.VALID);
+        Product product = store.getProduct(productData.getProductName());
+        int prev_amount =  product.getAmount();
         assertTrue(guest.reserveCart());
+        store = daoHolder.getStoreDao().find(storeData.getName());
+        product = store.getProduct(productData.getProductName());
+        int cur_amont =  product.getAmount();
+        ProductInCart inCart = guest.getCart().getBasket(store.getName()).getProducts().get(product.getName());
+        int in_cart = inCart.getAmount();
+        assertEquals(prev_amount, cur_amont+in_cart);
+        tearDownStore();
     }
 
     /**
@@ -67,12 +152,13 @@ public class GuestTestReal extends GuestTest{
      */
     @Test
     public void testCancelCart() {
-        setUpReserved();
+        setUpCart();
         int expected = amountProductInStore();
         guest.reserveCart();
         guest.cancelCart();
         int result = amountProductInStore();
         assertEquals(expected,result);
+        tearDownStore();
     }
 
     /**
@@ -81,17 +167,11 @@ public class GuestTestReal extends GuestTest{
      * @return
      */
     private int amountProductInStore() {
-        Store store = null;
-        for(Basket b: cart.getBaskets().values()) {
-            store = b.getStore();
-            break;
-        }
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
         assertNotNull(store);
-        Product product = null;
-        for(Product p :store.getProducts().values()) {
-            product = p;
-            break;
-        }
+        ProductData productData = data.getProductData(Data.VALID);
+        Product product = store.getProduct(productData.getProductName());
         assertNotNull(product);
         return product.getAmount();
     }
