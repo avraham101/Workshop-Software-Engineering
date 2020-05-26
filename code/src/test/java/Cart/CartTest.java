@@ -180,8 +180,11 @@ public class CartTest {
     @Test
     public void testBuyCartPolicyFail(){
         setUpBuy();
-        cart.getBaskets().get(data.getStore(Data.VALID).getName()).getStore().setPurchasePolicy(
-                new BasketPurchasePolicy(0));
+        StoreData storeData = data.getStore(Data.VALID);
+        StoreDao storeDao = daoHolder.getStoreDao();
+        Store store = storeDao.find(storeData.getName());
+        store.setPurchasePolicy(new BasketPurchasePolicy(0));
+        storeDao.update(store);
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
         assertFalse(cart.buy(paymentData,deliveryData));
