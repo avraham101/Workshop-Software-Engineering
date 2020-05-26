@@ -1257,11 +1257,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * test use case 4.9.2
      */
-    @Override @Test
-    public void testReplayRequest() {
-        testReplayRequestSuccess();
-        testReplayRequestFail();
-    }
+//    @Override @Test
+//    public void testReplayRequest() {
+//        testReplayRequestSuccess();
+//        testReplayRequestFail();
+//    }
 
     /**
      * part of test use case 4.9.2
@@ -1270,12 +1270,14 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Test
     public void testReplayRequestSuccess() {
         setUpRequestAdded();
-        Request request = data.getRequest(Data.VALID);
         //check the comment savePurchases
         StoreData storeData = data.getStore(Data.VALID);
+        Store store = daos.getStoreDao().find(storeData.getName());
+        List<Request> requests=new LinkedList<>(store.getRequests().values());
+        Request request = requests.get(0);
         RequestData actual = logicManager.replayRequest(data.getId(Data.VALID),request.getStoreName(), request.getId(),
                 "The milk is there, open your eyes!").getValue();
-        Request excepted = stores.get(storeData.getName()).getRequests().get(request.getId());
+        Request excepted = daos.getRequestDao().find(request.getId());
         assertEquals(excepted.getId(),actual.getId());
         assertEquals(excepted.getComment(),actual.getComment());
         //check notifications
@@ -1285,6 +1287,10 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(actual.getContent(),notificationRequest.getContent());
         assertEquals(actual.getComment(),notificationRequest.getComment());
         assertEquals(actual.getSenderName(),notificationRequest.getSenderName());
+
+        daos.getRequestDao().removeRequest(request.getId());
+        store.getRequests().clear();
+        tearDownOpenStore();
     }
 
     /**
