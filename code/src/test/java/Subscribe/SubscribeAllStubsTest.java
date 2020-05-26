@@ -779,7 +779,21 @@ public class SubscribeAllStubsTest {
         assertTrue(this.subscribe.removePermissions(list, storeData.getName(),admin.getName()).getValue());
         Store store = daoHolder.getStoreDao().find(storeData.getName());
         assertEquals(2,store.getPermissions().values().size());
+        tearDownStore();
+    }
 
+    /**
+     * use case 4.7 - remove manager
+     */
+    @Test
+    public void testRemoveManagerStoreSuccess() {
+        setUpManagerAdded();
+        Subscribe subscribe = data.getSubscribe(Data.ADMIN);
+        StoreData storeData = data.getStore(Data.VALID);
+        assertTrue(this.subscribe.removeManager(subscribe, storeData.getName()).getValue());
+
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertEquals(1,store.getPermissions().values().size());
         tearDownStore();
     }
 
@@ -787,24 +801,10 @@ public class SubscribeAllStubsTest {
      * test use case 4.7 - remove manager
      */
     @Test
-    public void testRemoveManagerFromStore(){
+    public void testRemoveManagerFromStoreFail() {
         setUpManagerAdded();
-        testRemoveManagerFromStoreFail();
-        testRemoveManagerStoreSuccess();
-    }
-
-    /**
-     * part of test use case 4.7 - remove manager
-     */
-    protected void testRemoveManagerStoreSuccess() {
-        assertTrue(sub.removeManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()).getValue());
-    }
-
-    /**
-     * part of test use case 4.7 - remove manager
-     */
-    private void testRemoveManagerFromStoreFail() {
         checkRemoveManagerNotManager();
+        tearDownStore();
     }
 
     /**
