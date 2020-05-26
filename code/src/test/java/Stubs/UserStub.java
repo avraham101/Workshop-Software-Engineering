@@ -253,7 +253,7 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public Response<Request> replayToRequest(String storeName, int requestID, String content) {
+    public Response<Request> replayToRequest(String storeName, Integer requestID, String content) {
         return new Response<>(new Request(getUserName(), storeName, "temp", 10),OpCode.Success);
     }
 

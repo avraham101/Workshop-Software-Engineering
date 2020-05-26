@@ -1267,8 +1267,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * part of test use case 4.9.2
      * notification
      */
-    private void testReplayRequestSuccess() {
-        testAddRequest();
+    @Test
+    public void testReplayRequestSuccess() {
+        setUpRequestAdded();
         Request request = data.getRequest(Data.VALID);
         //check the comment savePurchases
         StoreData storeData = data.getStore(Data.VALID);
@@ -1289,9 +1290,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * part of test use case 4.9.2
      */
-    private void testReplayRequestFail() {
+    @Test
+    public void testReplayRequestFail() {
+        setUpOpenedStore();
         Request request = data.getRequest(Data.WRONG_ID);
-        assertNull(logicManager.replayRequest(data.getId(Data.VALID), request.getStoreName(), request.getId(), request.getContent()).getValue());
+        assertNull(logicManager.replayRequest(data.getId(Data.VALID), request.getStoreName(), null, request.getContent()).getValue());
+        tearDownOpenStore();
     }
 
     /**
