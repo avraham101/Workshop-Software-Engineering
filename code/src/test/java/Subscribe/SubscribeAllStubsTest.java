@@ -4,6 +4,7 @@ import Data.Data;
 import Data.TestData;
 import DataAPI.*;
 import Domain.*;
+import Domain.Discount.Discount;
 import Drivers.LogicManagerDriver;
 import Persitent.Cache;
 import Persitent.DaoHolders.DaoHolder;
@@ -87,7 +88,11 @@ public class SubscribeAllStubsTest {
      */
     protected void setUpManagerAdded(){
         setUpStoreOpened();
-        sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName());
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
+        StoreData storeData = data.getStore(Data.VALID);
+        Response<Boolean> response = logicManagerDriver.addManager(0,admin.getName(),storeData.getName());
+        if(!response.getValue())
+            fail();
     }
 
     /**
@@ -112,8 +117,11 @@ public class SubscribeAllStubsTest {
      */
     private void setUpDiscountAdded() {
         setUpProductAdded();
-        sub.addDiscountToStore(data.getStore(Data.VALID).getName(),
-                data.getDiscounts(Data.VALID).get(0));
+        StoreData storeData = data.getStore(Data.VALID);
+        List <Discount> discounts = data.getDiscounts(Data.VALID);
+        Response<Boolean> response = this.subscribe.addDiscountToStore(storeData.getName(), discounts.get(0));
+        if(!response.getValue())
+            fail();
     }
 
     /**
@@ -464,8 +472,10 @@ public class SubscribeAllStubsTest {
     @Test
     public void testAddDiscountToStoreSuccess(){
         setUpProductAdded();
-        assertTrue(sub.addDiscountToStore(data.getStore(Data.VALID).getName(),
-                data.getDiscounts(Data.VALID).get(0)).getValue());
+        StoreData storeData = data.getStore(Data.VALID);
+        List <Discount> discounts = data.getDiscounts(Data.VALID);
+        assertTrue(this.subscribe.addDiscountToStore(storeData.getName(), discounts.get(0)).getValue());
+        tearDownStore();
     }
 
     /**
@@ -474,13 +484,17 @@ public class SubscribeAllStubsTest {
     @Test
     public void checkAddDiscountToStoreNotManager() {
         setUpProductAdded();
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        Store store=permission.getStore();
-        sub.getPermissions().clear();
-        assertFalse(sub.addDiscountToStore(store.getName(),data.getDiscounts(Data.VALID).get(0)).getValue());
-        assertTrue(store.getDiscount().isEmpty());
-        sub.getPermissions().put(validStoreName,permission);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+
+        StoreData storeData = data.getStore(Data.VALID);
+        List <Discount> discounts = data.getDiscounts(Data.VALID);
+        assertFalse(sub.addDiscountToStore(storeData.getName(), discounts.get(0)).getValue());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
     }
 
     /**
@@ -489,15 +503,20 @@ public class SubscribeAllStubsTest {
     @Test
     public void checkAddDiscountToStoreHasNoPermission() {
         setUpProductAdded();
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        Store store=permission.getStore();
-        permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.addDiscountToStore(store.getName(),data.getDiscounts(Data.VALID).get(0)).getValue());
-        assertTrue(store.getDiscount().isEmpty());
-        permission.addType(PermissionType.OWNER);
-    }
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
 
+        logicManagerDriver.addManager(0,sub.getName(),storeData.getName());
+
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+        List <Discount> discounts = data.getDiscounts(Data.VALID);
+        assertFalse(sub.addDiscountToStore(storeData.getName(), discounts.get(0)).getValue());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
+    }
 
     /**
      * use case 4.2.1.2 -remove product from store
@@ -505,7 +524,13 @@ public class SubscribeAllStubsTest {
     @Test
     public void testRemoveDiscountFromStoreSuccess(){
         setUpDiscountAdded();
-        assertTrue(sub.deleteDiscountFromStore(0,data.getStore(Data.VALID).getName()).getValue());
+        StoreData storeData = data.getStore(Data.VALID);
+        List <Discount> discounts = data.getDiscounts(Data.VALID);
+        Discount discount = discounts.get(0);
+        assertTrue(this.subscribe.deleteDiscountFromStore(discount.getId(), storeData.getName()).getValue());
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertTrue(store.getDiscount().values().isEmpty());
+        tearDownStore();
     }
 
     /**
@@ -514,13 +539,20 @@ public class SubscribeAllStubsTest {
     @Test
     public void checkRemoveDiscountFromStoreNotManager() {
         setUpDiscountAdded();
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        Store store=permission.getStore();
-        sub.getPermissions().clear();
-        assertFalse(sub.deleteDiscountFromStore(0,store.getName()).getValue());
-        assertFalse(store.getDiscount().isEmpty());
-        sub.getPermissions().put(validStoreName,permission);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+
+        StoreData storeData = data.getStore(Data.VALID);
+        List <Discount> discounts = data.getDiscounts(Data.VALID);
+        Discount discount = discounts.get(0);
+        assertFalse(sub.deleteDiscountFromStore(discount.getId(), storeData.getName()).getValue());
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertFalse(store.getDiscount().values().isEmpty());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
     }
 
     /**
@@ -529,125 +561,157 @@ public class SubscribeAllStubsTest {
     @Test
     public void checkRemoveDiscountFromStoreHasNoPermission() {
         setUpDiscountAdded();
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        Store store=permission.getStore();
-        permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.deleteDiscountFromStore(0,store.getName()).getValue());
-        assertFalse(store.getDiscount().isEmpty());
-        permission.addType(PermissionType.OWNER);
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+
+        logicManagerDriver.addManager(0,sub.getName(),storeData.getName());
+
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+
+        List <Discount> discounts = data.getDiscounts(Data.VALID);
+        Discount discount = discounts.get(0);
+        assertFalse(sub.deleteDiscountFromStore(discount.getId(), storeData.getName()).getValue());
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertFalse(store.getDiscount().values().isEmpty());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
     }
 
-
+    /**
+     * use case 4.5 add manager
+     * test we cant add manager twice
+     */
+    @Test
+    public void testAlreadyManager() {
+        setUpStoreOpened();
+        assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()).getValue());
+        tearDownStore();
+    }
 
     /**
      * use case 4.5 add manager
      */
     @Test
-    public void testAddManagerToStore(){
+    public void testAddManagerStoreSuccess() {
         setUpStoreOpened();
-        testAddManagerToStoreFail();
-        testAddManagerStoreSuccess();
-        testAlreadyManager();
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
+        StoreData storeData = data.getStore(Data.VALID);
+        assertTrue(subscribe.addManager(admin,storeData.getName()).getValue());
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertEquals(2,store.getPermissions().values().size());
+        tearDownStore();
     }
 
     /**
-     * part of use case 4.5 add manager
-     * test we cant add manager twice
-     */
-    private void testAlreadyManager() {
-        assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()).getValue());
-    }
-
-    /**
-     * part of use case 4.5 add manager
-     */
-    protected void testAddManagerStoreSuccess() {
-        assertTrue(sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()).getValue());
-    }
-
-    /**
-     * part of use case 4.5 add manager
-     */
-    private void testAddManagerToStoreFail() {
-        checkAddManagerHasNoPermission();
-        checkAddManagerNotOwner();
-    }
-
-    /**
+     * use case 4.5 add manager
      * check cant add manager without being owner
      */
+    @Test
+    public void checkAddManagerNotOwner() {
+        setUpDiscountAdded();
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
 
-    private void checkAddManagerNotOwner() {
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        Store store=permission.getStore();
-        sub.getPermissions().clear();
-        assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),validStoreName).getValue());
-        assertFalse(store.getPermissions().containsKey(data.getSubscribe(Data.ADMIN).getName()));
-        sub.getPermissions().put(validStoreName,permission);
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
+        StoreData storeData = data.getStore(Data.VALID);
+        assertFalse(sub.addManager(admin,storeData.getName()).getValue());
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertEquals(1,store.getPermissions().values().size());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
     }
 
     /**
+     * use case 4.5 add manager
      * check cant add manager without permission
      */
-    private void checkAddManagerHasNoPermission() {
-        String validStoreName = data.getProductData(Data.VALID).getStoreName();
-        Permission permission = sub.getPermissions().get(validStoreName);
-        Store store=permission.getStore();
-        permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),validStoreName).getValue());
-        assertFalse(store.getPermissions().containsKey(data.getSubscribe(Data.ADMIN).getName()));
-        permission.addType(PermissionType.OWNER);
+    @Test
+    public void checkAddManagerHasNoPermission() {
+        setUpDiscountAdded();
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+
+        logicManagerDriver.addManager(0,sub.getName(),storeData.getName());
+
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
+        assertFalse(sub.addManager(admin,storeData.getName()).getValue());
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertEquals(2,store.getPermissions().values().size());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
     }
 
     /**
      * test use case 4.6.1 - add permissions to manager
      */
     @Test
-    public void testAddPermissions(){
-        setUpManagerAdded();
-        testAddPermissionNotManager();
-        testAddPermissionDontHavePermission();
-        testAddPermissionSuccess();
-    }
+    public void testAddPermissionDontHavePermission() {
+        setUpDiscountAdded();
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
 
-    /**
-     * part of test use case 4.6.1 - add permissions to manager
-     */
-    private void testAddPermissionDontHavePermission() {
+        logicManagerDriver.addManager(0,sub.getName(),storeData.getName());
+
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
-        Permission permission = sub.getPermissions().get(validStoreName);
-        Store store=permission.getStore();
-        permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.addPermissions(data.getPermissionTypeList(),
-                data.getSubscribe(Data.ADMIN).getName(),validStoreName).getValue());
-        assertFalse(store.getPermissions().get(data.getSubscribe(Data.ADMIN).getName()).getPermissionType().
-                containsAll(data.getPermissionTypeList()));
-        permission.addType(PermissionType.OWNER);
+        List<PermissionType> permissionList = data.getPermissionTypeList();
+        assertFalse(sub.addPermissions(permissionList, admin.getName(),validStoreName).getValue());
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertEquals(2,store.getPermissions().values().size());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
     }
 
     /**
-     * part of test use case 4.6.1 - add permissions to manager
+     * test use case 4.6.1 - add permissions to manager
      */
-    private void testAddPermissionNotManager() {
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        Store store=permission.getStore();
-        sub.getPermissions().clear();
-        assertFalse(sub.addPermissions(data.getPermissionTypeList(),
-                data.getSubscribe(Data.ADMIN).getName(),validStoreName).getValue());
-        assertFalse(store.getPermissions().get(data.getSubscribe(Data.ADMIN).getName()).getPermissionType().
-                containsAll(data.getPermissionTypeList()));
-        sub.getPermissions().put(validStoreName,permission);
+    @Test
+    public void testAddPermissionNotManager() {
+        setUpDiscountAdded();
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
+        String validStoreName = data.getProductData(Data.VALID).getStoreName();
+        List<PermissionType> permissionList = data.getPermissionTypeList();
+        assertFalse(sub.addPermissions(permissionList, admin.getName(),validStoreName).getValue());
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertEquals(1,store.getPermissions().values().size());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
     }
 
     /**
-     * part of test use case 4.6.1 - add permissions to manager
+     * test use case 4.6.1 - add permissions to manager
      */
-    protected void testAddPermissionSuccess() {
-        assertTrue(sub.addPermissions(data.getPermissionTypeList(),
-                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()).getValue());
+    @Test
+    public void testAddPermissionSuccess() {
+        setUpManagerAdded();
+        List<PermissionType> list = data.getPermissionTypeList();
+        StoreData storeData= data.getStore(Data.VALID);
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
+        assertTrue(this.subscribe.addPermissions(list, storeData.getName(),admin.getName()).getValue());
+        tearDownStore();
     }
 
     /**
