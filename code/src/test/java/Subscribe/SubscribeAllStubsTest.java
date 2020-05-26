@@ -100,8 +100,10 @@ public class SubscribeAllStubsTest {
      */
     private void setUpAddedPermissions(){
         setUpManagerAdded();
-        sub.addPermissions(data.getPermissionTypeList(),
-                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName());
+        List<PermissionType> list = data.getPermissionTypeList();
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
+        logicManagerDriver.addPermissions(0, list, storeData.getName(), admin.getName());
     }
 
     /**
@@ -715,35 +717,36 @@ public class SubscribeAllStubsTest {
     }
 
     /**
-     * test use case 4.6.2 - remove permission
+     * use case 4.6.2 - remove permission
      */
     @Test
-    public void testRemovePermission(){
+    public void testRemovePermissionNotManager() {
         setUpAddedPermissions();
-        testRemovePermissionNotManager();
-        testRemovePermissionDontHavePermission();
-        testRemovePermissionSuccess();
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
+        String validStoreName = data.getProductData(Data.VALID).getStoreName();
+        List<PermissionType> permissionList = data.getPermissionTypeList();
+
+        assertFalse(sub.removePermissions(permissionList, admin.getName(),validStoreName).getValue());
+
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertEquals(2,store.getPermissions().values().size());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
     }
 
     /**
-     * part of test use case 4.6.2 - remove permission
+     * use case 4.6.2 - remove permission
      */
-    private void testRemovePermissionNotManager() {
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        Store store=permission.getStore();
-        sub.getPermissions().clear();
-        assertFalse(sub.removePermissions(data.getPermissionTypeList(),
-                data.getSubscribe(Data.ADMIN).getName(),validStoreName).getValue());
-        assertTrue(store.getPermissions().get(data.getSubscribe(Data.ADMIN).getName()).getPermissionType().
-                containsAll(data.getPermissionTypeList()));
-        sub.getPermissions().put(validStoreName,permission);
-    }
-
-    /**
-     * part of test use case 4.6.2 - remove permission
-     */
-    private void testRemovePermissionDontHavePermission() {
+    @Test
+    public void testRemovePermissionDontHavePermission() {
+        setUpAddedPermissions();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
         Permission permission = sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
@@ -753,14 +756,18 @@ public class SubscribeAllStubsTest {
         assertTrue(store.getPermissions().get(data.getSubscribe(Data.ADMIN).getName()).getPermissionType().
                 containsAll(data.getPermissionTypeList()));
         permission.addType(PermissionType.OWNER);
+        tearDownStore();
     }
 
     /**
-     * part of test use case 4.6.2 - remove permission
+     * use case 4.6.2 - remove permission
      */
-    protected void testRemovePermissionSuccess() {
+    @Test
+    public void testRemovePermissionSuccess() {
+        setUpAddedPermissions();
         assertTrue(sub.removePermissions(data.getPermissionTypeList(),
                 data.getStore(Data.VALID).getName(),data.getSubscribe(Data.ADMIN).getName()).getValue());
+        tearDownStore();
     }
 
     /**
