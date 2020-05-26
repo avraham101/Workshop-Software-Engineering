@@ -374,13 +374,14 @@ public class SubscribeAllStubsTest {
     @Test
     public void checkRemoveProductNotManager() {
         setUpProductAdded();
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        Store store=permission.getStore();
-        sub.getPermissions().clear();
-        assertFalse(sub.removeProductFromStore(data.getProductData(Data.VALID).getProductName(),validStoreName).getValue());
-        sub.getPermissions().put(validStoreName,permission);
-        assertTrue(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+        ProductData productData = data.getProductData(Data.VALID);
+        assertFalse(sub.removeProductFromStore(storeData.getName(),productData.getProductName()).getValue());
+        daoHolder.getSubscribeDao().remove(sub.getName());
         tearDownStore();
     }
 
