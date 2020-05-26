@@ -1,11 +1,8 @@
 package Persitent;
 
 import Domain.Admin;
-import Domain.Discount.Discount;
-import Domain.Store;
+
 import Domain.Subscribe;
-import Domain.UserState;
-import org.hibernate.transform.Transformers;
 
 import javax.persistence.*;
 import java.util.LinkedList;
@@ -15,10 +12,10 @@ import java.util.Optional;
 public class SubscribeDao extends Dao<Subscribe>{
 
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("product");
+            .createEntityManagerFactory("subscribe");
+
 
     public boolean addSubscribe(Subscribe subscribe) {
-        boolean output = false;
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         return super.add(em,subscribe);
@@ -55,6 +52,8 @@ public class SubscribeDao extends Dao<Subscribe>{
 
         }
         catch(Exception ex) {
+            if(et!=null)
+                et.rollback();
         }
         finally {
             em.close();
@@ -67,19 +66,16 @@ public class SubscribeDao extends Dao<Subscribe>{
 
     public void clearTable() {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-        em.getTransaction().begin();
         Query query = em.createQuery("DELETE FROM Domain.Subscribe");
         int rowsDeleted = query.executeUpdate();
         //System.out.println("entities deleted: " + rowsDeleted);
-        em.getTransaction().commit();
         em.close();
     }
 
     public List<Admin> getAllAdmins() {
         List<Admin> output = new LinkedList<>();
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         try {
-            EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-            em.getTransaction().begin();
             Query query = em.createNativeQuery("SELECT admin.username FROM admin");
             List resultList = query.getResultList();
             for (Object admin : resultList) {
@@ -89,7 +85,9 @@ public class SubscribeDao extends Dao<Subscribe>{
         }
         catch (Exception e){
             e.printStackTrace();
-            return null;
+        }
+        finally {
+            em.close();
         }
         return output;
 
@@ -97,14 +95,13 @@ public class SubscribeDao extends Dao<Subscribe>{
 
     public List<String> getAllUserName() {
         List<String> output = new LinkedList<>();
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         try {
-            EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-            em.getTransaction().begin();
             Query query = em.createNativeQuery("SELECT Subscribe.username FROM Subscribe");
             output = query.getResultList();
         }
         catch (Exception e){
-            e.printStackTrace();
+            em.close();
         }
         return output;
     }
