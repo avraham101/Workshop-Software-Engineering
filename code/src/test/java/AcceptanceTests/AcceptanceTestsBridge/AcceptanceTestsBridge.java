@@ -63,4 +63,6 @@ public interface AcceptanceTestsBridge {
     List<String> getAllUsers(int id);
     void setPublisher(PublisherMock publisherMock);
     void removeUser(String username);
+    void removeProduct(ProductTestData product);
+    void removeStore(StoreTestData store);
 }

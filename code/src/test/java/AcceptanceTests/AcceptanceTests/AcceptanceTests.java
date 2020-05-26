@@ -229,10 +229,6 @@ public class AcceptanceTests {
         }
 
         bridge.logout(admin.getId());
-
-
-
-
     }
 
 
@@ -305,6 +301,24 @@ public class AcceptanceTests {
     protected void removeUsers(List<String> users){
         for(String user : users)
             removeUser(user);
+    }
+
+    protected void removeProduct(ProductTestData product){
+        this.bridge.removeProduct(product);
+    }
+
+    protected void removeProducts(List<ProductTestData> products){
+        for(ProductTestData product : products)
+            removeProduct(product);
+    }
+
+    protected void removeStore(StoreTestData store){
+        this.bridge.removeStore(store);
+    }
+
+    protected void removeStores(List<StoreTestData> stores){
+        for(StoreTestData store : stores)
+            removeStore(store);
     }
 
     @After

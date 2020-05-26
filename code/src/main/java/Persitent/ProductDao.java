@@ -132,4 +132,7 @@ public class ProductDao {
     }
 
 
+    public void removeProduct(String productName, String storeName) {
+        removeProduct(new Product(productName,storeName));
+    }
 }
