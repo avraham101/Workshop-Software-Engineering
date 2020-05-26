@@ -6,8 +6,12 @@ import DataAPI.*;
 import Domain.*;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
 import Drivers.LogicManagerDriver;
+import Persitent.CartDao;
 import Persitent.Dao;
 import Persitent.DaoHolders.DaoHolder;
+import Persitent.StoreDao;
+import Persitent.SubscribeDao;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -61,6 +65,22 @@ public class CartTest {
         }
         else
             fail();
+    }
+
+    @After
+    public void tearDown() {
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        SubscribeDao subscribeDao = daoHolder.getSubscribeDao();
+        subscribeDao.remove(subscribe.getName());
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
+        subscribeDao.remove(admin.getName());
+        StoreData storeData = data.getStore(Data.VALID);
+        StoreDao storeDao = daoHolder.getStoreDao();
+        storeDao.removeStore(storeData.getName());
+        CartDao cartDao = daoHolder.getCartDao();
+        Cart cart = cartDao.find(subscribe.getName());
+        if(cart!=null)
+            cartDao.remove(cart);
     }
 
     /**-------------------------set-ups------------------------------*/
@@ -122,6 +142,11 @@ public class CartTest {
     public void testReservedCart() {
         setUpProductAdded();
         assertTrue(cart.reserveCart());
+        ProductData productData = data.getProductData(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(productData.getStoreName());
+        Product product = store.getProduct(productData.getProductName());
+        int currentAmount = product.getAmount();
+        assertEquals(0, currentAmount);
     }
 
     /**
