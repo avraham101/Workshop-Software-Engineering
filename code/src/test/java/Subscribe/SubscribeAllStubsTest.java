@@ -258,8 +258,10 @@ public class SubscribeAllStubsTest {
      */
     @Test
     public void openStoreTest() {
-        Store store = sub.openStore(data.getStore(Data.VALID));
+        setUpLoginSubscribe();
+        Store store = this.subscribe.openStore(data.getStore(Data.VALID));
         assertNotNull(store);
+        tearDownStore();
     }
 
     /**
