@@ -803,19 +803,14 @@ public class SubscribeAllStubsTest {
     @Test
     public void testRemoveManagerFromStoreFail() {
         setUpManagerAdded();
-        checkRemoveManagerNotManager();
-        tearDownStore();
-    }
-
-    /**
-     * check cant add manager without being owner
-     */
-    private void checkRemoveManagerNotManager() {
+        Subscribe subscribe = data.getSubscribe(Data.WRONG_NAME);
+        StoreData storeData = data.getStore(Data.VALID);
         String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        sub.getPermissions().clear();
-        assertFalse(sub.removeManager(data.getSubscribe(Data.ADMIN),validStoreName).getValue());
-        sub.getPermissions().put(validStoreName,permission);
+        assertFalse(this.subscribe.removeManager(subscribe, validStoreName).getValue());
+
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertEquals(2,store.getPermissions().values().size());
+        tearDownStore();
     }
 
     /**
