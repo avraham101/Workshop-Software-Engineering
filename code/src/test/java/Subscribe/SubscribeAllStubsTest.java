@@ -130,10 +130,8 @@ public class SubscribeAllStubsTest {
      * set up for Buy and Cancel
      */
     protected void setUpBuy() {
-        Store store = data.getRealStore(Data.VALID);
-        Product product = data.getRealProduct(Data.VALID);
-        sub.addProductToCart(store,product,product.getAmount());
-        sub.reserveCart();
+        setUpReserved();
+        this.subscribe.reserveCart();
     }
 
     /**
@@ -229,6 +227,7 @@ public class SubscribeAllStubsTest {
         setUpBuy();
         int size = 0;
         double sum =0;
+        Cart cart = this.subscribe.getCart();
         for(Basket b:cart.getBaskets().values()) {
             Map<String, ProductInCart> products = b.getProducts();
             for(ProductInCart p:products.values()) {
@@ -239,9 +238,10 @@ public class SubscribeAllStubsTest {
         }
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
-        assertTrue(sub.buyCart(paymentData,deliveryData));
+        assertTrue(this.subscribe.buyCart(paymentData,deliveryData));
         assertEquals(sum,paymentData.getTotalPrice(),0.001);
         assertEquals(size,deliveryData.getProducts().size());
+        tearDownStore();
     }
 
 
