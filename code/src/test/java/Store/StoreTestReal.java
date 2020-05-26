@@ -4,10 +4,9 @@ import Data.Data;
 import DataAPI.ProductData;
 import DataAPI.Response;
 import DataAPI.StoreData;
-import Domain.Cart;
-import Domain.ProductInCart;
-import Domain.Store;
-import Domain.Subscribe;
+import Data.TestData;
+import Domain.*;
+import Domain.Discount.Discount;
 import Drivers.LogicManagerDriver;
 import Persitent.CartDao;
 import Persitent.DaoHolders.DaoHolder;
@@ -32,6 +31,7 @@ public class StoreTestReal extends StoreTestsAllStubs {
         catch (Exception e) {
             fail();
         }
+        data = new TestData();
         daoHolder = new DaoHolder();
         setUpStore();
         store = daoHolder.getStoreDao().find(data.getRealStore(Data.VALID).getName());
@@ -76,9 +76,6 @@ public class StoreTestReal extends StoreTestsAllStubs {
             cartDao.remove(cart);
     }
 
-    //private void setUpProduct
-
-
     /**
      * part of 2.8 - buy cart
      */
@@ -96,22 +93,37 @@ public class StoreTestReal extends StoreTestsAllStubs {
     }
 
     /**
+     * use case 3.3 - add review
+     */
+    @Test
+    public void testAddReview() {
+        Review review = data.getReview(Data.VALID);
+        assertTrue(store.addReview(review));
+        Product product= store.getProducts().get(review.getProductName());
+        assertTrue(product.getReviews().contains(review));
+        review = data.getReview(Data.WRONG_PRODUCT);
+        assertFalse(store.addReview(review));
+    }
+
+    /**
      * use case 4.1.1
      */
-    @Override
-    protected void testAddProductSuccess() {
-        setUpProductAdded();
-        //ProductData p = daoHolder.getProductDao().find(data.getRealProduct(Data.VALID));
-        assertTrue(store.getProducts().get(p.getProductName()).equal(p));
-        //tearDoenP
+    @Test
+    public void testAddProductSuccess() {
+        Product p = daoHolder.getProductDao().find(data.getRealProduct(Data.VALID));
+        assertEquals(store.getProducts().get(p.getName()).getName(), p.getName());
+        assertEquals(store.getProducts().get(p.getName()).getStore(), p.getStore());
     }
 
     /**
      * test use case 4.1.2
      */
     @Override
-    protected void testSuccessRemoveProduct() {
-        super.testSuccessRemoveProduct();
+    @Test
+    public void testSuccessRemoveProduct() {
+        Product product = daoHolder.getProductDao().find(data.getRealProduct(Data.VALID));
+        assertTrue(daoHolder.getProductDao().removeProduct(product));
+        store = daoHolder.getStoreDao().find(data.getRealStore(Data.VALID).getName());
         assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
 
@@ -119,10 +131,52 @@ public class StoreTestReal extends StoreTestsAllStubs {
      * use case 4.1.3
      */
     @Override
-    protected void testSuccessEditProduct() {
-        super.testSuccessEditProduct();
-        ProductData product=data.getProductData(Data.EDIT);
-        assertTrue(store.getProducts().get(product.getProductName()).equal(product));
+    @Test
+    public void testSuccessEditProduct() {
+        Product product = daoHolder.getProductDao().find(data.getRealProduct(Data.EDIT));
+        int oldAmount = product.getAmount();
+        product.setAmount(oldAmount + 1);
+        daoHolder.getProductDao().updateProduct(product);
+        product = daoHolder.getProductDao().find(data.getRealProduct(Data.EDIT));
+        assertEquals(oldAmount + 1, product.getAmount());
+        assertEquals(store.getProducts().get(product.getName()).getName(), product.getName());
+        assertEquals(store.getProducts().get(product.getName()).getStore(), product.getStore());
     }
+
+    /**
+     * test use case 4.2.1.1 -add discount to store
+     * success
+     */
+    @Test
+    public void testAddDiscountToStoreSuccess(){
+        Discount d = data.getDiscounts(Data.VALID).get(0);
+        assertTrue(store.addDiscount(d).getValue());
+        store = daoHolder.getStoreDao().find(store.getName());
+        assertEquals(store.getDiscount().get(0),d);
+    }
+
+
+    /**
+     * test use case 4.2.1.1 -add discount to store
+     */
+    @Test
+    public void testAddDiscountFailProductNotInStore(){
+        Product productToRemove = data.getRealProduct(Data.VALID);
+        Product productDB = daoHolder.getProductDao().find(productToRemove);
+        assertTrue(daoHolder.getProductDao().removeProduct(productDB));
+        store = daoHolder.getStoreDao().find(store.getName());
+        assertFalse(store.addDiscount(data.getDiscounts(Data.VALID).get(0)).getValue());
+        assertTrue(store.getDiscount().isEmpty());
+    }
+
+    /**
+     * test use case 4.2.1.2 - delete discount from store
+     */
+    @Test
+    public void testDeleteProductFromStoreDiscountNotExistInStore(){
+        assertFalse(store.deleteDiscount(0).getValue());
+    }
+
+
 
 }

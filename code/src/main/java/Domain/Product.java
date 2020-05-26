@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Entity
@@ -215,5 +216,26 @@ public class Product implements Serializable {
         getWriteLock().lock();
         ReviewDao reviewDao = daos.getReviewDao();
        return reviewDao.remove(review.getId());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return amount == product.amount &&
+                Double.compare(product.price, price) == 0 &&
+                Objects.equals(store, product.store) &&
+                Objects.equals(name, product.name) &&
+                Objects.equals(purchaseType, product.purchaseType) &&
+                Objects.equals(category, product.category) &&
+                Objects.equals(reviews, product.reviews) &&
+                Objects.equals(lock, product.lock) &&
+                Objects.equals(daos, product.daos);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(store, name, amount, price, purchaseType, category, reviews, lock, daos);
     }
 }
