@@ -21,14 +21,6 @@ import static org.junit.Assert.*;
  */
 public class BasketTestReal extends BasketTest{
 
-    @Before
-    public void setUp() {
-        data = new TestData();
-        Store store = data.getRealStore(Data.VALID);
-        String userName = data.getSubscribe(Data.VALID).getName();
-        basket = new Basket(store, userName);
-    }
-
     /**
      * use case 2.8 - reserveCart cart
      */
@@ -66,8 +58,17 @@ public class BasketTestReal extends BasketTest{
      */
     @Test
     public void testBuyBasket() {
-        Purchase result = basket.savePurchase(data.getSubscribe(Data.VALID).getName());
+        setUpProductAddedToBasket();
+        List<String> productNames = new LinkedList<>();
+        for(ProductInCart p: this.basket.getProducts().values()) {
+            productNames.add(p.getProductName());
+        }
+        Purchase result = this.basket.savePurchase(data.getSubscribe(Data.VALID).getName());
         assertNotNull(result);
+        for(ProductPeristentData productPeristentData: result.getProduct()) {
+            String name = productPeristentData.getProductName();
+            assertTrue(productNames.contains(name));
+        }
     }
 
 }
