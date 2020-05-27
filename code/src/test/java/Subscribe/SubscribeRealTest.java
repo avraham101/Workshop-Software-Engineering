@@ -4,6 +4,8 @@ import Data.Data;
 import Data.TestData;
 import DataAPI.*;
 import Domain.*;
+import Domain.Discount.Discount;
+import Domain.Discount.RegularDiscount;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Drivers.LogicManagerDriver;
@@ -163,18 +165,6 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         tearDownStore();
     }
 
-    /**
-     * use case 4.1.3 - edit product
-     */
-    @Override
-    @Test
-    public void testSuccessEditProduct() {
-        //TODO
-        super.testSuccessEditProduct();
-        ProductData product=data.getProductData(Data.EDIT);
-        assertTrue(sub.getPermissions().get(product.getStoreName()).getStore()
-                .getProducts().get(product.getProductName()).equal(product));
-    }
 
     /**
      * use case 4.2.1.1 -add product to store
@@ -182,9 +172,15 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      */
     @Test @Override
     public void testAddDiscountToStoreSuccess(){
-        super.testAddDiscountToStoreSuccess();
-        Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
-        assertEquals(store.getDiscount().get(0),data.getDiscounts(Data.VALID).get(0));
+        setUpProductAdded();
+        StoreData storeData = data.getStore(Data.VALID);
+        List <Discount> discounts = data.getDiscounts(Data.VALID);
+        assertTrue(this.subscribe.addDiscountToStore(storeData.getName(), discounts.get(0)).getValue());
+
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        Discount real = store.getDiscount().values().iterator().next();
+        assertTrue(real instanceof RegularDiscount);
+        tearDownStore();
     }
 
     /**
