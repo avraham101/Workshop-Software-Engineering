@@ -212,22 +212,33 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     public void testGetStatusRegularSuccess() {
         setUpLoginSubscribe();
         assertEquals(StatusTypeData.REGULAR, this.subscribe.getStatus());
-
     }
 
     @Test
     public void testGetStatusManagerSuccess(){
-        sub.openStore(data.getStore(Data.VALID));
-        assertEquals(StatusTypeData.MANAGER,sub.getStatus());
+        setUpStoreOpened();
+        assertEquals(StatusTypeData.MANAGER,this.subscribe.getStatus());
+        tearDownStore();
     }
 
     /**
      * tests for getMyManagedStores
      */
-
     @Test
     public void testGetMyManagedStoresNoStoresSuccess(){
-        assertNull(sub.getMyManagedStores());
+        setUpStoreOpened();
+        List<Store> stores = this.subscribe.getMyManagedStores();
+        assertNotNull(stores);
+        StoreData storeData = data.getStore(Data.VALID);
+        boolean output = false;
+        for(Store s: stores) {
+            if(s.getName().equals(storeData.getName())) {
+                output = true;
+                break;
+            }
+        }
+        assertTrue(output);
+        tearDownStore();
     }
 
     @Test

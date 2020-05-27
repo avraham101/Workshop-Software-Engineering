@@ -680,7 +680,6 @@ public class Subscribe extends UserState{
         List<Store> myStores = new ArrayList<>();
         for (Permission p: storesPermissions ) {
             myStores.add(p.getStore());
-
         }
         if(myStores.isEmpty())
             return null;
