@@ -27,11 +27,14 @@ handleChangeReview(event,product) {
 }
 
 handleSubmit(event,product) {
+  let writer = this.props.location.state.name;
   let rev={
-    storeName:product.storeName,
+    store:product.store,
     productName:product.productName,
     content:product.review,
+    writer:writer,
   }
+  alert(JSON.stringify(rev));
   send('/home/product/review?id='+this.props.location.state.id, 'POST',rev, this.sendReview);
 }
 
@@ -39,17 +42,18 @@ sendReview(received){
 if(received==null)
   alert("Server Failed");
   else {
+    alert(JSON.stringify(received));
     let opt = ''+ received.reason;
-    if(opt == 'Success') {
+    if(opt === 'Success') {
       alert("review was added successfully");
     }
-    else if(opt=='Invalid_Review'){
+    else if(opt==='Invalid_Review') {
       alert("Can't send empty review");
     }
-    else if(opt=='Store_Not_Found'){
+    else if(opt==='Store_Not_Found') {
       alert("Store not found");
     }
-    else if(opt=='Cant_Add_Review'){
+    else if(opt==='Cant_Add_Review') {
       alert("the product was removed from the store");
     }
     else {
@@ -61,7 +65,6 @@ if(received==null)
 create_Purchases(){
   if(this.flag){
   this.flag=false;
-  
   send('/home/history?id='+this.props.location.state.id, 'GET','', this.buildPurchases);
   }
 }
