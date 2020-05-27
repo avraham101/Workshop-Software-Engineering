@@ -234,8 +234,4 @@ public class Product implements Serializable {
                 Objects.equals(daos, product.daos);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(store, name, amount, price, purchaseType, category, reviews, lock, daos);
-    }
 }

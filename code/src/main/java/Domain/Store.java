@@ -231,9 +231,11 @@ public class Store {
                 discount.calculateDiscount(products);
             }
         }
-        for(Product p:products.keySet()){
-            int amount =  products.get(p);
-            price += amount * p.getPrice();
+        if (products != null) {
+            for(Product p: products.keySet()) {
+                int amount = products.get(p);
+                price += amount * p.getPrice();
+            }
         }
         return price;
 
