@@ -255,7 +255,7 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public HashSet<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName) {
+    public List<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName) {
         if(realBridge!=null)
             return realBridge.viewApplicationToStore(id, storeName);
         return null;

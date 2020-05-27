@@ -272,10 +272,10 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-4.9---------------------------------//
     @Override
-    public HashSet<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName) {
+    public List<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName) {
         List<RequestData> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
         List<ApplicationToStoreTestData> applications = buildApplicationsToStore(requests);
-        return new HashSet<>(applications);
+        return applications;
     }
 
     @Override
@@ -679,7 +679,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     }
 
     private ApplicationToStoreTestData buildApplicationToStore(RequestData request) {
-        return new ApplicationToStoreTestData(request.getStoreName(),request.getSenderName(),request.getContent());
+        return new ApplicationToStoreTestData(request.getId(),request.getStoreName(),request.getSenderName(),request.getContent());
     }
 
     private Set<StorePermissionsTypeTestData> buildStorePermissionType(Set<StorePermissionType> permissionsTypeTestData) {
