@@ -829,7 +829,6 @@ public class SubscribeAllStubsTest {
         assertEquals( request.getStoreName(),recived.getStoreName());
         assertEquals( request.getContent(), recived.getContent());
         assertEquals( request.getSenderName(), recived.getSenderName());
-
         tearDownStore();
     }
 
@@ -838,8 +837,9 @@ public class SubscribeAllStubsTest {
      */
     @Test
     public void testViewRequestWrongStore() {
-        setUpRequestAdded();
-        Store store = data.getRealStore(Data.WRONG_NAME);
+        setUpStoreOpened();
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
         List<Request> requests = this.subscribe.viewRequest(store);
         assertTrue(requests.isEmpty());
         tearDownStore();
