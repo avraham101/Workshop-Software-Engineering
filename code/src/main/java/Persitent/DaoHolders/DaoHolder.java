@@ -8,6 +8,7 @@ public class DaoHolder {
     private CategoryDao categoryDao;
     private DiscountDao discountDao;
     private NotificationDao notificationDao;
+    private PermissionDao permissionDao;
     private PolicyDao policyDao;
     private ProductDao productDao;
     private PurchaseDao purchaseDao;
@@ -21,6 +22,7 @@ public class DaoHolder {
         categoryDao=new CategoryDao();
         discountDao=new DiscountDao();
         notificationDao=new NotificationDao();
+        permissionDao = new PermissionDao();
         policyDao=new PolicyDao();
         purchaseDao=new PurchaseDao();
         productDao=new ProductDao(categoryDao);
@@ -72,5 +74,9 @@ public class DaoHolder {
 
     public ReviewDao getReviewDao() {
         return reviewDao;
+    }
+
+    public PermissionDao getPermissionDao() {
+        return permissionDao;
     }
 }

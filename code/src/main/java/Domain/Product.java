@@ -109,6 +109,8 @@ public class Product implements Serializable {
         getWriteLock().lock();
         this.amount=productData.getAmount();
         this.price=productData.getPrice();
+        this.category = this.category.getName().equals(productData.getCategory()) ?
+                category : new Category(productData.getCategory());
         getWriteLock().unlock();
     }
 

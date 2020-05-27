@@ -219,7 +219,7 @@ public class AcceptanceTests {
 
     protected  void addStores(List<StoreTestData> stores){
         bridge.register(admin.getUsername(),admin.getPassword());
-        boolean log = bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
+        bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
 
         for(StoreTestData store : stores) {
             UserTestData owner = store.getStoreOwner();
@@ -229,7 +229,7 @@ public class AcceptanceTests {
             bridge.logout(owner.getId());
         }
 
-        log = bridge.logout(admin.getId());
+        bridge.logout(admin.getId());
     }
 
 
@@ -320,6 +320,12 @@ public class AcceptanceTests {
     protected void removeStores(List<StoreTestData> stores){
         for(StoreTestData store : stores)
             removeStore(store);
+    }
+
+    public void removeUserStoresAndProducts(UserTestData user){
+        //removeProducts(products);
+        removeStores(stores);
+        removeUser(user.getUsername());
     }
 
     @After
