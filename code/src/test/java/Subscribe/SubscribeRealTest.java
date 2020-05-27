@@ -225,7 +225,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      * tests for getMyManagedStores
      */
     @Test
-    public void testGetMyManagedStoresNoStoresSuccess(){
+    public void testGetMyManagedStoresStoresSuccess(){
         setUpStoreOpened();
         List<Store> stores = this.subscribe.getMyManagedStores();
         assertNotNull(stores);
@@ -242,16 +242,10 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     }
 
     @Test
-    public void testGetMyManagedStoresHasStoresSuccess(){
-        StoreData myStore = data.getStore(Data.VALID);
-        sub.openStore(data.getStore(Data.VALID));
-        List<Store> managedStores = sub.getMyManagedStores();
-        assertNotNull(managedStores);
-        assertTrue(!managedStores.isEmpty());
-        Store managedStore = managedStores.get(0);
-        StoreData managedStoreData = new StoreData(managedStore.getName(),managedStore.getDescription());
-        assertEquals(myStore,managedStoreData);
-
+    public void testGetMyManagedStoresNoStoresSuccess(){
+        setUpLoginSubscribe();
+        List<Store> stores = this.subscribe.getMyManagedStores();
+        assertNull(stores);
     }
 
     /**
