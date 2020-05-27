@@ -117,12 +117,12 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     /**
      * test: use case 3.1 - Logout
      */
-    @Override @Test
+    @Test
     public void logoutTest(){
+        setUpLoginSubscribe();
         User user=new User();
-        assertTrue(sub.logout(user));
+        assertTrue(this.subscribe.logout(user));
         assertTrue(user.getState() instanceof Guest);
-        assertEquals(Optional.ofNullable(sub.getSessionNumber()),-1);
     }
 
     /**
