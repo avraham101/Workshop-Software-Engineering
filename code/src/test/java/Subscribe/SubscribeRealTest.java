@@ -9,6 +9,7 @@ import Domain.Discount.RegularDiscount;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Drivers.LogicManagerDriver;
+import Persitent.SubscribeDao;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -184,80 +185,6 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     }
 
     /**
-     * use case 4.2.1.2 -remove product from store
-     */
-    @Test
-    public void testRemoveDiscountFromStoreSuccess(){
-        super.testRemoveDiscountFromStoreSuccess();
-        Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
-        assertTrue(store.getDiscount().isEmpty());
-    }
-
-    /**
-     * use case 4.5 - add manager
-     * check also if the permission was added
-     */
-
-    @Override
-    @Test
-    public void testAddManagerStoreSuccess() {
-        //TODO
-        super.testAddManagerStoreSuccess();
-        assertTrue(sub.getGivenByMePermissions().get(0).getStore().getPermissions()
-                .containsKey(data.getSubscribe(Data.ADMIN).getName()));
-        Store store=sub.getGivenByMePermissions().get(0).getStore();
-        Subscribe newManager=data.getSubscribe(Data.ADMIN);
-        Permission p=store.getPermissions().get(newManager.getName());
-        assertNotNull(p);
-        assertEquals(p.getStore().getName(),store.getName());
-        newManager=p.getOwner();
-        assertNotNull(newManager);
-        assertTrue(newManager.getPermissions().containsKey(store.getName()));
-    }
-
-    /**
-     * check use case 4.6.1 - add permission
-     */
-    @Test
-    public void testAddPermissions() {
-        //TODO
-        testAddPermissionTwiceFail();
-    }
-
-    /**
-     * part of test use case 4.6.1 - add permission
-     */
-    private void testAddPermissionTwiceFail() {
-        assertFalse(sub.addPermissions(data.getPermissionTypeList(),
-                data.getStore(Data.VALID).getName(),data.getSubscribe(Data.VALID).getName()).getValue());
-    }
-
-    /**
-     * part of test use case 4.6.1 - add permissions to manager
-     * test the permission was really added
-     */
-    @Override
-    @Test
-    public void testAddPermissionSuccess() {
-        //TODO
-        super.testAddPermissionSuccess();
-        assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType().
-                containsAll(data.getPermissionTypeList()));
-    }
-
-    /**
-     * check use case 4.6.2 - remove permissions
-     */
-    @Override
-    @Test
-    public void testRemovePermissionSuccess() {
-        //TODO
-        super.testRemovePermissionSuccess();
-        assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType().
-                isEmpty());
-    }
-
-    /**
      * use case 4.7 - remove manager
      * make user admin manage user niv(VALID2)
      * remove Admin from being manager and check that niv was removed from being a manager recursively
@@ -265,23 +192,27 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     @Override @Test
     public void testRemoveManagerStoreSuccess() {
         setUpManagerAdded();
-        Permission p=sub.getGivenByMePermissions().get(0);
-        Subscribe niv=data.getSubscribe(Data.VALID2);
-        String storeName=p.getStore().getName();
-        //add another manager
-        p.getOwner().addManager(niv,storeName);
-        assertTrue(sub.removeManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()).getValue());
-        assertFalse(niv.getPermissions().containsKey(storeName));
-        assertFalse(p.getOwner().getPermissions().containsKey(storeName));
+        Subscribe subscribe = data.getSubscribe(Data.ADMIN);
+        StoreData storeData = data.getStore(Data.VALID);
+        assertTrue(this.subscribe.removeManager(subscribe, storeData.getName()).getValue());
 
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        assertEquals(1,store.getPermissions().values().size());
+
+        subscribe = daoHolder.getSubscribeDao().find(subscribe.getName());
+        Permission permission = subscribe.getPermissions().get(storeData.getName());
+        assertNull(permission);
+        tearDownStore();
     }
 
     /**
      * tests for getStatus
      */
     @Test
-    public void  testGetStatusRegularSuccess(){
-        assertEquals(StatusTypeData.REGULAR,sub.getStatus());
+    public void testGetStatusRegularSuccess() {
+        setUpLoginSubscribe();
+        assertEquals(StatusTypeData.REGULAR, this.subscribe.getStatus());
+
     }
 
     @Test
