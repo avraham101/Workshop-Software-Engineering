@@ -70,7 +70,6 @@ public class Dao<T> {
         } catch (Exception e){
             if(et!=null)
                 et.rollback();
-            e.printStackTrace();
         }
         finally {
             em.close();

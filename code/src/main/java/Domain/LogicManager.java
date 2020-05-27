@@ -8,6 +8,7 @@ import Domain.PurchasePolicy.PurchasePolicy;
 import Persitent.Cache;
 import Domain.Notification.Notification;
 import Persitent.DaoHolders.DaoHolder;
+import Persitent.RevenueDao;
 import Systems.HashSystem;
 import Systems.LoggerSystem;
 import Systems.PaymentSystem.PaymentSystem;
@@ -39,7 +40,6 @@ public class LogicManager {
     private Gson gson;
     private DaoHolder daos;
     private Cache cache;
-    private ConcurrentHashMap<LocalDate, Double> revenue;
 
 
     /**
@@ -59,7 +59,6 @@ public class LogicManager {
         gson = builderDiscount.create();
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
-        revenue = new ConcurrentHashMap<>();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -101,7 +100,6 @@ public class LogicManager {
         cache = new Cache();
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
-        this.revenue = new ConcurrentHashMap<>();
         GsonBuilder builderDiscount = new GsonBuilder();
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         builderDiscount.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
@@ -155,7 +153,6 @@ public class LogicManager {
         daos =new DaoHolder();
         cache = new Cache();
         usersIdCounter=new AtomicInteger(0);
-        this.revenue = new ConcurrentHashMap<>();
         requestIdGenerator = new AtomicInteger(0);
         GsonBuilder builderDiscount = new GsonBuilder();
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
@@ -685,10 +682,16 @@ public class LogicManager {
      * @param totalRevenue - the total price of a buy
      */
     private void addToRevenue(double totalRevenue) {
-        double todayRevenue = 0;
-        if (revenue.containsKey(LocalDate.now()))
-            todayRevenue = revenue.get(LocalDate.now());
-        revenue.put(LocalDate.now(), todayRevenue + totalRevenue);
+        RevenueDao dao=daos.getRevenueDao();
+        Revenue revenue=dao.find(LocalDate.now());
+        synchronized (dao) {
+            if (revenue == null) {
+                dao.add(new Revenue(totalRevenue));
+            } else {
+                revenue.addProfit(totalRevenue);
+                dao.update(revenue);
+            }
+        }
     }
 
     /**
@@ -1350,8 +1353,9 @@ public class LogicManager {
         LocalDate date = LocalDate.of(year, month, day);
         User current = cache.findUser(id);
         if (current != null && current.canWatchUserHistory()) {
-            if (revenue.containsKey(date))
-                return new Response<>(revenue.get(date), OpCode.Success);
+            Revenue revenue=daos.getRevenueDao().find(date);
+            if (revenue!=null)
+                return new Response<>(revenue.getProfit(), OpCode.Success);
             else
                 return new Response<>(0.0, OpCode.Not_Found);
         }
@@ -1381,8 +1385,9 @@ public class LogicManager {
         User current = cache.findUser(id);
         if (current != null && current.canWatchUserHistory()) {
             LocalDate date = LocalDate.now();
-            if (revenue.containsKey(date))
-                return new Response<>(revenue.get(date), OpCode.Success);
+            Revenue revenue=daos.getRevenueDao().find(date);
+            if (revenue!=null)
+                return new Response<>(revenue.getProfit(), OpCode.Success);
             else
                 return new Response<>(0.0, OpCode.Not_Found);
         }
