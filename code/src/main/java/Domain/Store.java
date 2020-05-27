@@ -471,7 +471,7 @@ public class Store {
      * @return if the removing was successfull
      */
     public Response<Boolean> deleteDiscount(int discountId) {
-        if(discountPolicy.remove(discountId)!=null)
+        if(daos.getDiscountDao().removeDiscount(discountId))
             return new Response<>(true, OpCode.Success);
         return new Response<>(false,OpCode.Not_Found);
     }

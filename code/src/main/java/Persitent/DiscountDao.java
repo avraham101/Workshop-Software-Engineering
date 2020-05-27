@@ -45,7 +45,7 @@ public class DiscountDao {
         return output;
     }
 
-    public void removeDiscount(int id){
+    public boolean removeDiscount(int id){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
 
@@ -56,12 +56,14 @@ public class DiscountDao {
             Discount discount=em.find(Discount.class,id);
             em.remove(discount);
             et.commit();
+            return true;
         } catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {
                 et.rollback();
             }
             ex.printStackTrace();
+            return false;
         } finally {
             // Close EntityManager
             em.close();
