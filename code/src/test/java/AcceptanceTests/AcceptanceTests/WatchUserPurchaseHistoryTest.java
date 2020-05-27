@@ -2,6 +2,7 @@ package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.PurchaseTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,5 +41,11 @@ public class WatchUserPurchaseHistoryTest extends AcceptanceTests {
         bridge.logout(user0.getId());
         List<PurchaseTestData> actualPurchases = bridge.getCurrentUserPurchaseHistory(user0.getId());
         assertNull(actualPurchases);
+    }
+
+    @After
+    public void tearDown(){
+
+        removeUserStoresAndProducts(user0);
     }
 }

@@ -138,7 +138,6 @@ public class Subscribe extends UserState{
         cart=daos.getCartDao().find(userName);
         boolean output= super.addProductToCart(store, product, amount);
         if(output){
-            //daos.getCartDao().remove(cart);
             return daos.getCartDao().replaceCart(cart);
         }
         return false;
@@ -150,7 +149,7 @@ public class Subscribe extends UserState{
      */
     @Override
     public void savePurchase(String buyer) {
-        this.purchases.addAll(this.cart.savePurchases(buyer));
+        this.purchases.addAll(this.cart.savePurchases(this.userName));
         this.cart = new Cart(this.userName);
     }
 
