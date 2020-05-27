@@ -911,7 +911,8 @@ public class SubscribeAllStubsTest {
     @Test
     public void testWatchStoreHistorySuccess() {
         setUpStoreOpened();
-        assertTrue(sub.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
+        StoreData storeData = data.getStore(Data.VALID);
+        assertTrue(this.subscribe.canWatchStoreHistory(storeData.getName()));
         tearDownStore();
     }
 
