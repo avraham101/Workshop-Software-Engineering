@@ -849,7 +849,7 @@ public class SubscribeAllStubsTest {
      * test use case 4.9.2 - reply request
      */
     @Test
-    public void testReplayRequestNullName() {
+    public void testReplayRequestNull() {
         setUpRequestAdded();
         assertNull(this.subscribe.replayToRequest(null, 1, "comment").getValue());
         tearDownStore();
@@ -859,10 +859,11 @@ public class SubscribeAllStubsTest {
      * test use case 4.9.2 - reply request
      */
     @Test
-    public void testReplayRequestWrongStore() {
+    public void testReplayRequestWrongComment() {
         setUpRequestAdded();
-        Request request2 = data.getRequest(Data.WRONG_STORE);
-        assertNull(sub.replayToRequest(request2.getStoreName(), request2.getId(), "comment").getValue());
+        StoreData storeData = data.getStore(Data.VALID);
+        assertNull(this.subscribe.replayToRequest(storeData.getName(),1, null).getValue());
+        tearDownStore();
     }
 
     /**
@@ -871,18 +872,9 @@ public class SubscribeAllStubsTest {
     @Test
     public void testReplayRequestWrongID() {
         setUpRequestAdded();
-        Request request3 = data.getRequest(Data.WRONG_ID);
-        assertNull(sub.replayToRequest(request3.getStoreName(), request3.getId(), "comment").getValue());
-    }
-
-    /**
-     * test use case 4.9.2 - reply request
-     */
-    @Test
-    public void testReplayRequestNullRequest() {
-        setUpRequestAdded();
-        Request request4 = data.getRequest(Data.VALID);
-        assertNull(sub.replayToRequest(request4.getStoreName(), request4.getId(), null).getValue());
+        StoreData storeData = data.getStore(Data.VALID);
+        assertNull(this.subscribe.replayToRequest(storeData.getName(), -1, "comment").getValue());
+        tearDownStore();
     }
 
     /**
