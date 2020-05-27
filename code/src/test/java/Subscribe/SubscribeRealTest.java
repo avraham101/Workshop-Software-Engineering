@@ -276,10 +276,25 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         assertNotNull(permissionTypes);
         assertTrue(permissionTypes.isEmpty());
 
-
         daoHolder.getSubscribeDao().remove(sub.getName());
         tearDownStore();
     }
+
+    @Test
+    public void testGetPermissionsForStoreFailNoPermissions(){
+        setUpStoreOpened();
+
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+        assertNull(sub.getPermissionsForStore(storeData.getName()));
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
+    }
+
 
     @Test
     public void testGetPermissionsForSuccessManagerWithPermissions(){
@@ -297,14 +312,8 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     }
 
     @Test
-    public void testGetPermissionsForStoreFailNoPermissions(){
-        assertNull( sub.getPermissionsForStore(data.getStore(Data.VALID).getName()));
-
-    }
-    @Test
     public void testGetPermissionsForStoreFailStoreNotExist() {
         assertNull( sub.getPermissionsForStore("InvalidStore"));
-
     }
 
     /**
