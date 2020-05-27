@@ -882,7 +882,8 @@ public class SubscribeAllStubsTest {
      */
     @Test
     public void testCanWatchUserHistory(){
-        assertFalse(sub.canWatchUserHistory());
+        setUpLoginSubscribe();
+        assertFalse(this.subscribe.canWatchUserHistory());
     }
 
     /**
