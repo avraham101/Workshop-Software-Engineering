@@ -41,7 +41,6 @@ public class PermissionTest {
         setUpStore();
         daoHolder.getSubscribeDao().addSubscribe(data.getSubscribe(Data.VALID2));
         Subscribe subToAdd = daoHolder.getSubscribeDao().find(data.getSubscribe(Data.VALID2).getName());
-        //Subscribe sub = daoHolder.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
         Store store = daoHolder.getStoreDao().find(data.getRealStore(Data.VALID).getName());
         permissionTypes=new HashSet<>();
         permission = new Permission(subToAdd, store);
