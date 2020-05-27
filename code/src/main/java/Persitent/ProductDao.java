@@ -96,10 +96,14 @@ public class ProductDao {
             // Get transaction and start
             et = em.getTransaction();
             et.begin();
-            Product p=em.find(Product.class,product);
-            em.remove(product);
+//            Product p = em.find(Product.class,product);
+//            em.remove(p);
+            int x=  em.createNativeQuery("DELETE FROM product WHERE storeName=? AND productName=?")
+                    .setParameter(1, product.getStore())
+                    .setParameter(2, product.getName())
+                    .executeUpdate();
             et.commit();
-            return true;
+            return x > 0;
         } catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {

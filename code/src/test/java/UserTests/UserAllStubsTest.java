@@ -478,7 +478,7 @@ public class UserAllStubsTest {
     public void testReplayRequestGuest(){
         setUpGuest();
         assertNull(user.replayToRequest(data.getRequest(Data.VALID).getStoreName()
-            , data.getRequest(Data.VALID).getId(), "I want replay but can't").getValue());}
+            , -2, "I want replay but can't").getValue());}
 
     /**
      * use case 6.4.1 - watch user store

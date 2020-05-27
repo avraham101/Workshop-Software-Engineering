@@ -52,6 +52,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
     /**---------------------set-ups-------------------------------------------*/
 
+
     /**
      * set up connect
      */
@@ -85,7 +86,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
     /**----------------------set-ups------------------------------------------*/
 
-    /**
+
+
+     /**
      * set up for register a user
      */
     private void setUpRegisteredUser(){
@@ -105,7 +108,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         assertTrue(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
         daos.getSubscribeDao().remove(subscribe.getName());
-        tearDownConnect();
+        tearDownRegisteredUser();
     }
 
 
@@ -191,7 +194,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(1,products.size());
         tearDownOpenStore();
     }
-
 
     /**
      * part of use case 2.5 - view spesific products
@@ -378,6 +380,22 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(1, list.size());
         assertEquals(list.get(0).getProductName(), productData.getProductName());
         tearDownProductAddedToCart();
+    }
+
+    /**
+     * use case 2.7.1 fail when the product is null
+     */
+    protected void testWatchCartDetailsNull() {
+        CartData cartData = logicManager.watchCartDetails(data.getId(Data.VALID)).getValue();
+        assertNotNull(cartData.getProducts().get(0));
+    }
+
+    /**
+     * use case 2.7.1 fail when the basket is null
+     */
+    protected void testWatchCartDetailsNullStore() {
+        CartData cartData = logicManager.watchCartDetails(data.getId(Data.VALID)).getValue();
+        assertNotNull(cartData.getProducts().get(0).getStoreName());
     }
 
     /**
@@ -841,7 +859,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(temp.getComment(), request.getComment());
     }
 
-    /**
+     /**
      * use case 3.7 - watch purchase history
      */
     @Override @Test
@@ -1033,13 +1051,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override
     @Transactional
-    public void testAddDiscountToStoreSuccessTest() {
-        setUpProductAdded();
+    protected void testAddDiscountToStoreSuccessTest() {
         super.testAddDiscountToStoreSuccessTest();
         Subscribe sub = daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
         Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
         assertTrue(store.getDiscount().values().iterator().next() instanceof RegularDiscount);
-        tearDownOpenStore();
     }
 
     /**
@@ -1052,8 +1068,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         int discountId=daos.getStoreDao().find(data.getStore(Data.VALID).getName()).getDiscount().values().iterator().next().getId();
         assertTrue(logicManager.deleteDiscountFromStore(data.getId(Data.VALID),discountId,
                     data.getStore(Data.VALID).getName()).getValue());
-        Subscribe sub = daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
-        Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
+        Store store=daos.getStoreDao().find(data.getStore(Data.VALID).getName());
         assertTrue(store.getDiscount().isEmpty());
         tearDownOpenStore();
     }
