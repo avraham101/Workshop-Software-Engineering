@@ -260,7 +260,8 @@ public class SubscribeAllStubsTest {
      */
     @Test
     public void logoutTest(){
-        assertTrue(sub.logout(new User()));
+        setUpLoginSubscribe();
+        assertTrue(this.subscribe.logout(new User()));
     }
 
     /**
