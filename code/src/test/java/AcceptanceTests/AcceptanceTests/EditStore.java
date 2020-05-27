@@ -26,7 +26,7 @@ public class EditStore extends AcceptanceTests {
     public void addProductToStoreSuccess(){
         String storeName = stores.get(0).getStoreName();
         ProductTestData product = new ProductTestData("newProduct",
-                storeName,5,15.5,"tests",
+                storeName,5,15.5,"Fruits",
                 new ArrayList<ReviewTestData>());
         boolean approval = bridge.addProduct(superUser.getId(),product);
         assertTrue(approval);
@@ -149,8 +149,8 @@ public class EditStore extends AcceptanceTests {
     }
     @After
     public void tearDown(){
-        //removeStores(stores);
         removeProducts(products);
+        removeStores(stores);
         removeUser(superUser.getUsername());
     }
 
