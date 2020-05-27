@@ -2,13 +2,16 @@ package Permission;
 
 import Data.Data;
 import Data.TestData;
+import DataAPI.ProductData;
+import DataAPI.Response;
 import DataAPI.StoreData;
-import Domain.Permission;
+import Domain.*;
 import DataAPI.PermissionType;
-import Domain.Store;
-import Domain.Subscribe;
+import Drivers.LogicManagerDriver;
+import Persitent.CartDao;
 import Persitent.DaoHolders.DaoHolder;
 import Persitent.StoreDao;
+import Persitent.SubscribeDao;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,26 +24,89 @@ import static org.junit.Assert.*;
 
 public class PermissionTest {
     private TestData data;
-    private Subscribe sub;
-    private Store store;
+    private HashSet<PermissionType> permissionTypes;
     private Permission permission;
+    private DaoHolder daoHolder;
+    private LogicManagerDriver logicDriver;
 
     @Before
-    public void setUp() {
-        data=new TestData();
-        sub=data.getSubscribe(Data.VALID);
-        StoreData storeData = data.getStore(Data.VALID);
-        permission=new Permission(sub);
-        store= new Store(storeData.getName(), permission, storeData.getDescription());
-        permission.setStore(store);
+    public void setUp(){
+        data = new TestData();
+        daoHolder = new DaoHolder();
+        try {
+            logicDriver = new LogicManagerDriver();
+        } catch ( Exception e){
+            fail();
+        }
+        setUpStore();
+        daoHolder.getSubscribeDao().addSubscribe(data.getSubscribe(Data.VALID2));
+        Subscribe subToAdd = daoHolder.getSubscribeDao().find(data.getSubscribe(Data.VALID2).getName());
+        //Subscribe sub = daoHolder.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
+        Store store = daoHolder.getStoreDao().find(data.getRealStore(Data.VALID).getName());
+        permissionTypes=new HashSet<>();
+        permission = new Permission(subToAdd, store);
+        daoHolder.getPermissionDao().addPermission(permission);
+        permission = daoHolder.getPermissionDao().findPermission(permission);
     }
+
+    @After
+    public void tearDown() {
+        tearDownStore();
+        daoHolder.getPermissionDao().removePermissionFromSubscribe(permission);
+        daoHolder.getSubscribeDao().remove(data.getSubscribe(Data.VALID2).getName());
+    }
+
+    /**
+     * set up for a store
+     */
+    private void setUpStore() {
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        ProductData productData = data.getProductData(Data.VALID);
+        StoreData storeData = data.getStore(Data.VALID);
+        int id = logicDriver.connectToSystem();
+        Response<Boolean> response = logicDriver.register(subscribe.getName(), subscribe.getPassword());
+        if(response.getValue()) {
+            response = logicDriver.login(id, subscribe.getName(), subscribe.getPassword());
+            if(response.getValue()) {
+                response = logicDriver.openStore(id, storeData);
+                if(response.getValue()) {
+                    logicDriver.addProductToStore(id, productData);
+                }
+                else
+                    fail();
+            }
+            else
+                fail();
+        }
+        else
+            fail();
+    }
+
+    /**
+     * tear down for a store
+     */
+    private void tearDownStore() {
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        SubscribeDao subscribeDao = daoHolder.getSubscribeDao();
+        subscribeDao.remove(subscribe.getName());
+        Subscribe admin = data.getSubscribe(Data.ADMIN);
+        subscribeDao.remove(admin.getName());
+        StoreData storeData = data.getStore(Data.VALID);
+        StoreDao storeDao = daoHolder.getStoreDao();
+        storeDao.removeStore(storeData.getName());
+        CartDao cartDao = daoHolder.getCartDao();
+        Cart cart = cartDao.find(subscribe.getName());
+        if(cart!=null)
+            cartDao.remove(cart);
+    }
+
 
     /**
      * test add type basic success case
      */
     @Test
     public void testAddTypeSuccess() {
-        assertTrue(permission.addType(PermissionType.PRODUCTS_INVENTORY));
+        assertTrue(permission.addType(PermissionType.CRUD_POLICY_DISCOUNT));
     }
 
     /**
@@ -49,8 +115,9 @@ public class PermissionTest {
     @Test
     public void testAddOwner() {
         assertTrue(permission.addType(PermissionType.OWNER));
-        assertEquals(1, permission.getPermissionType().size());
-        assertTrue(permission.getPermissionType().contains(PermissionType.OWNER));
+        permissionTypes = daoHolder.getPermissionDao().findPermission(permission).getPermissionType();
+        assertEquals(1, permissionTypes.size());
+        assertTrue(permissionTypes.contains(PermissionType.OWNER));
     }
 
     /**
@@ -58,21 +125,19 @@ public class PermissionTest {
      */
     @Test
     public void testAddTypeAgainFail() {
-        assertFalse(permission.addType(PermissionType.PRODUCTS_INVENTORY));
+        assertTrue(permission.addType(PermissionType.CRUD_POLICY_DISCOUNT));
+        assertFalse(permission.addType(PermissionType.CRUD_POLICY_DISCOUNT));
     }
 
     /**
      * test add type when the permission is owner, fails
      */
     @Test
-    public void testAddTypeWhenOwnerFail(){
+    public void testAddTypeWhenOwnerFail() {
+        assertTrue(permission.addType(PermissionType.OWNER));
         assertFalse(permission.addType(PermissionType.ADD_MANAGER));
         assertFalse(permission.getPermissionType().contains(PermissionType.ADD_MANAGER));
     }
 
-    @After
-    public void tearDown() {
-        data=new TestData();
-    }
 
 }

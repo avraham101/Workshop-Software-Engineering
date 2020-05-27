@@ -7,6 +7,7 @@ import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
 import AcceptanceTests.SystemMocks.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
+import org.junit.After;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -34,7 +35,7 @@ public class BuyCartTest extends AcceptanceTests {
         setUp(paymentSystem,deliverySystem);
     }
 
-    @Test
+    //@Test
     public void buyCartSuccess(){
         positiveSetUp();
         PublisherMock publisherMock=new PublisherMock();
@@ -119,6 +120,11 @@ public class BuyCartTest extends AcceptanceTests {
         assertFalse(approval);
         CartTestData currCart = bridge.getUsersCart(userId);
         assertFalse(currCart.isEmpty());
+    }
+    @After
+    public void tearDown(){
+        removeProducts(products);
+        removeStores(stores);
     }
 
 }

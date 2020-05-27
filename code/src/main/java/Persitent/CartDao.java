@@ -3,27 +3,11 @@ package Persitent;
 import Domain.*;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 
 public class CartDao extends Dao<Cart> {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("product");
-
-//    public static void main(String[] args){
-//        PermissionType[] ps = {PermissionType.OWNER};
-//        List<PermissionType> perms = new ArrayList<PermissionType>(Arrays.asList(ps));
-//        Permission p = new Permission(new Subscribe("roy","roy"), new HashSet<>(perms));
-//        Basket b = new Basket(new Store("roy",p,"roy"),"roy");
-//        ProductData pd  = new ProductData("roy","roy","roy",null,0,0,PurchaseTypeData.IMMEDDIATE);
-//        Product pr = new Product(pd,new Category("roy"));
-//        b.addProduct(pr,0);
-//        Cart c = new Cart("roy");
-//        c.getBaskets().put("roy",b);
-//        Cart c2 = new Cart("yuval");
-//        BasketDao bdao = new BasketDao();
-////        bdao.addBasket(c);
-//        bdao.removeBasket(c);
-//        ENTITY_MANAGER_FACTORY.close();
-//    }
 
     public boolean add(Cart cart){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
@@ -56,8 +40,25 @@ public class CartDao extends Dao<Cart> {
             et = em.getTransaction();
             et.begin();
             Cart c = em.find(Cart.class, cart.getBuyer());
-            em.remove(em.contains(c) ? c : em.merge(c));
-            et.commit();
+            if(c!=null) {
+
+                em.createNativeQuery("DELETE FROM basket WHERE username=?")
+                        .setParameter(1, cart.getBuyer())
+                        .executeUpdate();
+                em.createNativeQuery("DELETE FROM cart WHERE username=?")
+                        .setParameter(1,cart.getBuyer())
+                        .executeUpdate();
+                //em.remove(em.contains(c) ? c : em.merge(c));
+                et.commit();
+            }
+
+
+//            int x=  em.createNativeQuery("DELETE FROM product WHERE storeName=? AND productName=?")
+//                    .setParameter(1, product.getStore())
+//                    .setParameter(2, product.getName())
+//                    .executeUpdate();
+//            et.commit();
+//            return x > 0;
         } catch (Exception e){
             if(et!=null)
                 et.rollback();
@@ -86,5 +87,10 @@ public class CartDao extends Dao<Cart> {
             em.close();
         }
         return cart;
+    }
+    @Transactional
+    public boolean replaceCart(Cart cart) {
+       remove(cart);
+       return add(cart);
     }
 }
