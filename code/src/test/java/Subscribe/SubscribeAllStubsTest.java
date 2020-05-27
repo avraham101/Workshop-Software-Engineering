@@ -143,24 +143,11 @@ public class SubscribeAllStubsTest {
     }
 
     /**
-     * set up for the save
-     */
-    protected void setUpSave() {
-        setUpBuy();
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        Response<Boolean> response = logicManagerDriver.purchaseCart(0,"Country",paymentData,
-                deliveryData.getAddress());
-        if(!response.getValue())
-            fail();
-    }
-
-    /**
      * set up a valid purchase history
      */
     protected void setUpProductBought(){
-        setUpSave();
-        sub.savePurchase(sub.getName());
+        setUpBuy();
+        this.subscribe.savePurchase(this.subscribe.getName());
     }
 
     /**

@@ -153,22 +153,14 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     @Test
     public void testWatchPurchases() {
         setUpProductBought();
-        List<Purchase> list = sub.watchMyPurchaseHistory().getValue();
+        List<Purchase> list = this.subscribe.watchMyPurchaseHistory().getValue();
         assertNotNull(list);
         assertEquals(1,list.size());
-    }
-
-    /**
-     * test use case 4.1.1 - add product to store
-     * test the product was added to store
-     */
-    @Override @Test
-    public void addProductToStoreTestSuccess() {
-        super.addProductToStoreTestSuccess();
-        ProductData pData=data.getProductData(Data.VALID);
-        Product p= sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore().getProducts().
-                get(pData.getProductName());
-        assertTrue(p.equal(pData));
+        Purchase purchase = list.get(0);
+        StoreData storeData = data.getStore(Data.VALID);
+        assertEquals(storeData.getName() ,purchase.getStoreName());
+        assertEquals(this.subscribe.getName(),purchase.getBuyer());
+        tearDownStore();
     }
 
     /**
