@@ -32,7 +32,7 @@ public class Basket implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @MapKey(name="productName")
-    @JoinColumns({
+    @JoinColumns(value = {
             @JoinColumn(name="buyer", referencedColumnName = "username", updatable = false),
             @JoinColumn(name="storename", referencedColumnName = "storename", updatable = false)
     })
