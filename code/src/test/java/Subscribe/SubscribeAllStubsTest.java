@@ -29,8 +29,6 @@ public class SubscribeAllStubsTest {
 
     protected Subscribe sub;
     protected Cart cart;
-    protected PaymentSystem paymentSystem;
-    protected SupplySystem supplySystem;
     protected TestData data;
     protected DaoHolder daoHolder;
     protected Cache cache;
@@ -339,15 +337,21 @@ public class SubscribeAllStubsTest {
      */
     @Test
     public void testAddProductDontHavePermission() {
-        setUpStoreOpened();
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        Store store=permission.getStore();
-        permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.addProductToStore(data.getProductData(Data.VALID)).getValue());
-        permission.addType(PermissionType.OWNER);
-        assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+        setUpProductAdded();
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+
+        logicManagerDriver.addManager(0,sub.getName(),storeData.getName());
+
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+        ProductData productData = data.getProductData(Data.VALID);
+        assertFalse(sub.addProductToStore(productData).getValue());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
         tearDownStore();
+
     }
 
     /**
