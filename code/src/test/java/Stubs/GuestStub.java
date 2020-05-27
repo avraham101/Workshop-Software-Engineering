@@ -20,6 +20,9 @@ public class GuestStub extends Guest {
         return true;
     }
 
+
+
+
     /**
      * use case 3.1 - Logout
      * @param user - the user who using the system
@@ -131,6 +134,15 @@ public class GuestStub extends Guest {
     @Override
     public Response<Boolean> removeManager(Subscribe userName, String storeName) {
         return new Response<>(false,OpCode.Not_Login);
+    }
+
+    /**
+     * reserve cart
+     * @return cart
+     */
+    @Override
+    public boolean reserveCart() {
+        return true;
     }
 
     /**

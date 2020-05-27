@@ -7,6 +7,7 @@ import Domain.*;
 import java.util.*;
 
 public class SubscribeStub extends Subscribe{
+    private Store store;
 
     public SubscribeStub(String userName, String password) {
             super(userName, password);
@@ -21,6 +22,11 @@ public class SubscribeStub extends Subscribe{
     @Override
     public boolean login(User user, Subscribe subscribe) {
         return false;
+    }
+
+    @Override
+    public boolean addProductToCart(Store store, Product product, int amount) {
+        return true;
     }
 
     /**
@@ -40,7 +46,8 @@ public class SubscribeStub extends Subscribe{
      */
     @Override
     public Store openStore(StoreData storeDetails) {
-        return new Store(storeDetails.getName(),new Permission(this),storeDetails.getDescription());
+        store=new Store(storeDetails.getName(),new Permission(this),storeDetails.getDescription());
+        return store;
     }
 
     /**
@@ -178,6 +185,16 @@ public class SubscribeStub extends Subscribe{
         return true;
     }
 
+
+    /**
+     * reserve cart
+     * @return cart
+     */
+    @Override
+    public boolean reserveCart() {
+        return true;
+    }
+
     /**
      * use case 3.7 - watch purchase history
      * the function return the purchase list
@@ -201,6 +218,11 @@ public class SubscribeStub extends Subscribe{
     public List<Store> getMyManagedStores(){
         return new ArrayList<>();
 
+    }
+
+    @Override
+    public Request addRequest(String storeName, String content) {
+        return new Request(getName(),storeName,content);
     }
 
     @Override
