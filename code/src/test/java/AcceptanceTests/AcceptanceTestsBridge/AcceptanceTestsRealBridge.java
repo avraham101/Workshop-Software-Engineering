@@ -599,7 +599,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     private DiscountTestData buildDiscountTestData(int id,String s) {
         String[] mid= s.split("\"");
         String product=mid[9];
-        int i=mid[12].indexOf('}');
+        int i=mid[12].indexOf(',');
         double percantage=Double.valueOf(mid[12].substring(1,i));
         return new DiscountTestData(percantage,product,id);
     }
