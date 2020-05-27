@@ -304,6 +304,7 @@ public class AcceptanceTests {
             removeUser(user);
     }
 
+
     protected void removeProduct(ProductTestData product){
         this.bridge.removeProduct(product);
     }
