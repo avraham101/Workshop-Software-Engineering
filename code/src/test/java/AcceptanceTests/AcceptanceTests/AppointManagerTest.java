@@ -2,9 +2,11 @@ package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.xml.ws.Action;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +25,8 @@ public class AppointManagerTest extends AcceptanceTests  {
         userToAdd = users.get(2);
         userLst.add(userToAdd);
         registerUsers(userLst);
-
-        registerAndLogin(superUser);
         addStores(stores);
+        registerAndLogin(superUser);
     }
 
     @Test
@@ -57,5 +58,10 @@ public class AppointManagerTest extends AcceptanceTests  {
 
         boolean approval = bridge.appointManager(superUser.getId(),store.getStoreName(),userToAdd.getUsername());
         assertFalse(approval);
+    }
+
+    @After
+    public void tearDown(){
+        removeUserStoresAndProducts(userToAdd);
     }
 }
