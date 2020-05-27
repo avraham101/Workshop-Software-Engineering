@@ -593,8 +593,15 @@ public class SubscribeAllStubsTest {
      */
     @Test
     public void testAlreadyManager() {
-        setUpStoreOpened();
-        assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()).getValue());
+        setUpProductAdded();
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+
+        logicManagerDriver.addManager(0,sub.getName(),storeData.getName());
+        assertFalse(this.subscribe.addManager(sub,storeData.getName()).getValue());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
         tearDownStore();
     }
 
