@@ -171,7 +171,7 @@ public class SubscribeAllStubsTest {
     private void setUpRequestAdded(){
         setUpStoreOpened();
         Request excepted = data.getRequest(Data.VALID);
-        sub.addRequest(excepted.getStoreName(), excepted.getContent());
+        this.subscribe.addRequest(excepted.getStoreName(), excepted.getContent());
     }
 
     /**
@@ -817,30 +817,26 @@ public class SubscribeAllStubsTest {
      * use case 4.9.1 - view request
      */
     @Test
-    public void testViewRequest(){
+    public void testViewRequestSuccess() {
         setUpRequestAdded();
-        //testViewRequestWrongStore();
-        //testViewRequestNullName();
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        List<Request> requests = this.subscribe.viewRequest(store);
+        assertFalse(requests.isEmpty());
+        tearDownStore();
     }
 
-    //TODO - fix this
-//    /**
-//     * part of use case 4.9.1 - view request
-//     */
-//    private void testViewRequestWrongStore() {
-//        Request request1 = data.getRequest(Data.WRONG_STORE);
-//        assertTrue(sub.viewRequest(request1.getStoreName()).isEmpty());
-//    }
-
-    //TODO - fix this
-
-//    /**
-//     * part of use case 4.9.1 - view request
-//     */
-//    private void testViewRequestNullName() {
-//        Request request2 = data.getRequest(Data.NULL_NAME);
-//        assertTrue(sub.viewRequest(request2.getStoreName()).isEmpty());
-//    }
+    /**
+     * use case 4.9.1 - view request
+     */
+    @Test
+    public void testViewRequestWrongStore() {
+        setUpRequestAdded();
+        Store store = data.getRealStore(Data.WRONG_NAME);
+        List<Request> requests = this.subscribe.viewRequest(store);
+        assertTrue(requests.isEmpty());
+        tearDownStore();
+    }
 
     /**
      * test use case 4.9.2 - reply request
