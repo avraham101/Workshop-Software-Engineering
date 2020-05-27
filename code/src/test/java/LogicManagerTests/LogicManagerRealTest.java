@@ -1213,17 +1213,16 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
 
-//
-//    /**
-//     * use case 4.3 - manage owner - fail
-//     */
-//    @Override
-//    protected void testManageOwnerFail() {
-//        super.testManageOwnerFail();
-//        String sName=data.getStore(Data.VALID).getName();
-//        assertFalse(logicManager.manageOwner(data.getId(Data.VALID),sName,sName).getValue());
-//        assertFalse(stores.get(sName).getPermissions().containsKey(sName));
-//    }
+    /**
+     * get list of all the managers user with id need to approve in storeName test
+     */
+    @Test
+    public void testGetApprovedManagersNotExistedSuccess(){
+        manageOwnerNeed2PeopleApproveTest();
+        List<String> managers=logicManager.getApprovedManagers(data.getId(Data.ADMIN),data.getStore(Data.VALID).getName()).getValue();
+        assertTrue(managers.contains(data.getSubscribe(Data.VALID2).getName()));
+        tearDownOpenStore();
+    }
 
     /**
      * generic function for check when adding new permission that it was added to store and user correctly

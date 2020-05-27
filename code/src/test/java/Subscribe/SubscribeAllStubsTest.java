@@ -49,7 +49,9 @@ public class SubscribeAllStubsTest {
 
     private void setUpSubscribe() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
+        Subscribe valid2=data.getSubscribe(Data.VALID2);
         Response<Boolean> response = logicManagerDriver.register(subscribe.getName(),subscribe.getPassword());
+        logicManagerDriver.register(valid2.getName(),valid2.getPassword());
         if(!response.getValue())
             fail();
         this.subscribe = cache.findSubscribe(subscribe.getName());

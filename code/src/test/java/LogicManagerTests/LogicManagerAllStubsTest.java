@@ -1655,7 +1655,7 @@ public class LogicManagerAllStubsTest {
 
 
     /**
-     * part of test use case 4.3 - add owner
+     * part of test use case 4.3.1 - add owner
      */
     @Test
     public void testManageOwnerFailWrongStore() {
@@ -1666,13 +1666,23 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
-     * part of test use case 4.3 - add owner
+     * part of test use case 4.3.1 - add owner
      */
     @Test
     public void testManageOwnerFailWrongUser() {
         setUpOpenedStore();
         assertFalse(logicManager.manageOwner(data.getId(Data.VALID),data.getStore(Data.VALID).getName()
                 ,data.getStore(Data.VALID).getName()).getValue());
+        tearDownOpenStore();
+    }
+
+    /**
+     * get list of all the managers user with id need to approve in storeName test
+     */
+    @Test
+    public void testGetApprovedManagersNotExistedStore(){
+        setUpOpenedStore();
+        assertNull(logicManager.getApprovedManagers(data.getId(Data.VALID),data.getSubscribe(Data.VALID).getName()).getValue());
         tearDownOpenStore();
     }
 

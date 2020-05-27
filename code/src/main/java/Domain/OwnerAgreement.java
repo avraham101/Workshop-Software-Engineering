@@ -102,4 +102,8 @@ public class OwnerAgreement implements Serializable {
 //        for(String name:managers)
 //            dao.find(name).sendNotification();
     }
+
+    public boolean containsOwner(String owner){
+        return managers.contains(owner);
+    }
 }

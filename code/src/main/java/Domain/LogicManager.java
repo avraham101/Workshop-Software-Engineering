@@ -1055,6 +1055,29 @@ public class LogicManager {
     }
 
     /**
+     * get list of all the managers user with id need to approve in storeName
+     * @param id - user id
+     * @param storeName - store to approve
+     * @return
+     */
+
+    public Response<List<String>> getApprovedManagers(int id,String storeName){
+        loggerSystem.writeEvent("LogicManager","getApprovedManagers",
+                "store owner approve a owner to the store", new Object[] {storeName});
+        List<String> managers=new LinkedList<>();
+        Store store=daos.getStoreDao().find(storeName);
+        if(store==null)
+            return new Response<>(null,OpCode.Store_Not_Found);
+        User current=cache.findUser(id);
+        Map<String,OwnerAgreement> agreementMap=store.getAgreementMap();
+        for(String name:agreementMap.keySet()){
+            if(agreementMap.get(name).containsOwner(current.getUserName()))
+                managers.add(name);
+        }
+        return new Response<>(managers,OpCode.Success);
+    }
+
+    /**
      * use case 4.5 - add manager
      * @param storeName name of store to be manager of
      * @param userName
