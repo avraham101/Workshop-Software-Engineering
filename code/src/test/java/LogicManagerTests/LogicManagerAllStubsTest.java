@@ -185,7 +185,7 @@ public class LogicManagerAllStubsTest {
         Gson discountGson = builderDiscount.create();
         String discountToAdd=discountGson.toJson(discount,Discount.class);
         logicManager.addDiscount(data.getId(Data.VALID),discountToAdd,
-                data.getStore(Data.VALID).getName()).getValue();
+                data.getStore(Data.VALID).getName());
     }
 
     /**
@@ -265,6 +265,7 @@ public class LogicManagerAllStubsTest {
             List<Admin> admins = daos.getSubscribeDao().getAllAdmins();
             assertEquals(1, admins.size());
         }
+        tearDownRegisteredUser();
     }
 
     /**
@@ -279,6 +280,7 @@ public class LogicManagerAllStubsTest {
         List<Admin> admins = daos.getSubscribeDao().getAllAdmins();
         assertEquals(1, admins.size());
         assertEquals(subscribe.getName(), admins.get(0).getName());
+        tearDownRegisteredUser();
     }
 
     /**
@@ -303,6 +305,7 @@ public class LogicManagerAllStubsTest {
             List<Admin> admins = daos.getSubscribeDao().getAllAdmins();
             assertEquals(1, admins.size());
         }
+        tearDownRegisteredUser();
     }
 
     /**
@@ -314,6 +317,7 @@ public class LogicManagerAllStubsTest {
             assertEquals(id, logicManager.connectToSystem());
             assertNotNull(cashe.findUser(id));
         }
+        tearDownRegisteredUser();
     }
 
     /**
@@ -326,7 +330,7 @@ public class LogicManagerAllStubsTest {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         assertTrue(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
         daos.getSubscribeDao().remove(subscribe.getName());
-        tearDownConnect();
+        tearDownRegisteredUser();
     }
 
     /**
@@ -340,7 +344,7 @@ public class LogicManagerAllStubsTest {
         Subscribe subscribe = data.getSubscribe(Data.WRONG_NAME);
         assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
         assertNull(daos.getSubscribeDao().find(subscribe.getName()));
-        tearDownConnect();
+        tearDownRegisteredUser();
     }
 
     /**
@@ -354,7 +358,7 @@ public class LogicManagerAllStubsTest {
         Subscribe subscribe = data.getSubscribe(Data.WRONG_PASSWORD);
         assertFalse(logicManager.register(subscribe.getName(), subscribe.getPassword()).getValue());
         assertNull(daos.getSubscribeDao().find(subscribe.getName()));
-        tearDownConnect();
+        tearDownRegisteredUser();
     }
 
     /**
@@ -366,7 +370,7 @@ public class LogicManagerAllStubsTest {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.NULL);
         assertFalse(logicManager.register(subscribe.getName(), subscribe.getName()).getValue());
-        tearDownConnect();
+        tearDownRegisteredUser();
     }
 
     /**
@@ -380,7 +384,7 @@ public class LogicManagerAllStubsTest {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
         tearDownRegisteredUser();
-        tearDownConnect();
+        tearDownRegisteredUser();
     }
 
     /**
@@ -693,19 +697,17 @@ public class LogicManagerAllStubsTest {
     /**
      * use case 2.7.1 fail when the product is null
      */
-    private void testWatchCartDetailsNull() {
-        ProductData productData = data.getProductData(Data.NULL_PRODUCT);
+    protected void testWatchCartDetailsNull() {
         CartData cartData = logicManager.watchCartDetails(data.getId(Data.VALID)).getValue();
-        assertFalse(cartData.getProducts().contains(productData));
+        assertTrue(cartData.getProducts().isEmpty());
     }
 
     /**
      * use case 2.7.1 fail when the basket is null
      */
-    private void testWatchCartDetailsNullStore() {
-        ProductData productData = data.getProductData(Data.NULL_STORE);
+    protected void testWatchCartDetailsNullStore() {
         CartData cartData = logicManager.watchCartDetails(data.getId(Data.VALID)).getValue();
-        assertFalse(cartData.getProducts().contains(productData));
+        assertTrue(cartData.getProducts().isEmpty());
     }
 
     /**
@@ -778,11 +780,17 @@ public class LogicManagerAllStubsTest {
      *  use case 2.7.4 - add product to cart
      */
     @Test
-    public void testAddProductToCart() {
-        setUpProductAdded();
-        testAddProductToCartInvalidStore();
+    public void testAddProductToCart(){
+        testAddProductToCartTest();
         tearDownOpenStore();
     }
+
+    private void testAddProductToCartTest() {
+        setUpProductAdded();
+        testAddProductToCartInvalidStore();
+    }
+
+
 
     /**
      * part of use case 2.7.4 - add product to cart
@@ -1428,10 +1436,11 @@ public class LogicManagerAllStubsTest {
      * use case 4.2.1.1 -add discount to store
      */
     @Test
+    @Transactional
     public void testAddDiscountToStoreSuccess(){
         setUpProductAdded();
         testAddDiscountToStoreSuccessTest();
-        tearDownProductAdded();
+        tearDownOpenStore();
     }
 
 
@@ -1908,6 +1917,7 @@ public class LogicManagerAllStubsTest {
         setUpRequestAdded();
         testReplayRequestSuccess();
         testReplayRequestFailWrongStore();
+        tearDownOpenStore();
     }
 
     /**
@@ -2019,7 +2029,7 @@ public class LogicManagerAllStubsTest {
         setUpOpenedStore();
         StoreData storeData = data.getStore(Data.VALID);
         Response<Set<StorePermissionType>> response=
-                logicManager.getPermissionsForStore(data.getId(Data.VALID),
+                logicManager.getPermissionsForStore(data.getId(Data.ADMIN),
                         storeData.getName());
         assertNull(response.getValue());
         assertEquals(response.getReason(),OpCode.Dont_Have_Permission);

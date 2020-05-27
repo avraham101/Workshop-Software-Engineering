@@ -14,6 +14,7 @@ public class DaoHolder {
     private RequestDao requestDao;
     private StoreDao storeDao;
     private SubscribeDao subscribeDao;
+    private ReviewDao reviewDao;
 
     public DaoHolder() {
         cartDao =new CartDao();
@@ -26,6 +27,7 @@ public class DaoHolder {
         requestDao=new RequestDao();
         storeDao=new StoreDao();
         subscribeDao=new SubscribeDao();
+        reviewDao = new ReviewDao();
     }
 
     public CartDao getCartDao() {
@@ -68,4 +70,7 @@ public class DaoHolder {
         return subscribeDao;
     }
 
+    public ReviewDao getReviewDao() {
+        return reviewDao;
+    }
 }

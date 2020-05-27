@@ -1130,7 +1130,7 @@ public class LogicManager {
                 "store owner view the requests of the store", new Object[] {storeName});
         User current = cache.findUser(id);
         List<RequestData> requestDatas = new LinkedList<>();
-        if(storeName != null) {
+        if(storeName != null && current != null) {
             Store store = daos.getStoreDao().find(storeName);
             if (store != null) {
                 List<Request> requests = current.viewRequest(store);
@@ -1251,7 +1251,7 @@ public class LogicManager {
     public Response<Set<StorePermissionType>> getPermissionsForStore(int id, String storeName) {
         User user = cache.findUser(id);
         Response<Set<StorePermissionType>> response = new Response<>(null,OpCode.Dont_Have_Permission);
-        if(user==null)
+        if(user==null||daos.getStoreDao().find(storeName)==null)
             return response;
         Set<StorePermissionType> userStorePermissions = user.getPermissionsForStore(storeName);
         if(userStorePermissions!=null){
