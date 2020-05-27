@@ -146,13 +146,13 @@ public class SubscribeAllStubsTest {
      * set up for the save
      */
     protected void setUpSave() {
-        Store store = data.getRealStore(Data.VALID);
-        Product product = data.getRealProduct(Data.VALID);
-        sub.addProductToCart(store,product,product.getAmount());
-        sub.reserveCart();
+        setUpBuy();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        sub.buyCart(paymentData, deliveryData);
+        Response<Boolean> response = logicManagerDriver.purchaseCart(0,"Country",paymentData,
+                deliveryData.getAddress());
+        if(!response.getValue())
+            fail();
     }
 
     /**

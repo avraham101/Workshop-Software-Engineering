@@ -80,19 +80,12 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      */
     @Test
     public void testSavePurchase() {
-        setUpSave();
-        Store store = null;
-        int storeExpected = 0;
-        for(Basket basket: sub.getCart().getBaskets().values()) {
-            store = basket.getStore();
-            storeExpected = store.getPurchases().size() + 1;
-            break;
-        }
-        int expected = sub.getPurchases().size() +1;
-        sub.savePurchase(sub.getName());
-        int result = sub.getPurchases().size();
+        setUpBuy();
+        int expected = this.subscribe.getPurchases().size() +1;
+        this.subscribe.savePurchase(this.subscribe.getName());
+        int result = this.subscribe.getPurchases().size();
         assertEquals(expected, result);
-        assertEquals(storeExpected, store.getPurchases().size());
+        tearDownStore();
     }
 
     /**
