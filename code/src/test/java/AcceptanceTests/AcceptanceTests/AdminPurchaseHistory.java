@@ -2,6 +2,7 @@ package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.PurchaseTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -56,5 +57,10 @@ public class AdminPurchaseHistory extends AcceptanceTests {
         List<PurchaseTestData> history = bridge.getStorePurchasesHistory(admin.getId(),
                 "notExist");
         assertNull(history);
+    }
+
+    @After
+    public void tearDown(){
+        removeUserStoresAndProducts(userToCheck);
     }
 }
