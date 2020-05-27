@@ -323,7 +323,15 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
 
     @Test
     public void testGetPermissionsForStoreFailStoreNotExist() {
-        assertNull( sub.getPermissionsForStore("InvalidStore"));
+        setUpStoreOpened();
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+
+        StoreData storeData = data.getStore(Data.VALID);
+        assertNull(sub.getPermissionsForStore(storeData.getName()));
+        tearDownStore();
     }
 
     /**

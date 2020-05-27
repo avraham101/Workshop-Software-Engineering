@@ -96,7 +96,7 @@ public class SubscribeAllStubsTest {
     /**
      * set up a manager with permissions
      */
-    private void setUpAddedPermissions(){
+    private void setUpAddedPermissions() {
         setUpManagerAdded();
         List<PermissionType> list = data.getPermissionTypeList();
         StoreData storeData = data.getStore(Data.VALID);
