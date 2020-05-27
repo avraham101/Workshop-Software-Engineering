@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -99,21 +100,26 @@ public class StoreTestReal extends StoreTestsAllStubs {
 
 //TODO
 
-//    /**
-//     * part of 2.8 - buy cart
-//     */
-//    @Test
-//    public void calculatePrice(){
-//        setUpDiscountAdded();
-//        HashMap<String, ProductInCart> productAmount = data.getCart(Data.VALID);
-//        double expected = 0;
-//        double discount = 1;
-//        for(ProductInCart productInCart: productAmount.values()) {
-//            expected += productInCart.getAmount() * productInCart.getPrice() - discount;
-//        }
-//        double price=store.calculatePrice(productAmount);
-//        assertEquals(price, expected,0.001);
-//    }
+    /**
+     * part of 2.8 - buy cart
+     */
+    @Test
+    public void calculatePrice(){
+        setUpDiscountAdded();
+        Subscribe sub = daoHolder.getSubscribeDao().find("Yuval");
+        Product p = daoHolder.getProductDao().find(data.getRealProduct(Data.VALID));
+        assertEquals(store.getProducts().get(p.getName()).getName(), p.getName());
+        sub.addProductToCart(store, p, 1);
+        Cart cart = daoHolder.getCartDao().find(sub.getName());
+        Map<String, ProductInCart> productAmount = cart.getBasket(store.getName()).getProducts();
+        double expected = 0;
+        double discount = 1;
+        for(ProductInCart productInCart: productAmount.values()) {
+            expected += productInCart.getAmount() * productInCart.getPrice() - discount;
+        }
+        double price = store.calculatePrice(productAmount);
+        assertEquals(price, expected,0.001);
+    }
 
     /**
      * use case 2.8 - test product valid:
@@ -267,11 +273,12 @@ public class StoreTestReal extends StoreTestsAllStubs {
     /**
      * test use case 4.2.1.2 - delete discount from store
      */
-    //TODO - the test is good, but the auto increment for the discount id is a problem
     @Test
     public void testDeleteDiscountFromStoreSuccess(){
         setUpDiscountAdded();
-        assertTrue(store.deleteDiscount(10).getValue());
+        Discount d = this.store.getDiscount().values().iterator().next();
+        int id = d.getId();
+        assertTrue(store.deleteDiscount(id).getValue());
         assertTrue(store.getDiscount().isEmpty());
     }
 

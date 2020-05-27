@@ -30,6 +30,7 @@ class MenuSubscribe extends Component {
       color_7: '',
       color_8: '',
       color_9: '',
+      color_10: '',
     }
     this.checkIfAdmin();
     this.checkIfManager();
@@ -51,10 +52,14 @@ class MenuSubscribe extends Component {
 
   getAdminWatchPurchaseHistoryHtml(){
     return(
-        <th onClick={()=> pass(history,"/admin/storehistory",this.fromPath,this.props.state)}
+        [<th onClick={()=> pass(history,"/admin/storehistory",this.fromPath,this.props.state)}
             style={{background:this.state.color_9}}
             onMouseOver={()=>this.setState({color_9: WHITE_BLUE})}
-            onMouseLeave={()=>this.setState({color_9: ''})}> Admin Watch Purchases </th>);
+            onMouseLeave={()=>this.setState({color_9: ''})}> Admin Watch Purchases </th>,
+        <th onClick={()=> pass(history,"/admin/watchRevenu",this.fromPath,this.props.state)}
+            style={{background:this.state.color_10}}
+            onMouseOver={()=>this.setState({color_10: WHITE_BLUE})}
+            onMouseLeave={()=>this.setState({color_10: ''})}> Admin Watch Revenu </th>]);
   }
 
   checkIfManager(){

@@ -54,9 +54,10 @@ public class NotificationDao {
         return n;
     }
 
-    public void remove(int id) {
+    public boolean remove(int id) {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
+        boolean output=false;
 
         try {
             // Get transaction and start
@@ -65,6 +66,7 @@ public class NotificationDao {
             Notification notification = em.find(Notification.class, id);
             em.remove(notification);
             et.commit();
+            output=true;
         } catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {
@@ -75,5 +77,6 @@ public class NotificationDao {
             // Close EntityManager
             em.close();
         }
+        return output;
     }
 }

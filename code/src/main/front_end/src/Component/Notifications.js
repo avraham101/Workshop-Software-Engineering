@@ -24,9 +24,9 @@ export class Notifications extends Component {
   constructor(props){
     super(props)
     this.state = {
-      color_0: '#72CC87',
-      color_1: '#72CC87',
-      color_2: '#72CC87',
+      color_0: '#92BAFF',
+      color_1: '#92BAFF',
+      color_2: '#92BAFF',
     }
     this.handleNotification = this.handleNotification.bind(this);
     this.parseNotification = this.parseNotification.bind(this);
@@ -205,29 +205,29 @@ export class Notifications extends Component {
   render() {
     this.connectHandler(this.props.id);
     return (
-      <div style={{width:'100%',backgroundColor:'#72CC87',margin:0}}>
+      <div style={{width:'100%',backgroundColor:'#92BAFF',margin:0}}>
         <div style={{float:'left',width:'33%',backgroundColor:this.state.color_0,maring:0}}
-         onMouseOver={()=>this.setState({color_0: '#B3D1F0'})}
-         onMouseLeave={()=>this.setState({color_0: '#72CC87'})}
+         onMouseOver={()=>this.setState({color_0: '#BEDEFF'})}
+         onMouseLeave={()=>this.setState({color_0: '#92BAFF'})}
          onClick={()=>{show='PRODUCTS';this.setState({})}}>
           <h4 style={{textAlign:'center',margin:0}}> Products 
-            <em style={{color:'#AD200B', fontSize:21}}> {size_0} </em>
+            <em style={{color:'black', fontSize:23}}> {size_0} </em>
           </h4>
         </div>
         <div style={{float:'left',width:'33%',backgroundColor:this.state.color_1,maring:0}}
-            onMouseOver={()=>this.setState({color_1: '#B3D1F0'})}
-            onMouseLeave={()=>this.setState({color_1: '#72CC87'})}
+            onMouseOver={()=>this.setState({color_1: '#BEDEFF'})}
+            onMouseLeave={()=>this.setState({color_1: '#92BAFF'})}
             onClick={()=>{show='REPLAYS';this.setState({})}}>
           <h4 style={{textAlign:'center',margin:0}}> Replays 
-            <em style={{color:'#AD200B',fontSize:21}}> {size_1} </em>
+            <em style={{color:'black',fontSize:23}}> {size_1} </em>
           </h4>
         </div>
         <div style={{float:'left',width:'34%',backgroundColor:this.state.color_2,maring:0}}
-            onMouseOver={()=>this.setState({color_2: '#B3D1F0'})}
-            onMouseLeave={()=>this.setState({color_2: '#72CC87'})}
+            onMouseOver={()=>this.setState({color_2: '#BEDEFF'})}
+            onMouseLeave={()=>this.setState({color_2: '#92BAFF'})}
             onClick={()=>{show='MANAGMENT';this.setState({})}}>
           <h4 style={{textAlign:'center',margin:0}}> Removed Managment 
-            <em style={{color:'#AD200B',fontSize:21}}> {size_2} </em>
+            <em style={{color:'black',fontSize:23}}> {size_2} </em>
           </h4>
         </div>
         {this.renderPopUp()}

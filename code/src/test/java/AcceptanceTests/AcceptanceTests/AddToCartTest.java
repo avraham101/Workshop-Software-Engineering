@@ -4,6 +4,7 @@ import AcceptanceTests.AcceptanceTestDataObjects.BasketTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.CartTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -68,7 +69,7 @@ public class AddToCartTest extends AcceptanceTests {
 
     private void logoutAndDeleteProduct(ProductTestData productToDelete){
         logoutAndLogin(admin);
-        bridge.deleteProduct(admin.getId(),productToDelete);
+        boolean del = bridge.deleteProduct(admin.getId(),productToDelete);
         logoutAndLogin(user0);
     }
 
@@ -83,6 +84,11 @@ public class AddToCartTest extends AcceptanceTests {
         amount = 0;
         isAdded = bridge.addToUserCart(user0.getId(),productToAdd,amount);
         assertFalse(isAdded);
+    }
+
+    @After
+    public void tearDown(){
+        removeUserStoresAndProducts(user0);
     }
 
 }

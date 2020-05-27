@@ -8,6 +8,7 @@ import Domain.PurchasePolicy.PurchasePolicy;
 import Persitent.Cache;
 import Domain.Notification.Notification;
 import Persitent.DaoHolders.DaoHolder;
+import Persitent.RevenueDao;
 import Systems.HashSystem;
 import Systems.LoggerSystem;
 import Systems.PaymentSystem.PaymentSystem;
@@ -18,9 +19,11 @@ import Utils.Utils;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -670,8 +673,25 @@ public class LogicManager {
             current.cancelCart();
             return new Response<>(false, OpCode.Supply_Reject);
         }
-
+        addToRevenue(paymentData.getTotalPrice());
         return new Response<>(true,OpCode.Success);
+    }
+
+    /**
+     * add to the revenue the total price of a buy
+     * @param totalRevenue - the total price of a buy
+     */
+    private void addToRevenue(double totalRevenue) {
+        RevenueDao dao=daos.getRevenueDao();
+        Revenue revenue=dao.find(LocalDate.now());
+        synchronized (dao) {
+            if (revenue == null) {
+                dao.add(new Revenue(totalRevenue));
+            } else {
+                revenue.addProfit(totalRevenue);
+                dao.update(revenue);
+            }
+        }
     }
 
     /**
@@ -1316,5 +1336,61 @@ public class LogicManager {
         }
         return response;
 
+    }
+
+    /**
+     * get the revenue of the trading system by date
+     * @param id - the id of the user
+     * @param data - the date
+     * @return - the revenue on this date
+     */
+    public Response<Double> getRevenueByDate(int id, DateData data) {
+        int year = data.getYear();
+        int month = data.getMonth();
+        int day = data.getDay();
+        if (!validDate(year, month, day))
+            return new Response<>(0.0, OpCode.INVALID_DATE);
+        LocalDate date = LocalDate.of(year, month, day);
+        User current = cache.findUser(id);
+        if (current != null && current.canWatchUserHistory()) {
+            Revenue revenue=daos.getRevenueDao().find(date);
+            if (revenue!=null)
+                return new Response<>(revenue.getProfit(), OpCode.Success);
+            else
+                return new Response<>(0.0, OpCode.Not_Found);
+        }
+        return new Response<>(0.0,OpCode.NOT_ADMIN);
+    }
+
+    /**
+     * check if the date is valid
+     * @param year - the year
+     * @param month - the month
+     * @param day - the day
+     * @return - true if valid
+     */
+    private boolean validDate(int year, int month, int day) {
+        if(year > LocalDate.now().getYear() || month < 0 || month > 12 || day < 0 || day > 31 || year < 0)
+            return false;
+        return true;
+    }
+
+    /**
+     * get the revenue of the trading system today
+     * @param id - the id of the user
+     * @return - the revenue today
+     */
+    public Response<Double> getRevenueToday(int id) {
+
+        User current = cache.findUser(id);
+        if (current != null && current.canWatchUserHistory()) {
+            LocalDate date = LocalDate.now();
+            Revenue revenue=daos.getRevenueDao().find(date);
+            if (revenue!=null)
+                return new Response<>(revenue.getProfit(), OpCode.Success);
+            else
+                return new Response<>(0.0, OpCode.Not_Found);
+        }
+        return new Response<>(0.0,OpCode.NOT_ADMIN);
     }
 }

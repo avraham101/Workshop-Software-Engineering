@@ -8,7 +8,6 @@ import Domain.Notification.Notification;
 import Persitent.Cache;
 import Persitent.DaoHolders.SubscribeDaoHolder;
 import Persitent.RequestDao;
-import Persitent.SubscribeDao;
 import Publisher.Publisher;
 import Publisher.SinglePublisher;
 import org.hibernate.annotations.LazyCollection;
@@ -139,8 +138,7 @@ public class Subscribe extends UserState{
         cart=daos.getCartDao().find(userName);
         boolean output= super.addProductToCart(store, product, amount);
         if(output){
-            daos.getCartDao().remove(cart);
-            return daos.getCartDao().add(cart);
+            return daos.getCartDao().replaceCart(cart);
         }
         return false;
     }
@@ -151,7 +149,7 @@ public class Subscribe extends UserState{
      */
     @Override
     public void savePurchase(String buyer) {
-        this.purchases.addAll(this.cart.savePurchases(buyer));
+        this.purchases.addAll(this.cart.savePurchases(this.userName));
         this.cart = new Cart(this.userName);
     }
 
@@ -753,6 +751,7 @@ public class Subscribe extends UserState{
         for(Notification not: this.notifications) {
             for(int d:notificationsId) {
                 if(not.getId()==d){
+                    if(daos.getNotificationDao().remove(d))
                     remove.add(not);
                 }
             }

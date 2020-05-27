@@ -109,6 +109,8 @@ public class Product implements Serializable {
         getWriteLock().lock();
         this.amount=productData.getAmount();
         this.price=productData.getPrice();
+        this.category = this.category.getName().equals(productData.getCategory()) ?
+                category : new Category(productData.getCategory());
         getWriteLock().unlock();
     }
 
@@ -234,8 +236,4 @@ public class Product implements Serializable {
                 Objects.equals(daos, product.daos);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(store, name, amount, price, purchaseType, category, reviews, lock, daos);
-    }
 }

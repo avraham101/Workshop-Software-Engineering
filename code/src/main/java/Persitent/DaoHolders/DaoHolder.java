@@ -8,6 +8,7 @@ public class DaoHolder {
     private CategoryDao categoryDao;
     private DiscountDao discountDao;
     private NotificationDao notificationDao;
+    private PermissionDao permissionDao;
     private PolicyDao policyDao;
     private ProductDao productDao;
     private PurchaseDao purchaseDao;
@@ -15,12 +16,14 @@ public class DaoHolder {
     private StoreDao storeDao;
     private SubscribeDao subscribeDao;
     private ReviewDao reviewDao;
+    private RevenueDao revenueDao;
 
     public DaoHolder() {
         cartDao =new CartDao();
         categoryDao=new CategoryDao();
         discountDao=new DiscountDao();
         notificationDao=new NotificationDao();
+        permissionDao = new PermissionDao();
         policyDao=new PolicyDao();
         purchaseDao=new PurchaseDao();
         productDao=new ProductDao(categoryDao);
@@ -28,6 +31,7 @@ public class DaoHolder {
         storeDao=new StoreDao();
         subscribeDao=new SubscribeDao();
         reviewDao = new ReviewDao();
+        revenueDao=new RevenueDao();
     }
 
     public CartDao getCartDao() {
@@ -72,5 +76,13 @@ public class DaoHolder {
 
     public ReviewDao getReviewDao() {
         return reviewDao;
+    }
+
+    public PermissionDao getPermissionDao() {
+        return permissionDao;
+    }
+
+    public RevenueDao getRevenueDao() {
+        return revenueDao;
     }
 }

@@ -23,7 +23,7 @@ public class Cart implements Serializable {
     private String buyer;
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @MapKeyColumn(name="storename")
     @JoinColumn(name="username", referencedColumnName = "username", updatable = false)
     private Map<String,Basket> baskets; // key is the store name and the value is the basket of the store
@@ -77,6 +77,7 @@ public class Cart implements Serializable {
         if (basket == null) {
             basket = new Basket(store,this.buyer);
             baskets.put(store.getName(),basket);
+
         }
         return basket.addProduct(product, amount);
     }

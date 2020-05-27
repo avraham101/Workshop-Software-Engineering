@@ -206,7 +206,7 @@ DROP TABLE IF EXISTS `discount`;
 CREATE TABLE `discount` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -271,7 +271,7 @@ CREATE TABLE `notification` (
   `reason` varchar(45) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -376,7 +376,7 @@ DROP TABLE IF EXISTS `policy`;
 CREATE TABLE `policy` (
   `pol_id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`pol_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1257 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=330 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -439,7 +439,7 @@ CREATE TABLE `product` (
   `storeName` varchar(45) NOT NULL,
   `productName` varchar(45) NOT NULL,
   `amount` int(11) NOT NULL,
-  `price` int(11) NOT NULL,
+  `price` double NOT NULL,
   `purchaseType` enum('IMMEDDIATE') NOT NULL,
   PRIMARY KEY (`storeName`,`productName`),
   KEY `purchaseType_idx` (`purchaseType`),
@@ -465,7 +465,7 @@ CREATE TABLE `product_for_purchase` (
   `purchaseType` varchar(45) NOT NULL,
   `store` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -482,7 +482,7 @@ CREATE TABLE `product_min_max` (
   `pr_min_max_id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`pr_min_max_id`),
   KEY `product_policy_id_idx` (`pr_min_max_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -566,9 +566,7 @@ CREATE TABLE `purchase` (
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `price` double NOT NULL,
   PRIMARY KEY (`storeName`,`buyer`,`date`),
-  KEY `sub_purchase_idx` (`buyer`),
-  CONSTRAINT `store_purchase` FOREIGN KEY (`storeName`) REFERENCES `store` (`storename`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `sub_purchase` FOREIGN KEY (`buyer`) REFERENCES `subscribe` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `store_purchase` FOREIGN KEY (`storeName`) REFERENCES `store` (`storename`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -652,7 +650,7 @@ CREATE TABLE `request` (
   KEY `user_idx` (`sender`),
   KEY `store_idx` (`store`),
   CONSTRAINT `sotre_req` FOREIGN KEY (`store`) REFERENCES `store` (`storename`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -673,6 +671,20 @@ CREATE TABLE `request_notification` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `revenue`
+--
+
+DROP TABLE IF EXISTS `revenue`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `revenue` (
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `profit` double NOT NULL DEFAULT '0',
+  PRIMARY KEY (`date`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `review`
 --
 
@@ -688,7 +700,7 @@ CREATE TABLE `review` (
   PRIMARY KEY (`id`),
   KEY `reviews_idx` (`store`,`productName`),
   CONSTRAINT `reviews` FOREIGN KEY (`store`, `productName`) REFERENCES `product` (`storeName`, `productName`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -881,4 +893,4 @@ CREATE TABLE `xor_term` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-23 23:14:33
+-- Dump completed on 2020-05-27 16:57:51
