@@ -91,6 +91,7 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
     public void replyApplicationToStoreTestSuccess(){
         PublisherMock publisherMock=new PublisherMock();
         bridge.setPublisher(publisherMock);
+     //   HashSet<ApplicationToStoreTestData> applications= bridge.viewApplicationToStore(responder.getId(),storeName);
         HashMap<ApplicationToStoreTestData,String> emptyAppAndRep = bridge.getUserApplicationsAndReplies(responder.getId(),asker.getUsername(),storeName);
         for(ApplicationToStoreTestData app : applications)
             assertFalse(emptyAppAndRep.containsKey(app));

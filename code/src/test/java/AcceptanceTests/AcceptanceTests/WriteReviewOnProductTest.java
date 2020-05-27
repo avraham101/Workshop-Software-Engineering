@@ -41,7 +41,7 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
         ReviewTestData review0 = new ReviewTestData(user0.getUsername(),"review0test");
         ReviewTestData review4 = new ReviewTestData(user0.getUsername(),"review4test");
         ProductTestData product0 = products.get(0);
-        ProductTestData product4 = products.get(4);
+        ProductTestData product4 = products.get(1);
         productsAndReviews.put(product0,review0);
         productsAndReviews.put(product4,review4);
     }
@@ -101,4 +101,9 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
         assertFalse(actualReviews.contains(review));
     }
 
+    @After
+    public void tearDown(){
+        removeProducts(products);
+        removeStores(stores);
+    }
 }
