@@ -887,32 +887,32 @@ public class SubscribeAllStubsTest {
     }
 
     /**
-     * test use case 6.4.2 and 4.10 - watch store history
-     */
-    @Test
-    public void testCanWatchStoreHistory(){
-        setUpStoreOpened();
-        testWatchStoreHistorySuccess();
-        testWatchStoreHistoryNotManger();
-    }
-
-    /**
-     * part of test use case 6.4.2 and 4.10 - watch store history
+     * use case 6.4.2 and 4.10 - watch store history
      * test that cannot watch store history when not manager
      */
-    private void testWatchStoreHistoryNotManger() {
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        sub.getPermissions().clear();
+    @Test
+    public void testWatchStoreHistoryNotManger() {
+        setUpAddedPermissions();
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+
+        String validStoreName = data.getProductData(Data.VALID).getStoreName();
         assertFalse(sub.canWatchStoreHistory(validStoreName));
-        sub.getPermissions().put(validStoreName,permission);
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
     }
 
     /**
-     * part of test use case 6.4.2 and 4.10 - watch store history
+     *use case 6.4.2 and 4.10 - watch store history
      */
-    private void testWatchStoreHistorySuccess() {
+    @Test
+    public void testWatchStoreHistorySuccess() {
+        setUpStoreOpened();
         assertTrue(sub.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
+        tearDownStore();
     }
 
     @After
