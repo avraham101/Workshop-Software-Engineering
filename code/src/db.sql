@@ -30,6 +30,21 @@ CREATE TABLE `admin` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `agreement_approvers`
+--
+
+DROP TABLE IF EXISTS `agreement_approvers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `agreement_approvers` (
+  `id` int(11) NOT NULL,
+  `manager` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`,`manager`),
+  CONSTRAINT `id_agreement` FOREIGN KEY (`id`) REFERENCES `manager_agreement` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `and_discount`
 --
 
@@ -206,7 +221,7 @@ DROP TABLE IF EXISTS `discount`;
 CREATE TABLE `discount` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -244,6 +259,24 @@ CREATE TABLE `discounts_inside_discounts` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `manager_agreement`
+--
+
+DROP TABLE IF EXISTS `manager_agreement`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `manager_agreement` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `store` varchar(45) NOT NULL,
+  `givenby` varchar(45) NOT NULL,
+  `owner` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `store_agreement_idx` (`store`),
+  CONSTRAINT `store_agreement` FOREIGN KEY (`store`) REFERENCES `store` (`storename`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `min_max_and_policies`
 --
 
@@ -271,7 +304,7 @@ CREATE TABLE `notification` (
   `reason` varchar(45) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -376,7 +409,7 @@ DROP TABLE IF EXISTS `policy`;
 CREATE TABLE `policy` (
   `pol_id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`pol_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=330 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=803 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -465,7 +498,7 @@ CREATE TABLE `product_for_purchase` (
   `purchaseType` varchar(45) NOT NULL,
   `store` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -650,7 +683,7 @@ CREATE TABLE `request` (
   KEY `user_idx` (`sender`),
   KEY `store_idx` (`store`),
   CONSTRAINT `sotre_req` FOREIGN KEY (`store`) REFERENCES `store` (`storename`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -700,7 +733,7 @@ CREATE TABLE `review` (
   PRIMARY KEY (`id`),
   KEY `reviews_idx` (`store`,`productName`),
   CONSTRAINT `reviews` FOREIGN KEY (`store`, `productName`) REFERENCES `product` (`storeName`, `productName`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -893,4 +926,4 @@ CREATE TABLE `xor_term` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-27 16:57:51
+-- Dump completed on 2020-05-28  0:20:28
