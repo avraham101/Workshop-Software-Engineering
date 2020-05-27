@@ -67,4 +67,5 @@ public interface AcceptanceTestsBridge {
     void removeStore(StoreTestData store);
     double getRevenueToday(int id);
     double getRevenueByDay(int id, DateTestData date);
+    void removeRevenues();
 }

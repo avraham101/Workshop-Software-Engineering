@@ -1612,7 +1612,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         daos.getRevenueDao().remove(LocalDate.now());
     }
 }

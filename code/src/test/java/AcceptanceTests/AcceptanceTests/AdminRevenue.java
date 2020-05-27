@@ -13,11 +13,16 @@ import static org.junit.Assert.assertEquals;
 
 public class AdminRevenue extends AcceptanceTests{
 
-    UserTestData userToCheck;
+    private UserTestData userToCheck;
 
-    public void setUp(){
+
+    @Before
+    public void setUpBefore(){
         userToCheck = users.get(1);
         addUserStoresAndProducts(userToCheck);
+    }
+
+    public void setUp(){
         bridge.addToUserCart(userToCheck.getId(),products.get(0),1);
         bridge.buyCart(userToCheck.getId(),validPayment,validDelivery);
         bridge.logout(userToCheck.getId());
@@ -25,16 +30,13 @@ public class AdminRevenue extends AcceptanceTests{
     }
 
     public void setUpWithDicount(){
-        userToCheck = users.get(1);
-        addUserStoresAndProducts(admin);
+        //addUserStoresAndProducts(admin);
         DiscountTestData discountTestData=new DiscountTestData(50,"appleTest");
-        boolean added = bridge.addDiscount(admin.getId(), discountTestData, "store0Test");
+        boolean added = bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
+        added = bridge.addDiscount(admin.getId(), discountTestData, "store0Test");
         added = bridge.addToUserCart(admin.getId(),products.get(0),1);
         added = bridge.buyCart(admin.getId(),validPayment,validDelivery);
-        added = bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
     }
-
-
 
     @Test
     public void testTodayRevenue() {
@@ -104,6 +106,7 @@ public class AdminRevenue extends AcceptanceTests{
 
     @After
     public void tearDown(){
+        bridge.removeRevenues();
         removeUserStoresAndProducts(userToCheck);
     }
 }

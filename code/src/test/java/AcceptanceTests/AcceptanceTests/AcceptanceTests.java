@@ -324,7 +324,7 @@ public class AcceptanceTests {
     }
 
     public void removeUserStoresAndProducts(UserTestData user){
-        //removeProducts(products);
+        removeProducts(products);
         removeStores(stores);
         removeUser(user.getUsername());
     }

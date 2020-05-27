@@ -398,4 +398,10 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
             return realBridge.getRevenueByDay(id, date);
         return 0.0;
     }
+
+    @Override
+    public void removeRevenues() {
+        if(realBridge!=null)
+            realBridge.removeRevenues();
+    }
 }

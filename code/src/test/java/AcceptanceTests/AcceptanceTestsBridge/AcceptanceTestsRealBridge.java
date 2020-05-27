@@ -12,15 +12,13 @@ import DataAPI.Purchase;
 import Domain.ProductPeristentData;
 import Domain.Request;
 import Domain.Review;
-import Persitent.CategoryDao;
-import Persitent.ProductDao;
-import Persitent.StoreDao;
-import Persitent.SubscribeDao;
+import Persitent.*;
 import Publisher.SinglePublisher;
 import Service.ServiceAPI;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
@@ -404,6 +402,11 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     public double getRevenueByDay(int id, DateTestData date) {
         DateData day = new DateData(date.getDay(),date.getMonth(),date.getYear());
         return serviceAPI.getRevenueByDay(id,day).getValue();
+    }
+
+    @Override
+    public void removeRevenues() {
+        new RevenueDao().remove(LocalDate.now());
     }
     //--------------------------get managers of store---------------------------------//
 
