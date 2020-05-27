@@ -433,8 +433,18 @@ public class Store {
         if(old==null)
             return new Response<>(false,OpCode.Invalid_Product);
         String categoryName=productData.getCategory();
-        if(!categoryList.containsKey(categoryName)){
-            categoryList.put(categoryName,new Category(categoryName));
+        if(!categoryList.containsKey(categoryName)) {
+            Category found = daos.getCategoryDao().find(categoryName);
+            if(found!=null) {
+                categoryList.put(categoryName, found);
+            }
+            else {
+                Category newCategory = new Category(categoryName);
+                categoryList.put(categoryName, newCategory);
+                if (!daos.getCategoryDao().add(newCategory))
+                    return new Response<>(false, OpCode.DB_Down);
+            }
+
         }
         old=daos.getProductDao().find(old);
         old.edit(productData);
