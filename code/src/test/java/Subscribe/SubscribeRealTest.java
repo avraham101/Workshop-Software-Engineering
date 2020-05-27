@@ -15,26 +15,25 @@ import static org.junit.Assert.*;
 
 public class SubscribeRealTest extends SubscribeAllStubsTest {
 
-    @Before
-    public void setUp(){
-        data = new TestData();
-        cart = new Cart("Yuval");
-        sub = new Subscribe("Yuval","Sabag", cart);
-    }
-
     /**
      * use case 2.7 add to cart
      */
-    @Override @Test
+    @Test
     public void testAddProductToCart() {
-        super.testAddProductToCart();
-        Store store = data.getRealStore(Data.VALID);
-        Product product = data.getRealProduct(Data.VALID);
-        Map<String,ProductInCart> products = cart.getBasket(store.getName()).getProducts();
-        assertEquals(1,products.size());
-        Iterator<ProductInCart> iterator =  products.values().iterator();
-        ProductInCart real = iterator.next();
-        assertEquals(real.getProductName(),product.getName());
+        setUpProductAdded();
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        ProductData productData = data.getProductData(Data.VALID);
+        Product product = store.getProduct(productData.getProductName());
+        assertTrue(subscribe.addProductToCart(store,product,product.getAmount()));
+
+        Basket basket = subscribe.getCart().getBasket(storeData.getName());
+        assertNotNull(basket);
+        ProductInCart productInCart = basket.getProducts().get(productData.getProductName());
+        assertNotNull(productInCart);
+        assertEquals(productData.getAmount(), productInCart.getAmount());
+
+        tearDownStore();
     }
 
     /**
@@ -43,7 +42,8 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     @Override @Test
     public void testReservedCart() {
         setUpReserved();
-        assertTrue(sub.reserveCart());
+        assertTrue(this.subscribe.reserveCart());
+        tearDownStore();
     }
 
     /**

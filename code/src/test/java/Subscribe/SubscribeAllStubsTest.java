@@ -107,7 +107,7 @@ public class SubscribeAllStubsTest {
     /**
      * set up valid product in the store of sub
      */
-    private void setUpProductAdded(){
+    public void setUpProductAdded(){
         setUpStoreOpened();
         subscribe.addProductToStore(data.getProductData(Data.VALID));
     }
