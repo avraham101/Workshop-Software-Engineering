@@ -298,17 +298,27 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
 
     @Test
     public void testGetPermissionsForSuccessManagerWithPermissions(){
-        testGetPermissionsForStoreSuccessManagerNoPermissions();
-        StoreData store = data.getStore(Data.VALID);
-        Subscribe niv=data.getSubscribe(Data.VALID2);
+        setUpStoreOpened();
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+
+        logicManagerDriver.addManager(0,sub.getName(),storeData.getName());
         List<PermissionType> permissions = new ArrayList<>();
         permissions.add(PermissionType.ADD_MANAGER);
         permissions.add(PermissionType.PRODUCTS_INVENTORY);
-        niv.addPermissions(permissions,store.getName(),sub.getName());
-        Set<StorePermissionType> expected = new HashSet<>();
-        expected.add(StorePermissionType.ADD_MANAGER);
-        expected.add(StorePermissionType.PRODUCTS_INVENTORY);
-        assertEquals(expected,sub.getPermissionsForStore(store.getName()));
+
+        logicManagerDriver.addPermissions(0,permissions ,storeData.getName(),sub.getName());
+
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+        Set <StorePermissionType> permissionTypes=
+                sub.getPermissionsForStore(data.getStore(Data.VALID).getName());
+        assertNotNull(permissionTypes);
+        assertFalse(permissionTypes.isEmpty());
+        assertEquals(2,permissionTypes.size());
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
     }
 
     @Test
