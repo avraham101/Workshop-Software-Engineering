@@ -140,7 +140,7 @@ public class TestData {
                 ,null,12,101, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.NULL_PRODUCT,new ProductData(null,null,null
                 ,null,1,10, null));
-        productsData.put(Data.EDIT,new ProductData("peanuts","Store","categoryYuval"
+        productsData.put(Data.EDIT,new ProductData("peanuts","Store","category"
                 ,null,3,11, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.WRONG_NAME,new ProductData("peanuts1","Store","category"
                 ,null,1,10, PurchaseTypeData.IMMEDDIATE));

@@ -17,6 +17,7 @@ import Systems.SupplySystem.ProxySupply;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -1519,6 +1520,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         double actual = logicManager.getRevenueToday(data.getId(Data.ADMIN)).getValue();
         assertEquals(10, actual, 0.001);
         logicManager.logout(data.getId(Data.ADMIN));
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -1531,6 +1533,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         logicManager.login(data.getId(Data.ADMIN),sub.getName(),sub.getPassword());
         double actual = logicManager.getRevenueToday(data.getId(Data.ADMIN)).getValue();
         assertEquals(0, actual, 0.001);
+        tearDownLogin();
     }
 
     /**
@@ -1545,6 +1548,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         double actual = logicManager.getRevenueToday(data.getId(Data.ADMIN)).getValue();
         assertEquals(0, actual, 0.001);
         logicManager.logout(data.getId(Data.VALID));
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -1561,6 +1565,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         double actual = logicManager.getRevenueByDate(data.getId(Data.ADMIN), date).getValue();
         assertEquals(10, actual, 0.001);
         logicManager.logout(data.getId(Data.ADMIN));
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -1576,6 +1581,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
                 LocalDate.now().getYear());
         double actual = logicManager.getRevenueByDate(data.getId(Data.ADMIN), date).getValue();
         assertEquals(0, actual, 0.001);
+        tearDownLogin();
     }
 
     /**
@@ -1593,6 +1599,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         double actual = logicManager.getRevenueByDate(data.getId(Data.ADMIN), date).getValue();
         assertEquals(0, actual, 0.001);
         logicManager.logout(data.getId(Data.VALID));
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -1604,5 +1611,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         tearDownOpenStore();
     }
 
+    @After
+    public void tearDown() throws Exception {
+        daos.getRevenueDao().remove(LocalDate.now());
+    }
 }
 
