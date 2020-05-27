@@ -185,7 +185,7 @@ public class LogicManagerAllStubsTest {
         Gson discountGson = builderDiscount.create();
         String discountToAdd=discountGson.toJson(discount,Discount.class);
         logicManager.addDiscount(data.getId(Data.VALID),discountToAdd,
-                data.getStore(Data.VALID).getName()).getValue();
+                data.getStore(Data.VALID).getName());
     }
 
     /**
@@ -330,7 +330,7 @@ public class LogicManagerAllStubsTest {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         assertTrue(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
         daos.getSubscribeDao().remove(subscribe.getName());
-        tearDownConnect();
+        tearDownRegisteredUser();
     }
 
     /**
@@ -344,7 +344,7 @@ public class LogicManagerAllStubsTest {
         Subscribe subscribe = data.getSubscribe(Data.WRONG_NAME);
         assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
         assertNull(daos.getSubscribeDao().find(subscribe.getName()));
-        tearDownConnect();
+        tearDownRegisteredUser();
     }
 
     /**
@@ -358,7 +358,7 @@ public class LogicManagerAllStubsTest {
         Subscribe subscribe = data.getSubscribe(Data.WRONG_PASSWORD);
         assertFalse(logicManager.register(subscribe.getName(), subscribe.getPassword()).getValue());
         assertNull(daos.getSubscribeDao().find(subscribe.getName()));
-        tearDownConnect();
+        tearDownRegisteredUser();
     }
 
     /**
@@ -370,7 +370,7 @@ public class LogicManagerAllStubsTest {
         setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.NULL);
         assertFalse(logicManager.register(subscribe.getName(), subscribe.getName()).getValue());
-        tearDownConnect();
+        tearDownRegisteredUser();
     }
 
     /**
@@ -384,7 +384,7 @@ public class LogicManagerAllStubsTest {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         assertFalse(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
         tearDownRegisteredUser();
-        tearDownConnect();
+        tearDownRegisteredUser();
     }
 
     /**
@@ -780,12 +780,12 @@ public class LogicManagerAllStubsTest {
      *  use case 2.7.4 - add product to cart
      */
     @Test
-    public void testAddProductToCartTest(){
-        testAddProductToCart();
+    public void testAddProductToCart(){
+        testAddProductToCartTest();
         tearDownOpenStore();
     }
 
-    public void testAddProductToCart() {
+    private void testAddProductToCartTest() {
         setUpProductAdded();
         testAddProductToCartInvalidStore();
     }
@@ -1436,10 +1436,11 @@ public class LogicManagerAllStubsTest {
      * use case 4.2.1.1 -add discount to store
      */
     @Test
+    @Transactional
     public void testAddDiscountToStoreSuccess(){
         setUpProductAdded();
         testAddDiscountToStoreSuccessTest();
-        tearDownProductAdded();
+        tearDownOpenStore();
     }
 
 
@@ -1916,6 +1917,7 @@ public class LogicManagerAllStubsTest {
         setUpRequestAdded();
         testReplayRequestSuccess();
         testReplayRequestFailWrongStore();
+        tearDownOpenStore();
     }
 
     /**
