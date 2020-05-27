@@ -340,8 +340,14 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     @Test
     public void getManagersOfStoreUserManagedSuccess(){
         setUpManagerAdded();
-        assertTrue(sub.getManagersOfStoreUserManaged(data.getStore(Data.VALID).getName()).getValue().
-                contains(data.getSubscribe(Data.ADMIN).getName()));
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe sub = data.getSubscribe(Data.ADMIN);
+        Response<List<String>> response = this.subscribe.getManagersOfStoreUserManaged(storeData.getName());
+        List<String> value = response.getValue();
+        assertNotNull(value);
+        assertEquals(1, value.size());
+        assertTrue(value.contains(sub.getName()));
+        tearDownStore();
     }
 
 }
