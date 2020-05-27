@@ -8,7 +8,6 @@ import DataAPI.StoreData;
 import Domain.*;
 import DataAPI.PermissionType;
 import Drivers.LogicManagerDriver;
-import Persitent.Cache;
 import Persitent.CartDao;
 import Persitent.DaoHolders.DaoHolder;
 import Persitent.StoreDao;
@@ -25,36 +24,10 @@ import static org.junit.Assert.*;
 
 public class PermissionTest {
     private TestData data;
-    private Subscribe sub;
-    private Subscribe subToAdd;
-    private Store store;
     private HashSet<PermissionType> permissionTypes;
     private Permission permission;
     private DaoHolder daoHolder;
     private LogicManagerDriver logicDriver;
-    private int id;
-
-
-//    @Before
-//    public void setUp() {
-//        data = new TestData();
-//        daoHolder = new DaoHolder();
-//        daoHolder.getSubscribeDao().addSubscribe(data.getSubscribe(Data.VALID));
-//        daoHolder.getStoreDao().addStore(data.getRealStore(Data.VALID));
-//        sub = daoHolder.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
-//        store = daoHolder.getStoreDao().find(data.getRealStore(Data.VALID).getName());
-//        permissionTypes=new HashSet<>();
-//        permission = new Permission(sub, store);
-//        daoHolder.getPermissionDao().addPermission(permission);
-//    }
-//
-//    @After
-//    public void tearDown() {
-//        daoHolder.getPermissionDao().removePermissionFromSubscribe(permission);
-//        daoHolder.getStoreDao().removeStore(data.getSubscribe(Data.VALID).getName());
-//        daoHolder.getSubscribeDao().remove(data.getSubscribe(Data.VALID).getName());
-//    }
-
 
     @Before
     public void setUp(){
@@ -67,9 +40,9 @@ public class PermissionTest {
         }
         setUpStore();
         daoHolder.getSubscribeDao().addSubscribe(data.getSubscribe(Data.VALID2));
-        subToAdd = daoHolder.getSubscribeDao().find(data.getSubscribe(Data.VALID2).getName());
-        sub = daoHolder.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
-        store = daoHolder.getStoreDao().find(data.getRealStore(Data.VALID).getName());
+        Subscribe subToAdd = daoHolder.getSubscribeDao().find(data.getSubscribe(Data.VALID2).getName());
+        //Subscribe sub = daoHolder.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
+        Store store = daoHolder.getStoreDao().find(data.getRealStore(Data.VALID).getName());
         permissionTypes=new HashSet<>();
         permission = new Permission(subToAdd, store);
         daoHolder.getPermissionDao().addPermission(permission);
@@ -83,6 +56,9 @@ public class PermissionTest {
         daoHolder.getSubscribeDao().remove(data.getSubscribe(Data.VALID2).getName());
     }
 
+    /**
+     * set up for a store
+     */
     private void setUpStore() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         ProductData productData = data.getProductData(Data.VALID);
@@ -94,7 +70,7 @@ public class PermissionTest {
             if(response.getValue()) {
                 response = logicDriver.openStore(id, storeData);
                 if(response.getValue()) {
-                    response = logicDriver.addProductToStore(id, productData);
+                    logicDriver.addProductToStore(id, productData);
                 }
                 else
                     fail();
@@ -106,6 +82,9 @@ public class PermissionTest {
             fail();
     }
 
+    /**
+     * tear down for a store
+     */
     private void tearDownStore() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
         SubscribeDao subscribeDao = daoHolder.getSubscribeDao();
