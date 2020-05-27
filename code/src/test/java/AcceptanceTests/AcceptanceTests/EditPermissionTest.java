@@ -4,6 +4,7 @@ import AcceptanceTests.AcceptanceTestDataObjects.PermissionsTypeTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ReviewTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -137,6 +138,11 @@ public class EditPermissionTest extends AcceptanceTests {
         boolean approval=bridge.deletePermission(superUser.getId(),
                 stores.get(0).getStoreName(),userToCheck.getUsername(), PermissionsTypeTestData.OWNER);
         assertFalse(approval);
+    }
+
+    @After
+    public void tearDown(){
+        removeUserStoresAndProducts(userToCheck);
     }
 
 }

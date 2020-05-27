@@ -17,11 +17,13 @@ import Systems.SupplySystem.ProxySupply;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -1507,6 +1509,98 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         super.testGetAllUsers();
     }
 
+    /**
+     * test the revenue of today
+     */
+    @Test
+    public void testRevenueToday() {
+        setUpBoughtProduct();
+        Subscribe sub = data.getSubscribe(Data.ADMIN);
+        logicManager.login(data.getId(Data.ADMIN),sub.getName(),sub.getPassword());
+        double actual = logicManager.getRevenueToday(data.getId(Data.ADMIN)).getValue();
+        assertEquals(10, actual, 0.001);
+        logicManager.logout(data.getId(Data.ADMIN));
+        tearDownProductAddedToCart();
+    }
+
+    /**
+     * test the revenue of today
+     */
+    @Test
+    public void testRevenueTodayNoBuy() {
+        setUpConnect();
+        Subscribe sub = data.getSubscribe(Data.ADMIN);
+        logicManager.login(data.getId(Data.ADMIN),sub.getName(),sub.getPassword());
+        double actual = logicManager.getRevenueToday(data.getId(Data.ADMIN)).getValue();
+        assertEquals(0, actual, 0.001);
+        tearDownLogin();
+    }
+
+    /**
+     * test the revenue of today
+     * not an admin
+     */
+    @Test
+    public void testRevenueTodayNotAdmin() {
+        setUpBoughtProduct();
+        Subscribe sub = data.getSubscribe(Data.VALID);
+        logicManager.login(data.getId(Data.VALID),sub.getName(),sub.getPassword());
+        double actual = logicManager.getRevenueToday(data.getId(Data.ADMIN)).getValue();
+        assertEquals(0, actual, 0.001);
+        logicManager.logout(data.getId(Data.VALID));
+        tearDownProductAddedToCart();
+    }
+
+    /**
+     * test the revenue by given date
+     */
+    @Test
+    public void testRevenueByDay() {
+        setUpBoughtProduct();
+        Subscribe sub = data.getSubscribe(Data.ADMIN);
+        logicManager.login(data.getId(Data.ADMIN),sub.getName(),sub.getPassword());
+        DateData date = new DateData(LocalDate.now().getDayOfMonth(),
+                                     LocalDate.now().getMonthValue(),
+                                     LocalDate.now().getYear());
+        double actual = logicManager.getRevenueByDate(data.getId(Data.ADMIN), date).getValue();
+        assertEquals(10, actual, 0.001);
+        logicManager.logout(data.getId(Data.ADMIN));
+        tearDownProductAddedToCart();
+    }
+
+    /**
+     * test the revenue by day when there wasn't any buy
+     */
+    @Test
+    public void testRevenueByDateNoBuy() {
+        setUpConnect();
+        Subscribe sub = data.getSubscribe(Data.ADMIN);
+        logicManager.login(data.getId(Data.ADMIN),sub.getName(),sub.getPassword());
+        DateData date = new DateData(LocalDate.now().getDayOfMonth(),
+                LocalDate.now().getMonthValue(),
+                LocalDate.now().getYear());
+        double actual = logicManager.getRevenueByDate(data.getId(Data.ADMIN), date).getValue();
+        assertEquals(0, actual, 0.001);
+        tearDownLogin();
+    }
+
+    /**
+     * test the revenue of today
+     * not an admin
+     */
+    @Test
+    public void testRevenueByDateNotAdmin() {
+        setUpBoughtProduct();
+        Subscribe sub = data.getSubscribe(Data.VALID);
+        logicManager.login(data.getId(Data.VALID),sub.getName(),sub.getPassword());
+        DateData date = new DateData(LocalDate.now().getDayOfMonth(),
+                LocalDate.now().getMonthValue(),
+                LocalDate.now().getYear());
+        double actual = logicManager.getRevenueByDate(data.getId(Data.ADMIN), date).getValue();
+        assertEquals(0, actual, 0.001);
+        logicManager.logout(data.getId(Data.VALID));
+        tearDownProductAddedToCart();
+    }
 
     /**
      * tear down
@@ -1517,5 +1611,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         tearDownOpenStore();
     }
 
+    @After
+    public void tearDown() throws Exception {
+        daos.getRevenueDao().remove(LocalDate.now());
+    }
 }
 

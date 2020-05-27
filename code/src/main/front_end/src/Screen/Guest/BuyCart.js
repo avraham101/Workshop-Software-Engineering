@@ -19,6 +19,7 @@ class BuyCart extends Component {
         this.handleChangeCreditCard = this.handleChangeCreditCard.bind(this);
         this.handlebuy = this.handlebuy.bind(this);
         this.buildbuy=this.buildbuy.bind(this);
+        this.render_name = this.render_name.bind(this);
         this.cart = cart1;
         this.pathname = '/buyCart';
         this.state = {
@@ -104,6 +105,17 @@ class BuyCart extends Component {
         }
       };
 
+    render_name() {
+      let subscribe_name = this.props.location.state.name; 
+      if(subscribe_name!=undefined) {
+        this.state.name = subscribe_name;
+        return <p style={{textAlign:'center'}}> name: {subscribe_name} </p>;
+      }
+      return (
+        <Input title="name" type="text" value={this.state.name} onChange={this.handleChangeName} />
+      );
+    }  
+
     render() {
         let onClick =()=> {
             pass(this.props.history,this.props.location.fromPath,this.pathname,this.props.location.state)
@@ -114,7 +126,8 @@ class BuyCart extends Component {
                 <body>
                     <Title title='Buy Cart' />
                     <h3 style={style_sheet}> Enter your details:</h3>
-                    <Input title="name" type="text" value={this.state.name} onChange={this.handleChangeName} />
+                    {/*<Input title="name" type="text" value={this.state.name} onChange={this.handleChangeName} />*/}
+                    {this.render_name()}
                     <Input title="age" type="number" min={1} value={this.state.age} onChange={this.handleChangeAge} />
                     <Input title="address" type="text" value={this.state.address} onChange={this.handleChangeAddress} />
                     <Input title="country" type="text" value={this.state.country} onChange={this.handleChangeCountry} />

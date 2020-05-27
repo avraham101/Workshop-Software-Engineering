@@ -279,7 +279,7 @@ public class User {
 
     /**
      * use case 4.9.1 - view request
-     * @param storeName
+     * @param store
      */
     public List<Request> viewRequest(Store store) {
         return state.viewRequest(store);

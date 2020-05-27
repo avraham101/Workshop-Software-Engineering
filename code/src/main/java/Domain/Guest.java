@@ -226,7 +226,7 @@ public class Guest extends UserState {
 
     @Override
     public Response<Boolean> removeManager(Subscribe userName, String storeName) {
-        return null;
+        return new Response<>(false,OpCode.Not_Login);
     }
 
     @Override

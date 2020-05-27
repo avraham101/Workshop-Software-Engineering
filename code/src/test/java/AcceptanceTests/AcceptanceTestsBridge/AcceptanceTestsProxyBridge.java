@@ -384,4 +384,18 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
         if(realBridge != null)
             realBridge.removeStore(store);
     }
+
+    @Override
+    public double getRevenueToday(int id) {
+        if (realBridge != null)
+            return realBridge.getRevenueToday(id);
+        return 0.0;
+    }
+
+    @Override
+    public double getRevenueByDay(int id, DateTestData date) {
+        if (realBridge != null)
+            return realBridge.getRevenueByDay(id, date);
+        return 0.0;
+    }
 }

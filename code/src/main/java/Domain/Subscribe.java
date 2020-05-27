@@ -678,7 +678,6 @@ public class Subscribe extends UserState{
         List<Store> myStores = new ArrayList<>();
         for (Permission p: storesPermissions ) {
             myStores.add(p.getStore());
-
         }
         if(myStores.isEmpty())
             return null;
@@ -752,6 +751,7 @@ public class Subscribe extends UserState{
         for(Notification not: this.notifications) {
             for(int d:notificationsId) {
                 if(not.getId()==d){
+                    if(daos.getNotificationDao().remove(d))
                     remove.add(not);
                 }
             }

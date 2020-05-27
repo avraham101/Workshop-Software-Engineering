@@ -29,10 +29,17 @@ public class PermissionDao extends Dao<Permission> {
         try {
             et = em.getTransaction();
             et.begin();
-            Permission permission = em.find(Permission.class,perToDelete);
-            em.remove(permission);
+//            Permission permission = em.find(Permission.class,perToDelete);
+//            em.remove(permission);
+
+            int x =  em.createNativeQuery("DELETE FROM permission WHERE store=? AND owner=?")
+                    .setParameter(1, perToDelete.getStore())
+                    .setParameter(2, perToDelete.getOwner())
+                    .executeUpdate();
+
             //em.remove(em.contains(permission) ? permission : em.merge(permission));
             et.commit();
+            return x > 0;
         }
         catch(Exception ex) {
             if (et != null) {
@@ -43,7 +50,6 @@ public class PermissionDao extends Dao<Permission> {
         finally {
             em.close();
         }
-        return true;
     }
 
     public  Permission findPermission(Permission perToFind){

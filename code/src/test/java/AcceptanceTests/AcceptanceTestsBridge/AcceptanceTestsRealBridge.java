@@ -388,6 +388,23 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         StoreDao storeDao = new StoreDao();
         storeDao.removeStore(store.getStoreName());
     }
+
+    /**
+     * use cse 6.6.1
+     * get the revenue today
+     * @param id - the id of the  user
+     * @return - the total amount of today revenue
+     */
+    @Override
+    public double getRevenueToday(int id) {
+        return serviceAPI.getRevenueToday(id).getValue();
+    }
+
+    @Override
+    public double getRevenueByDay(int id, DateTestData date) {
+        DateData day = new DateData(date.getDay(),date.getMonth(),date.getYear());
+        return serviceAPI.getRevenueByDay(id,day).getValue();
+    }
     //--------------------------get managers of store---------------------------------//
 
 

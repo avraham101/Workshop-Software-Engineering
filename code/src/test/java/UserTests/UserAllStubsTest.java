@@ -60,7 +60,7 @@ public class UserAllStubsTest {
     /**
      * set up a store for the subscribed user
      */
-    private void setUpOpenStore(){
+    protected void setUpOpenStore(){
         setUpSubscribe();
         StoreData storeData = new StoreData("Store", "description");
         user.openStore(storeData);
@@ -94,7 +94,7 @@ public class UserAllStubsTest {
     /**
      * set up add discount to a store
      */
-    private void setUpDiscountAdded() {
+    protected void setUpDiscountAdded() {
         setUpProductAdded();
         user.addDiscountToStore(data.getStore(Data.VALID).getName(),
                 data.getDiscounts(Data.VALID).get(0));
@@ -262,7 +262,7 @@ public class UserAllStubsTest {
     public void testAddRequestSubscribe() {
         setUpOpenStore();
         Request request = data.getRequest(Data.VALID);
-        assertNotNull(user.addRequest(request.getStoreName(),request.getComment())); }
+        assertNotNull(user.addRequest(request.getStoreName(),request.getContent())); }
 
         /**
      * test use case 3.7 - watch purchases
@@ -460,17 +460,6 @@ public class UserAllStubsTest {
         assertTrue(user.removeManager(data.getSubscribe(Data.ADMIN), data.getStore(Data.VALID).getName()).getValue());
     }
 
-//TODO -fix this
-
-//    /**
-//     * test use case 4.9.1 - view request
-//     */
-//    @Test
-//    public void testViewRequestGuest() {
-//        setUpGuest();
-//        assertTrue(user.viewRequest(data.getStore(Data.VALID).getName()).isEmpty());
-//    }
-
     /**
      * test use case 4.9.2 - reply request
      */
@@ -496,6 +485,7 @@ public class UserAllStubsTest {
     public void testCanWatchUserHistorySubscribe() {
         setUpSubscribe();
         assertFalse(user.canWatchUserHistory());
+        tearDownSubscribe();
     }
 
     /**
@@ -505,6 +495,7 @@ public class UserAllStubsTest {
     public void testCanWatchUserHistoryAdmin(){
         setUpAdmin();
         assertTrue(user.canWatchUserHistory());
+        tearDownSubscribe();
     }
 
     /**
@@ -532,6 +523,9 @@ public class UserAllStubsTest {
     public void testCanWatchStoreHistoryAdmin(){
         setUpAdmin();
         assertTrue(user.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
+        tearDownSubscribe();
     }
+
+    protected void tearDownSubscribe(){}
 
 }
