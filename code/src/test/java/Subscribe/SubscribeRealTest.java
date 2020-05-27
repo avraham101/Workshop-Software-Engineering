@@ -53,10 +53,11 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     public void testCancelCart() {
         setUpReserved();
         int expected = amountProductInStore();
-        sub.reserveCart();
-        sub.cancelCart();
+        this.subscribe.reserveCart();
+        this.subscribe.cancelCart();
         int result = amountProductInStore();
         assertEquals(expected,result);
+        tearDownStore();
     }
 
     /**
@@ -65,17 +66,11 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      * @return
      */
     private int amountProductInStore() {
-        Store store = null;
-        for(Basket b: cart.getBaskets().values()) {
-            store = b.getStore();
-            break;
-        }
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
         assertNotNull(store);
-        Product product = null;
-        for(Product p :store.getProducts().values()) {
-            product = p;
-            break;
-        }
+        ProductData productData = data.getProductData(Data.VALID);
+        Product product = store.getProduct(productData.getProductName());
         assertNotNull(product);
         return product.getAmount();
     }
