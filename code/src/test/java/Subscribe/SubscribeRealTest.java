@@ -5,6 +5,11 @@ import Data.TestData;
 import DataAPI.*;
 import Domain.*;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
+import Domain.PurchasePolicy.PurchasePolicy;
+import Drivers.LogicManagerDriver;
+import Utils.InterfaceAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -93,14 +98,20 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      */
     @Test
     public void testBuyCartFailPolicy(){
-        setUpBuy();
+        setUpReserved();
+        BasketPurchasePolicy policy = new BasketPurchasePolicy(0);
+        GsonBuilder builderPolicy = new GsonBuilder();
+        builderPolicy.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
+        Gson policyGson = builderPolicy.create();
+        String policyToAdd = policyGson.toJson(policy, PurchasePolicy.class);
+        StoreData storeData = data.getStore(Data.VALID);
+        logicManagerDriver.updatePolicy(0, policyToAdd, storeData.getName());
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
-        sub.getCart().getBaskets().get(data.getStore(Data.VALID).getName()).getStore().setPurchasePolicy(
-                new BasketPurchasePolicy(0));
-        assertFalse(sub.buyCart(paymentData,deliveryData));
+        assertFalse(this.subscribe.buyCart(paymentData,deliveryData));
         assertEquals(0,paymentData.getTotalPrice(),0.001);
         assertTrue(deliveryData.getProducts().isEmpty());
+        tearDownStore();
     }
 
     /**
