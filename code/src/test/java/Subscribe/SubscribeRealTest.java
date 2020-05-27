@@ -253,24 +253,32 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      */
     @Test
     public void testGetPermissionsForStoreSuccessOwner(){
-        sub.openStore(data.getStore(Data.VALID));
-       Set <StorePermissionType> permissionTypes=
-               sub.getPermissionsForStore(data.getStore(Data.VALID).getName());
-       assertNotNull(permissionTypes);
-       assertTrue(permissionTypes.contains(StorePermissionType.OWNER));
-
+        setUpStoreOpened();
+        Collection<Permission> permissions = this.subscribe.getPermissions().values();
+        Permission p = permissions.iterator().next();
+        assertTrue(p.getPermissionType().contains(PermissionType.OWNER));
+        tearDownStore();
     }
 
     @Test
     public void testGetPermissionsForStoreSuccessManagerNoPermissions(){
-        Subscribe niv=data.getSubscribe(Data.VALID2);
-        niv.openStore(data.getStore(Data.VALID));
-        niv.addManager(sub,data.getStore(Data.VALID).getName());
+        setUpStoreOpened();
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+
+        logicManagerDriver.addManager(0,sub.getName(),storeData.getName());
+
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
         Set <StorePermissionType> permissionTypes=
                 sub.getPermissionsForStore(data.getStore(Data.VALID).getName());
         assertNotNull(permissionTypes);
         assertTrue(permissionTypes.isEmpty());
 
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
     }
 
     @Test
@@ -294,7 +302,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
 
     }
     @Test
-    public void testGetPermissionsForStoreFailStoreNotExist(){
+    public void testGetPermissionsForStoreFailStoreNotExist() {
         assertNull( sub.getPermissionsForStore("InvalidStore"));
 
     }
