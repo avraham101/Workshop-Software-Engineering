@@ -87,6 +87,7 @@ public class EditStore extends AcceptanceTests {
         bridge.addProduct(superUser.getId(),product);
         boolean approval = bridge.deleteProduct(superUser.getId(),product);
         assertTrue(approval);
+        //removeProduct(product);
 
         List<ProductTestData> products = bridge.getStoreProducts(stores.get(0).getStoreName());
         assertFalse(products.contains(product));
@@ -148,7 +149,8 @@ public class EditStore extends AcceptanceTests {
     }
     @After
     public void tearDown(){
-        removeStores(stores);
+        //removeStores(stores);
+        removeProducts(products);
         removeUser(superUser.getUsername());
     }
 
