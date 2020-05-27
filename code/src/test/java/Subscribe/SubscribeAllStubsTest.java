@@ -823,6 +823,13 @@ public class SubscribeAllStubsTest {
         Store store = daoHolder.getStoreDao().find(storeData.getName());
         List<Request> requests = this.subscribe.viewRequest(store);
         assertFalse(requests.isEmpty());
+        assertEquals(1, requests.size());
+        Request request = data.getRequest(Data.VALID);
+        Request recived = requests.get(0);
+        assertEquals( request.getStoreName(),recived.getStoreName());
+        assertEquals( request.getContent(), recived.getContent());
+        assertEquals( request.getSenderName(), recived.getSenderName());
+
         tearDownStore();
     }
 
