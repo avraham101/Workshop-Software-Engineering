@@ -752,6 +752,7 @@ public class Subscribe extends UserState{
         for(Notification not: this.notifications) {
             for(int d:notificationsId) {
                 if(not.getId()==d){
+                    if(daos.getNotificationDao().remove(d))
                     remove.add(not);
                 }
             }

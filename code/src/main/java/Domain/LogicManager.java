@@ -1348,7 +1348,7 @@ public class LogicManager {
         if (!validDate(year, month, day))
             return new Response<>(0.0, OpCode.INVALID_DATE);
         LocalDate date = LocalDate.of(year, month, day);
-        User current = connectedUsers.get(id);
+        User current = cache.findUser(id);
         if (current != null && current.canWatchUserHistory()) {
             if (revenue.containsKey(date))
                 return new Response<>(revenue.get(date), OpCode.Success);
@@ -1378,7 +1378,7 @@ public class LogicManager {
      */
     public Response<Double> getRevenueToday(int id) {
 
-        User current = connectedUsers.get(id);
+        User current = cache.findUser(id);
         if (current != null && current.canWatchUserHistory()) {
             LocalDate date = LocalDate.now();
             if (revenue.containsKey(date))
