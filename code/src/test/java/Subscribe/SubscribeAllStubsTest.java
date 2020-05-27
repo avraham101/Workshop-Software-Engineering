@@ -849,42 +849,38 @@ public class SubscribeAllStubsTest {
      * test use case 4.9.2 - reply request
      */
     @Test
-    public void testReplayRequest(){
+    public void testReplayRequestNullName() {
         setUpRequestAdded();
-        testReplayRequestNullName();
-        testReplayRequestWrongStore();
-        testReplayRequestWrongID();
-        testReplayRequestNullRequest();
+        assertNull(this.subscribe.replayToRequest(null, 1, "comment").getValue());
+        tearDownStore();
     }
 
     /**
-     * part of test use case 4.9.2 - reply request
+     * test use case 4.9.2 - reply request
      */
-    private void testReplayRequestNullName() {
-        Request request1 = data.getRequest(Data.NULL_NAME);
-        assertNull(sub.replayToRequest(request1.getStoreName(), request1.getId(), "comment").getValue());
-    }
-
-    /**
-     * part of test use case 4.9.2 - reply request
-     */
-    private void testReplayRequestWrongStore() {
+    @Test
+    public void testReplayRequestWrongStore() {
+        setUpRequestAdded();
         Request request2 = data.getRequest(Data.WRONG_STORE);
         assertNull(sub.replayToRequest(request2.getStoreName(), request2.getId(), "comment").getValue());
     }
 
     /**
-     * part of test use case 4.9.2 - reply request
+     * test use case 4.9.2 - reply request
      */
-    private void testReplayRequestWrongID() {
+    @Test
+    public void testReplayRequestWrongID() {
+        setUpRequestAdded();
         Request request3 = data.getRequest(Data.WRONG_ID);
         assertNull(sub.replayToRequest(request3.getStoreName(), request3.getId(), "comment").getValue());
     }
 
     /**
-     * part of test use case 4.9.2 - reply request
+     * test use case 4.9.2 - reply request
      */
-    private void testReplayRequestNullRequest() {
+    @Test
+    public void testReplayRequestNullRequest() {
+        setUpRequestAdded();
         Request request4 = data.getRequest(Data.VALID);
         assertNull(sub.replayToRequest(request4.getStoreName(), request4.getId(), null).getValue());
     }
