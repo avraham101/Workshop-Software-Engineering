@@ -90,9 +90,9 @@ public class ProductData {
         return amount == that.amount &&
                 Double.compare(that.price, price) == 0 &&
                 productName!=null&&productName.equals(that.productName) &&
-                purchaseType.equals(that.purchaseType) &&
-                storeName.equals(that.storeName) &&
-                category.equals(that.category); //&&
+                purchaseType!=null&&purchaseType.equals(that.purchaseType) &&
+                storeName!=null&&storeName.equals(that.storeName) &&
+                category!=null&&category.equals(that.category); //&&
                 //Objects.equals(reviews, that.reviews);
     }
 
