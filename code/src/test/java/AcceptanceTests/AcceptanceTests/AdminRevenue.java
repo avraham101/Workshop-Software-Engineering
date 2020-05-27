@@ -2,6 +2,7 @@ package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.DateTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.DiscountTestData;
+import org.junit.After;
 import org.junit.Before;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
 import org.junit.Test;
@@ -98,5 +99,10 @@ public class AdminRevenue extends AcceptanceTests{
                 LocalDate.now().getYear());
         double revenue = bridge.getRevenueByDay(admin.getId(), day);
         assertEquals(0, revenue, 0.001);
+    }
+
+    @After
+    public void tearDown(){
+        removeUserStoresAndProducts(userToCheck);
     }
 }
