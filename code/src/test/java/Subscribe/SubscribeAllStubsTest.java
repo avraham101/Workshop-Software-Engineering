@@ -29,8 +29,6 @@ public class SubscribeAllStubsTest {
 
     protected Subscribe sub;
     protected Cart cart;
-    protected PaymentSystem paymentSystem;
-    protected SupplySystem supplySystem;
     protected TestData data;
     protected DaoHolder daoHolder;
     protected Cache cache;
@@ -171,7 +169,7 @@ public class SubscribeAllStubsTest {
     private void setUpRequestAdded(){
         setUpStoreOpened();
         Request excepted = data.getRequest(Data.VALID);
-        sub.addRequest(excepted.getStoreName(), excepted.getContent());
+        this.subscribe.addRequest(excepted.getStoreName(), excepted.getContent());
     }
 
     /**
@@ -260,7 +258,8 @@ public class SubscribeAllStubsTest {
      */
     @Test
     public void logoutTest(){
-        assertTrue(sub.logout(new User()));
+        setUpLoginSubscribe();
+        assertTrue(this.subscribe.logout(new User()));
     }
 
     /**
@@ -338,15 +337,21 @@ public class SubscribeAllStubsTest {
      */
     @Test
     public void testAddProductDontHavePermission() {
-        setUpStoreOpened();
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        Store store=permission.getStore();
-        permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.addProductToStore(data.getProductData(Data.VALID)).getValue());
-        permission.addType(PermissionType.OWNER);
-        assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+        setUpProductAdded();
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+
+        logicManagerDriver.addManager(0,sub.getName(),storeData.getName());
+
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+        ProductData productData = data.getProductData(Data.VALID);
+        assertFalse(sub.addProductToStore(productData).getValue());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
         tearDownStore();
+
     }
 
     /**
@@ -588,8 +593,15 @@ public class SubscribeAllStubsTest {
      */
     @Test
     public void testAlreadyManager() {
-        setUpStoreOpened();
-        assertFalse(sub.addManager(data.getSubscribe(Data.ADMIN),data.getStore(Data.VALID).getName()).getValue());
+        setUpProductAdded();
+        StoreData storeData = data.getStore(Data.VALID);
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+
+        logicManagerDriver.addManager(0,sub.getName(),storeData.getName());
+        assertFalse(this.subscribe.addManager(sub,storeData.getName()).getValue());
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
         tearDownStore();
     }
 
@@ -817,73 +829,64 @@ public class SubscribeAllStubsTest {
      * use case 4.9.1 - view request
      */
     @Test
-    public void testViewRequest(){
+    public void testViewRequestSuccess() {
         setUpRequestAdded();
-        //testViewRequestWrongStore();
-        //testViewRequestNullName();
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        List<Request> requests = this.subscribe.viewRequest(store);
+        assertFalse(requests.isEmpty());
+        assertEquals(1, requests.size());
+        Request request = data.getRequest(Data.VALID);
+        Request recived = requests.get(0);
+        assertEquals( request.getStoreName(),recived.getStoreName());
+        assertEquals( request.getContent(), recived.getContent());
+        assertEquals( request.getSenderName(), recived.getSenderName());
+        tearDownStore();
     }
 
-    //TODO - fix this
-//    /**
-//     * part of use case 4.9.1 - view request
-//     */
-//    private void testViewRequestWrongStore() {
-//        Request request1 = data.getRequest(Data.WRONG_STORE);
-//        assertTrue(sub.viewRequest(request1.getStoreName()).isEmpty());
-//    }
-
-    //TODO - fix this
-
-//    /**
-//     * part of use case 4.9.1 - view request
-//     */
-//    private void testViewRequestNullName() {
-//        Request request2 = data.getRequest(Data.NULL_NAME);
-//        assertTrue(sub.viewRequest(request2.getStoreName()).isEmpty());
-//    }
+    /**
+     * use case 4.9.1 - view request
+     */
+    @Test
+    public void testViewRequestWrongStore() {
+        setUpStoreOpened();
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        List<Request> requests = this.subscribe.viewRequest(store);
+        assertTrue(requests.isEmpty());
+        tearDownStore();
+    }
 
     /**
      * test use case 4.9.2 - reply request
      */
     @Test
-    public void testReplayRequest(){
+    public void testReplayRequestNull() {
         setUpRequestAdded();
-        testReplayRequestNullName();
-        testReplayRequestWrongStore();
-        testReplayRequestWrongID();
-        testReplayRequestNullRequest();
+        assertNull(this.subscribe.replayToRequest(null, 1, "comment").getValue());
+        tearDownStore();
     }
 
     /**
-     * part of test use case 4.9.2 - reply request
+     * test use case 4.9.2 - reply request
      */
-    private void testReplayRequestNullName() {
-        Request request1 = data.getRequest(Data.NULL_NAME);
-        assertNull(sub.replayToRequest(request1.getStoreName(), request1.getId(), "comment").getValue());
+    @Test
+    public void testReplayRequestWrongComment() {
+        setUpRequestAdded();
+        StoreData storeData = data.getStore(Data.VALID);
+        assertNull(this.subscribe.replayToRequest(storeData.getName(),1, null).getValue());
+        tearDownStore();
     }
 
     /**
-     * part of test use case 4.9.2 - reply request
+     * test use case 4.9.2 - reply request
      */
-    private void testReplayRequestWrongStore() {
-        Request request2 = data.getRequest(Data.WRONG_STORE);
-        assertNull(sub.replayToRequest(request2.getStoreName(), request2.getId(), "comment").getValue());
-    }
-
-    /**
-     * part of test use case 4.9.2 - reply request
-     */
-    private void testReplayRequestWrongID() {
-        Request request3 = data.getRequest(Data.WRONG_ID);
-        assertNull(sub.replayToRequest(request3.getStoreName(), request3.getId(), "comment").getValue());
-    }
-
-    /**
-     * part of test use case 4.9.2 - reply request
-     */
-    private void testReplayRequestNullRequest() {
-        Request request4 = data.getRequest(Data.VALID);
-        assertNull(sub.replayToRequest(request4.getStoreName(), request4.getId(), null).getValue());
+    @Test
+    public void testReplayRequestWrongID() {
+        setUpRequestAdded();
+        StoreData storeData = data.getStore(Data.VALID);
+        assertNull(this.subscribe.replayToRequest(storeData.getName(), -1, "comment").getValue());
+        tearDownStore();
     }
 
     /**
@@ -891,36 +894,38 @@ public class SubscribeAllStubsTest {
      */
     @Test
     public void testCanWatchUserHistory(){
-        assertFalse(sub.canWatchUserHistory());
+        setUpLoginSubscribe();
+        assertFalse(this.subscribe.canWatchUserHistory());
     }
 
     /**
-     * test use case 6.4.2 and 4.10 - watch store history
-     */
-    @Test
-    public void testCanWatchStoreHistory(){
-        setUpStoreOpened();
-        testWatchStoreHistorySuccess();
-        testWatchStoreHistoryNotManger();
-    }
-
-    /**
-     * part of test use case 6.4.2 and 4.10 - watch store history
+     * use case 6.4.2 and 4.10 - watch store history
      * test that cannot watch store history when not manager
      */
-    private void testWatchStoreHistoryNotManger() {
-        String validStoreName=data.getProductData(Data.VALID).getStoreName();
-        Permission permission=sub.getPermissions().get(validStoreName);
-        sub.getPermissions().clear();
+    @Test
+    public void testWatchStoreHistoryNotManger() {
+        setUpAddedPermissions();
+        Subscribe sub = data.getSubscribe(Data.VALID2);
+        logicManagerDriver.register(sub.getName(), sub.getPassword());
+        int newId =  logicManagerDriver.connectToSystem();
+        logicManagerDriver.login(newId, sub.getName(), sub.getPassword());
+
+        String validStoreName = data.getProductData(Data.VALID).getStoreName();
         assertFalse(sub.canWatchStoreHistory(validStoreName));
-        sub.getPermissions().put(validStoreName,permission);
+
+        daoHolder.getSubscribeDao().remove(sub.getName());
+        tearDownStore();
     }
 
     /**
-     * part of test use case 6.4.2 and 4.10 - watch store history
+     *use case 6.4.2 and 4.10 - watch store history
      */
-    private void testWatchStoreHistorySuccess() {
-        assertTrue(sub.canWatchStoreHistory(data.getStore(Data.VALID).getName()));
+    @Test
+    public void testWatchStoreHistorySuccess() {
+        setUpStoreOpened();
+        StoreData storeData = data.getStore(Data.VALID);
+        assertTrue(this.subscribe.canWatchStoreHistory(storeData.getName()));
+        tearDownStore();
     }
 
     @After
