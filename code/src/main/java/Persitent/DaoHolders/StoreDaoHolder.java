@@ -12,6 +12,7 @@ public class StoreDaoHolder {
     private PurchaseTypeDao purchaseTypeDao;
     private RequestDao requestDao;
     private SubscribeDao subscribeDao;
+    private OwnerAgreementDao ownerAgreementDao;
 
     public StoreDaoHolder() {
         this.categoryDao = new CategoryDao();
@@ -23,6 +24,7 @@ public class StoreDaoHolder {
         this.purchaseTypeDao = new PurchaseTypeDao();
         this.requestDao = new RequestDao();
         this.subscribeDao=new SubscribeDao();
+        this.ownerAgreementDao=new OwnerAgreementDao();
     }
 
     public CategoryDao getCategoryDao() {
@@ -56,4 +58,13 @@ public class StoreDaoHolder {
     public RequestDao getRequestDao() {
         return requestDao;
     }
+
+    public OwnerAgreementDao getOwnerAgreementDao() {
+        return ownerAgreementDao;
+    }
+
+    public SubscribeDao getSubscribeDao() {
+        return subscribeDao;
+    }
+
 }

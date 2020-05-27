@@ -86,6 +86,13 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         logicManager.login(data.getId(Data.ADMIN),data.getSubscribe(Data.ADMIN).getName(),data.getSubscribe(Data.ADMIN).getPassword());
         logicManager.addManager(data.getId(Data.ADMIN),data.getSubscribe(Data.VALID2).getName(),data.getStore(Data.VALID).getName());
     }
+
+    private void setUpManagedOwner(){
+        setUpOpenedStore();
+        String storeName=data.getStore(Data.VALID).getName();
+        Subscribe admin=data.getSubscribe(Data.ADMIN);
+        logicManager.manageOwner(data.getId(Data.VALID),storeName, admin.getName());
+    }
     /**----------------------set-ups------------------------------------------*/
 
 
@@ -717,7 +724,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         StoreData storeData = data.getStore(Data.VALID);
         assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
         daos.getStoreDao().removeStore(storeData.getName());
-        tearDownLogin();
+        tearDownOpenStore();
     }
 
     /**
@@ -1127,14 +1134,85 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         super.testViewStorePolicy();
     }
 
-//    /**
-//     * use case 4.3 - manage owner - success
-//     */
-//    @Override
-//    protected void testManageOwnerSuccess() {
-//        super.testManageOwnerSuccess();
-//        checkPermissions(Data.VALID2);
-//    }
+
+    /**
+     * use case 4.3.1 - manage owner - success
+     */
+    @Test
+    public void testManageOwnerSuccess() {
+        setUpOpenedStore();
+        assertTrue(logicManager.manageOwner(data.getId(Data.VALID),data.getStore(Data.VALID).getName(),
+                data.getSubscribe(Data.VALID2).getName()).getValue());
+        checkPermissions(Data.VALID2);
+        tearDownOpenStore();
+    }
+
+    @Test
+    public void manageOwnerNeed2PeopleApprove(){
+        manageOwnerNeed2PeopleApproveTest();
+        tearDownOpenStore();
+    }
+
+    private void manageOwnerNeed2PeopleApproveTest() {
+        setUpManagedOwner();
+        String storeName=data.getStore(Data.VALID).getName();
+        Subscribe admin=data.getSubscribe(Data.ADMIN);
+        String niv = ManageAgain(storeName, admin);
+        checkAgreement(storeName,niv);
+    }
+
+    private String ManageAgain(String storeName, Subscribe admin) {
+        int validId=data.getId(Data.VALID);
+        logicManager.login(data.getId(Data.ADMIN),admin.getName(),admin.getPassword());
+        String niv=data.getSubscribe(Data.VALID2).getName();
+        logicManager.manageOwner(validId,storeName,niv);
+        return niv;
+    }
+
+    private void checkAgreement(String storeName,String owner) {
+        Store store=daos.getStoreDao().find(storeName);
+        OwnerAgreement ownerAgreement=store.getAgreementMap().get(owner);
+        assertEquals(ownerAgreement.getOwner(),owner);
+        assertEquals(ownerAgreement.getGivenBy(),data.getSubscribe(Data.VALID).getName());
+        assertTrue(daos.getSubscribeDao().find(owner).getPermissions().isEmpty());
+    }
+
+    /**
+     * use case 4.3.2 - approveManager - success
+     */
+    @Test
+    public void approveManagerSuccess(){
+        String storeName=data.getStore(Data.VALID).getName();
+        Subscribe niv=data.getSubscribe(Data.VALID2);
+        manageOwnerNeed2PeopleApproveTest();
+        int agreementId=daos.getStoreDao().find(storeName).getAgreementMap().get(niv.getName()).getId();
+        assertTrue(logicManager.approveManageOwner(data.getId(Data.ADMIN),storeName,niv.getName()).getValue());
+        checkPermissions(Data.VALID2);
+        checkAgreementRemoved(agreementId);
+        tearDownOpenStore();
+    }
+
+    /**
+     * test appoint new owner when the last one that need to approve being deleted
+     */
+    @Test
+    public void approveManagerSuccessByDelete(){
+        String storeName=data.getStore(Data.VALID).getName();
+        Subscribe admin=data.getSubscribe(Data.ADMIN);
+        Subscribe niv=data.getSubscribe(Data.VALID2);
+        manageOwnerNeed2PeopleApproveTest();
+        int agreementId=daos.getStoreDao().find(storeName).getAgreementMap().get(niv.getName()).getId();
+        assertTrue(logicManager.removeManager(data.getId(Data.VALID),admin.getName(),storeName).getValue());
+        checkPermissions(Data.VALID2);
+        checkAgreementRemoved(agreementId);
+        tearDownOpenStore();
+    }
+
+    private void checkAgreementRemoved(int agreementId) {
+        assertNull(daos.getOwnerAgreementDao().find(agreementId));
+    }
+
+
 //
 //    /**
 //     * use case 4.3 - manage owner - fail
@@ -1152,8 +1230,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * @param d - the data of the user to check the permission of
      */
     private void checkPermissions(Data d){
-        Subscribe sub=(Subscribe) currUser.getState();
-        Store store=sub.getGivenByMePermissions().get(0).getStore();
+        Store store=daos.getStoreDao().find(data.getStore(Data.VALID).getName());
         Subscribe newManager=data.getSubscribe(d);
         Permission p=store.getPermissions().get(newManager.getName());
         assertNotNull(p);

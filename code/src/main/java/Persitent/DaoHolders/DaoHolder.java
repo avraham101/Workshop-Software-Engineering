@@ -17,6 +17,7 @@ public class DaoHolder {
     private SubscribeDao subscribeDao;
     private ReviewDao reviewDao;
     private RevenueDao revenueDao;
+    private OwnerAgreementDao ownerAgreementDao;
 
     public DaoHolder() {
         cartDao =new CartDao();
@@ -32,6 +33,7 @@ public class DaoHolder {
         subscribeDao=new SubscribeDao();
         reviewDao = new ReviewDao();
         revenueDao=new RevenueDao();
+        ownerAgreementDao=new OwnerAgreementDao();
     }
 
     public CartDao getCartDao() {
@@ -84,5 +86,9 @@ public class DaoHolder {
 
     public RevenueDao getRevenueDao() {
         return revenueDao;
+    }
+
+    public OwnerAgreementDao getOwnerAgreementDao() {
+        return ownerAgreementDao;
     }
 }

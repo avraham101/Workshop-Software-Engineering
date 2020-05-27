@@ -587,6 +587,9 @@ public class SubscribeAllStubsTest {
         tearDownStore();
     }
 
+
+
+
     /**
      * use case 4.5 add manager
      * test we cant add manager twice

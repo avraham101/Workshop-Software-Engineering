@@ -201,6 +201,25 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     }
 
     /**
+     * use case 4.3.1 - manage owner
+     */
+    @Test
+    public void addOwnerNoPermission(){
+        setUpStoreOpened();
+        Subscribe sub=data.getSubscribe(Data.ADMIN);
+        assertFalse(sub.addOwner(sub.getName(),data.getSubscribe(Data.VALID2).getName()).getValue());
+        tearDownStore();
+    }
+
+    //store in dao no permission
+    //permission not owner
+    //real
+
+    /**
+     * use case 4.3.2 - approve owner
+     */
+
+    /**
      * use case 4.5 - add manager
      * check also if the permission was added
      */
