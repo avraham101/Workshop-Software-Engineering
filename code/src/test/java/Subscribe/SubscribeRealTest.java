@@ -130,15 +130,21 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
      */
     @Override @Test
     public void openStoreTest() {
-        StoreData storeData=data.getStore(Data.VALID);
-        Store store = sub.openStore(storeData);
+        setUpLoginSubscribe();
+        StoreData storeData = data.getStore(Data.VALID);
+        this.subscribe.openStore(storeData);
+
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
         assertEquals(storeData.getName(), store.getName());
-        assertEquals(storeData.getDescription(),"description");
-        //test Owner permissions
-        ConcurrentHashMap<String, Permission> permissions =(ConcurrentHashMap<String, Permission>) sub.getPermissions();
-        assertTrue(permissions.containsKey(store.getName()));
-        Permission permission = permissions.get(store.getName());
-        assertTrue(permission.getPermissionType().contains(PermissionType.OWNER));
+        assertEquals(storeData.getDescription(),store.getDescription());
+        Collection<Permission> permissionList = this.subscribe.getPermissions().values();
+        assertNotNull(permissionList);
+        assertEquals(1, permissionList.size());
+        Permission p = permissionList.iterator().next();
+        assertEquals(this.subscribe.getName(), p.getOwner().getName());
+        assertEquals(storeData.getName(), p.getStore().getName());
+        assertTrue(p.getPermissionType().contains(PermissionType.OWNER));
+        tearDownStore();
     }
 
     /**
