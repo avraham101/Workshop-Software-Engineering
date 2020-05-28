@@ -43,6 +43,8 @@ public enum OpCode implements Serializable {
     Add_Manager,
     DB_Down,
     Already_Owner,
+    Approve_Owner,
+    Add_Owner,
     ;
 
 }

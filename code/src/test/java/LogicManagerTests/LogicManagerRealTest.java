@@ -1141,9 +1141,15 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Test
     public void testManageOwnerSuccess() {
         setUpOpenedStore();
+        Subscribe valid2=data.getSubscribe(Data.VALID2);
+        logicManager.login(data.getId(Data.VALID2),valid2.getName(),valid2.getPassword());
         assertTrue(logicManager.manageOwner(data.getId(Data.VALID),data.getStore(Data.VALID).getName(),
                 data.getSubscribe(Data.VALID2).getName()).getValue());
         checkPermissions(Data.VALID2);
+        HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
+        for(List<Notification> n:notifications.values()){
+            assertEquals(data.getStore(Data.VALID).getName(),n.get(0).getValue());
+        }
         tearDownOpenStore();
     }
 
@@ -1158,6 +1164,14 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         String storeName=data.getStore(Data.VALID).getName();
         Subscribe admin=data.getSubscribe(Data.ADMIN);
         String niv = ManageAgain(storeName, admin);
+        Subscribe valid2=data.getSubscribe(Data.VALID2);
+        logicManager.login(data.getId(Data.VALID2),valid2.getName(),valid2.getPassword());
+        HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
+        for(List<Notification> n:notifications.values()){
+            List<String> storeOwner= (List<String>) n.get(0).getValue();
+            assertEquals(data.getStore(Data.VALID).getName(),storeOwner.get(0));
+            assertEquals(valid2.getName(),storeOwner.get(1));
+        }
         checkAgreement(storeName,niv);
     }
 
@@ -1210,6 +1224,14 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
     private void checkAgreementRemoved(int agreementId) {
         assertNull(daos.getOwnerAgreementDao().find(agreementId));
+        Subscribe valid2=data.getSubscribe(Data.VALID2);
+        logicManager.login(data.getId(Data.VALID2),valid2.getName(),valid2.getPassword());
+        HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
+        List<String> storeOwner= (List<String>) notifications.get(0).get(0).getValue();
+        String store=data.getStore(Data.VALID).getName();
+        assertEquals(storeOwner.get(0),store);
+        assertEquals(storeOwner.get(1),valid2.getName());
+        assertEquals(notifications.get(2).get(0).getValue(),store);
     }
 
 

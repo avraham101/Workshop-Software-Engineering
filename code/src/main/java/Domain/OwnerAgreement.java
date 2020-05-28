@@ -2,6 +2,8 @@ package Domain;
 
 
 import DataAPI.PermissionType;
+import Domain.Notification.AddOwnerNotification;
+import Domain.Notification.approve_notification;
 import Persitent.Cache;
 import Persitent.SubscribeDao;
 import org.hibernate.annotations.LazyCollection;
@@ -78,8 +80,8 @@ public class OwnerAgreement implements Serializable {
                 permissionList.add(PermissionType.OWNER);
                 mainOwner.addPermissions(permissionList,store,owner);
                 dao.update(mainOwner);
+                subOwner.sendNotification(new AddOwnerNotification(store));
                 dao.update(subOwner);
-                //send notification to subscribe //TODO
                 return true;
             }
         }
@@ -99,8 +101,8 @@ public class OwnerAgreement implements Serializable {
     }
 
     public void sendNotifications() {
-//        for(String name:managers)
-//            dao.find(name).sendNotification();
+        for(String name:managers)
+            dao.find(name).sendNotification(new approve_notification(store,owner));
     }
 
     public boolean containsOwner(String owner){

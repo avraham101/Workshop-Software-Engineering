@@ -547,7 +547,7 @@ public class Store {
         OwnerAgreement ownerAgreement =findGivenBy(userName);
         if(ownerAgreement!=null) {
             agreementMap.remove(ownerAgreement.getOwner());
-            //remove from dao //TODO
+            daos.getOwnerAgreementDao().remove(ownerAgreement.getId());
         }
     }
 
