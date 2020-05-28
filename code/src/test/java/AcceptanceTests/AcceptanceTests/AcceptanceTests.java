@@ -324,14 +324,14 @@ public class AcceptanceTests {
     }
 
     public void removeUserStoresAndProducts(UserTestData user){
-        //removeProducts(products);
+        removeProducts(products);
         removeStores(stores);
         removeUser(user.getUsername());
     }
 
     @After
     public  void tearDownAll(){
-        removeUsers(Arrays.asList(admin.getUsername(),users.get(0).getUsername(),users.get(1).getUsername()));
+        removeUsers(Arrays.asList(admin.getUsername(),users.get(0).getUsername(),users.get(1).getUsername(),users.get(3).getUsername()));
         bridge.resetSystem();
     }
 }

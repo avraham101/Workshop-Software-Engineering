@@ -96,7 +96,7 @@ public class SubscribeAllStubsTest {
     /**
      * set up a manager with permissions
      */
-    private void setUpAddedPermissions(){
+    private void setUpAddedPermissions() {
         setUpManagerAdded();
         List<PermissionType> list = data.getPermissionTypeList();
         StoreData storeData = data.getStore(Data.VALID);
@@ -107,7 +107,7 @@ public class SubscribeAllStubsTest {
     /**
      * set up valid product in the store of sub
      */
-    private void setUpProductAdded(){
+    public void setUpProductAdded(){
         setUpStoreOpened();
         subscribe.addProductToStore(data.getProductData(Data.VALID));
     }
@@ -143,24 +143,11 @@ public class SubscribeAllStubsTest {
     }
 
     /**
-     * set up for the save
-     */
-    protected void setUpSave() {
-        Store store = data.getRealStore(Data.VALID);
-        Product product = data.getRealProduct(Data.VALID);
-        sub.addProductToCart(store,product,product.getAmount());
-        sub.reserveCart();
-        PaymentData paymentData = data.getPaymentData(Data.VALID);
-        DeliveryData deliveryData = data.getDeliveryData(Data.VALID);
-        sub.buyCart(paymentData, deliveryData);
-    }
-
-    /**
      * set up a valid purchase history
      */
     protected void setUpProductBought(){
-        setUpSave();
-        sub.savePurchase(sub.getName());
+        setUpBuy();
+        this.subscribe.savePurchase(this.subscribe.getName());
     }
 
     /**
@@ -529,7 +516,7 @@ public class SubscribeAllStubsTest {
      * use case 4.2.1.2 -remove product from store
      */
     @Test
-    public void testRemoveDiscountFromStoreSuccess(){
+    public void testRemoveDiscountFromStoreSuccess() {
         setUpDiscountAdded();
         StoreData storeData = data.getStore(Data.VALID);
         List <Discount> discounts = data.getDiscounts(Data.VALID);
@@ -616,6 +603,10 @@ public class SubscribeAllStubsTest {
         assertTrue(subscribe.addManager(admin,storeData.getName()).getValue());
         Store store = daoHolder.getStoreDao().find(storeData.getName());
         assertEquals(2,store.getPermissions().values().size());
+        Permission p = store.getPermissions().get(admin.getName());
+        assertNotNull(p);
+        assertEquals(admin.getName(),p.getOwner().getName());
+        assertEquals(subscribe.getName(), p.getGivenBy());
         tearDownStore();
     }
 
