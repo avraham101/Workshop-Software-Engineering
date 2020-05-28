@@ -297,8 +297,19 @@ public class AcceptanceTests {
     }
 
     protected void removeUser(String username){
+        UserTestData user = getUserByName(username);
+        if(user!=null)
+            this.bridge.logout(user.getId());
         this.bridge.removeUser(username);
     }
+
+    private UserTestData getUserByName(String username) {
+        for(UserTestData user : users)
+            if(user.getUsername().equals(username))
+                return user;
+        return null;
+    }
+
     protected void removeUsers(List<String> users){
         for(String user : users)
             removeUser(user);

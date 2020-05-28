@@ -4,9 +4,12 @@ import AcceptanceTests.AcceptanceTestDataObjects.PermissionsTypeTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.StorePermissionsTypeTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -19,8 +22,7 @@ public class UserAdministrationInfo extends AcceptanceTests {
 
     @Before
     public void setUp() {
-        addStores(stores);
-        addProducts(products);
+        addUserStoresAndProducts(superUser);
         setUpManagerPermissionsTestManagers();
     }
 
@@ -30,12 +32,9 @@ public class UserAdministrationInfo extends AcceptanceTests {
     private void setUpManagerPermissionsTestManagers(){
         store = stores.get(0);
         user = users.get(2);
-        registerAndLogin(superUser);
         registerAndLogin(user);
         bridge.appointManager(superUser.getId(),store.getStoreName(), user.getUsername());
         bridge.addPermissionToManager(superUser.getId(),store.getStoreName(),user.getUsername(), PermissionsTypeTestData.PRODUCTS_INVENTORY);
-        logoutAndLogin(user);
-        logoutAndLogin(superUser);
     }
 
     @Test
@@ -52,8 +51,7 @@ public class UserAdministrationInfo extends AcceptanceTests {
 
     @Test
     public void testGetStoresManagedByUserFail() {
-        user = users.get(3);
-        List<StoreTestData> storesList = bridge.getStoresManagedByUser(user.getId());
+        List<StoreTestData> storesList = bridge.getStoresManagedByUser(users.get(3).getId());
         assertTrue(storesList.isEmpty());
     }
 
@@ -119,5 +117,12 @@ public class UserAdministrationInfo extends AcceptanceTests {
         assertTrue(users.isEmpty());
     }
 
-
+    @After
+    public void tearDown() {
+        removeProducts(products);
+        removeStores(stores);
+        bridge.logout(user.getId());
+        bridge.logout(superUser.getId());
+        removeUsers(new ArrayList<>(Arrays.asList(user.getUsername(), superUser.getUsername())));
+    }
 }

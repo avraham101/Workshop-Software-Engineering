@@ -72,7 +72,7 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
             assertFalse(isWritten);
 
             List<ReviewTestData> actualReviews = bridge.getProductsReviews(product);
-            assertFalse(actualReviews.contains(review));
+            assertTrue(actualReviews == null || !actualReviews.contains(review));
         }
     }
 
