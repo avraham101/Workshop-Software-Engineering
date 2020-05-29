@@ -42,4 +42,9 @@ public enum OpCode implements Serializable {
     INVALID_DATE,
     Add_Manager,
     DB_Down,
+    Already_Owner,
+    Approve_Owner,
+    Add_Owner,
+    ;
+
 }

@@ -290,7 +290,7 @@ public class ServiceAPI {
     }
 
     /**
-     * use case 4.3
+     * use case 4.3.1
      * acceptance test class : AppointAnotherOwnerToStoreTest
      * @param id - user id
      * @param storeName - name of store
@@ -299,6 +299,27 @@ public class ServiceAPI {
      */
     public Response<Boolean> manageOwner(int id,String storeName,String userName){
         return logicManager.manageOwner(id,storeName,userName);
+    }
+
+    /**
+     * //TODO acceptance test
+     * use case 4.3.2 - approve manage owner
+     * @param storeName the name of the store to be manager of
+     * @param userName the user to be manager of the store
+     * @return
+     */
+    public Response<Boolean> approveManageOwner(int id,String storeName, String userName){
+        return logicManager.approveManageOwner(id,storeName,userName);
+    }
+
+    /**
+     * get list of all the managers user with id need to approve in storeName
+     * @param id - user id
+     * @param storeName - store to approve
+     * @return
+     */
+    public Response<List<String>> getApprovedManagers(int id,String storeName){
+        return logicManager.getApprovedManagers(id,storeName);
     }
 
     /**

@@ -54,6 +54,10 @@ public class Store {
     private Map<String, Category> categoryList;
 
 
+    @OneToMany(cascade=CascadeType.PERSIST,fetch = FetchType.EAGER)
+    @MapKey(name = "owner")
+    @JoinColumn(name="store",referencedColumnName = "storename",updatable = false)
+    Map<String, OwnerAgreement> agreementMap;
 
     @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
     @MapKey(name = "id")
@@ -86,6 +90,7 @@ public class Store {
         this.requests= new ConcurrentHashMap<>();
         this.purchases = new LinkedList<>();
         daos = new StoreDaoHolder();
+        agreementMap=new ConcurrentHashMap<>();
     }
 
     public Store() {
@@ -127,6 +132,9 @@ public class Store {
         return requests;
     }
 
+    public Map<String, OwnerAgreement> getAgreementMap() {
+        return agreementMap;
+    }
 
     public Map<String, Permission> getPermissions() {
         return permissions;
@@ -138,6 +146,7 @@ public class Store {
         this.categoryList=new ConcurrentHashMap<>(this.categoryList);
         this.products=new ConcurrentHashMap<>(products);
         this.discountPolicy=new ConcurrentHashMap<>(discountPolicy);
+        this.agreementMap=new ConcurrentHashMap<>(this.agreementMap);
         if(purchasePolicy==null)
             purchasePolicy=new AndPolicy(new ArrayList<>());
         if(!(this.permissions instanceof ConcurrentHashMap)) {
@@ -275,7 +284,7 @@ public class Store {
                 }
             }
             else {
-               output = false;
+                output = false;
             }
         }
         if(!output) {
@@ -508,6 +517,67 @@ public class Store {
         }
     }
 
+
+    /**
+     * use case 4.3 - manage owner
+     * @param owner the user to be manager of the store
+     * @param givenBy the user that managed owner
+     * @return
+     */
+    public Response<Boolean> addOwner(String givenBy, String owner) {
+        Set<String> owners=new HashSet<>();
+        for(String name: permissions.keySet()){
+            if(permissions.get(name).isOwner()) {
+                if(name.equals(owner))
+                    return new Response<>(false,OpCode.Already_Owner);
+                owners.add(name);
+            }
+        }
+        OwnerAgreement agreement=new OwnerAgreement(owners,givenBy,owner,name);
+        if(!agreement.approve(givenBy)){
+            if(daos.getOwnerAgreementDao().add(agreement)) {
+                agreementMap.put(owner, agreement);
+                agreement.sendNotifications();
+            }
+        }
+        return new Response<>(true,OpCode.Success);
+    }
+
+    public void removeAgreement(String userName) {
+        OwnerAgreement ownerAgreement =findGivenBy(userName);
+        if(ownerAgreement!=null) {
+            agreementMap.remove(ownerAgreement.getOwner());
+            daos.getOwnerAgreementDao().remove(ownerAgreement.getId());
+        }
+    }
+
+    private OwnerAgreement findGivenBy(String userName) {
+        for(String key:agreementMap.keySet())
+            if(agreementMap.get(key).getGivenBy().equals(userName))
+                return agreementMap.get(key);
+        return null;
+    }
+
+    public void approveAgreementsOfUser(String userName) {
+        for(OwnerAgreement ownerAgreement:agreementMap.values()) {
+            if(ownerAgreement.approve(userName)){
+                daos.getOwnerAgreementDao().remove(ownerAgreement.getId());
+                agreementMap.remove(userName);
+            }
+
+        }
+    }
+
+    public Response<Boolean> approveAgreement(String approver, String newOwner) {
+        OwnerAgreement ownerAgreement =agreementMap.get(newOwner);
+        if(ownerAgreement!=null&&ownerAgreement.approve(approver)) {
+            daos.getOwnerAgreementDao().remove(ownerAgreement.getId());
+            agreementMap.remove(newOwner);
+        }
+        return new Response<>(true,OpCode.Success);
+    }
+
+
     /**
      * get hash map of specific real products and their amount in a basket
      * @param list - hash map of products in cart
@@ -524,5 +594,7 @@ public class Store {
         }
         return output;
     }
+
+
 
 }

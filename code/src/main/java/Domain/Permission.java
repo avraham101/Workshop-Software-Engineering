@@ -179,5 +179,9 @@ public class Permission implements Serializable {
         lock.readLock().unlock();
         return result;
     }
+
+    public boolean isOwner() {
+        return permissionType.contains(PermissionType.OWNER);
+    }
 }
 
