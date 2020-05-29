@@ -151,7 +151,9 @@ public class Subscribe extends UserState{
     @Override
     public void savePurchase(String buyer) {
         this.purchases.addAll(this.cart.savePurchases(this.userName));
+        this.daos.getCartDao().remove(this.getCart()); //remove the old cart
         this.cart = new Cart(this.userName);
+        this.daos.getCartDao().add(this.getCart()); //add the new cart
     }
 
     /**
