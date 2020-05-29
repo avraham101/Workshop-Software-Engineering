@@ -16,6 +16,7 @@ public class NotificationDao extends Dao<Notification>{
         // Used to issue transactions on the EntityManager
         boolean output = super.add(em,notification);
         if(output) {
+            //
             EntityTransaction et = null;
             try {
                 em = ENTITY_MANAGER_FACTORY.createEntityManager();
