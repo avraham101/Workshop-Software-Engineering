@@ -265,7 +265,7 @@ public class daoTest {
     public void addRemoveNotification(){
         RemoveNotification notification=new RemoveNotification("hanut", OpCode.Removed_From_Management);
         NotificationDao dao=new NotificationDao();
-        dao.add(notification);
+        dao.add(notification, "Subscribe");
     }
 
     @Test
@@ -282,7 +282,7 @@ public class daoTest {
         Request r=requestDao.find(1);
         RequestNotification notification=new RequestNotification(r,OpCode.Reply_Request);
         NotificationDao dao=new NotificationDao();
-        dao.add(notification);
+        dao.add(notification,"Subscribe");
     }
 
     @Test
@@ -291,7 +291,7 @@ public class daoTest {
         products.add(data.getProductData(Data.VALID));
         BuyNotification notification=new BuyNotification(products,OpCode.Buy_Product);
         NotificationDao dao=new NotificationDao();
-        dao.add(notification);
+        dao.add(notification,"Subscribe");
     }
 
     @Test

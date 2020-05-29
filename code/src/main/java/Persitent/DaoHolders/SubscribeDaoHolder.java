@@ -3,12 +3,14 @@ package Persitent.DaoHolders;
 import Persitent.*;
 
 public class SubscribeDaoHolder {
+
     private NotificationDao notificationDao;
     private PurchaseDao purchaseDao;
     private RequestDao requestDao;
     private StoreDao storeDao;
     private CartDao cartDao;
     private PermissionDao permissionDao;
+    private SubscribeDao subscribeDao;
 
     public SubscribeDaoHolder() {
         notificationDao=new NotificationDao();
@@ -17,6 +19,7 @@ public class SubscribeDaoHolder {
         storeDao=new StoreDao();
         permissionDao = new PermissionDao();
         cartDao=new CartDao();
+        subscribeDao = new SubscribeDao();
     }
 
     public NotificationDao getNotificationDao() {
@@ -42,4 +45,6 @@ public class SubscribeDaoHolder {
     public CartDao getCartDao() {
         return cartDao;
     }
+
+    public SubscribeDao getSubscribeDao() {return subscribeDao;}
 }

@@ -87,6 +87,7 @@ export class Notifications extends Component {
   buttonX() {
     if(show==='PRODUCTS') {
       let msg = products_notification;
+      alert(msg);
       products=[];
       products_notification=[];
       size_0= 0;

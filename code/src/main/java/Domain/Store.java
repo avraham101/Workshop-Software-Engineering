@@ -6,7 +6,9 @@ import Domain.Notification.BuyNotification;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.Notification.Notification;
+import Persitent.Cache;
 import Persitent.DaoHolders.StoreDaoHolder;
+import Persitent.SubscribeDao;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -514,7 +516,11 @@ public class Store {
     public void sendManagersNotifications(List<ProductData> productData) {
         for(String manager: permissions.keySet()){
             Notification notification=new BuyNotification(productData,OpCode.Buy_Product);
-            permissions.get(manager).getOwner().sendNotification(notification);
+            Subscribe tmpOwner = permissions.get(manager).getOwner();
+            Cache cache = new Cache();
+            Subscribe realOwner = cache.findSubscribe(tmpOwner.getName());
+            realOwner.sendNotification(notification);
+            //permissions.get(manager).getOwner().sendNotification(notification);
         }
     }
 

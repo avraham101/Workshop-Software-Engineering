@@ -8,6 +8,7 @@ import Domain.Notification.Notification;
 import Persitent.Cache;
 import Persitent.DaoHolders.SubscribeDaoHolder;
 import Persitent.RequestDao;
+import Persitent.SubscribeDao;
 import Publisher.Publisher;
 import Publisher.SinglePublisher;
 import org.hibernate.annotations.LazyCollection;
@@ -731,7 +732,7 @@ public class Subscribe extends UserState{
 
 
     public void sendNotification(Notification<?> notification) {
-        if(daos.getNotificationDao().add(notification)) {
+        if(daos.getNotificationDao().add(notification, this.getName())) {
             notifications.add(notification);
             sendAllNotifications();
         }
