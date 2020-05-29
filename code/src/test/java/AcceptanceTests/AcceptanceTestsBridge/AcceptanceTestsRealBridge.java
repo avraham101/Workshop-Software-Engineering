@@ -233,12 +233,23 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-4.3---------------------------------//
     @Override
-    public boolean appointOwnerToStore(int id,String storeName, String username) {
+    public boolean appointOwnerToStoreDirectly(int id,String storeName, String username) {
         boolean addManager = serviceAPI.addManagerToStore(id,storeName,username).getValue();
         List<PermissionType> ownerPermission = new ArrayList<>(Collections.singletonList(PermissionType.OWNER));
         boolean addPermission = serviceAPI.addPermissions(id, ownerPermission, storeName, username).getValue();
         return addManager & addPermission;
     }
+
+    @Override
+    public boolean appointOwnerToStore(int id, String storeName, String username) {
+        return serviceAPI.manageOwner(id,storeName,username).getValue();
+    }
+
+    @Override
+    public boolean approveManageOwner(int id, String storeName, String username){
+        return serviceAPI.approveManageOwner(id,storeName,username).getValue();
+    }
+
     //---------------------------Use-Case-4.3---------------------------------//
 
     //---------------------------Use-Case-4.5---------------------------------//

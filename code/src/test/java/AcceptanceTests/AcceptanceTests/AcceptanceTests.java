@@ -225,7 +225,7 @@ public class AcceptanceTests {
             UserTestData owner = store.getStoreOwner();
             registerAndLogin(owner);
             bridge.openStore(owner.getId(),store.getStoreName());
-            bridge.appointOwnerToStore(owner.getId(),store.getStoreName(),admin.getUsername());
+            bridge.appointOwnerToStoreDirectly(owner.getId(),store.getStoreName(),admin.getUsername());
             bridge.logout(owner.getId());
         }
 
@@ -272,11 +272,6 @@ public class AcceptanceTests {
         addStores(stores);
         addProducts(products);
         registerAndLogin(user);
-    }
-    protected  void addUserAndStores(UserTestData user){
-        registerAndLogin(user);
-        addStores(stores);
-
     }
 
 
