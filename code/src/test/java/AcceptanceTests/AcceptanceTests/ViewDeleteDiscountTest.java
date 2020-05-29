@@ -1,6 +1,7 @@
 package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.DiscountTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +24,9 @@ public class ViewDeleteDiscountTest extends AcceptanceTests{
 
     @Test
     public void deleteDiscountSuccess(){
-        assertTrue(bridge.deleteDiscount(superUser.getId(),0,store));
+       List<DiscountTestData> discounts= bridge.getDiscountsOfStore(store);
+       int discountId = discounts.get(0).getId() ;
+       assertTrue(bridge.deleteDiscount(superUser.getId(),discountId,store));
         deleteDiscountNotExist();
     }
 
@@ -51,7 +54,9 @@ public class ViewDeleteDiscountTest extends AcceptanceTests{
 
     @Test
     public void viewDiscountEmptyDiscountSuccess(){
-        bridge.deleteDiscount(superUser.getId(),0,store);
+        List<DiscountTestData>  discounts= bridge.getDiscountsOfStore(store);
+        int discountId = discounts.get(0).getId();
+        bridge.deleteDiscount(superUser.getId(),discountId,store);
         List<DiscountTestData> discountTestDataList=bridge.getDiscountsOfStore(store);
         assertNotNull(discountTestDataList);
         assertTrue(discountTestDataList.isEmpty());
@@ -61,6 +66,12 @@ public class ViewDeleteDiscountTest extends AcceptanceTests{
     public void viewDiscountInvalidStore(){
         List<DiscountTestData> discountTestDataList=bridge.getDiscountsOfStore(store+1);
         assertNull(discountTestDataList);
+    }
+
+    @After
+    public void tearDown(){
+        removeProducts(products);
+        removeStores(stores);
     }
 
 

@@ -140,7 +140,7 @@ public class TestData {
                 ,null,12,101, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.NULL_PRODUCT,new ProductData(null,null,null
                 ,null,1,10, null));
-        productsData.put(Data.EDIT,new ProductData("peanuts","Store","categoryYuval"
+        productsData.put(Data.EDIT,new ProductData("peanuts","Store","category"
                 ,null,3,11, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.WRONG_NAME,new ProductData("peanuts1","Store","category"
                 ,null,1,10, PurchaseTypeData.IMMEDDIATE));
@@ -168,7 +168,8 @@ public class TestData {
     private void setUpBasketData() {
         basket = new HashMap<Data, HashMap<ProductData, Integer>>();
         HashMap <ProductData, Integer> productsInBasket = new HashMap<>();
-        productsInBasket.put(productsData.get(Data.VALID), 100);
+        ProductData productData =  productsData.get(Data.VALID);
+        productsInBasket.put( productData, productData.getAmount());
         basket.put(Data.VALID, productsInBasket);
     }
 
@@ -322,6 +323,7 @@ public class TestData {
         requests.put(Data.NULL_NAME, new Request(users.get(Data.VALID).getName(), stores.get(Data.NULL_NAME).getName(), "where is the milk in this store?", 1));
         requests.put(Data.NULL_CONTENT, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), null, 1));
         requests.put(Data.WRONG_ID, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), "where is the milk in this store?", -1));
+        requests.put(Data.WRONG_ID2,new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), "where is the milk in this store?", -2));
     }
 
     /**

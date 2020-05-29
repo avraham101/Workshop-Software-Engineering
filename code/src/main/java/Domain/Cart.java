@@ -3,21 +3,51 @@ package Domain;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.Purchase;
+import Persitent.PurchaseDao;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-public class Cart {
+@Entity
+@Table(name = "cart")
+public class Cart implements Serializable {
 
+    @Id
+    @Column(name = "username")
     private String buyer;
-    private HashMap<String,Basket> baskets; // key is the store name and the value is the basket of the store
 
-    public Cart(String buyer) {
-        baskets=new HashMap<>();
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @MapKeyColumn(name="storename")
+    @JoinColumn(name="username", referencedColumnName = "username", updatable = false)
+    private Map<String,Basket> baskets; // key is the store name and the value is the basket of the store
+
+    @Transient
+    private final PurchaseDao purchasesDao;
+
+
+    public Cart(){
+        baskets = new HashMap<>();
+        purchasesDao = new PurchaseDao();
     }
 
-    public HashMap<String, Basket> getBaskets() {
+    public String getBuyer() {
+        return buyer;
+    }
+
+    public Cart(String buyer){
+        this.buyer = buyer;
+        baskets = new HashMap<>();
+        purchasesDao = new PurchaseDao();
+    }
+
+    public Map<String, Basket> getBaskets() {
         return baskets;
     }
 
@@ -47,6 +77,7 @@ public class Cart {
         if (basket == null) {
             basket = new Basket(store,this.buyer);
             baskets.put(store.getName(),basket);
+
         }
         return basket.addProduct(product, amount);
     }
@@ -115,8 +146,14 @@ public class Cart {
     public List<Purchase> savePurchases(String buyer) {
         List<Purchase> purchases = new LinkedList<>();
         for(Basket b:baskets.values()){
-            purchases.add(b.savePurchase(buyer));
+            Purchase p=b.savePurchase(buyer);
+            if(purchasesDao.add(p))
+                purchases.add(p);
         }
         return purchases;
+    }
+
+    public void setBasket(String name, Basket basket) {
+        this.baskets.put(name,basket);
     }
 }

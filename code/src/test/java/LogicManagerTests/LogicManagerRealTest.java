@@ -5,17 +5,24 @@ import DataAPI.*;
 import Domain.*;
 import Domain.Discount.Discount;
 import Domain.Discount.RegularDiscount;
+import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.PurchasePolicy.UserPurchasePolicy;
+import Domain.Notification.Notification;
+import Persitent.Cache;
+import Persitent.DaoHolders.DaoHolder;
+import Publisher.SinglePublisher;
 import Stubs.StubPublisher;
-import Systems.HashSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -24,20 +31,29 @@ import static org.junit.Assert.*;
 //no stubs full integration
 public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
-
     private StubPublisher publisher;
+
+    @BeforeClass
+    public static void beforeClass() throws Exception {
+        daos=new DaoHolder();
+    }
+
     @Before
     public void setUp() {
+        daos=new DaoHolder();
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();
+        cashe=new Cache();
+        cashe.resetList();
         init();
-        currUser=connectedUsers.get(data.getId(Data.VALID));
+        currUser=cashe.findUser(data.getId(Data.VALID));
         publisher=new StubPublisher();
-        logicManager.setPublisher(publisher);
+        SinglePublisher.initPublisher(publisher);
 
     }
 
     /**---------------------set-ups-------------------------------------------*/
+
 
     /**
      * set up connect
@@ -48,7 +64,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         logicManager.connectToSystem();
         logicManager.connectToSystem();
         //work with the regular user has current user
-        currUser=connectedUsers.get(data.getId(Data.VALID));
+        currUser=cashe.findUser(data.getId(Data.VALID));
     }
 
     @Override
@@ -67,13 +83,21 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override
     protected void setUpManagerAddedSubManagerAdded(){
         setUpPermissionsAdded();
-        currUser.setState(users.get(data.getSubscribe(Data.ADMIN).getName()));
-        logicManager.addManager(data.getId(Data.VALID),data.getSubscribe(Data.VALID2).getName(),data.getStore(Data.VALID).getName());
-        currUser.setState(users.get(data.getSubscribe(Data.VALID).getName()));
+        logicManager.login(data.getId(Data.ADMIN),data.getSubscribe(Data.ADMIN).getName(),data.getSubscribe(Data.ADMIN).getPassword());
+        logicManager.addManager(data.getId(Data.ADMIN),data.getSubscribe(Data.VALID2).getName(),data.getStore(Data.VALID).getName());
+    }
+
+    private void setUpManagedOwner(){
+        setUpOpenedStore();
+        String storeName=data.getStore(Data.VALID).getName();
+        Subscribe admin=data.getSubscribe(Data.ADMIN);
+        logicManager.manageOwner(data.getId(Data.VALID),storeName, admin.getName());
     }
     /**----------------------set-ups------------------------------------------*/
 
-    /**
+
+
+     /**
      * set up for register a user
      */
     private void setUpRegisteredUser(){
@@ -83,71 +107,85 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
-     * test use case 2.3 - Login
+     * use case 2.2 Register
      */
-    @Override @Test
-    public void testLogin() {
-        super.testLogin();
-        testLoginFailAlreadyUserLogged();
-        testLoginFailAlreadySubscribeLogged();
-    }
-
-    /**
-     * part of test use case 2.3 - Login
-     */
-    private void testLoginFailAlreadySubscribeLogged() {
-        Subscribe subscribe = data.getSubscribe(Data.VALID);
-        assertFalse(logicManager.login(data.getId(Data.VALID2), subscribe.getName(),subscribe.getPassword()).getValue());
-    }
-
-    /**
-     * part of test use case 2.3 - Login
-     */
-    public void testLoginFailAlreadyUserLogged() {
-        Subscribe subscribe = data.getSubscribe(Data.ADMIN);
-        assertFalse(logicManager.login(data.getId(Data.VALID), subscribe.getName(),subscribe.getPassword()).getValue());
-    }
-
-    /**
-     * part of test use case 2.3 - Login
-     */
+    @Test
     @Override
-    protected void testLoginSuccess() {
-        super.testLoginSuccess();
+    @Transactional
+    public void testRegisterSuccess() {
+        setUpConnect();
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        assertEquals(currUser.getUserName(),subscribe.getName());
-        //check session number
-        assertEquals(((Subscribe)currUser.getState()).getSessionNumber().get(),data.getId(Data.VALID));
-        try {
-            HashSystem hashSystem = new HashSystem();
-            String password = hashSystem.encrypt(subscribe.getPassword());
-            assertEquals(password, currUser.getPassword());
-        } catch (Exception e) {
-            fail();
-        }
+        assertTrue(logicManager.register(subscribe.getName(),subscribe.getPassword()).getValue());
+        daos.getSubscribeDao().remove(subscribe.getName());
+        tearDownRegisteredUser();
     }
+
+
+    /**
+     * part of test use case 2.3 - Login
+     */
+    @Test
+    @Transactional
+    public void testLoginFailAlreadySubscribeLogged() {
+        setUpLogedInUser();
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        assertFalse(logicManager.login(data.getId(Data.VALID2), subscribe.getName(),
+                subscribe.getPassword()).getValue());
+        tearDownLogin();
+    }
+
+
+
+    /**
+     * part of test use case 2.3 - Login
+     */
+    @Test
+    @Transactional
+    public void testLoginFailAlreadyUserLogged() {
+        setUpLogedInUser();
+        Subscribe subscribe = data.getSubscribe(Data.VALID);
+        assertFalse(logicManager.login(data.getId(Data.VALID), subscribe.getName(),
+                subscribe.getPassword()).getValue());
+        tearDownLogin();
+    }
+
 
     /**
      * use case 2.4.1 - view all stores details
      */
     @Override @Test
+    @Transactional
     public void testViewDataStores() {
-        super.testViewDataStores();
-        for (StoreData storeData : logicManager.viewStores().getValue()) {
-            assertTrue(stores.containsKey(storeData.getName()));
+        setUpOpenedStore();
+        List<StoreData> expected = new LinkedList<>();
+        expected.add(data.getStore(Data.VALID));
+        List<StoreData> storeDataList  = logicManager.viewStores().getValue();
+        assertNotEquals(null, storeDataList);
+        for (StoreData storeData : storeDataList) {
+            boolean result = false;
+            for(StoreData real: expected) {
+                if(real.getName().equals(storeData.getName())) {
+                    result = true;
+                    break;
+                }
+            }
+            assertTrue(result);
         }
+        tearDownOpenStore();
     }
 
     /**
      * use case 2.4.2 - view the products in some store test
      */
     @Override @Test
+    @Transactional
     public void testViewProductsInStore() {
         setUpProductAdded();
         String storeName = data.getStore(Data.VALID).getName();
         for (ProductData productData: logicManager.viewProductsInStore(storeName).getValue()) {
-            assertTrue(stores.get(storeName).getProducts().containsKey(productData.getProductName()));
+            assertTrue(daos.getStoreDao().find(storeName).getProducts().containsKey(productData.getProductName()));
         }
+        tearDownOpenStore();
     }
 
     /**
@@ -155,21 +193,23 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override
     @Test
-    public void testViewSpecificProducFilterProductName() {
+    @Transactional
+    public void testViewSpecificProductFilterProductName() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
         filter.setSearch(Search.PRODUCT_NAME);
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertEquals(1,products.size());
+        tearDownOpenStore();
     }
-
 
     /**
      * part of use case 2.5 - view spesific products
      */
     @Test
     @Override
+    @Transactional
     public void testViewSpecificProductFilterKeyWord() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
@@ -177,6 +217,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertEquals(1,products.size());
+        tearDownOpenStore();
+
     }
 
     /**
@@ -184,6 +226,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Test
     @Override
+    @Transactional
     public void testViewSpecificProductFilterNone() {
         setUpProductAdded();
         Filter filter = data.getFilter(Data.VALID);
@@ -191,7 +234,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         List<ProductData> products = logicManager.viewSpecificProducts(filter).getValue();
         assertNotNull(products);
         assertEquals(1,products.size());
+        tearDownOpenStore();
     }
+
 
     /**
      * part of use case 2.5 - view specific product
@@ -213,6 +258,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * part of use case 2.5 - view specific product
      */
     @Test
+    @Transactional
     public void testViewSpecificProductSearchNone() {
         setUpProductAdded();
         //SUCCESS ALWAYS
@@ -224,24 +270,28 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         ProductData result = products.get(0);
         ProductData expected = data.getProductData(Data.VALID);
         assertTrue(data.compareProductData(expected, result));
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 2.5 - view specific product
      */
     @Test
+    @Transactional
     public void testViewSpecificProductSearchByName() {
         setUpProductAdded();
         Filter correct = data.getFilter(Data.VALID);
         correct.setSearch(Search.PRODUCT_NAME);
         Filter wrong = data.getFilter(Data.WRONG_NAME);
         testViewSpecificProductSearch(correct, 1,wrong);
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 2.5 - view specific product
      */
     @Test
+    @Transactional
     public void testViewSpecificProductSearchByCategory() {
         setUpProductAdded();
         ProductData productData = data.getProductData(Data.VALID);
@@ -250,12 +300,14 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         correct.setValue(productData.getCategory());
         Filter wrong = data.getFilter(Data.WRONG_CATEGORY);
         testViewSpecificProductSearch(correct, 1,wrong);
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 2.5 - view specific product
      */
     @Test
+    @Transactional
     public void testViewSpecificProductSearchByKeyWord() {
         setUpProductAdded();
         ProductData productData = data.getProductData(Data.VALID);
@@ -264,6 +316,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         correct.setValue(productData.getProductName());
         Filter wrong = data.getFilter(Data.WRONG_KEY_WORD);
         testViewSpecificProductSearch(correct, 1,wrong);
+        tearDownOpenStore();
     }
 
     /**
@@ -274,7 +327,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         List<ProductData> products = logicManager.viewSpecificProducts(correct).getValue();
         assertFalse(products.isEmpty());
         int size = 0;
-        for(Store s: stores.values()) {
+        for(Store s: daos.getStoreDao().getAll()) {
             size+=s.getProducts().size();
         }
         assertEquals(size, products.size());
@@ -287,33 +340,39 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * part of use case 2.5 - view specific product
      */
     @Test
+    @Transactional
     public void testViewSpecificProductFillterMin() {
         setUpProductAdded();
         Filter correct = data.getFilter(Data.FILTER_MIN);
         Filter wrong = data.getFilter(Data.NEGATIVE_MIN);
         testViewSpecificProductFillter(correct, wrong);
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 2.5 - view specific product
      */
     @Test
+    @Transactional
     public void testViewSpecificProductFillterMax() {
         setUpProductAdded();
         Filter correct = data.getFilter(Data.FILTER_MAX);
         Filter wrong = data.getFilter(Data.NEGATIVE_MAX);
         testViewSpecificProductFillter(correct, wrong);
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 2.5 - view specific product
      */
     @Test
+    @Transactional
     public void testViewSpecificProductFillterCategory() {
         setUpProductAdded();
         Filter correct = data.getFilter(Data.FILTER_ALL_CATEGORIES);
         Filter wrong = data.getFilter(Data.WRONG_CATEGORY);
         testViewSpecificProductFillter(correct, wrong);
+        tearDownOpenStore();
     }
 
 
@@ -321,14 +380,31 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * use case 2.7.1 - watch cart details
      * success test
      */
-    @Override @Test
-    public void testWatchCartDetails() {
-        super.testWatchCartDetails();
+     @Test
+    public void testWatchCartDetailsSuccess() {
+        setUpProductAddedToCart();
         ProductData productData = data.getProductData(Data.VALID);
         CartData cartData = logicManager.watchCartDetails(data.getId(Data.VALID)).getValue();
         List<ProductData> list = cartData.getProducts();
         assertEquals(1, list.size());
         assertEquals(list.get(0).getProductName(), productData.getProductName());
+        tearDownProductAddedToCart();
+    }
+
+    /**
+     * use case 2.7.1 fail when the product is null
+     */
+    protected void testWatchCartDetailsNull() {
+        CartData cartData = logicManager.watchCartDetails(data.getId(Data.VALID)).getValue();
+        assertNotNull(cartData.getProducts().get(0));
+    }
+
+    /**
+     * use case 2.7.1 fail when the basket is null
+     */
+    protected void testWatchCartDetailsNullStore() {
+        CartData cartData = logicManager.watchCartDetails(data.getId(Data.VALID)).getValue();
+        assertNotNull(cartData.getProducts().get(0).getStoreName());
     }
 
     /**
@@ -336,12 +412,15 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * success test
      */
     @Override @Test
+    @Transactional
     public void testDeleteProductFromCart() {
         setUpProductAddedToCart();
         ProductData productData = data.getProductData(Data.VALID);
         assertTrue(logicManager.deleteFromCart(data.getId(Data.VALID),productData.getProductName(),productData.getStoreName()).getValue());
-        Basket basket=currUser.getState().getCart().getBasket(productData.getStoreName());
+        Subscribe sub =daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
+        Basket basket=sub.getCart().getBasket(productData.getStoreName());
         assertNull(basket.getProducts().get(productData.getProductName()));
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -349,11 +428,13 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * success test
      */
     @Override @Test
+    @Transactional
     public void testEditProductsInCart() {
         setUpProductAddedToCart();
         ProductData productData = data.getProductData(Data.VALID);
         assertTrue(logicManager.editProductInCart(data.getId(Data.VALID),productData.getProductName(),productData.getStoreName(),2).getValue());
         assertEquals(2, logicManager.watchCartDetails(data.getId(Data.VALID)).getValue().getProducts().get(0).getAmount());
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -362,10 +443,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Override @Test
     public void testAddProductToCart() {
-        super.testAddProductToCart();
+        setUpProductAdded();
         testAddProductToCartBasketNull();
         testAddProductToCartValid();
+        tearDownProductAddedToCart();
     }
+
 
     /**
      * use case 2.7.4
@@ -394,27 +477,33 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * notification
      */
     @Override
-    protected void testSuccessBuyProducts() {
+    @Test
+    @Transactional
+    public void testSuccessBuyProducts() {
+        setUpProductAddedToCart();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
         assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
         //check notification
         HashMap<Integer, List<Notification>> notifications=publisher.getNotificationList();
-        List<ProductData> productDataList= (List<ProductData>) notifications.get(data.getId(Data.VALID)).get(0).getValue();
+        List<ProductPeristentData> productDataList= (List<ProductPeristentData>) notifications.get(data.getId(Data.VALID)).get(0).getValue();
         ProductData expected=data.getProductData(Data.VALID);
-        ProductData actual=productDataList.get(0);
+        ProductPeristentData actual=productDataList.get(0);
         assertEquals(actual.getProductName(),expected.getProductName());
-        assertEquals(actual.getStoreName(),expected.getStoreName());
+        assertEquals(actual.getStore(),expected.getStoreName());
         assertEquals(actual.getCategory(),expected.getCategory());
         assertEquals(actual.getAmount(),expected.getAmount());
         assertEquals(actual.getPrice(),expected.getPrice(),0.001);
+        tearDownProductAddedToCart();
     }
+
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartInvalidCountry() {
         setUpProductAddedToCart();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
@@ -422,127 +511,158 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         String country = data.getDeliveryData(Data.INVALID_COUNTRY).getCountry();
         List<String> contries=new ArrayList<>();
         contries.add("Israel");
-        stores.get(data.getStore(Data.VALID).getName()).setPurchasePolicy(new UserPurchasePolicy(contries));
+        PurchasePolicy policy = new UserPurchasePolicy(contries);
+        GsonBuilder builderPolicy = new GsonBuilder();
+        builderPolicy.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
+        Gson policyGson = builderPolicy.create();
+        String policyToAdd = policyGson.toJson(policy, PurchasePolicy.class);
+        logicManager.updatePolicy(data.getId(Data.VALID),policyToAdd,data.getStore(Data.VALID).getName());
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
         checkBuyDidntWork();
+        tearDownProductAddedToCart();
     }
 
     /**
      * use case 2.8 - buy Cart
      */
     @Test @Override
+    @Transactional
     public void testBuyCartPaymentSystemCrashed() {
-        super.testBuyCartPaymentSystemCrashed();
+        super.testBuyCartPaymentSystemCrashedTest();
         checkBuyDidntWork();
+        tearDownProductAddedToCart();
     }
 
     /**
      * use case 2.8 - buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartSupplySystemCrashed() {
-        super.testBuyCartSupplySystemCrashed();
+        super.testBuyCartSupplySystemCrashedTest();
         checkBuyDidntWork();
+        tearDownProductAddedToCart();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartSupplySystemCrashedAndPaymentCancel() {
-        super.testBuyCartSupplySystemCrashedAndPaymentCancel();
+        super.testBuyCartSupplySystemCrashedAndPaymentCancelTest();
         checkBuyDidntWork();
+        tearDownProductAddedToCart();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartNullPayment(){
-        super.testBuyCartNullPayment();
+        super.testBuyCartNullPaymentTest();
         checkBuyDidntWork();
+        tearDownProductAddedToCart();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartNullAddressPayment() {
-        super.testBuyCartNullAddressPayment();
+        super.testBuyCartNullAddressPaymentTest();
         checkBuyDidntWork();
+        tearDownProductAddedToCart();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartEmptyAddressPayment() {
-        super.testBuyCartEmptyAddressPayment();
+        super.testBuyCartEmptyAddressPaymentTest();
         checkBuyDidntWork();
+        tearDownProductAddedToCart();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartEmptyPayment() {
-        super.testBuyCartEmptyPayment();
+        super.testBuyCartEmptyPaymentTest();
         checkBuyDidntWork();
+        tearDownProductAddedToCart();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartPaymentNullName() {
-        super.testBuyCartPaymentNullName();
+        super.testBuyCartPaymentNullNameTest();
         checkBuyDidntWork();
+        tearDownProductAddedToCart();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartPaymentEmptyName(){
-        super.testBuyCartPaymentEmptyName();
+        super.testBuyCartPaymentEmptyNameTest();
         checkBuyDidntWork();
-
+        tearDownProductAddedToCart();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartNullAddress() {
-        super.testBuyCartNullAddress();
+        super.testBuyCartNullAddressTest();
         checkBuyDidntWork();
+        tearDownProductAddedToCart();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartEmptyAddress() {
-        super.testBuyCartEmptyAddress();
+        super.testBuyCartEmptyAddressTest();
         checkBuyDidntWork();
+        tearDownProductAddedToCart();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartEmptyCountry() {
-        super.testBuyCartEmptyCountry();
+        super.testBuyCartEmptyCountryTest();
         checkBuyDidntWork();
+        tearDownProductAddedToCart();
     }
 
     /**
      * use case 2.8 - test buy Cart
      */
     @Test
+    @Transactional
     public void testBuyCartNullCountry() {
-        super.testBuyCartNullCountry();
+        super.testBuyCartNullCountryTest();
         checkBuyDidntWork();
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -551,98 +671,127 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * check there are no notifications
      */
     private void checkBuyDidntWork() {
-        Cart cart=users.get(data.getSubscribe(Data.VALID).getName()).getCart();
+        Cart cart=daos.getCartDao().find(data.getSubscribe(Data.VALID).getName());
         assertEquals(cart.getBaskets().size(),1);
-        Basket basket=cart.getBaskets().get(data.getStore(Data.VALID).getName());
+        Store store=daos.getStoreDao().find(data.getStore(Data.VALID).getName());
+        Map<String,Basket> basketMap=new HashMap<>(cart.getBaskets());
+        Basket basket=basketMap.get(store.getName());
         assertFalse(basket.getProducts().isEmpty());
-        Store store=stores.get(data.getStore(Data.VALID).getName());
         assertEquals(store.getProducts().get(data.getProductData(Data.VALID).getProductName()).getAmount(),1);
         //check no notifications
-        assertTrue(publisher.getNotificationList().isEmpty());
+        assertTrue(((StubPublisher)SinglePublisher.getInstance()).getNotificationList().isEmpty());
     }
 
     /**
      * use case 2.8 - test reserveCart Products
      */
-    @Override @Test
+    @Test
+    @Transactional
     public void testBuyCart() {
-        super.testBuyCart();
-        List<Purchase> purchaseList = this.currUser.getState().watchMyPurchaseHistory().getValue();
+        setUpProductAddedToCart();
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        String country = data.getDeliveryData(Data.VALID).getCountry();
+        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address).getValue());
+        List<Purchase> purchaseList = daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName()).watchMyPurchaseHistory().getValue();
         for (Purchase purchase: purchaseList) {
             String storeName = purchase.getStoreName();
-            Store store = this.stores.get(storeName);
-            assertTrue(store.getPurchases().contains(purchase));
+            Store store = daos.getStoreDao().find(storeName);
+            assertEquals(store.getPurchases().get(0),purchase);
         }
+        tearDownProductAddedToCart();
     }
 
-    /**
-     * test: use case 3.1 - Logout
-     */
-    @Override @Test
-    public void testLogout() {
-        setUpLogedInUser();
-        Subscribe sub= (Subscribe) currUser.getState();
-        super.testLogout();
-        assertEquals(sub.getSessionNumber().get(),-1);
-    }
 
     /**
      * logout twice from same user
      */
     @Test
-    public void logoutTwice(){
-        super.testLogout();
-        assertFalse(currUser.logout());
-    }
-
-    /**
-     * test use case 3.2 - Open Store
-     */
-    @Override @Test
-    public void testOpenStore() {
-        super.testOpenStore();
-        testOpenStorePurchesAndDiscontPolicy();
-        testOpenStoreUserPermissions();
-        testOpenStoreStorePermissions();
+    public void logoutTwice() {
+        setUpLogedInUser();
+        int id = data.getId(Data.VALID);
+        assertTrue(logicManager.logout(id).getValue());
+        assertFalse(logicManager.logout(id).getValue());
+        tearDownLogin();
     }
 
     /**
      * part of test use case 3.2 - Open Store
      */
-    private void testOpenStorePurchesAndDiscontPolicy() {
+    @Test
+    public void testOpenStoreSuccess(){
+        setUpLogedInUser();
         StoreData storeData = data.getStore(Data.VALID);
-        Store store = stores.get(storeData.getName());
-        assertEquals(storeData.getDescription(),"description");
+        assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
+        daos.getStoreDao().removeStore(storeData.getName());
+        tearDownOpenStore();
     }
 
     /**
      * part of test use case 3.2 - Open Store
      */
-    private void testOpenStoreUserPermissions() {
+    @Test
+    public void testOpenStoreReopen() {
+        setUpLogedInUser();
+        StoreData storeData = data.getStore(Data.VALID);
+        assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
+        assertFalse(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
+        daos.getStoreDao().removeStore(storeData.getName());
+        tearDownOpenStore();
+    }
+
+    /**
+     * part of test use case 3.2 - Open Store
+     */
+    @Test
+    public void testOpenStorePurchesAndDiscontPolicy() {
+        setUpOpenedStore();
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daos.getStoreDao().find(storeData.getName());
+        assertEquals(store.getDescription(),"description");
+        tearDownOpenStore();
+    }
+
+    /**
+     * part of test use case 3.2 - Open Store
+     */
+    @Test
+    public void testOpenStoreUserPermissions() {
+        setUpOpenedStore();
         StoreData storeData = data.getStore(Data.VALID);
         Subscribe subscribe = (Subscribe)currUser.getState();
         Permission permission = subscribe.getPermissions().get(storeData.getName());
         assertTrue(permission.getPermissionType().contains(PermissionType.OWNER));
+        tearDownOpenStore();
     }
 
     /**
      * part of test use case 3.2 - Open Store
      */
-    private void testOpenStoreStorePermissions() {
+    @Test
+    public void testOpenStoreStorePermissions() {
+        setUpOpenedStore();
         StoreData storeData = data.getStore(Data.VALID);
-        Store store = stores.get(storeData.getName());
+        Store store = daos.getStoreDao().find(storeData.getName());
         assertTrue(store.getPermissions().containsKey(currUser.getUserName()));
         Permission p = store.getPermissions().get(currUser.getUserName());
         assertTrue(p.getPermissionType().contains(PermissionType.OWNER));
+        tearDownOpenStore();
     }
 
 
     /**
      * use case 3.3 - write review
      */
-    @Override @Test
+    @Override
+    @Test
     public void testWriteReview() {
         super.testWriteReview();
+    }
+
+    @Override
+    protected void testWriteReviewTest(){
+        super.testWriteReviewTest();
         testWriteReviewSuccess();
         testWriteReviewProductDidntPurchased();
     }
@@ -653,7 +802,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     private void testWriteReviewSuccess() {
         Review review = data.getReview(Data.VALID);
         //check if the review is in store
-        Store store = stores.get(review.getStore());
+        Store store = daos.getStoreDao().find(review.getStore());
         Product p = store.getProduct(review.getProductName());
         //check if the review is in the product
         List<Review> reviewList = p.getReviews();
@@ -688,35 +837,38 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * use case 3.5 -add request
      */
     @Override
+    @Test
     public void testAddRequest(){
-        setUpOpenedStore();
-        testSubscribeAddRequestSuccess();
+        super.testAddRequest();
     }
 
     /**
      * part of use case 3.5 -add request
      */
-    private void testSubscribeAddRequestSuccess() {
+    @Override
+    protected void testAddRequestSuccess() {
         Request request = data.getRequest(Data.VALID);
         assertTrue(logicManager.addRequest(data.getId(Data.VALID),request.getStoreName(), request.getContent()).getValue());
 
         // check request saved in the store and user.
         StoreData storeData = data.getStore(Data.VALID);
 
-        Store store = stores.get(storeData.getName());
-        assertEquals(store.getRequests().get(request.getId()).getSenderName(), request.getSenderName());
-        assertEquals(store.getRequests().get(request.getId()).getStoreName(), request.getStoreName());
-        assertEquals(store.getRequests().get(request.getId()).getContent(), request.getContent());
-        assertEquals(store.getRequests().get(request.getId()).getComment(), request.getComment());
+        Store store = daos.getStoreDao().find(storeData.getName());
+        Request temp=store.getRequests().values().iterator().next();
+        assertEquals(temp.getSenderName(), request.getSenderName());
+        assertEquals(temp.getStoreName(), request.getStoreName());
+        assertEquals(temp.getContent(), request.getContent());
+        assertEquals(temp.getComment(), request.getComment());
 
-        Subscribe subscribe = users.get(currUser.getUserName());
-        assertEquals(subscribe.getRequests().get(0).getSenderName(), request.getSenderName());
-        assertEquals(subscribe.getRequests().get(0).getStoreName(), request.getStoreName());
-        assertEquals(subscribe.getRequests().get(0).getContent(), request.getContent());
-        assertEquals(subscribe.getRequests().get(0).getComment(), request.getComment());
+        Subscribe subscribe = cashe.findSubscribe(currUser.getUserName());
+        temp=subscribe.getRequests().get(0);
+        assertEquals(temp.getSenderName(), request.getSenderName());
+        assertEquals(temp.getStoreName(), request.getStoreName());
+        assertEquals(temp.getContent(), request.getContent());
+        assertEquals(temp.getComment(), request.getComment());
     }
 
-    /**
+     /**
      * use case 3.7 - watch purchase history
      */
     @Override @Test
@@ -725,28 +877,38 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         List<Purchase> purchases = logicManager.watchMyPurchaseHistory(data.getId(Data.VALID)).getValue();
         assertNotNull(purchases);
         assertEquals(1,purchases.size());
+        tearDownOpenStore();
     }
 
-    /**
-     * test use case 4.1.1 -add product to store
-     */
-    @Override @Test
-    public void testAddProductSuccess() {
-        super.testAddProductSuccess();
-        testAddProductWithSameName();
-    }
 
     /**
+     * use case 4.1.1
      * test adding product with name that is not unique
      */
-    private void testAddProductWithSameName() {
+    //TODO fix it
+    @Test
+    public void testAddProductWithSameName() {
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.SAME_NAME)).getValue());
     }
 
     /**
+     * use case 4.1.1
+     * test that a product added to the store
+     */
+    @Test
+    @Transactional
+    public void testAddProductToStore() {
+        setUpOpenedStore();
+        assertTrue(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.VALID)).getValue());
+        tearDownOpenStore();
+    }
+
+    /**
+     * use case 4.1.1
      * test try adding product without being owner or manager of the store
      */
     @Test
+    @Transactional
     public void testAddProductNotManagerOfStore() {
          setUpOpenedStore();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
@@ -754,15 +916,19 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Permission permission = sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         sub.getPermissions().clear();
+        daos.getSubscribeDao().remove(sub.getName());
+        daos.getSubscribeDao().addSubscribe(sub);
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.VALID)).getValue());
-        sub.getPermissions().put(validStoreName,permission);
         assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+        tearDownOpenStore();
     }
 
     /**
+     * use case 4.1.1
      * test that user that has no CRUD permission or owner permission cant add products to store
      */
     @Test
+    @Transactional
     public void testAddProductDontHavePermission() {
         setUpOpenedStore();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
@@ -770,9 +936,18 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Permission permission = sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         permission.removeType(PermissionType.OWNER);
+        daos.getSubscribeDao().remove(sub.getName());
+        daos.getSubscribeDao().addSubscribe(sub);
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.VALID)).getValue());
-        permission.addType(PermissionType.OWNER);
-        assertFalse(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+        assertFalse(daos.getStoreDao().find(store.getName()).getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+        tearDownOpenStore();
+    }
+
+    @Test
+    @Override
+    @Transactional
+    public void testRemoveProductFromStore(){
+        super.testRemoveProductFromStore();
     }
 
     /**
@@ -781,7 +956,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     @Override
     protected void testRemoveProductSuccess() {
         super.testRemoveProductSuccess();
-        Subscribe sub=(Subscribe)currUser.getState();
+        Subscribe sub=daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
         assertFalse(sub.getPermissions().containsKey(data.getProductData(Data.VALID).getProductName()));
     }
 
@@ -789,44 +964,54 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * part of use case 4.1.2 test
      */
     @Test
+    @Transactional
     public void checkRemoveProductNotManager() {
         setUpProductAdded();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
-        Subscribe sub = ((Subscribe) currUser.getState());
+        Subscribe sub = daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
         Permission permission = sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         sub.getPermissions().clear();
-        assertFalse(sub.removeProductFromStore(data.getProductData(Data.VALID).getProductName(),validStoreName).getValue());
+        daos.getSubscribeDao().remove(sub.getName());
+        daos.getSubscribeDao().addSubscribe(sub);
+        assertFalse(logicManager.removeProductFromStore(data.getId(Data.VALID),data.getProductData(Data.VALID).getProductName(),validStoreName).getValue());
         sub.getPermissions().put(validStoreName,permission);
-        assertTrue(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+        assertTrue(daos.getStoreDao().find(store.getName()).getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 4.1.2 test
      */
     @Test
+    @Transactional
     public void checkRemoveProductHasNoPermission() {
         setUpProductAdded();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
-        Subscribe sub = ((Subscribe) currUser.getState());
+        Subscribe sub = daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
         Permission permission = sub.getPermissions().get(validStoreName);
         Store store=permission.getStore();
         permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.removeProductFromStore(data.getProductData(Data.VALID).getProductName(),validStoreName).getValue());
-        permission.addType(PermissionType.OWNER);
+        daos.getSubscribeDao().remove(sub.getName());
+        daos.getSubscribeDao().addSubscribe(sub);
+        assertFalse(logicManager.removeProductFromStore(data.getId(Data.VALID),data.getProductData(Data.VALID).getProductName(),validStoreName).getValue());
         assertTrue(store.getProducts().containsKey(data.getProductData(Data.VALID).getProductName()));
+        tearDownOpenStore();
     }
 
     /**
      * use case 4.1.3 edit product
      */
     @Override @Test
+    @Transactional
     public void testEditProductSuccess() {
-        super.testEditProductSuccess();
+        setUpProductAdded();
+        assertTrue(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.EDIT)).getValue());
         ProductData product=data.getProductData(Data.EDIT);
-        Subscribe sub=(Subscribe) currUser.getState();
+        Subscribe sub=daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
         assertTrue(sub.getPermissions().get(product.getStoreName()).getStore()
                 .getProducts().get(product.getProductName()).equal(product));
+        tearDownOpenStore();
     }
 
     /**
@@ -836,20 +1021,24 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     public void checkEditProductNotManager() {
         setUpProductAdded();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
-        Subscribe sub = ((Subscribe) currUser.getState());
+        Subscribe sub = cashe.findSubscribe(data.getSubscribe(Data.VALID).getName());
         Permission permission=sub.getPermissions().get(validStoreName);
         ProductData pData=data.getProductData(Data.EDIT);
         Store store=permission.getStore();
         sub.getPermissions().clear();
-        assertFalse(sub.editProductFromStore(pData).getValue());
-        assertFalse(store.getProducts().get(pData.getProductName()).equal(pData));
+        daos.getSubscribeDao().remove(sub.getName());
+        daos.getSubscribeDao().addSubscribe(sub);
+        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),pData).getValue());
+        assertFalse(daos.getStoreDao().find(store.getName()).getProducts().get(pData.getProductName()).equal(pData));
         sub.getPermissions().put(validStoreName,permission);
+        tearDownOpenStore();
     }
 
     /**
      * edit product when not have crud products permission
      */
     @Test
+    @Transactional
     public void checkEditProductHasNoPermission() {
         setUpProductAdded();
         String validStoreName = data.getProductData(Data.VALID).getStoreName();
@@ -858,31 +1047,39 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         ProductData pData=data.getProductData(Data.EDIT);
         Store store=permission.getStore();
         permission.removeType(PermissionType.OWNER);
-        assertFalse(sub.editProductFromStore(data.getProductData(Data.VALID)).getValue());
-        assertFalse(store.getProducts().get(pData.getProductName()).equal(pData));
+        daos.getSubscribeDao().remove(sub.getName());
+        daos.getSubscribeDao().addSubscribe(sub);
+        assertFalse(logicManager.editProductFromStore(data.getId(Data.VALID),data.getProductData(Data.VALID)).getValue());
+        assertFalse(daos.getStoreDao().find(store.getName()).getProducts().get(pData.getProductName()).equal(pData));
         permission.addType(PermissionType.OWNER);
+        tearDownOpenStore();
     }
 
     /**
      * use case 4.2.1.1 -add discount to store
      */
-    @Test @Override
-    public void testAddDiscountToStoreSuccess(){
-        super.testAddDiscountToStoreSuccess();
-        Subscribe sub = ((Subscribe) currUser.getState());
+    @Override
+    @Transactional
+    protected void testAddDiscountToStoreSuccessTest() {
+        super.testAddDiscountToStoreSuccessTest();
+        Subscribe sub = daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
         Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
-        assertTrue(store.getDiscount().containsKey(0));
+        assertTrue(store.getDiscount().values().iterator().next() instanceof RegularDiscount);
     }
 
     /**
      * use case 4.2.1.2 -remove discount from store
      */
     @Test
-    public void testDeleteDiscountFromStoreSuccess(){
-        super.testDeleteDiscountFromStoreSuccess();
-        Subscribe sub = ((Subscribe) currUser.getState());
-        Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
+    @Transactional
+    public void testDeleteDiscountFromStoreSuccessTest(){
+        setUpDiscountAdded();
+        int discountId=daos.getStoreDao().find(data.getStore(Data.VALID).getName()).getDiscount().values().iterator().next().getId();
+        assertTrue(logicManager.deleteDiscountFromStore(data.getId(Data.VALID),discountId,
+                    data.getStore(Data.VALID).getName()).getValue());
+        Store store=daos.getStoreDao().find(data.getStore(Data.VALID).getName());
         assertTrue(store.getDiscount().isEmpty());
+        tearDownOpenStore();
     }
 
     /**
@@ -891,62 +1088,162 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     @Test @Override
     public void testViewDiscountSuccess(){
-        super.testViewDiscountSuccess();
+        setUpDiscountAdded();
         String store=data.getStore(Data.VALID).getName();
+        int discountId=daos.getStoreDao().find(store).getDiscount().values().iterator().next().getId();
         HashMap<Integer, String> discounts =logicManager.viewDiscounts(store).getValue();
-        assertNotNull(discounts.get(0));
+        assertNotNull(discounts.get(discountId));
         try {
             GsonBuilder builderDiscount = new GsonBuilder();
             builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
             Gson discountGson = builderDiscount.create();
-            RegularDiscount discount = (RegularDiscount) (discountGson.fromJson(discounts.get(0),Discount.class));
+            RegularDiscount discount = (RegularDiscount) (discountGson.fromJson(discounts.get(discountId),Discount.class));
             assertEquals(discount.getProduct(),data.getProductData(Data.VALID).getProductName());
             assertEquals(discount.getPercantage(),10,0.001);
         }
         catch(Exception e){
             fail();
         }
+        tearDownOpenStore();
     }
 
     /**
      * use case 4.2.2.1 - update policy for the store
      */
-    @Test @Override
-    public void testUpdatePolicy() {
-        super.testUpdatePolicy();
-        Subscribe subscribe = ((Subscribe) currUser.getState());
+    @Override
+    protected void testUpdatePolicyTest() {
+        super.testUpdatePolicyTest();
+        Subscribe subscribe = daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName());
         Store store = subscribe.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
         assertNotNull(store.getPurchasePolicy());
     }
 
-    @Test @Override
-    public void testViewStorePolicy() {
-        super.testViewStorePolicy();
+
+    /**
+     * use case 4.2.2.2 - view policy in the store
+     */
+    @Override
+    protected void testViewStorePolicyTest() {
         String store = data.getStore(Data.VALID).getName();
         String output = logicManager.viewPolicy(store).getValue();
         assertFalse(output.isEmpty());
+    }
 
+    @Test
+    public void testViewStorePolicy(){
+        super.testViewStorePolicy();
     }
 
 
     /**
-     * use case 4.3 - manage owner - success
+     * use case 4.3.1 - manage owner - success
      */
-    @Override
-    protected void testManageOwnerSuccess() {
-        super.testManageOwnerSuccess();
+    @Test
+    public void testManageOwnerSuccess() {
+        setUpOpenedStore();
+        Subscribe valid2=data.getSubscribe(Data.VALID2);
+        logicManager.login(data.getId(Data.VALID2),valid2.getName(),valid2.getPassword());
+        assertTrue(logicManager.manageOwner(data.getId(Data.VALID),data.getStore(Data.VALID).getName(),
+                data.getSubscribe(Data.VALID2).getName()).getValue());
         checkPermissions(Data.VALID2);
+        HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
+        for(List<Notification> n:notifications.values()){
+            assertEquals(data.getStore(Data.VALID).getName(),n.get(0).getValue());
+        }
+        tearDownOpenStore();
+    }
+
+    @Test
+    public void manageOwnerNeed2PeopleApprove(){
+        manageOwnerNeed2PeopleApproveTest();
+        tearDownOpenStore();
+    }
+
+    private void manageOwnerNeed2PeopleApproveTest() {
+        setUpManagedOwner();
+        String storeName=data.getStore(Data.VALID).getName();
+        Subscribe admin=data.getSubscribe(Data.ADMIN);
+        String niv = ManageAgain(storeName, admin);
+        Subscribe valid2=data.getSubscribe(Data.VALID2);
+        logicManager.login(data.getId(Data.VALID2),valid2.getName(),valid2.getPassword());
+        HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
+        for(List<Notification> n:notifications.values()){
+            List<String> storeOwner= (List<String>) n.get(0).getValue();
+            assertEquals(data.getStore(Data.VALID).getName(),storeOwner.get(0));
+            assertEquals(valid2.getName(),storeOwner.get(1));
+        }
+        checkAgreement(storeName,niv);
+    }
+
+    private String ManageAgain(String storeName, Subscribe admin) {
+        int validId=data.getId(Data.VALID);
+        logicManager.login(data.getId(Data.ADMIN),admin.getName(),admin.getPassword());
+        String niv=data.getSubscribe(Data.VALID2).getName();
+        logicManager.manageOwner(validId,storeName,niv);
+        return niv;
+    }
+
+    private void checkAgreement(String storeName,String owner) {
+        Store store=daos.getStoreDao().find(storeName);
+        OwnerAgreement ownerAgreement=store.getAgreementMap().get(owner);
+        assertEquals(ownerAgreement.getOwner(),owner);
+        assertEquals(ownerAgreement.getGivenBy(),data.getSubscribe(Data.VALID).getName());
+        assertTrue(daos.getSubscribeDao().find(owner).getPermissions().isEmpty());
     }
 
     /**
-     * use case 4.3 - manage owner - fail
+     * use case 4.3.2 - approveManager - success
      */
-    @Override
-    protected void testManageOwnerFail() {
-        super.testManageOwnerFail();
-        String sName=data.getStore(Data.VALID).getName();
-        assertFalse(logicManager.manageOwner(data.getId(Data.VALID),sName,sName).getValue());
-        assertFalse(stores.get(sName).getPermissions().containsKey(sName));
+    @Test
+    public void approveManagerSuccess(){
+        String storeName=data.getStore(Data.VALID).getName();
+        Subscribe niv=data.getSubscribe(Data.VALID2);
+        manageOwnerNeed2PeopleApproveTest();
+        int agreementId=daos.getStoreDao().find(storeName).getAgreementMap().get(niv.getName()).getId();
+        assertTrue(logicManager.approveManageOwner(data.getId(Data.ADMIN),storeName,niv.getName()).getValue());
+        checkPermissions(Data.VALID2);
+        checkAgreementRemoved(agreementId);
+        tearDownOpenStore();
+    }
+
+    /**
+     * test appoint new owner when the last one that need to approve being deleted
+     */
+    @Test
+    public void approveManagerSuccessByDelete(){
+        String storeName=data.getStore(Data.VALID).getName();
+        Subscribe admin=data.getSubscribe(Data.ADMIN);
+        Subscribe niv=data.getSubscribe(Data.VALID2);
+        manageOwnerNeed2PeopleApproveTest();
+        int agreementId=daos.getStoreDao().find(storeName).getAgreementMap().get(niv.getName()).getId();
+        assertTrue(logicManager.removeManager(data.getId(Data.VALID),admin.getName(),storeName).getValue());
+        checkPermissions(Data.VALID2);
+        checkAgreementRemoved(agreementId);
+        tearDownOpenStore();
+    }
+
+    private void checkAgreementRemoved(int agreementId) {
+        assertNull(daos.getOwnerAgreementDao().find(agreementId));
+        Subscribe valid2=data.getSubscribe(Data.VALID2);
+        logicManager.login(data.getId(Data.VALID2),valid2.getName(),valid2.getPassword());
+        HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
+        List<String> storeOwner= (List<String>) notifications.get(0).get(0).getValue();
+        String store=data.getStore(Data.VALID).getName();
+        assertEquals(storeOwner.get(0),store);
+        assertEquals(storeOwner.get(1),valid2.getName());
+        assertEquals(notifications.get(2).get(0).getValue(),store);
+    }
+
+
+    /**
+     * get list of all the managers user with id need to approve in storeName test
+     */
+    @Test
+    public void testGetApprovedManagersNotExistedSuccess(){
+        manageOwnerNeed2PeopleApproveTest();
+        List<String> managers=logicManager.getApprovedManagers(data.getId(Data.ADMIN),data.getStore(Data.VALID).getName()).getValue();
+        assertTrue(managers.contains(data.getSubscribe(Data.VALID2).getName()));
+        tearDownOpenStore();
     }
 
     /**
@@ -954,8 +1251,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * @param d - the data of the user to check the permission of
      */
     private void checkPermissions(Data d){
-        Subscribe sub=(Subscribe) currUser.getState();
-        Store store=sub.getGivenByMePermissions().get(0).getStore();
+        Store store=daos.getStoreDao().find(data.getStore(Data.VALID).getName());
         Subscribe newManager=data.getSubscribe(d);
         Permission p=store.getPermissions().get(newManager.getName());
         assertNotNull(p);
@@ -968,6 +1264,13 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 4.5 - add manager
      */
+
+    @Test
+    @Override
+    public void testAddManagerToStore(){
+        super.testAddManagerToStore();
+    }
+
     @Override
     protected void testAddManagerStoreSuccess() {
         super.testAddManagerStoreSuccess();
@@ -977,6 +1280,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 4.6.1 -add permission
      */
+    @Test
+    @Override
+    public void testAddPermission(){
+        super.testAddPermission();
+    }
+
     @Override
     protected void testAddPermissionSuccess() {
         super.testAddPermissionSuccess();
@@ -988,6 +1297,11 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     /**
      * use case 4.6.2 - remove permission
      */
+    @Test
+    @Override
+    public void testRemovePermission(){
+        super.testRemovePermission();
+    }
     @Override
     protected void testRemovePermissionSuccess() {
         super.testRemovePermissionSuccess();
@@ -1002,85 +1316,85 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * notification
      * remove Admin from being manager and check that niv was removed from being a manager recursively
      */
+
+    @Override
+    @Test
+    @Transactional
+    public void testRemoveManager(){
+        super.testRemoveManager();
+    }
+
     @Override
     protected void testRemoveManagerSuccess() {
-        Subscribe sub=(Subscribe) currUser.getState();
-        Permission p=sub.getGivenByMePermissions().get(0);
-        logicManager.login(data.getId(Data.ADMIN),data.getSubscribe(Data.ADMIN).getName(),data.getSubscribe(Data.ADMIN).getPassword());
         Subscribe niv=data.getSubscribe(Data.VALID2);
         logicManager.login(data.getId(Data.VALID2),niv.getName(),niv.getPassword());
+        Subscribe sub=cashe.findSubscribe(data.getSubscribe(Data.VALID).getName());
+        Permission p=sub.getGivenByMePermissions().get(0);
         String storeName=p.getStore().getName();
-        //add another manager
-        p.getOwner().addManager(niv,storeName);
         super.testRemoveManagerSuccess();
-        logicManager.setPublisher(this.publisher);
+        SinglePublisher.initPublisher(this.publisher);
         assertFalse(niv.getPermissions().containsKey(storeName));
         assertFalse(p.getOwner().getPermissions().containsKey(storeName));
         //check notifications
-        HashMap<Integer, List<Notification>> notifications=publisher.getNotificationList();
-        for(int i=0;i<=2;i+=2){
-            assertEquals(data.getStore(Data.VALID).getName(),notifications.get(i).get(0).getValue());
+        HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
+        for(List<Notification> n:notifications.values()){
+            assertEquals(data.getStore(Data.VALID).getName(),n.get(0).getValue());
         }
     }
 
     /**
      * use case 4.9.1 - view request
      */
-    @Override @Test
-    public void testStoreViewRequest(){
-        super.testStoreViewRequest();
-        testStoreViewRequestSuccess();
-        testStoreViewRequestFail();
-    }
-
-    /**
-     * part of use case 4.9.1 - view request
-     */
-    private void testStoreViewRequestSuccess() {
-        testAddRequest();
+    @Test
+    @Transactional
+    public void testStoreViewRequestSuccess() {
+        setUpRequestAdded();
         StoreData storeData = data.getStore(Data.VALID);
-        List<Request> requests=new LinkedList<>(stores.get(storeData.getName()).getRequests().values());
+        Store store = daos.getStoreDao().find(storeData.getName());
+        List<Request> requests=new LinkedList<>(store.getRequests().values());
         List<RequestData> excepted = new LinkedList<>();
         for(Request r:requests)
             excepted.add(new RequestData(r));
         List<RequestData> actual = logicManager.viewStoreRequest(data.getId(Data.VALID), storeData.getName()).getValue();
-        for(int i=0;i<=1;i++){
+        for(int i=0;i<1;i++){
             assertEquals(actual.get(i).getStoreName(),excepted.get(i).getStoreName());
             assertEquals(actual.get(i).getComment(),excepted.get(i).getComment());
             assertEquals(actual.get(i).getContent(),excepted.get(i).getContent());
             assertEquals(actual.get(i).getId(),excepted.get(i).getId());
             assertEquals(actual.get(i).getSenderName(),excepted.get(i).getSenderName());
         }
+        daos.getRequestDao().removeRequest(requests.get(0).getId());
+        store.getRequests().clear();
+        tearDownOpenStore();
     }
 
     /**
      * part of use case 4.9.1 - view request
      */
-    private void testStoreViewRequestFail() {
+    @Test
+    @Transactional
+    public void testStoreViewRequestFail() {
+        setUpOpenedStore();
         assertTrue(logicManager.viewStoreRequest(data.getId(Data.VALID), data.getStore(Data.NULL_NAME).getName()).getValue().isEmpty());
-    }
-
-    /**
-     * test use case 4.9.2
-     */
-    @Override @Test
-    public void testReplayRequest() {
-        testReplayRequestSuccess();
-        testReplayRequestFail();
+        tearDownOpenStore();
     }
 
     /**
      * part of test use case 4.9.2
      * notification
      */
-    private void testReplayRequestSuccess() {
-        testAddRequest();
-        Request request = data.getRequest(Data.VALID);
+    @Test
+    @Transactional
+    public void testReplayRequestSuccess() {
+        setUpRequestAdded();
         //check the comment savePurchases
         StoreData storeData = data.getStore(Data.VALID);
+        Store store = daos.getStoreDao().find(storeData.getName());
+        List<Request> requests=new LinkedList<>(store.getRequests().values());
+        Request request = requests.get(0);
         RequestData actual = logicManager.replayRequest(data.getId(Data.VALID),request.getStoreName(), request.getId(),
                 "The milk is there, open your eyes!").getValue();
-        Request excepted = stores.get(storeData.getName()).getRequests().get(request.getId());
+        Request excepted = daos.getRequestDao().find(request.getId());
         assertEquals(excepted.getId(),actual.getId());
         assertEquals(excepted.getComment(),actual.getComment());
         //check notifications
@@ -1090,23 +1404,34 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertEquals(actual.getContent(),notificationRequest.getContent());
         assertEquals(actual.getComment(),notificationRequest.getComment());
         assertEquals(actual.getSenderName(),notificationRequest.getSenderName());
+
+        daos.getRequestDao().removeRequest(request.getId());
+        store.getRequests().clear();
+        tearDownOpenStore();
     }
 
     /**
      * part of test use case 4.9.2
      */
-    private void testReplayRequestFail() {
+    @Test
+    @Transactional
+    public void testReplayRequestFail() {
+        setUpOpenedStore();
         Request request = data.getRequest(Data.WRONG_ID);
-        assertNull(logicManager.replayRequest(data.getId(Data.VALID), request.getStoreName(), request.getId(), request.getContent()).getValue());
+        assertNull(logicManager.replayRequest(data.getId(Data.VALID), request.getStoreName(), null, request.getContent()).getValue());
+        tearDownOpenStore();
     }
 
     /**
      * test use case 4.10 and 6.4.2 -watch store history
      */
     @Override
-    protected void testWatchStoreHistorySuccess() {
+    @Test
+    public void testWatchStoreHistorySuccess() {
+        setUpBoughtProductAdminState();
         testWatchStoreHistorySuccessNotAdmin();
         testWatchStoreHistorySuccessWhenAdmin();
+        tearDownOpenStore();
     }
 
     /**
@@ -1144,43 +1469,58 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * tests for getManagersOfStore
+     * fail not existing store in the system
+     */
+    @Test
+    @Transactional
+    public void testGetManagersOfStoreFailStoreNotExist(){
+        setUpLogedInUser();
+        StoreData storeData = data.getStore(Data.WRONG_STORE);
+        assertNull(logicManager.getManagersOfStore(storeData.getName()).getValue());
+        tearDownLogin();
+    }
+
+    /**
      * tests for GetStoresManagedByUsers
      */
 
     @Test
+    @Transactional
     public void testGetStoresManagedByUsersOwnerSuccess(){
         setUpOpenedStore();
         Response<List<StoreData>> response= logicManager.getStoresManagedByUser(data.getId(Data.VALID));
         assertNotNull(response.getValue());
         assertEquals(response.getReason(),OpCode.Success);
-
-
+        tearDownOpenStore();
     }
 
     @Test
+    @Transactional
     public void testGetStoresManagedByUsersGuestFail(){
         setUpConnect();
         Response<List<StoreData>> response= logicManager.getStoresManagedByUser(data.getId(Data.VALID));
         assertNull(response.getValue());
         assertEquals(response.getReason(),OpCode.No_Stores_To_Manage);
+        tearDownRegisteredUser();
 
     }
 
     @Test
+    @Transactional
     public void testGetStoresManagedByUsersNotManagerFail(){
         setUpLogedInUser();
         Response<List<StoreData>> response= logicManager.getStoresManagedByUser(data.getId(Data.VALID));
         assertNull(response.getValue());
         assertEquals(response.getReason(),OpCode.No_Stores_To_Manage);
-
-
+        tearDownLogin();
     }
 
     /**
      *  tests for getPermissionsForStore
      */
-
     @Test
+    @Transactional
     public void  testGetPermissionsForStoreOwnerSuccess(){
         setUpOpenedStore();
         StoreData storeData = data.getStore(Data.VALID);
@@ -1189,9 +1529,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
                         storeData.getName());
         assertTrue(response.getValue().contains(StorePermissionType.OWNER));
         assertEquals(response.getReason(),OpCode.Success);
-
+        tearDownOpenStore();
     }
+
+
     @Test
+    @Transactional
     public void testGetPermissionsForStoreFailUserNotExist(){
         StoreData storeData = data.getStore(Data.VALID);
         Response<Set<StorePermissionType>> response=
@@ -1199,16 +1542,19 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
                         storeData.getName());
         assertNull(response.getValue());
         assertEquals(response.getReason(),OpCode.Dont_Have_Permission);
+        tearDownRegisteredUser();
     }
 
     @Test
+    @Transactional
     public void testGetPermissionsForStoreFailStoreNotExist(){
+        setUpRegisteredUser();
         Response<Set<StorePermissionType>> response=
                 logicManager.getPermissionsForStore(data.getId(Data.VALID),
                         "invalidStore");
         assertNull(response.getValue());
         assertEquals(response.getReason(),OpCode.Dont_Have_Permission);
-
+        tearDownRegisteredUser();
     }
 
     /**
@@ -1216,6 +1562,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * success
      */
     @Test
+    @Transactional
     public void  testGetManagersOfStoreSuccess(){
         setUpManagerAddedSubManagerAdded();
         StoreData storeData = data.getStore(Data.VALID);
@@ -1225,12 +1572,14 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         expectedManager.add(data.getSubscribe(Data.ADMIN).getName());
         List<String> mangers=logicManager.getManagersOfStore(storeData.getName()).getValue();
         assertEquals(expectedManager,mangers);
+        tearDownManagerAdded();
     }
 
     /**
      * getManagersOfStoreUserManaged tests
      */
     @Test
+    @Transactional
     public void getManagersOfStoreUserManagedSuccess(){
         setUpManagerAddedSubManagerAdded();
         List<String> managers=logicManager.getManagersOfStoreUserManaged(data.getId(Data.VALID),
@@ -1238,16 +1587,19 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         List<String> expectedManagers=new LinkedList<>();
         expectedManagers.add(data.getSubscribe(Data.ADMIN).getName());
         assertEquals(managers,expectedManagers);
+        tearDownManagerAdded();
     }
 
     /**
      * get all the users for the admin
      */
     @Test
+    @Transactional
     public void testGetAllUsersNotAnAdmin() {
         setUpRegisteredUser();
         List<String> users = logicManager.getAllUsers(data.getId(Data.VALID)).getValue();
         assertTrue(users.isEmpty());
+        tearDownRegisteredUser();
     }
 
     @Test @Override
@@ -1266,6 +1618,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         double actual = logicManager.getRevenueToday(data.getId(Data.ADMIN)).getValue();
         assertEquals(10, actual, 0.001);
         logicManager.logout(data.getId(Data.ADMIN));
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -1278,6 +1631,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         logicManager.login(data.getId(Data.ADMIN),sub.getName(),sub.getPassword());
         double actual = logicManager.getRevenueToday(data.getId(Data.ADMIN)).getValue();
         assertEquals(0, actual, 0.001);
+        tearDownLogin();
     }
 
     /**
@@ -1292,6 +1646,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         double actual = logicManager.getRevenueToday(data.getId(Data.ADMIN)).getValue();
         assertEquals(0, actual, 0.001);
         logicManager.logout(data.getId(Data.VALID));
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -1308,6 +1663,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         double actual = logicManager.getRevenueByDate(data.getId(Data.ADMIN), date).getValue();
         assertEquals(10, actual, 0.001);
         logicManager.logout(data.getId(Data.ADMIN));
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -1323,6 +1679,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
                 LocalDate.now().getYear());
         double actual = logicManager.getRevenueByDate(data.getId(Data.ADMIN), date).getValue();
         assertEquals(0, actual, 0.001);
+        tearDownLogin();
     }
 
     /**
@@ -1340,6 +1697,21 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         double actual = logicManager.getRevenueByDate(data.getId(Data.ADMIN), date).getValue();
         assertEquals(0, actual, 0.001);
         logicManager.logout(data.getId(Data.VALID));
+        tearDownProductAddedToCart();
+    }
+
+    /**
+     * tear down
+     */
+
+    private void tearDownProductAddedToCart() {
+        daos.getSubscribeDao().remove(data.getSubscribe(Data.VALID).getName());
+        tearDownOpenStore();
+    }
+
+    @After
+    public void tearDown() {
+        daos.getRevenueDao().remove(LocalDate.now());
     }
 }
 

@@ -10,7 +10,8 @@ import Domain.ProductInCart;
 import Domain.Review;
 import Domain.Store;
 
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.Map;
 
 public class StoreStub extends Store {
 
@@ -27,7 +28,7 @@ public class StoreStub extends Store {
      * @return
      */
     @Override
-    public boolean policyCheck(PaymentData paymentData, String country, HashMap<String, ProductInCart> list) {
+    public boolean policyCheck(PaymentData paymentData, String country, Map<String, ProductInCart> list) {
         return false;
     }
 
@@ -90,5 +91,15 @@ public class StoreStub extends Store {
     @Override
     public Response<Boolean> deleteDiscount(int discountId) {
         return new Response<>(true,OpCode.Success);
+    }
+
+    /**
+     * use case 2.8 - reserveCart cart
+     * @param otherProducts - the products to remove from store
+     * @return true
+     */
+    @Override
+    public boolean reserveProducts(Collection<ProductInCart> otherProducts) {
+        return true;
     }
 }

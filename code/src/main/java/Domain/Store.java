@@ -2,31 +2,86 @@ package Domain;
 
 import DataAPI.*;
 import Domain.Discount.Discount;
+import Domain.Notification.BuyNotification;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Domain.Notification.Notification;
+import Persitent.DaoHolders.StoreDaoHolder;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
+import javax.persistence.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
+@Entity
+@Table(name="store")
 public class Store {
 
-    private String name; //unique
+    @Id
+    @Column(name="storename")
+    private String name;
+
+    @Column(name="description")
     private String description;
+
+    @OneToOne(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(name="policy_in_store",
+            joinColumns ={@JoinColumn(name = "store", referencedColumnName="storename")},
+            inverseJoinColumns={@JoinColumn(name="pol_id", referencedColumnName="pol_id")}
+    )
     private PurchasePolicy purchasePolicy;
-    private AtomicInteger discountCounter;
-    private ConcurrentHashMap<Integer,Discount> discountPolicy;
-    private ConcurrentHashMap<String, Product> products;
-    private ConcurrentHashMap<String, Category> categoryList;
-    private ConcurrentHashMap<Integer, Request> requests;
-    private ConcurrentHashMap<String, Permission> permissions;
+
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @MapKey(name = "id")
+    @JoinTable(name="discount_in_store",
+            joinColumns ={@JoinColumn(name = "store", referencedColumnName="storename")},
+            inverseJoinColumns={@JoinColumn(name="discount_id", referencedColumnName="id")}
+    )
+    private Map<Integer,Discount> discountPolicy;
+
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @MapKey(name = "name")
+    @JoinColumn(name="storeName",referencedColumnName = "storename",insertable=false,updatable = false)
+    private Map<String, Product> products;
+
+    @OneToMany(cascade=CascadeType.PERSIST,fetch = FetchType.EAGER)
+    @MapKey(name = "name")
+    @JoinTable(name="categories_in_store",
+            joinColumns ={@JoinColumn(name = "store", referencedColumnName="storename")},
+            inverseJoinColumns={@JoinColumn(name="category", referencedColumnName="name")}
+    )
+    private Map<String, Category> categoryList;
+
+
+    @OneToMany(cascade=CascadeType.PERSIST,fetch = FetchType.EAGER)
+    @MapKey(name = "owner")
+    @JoinColumn(name="store",referencedColumnName = "storename",updatable = false)
+    Map<String, OwnerAgreement> agreementMap;
+
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @MapKey(name = "id")
+    @JoinColumn(name="store",referencedColumnName = "storeName",updatable = false)
+    private Map<Integer, Request> requests;
+
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @MapKeyColumn(name = "owner")
+    @JoinColumn(name="store",referencedColumnName = "storeName",updatable = false)
+    private Map<String, Permission> permissions;
+
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="storeName",referencedColumnName = "storeName",updatable = false)
     private List<Purchase> purchases;
+
+    @Transient
+    private final StoreDaoHolder daos;
 
     public Store(String name,Permission permission,String description) {
         this.name = name;
         this.description=description;
         this.purchasePolicy = new AndPolicy(new ArrayList<>());
-        discountCounter=new AtomicInteger(0);
         this.discountPolicy=new ConcurrentHashMap<>();
         this.permissions = new ConcurrentHashMap<>();
         this.permissions.put(permission.getOwner().getName(), permission);
@@ -34,6 +89,12 @@ public class Store {
         this.categoryList=new ConcurrentHashMap<>();
         this.requests= new ConcurrentHashMap<>();
         this.purchases = new LinkedList<>();
+        daos = new StoreDaoHolder();
+        agreementMap=new ConcurrentHashMap<>();
+    }
+
+    public Store() {
+        daos = new StoreDaoHolder();
     }
 
     // ============================ getters & setters ============================ //
@@ -55,24 +116,46 @@ public class Store {
             this.purchasePolicy = purchasePolicy;
     }
 
-    public ConcurrentHashMap<Integer, Discount> getDiscount() {
+    public Map<Integer, Discount> getDiscount() {
         return discountPolicy;
     }
 
-    public ConcurrentHashMap<String, Product> getProducts() {
+    public Map<String, Product> getProducts() {
         return products;
     }
 
-    public ConcurrentHashMap<String, Category> getCategoryList() {
+    public Map<String, Category> getCategoryList() {
         return categoryList;
     }
 
-    public ConcurrentHashMap<Integer, Request> getRequests() {
+    public Map<Integer, Request> getRequests() {
         return requests;
     }
 
-    public ConcurrentHashMap<String, Permission> getPermissions() {
+    public Map<String, OwnerAgreement> getAgreementMap() {
+        return agreementMap;
+    }
+
+    public Map<String, Permission> getPermissions() {
         return permissions;
+    }
+
+    //make permissions concurrent
+    public void initPermissions(){
+        this.requests=new ConcurrentHashMap<>(this.requests);
+        this.categoryList=new ConcurrentHashMap<>(this.categoryList);
+        this.products=new ConcurrentHashMap<>(products);
+        this.discountPolicy=new ConcurrentHashMap<>(discountPolicy);
+        this.agreementMap=new ConcurrentHashMap<>(this.agreementMap);
+        if(purchasePolicy==null)
+            purchasePolicy=new AndPolicy(new ArrayList<>());
+        if(!(this.permissions instanceof ConcurrentHashMap)) {
+            this.permissions = new ConcurrentHashMap<>(this.permissions);
+            for (Permission p : this.permissions.values()){
+                p.getOwner().initPermissions();
+                p.getStore().initPermissions();
+            }
+        }
     }
 
     /**
@@ -117,7 +200,10 @@ public class Store {
      * @return - thr product if exist, null if not
      */
     public Product getProduct(String productName) {
-        return products.get(productName);
+        Product product=products.get(productName);
+        if(product==null)
+            product=daos.getProductDao().find(new Product(productName,name));
+        return product;
     }
 
     @Override
@@ -145,7 +231,7 @@ public class Store {
      * @param list - the products to calc from basket
      * @return calculate price of the products after discounts
      */
-    public double calculatePrice(HashMap<String, ProductInCart> list) {
+    public double calculatePrice(Map<String, ProductInCart> list) {
         HashMap<Product, Integer> products = getSpecificProducts(list);
         double price=0;
         for(int discountId:discountPolicy.keySet()){
@@ -154,9 +240,11 @@ public class Store {
                 discount.calculateDiscount(products);
             }
         }
-        for(Product p:products.keySet()){
-            int amount =  products.get(p);
-            price += amount * p.getPrice();
+        if (products != null) {
+            for(Product p: products.keySet()) {
+                int amount = products.get(p);
+                price += amount * p.getPrice();
+            }
         }
         return price;
 
@@ -171,14 +259,23 @@ public class Store {
         boolean output = true;
         List<ProductInCart> productsReserved = new LinkedList<>();
         for(ProductInCart productInCart: otherProducts) {
-            Product real = this.products.get(productInCart.getProductName());
+
+            Product real = daos.getProductDao().find(new Product(productInCart.getProductName(),name));//this.products.get(productInCart.getProductName());
             if(real!=null) {
                 int amount = productInCart.getAmount();
                 real.getWriteLock().lock();
                 if(amount<=real.getAmount()) {
                     productsReserved.add(productInCart);
                     real.setAmount(real.getAmount() - amount);
-                    real.getWriteLock().unlock();
+                    if(daos.getProductDao().updateProduct(real)) {
+                        products.put(real.getName(), real);
+                        real.getWriteLock().unlock();
+                    }
+                    else{
+                        output = false;
+                        real.getWriteLock().unlock();
+                        break;
+                    }
                 }
                 else {
                     output = false;
@@ -187,7 +284,7 @@ public class Store {
                 }
             }
             else {
-               output = false;
+                output = false;
             }
         }
         if(!output) {
@@ -216,6 +313,7 @@ public class Store {
         if(real!=null) {
             real.getWriteLock().lock();
             real.setAmount(real.getAmount() + other.getAmount());
+            daos.getProductDao().updateProduct(real);
             real.getWriteLock().unlock();
         }
     }
@@ -240,7 +338,7 @@ public class Store {
      * @param list - the products in the basket
      * @return true if succeed
      */
-    public boolean policyCheck(PaymentData paymentData, String country, HashMap<String, ProductInCart> list) {
+    public boolean policyCheck(PaymentData paymentData, String country, Map<String, ProductInCart> list) {
         HashMap<Product, Integer> hashMap = getSpecificProducts(list);
         return getPurchasePolicy().standInPolicy(paymentData,country,hashMap);
     }
@@ -254,8 +352,8 @@ public class Store {
         Product p = products.get(review.getProductName());
         if(p==null) //Store as the product
             return false;
-        p.addReview(review);
-        return true;
+        return p.addReview(review);
+
     }
 
     /**
@@ -296,8 +394,13 @@ public class Store {
         }
         Product product=new Product(productData,categoryList.get(categoryName));
         boolean result=products.putIfAbsent(productData.getProductName(),product)==null;
-        if(result)
-            return new Response<>(true,OpCode.Success);
+        if(result) {
+            if(daos.getProductDao().addProduct(product))
+                return new Response<>(true, OpCode.Success);
+            else
+                return new Response<>(false, OpCode.DB_Down);
+
+        }
         return new Response<>(false,OpCode.Already_Exists);
     }
 
@@ -309,12 +412,21 @@ public class Store {
      */
     public Response<Boolean> removeProduct(String productName) {
         Product product=products.get(productName);
+        //check on db for updates
+        if(product==null)
+            product=daos.getProductDao().find(new Product(productName,name));
         if(product!=null) {
             product.getWriteLock().lock();
-            product.getCategory().removeProduct(productName);
-            products.remove(productName);
-            product.getWriteLock().unlock();
-            return new Response<>(true,OpCode.Success);
+            if(daos.getProductDao().removeProduct(product)) {
+                product.getCategory().removeProduct(productName);
+                products.remove(productName);
+                product.getWriteLock().unlock();
+                return new Response<>(true,OpCode.Success);
+            }
+            else{
+                product.getWriteLock().unlock();
+                return new Response<>(false,OpCode.Invalid_Product);
+            }
         }
         return new Response<>(false,OpCode.Invalid_Product);
     }
@@ -326,15 +438,21 @@ public class Store {
      * @return if the product was edited successfully
      */
     public Response<Boolean> editProduct(ProductData productData) {
-        Product old=products.get(productData.getProductName());
+        Product old=daos.getProductDao().find(new Product(productData.getProductName(),productData.getStoreName()));
         if(old==null)
             return new Response<>(false,OpCode.Invalid_Product);
         String categoryName=productData.getCategory();
         if(!categoryList.containsKey(categoryName)){
             categoryList.put(categoryName,new Category(categoryName));
         }
-        old.edit(productData,categoryList.get(categoryName));
-        return new Response<>(true,OpCode.Success);
+        old=daos.getProductDao().find(old);
+        old.edit(productData);
+        if(daos.getProductDao().updateProduct(old)) {
+            products.put(old.getName(), old);
+            return new Response<>(true,OpCode.Success);
+        }
+        return new Response<>(false,OpCode.DB_Down);
+
     }
 
     /**
@@ -345,7 +463,8 @@ public class Store {
     public Response<Boolean> addDiscount(Discount discount) {
         if(!checkProducts(discount))
             return new Response<>(false,OpCode.Invalid_Product);
-        discountPolicy.putIfAbsent(discountCounter.getAndIncrement(),discount);
+        if(daos.getDiscountDao().addDiscount(discount))
+            discountPolicy.put(discount.getId(),discount);
         return new Response<>(true,OpCode.Success);
     }
 
@@ -363,8 +482,10 @@ public class Store {
      * @return if the removing was successfull
      */
     public Response<Boolean> deleteDiscount(int discountId) {
-        if(discountPolicy.remove(discountId)!=null)
+        if(daos.getDiscountDao().removeDiscount(discountId)) {
+            discountPolicy.remove(discountId);
             return new Response<>(true, OpCode.Success);
+        }
         return new Response<>(false,OpCode.Not_Found);
     }
 
@@ -391,17 +512,78 @@ public class Store {
 
     public void sendManagersNotifications(List<ProductData> productData) {
         for(String manager: permissions.keySet()){
-            Notification notification=new Notification(productData,OpCode.Buy_Product);
+            Notification notification=new BuyNotification(productData,OpCode.Buy_Product);
             permissions.get(manager).getOwner().sendNotification(notification);
         }
     }
+
+
+    /**
+     * use case 4.3 - manage owner
+     * @param owner the user to be manager of the store
+     * @param givenBy the user that managed owner
+     * @return
+     */
+    public Response<Boolean> addOwner(String givenBy, String owner) {
+        Set<String> owners=new HashSet<>();
+        for(String name: permissions.keySet()){
+            if(permissions.get(name).isOwner()) {
+                if(name.equals(owner))
+                    return new Response<>(false,OpCode.Already_Owner);
+                owners.add(name);
+            }
+        }
+        OwnerAgreement agreement=new OwnerAgreement(owners,givenBy,owner,name);
+        if(!agreement.approve(givenBy)){
+            if(daos.getOwnerAgreementDao().add(agreement)) {
+                agreementMap.put(owner, agreement);
+                agreement.sendNotifications();
+            }
+        }
+        return new Response<>(true,OpCode.Success);
+    }
+
+    public void removeAgreement(String userName) {
+        OwnerAgreement ownerAgreement =findGivenBy(userName);
+        if(ownerAgreement!=null) {
+            agreementMap.remove(ownerAgreement.getOwner());
+            daos.getOwnerAgreementDao().remove(ownerAgreement.getId());
+        }
+    }
+
+    private OwnerAgreement findGivenBy(String userName) {
+        for(String key:agreementMap.keySet())
+            if(agreementMap.get(key).getGivenBy().equals(userName))
+                return agreementMap.get(key);
+        return null;
+    }
+
+    public void approveAgreementsOfUser(String userName) {
+        for(OwnerAgreement ownerAgreement:agreementMap.values()) {
+            if(ownerAgreement.approve(userName)){
+                daos.getOwnerAgreementDao().remove(ownerAgreement.getId());
+                agreementMap.remove(userName);
+            }
+
+        }
+    }
+
+    public Response<Boolean> approveAgreement(String approver, String newOwner) {
+        OwnerAgreement ownerAgreement =agreementMap.get(newOwner);
+        if(ownerAgreement!=null&&ownerAgreement.approve(approver)) {
+            daos.getOwnerAgreementDao().remove(ownerAgreement.getId());
+            agreementMap.remove(newOwner);
+        }
+        return new Response<>(true,OpCode.Success);
+    }
+
 
     /**
      * get hash map of specific real products and their amount in a basket
      * @param list - hash map of products in cart
      * @return - real products and their amount in a basket
      */
-    private HashMap<Product, Integer> getSpecificProducts(HashMap<String, ProductInCart> list) {
+    private HashMap<Product, Integer> getSpecificProducts(Map<String, ProductInCart> list) {
         HashMap<Product, Integer> output = new HashMap<>();
         for (ProductInCart product: list.values()) {
             Product realProduct = this.products.get(product.getProductName());
@@ -412,5 +594,7 @@ public class Store {
         }
         return output;
     }
+
+
 
 }

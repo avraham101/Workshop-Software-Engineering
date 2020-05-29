@@ -89,11 +89,11 @@ public class ProductData {
         ProductData that = (ProductData) o;
         return amount == that.amount &&
                 Double.compare(that.price, price) == 0 &&
-                Objects.equals(productName, that.productName) &&
-                purchaseType == that.purchaseType &&
-                Objects.equals(storeName, that.storeName) &&
-                Objects.equals(category, that.category) &&
-                Objects.equals(reviews, that.reviews);
+                productName!=null&&productName.equals(that.productName) &&
+                purchaseType!=null&&purchaseType.equals(that.purchaseType) &&
+                storeName!=null&&storeName.equals(that.storeName) &&
+                category!=null&&category.equals(that.category); //&&
+                //Objects.equals(reviews, that.reviews);
     }
 
     @Override

@@ -10,12 +10,18 @@ import java.util.Set;
 
 public class Guest extends UserState {
 
+    private Cart cart;
+
     public Guest() {
-        super("Guest");
+        this.cart=new Cart("Guest");
+    }
+
+    @Override
+    public Cart getCart() {
+        return this.cart;
     }
 
     public Guest(Cart cart) {
-        super("Guest");
         this.cart = cart;
     }
 
@@ -105,7 +111,7 @@ public class Guest extends UserState {
      * @return true if success, false else
      */
     @Override
-    public Request addRequest(int requestId, String storeName, String content){
+    public Request addRequest(String storeName, String content){
         return null;
     }
 
@@ -184,6 +190,22 @@ public class Guest extends UserState {
     }
 
     /**
+     * use case 4.3.1 - manage owner
+     * @param storeName the name of the store to be manager of
+     * @param userName the user to be manager of the store
+     * @return
+     */
+    @Override
+    public Response<Boolean> addOwner(String storeName, String userName) {
+        return new Response<>(false,OpCode.Not_Login);
+    }
+
+    @Override
+    public Response<Boolean> approveManageOwner(String storeName, String userName) {
+        return new Response<>(false,OpCode.Not_Login);
+    }
+
+    /**
      * use case 4.5 - add manager to store
      * @param youngOwner user to be owner
      * @param storeName
@@ -218,26 +240,40 @@ public class Guest extends UserState {
         return new Response<>(false,OpCode.Not_Login);
     }
 
-    /**
-     * use case 4.7 - remove manager
-     * @param userName
-     * @param storeName
-     * @return
-     */
     @Override
-    public Response<Boolean>  removeManager(String userName, String storeName) {
+    public Response<Boolean> removeManager(Subscribe userName, String storeName) {
         return new Response<>(false,OpCode.Not_Login);
     }
 
-    /**
-     * use case 4.9.1 - view request
-     * @param storeName
-     * @return
-     */
     @Override
-    public List<Request> viewRequest(String storeName) {
-        return new LinkedList<>();
+    public List<Request> viewRequest(Store store) {
+        return null;
     }
+
+
+    //TODO fix this
+//    /**
+//     * use case 4.7 - remove manager
+//     * @param userName
+//     * @param storeName
+//     * @return
+//     */
+//    @Override
+//    public Response<Boolean> removeManager(String userName, String storeName) {
+//        return new Response<>(false,OpCode.Not_Login);
+//    }
+//
+//
+//    //TODO - fix this
+//    /**
+//     * use case 4.9.1 - view request
+//     * @param storeName
+//     * @return
+//     */
+//    @Override
+//    public List<Request> viewRequest(String storeName) {
+//        return new LinkedList<>();
+//    }
 
     /**
      * use case 4.9.2 - reply request
@@ -247,7 +283,7 @@ public class Guest extends UserState {
      * @return
      */
     @Override
-    public Response<Request> replayToRequest(String storeName, int requestID, String content) {
+    public Response<Request> replayToRequest(String storeName, Integer requestID, String content) {
         return new Response<>(null,OpCode.Not_Login);
     }
 

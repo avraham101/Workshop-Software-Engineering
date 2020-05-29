@@ -4,19 +4,47 @@ import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.Purchase;
+import Persitent.ProductInCartDao;
+import Persitent.StoreDao;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.*;
 
+@Entity
+@Table(name = "basket")
+public class Basket implements Serializable {
 
-public class Basket {
+    @Transient
+    private final ProductInCartDao productInCartDao;
 
+    @Transient
+    private final StoreDao storeDao;
+
+    @Id
+    @ManyToOne(cascade = CascadeType.DETACH,fetch = FetchType.EAGER)
+    @JoinColumn(name="storename",referencedColumnName = "storename")
     private Store store; // the store of the basket
+
+    @Id
+    @Column(name = "username")
     private String buyer; // the buyer name
-    private HashMap<String, ProductInCart> products; //key: Product Name value:Data
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @MapKey(name="productName")
+    @JoinColumns(value = {
+            @JoinColumn(name="buyer", referencedColumnName = "username", updatable = false),
+            @JoinColumn(name="storename", referencedColumnName = "storename", updatable = false)
+    })
+    private Map<String, ProductInCart> products; //key: Product Name value:Data
+
+    @Column(name = "price")
     private double price;
+
+    public Basket() {
+        productInCartDao = new ProductInCartDao();
+        storeDao = new StoreDao();
+    }
 
     /**
      * constructor
@@ -27,6 +55,8 @@ public class Basket {
         this.buyer = buyer;
         this.products = new HashMap<>();
         this.price=0;
+        productInCartDao = new ProductInCartDao();
+        storeDao = new StoreDao();
     }
 
     /**
@@ -36,10 +66,14 @@ public class Basket {
      * @return - true if removed, false if not
      */
     public boolean deleteProduct(String productName) {
+        store = storeDao.find(store.getName());
         boolean result = false;
         if (productName != null && this.products.get(productName)!=null) {
-            products.remove(productName);
-            result = true;
+            ProductInCart key=new ProductInCart(buyer, store.getName(), productName);
+            if (buyer==null||productInCartDao.remove(key)) {
+                products.remove(productName);
+                result = true;
+            }
         }
         return result;
     }
@@ -52,10 +86,14 @@ public class Basket {
      * @return - true if succeeded, false if not
      */
     public boolean editAmount(String productName, int newAmount) {
+        store =storeDao.find(store.getName());
         boolean result = false;
         ProductInCart productToEdit = this.products.get(productName);
         if (newAmount>0 && productToEdit != null) {
             productToEdit.setAmount(newAmount);
+            if(buyer!=null){
+                return productInCartDao.update(productToEdit);
+            }
             result = true;
         }
         return result;
@@ -69,6 +107,7 @@ public class Basket {
      * @return - true if added, false if not
      */
     public boolean addProduct(Product product, int amount) {
+        store = storeDao.find(store.getName());
         if(amount<0 || this.products.get(product.getName())!=null) {
             return false;
         }
@@ -86,7 +125,7 @@ public class Basket {
         return store;
     }
 
-    public HashMap<String, ProductInCart> getProducts() {
+    public Map<String, ProductInCart> getProducts() {
         return products;
     }
 
@@ -135,6 +174,7 @@ public class Basket {
      * @param deliveryData the delivery data
      */
     public boolean buy(PaymentData paymentData, DeliveryData deliveryData) {
+        store =storeDao.find(store.getName());
         if(!store.policyCheck(paymentData,deliveryData.getCountry(),products))
             return false;
         List<ProductData> list = deliveryData.getProducts();
@@ -159,6 +199,7 @@ public class Basket {
      * @return the purchase bought
      */
     public Purchase savePurchase(String buyer) {
+        store = storeDao.find(store.getName());
         String storeName = this.store.getName();
         List<ProductData> list = new LinkedList<>();
         for(ProductInCart productInCart: this.products.values()) {

@@ -2,16 +2,28 @@ package Domain.Discount;
 
 import Domain.Product;
 
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class AndDiscount implements Discount {
+@Entity
+@Table(name="and_discount")
+public class AndDiscount extends Discount {
+
+    @OneToMany(cascade= CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(name="discounts_inside_discounts",
+            joinColumns =@JoinColumn(name = "holder_id", referencedColumnName="id"),
+            inverseJoinColumns={@JoinColumn(name="holdee_id", referencedColumnName="id")}
+    )
     private List<Discount> discounts;
 
     public AndDiscount(List<Discount> discounts) {
         this.discounts = discounts;
+    }
+
+    public AndDiscount() {
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 public class User {
-    private UserState state;
+    protected UserState state;
 
     public User() {
         state=new Guest();
@@ -23,6 +23,8 @@ public class User {
     public UserState getState() {
         return state;
     }
+
+
 
     /**
      * The function update the user state.
@@ -184,8 +186,8 @@ public class User {
      * @param content
      * @return
      */
-    public Request addRequest(int requestId, String storeName, String content) {
-        return state.addRequest(requestId,storeName, content); }
+    public Request addRequest(String storeName, String content) {
+        return state.addRequest(storeName, content); }
 
     /**
      * use case 3.7 - watch purchase history
@@ -234,6 +236,26 @@ public class User {
     }
 
     /**
+     * use case 4.3.1 - manage owner
+     * @param storeName the name of the store to be manager of
+     * @param userName the user to be manager of the store
+     * @return
+     */
+    public Response<Boolean> addOwner(String storeName, String userName) {
+        return state.addOwner(storeName,userName);
+    }
+
+    /**
+     * use case 4.3.2 - approve manage owner
+     * @param storeName the name of the store to be manager of
+     * @param userName the user to be manager of the store
+     * @return
+     */
+    public Response<Boolean> approveManageOwner(String storeName, String userName) {
+        return state.approveManageOwner(storeName,userName);
+    }
+
+    /**
      * use case 4.5 - add manager
      * @param subscribe
      * @param storeName
@@ -271,16 +293,16 @@ public class User {
      * @param storeName
      * @return
      */
-    public Response<Boolean> removeManager(String userName, String storeName) {
+    public Response<Boolean> removeManager(Subscribe userName, String storeName) {
         return state.removeManager(userName,storeName);
     }
 
     /**
      * use case 4.9.1 - view request
-     * @param storeName
+     * @param store
      */
-    public List<Request> viewRequest(String storeName) {
-        return state.viewRequest(storeName);
+    public List<Request> viewRequest(Store store) {
+        return state.viewRequest(store);
     }
 
     /**
@@ -290,7 +312,7 @@ public class User {
      * @param content
      * @return request if replay, null else
      */
-    public Response<Request> replayToRequest(String storeName, int requestID, String content) {
+    public Response<Request> replayToRequest(String storeName, Integer requestID, String content) {
         return state.replayToRequest(storeName, requestID, content);
     }
 
@@ -342,4 +364,7 @@ public class User {
     public Boolean sendMyNotification() {
        return state.sendMyNotifications();
     }
+
+
+
 }

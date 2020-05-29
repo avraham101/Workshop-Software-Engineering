@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -98,7 +99,7 @@ public class GuestTest {
         int size = 0;
         double sum =0;
         for(Basket b:cart.getBaskets().values()) {
-            HashMap<String,ProductInCart> products = b.getProducts();
+            Map<String,ProductInCart> products = b.getProducts();
             for(ProductInCart p:products.values()) {
                 int amount = p.getAmount();
                 sum += amount * p.getPrice();
@@ -144,7 +145,7 @@ public class GuestTest {
     @Test
     public void addRequest() {
         Request request = data.getRequest(Data.WRONG_STORE);
-        assertNull(guest.addRequest(request.getId(), request.getStoreName(), request.getContent()));
+        assertNull(guest.addRequest(request.getStoreName(), request.getContent()));
     }
 
     /**

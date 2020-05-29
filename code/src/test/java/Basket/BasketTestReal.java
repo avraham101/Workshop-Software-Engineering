@@ -1,11 +1,8 @@
 package Basket;
 
-import Data.Data;
+import Data.*;
 import Data.TestData;
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
-import DataAPI.Purchase;
+import DataAPI.*;
 import Domain.*;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
 import org.junit.Before;
@@ -21,31 +18,14 @@ import static org.junit.Assert.*;
  */
 public class BasketTestReal extends BasketTest{
 
-    @Before
-    public void setUp() {
-        data = new TestData();
-        Store store = data.getRealStore(Data.VALID);
-        String userName = data.getSubscribe(Data.VALID).getName();
-        basket = new Basket(store, userName);
-    }
-
-    /**------------------------------set-ups------------*/
-    /**
-     * set up for checking buying product
-     */
-    private void setUpForBuy(){
-        setUpAddedToBasket();
-    }
-
-    /**------------------------------set-ups------------*/
-
+    //
 
     /**
      * use case 2.8 - reserveCart cart
      */
     @Test
     public void testBuySuccess() {
-        setUpForBuy();
+        setUpProductAddedToBasket();
         int price = 0;
         List<ProductData> productDataList = new LinkedList<>();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
@@ -65,8 +45,11 @@ public class BasketTestReal extends BasketTest{
      */
     @Test
     public void testBuyNotStandsInPolicy(){
-        setUpForBuy();
-        basket.getStore().setPurchasePolicy(new BasketPurchasePolicy(0));
+        setUpProductAddedToBasket();
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        store.setPurchasePolicy(new BasketPurchasePolicy(0));
+        daoHolder.getStoreDao().update(store);
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
         assertFalse(basket.buy(paymentData, deliveryData));
@@ -79,11 +62,17 @@ public class BasketTestReal extends BasketTest{
      */
     @Test
     public void testBuyBasket() {
-        setUpAddedToBasket();
-        Purchase result = basket.savePurchase(data.getSubscribe(Data.VALID).getName());
+        setUpProductAddedToBasket();
+        List<String> productNames = new LinkedList<>();
+        for(ProductInCart p: this.basket.getProducts().values()) {
+            productNames.add(p.getProductName());
+        }
+        Purchase result = this.basket.savePurchase(data.getSubscribe(Data.VALID).getName());
         assertNotNull(result);
+        for(ProductPeristentData productPeristentData: result.getProduct()) {
+            String name = productPeristentData.getProductName();
+            assertTrue(productNames.contains(name));
+        }
     }
-
-
 
 }

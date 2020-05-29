@@ -2,6 +2,7 @@ package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.ApplicationToStoreTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +24,7 @@ public class ApplicationToStoreTest extends AcceptanceTests {
         addStores(stores);
         user = users.get(0);
         registerAndLogin(user);
-        application = new ApplicationToStoreTestData(stores.get(0).getStoreName(), user.getUsername(),"message");
+        application = new ApplicationToStoreTestData(-1,stores.get(0).getStoreName(), user.getUsername(),"message");
     }
 
     @Test
@@ -48,5 +49,11 @@ public class ApplicationToStoreTest extends AcceptanceTests {
         assertFalse(approval);
         List<ApplicationToStoreTestData> applications = bridge.getUserApplications(user.getId(),user.getUsername(),application.getStoreName());
         assertFalse(applications.contains(application));
+    }
+
+    @After
+    public void tearDown(){
+        removeStores(stores);
+        removeUser(user.getUsername());
     }
 }

@@ -3,17 +3,32 @@ package Domain.PurchasePolicy;
 import DataAPI.PaymentData;
 import DataAPI.ProductMinMax;
 import Domain.Product;
+import org.hibernate.collection.internal.PersistentMap;
 
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-public class ProductPurchasePolicy implements PurchasePolicy {
+@Entity
+@Table(name = "product_policy")
+public class ProductPurchasePolicy extends PurchasePolicy {
 
-    private HashMap<String, ProductMinMax> amountPerProduct;
+
+   @OneToMany(cascade= CascadeType.ALL,fetch = FetchType.EAGER)
+   @MapKey(name = "productName")
+   @JoinTable(name="min_max_and_policies",
+           joinColumns ={@JoinColumn(name = "pol_id", referencedColumnName="pol_id")},
+           inverseJoinColumns={@JoinColumn(name="min_max_id", referencedColumnName="pr_min_max_id")}
+   )
+    private Map<String, ProductMinMax> amountPerProduct;
 
     public ProductPurchasePolicy(HashMap<String, ProductMinMax> maxAmountPerProduct) {
-        this.amountPerProduct = maxAmountPerProduct;
+        this.amountPerProduct =  maxAmountPerProduct;
+    }
+
+    public ProductPurchasePolicy() {
     }
 
     @Override

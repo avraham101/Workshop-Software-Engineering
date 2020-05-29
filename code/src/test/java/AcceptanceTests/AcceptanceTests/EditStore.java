@@ -3,6 +3,7 @@ package AcceptanceTests.AcceptanceTests;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ReviewTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,7 +26,7 @@ public class EditStore extends AcceptanceTests {
     public void addProductToStoreSuccess(){
         String storeName = stores.get(0).getStoreName();
         ProductTestData product = new ProductTestData("newProduct",
-                storeName,5,15.5,"tests",
+                storeName,5,15.5,"Fruits",
                 new ArrayList<ReviewTestData>());
         boolean approval = bridge.addProduct(superUser.getId(),product);
         assertTrue(approval);
@@ -86,6 +87,7 @@ public class EditStore extends AcceptanceTests {
         bridge.addProduct(superUser.getId(),product);
         boolean approval = bridge.deleteProduct(superUser.getId(),product);
         assertTrue(approval);
+        //removeProduct(product);
 
         List<ProductTestData> products = bridge.getStoreProducts(stores.get(0).getStoreName());
         assertFalse(products.contains(product));
@@ -113,7 +115,7 @@ public class EditStore extends AcceptanceTests {
         ProductTestData product = stores.get(0).getProducts().get(0);
         product.setAmountInStore(10);
         product.setPrice(100);
-        product.setCategory("newCategory");
+        product.setCategory("Dairy");
         boolean approval = bridge.editProductInStore(superUser.getId(),product);
         assertTrue(approval);
         StoreTestData store = bridge.getStoreInfoByName( stores.get(0).getStoreName());
@@ -145,6 +147,11 @@ public class EditStore extends AcceptanceTests {
         boolean approval = bridge.editProductInStore(superUser.getId(),product);
         assertFalse(approval);
     }
-
+    @After
+    public void tearDown(){
+        removeProducts(products);
+        removeStores(stores);
+        removeUser(superUser.getUsername());
+    }
 
 }

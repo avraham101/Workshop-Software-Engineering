@@ -1,17 +1,11 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.CartTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.PurchasePolicyTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
+import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.SystemMocks.*;
-import DataAPI.Notification;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
+import org.junit.After;
 import org.junit.Test;
-
-import java.util.HashMap;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -21,7 +15,6 @@ import static org.junit.Assert.*;
 
 public class BuyCartTest extends AcceptanceTests {
     private int userId;
-
     public void setUp(PaymentSystem paymentSystem , SupplySystem deliverySystem){
         //bridge.initialStart(admin.getUsername(), admin.getPassword(),paymentSystem,deliverySystem);
         //setUpUsers();
@@ -29,27 +22,46 @@ public class BuyCartTest extends AcceptanceTests {
         super.setUpAll();
         addStores(stores);
         addProducts(products);
-        userId = bridge.connect();
+
+        userId =bridge.connect() ;
+
     }
 
     public void positiveSetUp(){
         PaymentSystem paymentSystem = new PaymentSystemMockAllPositive();
         SupplySystem deliverySystem = new DeliverySystemMockAllPositive();
+
+
         setUp(paymentSystem,deliverySystem);
     }
 
     @Test
     public void buyCartSuccess(){
         positiveSetUp();
-        PublisherMock publisherMock=new PublisherMock();
-        bridge.setPublisher(publisherMock);
+
         addProductToCart(1);
         boolean approval = bridge.buyCart(userId,validPayment,validDelivery);
         assertTrue(approval);
         CartTestData currCart = bridge.getUsersCart(userId);
         assertTrue(currCart.isEmpty());
         //check notification
-        assertFalse(publisherMock.getNotificationList().isEmpty());
+       // assertFalse(publisherMock.getNotificationList().isEmpty());
+    }
+
+    @Test
+    public void buyCartSuccessNotification(){
+        positiveSetUp();
+        PublisherMock publisherMock=new PublisherMock();
+        bridge.setPublisher(publisherMock);
+        bridge.login(superUser.getId(),superUser.getUsername(),superUser.getPassword());
+        addProductToCart(1);
+        boolean approval = bridge.buyCart(userId,validPayment,validDelivery);
+        assertTrue(approval);
+        CartTestData currCart = bridge.getUsersCart(userId);
+        assertTrue(currCart.isEmpty());
+        //check notification
+         assertFalse(publisherMock.getNotificationList().isEmpty());
+       //  removeUser(user.getUsername());
     }
 
     @Test
@@ -117,12 +129,20 @@ public class BuyCartTest extends AcceptanceTests {
     public void buyCartNotStandsInPolicy(){
         positiveSetUp();
         addProductToCart(2);
+        bridge.login(superUser.getId(),superUser.getUsername(),superUser.getPassword());
         PurchasePolicyTestData purchasePolicyTestData = new PurchasePolicyTestData(1);
-        bridge.updatePolicy(superUser.getId(),purchasePolicyTestData,"store0Test");
+        boolean updateApproval= bridge.updatePolicy(superUser.getId(),purchasePolicyTestData,"store0Test");
+        assertTrue(updateApproval);
         boolean approval = bridge.buyCart(userId,validPayment,validDelivery);
         assertFalse(approval);
         CartTestData currCart = bridge.getUsersCart(userId);
         assertFalse(currCart.isEmpty());
+    }
+    @After
+    public void tearDown(){
+
+        removeProducts(products);
+        removeStores(stores);
     }
 
 }

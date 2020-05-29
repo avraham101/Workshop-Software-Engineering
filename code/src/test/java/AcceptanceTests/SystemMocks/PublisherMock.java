@@ -1,6 +1,6 @@
 package AcceptanceTests.SystemMocks;
 
-import DataAPI.Notification;
+import Domain.Notification.Notification;
 import Publisher.Publisher;
 
 import java.util.ArrayList;

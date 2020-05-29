@@ -1,5 +1,6 @@
 package AcceptanceTests.AcceptanceTests;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -61,6 +62,11 @@ public class LoginTest extends AcceptanceTests {
         testLoginSuccess();
         boolean isLoggedIn = bridge.login(id,username,password);
         assertFalse(isLoggedIn);
+    }
+
+    @After
+    public void tearDown(){
+        removeUser(username);
     }
 
 }

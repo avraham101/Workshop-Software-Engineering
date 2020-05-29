@@ -1,22 +1,31 @@
 package UserTests;
 
-import Data.Data;
+import Data.*;
 import DataAPI.*;
 import Domain.*;
+import Domain.Discount.RegularDiscount;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
+import Persitent.DaoHolders.DaoHolder;
+import Persitent.SubscribeDao;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
 public class UserRealTest extends UserAllStubsTest{
+    private DaoHolder daos;
+
     @Before
     public void setUp(){
-        super.setUp();
+        data =new TestData();
+        daos=new DaoHolder();
     }
+
+    /***************************setUp***********************************/
 
     @Override
     protected void setUpGuest() {
@@ -30,7 +39,44 @@ public class UserRealTest extends UserAllStubsTest{
     @Override
     protected void setUpSubscribe(){
         setUpGuest();
+        daos.getSubscribeDao().addSubscribe(data.getSubscribe(Data.VALID));
+        daos.getSubscribeDao().addSubscribe(data.getSubscribe(Data.ADMIN));
+        daos.getSubscribeDao().addSubscribe(data.getSubscribe(Data.VALID2));
         user.login(data.getSubscribe(Data.VALID));
+    }
+
+    /**
+     * set up a store for the subscribed user
+     */
+    protected void setUpOpenStore(){
+        setUpSubscribe();
+        StoreData storeData = new StoreData("Store", "description");
+        user.openStore(storeData);
+    }
+
+    @Override
+    protected void setUpProductAdded() {
+        super.setUpProductAdded();
+    }
+
+    @Override
+    protected void setUpProductAddedToCart() {
+        super.setUpProductAddedToCart();
+    }
+
+    @Override
+    protected void setUpReservedCart() {
+        super.setUpReservedCart();
+    }
+
+    @Override
+    protected void setUpBuyCart() {
+        super.setUpBuyCart();
+    }
+
+    @Override
+    protected void setUpBougtAndSaved() {
+        super.setUpBougtAndSaved();
     }
 
     /**
@@ -43,6 +89,8 @@ public class UserRealTest extends UserAllStubsTest{
         user.addProductToCart(store,p,p.getAmount());
     }
 
+
+    /***************************test*******************************/
     /**
      * test use case 2.3 - Login
      * user: Yuval Sabag
@@ -57,6 +105,7 @@ public class UserRealTest extends UserAllStubsTest{
     /**
      * use case 2.7 - add product to cart
      */
+    @Override
     @Test
     public void testAddProductToCart() {
         setUpProductAdded();
@@ -64,6 +113,7 @@ public class UserRealTest extends UserAllStubsTest{
         Product p = data.getRealProduct(Data.VALID);
         assertTrue(user.addProductToCart(store,p,p.getAmount()));
         assertTrue(user.getState().getCart().getBasket(store.getName()).getProducts().containsKey(p.getName()));
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -76,7 +126,7 @@ public class UserRealTest extends UserAllStubsTest{
         int size = 0;
         double sum =0;
         for(Basket b:cart.getBaskets().values()) {
-            HashMap<String,ProductInCart> products = b.getProducts();
+            Map<String,ProductInCart> products = b.getProducts();
             for(ProductInCart p:products.values()) {
                 int amount = p.getAmount();
                 sum += amount * p.getPrice();
@@ -88,7 +138,19 @@ public class UserRealTest extends UserAllStubsTest{
         assertTrue(user.buyCart(paymentData,deliveryData));
         assertEquals(sum,paymentData.getTotalPrice(),0.001);
         assertEquals(size,deliveryData.getProducts().size());
+        tearDownProductAddedToCart();
     }
+
+    /**
+     * use case 2.8 - reserve cart
+     */
+
+    @Override
+    public void testReservedCart() {
+        super.testReservedCart();
+        tearDownProductAddedToCart();
+    }
+
 
     /**
      * use case 2.8 - purchase cart
@@ -96,35 +158,29 @@ public class UserRealTest extends UserAllStubsTest{
     @Test
     public void testBuyCartFail(){
         setUpReservedCart();
-        Cart cart = user.getState().getCart();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
-        cart.getBaskets().get(data.getStore(Data.VALID).getName()).getStore().setPurchasePolicy(
-                new BasketPurchasePolicy(0));
+        user.updateStorePolicy(data.getStore(Data.VALID).getName(),new BasketPurchasePolicy(0));
         assertFalse(user.buyCart(paymentData,deliveryData));
         assertEquals(0,paymentData.getTotalPrice(),0.001);
         assertTrue(deliveryData.getProducts().isEmpty());
-
+        tearDownProductAddedToCart();
     }
 
     /**
      * use case 2.8 - purchase cart
      */
+    @Override
     @Test
     public void testSavePurchase() {
         setUpReservedCart();
-        Store store = null;
-        int storeExpected = 0;
-        for(Basket basket: user.getState().getCart().getBaskets().values()) {
-            store = basket.getStore();
-            storeExpected = store.getPurchases().size() + 1;
-            break;
-        }
-        int number =  user.getState().getCart().getBaskets().keySet().size();
         String name = data.getSubscribe(Data.VALID).getName();
+        int number =  daos.getSubscribeDao().find(name).getCart().getBaskets().keySet().size();
         user.savePurchase(name);
+        Store store = daos.getStoreDao().find(data.getStore(Data.VALID).getName());
         assertEquals(number, user.watchMyPurchaseHistory().getValue().size());
-        assertEquals(storeExpected, store.getPurchases().size());
+        assertEquals(number, store.getPurchases().size());
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -138,6 +194,7 @@ public class UserRealTest extends UserAllStubsTest{
         user.cancelCart();
         int result = amountProductInStore();
         assertEquals(expected,result);
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -146,7 +203,7 @@ public class UserRealTest extends UserAllStubsTest{
      * @return
      */
     private int amountProductInStore() {
-        Cart cart = user.getState().getCart();
+        Cart cart = daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName()).getCart();
         Store store = null;
         for(Basket b: cart.getBaskets().values()) {
             store = b.getStore();
@@ -170,10 +227,20 @@ public class UserRealTest extends UserAllStubsTest{
     @Override @Test
     public void testLogoutSubscribe() {
         setUpSubscribe();
-        Subscribe sub= (Subscribe) user.getState();
-        super.testLogoutSubscribe();
-        assertEquals(sub.getSessionNumber().get(),-1);
+        Subscribe sub=(Subscribe)user.getState();
+        assertTrue(user.logout());
+        assertEquals(sub.getSessionNumber().intValue(),-1);
         assertTrue(user.getState() instanceof Guest);
+        tearDownSubscribe();
+    }
+
+    /**
+     * 3.2 open store
+     */
+    @Override
+    public void testOpenStoreSubscribe() {
+        super.testOpenStoreSubscribe();
+        tearDownOpenStore();
     }
 
     /**
@@ -187,6 +254,7 @@ public class UserRealTest extends UserAllStubsTest{
         List<Review> reviewList = user.getState().getReviews();
         assertEquals(1, reviewList.size());
         assertEquals(review, reviewList.get(0));
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -197,6 +265,14 @@ public class UserRealTest extends UserAllStubsTest{
         setUpReserved();
         Review review = data.getReview(Data.WRONG_PRODUCT);
         assertFalse(user.addReview(review));
+        tearDownProductAddedToCart();
+    }
+
+    @Test
+    @Override
+    public void testAddRequestSubscribe() {
+        super.testAddRequestSubscribe();
+        tearDownOpenStore();
     }
 
     /**
@@ -208,6 +284,7 @@ public class UserRealTest extends UserAllStubsTest{
         List<Purchase> list = user.watchMyPurchaseHistory().getValue();
         assertNotNull(list);
         assertEquals(1, list.size());
+        tearDownProductAddedToCart();
     }
 
     /**
@@ -216,9 +293,10 @@ public class UserRealTest extends UserAllStubsTest{
     @Override @Test
     public void testAddProductToStoreSubscribe() {
         super.testAddProductToStoreSubscribe();
-        Product product=((Subscribe) user.getState()).getPermissions().get(data.getStore(Data.VALID).getName()).
-                getStore().getProducts().get(data.getProductData(Data.VALID).getProductName());
+        Permission p=daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName()).getPermissions().get(data.getStore(Data.VALID).getName());
+        Product product=p.getStore().getProducts().get(data.getProductData(Data.VALID).getProductName());
         assertTrue(product.equal(data.getProductData(Data.VALID)));
+        tearDownOpenStore();
     }
 
     /**
@@ -228,7 +306,9 @@ public class UserRealTest extends UserAllStubsTest{
     public void testRemoveProductFromStoreSubscribe() {
         super.testRemoveProductFromStoreSubscribe();
         Subscribe sub=(Subscribe)user.getState();
+        sub=daos.getSubscribeDao().find(sub.getName());
         assertFalse(sub.getPermissions().containsKey(data.getProductData(Data.VALID).getProductName()));
+        tearDownOpenStore();
     }
 
     /**
@@ -239,8 +319,10 @@ public class UserRealTest extends UserAllStubsTest{
         super.testEditProductFromStoreSubscribe();
         ProductData product= data.getProductData(Data.EDIT);
         Subscribe sub=(Subscribe) user.getState();
+        sub=daos.getSubscribeDao().find(sub.getName());
         assertTrue(sub.getPermissions().get(product.getStoreName()).getStore()
                 .getProducts().get(product.getProductName()).equal(product));
+        tearDownOpenStore();
     }
 
     /**
@@ -249,9 +331,9 @@ public class UserRealTest extends UserAllStubsTest{
     @Test @Override
     public void testAddDiscountToStoreSuccessSubscribe(){
         super.testAddDiscountToStoreSuccessSubscribe();
-        Subscribe sub=(Subscribe) user.getState();
-        Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
-        assertEquals(data.getDiscounts(Data.VALID).get(0),store.getDiscount().get(0));
+        Store store=daos.getStoreDao().find(data.getStore(Data.VALID).getName());
+        assertTrue(store.getDiscount().values().iterator().next() instanceof RegularDiscount);
+        tearDownOpenStore();
     }
 
     /**
@@ -259,10 +341,13 @@ public class UserRealTest extends UserAllStubsTest{
      */
     @Test @Override
     public void testDeleteDiscountFromStoreSuccessSubscribe(){
-        super.testDeleteDiscountFromStoreSuccessSubscribe();
-        Subscribe sub=(Subscribe) user.getState();
-        Store store=sub.getPermissions().get(data.getStore(Data.VALID).getName()).getStore();
+        setUpDiscountAdded();
+        Store store=daos.getStoreDao().find(data.getStore(Data.VALID).getName());
+        int discountId=store.getDiscount().values().iterator().next().getId();
+        assertTrue(user.deleteDiscountFromStore(discountId,data.getStore(Data.VALID).getName()).getValue());
+        store=daos.getStoreDao().find(data.getStore(Data.VALID).getName());
         assertTrue(store.getDiscount().isEmpty());
+        tearDownOpenStore();
     }
 
     /**
@@ -272,6 +357,7 @@ public class UserRealTest extends UserAllStubsTest{
     public void testAddManagerSubscribe() {
         super.testAddManagerSubscribe();
         Subscribe sub=(Subscribe) user.getState();
+        sub=daos.getSubscribeDao().find(sub.getName());
         assertTrue(sub.getGivenByMePermissions().get(0).getStore().getPermissions()
                 .containsKey(data.getSubscribe(Data.ADMIN).getName()));
         Store store=sub.getGivenByMePermissions().get(0).getStore();
@@ -282,6 +368,7 @@ public class UserRealTest extends UserAllStubsTest{
         newManager=p.getOwner();
         assertNotNull(newManager);
         assertTrue(newManager.getPermissions().containsKey(store.getName()));
+        tearDownOpenStore();
     }
 
     /**
@@ -291,8 +378,10 @@ public class UserRealTest extends UserAllStubsTest{
     public void testAddPermissionsSubscribe() {
         super.testAddPermissionsSubscribe();
         Subscribe sub=(Subscribe) user.getState();
+        sub=daos.getSubscribeDao().find(sub.getName());
         assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType()
                 .containsAll(data.getPermissionTypeList()));
+        tearDownOpenStore();
     }
 
     /**
@@ -302,8 +391,10 @@ public class UserRealTest extends UserAllStubsTest{
     public void testRemovePermissionsSubscribe() {
         super.testRemovePermissionsSubscribe();
         Subscribe sub=(Subscribe) user.getState();
+        sub=daos.getSubscribeDao().find(sub.getName());
         assertTrue(sub.getGivenByMePermissions().get(0).getPermissionType().
                 isEmpty());
+        tearDownOpenStore();
     }
 
     /**
@@ -315,14 +406,18 @@ public class UserRealTest extends UserAllStubsTest{
     public void testRemoveManagerSubscribe() {
         setUpAddedManager();
         Subscribe sub=(Subscribe) user.getState();
+        sub=daos.getSubscribeDao().find(sub.getName());
         Permission p=sub.getGivenByMePermissions().get(0);
         Subscribe niv=data.getSubscribe(Data.VALID2);
         String storeName=p.getStore().getName();
         //add another manager
         p.getOwner().addManager(niv,storeName);
-        assertTrue(user.removeManager(data.getSubscribe(Data.ADMIN).getName(), data.getStore(Data.VALID).getName()).getValue());
+        assertTrue(user.removeManager(data.getSubscribe(Data.ADMIN), data.getStore(Data.VALID).getName()).getValue());
+        niv=daos.getSubscribeDao().find(niv.getName());
         assertFalse(niv.getPermissions().containsKey(storeName));
-        assertFalse(p.getOwner().getPermissions().containsKey(storeName));
+        Subscribe admin=daos.getSubscribeDao().find(data.getSubscribe(Data.ADMIN).getName());
+        assertFalse(admin.getPermissions().containsKey(storeName));
+        tearDownOpenStore();
     }
 
     /**
@@ -333,6 +428,16 @@ public class UserRealTest extends UserAllStubsTest{
         setUpAddedManager();
         assertTrue(user.getManagersOfStoreUserManaged(data.getStore(Data.VALID).getName()).getValue().
                 contains(data.getSubscribe(Data.ADMIN).getName()));
+        tearDownOpenStore();
+    }
+
+    /**
+     * use case 6.4.2 - watch store
+     */
+    @Override
+    public void testCanWatchStoreHistorySubscribe() {
+        super.testCanWatchStoreHistorySubscribe();
+        tearDownOpenStore();
     }
 
     /**
@@ -343,5 +448,22 @@ public class UserRealTest extends UserAllStubsTest{
         setUpGuest();
         assertNull(user.getManagersOfStoreUserManaged(data.getStore(Data.VALID).getName()).getValue());
     }
+
+    protected void tearDownSubscribe(){
+        daos.getSubscribeDao().remove(data.getSubscribe(Data.VALID).getName());
+        daos.getSubscribeDao().remove(data.getSubscribe(Data.ADMIN).getName());
+        daos.getSubscribeDao().remove(data.getSubscribe(Data.VALID2).getName());
+    }
+
+    protected void tearDownOpenStore(){
+        daos.getStoreDao().removeStore(data.getStore(Data.VALID).getName());
+        tearDownSubscribe();
+    }
+
+    protected void tearDownProductAddedToCart(){
+        daos.getSubscribeDao().remove(data.getSubscribe(Data.VALID).getName());
+        tearDownOpenStore();
+    }
+
 
 }

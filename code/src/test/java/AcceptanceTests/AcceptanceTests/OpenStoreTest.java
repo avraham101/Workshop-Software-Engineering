@@ -2,6 +2,7 @@ package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,6 +45,10 @@ public class OpenStoreTest extends AcceptanceTests {
         assertNull(store);
     }
 
-
+    @After
+    public void tearDown(){
+        removeStore(new StoreTestData(newStoreName, user));
+        removeUser(user.getUsername());
+    }
 
 }

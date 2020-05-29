@@ -46,7 +46,7 @@ public interface AcceptanceTestsBridge {
     boolean addPermissionToManager(int id,String storeName, String username, PermissionsTypeTestData productsInventory);
     boolean deletePermission(int id, String storeName, String username, PermissionsTypeTestData productsInventory);
     boolean writeReplyToApplication(int id, int requestId,String storeName, ApplicationToStoreTestData key, String value);
-    HashSet<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName);
+    List<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName);
     HashMap<ApplicationToStoreTestData,String> getUserApplicationsAndReplies(int id, String username,String storeName);
     List<ApplicationToStoreTestData> getUserApplications(int id,String username, String storeName);
     List<PurchaseTestData> userGetStorePurchasesHistory(int id,String storeName);
@@ -62,6 +62,10 @@ public interface AcceptanceTestsBridge {
     List<String> getManagersOfStoreIManaged(int id,String storeName);
     List<String> getAllUsers(int id);
     void setPublisher(PublisherMock publisherMock);
+    void removeUser(String username);
+    void removeProduct(ProductTestData product);
+    void removeStore(StoreTestData store);
     double getRevenueToday(int id);
     double getRevenueByDay(int id, DateTestData date);
+    void removeRevenues();
 }

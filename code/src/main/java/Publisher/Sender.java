@@ -1,6 +1,6 @@
 package Publisher;
 
-import DataAPI.Notification;
+import Domain.Notification.Notification;
 
 import java.util.ArrayList;
 
