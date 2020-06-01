@@ -2,39 +2,38 @@ package Persitent;
 
 import Domain.Notification.Notification;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
+import javax.transaction.Transactional;
 
-public class NotificationDao {
+public class NotificationDao extends Dao<Notification>{
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("request");
 
-    public boolean add(Notification notification) {
+    @Transactional
+    public boolean add(Notification notification, String username) {
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         // Used to issue transactions on the EntityManager
-        EntityTransaction et = null;
-        boolean output=false;
-        try {
-            // Get transaction and start
-            et = em.getTransaction();
-            et.begin();
-
-            // Save the customer object
-            em.persist(notification);
-            et.commit();
-            output = true;
-        } catch (Exception ex) {
-            // If there is an exception rollback changes
-            if (et != null) {
-                et.rollback();
+        boolean output = super.add(em,notification);
+        if(output) {
+            //
+            EntityTransaction et = null;
+            try {
+                em = ENTITY_MANAGER_FACTORY.createEntityManager();
+                et = em.getTransaction();
+                et.begin();
+                Query query = em.createNativeQuery("INSERT INTO subscibe_notifications VALUES (?,?)");
+                query.setParameter(1, username);
+                query.setParameter(2, notification.getId());
+                int res = query.executeUpdate();
+                et.commit();
+            } catch (Exception ignored) {
+                if (et != null) {
+                    et.rollback();
+                }
+            } finally {
+                em.close();
             }
-            ex.printStackTrace();
-        } finally {
-            // Close EntityManager
-            em.close();
         }
         return output;
     }

@@ -9,7 +9,7 @@ public class SubscribeDaoHolder {
     private static StoreDao storeDao;
     private static CartDao cartDao;
     private static PermissionDao permissionDao;
-
+    private static SubscribeDao subscribeDao;
     public SubscribeDaoHolder() {
         notificationDao=new NotificationDao();
         purchaseDao=new PurchaseDao();
@@ -17,6 +17,7 @@ public class SubscribeDaoHolder {
         storeDao=new StoreDao();
         permissionDao = new PermissionDao();
         cartDao=new CartDao();
+        subscribeDao = new SubscribeDao();
     }
 
     public NotificationDao getNotificationDao() {
@@ -42,4 +43,6 @@ public class SubscribeDaoHolder {
     public CartDao getCartDao() {
         return cartDao;
     }
+
+    public SubscribeDao getSubscribeDao() {return subscribeDao;}
 }

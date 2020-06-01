@@ -82,9 +82,6 @@ public class ProductDao {
             em.close();
         }
         return output;
-
-
-
     }
 
     public boolean removeProduct(Product product){

@@ -70,7 +70,7 @@ public class Basket implements Serializable {
         boolean result = false;
         if (productName != null && this.products.get(productName)!=null) {
             ProductInCart key=new ProductInCart(buyer, store.getName(), productName);
-            if (buyer==null||productInCartDao.remove(key)) {
+            if (buyer==null || buyer.equals("Guest") || productInCartDao.remove(key)) {
                 products.remove(productName);
                 result = true;
             }
@@ -91,7 +91,7 @@ public class Basket implements Serializable {
         ProductInCart productToEdit = this.products.get(productName);
         if (newAmount>0 && productToEdit != null) {
             productToEdit.setAmount(newAmount);
-            if(buyer!=null){
+            if(!buyer.equals("Guest")){
                 return productInCartDao.update(productToEdit);
             }
             result = true;
