@@ -122,7 +122,7 @@ public class daoTest {
     @Test
     public void addStoreWith(){
         StoreDao storeDao=new StoreDao();
-        Store store=storeDao.find("hanut");
+        Store store=storeDao.find("Store");
         PolicyDao pdao= new PolicyDao();
         PurchasePolicy basketp = new BasketPurchasePolicy(25);
         List<PurchasePolicy> lst1 = new ArrayList<>();
@@ -151,6 +151,12 @@ public class daoTest {
 
     @Test
     public void addCountryPolicy(){
+        LogicManager logicManager;
+        try {
+            logicManager=new LogicManager("yuv","all");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         PolicyDao pdao= new PolicyDao();
         List<String> lst = new ArrayList<>();
         lst.add("england");
@@ -159,7 +165,8 @@ public class daoTest {
         List<PurchasePolicy> lst1 = new ArrayList<>();
         lst1.add(usrp);
         PurchasePolicy p = new AndPolicy(lst1);
-        pdao.addPolicy(p);
+        //pdao.addPolicy(p);
+        //logicManager.updatePolicy(data.getId())
         assertTrue(true);
     }
 
