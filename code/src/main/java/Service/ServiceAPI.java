@@ -318,7 +318,7 @@ public class ServiceAPI {
      * @param storeName - store to approve
      * @return
      */
-                    public Response<List<String>> getApprovedManagers(int id,String storeName){
+    public Response<List<String>> getApprovedManagers(int id,String storeName){
         return logicManager.getApprovedManagers(id,storeName);
     }
 
