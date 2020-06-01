@@ -13,13 +13,21 @@ public class PolicyDaoProxy implements IPolicyDao {
     }
 
     @Override
-    public void addPolicy(PurchasePolicy policy) {
-        dao.addPolicy(policy);
+    public boolean addPolicy(PurchasePolicy policy) {
+        try {
+            return dao.addPolicy(policy);
+        }catch (Exception e){
+            return false;
+        }
     }
 
     @Override
-    public void removePolicy(int id) {
-        dao.removePolicy(id);
+    public boolean removePolicy(int id) {
+        try {
+            return dao.removePolicy(id);
+        }catch (Exception e){
+            return false;
+        }
     }
 
     @Override
