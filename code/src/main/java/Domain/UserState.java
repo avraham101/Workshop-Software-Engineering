@@ -233,6 +233,24 @@ public abstract class UserState {
      */
     public abstract Response<Boolean> updateStorePolicy(String storeName, PurchasePolicy policy);
 
+
+    /**
+     * use case 4.3.1 - manage owner
+     * @param storeName the name of the store to be manager of
+     * @param userName the user to be manager of the store
+     * @return
+     */
+    public abstract Response<Boolean> addOwner(String storeName, String userName);
+
+    /**
+     * use case 4.3.2 - approve manage owner
+     * @param storeName the name of the store to be manager of
+     * @param userName the user to be manager of the store
+     * @return
+     */
+    public abstract Response<Boolean> approveManageOwner(String storeName, String userName);
+
+
     /**
      * use case 4.5 - add manager
      * @param subscribe
@@ -318,4 +336,6 @@ public abstract class UserState {
     public synchronized boolean setSessionNumber(Integer sessionNumber) {
         return false;
     }
+
+
 }

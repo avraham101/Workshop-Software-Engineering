@@ -60,17 +60,17 @@ public class ProductDao {
     }
 
     public boolean updateProduct(Product product){
-        boolean output = false;
+
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
-
+        boolean output=false;
         try {
             // Get transaction and start
             et = em.getTransaction();
             et.begin();
             em.merge(product);
             et.commit();
-            output = true;
+            output= true;
         } catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {
@@ -88,7 +88,7 @@ public class ProductDao {
 
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
-
+        boolean output=false;
         try {
             // Get transaction and start
             et = em.getTransaction();
@@ -100,21 +100,17 @@ public class ProductDao {
                     .setParameter(2, product.getName())
                     .executeUpdate();
             et.commit();
-            return x > 0;
+            output= x > 0;
         } catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {
                 et.rollback();
             }
-            return false;
-//            ex.printStackTrace();
         } finally {
             // Close EntityManager
             em.close();
         }
-
-
-
+        return output;
     }
 
     public Product find(Product keys){
@@ -124,7 +120,6 @@ public class ProductDao {
             product=em.find(Product.class,keys);
         }
         catch(NoResultException ex) {
-            ex.printStackTrace();
         }
         finally {
             em.close();

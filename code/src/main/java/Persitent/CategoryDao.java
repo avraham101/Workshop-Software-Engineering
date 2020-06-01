@@ -24,8 +24,8 @@ public class CategoryDao extends Dao<Category> {
         try {
             cat=em.find(Category.class,name);
         }
-        catch(NoResultException ex) {
-            ex.printStackTrace();
+        catch(Exception ex) {
+
         }
         finally {
             em.close();

@@ -236,6 +236,26 @@ public class User {
     }
 
     /**
+     * use case 4.3.1 - manage owner
+     * @param storeName the name of the store to be manager of
+     * @param userName the user to be manager of the store
+     * @return
+     */
+    public Response<Boolean> addOwner(String storeName, String userName) {
+        return state.addOwner(storeName,userName);
+    }
+
+    /**
+     * use case 4.3.2 - approve manage owner
+     * @param storeName the name of the store to be manager of
+     * @param userName the user to be manager of the store
+     * @return
+     */
+    public Response<Boolean> approveManageOwner(String storeName, String userName) {
+        return state.approveManageOwner(storeName,userName);
+    }
+
+    /**
      * use case 4.5 - add manager
      * @param subscribe
      * @param storeName
@@ -344,4 +364,7 @@ public class User {
     public Boolean sendMyNotification() {
        return state.sendMyNotifications();
     }
+
+
+
 }

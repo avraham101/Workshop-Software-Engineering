@@ -30,7 +30,6 @@ public class SubscribeDao extends Dao<Subscribe>{
                 sub.initPermissions();
         }
         catch(NoResultException ex) {
-            ex.printStackTrace();
         }
         finally {
             em.close();
@@ -63,14 +62,6 @@ public class SubscribeDao extends Dao<Subscribe>{
         return super.update(ENTITY_MANAGER_FACTORY.createEntityManager(), info);
     }
 
-    public void clearTable() {
-        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-        Query query = em.createQuery("DELETE FROM Domain.Subscribe");
-        int rowsDeleted = query.executeUpdate();
-        //System.out.println("entities deleted: " + rowsDeleted);
-        em.close();
-    }
-
     public List<Admin> getAllAdmins() {
         List<Admin> output = new LinkedList<>();
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
@@ -83,7 +74,6 @@ public class SubscribeDao extends Dao<Subscribe>{
             }
         }
         catch (Exception e){
-            e.printStackTrace();
         }
         finally {
             em.close();
@@ -100,6 +90,8 @@ public class SubscribeDao extends Dao<Subscribe>{
             output = query.getResultList();
         }
         catch (Exception e){
+        }
+        finally {
             em.close();
         }
         return output;

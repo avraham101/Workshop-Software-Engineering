@@ -1,6 +1,7 @@
 package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.PurchasePolicyTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,6 +41,12 @@ public class UpdatePurchasePolicyTest extends AcceptanceTests {
     @Test
     public void viewPolicyFail() {
         assertNull(bridge.viewPolicy("store11Test"));
+    }
+
+    @After
+    public void tearDown(){
+        removeProducts(products);
+        removeStores(stores);
     }
 
 }

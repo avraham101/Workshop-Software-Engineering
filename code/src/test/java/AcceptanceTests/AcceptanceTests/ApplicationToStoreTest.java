@@ -24,7 +24,7 @@ public class ApplicationToStoreTest extends AcceptanceTests {
         addStores(stores);
         user = users.get(0);
         registerAndLogin(user);
-        application = new ApplicationToStoreTestData(stores.get(0).getStoreName(), user.getUsername(),"message");
+        application = new ApplicationToStoreTestData(-1,stores.get(0).getStoreName(), user.getUsername(),"message");
     }
 
     @Test

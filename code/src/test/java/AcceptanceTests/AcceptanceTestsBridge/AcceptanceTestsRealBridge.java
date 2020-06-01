@@ -12,15 +12,13 @@ import DataAPI.Purchase;
 import Domain.ProductPeristentData;
 import Domain.Request;
 import Domain.Review;
-import Persitent.CategoryDao;
-import Persitent.ProductDao;
-import Persitent.StoreDao;
-import Persitent.SubscribeDao;
+import Persitent.*;
 import Publisher.SinglePublisher;
 import Service.ServiceAPI;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
@@ -235,12 +233,23 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-4.3---------------------------------//
     @Override
-    public boolean appointOwnerToStore(int id,String storeName, String username) {
+    public boolean appointOwnerToStoreDirectly(int id,String storeName, String username) {
         boolean addManager = serviceAPI.addManagerToStore(id,storeName,username).getValue();
         List<PermissionType> ownerPermission = new ArrayList<>(Collections.singletonList(PermissionType.OWNER));
         boolean addPermission = serviceAPI.addPermissions(id, ownerPermission, storeName, username).getValue();
         return addManager & addPermission;
     }
+
+    @Override
+    public boolean appointOwnerToStore(int id, String storeName, String username) {
+        return serviceAPI.manageOwner(id,storeName,username).getValue();
+    }
+
+    @Override
+    public boolean approveManageOwner(int id, String storeName, String username){
+        return serviceAPI.approveManageOwner(id,storeName,username).getValue();
+    }
+
     //---------------------------Use-Case-4.3---------------------------------//
 
     //---------------------------Use-Case-4.5---------------------------------//
@@ -274,10 +283,10 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-4.9---------------------------------//
     @Override
-    public HashSet<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName) {
+    public List<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName) {
         List<RequestData> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
         List<ApplicationToStoreTestData> applications = buildApplicationsToStore(requests);
-        return new HashSet<>(applications);
+        return applications;
     }
 
     @Override
@@ -404,6 +413,11 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     public double getRevenueByDay(int id, DateTestData date) {
         DateData day = new DateData(date.getDay(),date.getMonth(),date.getYear());
         return serviceAPI.getRevenueByDay(id,day).getValue();
+    }
+
+    @Override
+    public void removeRevenues() {
+        new RevenueDao().remove(LocalDate.now());
     }
     //--------------------------get managers of store---------------------------------//
 
@@ -596,7 +610,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     private DiscountTestData buildDiscountTestData(int id,String s) {
         String[] mid= s.split("\"");
         String product=mid[9];
-        int i=mid[12].indexOf('}');
+        int i=mid[12].indexOf(',');
         double percantage=Double.valueOf(mid[12].substring(1,i));
         return new DiscountTestData(percantage,product,id);
     }
@@ -676,7 +690,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     }
 
     private ApplicationToStoreTestData buildApplicationToStore(RequestData request) {
-        return new ApplicationToStoreTestData(request.getStoreName(),request.getSenderName(),request.getContent());
+        return new ApplicationToStoreTestData(request.getId(),request.getStoreName(),request.getSenderName(),request.getContent());
     }
 
     private Set<StorePermissionsTypeTestData> buildStorePermissionType(Set<StorePermissionType> permissionsTypeTestData) {

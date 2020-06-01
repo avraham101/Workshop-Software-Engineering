@@ -18,7 +18,6 @@ public class PurchaseTypeDao {
             purchaseType=em.find(PurchaseType.class,type.getPurchaseTypeData());
         }
         catch(NoResultException ex) {
-            ex.printStackTrace();
         }
         finally {
             em.close();

@@ -185,6 +185,67 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
     }
 
     /**
+     * use case 4.3.1 - manage owner - success
+     */
+    @Test
+    public void testAddOwnerNoPermission(){
+        setUpStoreOpened();
+        String store=data.getStore(Data.VALID).getName();
+        assertFalse(data.getSubscribe(Data.ADMIN).addOwner(store,data.getSubscribe(Data.VALID2).getName()).getValue());
+        tearDownStore();
+    }
+
+    /**
+     * test not have permission but owner
+     */
+    @Test
+    public void testAddOwnerNotOwner(){
+        setUpManagerAdded();
+        String store=data.getStore(Data.VALID).getName();
+        assertFalse(data.getSubscribe(Data.ADMIN).addOwner(store,data.getSubscribe(Data.VALID2).getName()).getValue());
+        tearDownStore();
+    }
+
+    @Test
+    public void testAddOwnerSucsess(){
+        setUpStoreOpened();
+        String store=data.getStore(Data.VALID).getName();
+        assertTrue(data.getSubscribe(Data.VALID).addOwner(store,data.getSubscribe(Data.VALID2).getName()).getValue());
+        tearDownStore();
+    }
+
+
+    /**
+     * use case 4.3.2 - approveManager - success
+     */
+    @Test
+    public void testApproveOwnerNoPermission(){
+        setUpStoreOpened();
+        String store=data.getStore(Data.VALID).getName();
+        assertFalse(data.getSubscribe(Data.ADMIN).approveManageOwner(store,data.getSubscribe(Data.VALID2).getName()).getValue());
+        tearDownStore();
+    }
+
+    /**
+     * test not have permission but owner
+     */
+    @Test
+    public void testApproveOwnerNotOwner(){
+        setUpManagerAdded();
+        String store=data.getStore(Data.VALID).getName();
+        assertFalse(data.getSubscribe(Data.ADMIN).approveManageOwner(store,data.getSubscribe(Data.VALID2).getName()).getValue());
+        tearDownStore();
+    }
+
+    @Test
+    public void testApproveOwnerSuccess(){
+        setUpStoreOpened();
+        String store=data.getStore(Data.VALID).getName();
+        assertTrue(data.getSubscribe(Data.VALID).approveManageOwner(store,data.getSubscribe(Data.VALID2).getName()).getValue());
+        tearDownStore();
+    }
+
+    /**
      * use case 4.7 - remove manager
      * make user admin manage user niv(VALID2)
      * remove Admin from being manager and check that niv was removed from being a manager recursively

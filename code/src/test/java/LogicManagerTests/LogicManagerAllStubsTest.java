@@ -1652,39 +1652,38 @@ public class LogicManagerAllStubsTest {
         tearDownOpenStore();
     }
 
-//    /**
-//     * test use case 4.3 - add owner
-//     */
-//    @Test
-//    public void testManageOwner(){
-//        setUpOpenedStore();
-//        testManageOwnerFail();
-//        testManageOwnerFailAgain();
-//        testManageOwnerSuccess();
-//    }
+
 
     /**
-     * part of test use case 4.3 - add owner
+     * part of test use case 4.3.1 - add owner
      */
-    private void testManageOwnerFailAgain() {
-        assertFalse(logicManager.manageOwner(data.getId(Data.VALID),data.getSubscribe(Data.VALID).getName(),
-                data.getSubscribe(Data.VALID2).getName()).getValue());
+    @Test
+    public void testManageOwnerFailWrongStore() {
+        setUpOpenedStore();
+        assertFalse(logicManager.manageOwner(data.getId(Data.VALID),data.getSubscribe(Data.VALID).getName()
+                ,data.getSubscribe(Data.VALID).getName()).getValue());
+        tearDownOpenStore();
     }
 
     /**
-     * part of test use case 4.3 - add owner
+     * part of test use case 4.3.1 - add owner
      */
-    protected void testManageOwnerSuccess() {
-        assertTrue(logicManager.manageOwner(data.getId(Data.VALID),data.getStore(Data.VALID).getName(),
-                data.getSubscribe(Data.VALID2).getName()).getValue());
-    }
-
-    /**
-     * part of test use case 4.3 - add owner
-     */
-    protected void testManageOwnerFail() {
+    @Test
+    public void testManageOwnerFailWrongUser() {
+        setUpOpenedStore();
         assertFalse(logicManager.manageOwner(data.getId(Data.VALID),data.getStore(Data.VALID).getName()
                 ,data.getStore(Data.VALID).getName()).getValue());
+        tearDownOpenStore();
+    }
+
+    /**
+     * get list of all the managers user with id need to approve in storeName test
+     */
+    @Test
+    public void testGetApprovedManagersNotExistedStore(){
+        setUpOpenedStore();
+        assertNull(logicManager.getApprovedManagers(data.getId(Data.VALID),data.getSubscribe(Data.VALID).getName()).getValue());
+        tearDownOpenStore();
     }
 
     /**

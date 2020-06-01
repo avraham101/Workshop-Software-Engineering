@@ -43,12 +43,11 @@ public class Dao<T> {
             output = true;
         }
         catch (Exception ex) {
-            output = false;
             // If there is an exception rollback changes
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
+
         }
         finally {
             // Close EntityManager
