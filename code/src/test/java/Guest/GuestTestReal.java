@@ -11,12 +11,11 @@ import Persitent.CartDao;
 import Persitent.DaoHolders.DaoHolder;
 import Persitent.StoreDao;
 import Persitent.SubscribeDao;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -235,5 +234,8 @@ public class GuestTestReal extends GuestTest{
         tearDownStore();
     }
 
-
+    @After
+    public void tearDown() throws Exception {
+        daoHolder.getSubscribeDao().remove(data.getSubscribe(Data.ADMIN).getName());
+    }
 }

@@ -122,7 +122,7 @@ public class daoTest {
     @Test
     public void addStoreWith(){
         StoreDao storeDao=new StoreDao();
-        Store store=storeDao.find("hanut");
+        Store store=storeDao.find("Store");
         PolicyDao pdao= new PolicyDao();
         PurchasePolicy basketp = new BasketPurchasePolicy(25);
         List<PurchasePolicy> lst1 = new ArrayList<>();
@@ -138,7 +138,7 @@ public class daoTest {
     @Test
     public void findSub(){
         SubscribeDao subdao=new SubscribeDao();
-        Subscribe sub=subdao.find("yuv");
+        Subscribe sub=subdao.find("Yuval");
         assertTrue(true);
     }
 
@@ -151,6 +151,12 @@ public class daoTest {
 
     @Test
     public void addCountryPolicy(){
+        LogicManager logicManager;
+        try {
+            logicManager=new LogicManager("yuv","all");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         PolicyDao pdao= new PolicyDao();
         List<String> lst = new ArrayList<>();
         lst.add("england");
@@ -159,7 +165,8 @@ public class daoTest {
         List<PurchasePolicy> lst1 = new ArrayList<>();
         lst1.add(usrp);
         PurchasePolicy p = new AndPolicy(lst1);
-        pdao.addPolicy(p);
+        //pdao.addPolicy(p);
+        //logicManager.updatePolicy(data.getId())
         assertTrue(true);
     }
 
@@ -184,12 +191,13 @@ public class daoTest {
     @Test
     public void reset(){
         SubscribeDao subdao=new SubscribeDao();
-        //subdao.remove("Admin");
+        subdao.remove("Admin");
         subdao.remove("Yuval");
         subdao.remove("Admin");
         subdao.remove("Niv");
         subdao.remove("nvi");
         subdao.remove("yuv");
+        subdao.remove("shhu");
         subdao.remove("testUser0");
         subdao.remove("testUser1");
         StoreDao storeDao=new StoreDao();
@@ -287,7 +295,7 @@ public class daoTest {
         Request r=requestDao.find(1);
         RequestNotification notification=new RequestNotification(r,OpCode.Reply_Request);
         NotificationDao dao=new NotificationDao();
-        dao.add(notification,"Subscribe");
+        dao.add(notification, "Subscribe");
     }
 
     @Test
@@ -296,7 +304,7 @@ public class daoTest {
         products.add(data.getProductData(Data.VALID));
         BuyNotification notification=new BuyNotification(products,OpCode.Buy_Product);
         NotificationDao dao=new NotificationDao();
-        dao.add(notification,"Subscribe");
+        dao.add(notification, "Subscribe");
     }
 
     @Test

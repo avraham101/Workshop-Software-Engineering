@@ -6,11 +6,9 @@ import Domain.*;
 import Domain.Discount.RegularDiscount;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
 import Persitent.DaoHolders.DaoHolder;
-import Persitent.SubscribeDao;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

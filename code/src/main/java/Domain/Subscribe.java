@@ -69,11 +69,8 @@ public class Subscribe extends UserState{
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="subscibe_notifications",
-            joinColumns ={@JoinColumn(name = "username", referencedColumnName="username")},
-            inverseJoinColumns={@JoinColumn(name="notfiication_id", referencedColumnName="id")}
-    )
-    private List<Notification> notifications;
+    @JoinColumn(name="subscribe",referencedColumnName = "username",insertable = false,updatable = false)
+    private List<Notification<?>> notifications;
 
     @Transient
     private final SubscribeDaoHolder daos;
@@ -792,7 +789,6 @@ public class Subscribe extends UserState{
     }
     @Override
     public void deleteReceivedNotifications(List<Integer> notificationsId) {
-
         List<Notification> remove = new LinkedList<>();
         for(Notification not: this.notifications) {
             for(int d:notificationsId) {

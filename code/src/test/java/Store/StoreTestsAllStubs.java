@@ -3,7 +3,6 @@ package Store;
 import Data.Data;
 import Data.TestData;
 import DataAPI.ProductData;
-import Domain.Review;
 import Domain.*;
 import Domain.Discount.Discount;
 import Drivers.LogicManagerDriver;
@@ -14,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
-import java.util.List;
 
 import static org.junit.Assert.*;
 

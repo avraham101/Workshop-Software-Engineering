@@ -7,7 +7,6 @@ import Domain.*;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
 import Drivers.LogicManagerDriver;
 import Persitent.CartDao;
-import Persitent.Dao;
 import Persitent.DaoHolders.DaoHolder;
 import Persitent.StoreDao;
 import Persitent.SubscribeDao;

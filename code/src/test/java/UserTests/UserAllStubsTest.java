@@ -4,9 +4,11 @@ import Data.Data;
 import Data.TestData;
 import DataAPI.*;
 import Domain.*;
+import Persitent.CartDao;
 import Stubs.AdminStub;
 import Stubs.GuestStub;
 import Stubs.SubscribeStub;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -547,4 +549,9 @@ public class UserAllStubsTest {
 
     protected void tearDownSubscribe(){}
 
+    @After
+    public void tearDown() throws Exception {
+        CartDao dao=new CartDao();
+        dao.remove(dao.find(data.getSubscribe(Data.VALID).getName()));
+    }
 }
