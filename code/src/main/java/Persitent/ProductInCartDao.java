@@ -41,7 +41,6 @@ public class ProductInCartDao extends Dao<ProductInCart> {
         } catch (Exception e){
             if(et!=null)
                 et.rollback();
-            e.printStackTrace();
         }
         finally {
             em.close();

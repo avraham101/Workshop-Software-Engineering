@@ -3,28 +3,28 @@ package Persitent.DaoHolders;
 import Persitent.*;
 
 public class StoreDaoHolder {
-    private CategoryDao categoryDao;
-    private DiscountDao discountDao;
-    private NotificationDao notificationDao;
-    private PolicyDao policyDao;
-    private ProductDao productDao;
-    private PurchaseDao purchaseDao;
-    private PurchaseTypeDao purchaseTypeDao;
-    private RequestDao requestDao;
-    private SubscribeDao subscribeDao;
-    private OwnerAgreementDao ownerAgreementDao;
+    private static CategoryDao categoryDao;
+    private static DiscountDao discountDao;
+    private static NotificationDao notificationDao;
+    private static PolicyDao policyDao;
+    private static ProductDao productDao;
+    private static PurchaseDao purchaseDao;
+    private static PurchaseTypeDao purchaseTypeDao;
+    private static RequestDao requestDao;
+    private static SubscribeDao subscribeDao;
+    private static OwnerAgreementDao ownerAgreementDao;
 
     public StoreDaoHolder() {
-        this.categoryDao = new CategoryDao();
-        this.discountDao = new DiscountDao();
-        this.notificationDao = new NotificationDao();
-        this.policyDao = new PolicyDao();
-        this.productDao = new ProductDao(categoryDao);
-        this.purchaseDao = new PurchaseDao();
-        this.purchaseTypeDao = new PurchaseTypeDao();
-        this.requestDao = new RequestDao();
-        this.subscribeDao=new SubscribeDao();
-        this.ownerAgreementDao=new OwnerAgreementDao();
+        categoryDao = new CategoryDao();
+        discountDao = new DiscountDao();
+        notificationDao = new NotificationDao();
+        policyDao = new PolicyDao();
+        productDao = new ProductDao(categoryDao);
+        purchaseDao = new PurchaseDao();
+        purchaseTypeDao = new PurchaseTypeDao();
+        requestDao = new RequestDao();
+        subscribeDao=new SubscribeDao();
+        ownerAgreementDao=new OwnerAgreementDao();
     }
 
     public CategoryDao getCategoryDao() {
