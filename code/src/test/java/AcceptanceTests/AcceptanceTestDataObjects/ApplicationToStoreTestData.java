@@ -1,14 +1,20 @@
 package AcceptanceTests.AcceptanceTestDataObjects;
 
 public class ApplicationToStoreTestData {
+    private int id;
     private String writer;
     private String content;
     private String storeName;
 
-    public ApplicationToStoreTestData(String storeName ,String writer, String content) {
+    public ApplicationToStoreTestData(int id, String storeName ,String writer, String content) {
+        this.id = id;
         this.writer = writer;
         this.content = content;
         this.storeName = storeName;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getWriter() {

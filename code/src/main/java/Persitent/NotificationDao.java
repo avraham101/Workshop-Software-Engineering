@@ -71,7 +71,7 @@ public class NotificationDao extends Dao<Notification>{
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
+
         } finally {
             // Close EntityManager
             em.close();

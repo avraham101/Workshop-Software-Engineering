@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -281,6 +282,36 @@ public class StoreTestReal extends StoreTestsAllStubs {
         assertTrue(store.deleteDiscount(id).getValue());
         assertTrue(store.getDiscount().isEmpty());
     }
+
+    /**
+     * use case 4.3.1 - manage owner - success
+     */
+    @Test
+    public void testAddOwnerFailAddMySelf(){
+        assertFalse(store.addOwner(data.getStore(Data.VALID).getName(),data.getSubscribe(Data.VALID).getName()).getValue());
+        tearDownStore();
+    }
+
+    @Test
+    public void testAddOwnerSuccess(){
+        assertTrue(store.addOwner(data.getStore(Data.VALID).getName(),data.getSubscribe(Data.VALID2).getName()).getValue());
+        tearDownStore();
+    }
+
+
+    /**
+     * use case 4.3.2 - approveManager - success
+     */
+    @Test
+    public void approveOwnerSuccess(){
+        String givenBy=data.getSubscribe(Data.VALID).getName();
+        String owner=data.getSubscribe(Data.VALID2).getName();
+        OwnerAgreement ownerAgreement=new OwnerAgreement(new HashSet<>(),givenBy,owner,store.getName());
+        store.getAgreementMap().put(owner,ownerAgreement);
+        assertTrue(store.approveAgreement(givenBy,owner).getValue());
+        tearDownStore();
+    }
+
 
     /**
      * use case 2.8 - test amount too big:

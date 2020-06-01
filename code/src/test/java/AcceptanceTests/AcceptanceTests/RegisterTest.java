@@ -20,6 +20,7 @@ public class RegisterTest extends AcceptanceTests {
     public void setUp(){
         username = users.get(2).getUsername();
         password = users.get(2).getPassword();
+        removeUser(username);
     }
 
     @Test

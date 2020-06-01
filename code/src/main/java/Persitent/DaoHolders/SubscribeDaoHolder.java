@@ -3,15 +3,13 @@ package Persitent.DaoHolders;
 import Persitent.*;
 
 public class SubscribeDaoHolder {
-
-    private NotificationDao notificationDao;
-    private PurchaseDao purchaseDao;
-    private RequestDao requestDao;
-    private StoreDao storeDao;
-    private CartDao cartDao;
-    private PermissionDao permissionDao;
-    private SubscribeDao subscribeDao;
-
+    private static NotificationDao notificationDao;
+    private static PurchaseDao purchaseDao;
+    private static RequestDao requestDao;
+    private static StoreDao storeDao;
+    private static CartDao cartDao;
+    private static PermissionDao permissionDao;
+    private static SubscribeDao subscribeDao;
     public SubscribeDaoHolder() {
         notificationDao=new NotificationDao();
         purchaseDao=new PurchaseDao();

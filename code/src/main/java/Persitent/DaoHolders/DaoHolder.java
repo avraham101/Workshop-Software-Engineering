@@ -4,19 +4,20 @@ import Persitent.*;
 import Publisher.Publisher;
 
 public class DaoHolder {
-    private CartDao cartDao;
-    private CategoryDao categoryDao;
-    private DiscountDao discountDao;
-    private NotificationDao notificationDao;
-    private PermissionDao permissionDao;
-    private PolicyDao policyDao;
-    private ProductDao productDao;
-    private PurchaseDao purchaseDao;
-    private RequestDao requestDao;
-    private StoreDao storeDao;
-    private SubscribeDao subscribeDao;
-    private ReviewDao reviewDao;
-    private RevenueDao revenueDao;
+    private static CartDao cartDao;
+    private static CategoryDao categoryDao;
+    private static DiscountDao discountDao;
+    private static NotificationDao notificationDao;
+    private static PermissionDao permissionDao;
+    private static PolicyDao policyDao;
+    private static ProductDao productDao;
+    private static PurchaseDao purchaseDao;
+    private static RequestDao requestDao;
+    private static StoreDao storeDao;
+    private static SubscribeDao subscribeDao;
+    private static ReviewDao reviewDao;
+    private static RevenueDao revenueDao;
+    private static OwnerAgreementDao ownerAgreementDao;
 
     public DaoHolder() {
         cartDao =new CartDao();
@@ -32,6 +33,7 @@ public class DaoHolder {
         subscribeDao=new SubscribeDao();
         reviewDao = new ReviewDao();
         revenueDao=new RevenueDao();
+        ownerAgreementDao=new OwnerAgreementDao();
     }
 
     public CartDao getCartDao() {
@@ -84,5 +86,9 @@ public class DaoHolder {
 
     public RevenueDao getRevenueDao() {
         return revenueDao;
+    }
+
+    public OwnerAgreementDao getOwnerAgreementDao() {
+        return ownerAgreementDao;
     }
 }

@@ -227,9 +227,23 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean appointOwnerToStore(int id,String storeName, String username) {
+    public boolean appointOwnerToStoreDirectly(int id,String storeName, String username) {
+        if(realBridge!=null)
+            return realBridge.appointOwnerToStoreDirectly(id,storeName,username);
+        return false;
+    }
+
+    @Override
+    public boolean appointOwnerToStore(int id, String storeName, String username){
         if(realBridge!=null)
             return realBridge.appointOwnerToStore(id,storeName,username);
+        return false;
+    }
+
+    @Override
+    public boolean approveManageOwner(int id, String storeName, String username){
+        if(realBridge!=null)
+            return realBridge.approveManageOwner(id,storeName,username);
         return false;
     }
 
@@ -255,7 +269,7 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public HashSet<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName) {
+    public List<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName) {
         if(realBridge!=null)
             return realBridge.viewApplicationToStore(id, storeName);
         return null;
@@ -397,5 +411,11 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
         if (realBridge != null)
             return realBridge.getRevenueByDay(id, date);
         return 0.0;
+    }
+
+    @Override
+    public void removeRevenues() {
+        if(realBridge!=null)
+            realBridge.removeRevenues();
     }
 }

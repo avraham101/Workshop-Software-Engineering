@@ -94,7 +94,7 @@ public class PolicyDao {
         try {
             policy=em.find(PurchasePolicy.class,id);
         } catch (Exception ex) {
-            ex.printStackTrace();
+
         } finally {
             // Close EntityManager
             em.close();

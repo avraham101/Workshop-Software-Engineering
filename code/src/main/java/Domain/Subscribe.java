@@ -378,6 +378,46 @@ public class Subscribe extends UserState{
     }
 
     /**
+     * use case 4.3.1 - manage owner
+     * @param storeName the name of the store to be manager of
+     * @param newOwner the user to be manager of the store
+     * @return
+     */
+    @Override
+    public Response<Boolean> addOwner(String storeName, String newOwner) {
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
+        if(permission==null)
+            return new Response<>(false,OpCode.Dont_Have_Permission);
+        Store store=permission.getStore();
+        if(store==null||!permission.isOwner())
+            return new Response<>(false,OpCode.Dont_Have_Permission);
+        Response<Boolean> output= store.addOwner(this.userName,newOwner);
+        if(output.getValue())
+            daos.getStoreDao().update(store);
+        return output;
+    }
+
+    /**
+     * use case 4.3.2 - approve manage owner
+     * @param storeName the name of the store to be manager of
+     * @param newOwner the user to be manager of the store
+     * @return
+     */
+    @Override
+    public Response<Boolean> approveManageOwner(String storeName, String newOwner) {
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
+        if(permission==null)
+            return new Response<>(false,OpCode.Dont_Have_Permission);
+        Store store=permission.getStore();
+        if(store==null||!permission.isOwner())
+            return new Response<>(false,OpCode.Dont_Have_Permission);
+        Response<Boolean> output= store.approveAgreement(this.userName,newOwner);
+        if(output.getValue())
+            daos.getStoreDao().update(store);
+        return output;
+    }
+
+    /**
      * use case 4.5 - add manager to store
      * @param youngOwner the new manager
      * @param storeName the store to add manager to
@@ -508,15 +548,18 @@ public class Subscribe extends UserState{
         if(permission!=null)
             givenByMePermissions.remove(permission);
         lock.writeLock().unlock();
-        Store store=permissions.get(storeName).getStore();
+        Store store=daos.getStoreDao().find(storeName);
+        //Store store=permissions.get(storeName).getStore();
         //remove the permission from the user
         Permission p=daos.getPermissionDao().findPermission(permissions.get(storeName));
         permissions.remove(storeName);
         //remove the permission from the store
         store.getPermissions().remove(userName);
         removePermission(p);
+        store.removeAgreement(userName);
+        store.approveAgreementsOfUser(userName);
+        daos.getStoreDao().update(store);
         sendNotification( new RemoveNotification(storeName,OpCode.Removed_From_Management));
-
     }
 
     /**

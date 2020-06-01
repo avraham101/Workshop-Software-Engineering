@@ -385,6 +385,25 @@ public class UserAllStubsTest {
     }
 
     /**
+     * use case 4.3.1 - manage owner
+     */
+    @Test
+    public void testManageOwnerFailGuest(){
+        setUpGuest();
+        assertFalse(user.addOwner(data.getStore(Data.VALID).getName(),data.getSubscribe(Data.VALID).getName()).getValue());
+    }
+
+    /**
+     * use case 4.3.2 - approve owner
+     */
+    @Test
+    public void testApproveOwnerFailGuest(){
+        setUpGuest();
+        assertFalse(user.approveManageOwner(data.getStore(Data.VALID).getName(),data.getSubscribe(Data.VALID).getName()).getValue());
+    }
+
+
+    /**
      * test use case 4.5 -addManager
      */
     @Test

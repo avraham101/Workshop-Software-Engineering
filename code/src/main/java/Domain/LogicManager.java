@@ -1021,7 +1021,7 @@ public class LogicManager {
     }
 
     /**
-     * use case 4.3 - manage owner
+     * use case 4.3.1 - manage owner
      * @param storeName the name of the store to be manager of
      * @param userName the user to be manager of the store
      * @return
@@ -1034,10 +1034,47 @@ public class LogicManager {
         if(daos.getStoreDao().find(storeName)==null)
             return new Response<>(false,OpCode.Store_Not_Found);
         User current=cache.findUser(id);
-        addManager(id,userName,storeName);
-        List<PermissionType> types=new ArrayList<>();
-        types.add(PermissionType.OWNER);
-        return current.addPermissions(types,storeName,userName);
+        return current.addOwner(storeName,userName);
+    }
+
+    /**
+     * use case 4.3.2 - approve manage owner
+     * @param storeName the name of the store to be manager of
+     * @param userName the user to be manager of the store
+     * @return
+     */
+    public Response<Boolean> approveManageOwner(int id,String storeName, String userName) {
+        loggerSystem.writeEvent("LogicManager","manageOwner",
+                "store owner add a owner to the store", new Object[] {storeName, userName});
+        if(cache.findSubscribe(userName)==null)
+            return new Response<>(false,OpCode.User_Not_Found);
+        if(daos.getStoreDao().find(storeName)==null)
+            return new Response<>(false,OpCode.Store_Not_Found);
+        User current=cache.findUser(id);
+        return current.approveManageOwner(storeName,userName);
+    }
+
+    /**
+     * get list of all the managers user with id need to approve in storeName
+     * @param id - user id
+     * @param storeName - store to approve
+     * @return
+     */
+
+    public Response<List<String>> getApprovedManagers(int id,String storeName){
+        loggerSystem.writeEvent("LogicManager","getApprovedManagers",
+                "store owner approve a owner to the store", new Object[] {storeName});
+        List<String> managers=new LinkedList<>();
+        Store store=daos.getStoreDao().find(storeName);
+        if(store==null)
+            return new Response<>(null,OpCode.Store_Not_Found);
+        User current=cache.findUser(id);
+        Map<String,OwnerAgreement> agreementMap=store.getAgreementMap();
+        for(String name:agreementMap.keySet()){
+            if(agreementMap.get(name).containsOwner(current.getUserName()))
+                managers.add(name);
+        }
+        return new Response<>(managers,OpCode.Success);
     }
 
     /**
@@ -1070,6 +1107,8 @@ public class LogicManager {
     public Response<Boolean> addPermissions(int id,List<PermissionType> permissions, String storeName, String userName) {
         loggerSystem.writeEvent("LogicManager","addPermissions",
                 "store owner add a manager's permissions", new Object[] {permissions, storeName, userName});
+        if(permissions!=null&&permissions.contains(PermissionType.OWNER))
+            return manageOwner(id,storeName,userName);
         if(!validList(permissions))
             return new Response<>(false,OpCode.Invalid_Permissions);
         Response<Boolean> valid = storeUserValidity(userName,storeName);
