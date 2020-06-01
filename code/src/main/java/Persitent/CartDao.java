@@ -24,7 +24,6 @@ public class CartDao extends Dao<Cart> {
         catch (Exception e){
             if(et != null)
                 et.rollback();
-            e.printStackTrace();
         }
         finally {
             em.close();
@@ -52,17 +51,9 @@ public class CartDao extends Dao<Cart> {
                 et.commit();
             }
 
-
-//            int x=  em.createNativeQuery("DELETE FROM product WHERE storeName=? AND productName=?")
-//                    .setParameter(1, product.getStore())
-//                    .setParameter(2, product.getName())
-//                    .executeUpdate();
-//            et.commit();
-//            return x > 0;
         } catch (Exception e){
             if(et!=null)
                 et.rollback();
-            e.printStackTrace();
         }
         finally {
             em.close();
@@ -80,8 +71,7 @@ public class CartDao extends Dao<Cart> {
         try {
             cart=em.find(Cart.class,name);
         }
-        catch(NoResultException ex) {
-            ex.printStackTrace();
+        catch(Exception ex) {
         }
         finally {
             em.close();

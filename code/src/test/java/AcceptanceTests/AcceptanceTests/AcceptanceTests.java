@@ -225,7 +225,7 @@ public class AcceptanceTests {
             UserTestData owner = store.getStoreOwner();
             registerAndLogin(owner);
             bridge.openStore(owner.getId(),store.getStoreName());
-            bridge.appointOwnerToStore(owner.getId(),store.getStoreName(),admin.getUsername());
+            bridge.appointOwnerToStoreDirectly(owner.getId(),store.getStoreName(),admin.getUsername());
             bridge.logout(owner.getId());
         }
 
@@ -273,11 +273,6 @@ public class AcceptanceTests {
         addProducts(products);
         registerAndLogin(user);
     }
-    protected  void addUserAndStores(UserTestData user){
-        registerAndLogin(user);
-        addStores(stores);
-
-    }
 
 
     protected  void registerUsers(List<UserTestData> usersToRegister){
@@ -297,8 +292,19 @@ public class AcceptanceTests {
     }
 
     protected void removeUser(String username){
+        UserTestData user = getUserByName(username);
+        if(user!=null)
+            this.bridge.logout(user.getId());
         this.bridge.removeUser(username);
     }
+
+    private UserTestData getUserByName(String username) {
+        for(UserTestData user : users)
+            if(user.getUsername().equals(username))
+                return user;
+        return null;
+    }
+
     protected void removeUsers(List<String> users){
         for(String user : users)
             removeUser(user);

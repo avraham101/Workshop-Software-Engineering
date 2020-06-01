@@ -72,7 +72,7 @@ public class NotificationDao {
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
+
         } finally {
             // Close EntityManager
             em.close();

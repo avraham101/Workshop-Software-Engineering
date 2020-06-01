@@ -22,7 +22,6 @@ public class ReviewDao extends Dao<Review> {
             review=em.find(Review.class,id);
         }
         catch(NoResultException ex) {
-            ex.printStackTrace();
         }
         finally {
             em.close();
@@ -36,6 +35,7 @@ public class ReviewDao extends Dao<Review> {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
         Review review = null;
+        boolean output=false;
 
         try {
             et = em.getTransaction();
@@ -43,19 +43,17 @@ public class ReviewDao extends Dao<Review> {
             review=em.find(Review.class,id);
             em.remove(review);
             et.commit();
-
+            output=true;
         }
         catch(NoResultException ex) {
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
-
-            return false;
+            output=false;
         }
         finally {
             em.close();
         }
-        return true;
+        return output;
     }
 }

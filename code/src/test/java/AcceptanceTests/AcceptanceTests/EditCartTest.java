@@ -164,8 +164,8 @@ public class EditCartTest extends AcceptanceTests {
 
     @After
     public void tearDown(){
-//        removeUser(user0.getUsername());
-//        removeProducts(products);
-//        removeStores(stores);
+        removeUser(user0.getUsername());
+        removeProducts(products);
+        removeStores(stores);
     }
 }

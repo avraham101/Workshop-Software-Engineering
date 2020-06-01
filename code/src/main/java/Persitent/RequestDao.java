@@ -78,7 +78,6 @@ public class RequestDao extends Dao<Request> {
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
         }
         finally {
             em.close();

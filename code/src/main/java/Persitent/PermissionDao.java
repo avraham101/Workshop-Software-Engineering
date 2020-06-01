@@ -25,6 +25,7 @@ public class PermissionDao extends Dao<Permission> {
     public boolean removePermissionFromSubscribe(Permission perToDelete){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
+        boolean output=false;
 
         try {
             et = em.getTransaction();
@@ -39,17 +40,18 @@ public class PermissionDao extends Dao<Permission> {
 
             //em.remove(em.contains(permission) ? permission : em.merge(permission));
             et.commit();
-            return x > 0;
+            output=x>0;
         }
         catch(Exception ex) {
             if (et != null) {
                 et.rollback();
             }
-            return false;
+            output= false;
         }
         finally {
             em.close();
         }
+        return output;
     }
 
     public  Permission findPermission(Permission perToFind){
@@ -59,7 +61,7 @@ public class PermissionDao extends Dao<Permission> {
             permission=em.find(Permission.class,perToFind);
         }
         catch(NoResultException ex) {
-            ex.printStackTrace();
+
         }
         finally {
             em.close();

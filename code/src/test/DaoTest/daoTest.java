@@ -75,7 +75,7 @@ public class daoTest {
     public void addSubscribe(){
         SubscribeDao dao=new SubscribeDao();
         StoreDao storeDao=new StoreDao();
-        Subscribe shmu=new Admin("yuv","Admin");
+        Subscribe shmu=new Admin("yuv", "Admin");
 //        Basket b=new Basket(storeDao.find("store"),"yuv");
 //        ProductData p=data.getProductData(Data.VALID);
 //        b.addProduct(new Product(p,new Category("cat")),3);
@@ -188,10 +188,15 @@ public class daoTest {
         subdao.remove("Yuval");
         subdao.remove("Admin");
         subdao.remove("Niv");
+        subdao.remove("nvi");
         subdao.remove("yuv");
+        subdao.remove("testUser0");
+        subdao.remove("testUser1");
         StoreDao storeDao=new StoreDao();
-        //Store store=storeDao.find("hanut");
         storeDao.removeStore("Store");
+        storeDao.removeStore("store0Test");
+        storeDao.removeStore("store1Test");
+        storeDao.removeStore("store2Test");
     }
 
     @Test

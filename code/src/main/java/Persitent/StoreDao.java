@@ -72,14 +72,6 @@ public class StoreDao extends Dao<Store>{
         }
     }
 
-    public void clearTable() {
-        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-        Query query = em.createQuery("DELETE FROM Domain.Store");
-        int rowsDeleted = query.executeUpdate();
-        //System.out.println("entities deleted: " + rowsDeleted);
-        em.close();
-    }
-
     public void update(Store store) {
         super.update(ENTITY_MANAGER_FACTORY.createEntityManager(),store);
     }

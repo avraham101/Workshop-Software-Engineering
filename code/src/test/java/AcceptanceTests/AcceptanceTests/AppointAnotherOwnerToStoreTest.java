@@ -1,13 +1,13 @@
 package AcceptanceTests.AcceptanceTests;
 
-import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
-import AcceptanceTests.AcceptanceTestDataObjects.ReviewTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -20,32 +20,29 @@ public class AppointAnotherOwnerToStoreTest extends AcceptanceTests {
     private UserTestData owner;
     private UserTestData newOwner;
     private StoreTestData shareOwnershipStore;
-    private ProductTestData productToAdd;
 
     @Before
     public void setUp(){
+        addStores(stores);
+        addProducts(products);
         owner = superUser;
         newOwner = users.get(1);
         shareOwnershipStore = stores.get(0);
         bridge.register(owner.getUsername(),owner.getPassword());
         bridge.register(newOwner.getUsername(),newOwner.getPassword());
         bridge.login(owner.getId(),owner.getUsername(),owner.getPassword());
-        addStores(stores);
-        addProducts(products);
-        productToAdd = new ProductTestData("newProductTest",
-                                                            shareOwnershipStore.getStoreName(),
-                                                            100,
-                                                            4,
-                                                            "Dairy",
-                                                            new ArrayList<ReviewTestData>()
-        );
+        bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
+        bridge.login(newOwner.getId(),newOwner.getUsername(),newOwner.getPassword());
+
     }
 
     @Test
     public void appointAnotherOwnerToStoreTestSuccess(){
         boolean isOwner = bridge.appointOwnerToStore(owner.getId(),
                 shareOwnershipStore.getStoreName(),newOwner.getUsername());
-        assertTrue(isOwner);
+        boolean approval = bridge.approveManageOwner(owner.getId(),shareOwnershipStore.getStoreName(),newOwner.getUsername()) &&
+                bridge.approveManageOwner(admin.getId(), shareOwnershipStore.getStoreName(),newOwner.getUsername());
+        assertTrue(isOwner && approval);
 
     }
 
@@ -54,7 +51,9 @@ public class AppointAnotherOwnerToStoreTest extends AcceptanceTests {
         appointAnotherOwnerToStoreTestSuccess();
         boolean isOwner = bridge.appointOwnerToStore(owner.getId(),
                 shareOwnershipStore.getStoreName(),newOwner.getUsername());
-        assertFalse(isOwner);
+        boolean approval = bridge.approveManageOwner(owner.getId(),shareOwnershipStore.getStoreName(),newOwner.getUsername()) &&
+                bridge.approveManageOwner(admin.getId(), shareOwnershipStore.getStoreName(),newOwner.getUsername());
+        assertFalse(isOwner && approval);
 
     }
 
@@ -74,5 +73,10 @@ public class AppointAnotherOwnerToStoreTest extends AcceptanceTests {
                 wrongStoreName,newOwner.getUsername());
         assertFalse(isOwner);
 
+    }
+    @After
+    public void tearDown(){
+        removeUsers(new ArrayList<>(Arrays.asList(newOwner.getUsername(),owner.getUsername(),admin.getUsername())));
+        removeStores(stores);
     }
 }
