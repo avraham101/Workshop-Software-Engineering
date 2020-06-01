@@ -58,9 +58,7 @@ public class ManagerController {
     public ResponseEntity<?> approveOwnerToStore(@RequestParam(name="id" ) int id,
                                                  @RequestParam(name="store" ) String storeName,
                                                  @RequestParam(name="user" ) String userName) {
-        System.out.println("Approve: "+userName);
         storeName = json.fromJson(storeName,String.class);
-        System.out.println(storeName);
         Response<Boolean> response = SingleService.getInstance().approveManageOwner(id,storeName,userName);
         return getResponseEntity(response);
     }
@@ -69,7 +67,6 @@ public class ManagerController {
     public ResponseEntity<?> getApprovedOwnersFromStore(@RequestParam(name="id" ) int id,
                                                         @RequestBody String storeName) {
         storeName = json.fromJson(storeName,String.class);
-        System.out.println("list approved: "+storeName);
         Response<List<String>> response = SingleService.getInstance().getApprovedManagers(id,storeName);
         return getResponseEntity(response);
     }
