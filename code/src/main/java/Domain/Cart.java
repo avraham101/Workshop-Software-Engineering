@@ -3,7 +3,8 @@ package Domain;
 import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.Purchase;
-import Persitent.PurchaseDao;
+import Persitent.DaoInterfaces.IPurchaseDao;
+import Persitent.DaoProxy.PurchaseDaoProxy;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -29,12 +30,12 @@ public class Cart implements Serializable {
     private Map<String,Basket> baskets; // key is the store name and the value is the basket of the store
 
     @Transient
-    private final PurchaseDao purchasesDao;
+    private final IPurchaseDao purchasesDao;
 
 
     public Cart(){
         baskets = new HashMap<>();
-        purchasesDao = new PurchaseDao();
+        purchasesDao = new PurchaseDaoProxy();
     }
 
     public String getBuyer() {
@@ -44,7 +45,7 @@ public class Cart implements Serializable {
     public Cart(String buyer){
         this.buyer = buyer;
         baskets = new HashMap<>();
-        purchasesDao = new PurchaseDao();
+        purchasesDao = new PurchaseDaoProxy();
     }
 
     public Map<String, Basket> getBaskets() {

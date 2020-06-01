@@ -7,7 +7,7 @@ import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.Notification.Notification;
 import Persitent.Cache;
 import Persitent.DaoHolders.SubscribeDaoHolder;
-import Persitent.RequestDao;
+import Persitent.DaoInterfaces.IRequestDao;
 import Publisher.Publisher;
 import Publisher.SinglePublisher;
 import org.hibernate.annotations.LazyCollection;
@@ -237,7 +237,7 @@ public class Subscribe extends UserState{
     public Request addRequest(String storeName, String content){
         Request request = new Request(userName, storeName, content);
         requests.add(request);
-        RequestDao requestDao = daos.getRequestDao();
+        IRequestDao requestDao = daos.getRequestDao();
         if(requestDao.addRequest(request))
             return request;
         return null;

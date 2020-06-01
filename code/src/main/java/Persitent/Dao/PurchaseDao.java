@@ -1,13 +1,15 @@
-package Persitent;
+package Persitent.Dao;
 
 import DataAPI.Purchase;
+import Persitent.DaoInterfaces.IPurchaseDao;
+import Persitent.DaoInterfaces.IPurchaseTypeDao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-public class PurchaseDao {
+public class PurchaseDao implements IPurchaseDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("request");
 

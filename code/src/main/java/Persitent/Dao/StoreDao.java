@@ -1,14 +1,14 @@
-package Persitent;
+package Persitent.Dao;
 
 
 import Domain.Store;
-import Publisher.Publisher;
+import Persitent.DaoInterfaces.IStoreDao;
 
 import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class StoreDao extends Dao<Store>{
+public class StoreDao extends Dao<Store> implements IStoreDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("store");
 
@@ -48,10 +48,11 @@ public class StoreDao extends Dao<Store>{
         return output;
     }
 
-    public void removeStore(String name){
+    public boolean removeStore(String name){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
         Store store = null;
+        boolean output = false;
 
         try {
             et = em.getTransaction();
@@ -60,16 +61,19 @@ public class StoreDao extends Dao<Store>{
             store=em.find(Store.class,name);
             em.remove(em.contains(store) ? store : em.merge(store));
             et.commit();
+            output = true;
 
         }
         catch(Exception ex) {
             if (et != null) {
                 et.rollback();
             }
+            output = false;
         }
         finally {
             em.close();
         }
+        return output;
     }
 
     public void update(Store store) {

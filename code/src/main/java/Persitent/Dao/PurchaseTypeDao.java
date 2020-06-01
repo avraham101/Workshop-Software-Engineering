@@ -1,28 +1,28 @@
-package Persitent;
+package Persitent.Dao;
 
-import Domain.Category;
+import Domain.PurchaseType;
+import Persitent.DaoInterfaces.IPurchaseTypeDao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
-public class CategoryDao {
+public class PurchaseTypeDao implements IPurchaseTypeDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("product");
 
-    public Category find(String name){
+    public PurchaseType find(PurchaseType type){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-        Category cat = null;
+        PurchaseType purchaseType = null;
         try {
-            cat=em.find(Category.class,name);
+            purchaseType=em.find(PurchaseType.class,type.getPurchaseTypeData());
         }
-        catch(Exception ex) {
-
+        catch(NoResultException ex) {
         }
         finally {
             em.close();
         }
-        return cat;
+        return purchaseType;
     }
 }

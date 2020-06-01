@@ -1,17 +1,18 @@
-package Persitent;
+package Persitent.Dao;
 
 import Domain.Notification.Notification;
+import Persitent.DaoInterfaces.INotificationDao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-public class NotificationDao {
+public class NotificationDao implements INotificationDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("request");
 
-    public boolean add(Notification notification) {
+    public boolean add(Notification<?> notification) {
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         // Used to issue transactions on the EntityManager
@@ -39,10 +40,10 @@ public class NotificationDao {
         return output;
     }
 
-    public Notification find(int id) {
+    public Notification<?> find(int id) {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
-        Notification n = null;
+        Notification<?> n = null;
 
         try {
             n = em.find(Notification.class, id);
@@ -63,7 +64,7 @@ public class NotificationDao {
             // Get transaction and start
             et = em.getTransaction();
             et.begin();
-            Notification notification = em.find(Notification.class, id);
+            Notification<?> notification = em.find(Notification.class, id);
             em.remove(notification);
             et.commit();
             output=true;

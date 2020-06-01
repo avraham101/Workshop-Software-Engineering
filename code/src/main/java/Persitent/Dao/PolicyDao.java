@@ -1,90 +1,105 @@
-package Persitent;
+package Persitent.Dao;
 
-import Domain.Discount.Discount;
+import Domain.PurchasePolicy.PurchasePolicy;
+import Persitent.DaoInterfaces.IPolicyDao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-public class DiscountDao {
+public class PolicyDao implements IPolicyDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("product");
+            .createEntityManagerFactory("policy");
 
-    public DiscountDao() {
+    public PolicyDao() {
     }
 
-    public boolean addDiscount(Discount discount) {
-        // The EntityManager class allows operations such as create, read, update, delete
+    public void addPolicy(PurchasePolicy policy){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-
-        // Used to issue transactions on the EntityManager
         EntityTransaction et = null;
-
-        boolean output=false;
         try {
             // Get transaction and start
             et = em.getTransaction();
             et.begin();
 
             // Save the object
-            em.persist(discount);
+            em.persist(policy);
             et.commit();
-            output=true;
         }
         catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {
                 et.rollback();
             }
-
+            ex.printStackTrace();
         } finally {
             // Close EntityManager
             em.close();
         }
-        return output;
     }
 
-    public boolean removeDiscount(int id){
+    public void removePolicy(int id){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
-        boolean output=false;
+
         try {
             // Get transaction and start
             et = em.getTransaction();
             et.begin();
-            Discount discount=em.find(Discount.class,id);
-            em.remove(discount);
+            PurchasePolicy policy=em.find(PurchasePolicy.class,id);
+            em.remove(policy);
             et.commit();
-            output=true;
         } catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {
                 et.rollback();
             }
-
+            ex.printStackTrace();
         } finally {
             // Close EntityManager
             em.close();
         }
-        return output;
     }
 
-    public Discount find(int id){
+    public void updatePolicy(PurchasePolicy policy){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
-        Discount d=null;
 
         try {
             // Get transaction and start
             et = em.getTransaction();
             et.begin();
-            d=em.find(Discount.class,id);
+            em.merge(policy);
+            et.commit();
         } catch (Exception ex) {
+            // If there is an exception rollback changes
+            if (et != null) {
+                et.rollback();
+            }
+//            ex.printStackTrace();
         } finally {
             // Close EntityManager
             em.close();
         }
-        return d;
+
+
     }
+    public PurchasePolicy find(int id){
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction et = null;
+        PurchasePolicy policy=null;
+        try {
+            policy=em.find(PurchasePolicy.class,id);
+        } catch (Exception ex) {
+
+        } finally {
+            // Close EntityManager
+            em.close();
+        }
+        return policy;
+    }
+
+
+
 }

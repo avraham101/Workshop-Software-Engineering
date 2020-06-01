@@ -1,92 +1,91 @@
-package Persitent;
+package Persitent.Dao;
 
 import Domain.Discount.Discount;
-import Domain.Request;
-import Domain.Store;
+import Persitent.DaoInterfaces.IDiscountDao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-public class RequestDao extends Dao<Request> {
+public class DiscountDao implements IDiscountDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("request");
+            .createEntityManagerFactory("product");
 
-    public boolean addRequest(Request request) {
+    public DiscountDao() {
+    }
+
+    public boolean addDiscount(Discount discount) {
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+
         // Used to issue transactions on the EntityManager
         EntityTransaction et = null;
 
+        boolean output=false;
         try {
             // Get transaction and start
             et = em.getTransaction();
             et.begin();
 
-            // Save the customer object
-            em.persist(request);
+            // Save the object
+            em.persist(discount);
             et.commit();
+            output=true;
+        }
+        catch (Exception ex) {
+            // If there is an exception rollback changes
+            if (et != null) {
+                et.rollback();
+            }
+
+        } finally {
+            // Close EntityManager
+            em.close();
+        }
+        return output;
+    }
+
+    public boolean removeDiscount(int id){
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction et = null;
+        boolean output=false;
+        try {
+            // Get transaction and start
+            et = em.getTransaction();
+            et.begin();
+            Discount discount=em.find(Discount.class,id);
+            em.remove(discount);
+            et.commit();
+            output=true;
         } catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
-            return false;
+
         } finally {
             // Close EntityManager
             em.close();
         }
-        return true;
-
+        return output;
     }
 
-    public Request find(int id) {
+    public Discount find(int id){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
-        Request r=null;
+        Discount d=null;
 
         try {
             // Get transaction and start
             et = em.getTransaction();
             et.begin();
-            r=em.find(Request.class,id);
+            d=em.find(Discount.class,id);
         } catch (Exception ex) {
         } finally {
             // Close EntityManager
             em.close();
         }
-        return r;
-    }
-
-    public void removeRequest(int id){
-        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-        EntityTransaction et = null;
-        Request request = null;
-
-        try {
-            et = em.getTransaction();
-            et.begin();
-
-            request=em.find(Request.class,id);
-            em.remove(request);
-            et.commit();
-
-        }
-        catch(Exception ex) {
-            if (et != null) {
-                et.rollback();
-            }
-        }
-        finally {
-            em.close();
-        }
-    }
-
-    public boolean update(Request request){
-        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-        return super.update(em,request);
-
+        return d;
     }
 }

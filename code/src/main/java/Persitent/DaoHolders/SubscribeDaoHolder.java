@@ -1,45 +1,47 @@
 package Persitent.DaoHolders;
 
-import Persitent.*;
+import Persitent.Dao.*;
+import Persitent.DaoInterfaces.*;
+import Persitent.DaoProxy.*;
 
 public class SubscribeDaoHolder {
-    private static NotificationDao notificationDao;
-    private static PurchaseDao purchaseDao;
-    private static RequestDao requestDao;
-    private static StoreDao storeDao;
-    private static CartDao cartDao;
-    private static PermissionDao permissionDao;
+    private INotificationDao notificationDao;
+    private IPurchaseDao purchaseDao;
+    private IRequestDao requestDao;
+    private IStoreDao storeDao;
+    private static ICartDao cartDao;
+    private IPermissionDao permissionDao;
 
     public SubscribeDaoHolder() {
-        notificationDao=new NotificationDao();
-        purchaseDao=new PurchaseDao();
-        requestDao=new RequestDao();
-        storeDao=new StoreDao();
-        permissionDao = new PermissionDao();
-        cartDao=new CartDao();
+        notificationDao=new NotificationDaoProxy();
+        purchaseDao=new PurchaseDaoProxy();
+        requestDao=new RequestDaoProxy();
+        storeDao=new StoreDaoProxy();
+        permissionDao = new PermissionDaoProxy();
+        cartDao=new CartDaoProxy();
     }
 
-    public NotificationDao getNotificationDao() {
+    public INotificationDao getNotificationDao() {
         return notificationDao;
     }
 
-    public PurchaseDao getPurchaseDao() {
+    public IPurchaseDao getPurchaseDao() {
         return purchaseDao;
     }
 
-    public RequestDao getRequestDao() {
+    public IRequestDao getRequestDao() {
         return requestDao;
     }
 
-    public StoreDao getStoreDao() {
+    public IStoreDao getStoreDao() {
         return storeDao;
     }
 
-    public PermissionDao getPermissionDao() {
+    public IPermissionDao getPermissionDao() {
         return permissionDao;
     }
 
-    public CartDao getCartDao() {
+    public ICartDao getCartDao() {
         return cartDao;
     }
 }

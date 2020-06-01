@@ -1,69 +1,71 @@
 package Persitent.DaoHolders;
 
-import Persitent.*;
+import Persitent.Dao.*;
+import Persitent.DaoInterfaces.*;
+import Persitent.DaoProxy.*;
 
 public class StoreDaoHolder {
-    private static CategoryDao categoryDao;
-    private static DiscountDao discountDao;
-    private static NotificationDao notificationDao;
-    private static PolicyDao policyDao;
-    private static ProductDao productDao;
-    private static PurchaseDao purchaseDao;
-    private static PurchaseTypeDao purchaseTypeDao;
-    private static RequestDao requestDao;
-    private static SubscribeDao subscribeDao;
-    private static OwnerAgreementDao ownerAgreementDao;
+    private ICategoryDao categoryDao;
+    private IDiscountDao discountDao;
+    private INotificationDao notificationDao;
+    private IPolicyDao policyDao;
+    private IProductDao productDao;
+    private IPurchaseDao purchaseDao;
+    private IPurchaseTypeDao purchaseTypeDao;
+    private IRequestDao requestDao;
+    private ISubscribeDao subscribeDao;
+    private IOwnerAgreementDao ownerAgreementDao;
 
     public StoreDaoHolder() {
-        categoryDao = new CategoryDao();
-        discountDao = new DiscountDao();
-        notificationDao = new NotificationDao();
-        policyDao = new PolicyDao();
-        productDao = new ProductDao(categoryDao);
-        purchaseDao = new PurchaseDao();
-        purchaseTypeDao = new PurchaseTypeDao();
-        requestDao = new RequestDao();
-        subscribeDao=new SubscribeDao();
-        ownerAgreementDao=new OwnerAgreementDao();
+        categoryDao = new CategoryDaoProxy();
+        discountDao = new DiscountDaoProxy();
+        notificationDao = new NotificationDaoProxy();
+        policyDao = new PolicyDaoProxy();
+        productDao = new ProductDaoProxy(categoryDao);
+        purchaseDao = new PurchaseDaoProxy();
+        purchaseTypeDao = new PurchaseTypeDaoProxy();
+        requestDao = new RequestDaoProxy();
+        subscribeDao=new SubscribeDaoProxy();
+        ownerAgreementDao=new OwnerAgreementDaoProxy();
     }
 
-    public CategoryDao getCategoryDao() {
+    public ICategoryDao getCategoryDao() {
         return categoryDao;
     }
 
-    public DiscountDao getDiscountDao() {
+    public IDiscountDao getDiscountDao() {
         return discountDao;
     }
 
-    public NotificationDao getNotificationDao() {
+    public INotificationDao getNotificationDao() {
         return notificationDao;
     }
 
-    public PolicyDao getPolicyDao() {
+    public IPolicyDao getPolicyDao() {
         return policyDao;
     }
 
-    public ProductDao getProductDao() {
+    public IProductDao getProductDao() {
         return productDao;
     }
 
-    public PurchaseDao getPurchaseDao() {
+    public IPurchaseDao getPurchaseDao() {
         return purchaseDao;
     }
 
-    public PurchaseTypeDao getPurchaseTypeDao() {
+    public IPurchaseTypeDao getPurchaseTypeDao() {
         return purchaseTypeDao;
     }
 
-    public RequestDao getRequestDao() {
+    public IRequestDao getRequestDao() {
         return requestDao;
     }
 
-    public OwnerAgreementDao getOwnerAgreementDao() {
+    public IOwnerAgreementDao getOwnerAgreementDao() {
         return ownerAgreementDao;
     }
 
-    public SubscribeDao getSubscribeDao() {
+    public ISubscribeDao getSubscribeDao() {
         return subscribeDao;
     }
 
