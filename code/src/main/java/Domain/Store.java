@@ -6,7 +6,9 @@ import Domain.Notification.BuyNotification;
 import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.Notification.Notification;
+import Persitent.Cache;
 import Persitent.DaoHolders.StoreDaoHolder;
+import Persitent.SubscribeDao;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -442,8 +444,18 @@ public class Store {
         if(old==null)
             return new Response<>(false,OpCode.Invalid_Product);
         String categoryName=productData.getCategory();
-        if(!categoryList.containsKey(categoryName)){
-            categoryList.put(categoryName,new Category(categoryName));
+        if(!categoryList.containsKey(categoryName)) {
+            Category found = daos.getCategoryDao().find(categoryName);
+            if(found!=null) {
+                categoryList.put(categoryName, found);
+            }
+            else {
+                Category newCategory = new Category(categoryName);
+                categoryList.put(categoryName, newCategory);
+                if (!daos.getCategoryDao().add(newCategory))
+                    return new Response<>(false, OpCode.DB_Down);
+            }
+
         }
         old=daos.getProductDao().find(old);
         old.edit(productData);
@@ -497,7 +509,10 @@ public class Store {
     public Response<Boolean> addPolicy(PurchasePolicy policy) {
         if(!checkProducts(policy))
             return new Response<>(false,OpCode.Invalid_Product);
-        this.purchasePolicy = policy;
+        if(daos.getPolicyDao().addPolicy(policy)) {
+            daos.getPolicyDao().removePolicy(this.purchasePolicy.getId());
+            this.purchasePolicy = policy;
+        }
         return new Response<>(true,OpCode.Success);
     }
 
@@ -513,7 +528,11 @@ public class Store {
     public void sendManagersNotifications(List<ProductData> productData) {
         for(String manager: permissions.keySet()){
             Notification notification=new BuyNotification(productData,OpCode.Buy_Product);
-            permissions.get(manager).getOwner().sendNotification(notification);
+            Subscribe tmpOwner = permissions.get(manager).getOwner();
+            Cache cache = new Cache();
+            Subscribe realOwner = cache.findSubscribe(tmpOwner.getName());
+            realOwner.sendNotification(notification);
+            //permissions.get(manager).getOwner().sendNotification(notification);
         }
     }
 

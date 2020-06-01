@@ -926,6 +926,7 @@ public class SubscribeAllStubsTest {
         subscribe = data.getSubscribe(Data.ADMIN);
         try {
             daoHolder.getSubscribeDao().remove(subscribe.getName());
+            daoHolder.getSubscribeDao().remove(data.getSubscribe(Data.VALID2).getName());
         }catch (Exception e){}
     }
 

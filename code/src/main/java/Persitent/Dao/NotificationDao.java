@@ -3,36 +3,37 @@ package Persitent.Dao;
 import Domain.Notification.Notification;
 import Persitent.DaoInterfaces.INotificationDao;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
+import javax.transaction.Transactional;
 
-public class NotificationDao implements INotificationDao {
+
+public class NotificationDao extends Dao<Notification<?>> implements INotificationDao{
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("request");
 
-    public boolean add(Notification<?> notification) {
+
+    @Transactional
+    public boolean add(Notification<?> notification, String username) {
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-        // Used to issue transactions on the EntityManager
         EntityTransaction et = null;
-        boolean output=false;
+        // Used to issue transactions on the EntityManager
+        notification.setName(username);
+        boolean output = false;
         try {
             // Get transaction and start
             et = em.getTransaction();
             et.begin();
-
-            // Save the customer object
+            // Save the object
             em.persist(notification);
             et.commit();
             output = true;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
         } finally {
             // Close EntityManager
             em.close();

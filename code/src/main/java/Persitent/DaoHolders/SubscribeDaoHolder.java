@@ -44,4 +44,6 @@ public class SubscribeDaoHolder {
     public ICartDao getCartDao() {
         return cartDao;
     }
+
+    public SubscribeDao getSubscribeDao() {return subscribeDao;}
 }

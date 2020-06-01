@@ -8,6 +8,7 @@ import Domain.PurchasePolicy.BasketPurchasePolicy;
 import Drivers.LogicManagerDriver;
 import Persitent.Cache;
 import Persitent.DaoHolders.DaoHolder;
+import org.junit.After;
 import Persitent.DaoInterfaces.ICartDao;
 import Persitent.DaoInterfaces.IStoreDao;
 import Persitent.DaoInterfaces.ISubscribeDao;
@@ -232,5 +233,8 @@ public class GuestTestReal extends GuestTest{
         tearDownStore();
     }
 
-
+    @After
+    public void tearDown() throws Exception {
+        daoHolder.getSubscribeDao().remove(data.getSubscribe(Data.ADMIN).getName());
+    }
 }

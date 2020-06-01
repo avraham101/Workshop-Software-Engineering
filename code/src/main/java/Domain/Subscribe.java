@@ -68,11 +68,8 @@ public class Subscribe extends UserState{
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="subscibe_notifications",
-            joinColumns ={@JoinColumn(name = "username", referencedColumnName="username")},
-            inverseJoinColumns={@JoinColumn(name="notfiication_id", referencedColumnName="id")}
-    )
-    private List<Notification> notifications;
+    @JoinColumn(name="subscribe",referencedColumnName = "username",insertable = false,updatable = false)
+    private List<Notification<?>> notifications;
 
     @Transient
     private final SubscribeDaoHolder daos;
@@ -150,7 +147,9 @@ public class Subscribe extends UserState{
     @Override
     public void savePurchase(String buyer) {
         this.purchases.addAll(this.cart.savePurchases(this.userName));
+        this.daos.getCartDao().remove(this.getCart()); //remove the old cart
         this.cart = new Cart(this.userName);
+        this.daos.getCartDao().add(this.getCart()); //add the new cart
     }
 
     /**
@@ -774,7 +773,7 @@ public class Subscribe extends UserState{
 
 
     public void sendNotification(Notification<?> notification) {
-        if(daos.getNotificationDao().add(notification)) {
+        if(daos.getNotificationDao().add(notification, this.getName())) {
             notifications.add(notification);
             sendAllNotifications();
         }
@@ -789,7 +788,6 @@ public class Subscribe extends UserState{
     }
     @Override
     public void deleteReceivedNotifications(List<Integer> notificationsId) {
-
         List<Notification> remove = new LinkedList<>();
         for(Notification not: this.notifications) {
             for(int d:notificationsId) {

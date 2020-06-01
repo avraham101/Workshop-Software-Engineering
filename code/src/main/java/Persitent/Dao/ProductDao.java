@@ -86,9 +86,6 @@ public class ProductDao implements IProductDao {
             em.close();
         }
         return output;
-
-
-
     }
 
     public boolean removeProduct(Product product){

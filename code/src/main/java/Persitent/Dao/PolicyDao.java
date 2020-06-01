@@ -15,9 +15,10 @@ public class PolicyDao implements IPolicyDao {
     public PolicyDao() {
     }
 
-    public void addPolicy(PurchasePolicy policy){
+    public boolean addPolicy(PurchasePolicy policy){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
+        boolean output=false;
         try {
             // Get transaction and start
             et = em.getTransaction();
@@ -26,22 +27,24 @@ public class PolicyDao implements IPolicyDao {
             // Save the object
             em.persist(policy);
             et.commit();
+            output=true;
         }
         catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
         } finally {
             // Close EntityManager
             em.close();
         }
+        return output;
     }
 
-    public void removePolicy(int id){
+    public boolean removePolicy(int id){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
+        boolean output=false;
 
         try {
             // Get transaction and start
@@ -50,16 +53,18 @@ public class PolicyDao implements IPolicyDao {
             PurchasePolicy policy=em.find(PurchasePolicy.class,id);
             em.remove(policy);
             et.commit();
+            output = true;
         } catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
+
         } finally {
             // Close EntityManager
             em.close();
         }
+        return output;
     }
 
     public void updatePolicy(PurchasePolicy policy){
