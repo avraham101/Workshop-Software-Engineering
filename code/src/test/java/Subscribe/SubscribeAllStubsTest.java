@@ -9,17 +9,10 @@ import Drivers.LogicManagerDriver;
 import Persitent.Cache;
 import Persitent.DaoHolders.DaoHolder;
 import Persitent.StoreDao;
-import Persitent.SubscribeDao;
-import Stubs.CartStub;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.PaymentSystem.ProxyPayment;
-import Systems.SupplySystem.ProxySupply;
-import Systems.SupplySystem.SupplySystem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -933,6 +926,7 @@ public class SubscribeAllStubsTest {
         subscribe = data.getSubscribe(Data.ADMIN);
         try {
             daoHolder.getSubscribeDao().remove(subscribe.getName());
+            daoHolder.getSubscribeDao().remove(data.getSubscribe(Data.VALID2).getName());
         }catch (Exception e){}
     }
 

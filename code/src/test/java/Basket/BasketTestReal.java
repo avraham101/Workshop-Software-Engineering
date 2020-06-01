@@ -1,11 +1,9 @@
 package Basket;
 
 import Data.*;
-import Data.TestData;
 import DataAPI.*;
 import Domain.*;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.LinkedList;

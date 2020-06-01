@@ -138,7 +138,7 @@ public class daoTest {
     @Test
     public void findSub(){
         SubscribeDao subdao=new SubscribeDao();
-        Subscribe sub=subdao.find("yuv");
+        Subscribe sub=subdao.find("Yuval");
         assertTrue(true);
     }
 
@@ -191,12 +191,13 @@ public class daoTest {
     @Test
     public void reset(){
         SubscribeDao subdao=new SubscribeDao();
-        //subdao.remove("Admin");
+        subdao.remove("Admin");
         subdao.remove("Yuval");
         subdao.remove("Admin");
         subdao.remove("Niv");
         subdao.remove("nvi");
         subdao.remove("yuv");
+        subdao.remove("shhu");
         subdao.remove("testUser0");
         subdao.remove("testUser1");
         StoreDao storeDao=new StoreDao();
@@ -294,7 +295,7 @@ public class daoTest {
         Request r=requestDao.find(1);
         RequestNotification notification=new RequestNotification(r,OpCode.Reply_Request);
         NotificationDao dao=new NotificationDao();
-        dao.add(notification,"Subscribe");
+        dao.add(notification, "Subscribe");
     }
 
     @Test
@@ -303,7 +304,7 @@ public class daoTest {
         products.add(data.getProductData(Data.VALID));
         BuyNotification notification=new BuyNotification(products,OpCode.Buy_Product);
         NotificationDao dao=new NotificationDao();
-        dao.add(notification,"Subscribe");
+        dao.add(notification, "Subscribe");
     }
 
     @Test

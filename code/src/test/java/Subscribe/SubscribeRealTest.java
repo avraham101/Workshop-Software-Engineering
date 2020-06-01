@@ -1,23 +1,18 @@
 package Subscribe;
 
 import Data.Data;
-import Data.TestData;
 import DataAPI.*;
 import Domain.*;
 import Domain.Discount.Discount;
 import Domain.Discount.RegularDiscount;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
-import Drivers.LogicManagerDriver;
-import Persitent.SubscribeDao;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.Assert.*;
 

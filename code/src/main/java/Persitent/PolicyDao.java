@@ -1,14 +1,11 @@
 package Persitent;
 
-import DataAPI.Purchase;
-import Domain.Discount.Discount;
 import Domain.PurchasePolicy.PurchasePolicy;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.security.Policy;
 
 public class PolicyDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
@@ -17,9 +14,10 @@ public class PolicyDao {
     public PolicyDao() {
     }
 
-    public void addPolicy(PurchasePolicy policy){
+    public boolean addPolicy(PurchasePolicy policy){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
+        boolean output=false;
         try {
             // Get transaction and start
             et = em.getTransaction();
@@ -28,22 +26,24 @@ public class PolicyDao {
             // Save the object
             em.persist(policy);
             et.commit();
+            output=true;
         }
         catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
         } finally {
             // Close EntityManager
             em.close();
         }
+        return output;
     }
 
-    public void removePolicy(int id){
+    public boolean removePolicy(int id){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
+        boolean output=false;
 
         try {
             // Get transaction and start
@@ -52,16 +52,18 @@ public class PolicyDao {
             PurchasePolicy policy=em.find(PurchasePolicy.class,id);
             em.remove(policy);
             et.commit();
+            output = true;
         } catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {
                 et.rollback();
             }
-            ex.printStackTrace();
+
         } finally {
             // Close EntityManager
             em.close();
         }
+        return output;
     }
 
     public void updatePolicy(PurchasePolicy policy){

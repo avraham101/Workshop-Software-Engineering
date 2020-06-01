@@ -509,7 +509,10 @@ public class Store {
     public Response<Boolean> addPolicy(PurchasePolicy policy) {
         if(!checkProducts(policy))
             return new Response<>(false,OpCode.Invalid_Product);
-        this.purchasePolicy = policy;
+        if(daos.getPolicyDao().addPolicy(policy)) {
+            daos.getPolicyDao().removePolicy(this.purchasePolicy.getId());
+            this.purchasePolicy = policy;
+        }
         return new Response<>(true,OpCode.Success);
     }
 
