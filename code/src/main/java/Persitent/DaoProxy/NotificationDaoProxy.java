@@ -13,9 +13,9 @@ public class NotificationDaoProxy implements INotificationDao {
     }
 
     @Override
-    public boolean add(Notification<?> notification) {
+    public boolean add(Notification<?> notification, String username) {
         try{
-            return dao.add(notification);
+            return dao.add(notification,username);
         }catch (Exception e) {
             return false;
         }

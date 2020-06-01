@@ -9,8 +9,9 @@ public class SubscribeDaoHolder {
     private IPurchaseDao purchaseDao;
     private IRequestDao requestDao;
     private IStoreDao storeDao;
-    private static ICartDao cartDao;
+    private ICartDao cartDao;
     private IPermissionDao permissionDao;
+    private ISubscribeDao subscribeDao;
 
     public SubscribeDaoHolder() {
         notificationDao=new NotificationDaoProxy();
@@ -19,6 +20,7 @@ public class SubscribeDaoHolder {
         storeDao=new StoreDaoProxy();
         permissionDao = new PermissionDaoProxy();
         cartDao=new CartDaoProxy();
+        subscribeDao=new SubscribeDaoProxy();
     }
 
     public INotificationDao getNotificationDao() {
@@ -45,5 +47,5 @@ public class SubscribeDaoHolder {
         return cartDao;
     }
 
-    public SubscribeDao getSubscribeDao() {return subscribeDao;}
+    public ISubscribeDao getSubscribeDao() {return subscribeDao;}
 }
