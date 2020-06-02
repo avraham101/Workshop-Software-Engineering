@@ -20,4 +20,13 @@ public class CategoryDaoProxy implements ICategoryDao {
             return null;
         }
     }
+
+    @Override
+    public boolean add(Category newCategory) {
+        try{
+            return dao.add(newCategory);
+        }catch (Exception e) {
+            return false;
+        }
+    }
 }

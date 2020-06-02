@@ -43,11 +43,10 @@ public class CartDaoProxy implements ICartDao {
     @Override
     public Cart find(String name) {
         try{
-            dao.find(name);
+            return dao.find(name);
         }catch (Exception e) {
             return null;
         }
-        return null;
     }
 
     @Override

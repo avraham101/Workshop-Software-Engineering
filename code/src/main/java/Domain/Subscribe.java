@@ -88,7 +88,9 @@ public class Subscribe extends UserState{
 
     @Override
     public Cart getCart() {
-        return this.cart;
+        if(this.cart!=null)
+            return this.cart;
+        return daos.getCartDao().find(userName);
     }
 
     public Subscribe(String userName, String password, Cart cart) {
