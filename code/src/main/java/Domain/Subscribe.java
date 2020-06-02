@@ -7,8 +7,7 @@ import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.Notification.Notification;
 import Persitent.Cache;
 import Persitent.DaoHolders.SubscribeDaoHolder;
-import Persitent.RequestDao;
-import Persitent.SubscribeDao;
+import Persitent.DaoInterfaces.IRequestDao;
 import Publisher.Publisher;
 import Publisher.SinglePublisher;
 import org.hibernate.annotations.LazyCollection;
@@ -69,11 +68,8 @@ public class Subscribe extends UserState{
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="subscibe_notifications",
-            joinColumns ={@JoinColumn(name = "username", referencedColumnName="username")},
-            inverseJoinColumns={@JoinColumn(name="notfiication_id", referencedColumnName="id")}
-    )
-    private List<Notification> notifications;
+    @JoinColumn(name="subscribe",referencedColumnName = "username",insertable = false,updatable = false)
+    private List<Notification<?>> notifications;
 
     @Transient
     private final SubscribeDaoHolder daos;
@@ -92,7 +88,9 @@ public class Subscribe extends UserState{
 
     @Override
     public Cart getCart() {
-        return this.cart;
+        if(this.cart!=null)
+            return this.cart;
+        return daos.getCartDao().find(userName);
     }
 
     public Subscribe(String userName, String password, Cart cart) {
@@ -240,7 +238,7 @@ public class Subscribe extends UserState{
     public Request addRequest(String storeName, String content){
         Request request = new Request(userName, storeName, content);
         requests.add(request);
-        RequestDao requestDao = daos.getRequestDao();
+        IRequestDao requestDao = daos.getRequestDao();
         if(requestDao.addRequest(request))
             return request;
         return null;
@@ -792,7 +790,6 @@ public class Subscribe extends UserState{
     }
     @Override
     public void deleteReceivedNotifications(List<Integer> notificationsId) {
-
         List<Notification> remove = new LinkedList<>();
         for(Notification not: this.notifications) {
             for(int d:notificationsId) {

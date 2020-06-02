@@ -2,18 +2,20 @@ package Persitent;
 
 import Domain.Subscribe;
 import Domain.User;
+import Persitent.DaoInterfaces.ISubscribeDao;
+import Persitent.DaoProxy.SubscribeDaoProxy;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Cache {
 
     protected static ConcurrentHashMap<Integer,User> connectedUsers;
-    private static SubscribeDao subscribeDao;
+    private static ISubscribeDao subscribeDao;
 
     public Cache(){
         if(connectedUsers==null) {
             connectedUsers = new ConcurrentHashMap<>();
-            subscribeDao = new SubscribeDao();
+            subscribeDao = new SubscribeDaoProxy();
         }
     }
 

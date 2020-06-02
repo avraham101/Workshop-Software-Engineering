@@ -8,10 +8,10 @@ import Data.TestData;
 import Domain.*;
 import Domain.Discount.Discount;
 import Drivers.LogicManagerDriver;
-import Persitent.CartDao;
 import Persitent.DaoHolders.DaoHolder;
-import Persitent.StoreDao;
-import Persitent.SubscribeDao;
+import Persitent.DaoInterfaces.ICartDao;
+import Persitent.DaoInterfaces.IStoreDao;
+import Persitent.DaoInterfaces.ISubscribeDao;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,14 +66,14 @@ public class StoreTestReal extends StoreTestsAllStubs {
     @After
     public void tearDownStore() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        SubscribeDao subscribeDao = daoHolder.getSubscribeDao();
+        ISubscribeDao subscribeDao = daoHolder.getSubscribeDao();
         subscribeDao.remove(subscribe.getName());
         Subscribe admin = data.getSubscribe(Data.ADMIN);
         subscribeDao.remove(admin.getName());
         StoreData storeData = data.getStore(Data.VALID);
-        StoreDao storeDao = daoHolder.getStoreDao();
+        IStoreDao storeDao = daoHolder.getStoreDao();
         storeDao.removeStore(storeData.getName());
-        CartDao cartDao = daoHolder.getCartDao();
+        ICartDao cartDao = daoHolder.getCartDao();
         Cart cart = cartDao.find(subscribe.getName());
         if(cart!=null)
             cartDao.remove(cart);

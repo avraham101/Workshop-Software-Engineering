@@ -4,8 +4,10 @@ import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import DataAPI.ProductData;
 import DataAPI.Purchase;
-import Persitent.ProductInCartDao;
-import Persitent.StoreDao;
+import Persitent.DaoInterfaces.IProductInCartDao;
+import Persitent.DaoInterfaces.IStoreDao;
+import Persitent.DaoProxy.ProductInCartDaoProxy;
+import Persitent.DaoProxy.StoreDaoProxy;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,10 +18,10 @@ import java.util.*;
 public class Basket implements Serializable {
 
     @Transient
-    private final ProductInCartDao productInCartDao;
+    private final IProductInCartDao productInCartDao;
 
     @Transient
-    private final StoreDao storeDao;
+    private final IStoreDao storeDao;
 
     @Id
     @ManyToOne(cascade = CascadeType.DETACH,fetch = FetchType.EAGER)
@@ -42,8 +44,8 @@ public class Basket implements Serializable {
     private double price;
 
     public Basket() {
-        productInCartDao = new ProductInCartDao();
-        storeDao = new StoreDao();
+        productInCartDao = new ProductInCartDaoProxy();
+        storeDao = new StoreDaoProxy();
     }
 
     /**
@@ -55,8 +57,8 @@ public class Basket implements Serializable {
         this.buyer = buyer;
         this.products = new HashMap<>();
         this.price=0;
-        productInCartDao = new ProductInCartDao();
-        storeDao = new StoreDao();
+        productInCartDao = new ProductInCartDaoProxy();
+        storeDao = new StoreDaoProxy();
     }
 
     /**

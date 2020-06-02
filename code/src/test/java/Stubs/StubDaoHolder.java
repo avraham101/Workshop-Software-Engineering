@@ -1,18 +1,11 @@
 package Stubs;
 
-import Persitent.*;
 import Persitent.DaoHolders.DaoHolder;
+import Persitent.DaoInterfaces.IStoreDao;
+import Persitent.DaoInterfaces.ISubscribeDao;
 
 public class StubDaoHolder extends DaoHolder {
 
-    private CartDao cartDao;
-    private CategoryDao categoryDao;
-    private DiscountDao discountDao;
-    private NotificationDao notificationDao;
-    private PolicyDao policyDao;
-    private ProductDao productDao;
-    private PurchaseDao purchaseDao;
-    private RequestDao requestDao;
     private StubStoreDao storeDao;
     private StubSubscribeDao subscribeDao;
 
@@ -22,12 +15,12 @@ public class StubDaoHolder extends DaoHolder {
     }
 
     @Override
-    public StoreDao getStoreDao() {
+    public IStoreDao getStoreDao() {
         return storeDao;
     }
 
     @Override
-    public SubscribeDao getSubscribeDao() {
+    public ISubscribeDao getSubscribeDao() {
         return subscribeDao;
     }
 }
