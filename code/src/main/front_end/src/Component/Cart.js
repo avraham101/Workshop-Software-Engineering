@@ -35,7 +35,7 @@ class Cart extends Component {
         <div>
             <div style={{width:'100%'}}>
                 <div style={{float:'left', width:'90%'}}>
-                    <h3 style={{textAlign:'center'}}>{"total price :"+this.props.cart.priceBeforeDiscount}</h3>
+                    {/* <h3 style={{textAlign:'center'}}>{"total price :"+this.props.cart.priceBeforeDiscount}</h3> */}
                 </div>
                 <div style={{float:'left', width:'10%'}}>
                     <Button text = "Buy Cart" onClick={()=>onClick()}/>
