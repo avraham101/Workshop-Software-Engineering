@@ -92,34 +92,34 @@ public class Decoder {
     }
 
     private void exceuteOpenStore(Map<String, Object> data) {
-        Map<String, Object> value = (Map<String, Object>)data.get("openStore");
-        String name = (String) value.get("idName");
+        String name = (String) data.get("idName");
         int id = connected.get(name);
+        Map<String, Object> value = (Map<String, Object>)data.get("openStore");
         StoreData storeDetails = (StoreData) value.get("storeDetails");
         serviceAPI.openStore(id,storeDetails);
     }
 
     private void executeAddProductToStore(Map<String, Object> data) {
-        Map<String, Object> value = (Map<String, Object>)data.get("addProductToStore");
-        String name = (String) value.get("idName");
+        String name = (String) data.get("idName");
         int id = connected.get(name);
+        Map<String, Object> value = (Map<String, Object>)data.get("addProductToStore");
         ProductData productData = (ProductData)value.get("productData");
         serviceAPI.addProductToStore(id,productData);
     }
 
     private void executeAddManagerToStore(Map<String, Object> data) {
-        Map<String, Object> value = (Map<String, Object>)data.get("addManagerToStore");
-        String name = (String) value.get("idName");
+        String name = (String) data.get("idName");
         int id = connected.get(name);
+        Map<String, Object> value = (Map<String, Object>)data.get("addManagerToStore");
         String storeName = (String) value.get("storeName");
         String userName = (String) value.get("userName");
         serviceAPI.addManagerToStore(id,storeName,userName);
     }
 
     private void executeAddPermissions(Map<String, Object> data) {
-        Map<String, Object> value = (Map<String, Object>)data.get("addPermissions");
-        String name = (String) value.get("idName");
+        String name = (String) data.get("idName");
         int id = connected.get(name);
+        Map<String, Object> value = (Map<String, Object>)data.get("addPermissions");
         List<PermissionType> permissions = (List<PermissionType>) value.get("permissions");
         String storeName = (String) value.get("storeName");
         String userName = (String) value.get("userName");

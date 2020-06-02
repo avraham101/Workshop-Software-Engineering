@@ -467,7 +467,8 @@ class ManagePolicy extends Component {
       }
       else {
         let key = this.state.selected_product.productName;
-        let value = {max:this.state.selected_amount_max, min:this.state.selected_amount_min};
+        let value = {max:this.state.selected_amount_max, min:this.state.selected_amount_min,
+                      productName:this.state.selected_product.productName};
         this.map_prodcts[key] = value;
         this.setState({selected_amount_min:0,selected_amount_max:0, selected_product:undefined})
       }
