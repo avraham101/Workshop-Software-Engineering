@@ -53,11 +53,11 @@ public class ProductPurchasePolicy extends PurchasePolicy {
     public boolean standInPolicy(PaymentData paymentData, String country,
                                  HashMap<Product, Integer> products) {
         for (Product product: products.keySet()) {
-            if(amountPerProduct.get(product.getName())==null)
-                return false;
-            if (!(products.get(product) <= amountPerProduct.get(product.getName()).getMax()) ||
-                    !(products.get(product) >= amountPerProduct.get(product.getName()).getMin())){
-                return false;
+            if(amountPerProduct.containsKey(product.getName())) {
+                if (!(products.get(product) <= amountPerProduct.get(product.getName()).getMax()) ||
+                        !(products.get(product) >= amountPerProduct.get(product.getName()).getMin())) {
+                    return false;
+                }
             }
         }
         return true;

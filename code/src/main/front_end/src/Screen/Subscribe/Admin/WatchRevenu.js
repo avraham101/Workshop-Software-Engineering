@@ -66,38 +66,38 @@ class WatchRevenu extends Component {
     }
 
     onChange_day(e) {
-      if(e.target.value>31) {
+      if(parseInt(e.target.value)>31) {
         alert('Cant Enter a day gretter then 31');
       }
-      else if(e.target.value<1) {
+      else if(parseInt(e.target.value)<1) {
         alert('Cant Enter a day lower then 1');
       }
       else {
-        this.setState({i_day:e.target.value});
+        this.setState({i_day:parseInt(e.target.value)});
       }
     }
 
     onChange_month(e) {
-      if(e.target.value>12) {
+      if(parseInt(e.target.value)>12) {
         alert('Cant Enter a month gretter then 12');
       }
-      else if(e.target.value<1) {
+      else if(parseInt(e.target.value)<1) {
         alert('Cant Enter a month lower then 1');
       }
       else {
-        this.setState({i_month:e.target.value});
+        this.setState({i_month:parseInt(e.target.value)});
       }
     }
 
     onChange_year(e) {
-      if(e.target.value>9999) {
+      if(parseInt(e.target.value)>9999) {
         alert('Cant Enter a year gretter then 9999');
       }
-      else if(e.target.value<1) {
+      else if(parseInt(e.target.value)<1) {
         alert('Cant Enter a year lower then 1');
       }
       else {
-        this.setState({i_year:e.target.value});
+        this.setState({i_year:parseInt(e.target.value)});
       }
     }
 
@@ -117,13 +117,13 @@ class WatchRevenu extends Component {
 
     render_SelectedDate() {
       let onClick = (e) => {
-        if(this.state.year < this.state.i_year) {
+        if(this.state.year!= undefined && this.state.year < this.state.i_year) {
           alert('Cant Select A Year greater then the current Year');
         }
-        else if(this.state.month < this.state.i_month) {
+        else if(this.state.year!= undefined && this.state.month < this.state.i_month) {
           alert('Cant Select A Month greater then the current Month');
         }
-        else if(this.state.day < this.state.i_day) {
+        else if(this.state.year!= undefined && this.state.day < this.state.i_day) {
           alert('Cant Select A Day greater then the current Day');
         }
         else {

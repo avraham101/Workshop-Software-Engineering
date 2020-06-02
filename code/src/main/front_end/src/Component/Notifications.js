@@ -58,29 +58,39 @@ export class Notifications extends Component {
     console.log(element);
     let opcode = element.reason;
     if(opcode===NOTIFICATION_PRODUCT) {
-      let list = element.value;
-      list.forEach(element=>{
-        products.push(element); //proudct data
-      });
-      products_notification.push(element.id); //id of notification
+      if(!products_notification.includes(element.id)) {
+        let list = element.value;
+        list.forEach(element=>{
+          products.push(element); //proudct data
+        });
+        products_notification.push(element.id); //id of notification
+      }
     }
     else if(opcode===NOTIFICATION_REPLAY) { 
-      replays.push(element.value); //Request
-      replays_notification.push(element.id); //id of notification
+      if(!replays_notification.includes(element.id)) {
+        replays.push(element.value); //Request
+        replays_notification.push(element.id); //id of notification
+      }
     }
     else if(opcode===NOTIFICATION_REMOVE_MANAGER) {
-      managment.push(element.value); //String store name
-      managment_notification.push(element.id); //id of notification
+      if(!managment_notification.includes(element.id)) {
+        managment.push(element.value); //String store name
+        managment_notification.push(element.id); //id of notification
+      }
     }
     else if(opcode===NOTIFICATION_WAITING_APPROVED) {
+      console.log(element.value);
       let list = element.value;
-      let obj = {store: list[0], name:list[0]};
-      waiting_approvels.push(obj);
-      waiting_approvels_notification.push(element.id);
+      let obj = {store: list[0], name:list[1]};
+      if(!waiting_approvels_notification.includes(element.id)) {
+        waiting_approvels.push(obj);
+        waiting_approvels_notification.push(element.id);
+      }
     }
     else if(opcode===NOTIFICATION_APPROVED) {
-      let list = element.value;
-      let obj = {store: list[0], name:list[0]};
+      console.log(element.value);
+      let store = element.value;
+      let obj = {store: store};
       approvels.push(obj);
       approvels_notification.push(element.id);
     }
@@ -165,7 +175,7 @@ export class Notifications extends Component {
       output.push(
         <div style={{border: "2px solid black", padding:2, backgroundColor:'white'}}>
           <p style={{textAlign:'center', padding: 4}}> Proudct Name: {element.productName } </p>
-          <p style={{textAlign:'center', padding: 4}}> Store Name: {element.storeName} </p>
+          <p style={{textAlign:'center', padding: 4}}> Store Name: {element.store} </p>
           <p style={{textAlign:'center', padding: 4}}> Amount Bought: {element.amount} </p>
         </div>
       );
@@ -180,7 +190,7 @@ export class Notifications extends Component {
     replays.forEach(element=>{
         output.push(
           <div style={{border: "2px solid black", padding:2, backgroundColor:'white'}}>
-            <p style={{textAlign:'center', padding: 4}}> Store Name: {element.storeName } </p>
+            <p style={{textAlign:'center', padding: 4}}> Store Name: {element.store } </p>
             <p style={{textAlign:'center', padding: 4}}> Content: {element.content} </p>
             <p style={{textAlign:'center', padding: 4}}> Comment: {element.comment} </p>
             <p style={{textAlign:'center', padding: 4}}> Id: {element.id} </p>
@@ -209,6 +219,7 @@ export class Notifications extends Component {
     if(waiting_approvels.length ===0)
       return <p style={{textAlign:'center'}}> No New Waiting Approvels For Owners Yet </p>;
     waiting_approvels.forEach(element=> {
+      console.log(element);
       output.push(
         <div style={{border: "2px solid black", padding:2, backgroundColor:'white'}}>
           <p style={{textAlign:'center', padding: 4,}}> Store Name: {element.store} </p>
@@ -224,10 +235,10 @@ export class Notifications extends Component {
     if(approvels.length ===0)
       return <p style={{textAlign:'center'}}> No New Approvels For Being Owners </p>;
     approvels.forEach(element=> {
+      console.log(element);
       output.push(
         <div style={{border: "2px solid black", padding:2, backgroundColor:'white'}}>
           <p style={{textAlign:'center', padding: 4,}}> Store Name: {element.store} </p>
-          <p style={{textAlign:'center', padding: 4,}}> Owner Name: {element.name} </p>
         </div>
       )
     })

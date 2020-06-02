@@ -181,7 +181,8 @@ public class Store {
         List<ProductData> data = new LinkedList<>();
         Set<String> keys = products.keySet();
         for (String key : keys) {
-            Product product = products.get(key);
+//            Product product = products.get(key);
+            Product product = daos.getProductDao().find(products.get(key));
             //synchronized product from delete
             if(product!=null) {
                 product.getReadLock().lock();

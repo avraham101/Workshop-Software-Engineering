@@ -40,4 +40,5 @@ public class approve_notification extends Notification<List<String>> {
     public String getOwner() {
         return owner;
     }
+
 }
