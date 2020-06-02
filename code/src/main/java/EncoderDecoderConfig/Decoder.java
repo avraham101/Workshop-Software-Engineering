@@ -30,7 +30,6 @@ public class Decoder {
         String json = readFile(path);
         Type type = new TypeToken<Map<String,List<Map<String, Object>>>>(){}.getType();
         listMap = gson.fromJson(json,type);
-
     }
 
     private String readFile(String path) {
@@ -95,7 +94,8 @@ public class Decoder {
         String name = (String) data.get("idName");
         int id = connected.get(name);
         Map<String, Object> value = (Map<String, Object>)data.get("openStore");
-        StoreData storeDetails = (StoreData) value.get("storeDetails");
+        StoreData storeDetails = gson.fromJson(gson.toJson(value.get("storeDetails")),
+                StoreData.class);
         serviceAPI.openStore(id,storeDetails);
     }
 
@@ -103,7 +103,8 @@ public class Decoder {
         String name = (String) data.get("idName");
         int id = connected.get(name);
         Map<String, Object> value = (Map<String, Object>)data.get("addProductToStore");
-        ProductData productData = (ProductData)value.get("productData");
+        ProductData productData = gson.fromJson(gson.toJson(value.get("productData")),
+                ProductData.class);
         serviceAPI.addProductToStore(id,productData);
     }
 
@@ -120,7 +121,8 @@ public class Decoder {
         String name = (String) data.get("idName");
         int id = connected.get(name);
         Map<String, Object> value = (Map<String, Object>)data.get("addPermissions");
-        List<PermissionType> permissions = (List<PermissionType>) value.get("permissions");
+        Type type = new TypeToken<List<PermissionType>>(){}.getType();
+        List<PermissionType> permissions = gson.fromJson(gson.toJson(value.get("permissions")),type);
         String storeName = (String) value.get("storeName");
         String userName = (String) value.get("userName");
         serviceAPI.addPermissions(id, permissions, storeName, userName);
