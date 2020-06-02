@@ -488,7 +488,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
         //check notification
         HashMap<Integer, List<Notification>> notifications=publisher.getNotificationList();
-        List<ProductPeristentData> productDataList= (List<ProductPeristentData>) notifications.get(data.getId(Data.VALID)).get(0).getValue();
+        List<ProductPeristentData> productDataList=
+                (List<ProductPeristentData>) notifications.get(data.getId(Data.VALID)).get(0).getValue();
         ProductData expected=data.getProductData(Data.VALID);
         ProductPeristentData actual=productDataList.get(0);
         assertEquals(actual.getProductName(),expected.getProductName());
