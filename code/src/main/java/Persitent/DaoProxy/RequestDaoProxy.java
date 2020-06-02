@@ -24,7 +24,7 @@ public class RequestDaoProxy implements IRequestDao {
     @Override
     public Request find(int id) {
         try{
-            return find(id);
+            return dao.find(id);
         }catch (Exception e) {
             return null;
         }
