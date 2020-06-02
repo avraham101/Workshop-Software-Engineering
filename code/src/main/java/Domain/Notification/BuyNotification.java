@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name="buy_notification")
-public class BuyNotification extends Notification<List<ProductPeristentData>> {
+    public class BuyNotification extends Notification<List<ProductPeristentData>> {
 
     @OneToMany(cascade = CascadeType.ALL,fetch= FetchType.EAGER)
     @JoinTable(name="productdata_inside_notification",

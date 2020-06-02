@@ -17,8 +17,8 @@ const style_sheet = {
   textAlign: 'center',
   color: "black",
   backgroundColor: '#F3F3F3',
-  padding: "10px",
+  paddingTop:"20px",
+  paddingBottom: "7px",
   fontFamily: "Arial",
   width:"99%",
-  marginTop:0,
 }

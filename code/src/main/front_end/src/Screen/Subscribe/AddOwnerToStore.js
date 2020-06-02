@@ -36,15 +36,21 @@ class AddOwnerToStore extends Component {
     }
 
     promiseAppointOwner(received){
-        console.log(received);
         if(received==null) {
             alert('Server Crashed')
         }
         else {
             let opcode = ''+received.reason;
             if(opcode === 'Success' && received.value) {
-                alert("The user : "+this.state.name+" added successfully\n To be the "+this.getPermission()+" of the store :"+this.props.location.state.storeName)
-
+                let msg = "";
+                msg += "The user : "+this.state.name+" added successfully\n";
+                msg += "In Store : "+this.props.location.state.storeName;
+                alert(msg);
+            }
+            else if(opcode === 'User_Not_Found') {
+                let msg = "";
+                msg += "User Not Found";
+                alert(msg);
             }
             else {
                 console.log(received);

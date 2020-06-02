@@ -66,24 +66,39 @@ class StoreMenu extends Component {
       appointManager: permissions.includes("OWNER")||permissions.includes("ADD_MANAGER"),
       managerPermissions: permissions.includes("OWNER")||permissions.includes("DELETE_MANAGER"),
       deleteManager: permissions.includes("OWNER")||permissions.includes("DELETE_MANAGER"),
+      approveOwner: permissions.includes("OWNER"),
     });
   }
   
   render_permissions() {
     return (
       <table style = {style_table}>
-        {this.state.manageProduct ? (<Row onClick={() => this.onClick("/manageProducts")}>Add Product</Row>) : ("")}
-        {this.state.manageProduct ? (<Row onClick={() => this.onClick("/editProduct")}>Edit Product</Row>) : ("")}
-        {this.state.manageProduct ? (<Row onClick={() => this.onClick("/productsDelete")}>View & Delete Product</Row>) : ("")}
-        {this.state.storeDiscounts ? (<Row onClick={() => this.onClick("/manageDiscount")}>Add Discounts</Row>) : ("")}
-        {this.state.storeDiscounts ? (<Row onClick={() => this.onClick("/viewDiscounts")}>View & Delete Discounts</Row>) : ("")}
-        {this.state.storePolicy ? (<Row onClick={() => this.onClick("/policy")}>Store Policy</Row>) : ("")}
-        {this.state.appointOwner ? (<Row onClick={() => this.onClick("/addOwnerToStore")}>Appoint Owner</Row>):("")}
-        {this.state.appointManager ? (<Row onClick={() => this.onClick("/addManagerToStore")}>Appoint Manager</Row>):("")}
-        {this.state.managerPermissions ? (<Row onClick={() => this.onClick("/editManagerPermissions")}>Manager Permissions</Row>):("")}
-        {this.state.deleteManager ? (<Row onClick={() => this.onClick("/removeManagerFromStore")}>Delete Manager</Row>):("")}
-        {(<Row onClick={() => this.onClick("/viewAndReplyRequests")}>View And Reply Requests</Row>)}
-        {(<Row onClick={() => this.onClick("/storeOwnerWatchHistory")}>Owner Watch Purchase History</Row>)}
+        {this.state.manageProduct ? (<Row onClick={() => this.onClick("/manageProducts")}>
+            <p style={paragraph}> Add Product </p></Row>) : ("")}
+        {this.state.manageProduct ? (<Row onClick={() => this.onClick("/editProduct")}>
+            <p style={paragraph}> Edit Product </p></Row>) : ("")}
+        {this.state.manageProduct ? (<Row onClick={() => this.onClick("/productsDelete")}>
+            <p style={paragraph}> View & Delete Product </p> </Row>) : ("")}
+        {this.state.storeDiscounts ? (<Row onClick={() => this.onClick("/manageDiscount")}>
+            <p style={paragraph}>Add Discounts</p> </Row>) : ("")}
+        {this.state.storeDiscounts ? (<Row onClick={() => this.onClick("/viewDiscounts")}>
+            <p style={paragraph}>View & Delete Discounts</p> </Row>) : ("")}
+        {this.state.storePolicy ? (<Row onClick={() => this.onClick("/policy")}>
+            <p style={paragraph}> Store Policy</p> </Row>) : ("")}
+        {this.state.appointOwner ? (<Row onClick={() => this.onClick("/addOwnerToStore")}>
+            <p style={paragraph}>Appoint Owner</p> </Row>):("")}
+        {this.state.approveOwner ? (<Row onClick={() => this.onClick("/approveOwnerToStore")}>
+            <p style={paragraph}>Approved Owner </p> </Row>):("")}
+        {this.state.appointManager ? (<Row onClick={() => this.onClick("/addManagerToStore")}>
+            <p style={paragraph}>Appoint Manager</p> </Row>):("")}
+        {this.state.managerPermissions ? (<Row onClick={() => this.onClick("/editManagerPermissions")}>
+            <p style={paragraph}>Manager Permissions</p> </Row>):("")}
+        {this.state.deleteManager ? (<Row onClick={() => this.onClick("/removeManagerFromStore")}>
+            <p style={paragraph}>Delete Manager</p> </Row>):("")}
+        <Row onClick={() => this.onClick("/viewAndReplyRequests")}>
+            <p style={paragraph}>View And Reply Requests</p> </Row>
+        <Row onClick={() => this.onClick("/storeOwnerWatchHistory")}>
+            <p style={paragraph}>Owner Watch Purchase History</p> </Row>
       </table>
     );
   }
@@ -95,7 +110,9 @@ class StoreMenu extends Component {
         <Menu state={this.props.location.state} />
         <Title title={"Welcome to - " + this.props.location.state.storeName} />
         <Title title="What do you want to do in your store?" />
-        <div>{this.render_permissions()}</div>
+        <div style={{paddingLeft:'25%', width:'50%'}}>
+          {this.render_permissions()}
+        </div>
       </BackGrond>
     );
   }
@@ -107,3 +124,11 @@ const style_table = {
   textAlign: "center",
   border: "2px solid black",
 };
+
+const paragraph = {
+  textAlign:'center',
+  fontSize:19,
+  margin:0,
+  padding:0,
+  borderBottom:'1px solid black',
+}
