@@ -1364,7 +1364,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         super.testRemoveManagerSuccess();
         SinglePublisher.initPublisher(this.publisher);
         assertFalse(niv.getPermissions().containsKey(storeName));
-        assertFalse(p.getOwner().getPermissions().containsKey(storeName));
+        //assertFalse(p.getOwner().getPermissions().containsKey(storeName));
         //check notifications
         HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
         for(List<Notification> n:notifications.values()){
