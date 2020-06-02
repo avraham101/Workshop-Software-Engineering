@@ -319,8 +319,11 @@ DROP TABLE IF EXISTS `notification`;
 CREATE TABLE `notification` (
   `reason` varchar(45) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=149 DEFAULT CHARSET=latin1;
+  `subscribe` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sub_notif_idx` (`subscribe`),
+  CONSTRAINT `sub_notif` FOREIGN KEY (`subscribe`) REFERENCES `subscribe` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=150 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -418,19 +421,6 @@ CREATE TABLE `permission_type` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `pol`
---
-
-DROP TABLE IF EXISTS `pol`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `pol` (
-  `p_id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`p_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `policy`
 --
 
@@ -440,7 +430,7 @@ DROP TABLE IF EXISTS `policy`;
 CREATE TABLE `policy` (
   `pol_id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`pol_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=886 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=887 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -714,7 +704,7 @@ CREATE TABLE `request` (
   KEY `user_idx` (`sender`),
   KEY `store_idx` (`store`),
   CONSTRAINT `sotre_req` FOREIGN KEY (`store`) REFERENCES `store` (`storename`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -798,23 +788,6 @@ CREATE TABLE `store_discount` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `subscibe_notifications`
---
-
-DROP TABLE IF EXISTS `subscibe_notifications`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `subscibe_notifications` (
-  `username` varchar(45) NOT NULL,
-  `notfiication_id` int(11) NOT NULL,
-  PRIMARY KEY (`username`,`notfiication_id`),
-  KEY `noti_user_idx` (`notfiication_id`),
-  CONSTRAINT `noti_user` FOREIGN KEY (`notfiication_id`) REFERENCES `notification` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `user_noti` FOREIGN KEY (`username`) REFERENCES `subscribe` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `subscribe`
 --
 
@@ -826,21 +799,6 @@ CREATE TABLE `subscribe` (
   `password` varchar(512) NOT NULL,
   `sessionNumber` int(11) DEFAULT '-1',
   PRIMARY KEY (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `system_pol`
---
-
-DROP TABLE IF EXISTS `system_pol`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `system_pol` (
-  `p_id` int(11) NOT NULL,
-  `age` int(11) NOT NULL,
-  KEY `system_policy_idx` (`p_id`),
-  CONSTRAINT `system_policy` FOREIGN KEY (`p_id`) REFERENCES `pol` (`p_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -957,4 +915,4 @@ CREATE TABLE `xor_term` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-29  0:14:28
+-- Dump completed on 2020-06-01 17:34:04
