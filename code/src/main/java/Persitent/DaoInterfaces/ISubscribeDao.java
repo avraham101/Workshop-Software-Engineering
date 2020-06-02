@@ -10,6 +10,7 @@ public interface ISubscribeDao {
     Subscribe find(String userName);
     void remove(String username);
     boolean update(Subscribe info);
+    boolean logoutAll();
     List<Admin> getAllAdmins();
     List<String> getAllUserName();
 }

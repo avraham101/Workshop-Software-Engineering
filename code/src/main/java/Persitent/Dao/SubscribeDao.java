@@ -96,4 +96,21 @@ public class SubscribeDao extends Dao<Subscribe> implements ISubscribeDao {
         }
         return output;
     }
+
+    public boolean logoutAll(){
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction et = null;
+        boolean output = false;
+
+        try {
+            output = em.createNativeQuery("UPDATE subscribe SET sessionNumber = ?").setParameter(1,-1).executeUpdate() > 0;
+        }
+        catch (Exception e){
+        }
+        finally {
+            em.close();
+        }
+        return output;
+
+    }
 }
