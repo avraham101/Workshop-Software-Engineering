@@ -212,7 +212,7 @@ export class Notifications extends Component {
       output.push(
         <div style={{border: "2px solid black", padding:2, backgroundColor:'white'}}>
           <p style={{textAlign:'center', padding: 4,}}> Store Name: {element.store} </p>
-          <p style={{textAlign:'center', padding: 4,}}> Owner Name: {element.name} </p>
+          <p style={{textAlign:'center', padding: 4,}}> Owner Name: {element.owner} </p>
         </div>
       )
     })
@@ -227,7 +227,6 @@ export class Notifications extends Component {
       output.push(
         <div style={{border: "2px solid black", padding:2, backgroundColor:'white'}}>
           <p style={{textAlign:'center', padding: 4,}}> Store Name: {element.store} </p>
-          <p style={{textAlign:'center', padding: 4,}}> Owner Name: {element.name} </p>
         </div>
       )
     })
