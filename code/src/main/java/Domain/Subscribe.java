@@ -6,6 +6,7 @@ import Domain.Notification.RemoveNotification;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.Notification.Notification;
 import Persitent.Cache;
+import Persitent.Dao.PermissionDao;
 import Persitent.DaoHolders.SubscribeDaoHolder;
 import Persitent.DaoInterfaces.IRequestDao;
 import Publisher.Publisher;
@@ -74,16 +75,22 @@ public class Subscribe extends UserState{
     @Transient
     private final SubscribeDaoHolder daos;
 
+    @Transient
+    private static Cache cache;
+
+
     public Subscribe(String userName, String password) {
         this.cart = new Cart(userName);
         initSubscribe(userName,password);
         lock = new ReentrantReadWriteLock();
         daos=new SubscribeDaoHolder();
+        cache = new Cache();
     }
 
     public Subscribe() {
         lock=new ReentrantReadWriteLock();
         daos=new SubscribeDaoHolder();
+        cache=new Cache();
     }
 
     @Override
@@ -98,6 +105,7 @@ public class Subscribe extends UserState{
         initSubscribe(userName,password);
         lock = new ReentrantReadWriteLock();
         daos=new SubscribeDaoHolder();
+        cache=new Cache();
     }
 
     private void initSubscribe(String userName, String password) {
@@ -518,7 +526,9 @@ public class Subscribe extends UserState{
         for(Permission p: givenByMePermissions) {
             if (p.getStore().getName().equals(storeName) && p.getOwner().getName().equals(xManager.userName)) {
                 lock.writeLock().lock();
-                p.getOwner().removeManagerFromStore(storeName);
+                //Permission perm = daos.getPermissionDao().findPermission(p);
+
+                cache.findSubscribe(p.getOwner().getName()).removeManagerFromStore(storeName);
                 givenByMePermissions.remove(p);
                 xManager.getPermissions().remove(storeName);
                 lock.writeLock().unlock();
@@ -539,7 +549,7 @@ public class Subscribe extends UserState{
         lock.writeLock().lock();
         for(Permission p: givenByMePermissions) {
             if (p.getStore().getName().equals(storeName)) {
-                p.getOwner().removeManagerFromStore(storeName);
+                cache.findSubscribe(p.getOwner().getName()).removeManagerFromStore(storeName);
                 permission=p;
             }
         }

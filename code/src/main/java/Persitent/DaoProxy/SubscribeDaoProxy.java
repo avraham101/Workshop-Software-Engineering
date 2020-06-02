@@ -66,4 +66,13 @@ public class SubscribeDaoProxy implements ISubscribeDao {
             return null;
         }
     }
+
+    @Override
+    public boolean logoutAll(){
+        try{
+            return dao.logoutAll();
+        }catch (Exception e){
+            return false;
+        }
+    }
 }
