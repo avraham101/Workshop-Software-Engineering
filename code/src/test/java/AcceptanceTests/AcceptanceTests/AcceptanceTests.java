@@ -335,6 +335,10 @@ public class AcceptanceTests {
         removeUser(user.getUsername());
     }
 
+    public boolean register(String username, String password){
+        return bridge.register(username,password);
+    }
+
     @After
     public  void tearDownAll(){
         removeUsers(Arrays.asList(admin.getUsername(),users.get(0).getUsername(),users.get(1).getUsername(),users.get(3).getUsername()));

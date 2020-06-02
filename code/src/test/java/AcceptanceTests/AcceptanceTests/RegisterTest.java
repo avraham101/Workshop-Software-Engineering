@@ -25,14 +25,14 @@ public class RegisterTest extends AcceptanceTests {
 
     @Test
     public void testRegisterSuccess(){
-       boolean isRegistered = bridge.register(username, password);
+       boolean isRegistered = register(username, password);
        assertTrue(isRegistered);
     }
 
     @Test
     public void testRegisterFailAlreadyRegistered(){
         testRegisterSuccess();
-        boolean isRegistered = bridge.register(username, password);
+        boolean isRegistered = register(username, password);
         assertFalse(isRegistered);
     }
 

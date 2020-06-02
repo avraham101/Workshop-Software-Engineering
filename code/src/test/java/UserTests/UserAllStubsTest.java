@@ -4,9 +4,12 @@ import Data.Data;
 import Data.TestData;
 import DataAPI.*;
 import Domain.*;
+import Persitent.DaoInterfaces.ICartDao;
+import Persitent.DaoProxy.CartDaoProxy;
 import Stubs.AdminStub;
 import Stubs.GuestStub;
 import Stubs.SubscribeStub;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -547,4 +550,9 @@ public class UserAllStubsTest {
 
     protected void tearDownSubscribe(){}
 
+    @After
+    public void tearDown() throws Exception {
+        ICartDao dao=new CartDaoProxy();
+        dao.remove(dao.find(data.getSubscribe(Data.VALID).getName()));
+    }
 }

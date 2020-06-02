@@ -1,20 +1,24 @@
-package Persitent;
+package Persitent.Dao;
 
 import Domain.PurchaseType;
 import Domain.Category;
 import Domain.Product;
+import Persitent.DaoInterfaces.ICategoryDao;
+import Persitent.DaoInterfaces.IProductDao;
+import Persitent.DaoInterfaces.IPurchaseTypeDao;
+import Persitent.DaoProxy.PurchaseTypeDaoProxy;
 
 import javax.persistence.*;
 
-public class ProductDao {
+public class ProductDao implements IProductDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("product");
-    private CategoryDao categoryDao;
-    private PurchaseTypeDao purchaseTypeDao;
+    private ICategoryDao categoryDao;
+    private IPurchaseTypeDao purchaseTypeDao;
 
-    public ProductDao(CategoryDao categoryDao) {
+    public ProductDao(ICategoryDao categoryDao) {
         this.categoryDao = categoryDao;
-        this.purchaseTypeDao = new PurchaseTypeDao();
+        this.purchaseTypeDao = new PurchaseTypeDaoProxy();
     }
 
     public boolean addProduct(Product product) {
@@ -128,7 +132,7 @@ public class ProductDao {
     }
 
 
-    public void removeProduct(String productName, String storeName) {
-        removeProduct(new Product(productName,storeName));
+    public boolean removeProduct(String productName, String storeName) {
+        return removeProduct(new Product(productName,storeName));
     }
 }

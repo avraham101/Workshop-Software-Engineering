@@ -1,11 +1,11 @@
-package Persitent;
+package Persitent.Dao;
 
 import Domain.Review;
-import Domain.Subscribe;
+import Persitent.DaoInterfaces.IReviewDao;
 
 import javax.persistence.*;
 
-public class ReviewDao extends Dao<Review> {
+public class ReviewDao extends Dao<Review> implements IReviewDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("product");
 

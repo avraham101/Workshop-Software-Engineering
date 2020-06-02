@@ -1,4 +1,4 @@
-package Persitent;
+package Persitent.Dao;
 
 import javax.persistence.*;
 

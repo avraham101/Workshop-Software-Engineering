@@ -1,17 +1,15 @@
-package Persitent;
+package Persitent.Dao;
 
 import DataAPI.PermissionType;
 import Domain.Permission;
-import Domain.Product;
-import Domain.Store;
 import Domain.Subscribe;
-import com.mysql.cj.Session;
+import Persitent.DaoInterfaces.IPermissionDao;
+import Persitent.DaoInterfaces.ISubscribeDao;
+import Persitent.DaoProxy.SubscribeDaoProxy;
 
 import javax.persistence.*;
-import javax.transaction.Transaction;
-import javax.transaction.Transactional;
 
-public class PermissionDao extends Dao<Permission> {
+public class PermissionDao extends Dao<Permission> implements IPermissionDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("product");
 
@@ -30,15 +28,12 @@ public class PermissionDao extends Dao<Permission> {
         try {
             et = em.getTransaction();
             et.begin();
-//            Permission permission = em.find(Permission.class,perToDelete);
-//            em.remove(permission);
 
             int x =  em.createNativeQuery("DELETE FROM permission WHERE store=? AND owner=?")
                     .setParameter(1, perToDelete.getStore())
                     .setParameter(2, perToDelete.getOwner())
                     .executeUpdate();
 
-            //em.remove(em.contains(permission) ? permission : em.merge(permission));
             et.commit();
             output=x>0;
         }
@@ -69,14 +64,11 @@ public class PermissionDao extends Dao<Permission> {
         return permission;
     }
 
-    //@Transactional
     public boolean addPermissionType(String storeName, String owner, PermissionType type){
-        //Session session = HibernateUtil.getSessionFactory().openSession();
-        //Transaction transaction = session.beginTransaction();
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-       EntityTransaction et= em.getTransaction();
-       et.begin();
-       // em.joinTransaction();
+        EntityTransaction et= em.getTransaction();
+        et.begin();
+
         int x=  em.createNativeQuery("INSERT INTO permission_type (store,owner,type) VALUES (?,?,?)")
                 .setParameter(1, storeName)
                 .setParameter(2, owner)
@@ -84,12 +76,12 @@ public class PermissionDao extends Dao<Permission> {
                 .executeUpdate();
 
 
-    et.commit();
-      return x>0;
+        et.commit();
+        return x>0;
     }
 
     public void removePermissionFromSubscribe(Permission p, Subscribe subscribe) {
-        SubscribeDao dao=new SubscribeDao();
+        ISubscribeDao dao=new SubscribeDaoProxy();
         dao.remove(subscribe.getName());
         dao.addSubscribe(subscribe);
     }

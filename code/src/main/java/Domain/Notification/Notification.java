@@ -14,6 +14,9 @@ public abstract class Notification<T> implements Serializable {
     @Column(name="reason")
     private OpCode reason;
 
+    @Column(name="subscribe")
+    private String subscribe;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -39,5 +42,9 @@ public abstract class Notification<T> implements Serializable {
     public void setId(Integer id) {
         if(this.id==null)
             this.id = id;
+    }
+
+    public void setName(String username){
+        this.subscribe=username;
     }
 }

@@ -5,6 +5,7 @@ import DataAPI.*;
 import Domain.*;
 import Domain.Discount.Discount;
 import Domain.Discount.RegularDiscount;
+import Domain.PurchasePolicy.ProductPurchasePolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.PurchasePolicy.UserPurchasePolicy;
 import Domain.Notification.Notification;
@@ -1118,6 +1119,30 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertNotNull(store.getPurchasePolicy());
     }
 
+    @Test
+    public void testUpdatePolicyProductPolicy(){
+        setUpProductAdded();
+        HashMap<String,ProductMinMax> productMinMaxHashMap=new HashMap<>();
+        String productName=data.getProductData(Data.VALID).getProductName();
+        productMinMaxHashMap.put(productName,new ProductMinMax(productName,13,4));
+        PurchasePolicy policy = new ProductPurchasePolicy(productMinMaxHashMap);
+        GsonBuilder builderPolicy = new GsonBuilder();
+        builderPolicy.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
+        Gson policyGson = builderPolicy.create();
+        String policyToAdd = policyGson.toJson(policy, PurchasePolicy.class);
+        assertTrue(logicManager.updatePolicy(data.getId(Data.VALID),policyToAdd,
+                data.getStore(Data.VALID).getName()).getValue());
+        Store store=daos.getStoreDao().find(data.getStore(Data.VALID).getName());
+        PurchasePolicy p=store.getPurchasePolicy();
+        assertTrue(p instanceof ProductPurchasePolicy);
+        ProductPurchasePolicy pol= (ProductPurchasePolicy) p;
+        ProductMinMax productMinMax=pol.getAmountPerProduct().get(productName);
+        assertEquals(productMinMax.getMax(),13);
+        assertEquals(productMinMax.getMin(),4);
+        tearDownOpenStore();
+    }
+
+
 
     /**
      * use case 4.2.2.2 - view policy in the store
@@ -1167,10 +1192,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Subscribe valid2=data.getSubscribe(Data.VALID2);
         logicManager.login(data.getId(Data.VALID2),valid2.getName(),valid2.getPassword());
         HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
-        for(List<Notification> n:notifications.values()){
-            List<String> storeOwner= (List<String>) n.get(0).getValue();
-            assertEquals(data.getStore(Data.VALID).getName(),storeOwner.get(0));
-            assertEquals(valid2.getName(),storeOwner.get(1));
+        for(List<Notification> n:notifications.values()) {
+            if(n.get(0).getValue() instanceof List) {
+                List<String> storeOwner = (List<String>) n.get(0).getValue();
+                assertEquals(data.getStore(Data.VALID).getName(), storeOwner.get(0));
+                assertEquals(valid2.getName(), storeOwner.get(1));
+            }
         }
         checkAgreement(storeName,niv);
     }
@@ -1227,11 +1254,13 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Subscribe valid2=data.getSubscribe(Data.VALID2);
         logicManager.login(data.getId(Data.VALID2),valid2.getName(),valid2.getPassword());
         HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
-        List<String> storeOwner= (List<String>) notifications.get(0).get(0).getValue();
-        String store=data.getStore(Data.VALID).getName();
-        assertEquals(storeOwner.get(0),store);
-        assertEquals(storeOwner.get(1),valid2.getName());
-        assertEquals(notifications.get(2).get(0).getValue(),store);
+        if(notifications.get(0).get(0).getValue() instanceof List) {
+            List<String> storeOwner = (List<String>) notifications.get(0).get(0).getValue();
+            String store = data.getStore(Data.VALID).getName();
+            assertEquals(storeOwner.get(0), store);
+            assertEquals(storeOwner.get(1), valid2.getName());
+            assertEquals(notifications.get(2).get(0).getValue(), store);
+        }
     }
 
 

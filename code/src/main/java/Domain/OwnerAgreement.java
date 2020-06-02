@@ -5,14 +5,14 @@ import DataAPI.PermissionType;
 import Domain.Notification.AddOwnerNotification;
 import Domain.Notification.approve_notification;
 import Persitent.Cache;
-import Persitent.SubscribeDao;
+import Persitent.DaoInterfaces.ISubscribeDao;
+import Persitent.DaoProxy.SubscribeDaoProxy;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.io.Serializable;
-import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -42,7 +42,7 @@ public class OwnerAgreement implements Serializable {
     private String store;
 
     @Transient
-    private final SubscribeDao dao;
+    private final ISubscribeDao dao;
 
     @Transient
     private final Cache cache;
@@ -52,12 +52,12 @@ public class OwnerAgreement implements Serializable {
         this.givenBy = givenBy;
         this.owner = owner;
         this.store = store;
-        dao=new SubscribeDao();
+        dao=new SubscribeDaoProxy();
         cache=new Cache();
     }
 
     public OwnerAgreement() {
-         dao= new SubscribeDao();
+         dao= new SubscribeDaoProxy();
          cache=new Cache();
     }
 

@@ -77,10 +77,10 @@ public class TestData {
     private void setUpUsers() {
         users = new HashMap<>();
         users.put(Data.NULL, new Subscribe(null, null));
-        users.put(Data.ADMIN,new Subscribe("Admin","Admin"));
+        users.put(Data.ADMIN,new Subscribe("src/test/Admin", "src/test/Admin"));
         users.put(Data.VALID,new Subscribe("Yuval","Sabag"));
-        users.put(Data.NULL_NAME, new Subscribe(null, "Admin"));
-        users.put(Data.NULL_PASSWORD, new Subscribe("Admin", null));
+        users.put(Data.NULL_NAME, new Subscribe(null, "src/test/Admin"));
+        users.put(Data.NULL_PASSWORD, new Subscribe("src/test/Admin", null));
         users.put(Data.WRONG_NAME, new Subscribe("","Changed_Password"));
         users.put(Data.WRONG_PASSWORD, new Subscribe("Yossi",""));
         users.put(Data.VALID2,new Subscribe("Niv","Shirazi"));

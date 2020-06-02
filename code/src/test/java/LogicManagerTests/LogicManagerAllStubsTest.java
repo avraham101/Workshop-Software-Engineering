@@ -5,14 +5,11 @@ import Data.TestData;
 import DataAPI.*;
 import Domain.Discount.*;
 import Domain.*;
-import Domain.Discount.Term.*;
 import Domain.PurchasePolicy.*;
-import Domain.Notification.*;
-import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
-import Domain.PurchasePolicy.ComposePolicys.OrPolicy;
-import Domain.PurchasePolicy.ComposePolicys.XorPolicy;
 import Persitent.*;
 import Persitent.DaoHolders.DaoHolder;
+import Persitent.DaoInterfaces.ISubscribeDao;
+import Persitent.DaoProxy.SubscribeDaoProxy;
 import Stubs.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -21,24 +18,14 @@ import Systems.SupplySystem.SupplySystem;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.internal.runners.statements.Fail;
-import org.mockito.internal.matchers.Not;
 
-import java.util.*;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.Assert.*;
 
@@ -2066,7 +2053,7 @@ public class LogicManagerAllStubsTest {
      */
     public void tearDownRegisteredUser() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        SubscribeDao subscribeDao = new SubscribeDao();
+        ISubscribeDao subscribeDao = new SubscribeDaoProxy();
         subscribeDao.remove(subscribe.getName());
         subscribeDao.remove(data.getSubscribe(Data.ADMIN).getName());
         subscribeDao.remove(data.getSubscribe(Data.VALID2).getName());

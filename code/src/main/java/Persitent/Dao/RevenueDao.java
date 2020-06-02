@@ -1,8 +1,7 @@
-package Persitent;
+package Persitent.Dao;
 
-import Domain.PurchasePolicy.PurchasePolicy;
-import Domain.Request;
 import Domain.Revenue;
+import Persitent.DaoInterfaces.IRevenueDao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -10,7 +9,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.time.LocalDate;
 
-public class RevenueDao extends Dao<Revenue> {
+public class RevenueDao extends Dao<Revenue> implements IRevenueDao {
 
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("subscribe");

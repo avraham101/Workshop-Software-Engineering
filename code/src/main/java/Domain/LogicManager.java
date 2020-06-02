@@ -8,7 +8,7 @@ import Domain.PurchasePolicy.PurchasePolicy;
 import Persitent.Cache;
 import Domain.Notification.Notification;
 import Persitent.DaoHolders.DaoHolder;
-import Persitent.RevenueDao;
+import Persitent.DaoInterfaces.IRevenueDao;
 import Systems.HashSystem;
 import Systems.LoggerSystem;
 import Systems.PaymentSystem.PaymentSystem;
@@ -19,13 +19,11 @@ import Utils.Utils;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LogicManager {
@@ -682,7 +680,7 @@ public class LogicManager {
      * @param totalRevenue - the total price of a buy
      */
     private void addToRevenue(double totalRevenue) {
-        RevenueDao dao=daos.getRevenueDao();
+        IRevenueDao dao=daos.getRevenueDao();
         Revenue revenue=dao.find(LocalDate.now());
         synchronized (dao) {
             if (revenue == null) {
