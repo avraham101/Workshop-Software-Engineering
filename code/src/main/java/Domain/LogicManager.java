@@ -49,6 +49,7 @@ public class LogicManager {
     public LogicManager(String userName, String password,PaymentSystem paymentSystem,
                         SupplySystem supplySystem,DaoHolder daoHolder,Cache cashe) throws Exception {
         daos =daoHolder;
+        daos.getSubscribeDao().logoutAll();
         this.cache = cashe;
         GsonBuilder builderDiscount = new GsonBuilder();
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
@@ -95,6 +96,7 @@ public class LogicManager {
      */
     public LogicManager(String userName, String password) throws Exception {
         daos =new DaoHolder();
+        daos.getSubscribeDao().logoutAll();
         cache = new Cache();
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
@@ -149,6 +151,7 @@ public class LogicManager {
      */
     public LogicManager(String userName, String password, PaymentSystem paymentSystem, SupplySystem supplySystem) throws Exception {
         daos =new DaoHolder();
+        daos.getSubscribeDao().logoutAll();
         cache = new Cache();
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
@@ -745,7 +748,8 @@ public class LogicManager {
      * @return true the store data is ok, otherwise false
      */
     private boolean validStoreDetails(StoreData storeData) {
-        return storeData!=null && storeData.getName() != null && storeData.getDescription()!=null;
+        return storeData!=null && storeData.getName() != null && storeData.getDescription()!=null && !storeData.getName().isEmpty()
+                && !storeData.getDescription().isEmpty();
     }
 
 
@@ -863,7 +867,8 @@ public class LogicManager {
      */
     private boolean validProduct(ProductData productData) {
         return productData.getProductName()!=null &&productData.getCategory()!=null && productData.getPrice()>0
-                && productData.getAmount()>0 && productData.getPurchaseType()!=null;
+                && productData.getAmount()>0 && productData.getPurchaseType()!=null && !productData.getProductName().isEmpty()
+                && !productData.getCategory().isEmpty();
     }
 
     /**
@@ -998,7 +1003,7 @@ public class LogicManager {
         if(store == null)
             return new Response<>(false,OpCode.Store_Not_Found);
         PurchasePolicy policy = makePolicyFromData(policyData);
-        if(policy==null)
+        if(policy==null || !policy.isValid())
             return new Response<>(false,OpCode.Invalid_Policy);
         return current.updateStorePolicy(storeName, policy);
     }

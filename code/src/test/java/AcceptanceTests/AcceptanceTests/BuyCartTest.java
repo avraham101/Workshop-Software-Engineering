@@ -30,14 +30,17 @@ public class BuyCartTest extends AcceptanceTests {
     public void positiveSetUp(){
         PaymentSystem paymentSystem = new PaymentSystemMockAllPositive();
         SupplySystem deliverySystem = new DeliverySystemMockAllPositive();
-
-
         setUp(paymentSystem,deliverySystem);
+        logoutAndLogin(admin);
+        logoutAndLogin(stores.get(0).getStoreOwner());
     }
 
     @Test
     public void buyCartSuccess(){
         positiveSetUp();
+
+        PublisherMock publisherMock=new PublisherMock();
+        bridge.setPublisher(publisherMock);
 
         addProductToCart(1);
         boolean approval = bridge.buyCart(userId,validPayment,validDelivery);
@@ -45,7 +48,7 @@ public class BuyCartTest extends AcceptanceTests {
         CartTestData currCart = bridge.getUsersCart(userId);
         assertTrue(currCart.isEmpty());
         //check notification
-       // assertFalse(publisherMock.getNotificationList().isEmpty());
+        assertFalse(publisherMock.getNotificationList().isEmpty());
     }
 
     @Test
