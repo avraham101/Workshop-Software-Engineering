@@ -36,6 +36,8 @@ public class ProductPurchasePolicy extends PurchasePolicy {
         if (amountPerProduct == null || amountPerProduct.isEmpty())
             return false;
         for (ProductMinMax minMax: amountPerProduct.values()) {
+            if(minMax.getMin()<0 || minMax.getMax()<0)
+                return false;
             if (minMax.getMin() > minMax.getMax())
                 return false;
         }
