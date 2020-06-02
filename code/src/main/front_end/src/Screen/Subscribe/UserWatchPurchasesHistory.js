@@ -34,7 +34,6 @@ handleSubmit(event,product) {
     content:product.review,
     writer:writer,
   }
-  alert(JSON.stringify(rev));
   send('/home/product/review?id='+this.props.location.state.id, 'POST',rev, this.sendReview);
 }
 

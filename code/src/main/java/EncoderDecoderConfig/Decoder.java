@@ -125,7 +125,7 @@ public class Decoder {
         List<PermissionType> permissions = gson.fromJson(gson.toJson(value.get("permissions")),type);
         String storeName = (String) value.get("storeName");
         String userName = (String) value.get("userName");
-        serviceAPI.addPermissions(id, permissions, storeName, userName);
+            serviceAPI.addPermissions(id, permissions, storeName, userName);
     }
 
     private void executeLogout() {
