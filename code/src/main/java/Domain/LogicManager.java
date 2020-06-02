@@ -721,7 +721,7 @@ public class LogicManager {
      * @return true if can open store, otherwise false.
      */
     public Response<Boolean> openStore(int id, StoreData storeDetails) {
-        loggerSystem.writeEvent("LogicManager","openStore",
+        loggerSystem.writeEvent("LogicManager","encodeOpenStore",
                 "open new store", new Object[] {storeDetails});
         if(!validStoreDetails(storeDetails))
             return new Response<>(false, OpCode.Invalid_Store_Details);
