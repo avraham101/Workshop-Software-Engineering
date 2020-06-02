@@ -165,7 +165,7 @@ export class Notifications extends Component {
       output.push(
         <div style={{border: "2px solid black", padding:2, backgroundColor:'white'}}>
           <p style={{textAlign:'center', padding: 4}}> Proudct Name: {element.productName } </p>
-          <p style={{textAlign:'center', padding: 4}}> Store Name: {element.storeName} </p>
+          <p style={{textAlign:'center', padding: 4}}> Store Name: {element.store} </p>
           <p style={{textAlign:'center', padding: 4}}> Amount Bought: {element.amount} </p>
         </div>
       );
@@ -180,7 +180,7 @@ export class Notifications extends Component {
     replays.forEach(element=>{
         output.push(
           <div style={{border: "2px solid black", padding:2, backgroundColor:'white'}}>
-            <p style={{textAlign:'center', padding: 4}}> Store Name: {element.storeName } </p>
+            <p style={{textAlign:'center', padding: 4}}> Store Name: {element.store } </p>
             <p style={{textAlign:'center', padding: 4}}> Content: {element.content} </p>
             <p style={{textAlign:'center', padding: 4}}> Comment: {element.comment} </p>
             <p style={{textAlign:'center', padding: 4}}> Id: {element.id} </p>
