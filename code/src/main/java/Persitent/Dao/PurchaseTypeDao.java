@@ -1,13 +1,14 @@
-package Persitent;
+package Persitent.Dao;
 
 import Domain.PurchaseType;
+import Persitent.DaoInterfaces.IPurchaseTypeDao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
-public class PurchaseTypeDao {
+public class PurchaseTypeDao implements IPurchaseTypeDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("product");
 

@@ -25,7 +25,7 @@ public class LoginTest extends AcceptanceTests {
         id = users.get(2).getId();
         username = users.get(2).getUsername();
         password = users.get(2).getPassword();
-        bridge.register(username,password);
+        register(username,password);
         notExistId = id*id;
         notExistUserName = username + username;
         notExistPassword = password + password;

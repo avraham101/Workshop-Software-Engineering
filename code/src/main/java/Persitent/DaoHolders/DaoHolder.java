@@ -1,94 +1,95 @@
 package Persitent.DaoHolders;
 
-import Persitent.*;
-import Publisher.Publisher;
+import Persitent.Dao.*;
+import Persitent.DaoInterfaces.*;
+import Persitent.DaoProxy.*;
 
 public class DaoHolder {
-    private static CartDao cartDao;
-    private static CategoryDao categoryDao;
-    private static DiscountDao discountDao;
-    private static NotificationDao notificationDao;
-    private static PermissionDao permissionDao;
-    private static PolicyDao policyDao;
-    private static ProductDao productDao;
-    private static PurchaseDao purchaseDao;
-    private static RequestDao requestDao;
-    private static StoreDao storeDao;
-    private static SubscribeDao subscribeDao;
-    private static ReviewDao reviewDao;
-    private static RevenueDao revenueDao;
-    private static OwnerAgreementDao ownerAgreementDao;
+    private ICartDao cartDao;
+    private ICategoryDao categoryDao;
+    private IDiscountDao discountDao;
+    private INotificationDao notificationDao;
+    private IPermissionDao permissionDao;
+    private IPolicyDao policyDao;
+    private IProductDao productDao;
+    private IPurchaseDao purchaseDao;
+    private IRequestDao requestDao;
+    private IStoreDao storeDao;
+    private ISubscribeDao subscribeDao;
+    private IReviewDao reviewDao;
+    private IRevenueDao revenueDao;
+    private IOwnerAgreementDao ownerAgreementDao;
 
     public DaoHolder() {
-        cartDao =new CartDao();
-        categoryDao=new CategoryDao();
-        discountDao=new DiscountDao();
-        notificationDao=new NotificationDao();
-        permissionDao = new PermissionDao();
-        policyDao=new PolicyDao();
-        purchaseDao=new PurchaseDao();
-        productDao=new ProductDao(categoryDao);
-        requestDao=new RequestDao();
-        storeDao=new StoreDao();
-        subscribeDao=new SubscribeDao();
-        reviewDao = new ReviewDao();
-        revenueDao=new RevenueDao();
-        ownerAgreementDao=new OwnerAgreementDao();
+        cartDao =new CartDaoProxy();
+        categoryDao=new CategoryDaoProxy();
+        discountDao=new DiscountDaoProxy();
+        notificationDao=new NotificationDaoProxy();
+        permissionDao = new PermissionDaoProxy();
+        policyDao=new PolicyDaoProxy();
+        purchaseDao=new PurchaseDaoProxy();
+        productDao=new ProductDaoProxy(categoryDao);
+        requestDao=new RequestDaoProxy();
+        storeDao=new StoreDaoProxy();
+        subscribeDao=new SubscribeDaoProxy();
+        reviewDao = new ReviewDaoProxy();
+        revenueDao=new RevenueDaoProxy();
+        ownerAgreementDao=new OwnerAgreementDaoProxy();
     }
 
-    public CartDao getCartDao() {
+    public ICartDao getCartDao() {
         return cartDao;
     }
 
-    public CategoryDao getCategoryDao() {
+    public ICategoryDao getCategoryDao() {
         return categoryDao;
     }
 
-    public DiscountDao getDiscountDao() {
+    public IDiscountDao getDiscountDao() {
         return discountDao;
     }
 
-    public NotificationDao getNotificationDao() {
+    public INotificationDao getNotificationDao() {
         return notificationDao;
     }
 
-    public PolicyDao getPolicyDao() {
+    public IPolicyDao getPolicyDao() {
         return policyDao;
     }
 
-    public ProductDao getProductDao() {
+    public IProductDao getProductDao() {
         return productDao;
     }
 
-    public PurchaseDao getPurchaseDao() {
+    public IPurchaseDao getPurchaseDao() {
         return purchaseDao;
     }
 
-    public RequestDao getRequestDao() {
+    public IRequestDao getRequestDao() {
         return requestDao;
     }
 
-    public StoreDao getStoreDao() {
+    public IStoreDao getStoreDao() {
         return storeDao;
     }
 
-    public SubscribeDao getSubscribeDao() {
+    public ISubscribeDao getSubscribeDao() {
         return subscribeDao;
     }
 
-    public ReviewDao getReviewDao() {
+    public IReviewDao getReviewDao() {
         return reviewDao;
     }
 
-    public PermissionDao getPermissionDao() {
+    public IPermissionDao getPermissionDao() {
         return permissionDao;
     }
 
-    public RevenueDao getRevenueDao() {
+    public IRevenueDao getRevenueDao() {
         return revenueDao;
     }
 
-    public OwnerAgreementDao getOwnerAgreementDao() {
+    public IOwnerAgreementDao getOwnerAgreementDao() {
         return ownerAgreementDao;
     }
 }

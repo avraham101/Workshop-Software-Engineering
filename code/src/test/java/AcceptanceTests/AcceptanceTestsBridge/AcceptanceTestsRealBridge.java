@@ -10,9 +10,12 @@ import DataAPI.*;
 import DataAPI.PermissionType;
 import DataAPI.Purchase;
 import Domain.ProductPeristentData;
-import Domain.Request;
 import Domain.Review;
-import Persitent.*;
+import Persitent.Dao.*;
+import Persitent.DaoInterfaces.IProductDao;
+import Persitent.DaoInterfaces.IStoreDao;
+import Persitent.DaoInterfaces.ISubscribeDao;
+import Persitent.DaoProxy.*;
 import Publisher.SinglePublisher;
 import Service.ServiceAPI;
 import Systems.PaymentSystem.PaymentSystem;
@@ -382,19 +385,19 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     //---------------------------------DB related----------------------------------//
     @Override
     public void removeUser(String username) {
-        SubscribeDao subscribeDao = new SubscribeDao();
+        ISubscribeDao subscribeDao = new SubscribeDaoProxy();
         subscribeDao.remove(username);
     }
 
     @Override
     public void removeProduct(ProductTestData productTestData) {
-        ProductDao productDao = new ProductDao(new CategoryDao());
+        IProductDao productDao = new ProductDaoProxy(new CategoryDaoProxy());
         productDao.removeProduct(productTestData.getProductName(), productTestData.getStoreName());
     }
 
     @Override
     public void removeStore(StoreTestData store) {
-        StoreDao storeDao = new StoreDao();
+        IStoreDao storeDao = new StoreDaoProxy();
         storeDao.removeStore(store.getStoreName());
     }
 
@@ -417,7 +420,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public void removeRevenues() {
-        new RevenueDao().remove(LocalDate.now());
+        new RevenueDaoProxy().remove(LocalDate.now());
     }
     //--------------------------get managers of store---------------------------------//
 

@@ -1,15 +1,14 @@
-package Persitent;
+package Persitent.Dao;
 
 import Domain.OwnerAgreement;
-import Domain.Revenue;
+import Persitent.DaoInterfaces.IOwnerAgreementDao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.time.LocalDate;
 
-public class OwnerAgreementDao extends Dao<OwnerAgreement> {
+public class OwnerAgreementDao extends Dao<OwnerAgreement> implements IOwnerAgreementDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("subscribe");
 

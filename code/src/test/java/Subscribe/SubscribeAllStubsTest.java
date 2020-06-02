@@ -8,7 +8,7 @@ import Domain.Discount.Discount;
 import Drivers.LogicManagerDriver;
 import Persitent.Cache;
 import Persitent.DaoHolders.DaoHolder;
-import Persitent.StoreDao;
+import Persitent.DaoInterfaces.IStoreDao;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,7 +72,7 @@ public class SubscribeAllStubsTest {
     protected void tearDownStore() {
         tearDown();
         StoreData storeData = data.getStore(Data.VALID);
-        StoreDao storeDao = daoHolder.getStoreDao();
+        IStoreDao storeDao = daoHolder.getStoreDao();
         storeDao.removeStore(storeData.getName());
     }
 

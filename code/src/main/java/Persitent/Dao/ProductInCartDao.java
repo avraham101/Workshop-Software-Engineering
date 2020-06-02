@@ -1,13 +1,14 @@
-package Persitent;
+package Persitent.Dao;
 
 import Domain.ProductInCart;
+import Persitent.DaoInterfaces.IProductInCartDao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-public class ProductInCartDao extends Dao<ProductInCart> {
+public class ProductInCartDao extends Dao<ProductInCart> implements IProductInCartDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("product");
 

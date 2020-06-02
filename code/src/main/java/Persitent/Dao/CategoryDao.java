@@ -1,13 +1,13 @@
-package Persitent;
+package Persitent.Dao;
 
 import Domain.Category;
+import Persitent.DaoInterfaces.ICategoryDao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
-public class CategoryDao extends Dao<Category> {
+public class CategoryDao extends Dao<Category> implements ICategoryDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("product");
 

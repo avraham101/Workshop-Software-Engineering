@@ -1,9 +1,9 @@
 package Stubs;
 
 import Domain.Subscribe;
-import Persitent.SubscribeDao;
+import Persitent.DaoProxy.SubscribeDaoProxy;
 
-public class StubSubscribeDao extends SubscribeDao {
+public class StubSubscribeDao extends SubscribeDaoProxy {
 
     @Override
     public boolean update(Subscribe info) {

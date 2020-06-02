@@ -1,39 +1,41 @@
 package Persitent.DaoHolders;
 
-import Persitent.*;
+import Persitent.Dao.*;
+import Persitent.DaoInterfaces.*;
+import Persitent.DaoProxy.*;
 
 public class ProductDaoHolder {
-    private static PurchaseDao purchaseDao;
-    private static PurchaseTypeDao purchaseTypeDao;
-    private static RequestDao requestDao;
-    private static SubscribeDao subscribeDao;
-    private static ReviewDao reviewDao;
+    private IPurchaseDao purchaseDao;
+    private IPurchaseTypeDao purchaseTypeDao;
+    private IRequestDao requestDao;
+    private ISubscribeDao subscribeDao;
+    private IReviewDao reviewDao;
 
     public ProductDaoHolder() {
-        purchaseDao = new PurchaseDao();
-        purchaseTypeDao = new PurchaseTypeDao();
-        requestDao = new RequestDao();
-        subscribeDao = new SubscribeDao();
-        reviewDao = new ReviewDao();
+        purchaseDao = new PurchaseDaoProxy();
+        purchaseTypeDao = new PurchaseTypeDaoProxy();
+        requestDao = new RequestDaoProxy();
+        subscribeDao = new SubscribeDaoProxy();
+        reviewDao = new ReviewDaoProxy();
     }
 
-    public PurchaseDao getPurchaseDao() {
+    public IPurchaseDao getPurchaseDao() {
         return purchaseDao;
     }
 
-    public PurchaseTypeDao getPurchaseTypeDao() {
+    public IPurchaseTypeDao getPurchaseTypeDao() {
         return purchaseTypeDao;
     }
 
-    public RequestDao getRequestDao() {
+    public IRequestDao getRequestDao() {
         return requestDao;
     }
 
-    public SubscribeDao getSubscribeDao() {
+    public ISubscribeDao getSubscribeDao() {
         return subscribeDao;
     }
 
-    public ReviewDao getReviewDao() {
+    public IReviewDao getReviewDao() {
         return reviewDao;
     }
 }

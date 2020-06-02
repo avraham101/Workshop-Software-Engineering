@@ -46,6 +46,31 @@ public class ManagerController {
         return getResponseEntity(response);
     }
 
+
+    /**
+     * use case 4.3.2
+     * @param id the id of the subscribe approving
+     * @param storeName the store name of the approval
+     * @param userName the user name of the approval
+     * @return
+     */
+    @PostMapping("approve/owner")
+    public ResponseEntity<?> approveOwnerToStore(@RequestParam(name="id" ) int id,
+                                                 @RequestParam(name="store" ) String storeName,
+                                                 @RequestParam(name="user" ) String userName) {
+        storeName = json.fromJson(storeName,String.class);
+        Response<Boolean> response = SingleService.getInstance().approveManageOwner(id,storeName,userName);
+        return getResponseEntity(response);
+    }
+
+    @PostMapping("approve/list")
+    public ResponseEntity<?> getApprovedOwnersFromStore(@RequestParam(name="id" ) int id,
+                                                        @RequestBody String storeName) {
+        storeName = json.fromJson(storeName,String.class);
+        Response<List<String>> response = SingleService.getInstance().getApprovedManagers(id,storeName);
+        return getResponseEntity(response);
+    }
+
     /**
      * use case 4.6.1 - add permissions
      */
@@ -134,8 +159,6 @@ public class ManagerController {
         Response<List<Purchase>> response = SingleService.getInstance().watchStoreHistory(id,store);
         return getResponseEntity(response);
     }
-
-
 
     private ResponseEntity<?> getResponseEntity(Response<?> response) {
         HttpHeaders headers = new HttpHeaders();

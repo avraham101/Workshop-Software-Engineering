@@ -9,6 +9,7 @@ import Domain.Notification.*;
 import Domain.PurchasePolicy.*;
 import Domain.PurchasePolicy.ComposePolicys.*;
 import Persitent.*;
+import Persitent.Dao.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

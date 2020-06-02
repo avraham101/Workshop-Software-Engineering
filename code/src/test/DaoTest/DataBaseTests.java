@@ -7,6 +7,7 @@ import DataAPI.ProductData;
 import DataAPI.PurchaseTypeData;
 import Domain.*;
 import Persitent.*;
+import Persitent.Dao.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 public class DataBaseTests {

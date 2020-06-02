@@ -1,13 +1,14 @@
-package Persitent;
+package Persitent.Dao;
 
 import Domain.PurchasePolicy.PurchasePolicy;
+import Persitent.DaoInterfaces.IPolicyDao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-public class PolicyDao {
+public class PolicyDao implements IPolicyDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("policy");
 
