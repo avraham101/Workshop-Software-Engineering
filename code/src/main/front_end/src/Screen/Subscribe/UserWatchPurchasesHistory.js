@@ -118,7 +118,7 @@ products.forEach(pro => {
   )
   output.push(
       <tr>
-      <th><Input title = 'Review:' type="text" value={pro.review} onChange={(t)=>this.handleChangeReview(t,pro)} />  </th> 
+        <th><Input title = 'Review:' type="text" value={pro.review} onChange={(t)=>this.handleChangeReview(t,pro)} />  </th> 
       </tr>            
   )
   output.push(
