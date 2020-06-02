@@ -64,7 +64,7 @@ class StoreMenu extends Component {
       storePolicy: permissions.includes("OWNER")||permissions.includes("CRUD_POLICY_DISCOUNT"),
       appointOwner: permissions.includes("OWNER")||permissions.includes("ADD_OWNER"),
       appointManager: permissions.includes("OWNER")||permissions.includes("ADD_MANAGER"),
-      managerPermissions: permissions.includes("OWNER")||permissions.includes("DELETE_MANAGER"),
+      managerPermissions: permissions.includes("OWNER")||permissions.includes("ADD_MANAGER"),
       deleteManager: permissions.includes("OWNER")||permissions.includes("DELETE_MANAGER"),
       approveOwner: permissions.includes("OWNER"),
     });

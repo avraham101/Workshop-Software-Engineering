@@ -435,7 +435,7 @@ public class Subscribe extends UserState{
         if(permission==null)
             return new Response<>(false,OpCode.Dont_Have_Permission);
         Store store=permission.getStore();
-        if(store==null||!permission.canAddOwner())
+        if(store==null||! permission.canAddManager())
             return new Response<>(false,OpCode.Dont_Have_Permission);
         //create new permission process
         Permission newPermission=new Permission(youngOwner,store);

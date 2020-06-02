@@ -2,6 +2,7 @@ package Service;
 
 import DataAPI.*;
 import Domain.*;
+import EncoderDecoderConfig.Encoder;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.util.Set;
 public class ServiceAPI {
 
     private LogicManager logicManager;
-
+//    private Encoder encoder = new Encoder(); //TODO remove THIS
     /**
      * use case 1.1 - Init Trading System
      * acceptance test class : initialStartTest
@@ -23,6 +24,7 @@ public class ServiceAPI {
      * @throws Exception - system crashed exception
      */
     public ServiceAPI(String userName, String password) throws Exception{
+//        encoder.encodeAdmin(userName, password);
         logicManager = new LogicManager(userName, password);
     }
 
@@ -46,6 +48,7 @@ public class ServiceAPI {
      * @return Response with true value if the register complete, otherwise false
      */
     public Response<Boolean> register(String userName, String password) {
+//        encoder.encodeRegister(userName, password);
         return logicManager.register(userName,password);
     }
 
@@ -163,6 +166,7 @@ public class ServiceAPI {
      * @return true if store is created
      */
     public Response<Boolean> openStore(int id,StoreData storeDetails){
+//        encoder.encodeOpenStore(id, storeDetails);
         return logicManager.openStore(id,storeDetails);
     }
 
@@ -209,6 +213,7 @@ public class ServiceAPI {
      * @return if product was added
      */
     public Response<Boolean> addProductToStore(int id,ProductData productData){
+//        encoder.endodeAddProductToStore(id,productData);
         return logicManager.addProductToStore(id,productData);
     }
 
@@ -331,6 +336,7 @@ public class ServiceAPI {
      * @return if the manger was added
      */
     public Response<Boolean> addManagerToStore(int id,String storeName,String userName){
+//        encoder.encodeAddManagerToStore(id,storeName, userName);
         return logicManager.addManager(id,userName,storeName);
     }
 
@@ -344,6 +350,8 @@ public class ServiceAPI {
      * @return
      */
     public Response<Boolean> addPermissions(int id,List<PermissionType> permissions, String storeName, String userName){
+//        encoder.encodeAddPermissions(id,permissions,storeName,userName);
+//        encoder.saveFile();
         return logicManager.addPermissions(id,permissions,storeName,userName);
     }
 

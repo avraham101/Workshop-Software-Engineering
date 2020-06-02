@@ -30,6 +30,7 @@ public class SubscribeDao extends Dao<Subscribe> implements ISubscribeDao {
                 sub.initPermissions();
         }
         catch(NoResultException ex) {
+            ex.printStackTrace();
         }
         finally {
             em.close();
