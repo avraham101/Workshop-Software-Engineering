@@ -107,6 +107,9 @@ public class AdminRevenue extends AcceptanceTests{
     @After
     public void tearDown(){
         bridge.removeRevenues();
-        removeUserStoresAndProducts(userToCheck);
+        removeUser(admin.getUsername());
+        removeUser(userToCheck.getUsername());
+        removeProducts(products);
+        removeStores(stores);
     }
 }

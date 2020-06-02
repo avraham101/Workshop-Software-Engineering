@@ -190,6 +190,22 @@ public class Guest extends UserState {
     }
 
     /**
+     * use case 4.3.1 - manage owner
+     * @param storeName the name of the store to be manager of
+     * @param userName the user to be manager of the store
+     * @return
+     */
+    @Override
+    public Response<Boolean> addOwner(String storeName, String userName) {
+        return new Response<>(false,OpCode.Not_Login);
+    }
+
+    @Override
+    public Response<Boolean> approveManageOwner(String storeName, String userName) {
+        return new Response<>(false,OpCode.Not_Login);
+    }
+
+    /**
      * use case 4.5 - add manager to store
      * @param youngOwner user to be owner
      * @param storeName

@@ -42,7 +42,9 @@ public interface AcceptanceTestsBridge {
     List<PurchaseTestData> getStorePurchasesHistory(int id,String storeName);
     List<PurchaseTestData> getUserPurchaseHistory(int id,String username);
     List<PurchaseTestData> getCurrentUserPurchaseHistory(int id);
+    boolean appointOwnerToStoreDirectly(int id,String storeName, String username);
     boolean appointOwnerToStore(int id,String storeName, String username);
+    boolean approveManageOwner(int id, String storeName, String username);
     boolean addPermissionToManager(int id,String storeName, String username, PermissionsTypeTestData productsInventory);
     boolean deletePermission(int id, String storeName, String username, PermissionsTypeTestData productsInventory);
     boolean writeReplyToApplication(int id, int requestId,String storeName, ApplicationToStoreTestData key, String value);

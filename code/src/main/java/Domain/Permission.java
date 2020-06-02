@@ -1,10 +1,10 @@
 package Domain;
 
 import DataAPI.PermissionType;
-import Persitent.PermissionDao;
+import Persitent.DaoInterfaces.IPermissionDao;
+import Persitent.DaoProxy.PermissionDaoProxy;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,18 +38,18 @@ public class Permission implements Serializable {
     @Transient
     private final ReentrantReadWriteLock lock;
     @Transient
-    private final PermissionDao dao;
+    private final IPermissionDao dao;
 
     public Permission(Subscribe owner) {
         this.owner = owner;
         permissionType=new HashSet<>();
         lock=new ReentrantReadWriteLock();
-        dao = new PermissionDao();
+        dao = new PermissionDaoProxy();
     }
 
     public Permission() {
         lock=new ReentrantReadWriteLock();
-        dao = new PermissionDao();
+        dao = new PermissionDaoProxy();
     }
 
     public Permission(Subscribe owner, Store store) {
@@ -57,14 +57,14 @@ public class Permission implements Serializable {
         this.store = store;
         permissionType=new HashSet<>();
         lock=new ReentrantReadWriteLock();
-        dao = new PermissionDao();
+        dao = new PermissionDaoProxy();
     }
 
     public Permission(Subscribe sub, HashSet<PermissionType> permissionTypes) {
         this.owner = sub;
         permissionType=permissionTypes;
         lock=new ReentrantReadWriteLock();
-        dao = new PermissionDao();
+        dao = new PermissionDaoProxy();
     }
 
     // ============================ getters & setters ============================ //
@@ -178,6 +178,10 @@ public class Permission implements Serializable {
                 permissionType.contains(PermissionType.OWNER);
         lock.readLock().unlock();
         return result;
+    }
+
+    public boolean isOwner() {
+        return permissionType.contains(PermissionType.OWNER);
     }
 }
 

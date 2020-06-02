@@ -445,21 +445,24 @@ class ManagePolicy extends Component {
     if(this.state.selected_product===undefined)
       return
     let onChangeMax= (event) => {
-      let update_amount = event.target.value;
+      let update_amount = parseInt(event.target.value);
       if( update_amount < this.state.selected_product.amount)
         this.setState({selected_amount_max:update_amount});
       else
         alert("cant select amount to policy gratter the amount in store");
     }
     let onChangeMin= (event) => {
-      let update_amount = event.target.value;
+      let update_amount = parseInt(event.target.value);
       if(update_amount < this.state.selected_product.amount)
         this.setState({selected_amount_min:update_amount});
       else
         alert("cant select amount to policy gratter the amount in store");
     }
     let addProduct = () => {
-      if(this.state.selected_amount_min > this.state.selected_amount_max) {
+      let min = parseInt(this.state.selected_amount_min);
+      let max = parseInt(this.state.selected_amount_max);
+      // alert('min ' + min +' max '+ max);
+      if(min > max) {
         alert("Min cant be greatter then Max. Cant add product to the policy.");
       }
       else {

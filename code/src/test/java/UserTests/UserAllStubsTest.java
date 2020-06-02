@@ -4,9 +4,12 @@ import Data.Data;
 import Data.TestData;
 import DataAPI.*;
 import Domain.*;
+import Persitent.DaoInterfaces.ICartDao;
+import Persitent.DaoProxy.CartDaoProxy;
 import Stubs.AdminStub;
 import Stubs.GuestStub;
 import Stubs.SubscribeStub;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -385,6 +388,25 @@ public class UserAllStubsTest {
     }
 
     /**
+     * use case 4.3.1 - manage owner
+     */
+    @Test
+    public void testManageOwnerFailGuest(){
+        setUpGuest();
+        assertFalse(user.addOwner(data.getStore(Data.VALID).getName(),data.getSubscribe(Data.VALID).getName()).getValue());
+    }
+
+    /**
+     * use case 4.3.2 - approve owner
+     */
+    @Test
+    public void testApproveOwnerFailGuest(){
+        setUpGuest();
+        assertFalse(user.approveManageOwner(data.getStore(Data.VALID).getName(),data.getSubscribe(Data.VALID).getName()).getValue());
+    }
+
+
+    /**
      * test use case 4.5 -addManager
      */
     @Test
@@ -528,4 +550,9 @@ public class UserAllStubsTest {
 
     protected void tearDownSubscribe(){}
 
+    @After
+    public void tearDown() throws Exception {
+        ICartDao dao=new CartDaoProxy();
+        dao.remove(dao.find(data.getSubscribe(Data.VALID).getName()));
+    }
 }

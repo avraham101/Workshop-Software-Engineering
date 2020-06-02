@@ -8,18 +8,11 @@ import Domain.Discount.Discount;
 import Drivers.LogicManagerDriver;
 import Persitent.Cache;
 import Persitent.DaoHolders.DaoHolder;
-import Persitent.StoreDao;
-import Persitent.SubscribeDao;
-import Stubs.CartStub;
-import Systems.PaymentSystem.PaymentSystem;
-import Systems.PaymentSystem.ProxyPayment;
-import Systems.SupplySystem.ProxySupply;
-import Systems.SupplySystem.SupplySystem;
+import Persitent.DaoInterfaces.IStoreDao;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +42,9 @@ public class SubscribeAllStubsTest {
 
     private void setUpSubscribe() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
+        Subscribe valid2=data.getSubscribe(Data.VALID2);
         Response<Boolean> response = logicManagerDriver.register(subscribe.getName(),subscribe.getPassword());
+        logicManagerDriver.register(valid2.getName(),valid2.getPassword());
         if(!response.getValue())
             fail();
         this.subscribe = cache.findSubscribe(subscribe.getName());
@@ -77,7 +72,7 @@ public class SubscribeAllStubsTest {
     protected void tearDownStore() {
         tearDown();
         StoreData storeData = data.getStore(Data.VALID);
-        StoreDao storeDao = daoHolder.getStoreDao();
+        IStoreDao storeDao = daoHolder.getStoreDao();
         storeDao.removeStore(storeData.getName());
     }
 
@@ -574,6 +569,9 @@ public class SubscribeAllStubsTest {
         tearDownStore();
     }
 
+
+
+
     /**
      * use case 4.5 add manager
      * test we cant add manager twice
@@ -928,6 +926,7 @@ public class SubscribeAllStubsTest {
         subscribe = data.getSubscribe(Data.ADMIN);
         try {
             daoHolder.getSubscribeDao().remove(subscribe.getName());
+            daoHolder.getSubscribeDao().remove(data.getSubscribe(Data.VALID2).getName());
         }catch (Exception e){}
     }
 

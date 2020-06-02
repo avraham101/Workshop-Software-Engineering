@@ -1,45 +1,51 @@
 package Persitent.DaoHolders;
 
-import Persitent.*;
+import Persitent.Dao.*;
+import Persitent.DaoInterfaces.*;
+import Persitent.DaoProxy.*;
 
 public class SubscribeDaoHolder {
-    private NotificationDao notificationDao;
-    private PurchaseDao purchaseDao;
-    private RequestDao requestDao;
-    private StoreDao storeDao;
-    private CartDao cartDao;
-    private PermissionDao permissionDao;
+    private INotificationDao notificationDao;
+    private IPurchaseDao purchaseDao;
+    private IRequestDao requestDao;
+    private IStoreDao storeDao;
+    private ICartDao cartDao;
+    private IPermissionDao permissionDao;
+    private ISubscribeDao subscribeDao;
 
     public SubscribeDaoHolder() {
-        notificationDao=new NotificationDao();
-        purchaseDao=new PurchaseDao();
-        requestDao=new RequestDao();
-        storeDao=new StoreDao();
-        permissionDao = new PermissionDao();
-        cartDao=new CartDao();
+        notificationDao=new NotificationDaoProxy();
+        purchaseDao=new PurchaseDaoProxy();
+        requestDao=new RequestDaoProxy();
+        storeDao=new StoreDaoProxy();
+        permissionDao = new PermissionDaoProxy();
+        cartDao=new CartDaoProxy();
+        subscribeDao=new SubscribeDaoProxy();
     }
 
-    public NotificationDao getNotificationDao() {
+    public INotificationDao getNotificationDao() {
         return notificationDao;
     }
 
-    public PurchaseDao getPurchaseDao() {
+    public IPurchaseDao getPurchaseDao() {
         return purchaseDao;
     }
 
-    public RequestDao getRequestDao() {
+    public IRequestDao getRequestDao() {
         return requestDao;
     }
 
-    public StoreDao getStoreDao() {
+    public IStoreDao getStoreDao() {
         return storeDao;
     }
 
-    public PermissionDao getPermissionDao() {
+    public IPermissionDao getPermissionDao() {
         return permissionDao;
     }
 
-    public CartDao getCartDao() {
+    public ICartDao getCartDao() {
         return cartDao;
     }
+
+    public ISubscribeDao getSubscribeDao() {return subscribeDao;}
 }

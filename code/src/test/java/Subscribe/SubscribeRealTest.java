@@ -1,23 +1,18 @@
 package Subscribe;
 
 import Data.Data;
-import Data.TestData;
 import DataAPI.*;
 import Domain.*;
 import Domain.Discount.Discount;
 import Domain.Discount.RegularDiscount;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
-import Drivers.LogicManagerDriver;
-import Persitent.SubscribeDao;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.Assert.*;
 
@@ -181,6 +176,67 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         Store store = daoHolder.getStoreDao().find(storeData.getName());
         Discount real = store.getDiscount().values().iterator().next();
         assertTrue(real instanceof RegularDiscount);
+        tearDownStore();
+    }
+
+    /**
+     * use case 4.3.1 - manage owner - success
+     */
+    @Test
+    public void testAddOwnerNoPermission(){
+        setUpStoreOpened();
+        String store=data.getStore(Data.VALID).getName();
+        assertFalse(data.getSubscribe(Data.ADMIN).addOwner(store,data.getSubscribe(Data.VALID2).getName()).getValue());
+        tearDownStore();
+    }
+
+    /**
+     * test not have permission but owner
+     */
+    @Test
+    public void testAddOwnerNotOwner(){
+        setUpManagerAdded();
+        String store=data.getStore(Data.VALID).getName();
+        assertFalse(data.getSubscribe(Data.ADMIN).addOwner(store,data.getSubscribe(Data.VALID2).getName()).getValue());
+        tearDownStore();
+    }
+
+    @Test
+    public void testAddOwnerSucsess(){
+        setUpStoreOpened();
+        String store=data.getStore(Data.VALID).getName();
+        assertTrue(data.getSubscribe(Data.VALID).addOwner(store,data.getSubscribe(Data.VALID2).getName()).getValue());
+        tearDownStore();
+    }
+
+
+    /**
+     * use case 4.3.2 - approveManager - success
+     */
+    @Test
+    public void testApproveOwnerNoPermission(){
+        setUpStoreOpened();
+        String store=data.getStore(Data.VALID).getName();
+        assertFalse(data.getSubscribe(Data.ADMIN).approveManageOwner(store,data.getSubscribe(Data.VALID2).getName()).getValue());
+        tearDownStore();
+    }
+
+    /**
+     * test not have permission but owner
+     */
+    @Test
+    public void testApproveOwnerNotOwner(){
+        setUpManagerAdded();
+        String store=data.getStore(Data.VALID).getName();
+        assertFalse(data.getSubscribe(Data.ADMIN).approveManageOwner(store,data.getSubscribe(Data.VALID2).getName()).getValue());
+        tearDownStore();
+    }
+
+    @Test
+    public void testApproveOwnerSuccess(){
+        setUpStoreOpened();
+        String store=data.getStore(Data.VALID).getName();
+        assertTrue(data.getSubscribe(Data.VALID).approveManageOwner(store,data.getSubscribe(Data.VALID2).getName()).getValue());
         tearDownStore();
     }
 

@@ -1,59 +1,72 @@
 package Persitent.DaoHolders;
 
-import Persitent.*;
+import Persitent.Dao.*;
+import Persitent.DaoInterfaces.*;
+import Persitent.DaoProxy.*;
 
 public class StoreDaoHolder {
-    private CategoryDao categoryDao;
-    private DiscountDao discountDao;
-    private NotificationDao notificationDao;
-    private PolicyDao policyDao;
-    private ProductDao productDao;
-    private PurchaseDao purchaseDao;
-    private PurchaseTypeDao purchaseTypeDao;
-    private RequestDao requestDao;
-    private SubscribeDao subscribeDao;
+    private ICategoryDao categoryDao;
+    private IDiscountDao discountDao;
+    private INotificationDao notificationDao;
+    private IPolicyDao policyDao;
+    private IProductDao productDao;
+    private IPurchaseDao purchaseDao;
+    private IPurchaseTypeDao purchaseTypeDao;
+    private IRequestDao requestDao;
+    private ISubscribeDao subscribeDao;
+    private IOwnerAgreementDao ownerAgreementDao;
 
     public StoreDaoHolder() {
-        this.categoryDao = new CategoryDao();
-        this.discountDao = new DiscountDao();
-        this.notificationDao = new NotificationDao();
-        this.policyDao = new PolicyDao();
-        this.productDao = new ProductDao(categoryDao);
-        this.purchaseDao = new PurchaseDao();
-        this.purchaseTypeDao = new PurchaseTypeDao();
-        this.requestDao = new RequestDao();
-        this.subscribeDao=new SubscribeDao();
+        categoryDao = new CategoryDaoProxy();
+        discountDao = new DiscountDaoProxy();
+        notificationDao = new NotificationDaoProxy();
+        policyDao = new PolicyDaoProxy();
+        productDao = new ProductDaoProxy(categoryDao);
+        purchaseDao = new PurchaseDaoProxy();
+        purchaseTypeDao = new PurchaseTypeDaoProxy();
+        requestDao = new RequestDaoProxy();
+        subscribeDao=new SubscribeDaoProxy();
+        ownerAgreementDao=new OwnerAgreementDaoProxy();
     }
 
-    public CategoryDao getCategoryDao() {
+    public ICategoryDao getCategoryDao() {
         return categoryDao;
     }
 
-    public DiscountDao getDiscountDao() {
+    public IDiscountDao getDiscountDao() {
         return discountDao;
     }
 
-    public NotificationDao getNotificationDao() {
+    public INotificationDao getNotificationDao() {
         return notificationDao;
     }
 
-    public PolicyDao getPolicyDao() {
+    public IPolicyDao getPolicyDao() {
         return policyDao;
     }
 
-    public ProductDao getProductDao() {
+    public IProductDao getProductDao() {
         return productDao;
     }
 
-    public PurchaseDao getPurchaseDao() {
+    public IPurchaseDao getPurchaseDao() {
         return purchaseDao;
     }
 
-    public PurchaseTypeDao getPurchaseTypeDao() {
+    public IPurchaseTypeDao getPurchaseTypeDao() {
         return purchaseTypeDao;
     }
 
-    public RequestDao getRequestDao() {
+    public IRequestDao getRequestDao() {
         return requestDao;
     }
+
+    public IOwnerAgreementDao getOwnerAgreementDao() {
+        return ownerAgreementDao;
+    }
+
+    public ISubscribeDao getSubscribeDao() {
+        return subscribeDao;
+    }
+
 }

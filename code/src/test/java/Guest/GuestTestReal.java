@@ -7,16 +7,14 @@ import Domain.*;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
 import Drivers.LogicManagerDriver;
 import Persitent.Cache;
-import Persitent.CartDao;
 import Persitent.DaoHolders.DaoHolder;
-import Persitent.StoreDao;
-import Persitent.SubscribeDao;
+import org.junit.After;
+import Persitent.DaoInterfaces.ICartDao;
+import Persitent.DaoInterfaces.IStoreDao;
+import Persitent.DaoInterfaces.ISubscribeDao;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -93,14 +91,14 @@ public class GuestTestReal extends GuestTest{
 
     private void tearDownStore() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        SubscribeDao subscribeDao = daoHolder.getSubscribeDao();
+        ISubscribeDao subscribeDao = daoHolder.getSubscribeDao();
         subscribeDao.remove(subscribe.getName());
         Subscribe admin = data.getSubscribe(Data.ADMIN);
         subscribeDao.remove(admin.getName());
         StoreData storeData = data.getStore(Data.VALID);
-        StoreDao storeDao = daoHolder.getStoreDao();
+        IStoreDao storeDao = daoHolder.getStoreDao();
         storeDao.removeStore(storeData.getName());
-        CartDao cartDao = daoHolder.getCartDao();
+        ICartDao cartDao = daoHolder.getCartDao();
         Cart cart = cartDao.find(subscribe.getName());
         if(cart!=null)
             cartDao.remove(cart);
@@ -235,5 +233,8 @@ public class GuestTestReal extends GuestTest{
         tearDownStore();
     }
 
-
+    @After
+    public void tearDown() throws Exception {
+        daoHolder.getSubscribeDao().remove(data.getSubscribe(Data.ADMIN).getName());
+    }
 }

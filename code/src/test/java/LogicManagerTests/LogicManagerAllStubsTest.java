@@ -5,14 +5,11 @@ import Data.TestData;
 import DataAPI.*;
 import Domain.Discount.*;
 import Domain.*;
-import Domain.Discount.Term.*;
 import Domain.PurchasePolicy.*;
-import Domain.Notification.*;
-import Domain.PurchasePolicy.ComposePolicys.AndPolicy;
-import Domain.PurchasePolicy.ComposePolicys.OrPolicy;
-import Domain.PurchasePolicy.ComposePolicys.XorPolicy;
 import Persitent.*;
 import Persitent.DaoHolders.DaoHolder;
+import Persitent.DaoInterfaces.ISubscribeDao;
+import Persitent.DaoProxy.SubscribeDaoProxy;
 import Stubs.*;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
@@ -21,24 +18,14 @@ import Systems.SupplySystem.SupplySystem;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.internal.runners.statements.Fail;
-import org.mockito.internal.matchers.Not;
 
-import java.util.*;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.Assert.*;
 
@@ -1652,39 +1639,38 @@ public class LogicManagerAllStubsTest {
         tearDownOpenStore();
     }
 
-//    /**
-//     * test use case 4.3 - add owner
-//     */
-//    @Test
-//    public void testManageOwner(){
-//        setUpOpenedStore();
-//        testManageOwnerFail();
-//        testManageOwnerFailAgain();
-//        testManageOwnerSuccess();
-//    }
+
 
     /**
-     * part of test use case 4.3 - add owner
+     * part of test use case 4.3.1 - add owner
      */
-    private void testManageOwnerFailAgain() {
-        assertFalse(logicManager.manageOwner(data.getId(Data.VALID),data.getSubscribe(Data.VALID).getName(),
-                data.getSubscribe(Data.VALID2).getName()).getValue());
+    @Test
+    public void testManageOwnerFailWrongStore() {
+        setUpOpenedStore();
+        assertFalse(logicManager.manageOwner(data.getId(Data.VALID),data.getSubscribe(Data.VALID).getName()
+                ,data.getSubscribe(Data.VALID).getName()).getValue());
+        tearDownOpenStore();
     }
 
     /**
-     * part of test use case 4.3 - add owner
+     * part of test use case 4.3.1 - add owner
      */
-    protected void testManageOwnerSuccess() {
-        assertTrue(logicManager.manageOwner(data.getId(Data.VALID),data.getStore(Data.VALID).getName(),
-                data.getSubscribe(Data.VALID2).getName()).getValue());
-    }
-
-    /**
-     * part of test use case 4.3 - add owner
-     */
-    protected void testManageOwnerFail() {
+    @Test
+    public void testManageOwnerFailWrongUser() {
+        setUpOpenedStore();
         assertFalse(logicManager.manageOwner(data.getId(Data.VALID),data.getStore(Data.VALID).getName()
                 ,data.getStore(Data.VALID).getName()).getValue());
+        tearDownOpenStore();
+    }
+
+    /**
+     * get list of all the managers user with id need to approve in storeName test
+     */
+    @Test
+    public void testGetApprovedManagersNotExistedStore(){
+        setUpOpenedStore();
+        assertNull(logicManager.getApprovedManagers(data.getId(Data.VALID),data.getSubscribe(Data.VALID).getName()).getValue());
+        tearDownOpenStore();
     }
 
     /**
@@ -2067,7 +2053,7 @@ public class LogicManagerAllStubsTest {
      */
     public void tearDownRegisteredUser() {
         Subscribe subscribe = data.getSubscribe(Data.VALID);
-        SubscribeDao subscribeDao = new SubscribeDao();
+        ISubscribeDao subscribeDao = new SubscribeDaoProxy();
         subscribeDao.remove(subscribe.getName());
         subscribeDao.remove(data.getSubscribe(Data.ADMIN).getName());
         subscribeDao.remove(data.getSubscribe(Data.VALID2).getName());

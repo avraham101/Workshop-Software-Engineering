@@ -227,9 +227,23 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean appointOwnerToStore(int id,String storeName, String username) {
+    public boolean appointOwnerToStoreDirectly(int id,String storeName, String username) {
+        if(realBridge!=null)
+            return realBridge.appointOwnerToStoreDirectly(id,storeName,username);
+        return false;
+    }
+
+    @Override
+    public boolean appointOwnerToStore(int id, String storeName, String username){
         if(realBridge!=null)
             return realBridge.appointOwnerToStore(id,storeName,username);
+        return false;
+    }
+
+    @Override
+    public boolean approveManageOwner(int id, String storeName, String username){
+        if(realBridge!=null)
+            return realBridge.approveManageOwner(id,storeName,username);
         return false;
     }
 

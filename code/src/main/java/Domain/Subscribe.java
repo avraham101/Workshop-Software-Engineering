@@ -7,7 +7,7 @@ import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.Notification.Notification;
 import Persitent.Cache;
 import Persitent.DaoHolders.SubscribeDaoHolder;
-import Persitent.RequestDao;
+import Persitent.DaoInterfaces.IRequestDao;
 import Publisher.Publisher;
 import Publisher.SinglePublisher;
 import org.hibernate.annotations.LazyCollection;
@@ -68,11 +68,8 @@ public class Subscribe extends UserState{
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="subscibe_notifications",
-            joinColumns ={@JoinColumn(name = "username", referencedColumnName="username")},
-            inverseJoinColumns={@JoinColumn(name="notfiication_id", referencedColumnName="id")}
-    )
-    private List<Notification> notifications;
+    @JoinColumn(name="subscribe",referencedColumnName = "username",insertable = false,updatable = false)
+    private List<Notification<?>> notifications;
 
     @Transient
     private final SubscribeDaoHolder daos;
@@ -91,7 +88,9 @@ public class Subscribe extends UserState{
 
     @Override
     public Cart getCart() {
-        return this.cart;
+        if(this.cart!=null)
+            return this.cart;
+        return daos.getCartDao().find(userName);
     }
 
     public Subscribe(String userName, String password, Cart cart) {
@@ -150,7 +149,9 @@ public class Subscribe extends UserState{
     @Override
     public void savePurchase(String buyer) {
         this.purchases.addAll(this.cart.savePurchases(this.userName));
+        this.daos.getCartDao().remove(this.getCart()); //remove the old cart
         this.cart = new Cart(this.userName);
+        this.daos.getCartDao().add(this.getCart()); //add the new cart
     }
 
     /**
@@ -237,7 +238,7 @@ public class Subscribe extends UserState{
     public Request addRequest(String storeName, String content){
         Request request = new Request(userName, storeName, content);
         requests.add(request);
-        RequestDao requestDao = daos.getRequestDao();
+        IRequestDao requestDao = daos.getRequestDao();
         if(requestDao.addRequest(request))
             return request;
         return null;
@@ -375,6 +376,46 @@ public class Subscribe extends UserState{
     }
 
     /**
+     * use case 4.3.1 - manage owner
+     * @param storeName the name of the store to be manager of
+     * @param newOwner the user to be manager of the store
+     * @return
+     */
+    @Override
+    public Response<Boolean> addOwner(String storeName, String newOwner) {
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
+        if(permission==null)
+            return new Response<>(false,OpCode.Dont_Have_Permission);
+        Store store=permission.getStore();
+        if(store==null||!permission.isOwner())
+            return new Response<>(false,OpCode.Dont_Have_Permission);
+        Response<Boolean> output= store.addOwner(this.userName,newOwner);
+        if(output.getValue())
+            daos.getStoreDao().update(store);
+        return output;
+    }
+
+    /**
+     * use case 4.3.2 - approve manage owner
+     * @param storeName the name of the store to be manager of
+     * @param newOwner the user to be manager of the store
+     * @return
+     */
+    @Override
+    public Response<Boolean> approveManageOwner(String storeName, String newOwner) {
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
+        if(permission==null)
+            return new Response<>(false,OpCode.Dont_Have_Permission);
+        Store store=permission.getStore();
+        if(store==null||!permission.isOwner())
+            return new Response<>(false,OpCode.Dont_Have_Permission);
+        Response<Boolean> output= store.approveAgreement(this.userName,newOwner);
+        if(output.getValue())
+            daos.getStoreDao().update(store);
+        return output;
+    }
+
+    /**
      * use case 4.5 - add manager to store
      * @param youngOwner the new manager
      * @param storeName the store to add manager to
@@ -505,15 +546,18 @@ public class Subscribe extends UserState{
         if(permission!=null)
             givenByMePermissions.remove(permission);
         lock.writeLock().unlock();
-        Store store=permissions.get(storeName).getStore();
+        Store store=daos.getStoreDao().find(storeName);
+        //Store store=permissions.get(storeName).getStore();
         //remove the permission from the user
         Permission p=daos.getPermissionDao().findPermission(permissions.get(storeName));
         permissions.remove(storeName);
         //remove the permission from the store
         store.getPermissions().remove(userName);
         removePermission(p);
+        store.removeAgreement(userName);
+        store.approveAgreementsOfUser(userName);
+        daos.getStoreDao().update(store);
         sendNotification( new RemoveNotification(storeName,OpCode.Removed_From_Management));
-
     }
 
     /**
@@ -731,7 +775,7 @@ public class Subscribe extends UserState{
 
 
     public void sendNotification(Notification<?> notification) {
-        if(daos.getNotificationDao().add(notification)) {
+        if(daos.getNotificationDao().add(notification, this.getName())) {
             notifications.add(notification);
             sendAllNotifications();
         }
@@ -746,7 +790,6 @@ public class Subscribe extends UserState{
     }
     @Override
     public void deleteReceivedNotifications(List<Integer> notificationsId) {
-
         List<Notification> remove = new LinkedList<>();
         for(Notification not: this.notifications) {
             for(int d:notificationsId) {

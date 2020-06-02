@@ -5,6 +5,7 @@ import DataAPI.*;
 import Domain.*;
 import Domain.Discount.Discount;
 import Domain.Discount.RegularDiscount;
+import Domain.PurchasePolicy.ProductPurchasePolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.PurchasePolicy.UserPurchasePolicy;
 import Domain.Notification.Notification;
@@ -85,6 +86,13 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         setUpPermissionsAdded();
         logicManager.login(data.getId(Data.ADMIN),data.getSubscribe(Data.ADMIN).getName(),data.getSubscribe(Data.ADMIN).getPassword());
         logicManager.addManager(data.getId(Data.ADMIN),data.getSubscribe(Data.VALID2).getName(),data.getStore(Data.VALID).getName());
+    }
+
+    private void setUpManagedOwner(){
+        setUpOpenedStore();
+        String storeName=data.getStore(Data.VALID).getName();
+        Subscribe admin=data.getSubscribe(Data.ADMIN);
+        logicManager.manageOwner(data.getId(Data.VALID),storeName, admin.getName());
     }
     /**----------------------set-ups------------------------------------------*/
 
@@ -717,7 +725,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         StoreData storeData = data.getStore(Data.VALID);
         assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
         daos.getStoreDao().removeStore(storeData.getName());
-        tearDownLogin();
+        tearDownOpenStore();
     }
 
     /**
@@ -1111,6 +1119,30 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         assertNotNull(store.getPurchasePolicy());
     }
 
+    @Test
+    public void testUpdatePolicyProductPolicy(){
+        setUpProductAdded();
+        HashMap<String,ProductMinMax> productMinMaxHashMap=new HashMap<>();
+        String productName=data.getProductData(Data.VALID).getProductName();
+        productMinMaxHashMap.put(productName,new ProductMinMax(productName,13,4));
+        PurchasePolicy policy = new ProductPurchasePolicy(productMinMaxHashMap);
+        GsonBuilder builderPolicy = new GsonBuilder();
+        builderPolicy.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
+        Gson policyGson = builderPolicy.create();
+        String policyToAdd = policyGson.toJson(policy, PurchasePolicy.class);
+        assertTrue(logicManager.updatePolicy(data.getId(Data.VALID),policyToAdd,
+                data.getStore(Data.VALID).getName()).getValue());
+        Store store=daos.getStoreDao().find(data.getStore(Data.VALID).getName());
+        PurchasePolicy p=store.getPurchasePolicy();
+        assertTrue(p instanceof ProductPurchasePolicy);
+        ProductPurchasePolicy pol= (ProductPurchasePolicy) p;
+        ProductMinMax productMinMax=pol.getAmountPerProduct().get(productName);
+        assertEquals(productMinMax.getMax(),13);
+        assertEquals(productMinMax.getMin(),4);
+        tearDownOpenStore();
+    }
+
+
 
     /**
      * use case 4.2.2.2 - view policy in the store
@@ -1127,33 +1159,128 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         super.testViewStorePolicy();
     }
 
-//    /**
-//     * use case 4.3 - manage owner - success
-//     */
-//    @Override
-//    protected void testManageOwnerSuccess() {
-//        super.testManageOwnerSuccess();
-//        checkPermissions(Data.VALID2);
-//    }
-//
-//    /**
-//     * use case 4.3 - manage owner - fail
-//     */
-//    @Override
-//    protected void testManageOwnerFail() {
-//        super.testManageOwnerFail();
-//        String sName=data.getStore(Data.VALID).getName();
-//        assertFalse(logicManager.manageOwner(data.getId(Data.VALID),sName,sName).getValue());
-//        assertFalse(stores.get(sName).getPermissions().containsKey(sName));
-//    }
+
+    /**
+     * use case 4.3.1 - manage owner - success
+     */
+    @Test
+    public void testManageOwnerSuccess() {
+        setUpOpenedStore();
+        Subscribe valid2=data.getSubscribe(Data.VALID2);
+        logicManager.login(data.getId(Data.VALID2),valid2.getName(),valid2.getPassword());
+        assertTrue(logicManager.manageOwner(data.getId(Data.VALID),data.getStore(Data.VALID).getName(),
+                data.getSubscribe(Data.VALID2).getName()).getValue());
+        checkPermissions(Data.VALID2);
+        HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
+        for(List<Notification> n:notifications.values()){
+            assertEquals(data.getStore(Data.VALID).getName(),n.get(0).getValue());
+        }
+        tearDownOpenStore();
+    }
+
+    @Test
+    public void manageOwnerNeed2PeopleApprove(){
+        manageOwnerNeed2PeopleApproveTest();
+        tearDownOpenStore();
+    }
+
+    private void manageOwnerNeed2PeopleApproveTest() {
+        setUpManagedOwner();
+        String storeName=data.getStore(Data.VALID).getName();
+        Subscribe admin=data.getSubscribe(Data.ADMIN);
+        String niv = ManageAgain(storeName, admin);
+        Subscribe valid2=data.getSubscribe(Data.VALID2);
+        logicManager.login(data.getId(Data.VALID2),valid2.getName(),valid2.getPassword());
+        HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
+        for(List<Notification> n:notifications.values()) {
+            if(n.get(0).getValue() instanceof List) {
+                List<String> storeOwner = (List<String>) n.get(0).getValue();
+                assertEquals(data.getStore(Data.VALID).getName(), storeOwner.get(0));
+                assertEquals(valid2.getName(), storeOwner.get(1));
+            }
+        }
+        checkAgreement(storeName,niv);
+    }
+
+    private String ManageAgain(String storeName, Subscribe admin) {
+        int validId=data.getId(Data.VALID);
+        logicManager.login(data.getId(Data.ADMIN),admin.getName(),admin.getPassword());
+        String niv=data.getSubscribe(Data.VALID2).getName();
+        logicManager.manageOwner(validId,storeName,niv);
+        return niv;
+    }
+
+    private void checkAgreement(String storeName,String owner) {
+        Store store=daos.getStoreDao().find(storeName);
+        OwnerAgreement ownerAgreement=store.getAgreementMap().get(owner);
+        assertEquals(ownerAgreement.getOwner(),owner);
+        assertEquals(ownerAgreement.getGivenBy(),data.getSubscribe(Data.VALID).getName());
+        assertTrue(daos.getSubscribeDao().find(owner).getPermissions().isEmpty());
+    }
+
+    /**
+     * use case 4.3.2 - approveManager - success
+     */
+    @Test
+    public void approveManagerSuccess(){
+        String storeName=data.getStore(Data.VALID).getName();
+        Subscribe niv=data.getSubscribe(Data.VALID2);
+        manageOwnerNeed2PeopleApproveTest();
+        int agreementId=daos.getStoreDao().find(storeName).getAgreementMap().get(niv.getName()).getId();
+        assertTrue(logicManager.approveManageOwner(data.getId(Data.ADMIN),storeName,niv.getName()).getValue());
+        checkPermissions(Data.VALID2);
+        checkAgreementRemoved(agreementId);
+        tearDownOpenStore();
+    }
+
+    /**
+     * test appoint new owner when the last one that need to approve being deleted
+     */
+    @Test
+    public void approveManagerSuccessByDelete(){
+        String storeName=data.getStore(Data.VALID).getName();
+        Subscribe admin=data.getSubscribe(Data.ADMIN);
+        Subscribe niv=data.getSubscribe(Data.VALID2);
+        manageOwnerNeed2PeopleApproveTest();
+        int agreementId=daos.getStoreDao().find(storeName).getAgreementMap().get(niv.getName()).getId();
+        assertTrue(logicManager.removeManager(data.getId(Data.VALID),admin.getName(),storeName).getValue());
+        checkPermissions(Data.VALID2);
+        checkAgreementRemoved(agreementId);
+        tearDownOpenStore();
+    }
+
+    private void checkAgreementRemoved(int agreementId) {
+        assertNull(daos.getOwnerAgreementDao().find(agreementId));
+        Subscribe valid2=data.getSubscribe(Data.VALID2);
+        logicManager.login(data.getId(Data.VALID2),valid2.getName(),valid2.getPassword());
+        HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
+        if(notifications.get(0).get(0).getValue() instanceof List) {
+            List<String> storeOwner = (List<String>) notifications.get(0).get(0).getValue();
+            String store = data.getStore(Data.VALID).getName();
+            assertEquals(storeOwner.get(0), store);
+            assertEquals(storeOwner.get(1), valid2.getName());
+            assertEquals(notifications.get(2).get(0).getValue(), store);
+        }
+    }
+
+
+    /**
+     * get list of all the managers user with id need to approve in storeName test
+     */
+    @Test
+    public void testGetApprovedManagersNotExistedSuccess(){
+        manageOwnerNeed2PeopleApproveTest();
+        List<String> managers=logicManager.getApprovedManagers(data.getId(Data.ADMIN),data.getStore(Data.VALID).getName()).getValue();
+        assertTrue(managers.contains(data.getSubscribe(Data.VALID2).getName()));
+        tearDownOpenStore();
+    }
 
     /**
      * generic function for check when adding new permission that it was added to store and user correctly
      * @param d - the data of the user to check the permission of
      */
     private void checkPermissions(Data d){
-        Subscribe sub=(Subscribe) currUser.getState();
-        Store store=sub.getGivenByMePermissions().get(0).getStore();
+        Store store=daos.getStoreDao().find(data.getStore(Data.VALID).getName());
         Subscribe newManager=data.getSubscribe(d);
         Permission p=store.getPermissions().get(newManager.getName());
         assertNotNull(p);

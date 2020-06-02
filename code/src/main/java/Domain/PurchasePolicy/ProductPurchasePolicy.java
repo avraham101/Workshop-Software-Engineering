@@ -61,4 +61,7 @@ public class ProductPurchasePolicy extends PurchasePolicy {
         return true;
     }
 
+    public Map<String, ProductMinMax> getAmountPerProduct() {
+        return amountPerProduct;
+    }
 }

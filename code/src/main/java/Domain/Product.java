@@ -3,9 +3,7 @@ package Domain;
 import DataAPI.ProductData;
 import DataAPI.PurchaseTypeData;
 import Persitent.DaoHolders.ProductDaoHolder;
-import Persitent.DaoHolders.StoreDaoHolder;
-import Persitent.ReviewDao;
-import Persitent.ProductDao;
+import Persitent.DaoInterfaces.IReviewDao;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -203,7 +201,7 @@ public class Product implements Serializable {
         this.reviews.add(review);
         getWriteLock().unlock();
 
-        ReviewDao reviewDao = daos.getReviewDao();
+        IReviewDao reviewDao = daos.getReviewDao();
         return reviewDao.addReview(review);
     }
 
@@ -216,7 +214,7 @@ public class Product implements Serializable {
         getWriteLock().lock();
         this.reviews.remove(review);
         getWriteLock().lock();
-        ReviewDao reviewDao = daos.getReviewDao();
+        IReviewDao reviewDao = daos.getReviewDao();
        return reviewDao.remove(review.getId());
     }
 
