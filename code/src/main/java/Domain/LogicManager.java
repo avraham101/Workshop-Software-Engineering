@@ -49,6 +49,7 @@ public class LogicManager {
     public LogicManager(String userName, String password,PaymentSystem paymentSystem,
                         SupplySystem supplySystem,DaoHolder daoHolder,Cache cashe) throws Exception {
         daos =daoHolder;
+        daos.getSubscribeDao().logoutAll();
         this.cache = cashe;
         GsonBuilder builderDiscount = new GsonBuilder();
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
@@ -95,6 +96,7 @@ public class LogicManager {
      */
     public LogicManager(String userName, String password) throws Exception {
         daos =new DaoHolder();
+        daos.getSubscribeDao().logoutAll();
         cache = new Cache();
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);
@@ -149,6 +151,7 @@ public class LogicManager {
      */
     public LogicManager(String userName, String password, PaymentSystem paymentSystem, SupplySystem supplySystem) throws Exception {
         daos =new DaoHolder();
+        daos.getSubscribeDao().logoutAll();
         cache = new Cache();
         usersIdCounter=new AtomicInteger(0);
         requestIdGenerator = new AtomicInteger(0);

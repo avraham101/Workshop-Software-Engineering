@@ -51,6 +51,9 @@ public class DeleteManagerTest extends AcceptanceTests{
         bridge.logout(firstManager.getId());
         bridge.login(superUser.getId(),superUser.getUsername(),superUser.getPassword());
 
+        bridge.login(firstManager.getId(),firstManager.getUsername(),firstManager.getPassword());
+        bridge.login(secondManager.getId(),secondManager.getUsername(),secondManager.getPassword());
+        bridge.login(thirdManager.getId(),thirdManager.getUsername(),thirdManager.getPassword());
 
     }
 
@@ -72,7 +75,7 @@ public class DeleteManagerTest extends AcceptanceTests{
         assertNull(isManager);
 
         //check notification
-        //assertFalse(publisherMock.getNotificationList().isEmpty());
+        assertFalse(publisherMock.getNotificationList().isEmpty());
     }
 
     @Test
