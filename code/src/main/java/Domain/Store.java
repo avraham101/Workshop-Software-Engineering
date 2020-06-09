@@ -553,6 +553,7 @@ public class Store {
             }
         }
         OwnerAgreement agreement=new OwnerAgreement(owners,givenBy,owner,name);
+        // TODO: lock owner's list
         if(!agreement.approve(givenBy)){
             if(daos.getOwnerAgreementDao().add(agreement)) {
                 agreementMap.put(owner, agreement);
