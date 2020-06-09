@@ -109,6 +109,9 @@ public class Decoder {
                 case "deleteDiscountFromStore":
                     executeRemoveDiscountFromStore(data);
                     break;
+                case "updatePolicy":
+                    executeUpdatePolicy(data);
+                    break;
                 case "manageOwner":
                     executeManageOwner(data);
                     break;
@@ -301,6 +304,19 @@ public class Decoder {
         int discountId= (int) value.get("discountId");
         String storeName = (String) value.get("storeName");
         serviceAPI.deleteDiscountFromStore(id,discountId,storeName);
+    }
+
+    /**
+     * use case - 4.2.2.1 - updatePolicy
+     * @param data
+     */
+    private void executeUpdatePolicy(Map<String, Object> data){
+        String name = (String) data.get("idName");
+        int id = connected.get(name);
+        Map<String, Object> value = (Map<String, Object>)data.get("updatePolicy");
+        String storeName = (String) value.get("storeName");
+        String policyData = (String) value.get("policyData");
+        serviceAPI.upadtePolicy(id,policyData,storeName);
     }
 
     /**
