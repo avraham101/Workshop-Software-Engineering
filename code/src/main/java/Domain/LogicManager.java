@@ -1029,6 +1029,7 @@ public class LogicManager {
      * @param userName the user to be manager of the store
      * @return
      */
+    @Transactional
     public Response<Boolean> manageOwner(int id,String storeName, String userName) {
         loggerSystem.writeEvent("LogicManager","manageOwner",
                 "store owner add a owner to the store", new Object[] {storeName, userName});
