@@ -28,6 +28,7 @@ public class StoreTestReal extends StoreTestsAllStubs {
 
     @Before
     public void setUp() {
+        Utils.Utils.TestMode();
         try {
             logicDriver = new LogicManagerDriver();
         }

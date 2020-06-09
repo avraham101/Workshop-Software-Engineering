@@ -28,6 +28,7 @@ public class GuestTestReal extends GuestTest{
     @Override
     @Before
     public void setUp(){
+        Utils.Utils.TestMode();
         data = new TestData();
         cart = new Cart("Guest");
         guest = new Domain.Guest(cart);

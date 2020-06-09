@@ -19,6 +19,7 @@ public class UserRealTest extends UserAllStubsTest{
 
     @Before
     public void setUp(){
+        Utils.Utils.TestMode();
         data =new TestData();
         daos=new DaoHolder();
     }

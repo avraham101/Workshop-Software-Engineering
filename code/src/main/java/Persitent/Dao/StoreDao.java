@@ -3,6 +3,7 @@ package Persitent.Dao;
 
 import Domain.Store;
 import Persitent.DaoInterfaces.IStoreDao;
+import Utils.Utils;
 
 import javax.persistence.*;
 import java.util.LinkedList;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class StoreDao extends Dao<Store> implements IStoreDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("store");
+            .createEntityManagerFactory(Utils.DB);
 
     public boolean addStore(Store store) {
         // The EntityManager class allows operations such as create, read, update, delete

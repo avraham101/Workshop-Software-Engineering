@@ -11,6 +11,7 @@ import Systems.SupplySystem.ProxySupply;
 import org.junit.Before;
 import org.junit.Test;
 
+import static Utils.Utils.*;
 import static org.junit.Assert.*;
 
 public class LogicManagerUserAndStoresStubs extends LogicManagerAllStubsTest {
@@ -21,6 +22,7 @@ public class LogicManagerUserAndStoresStubs extends LogicManagerAllStubsTest {
      */
     @Before
     public void setUp() {
+        TestMode();
         currUser=new UserStub();
         supplySystem=new ProxySupply();
         paymentSystem=new ProxyPayment();

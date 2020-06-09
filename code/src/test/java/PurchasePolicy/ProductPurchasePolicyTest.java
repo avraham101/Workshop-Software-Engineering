@@ -20,6 +20,7 @@ public class ProductPurchasePolicyTest {
 
     @Before
     public void setUp() {
+        Utils.Utils.TestMode();
         data = new TestData();
         policy = (ProductPurchasePolicy)data.getPurchasePolicy(Data.VALID_PRODUCT_PURCHASE_POLICY);
     }

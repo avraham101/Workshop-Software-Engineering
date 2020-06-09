@@ -20,6 +20,7 @@ public class BasketPurchasePolicyTest {
 
     @Before
     public void setUp() {
+        Utils.Utils.TestMode();
         data = new TestData();
         policy = (BasketPurchasePolicy)data.getPurchasePolicy(Data.VALID_BASKET_PURCHASE_POLICY);
     }

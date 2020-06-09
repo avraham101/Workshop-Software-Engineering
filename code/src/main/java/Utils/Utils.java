@@ -2,6 +2,12 @@ package Utils;
 
 public class Utils {
 
+    public static String DB = "workshop";
+
+    public static void TestMode(){
+        DB="test";
+    }
+
     /**
      * url - https://www.geeksforgeeks.org/edit-distance-dp-5/
      * min function between 3 values

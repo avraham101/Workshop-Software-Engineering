@@ -5,6 +5,7 @@ import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.Store;
 import Stubs.CacheStub;
+import Utils.Utils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,6 +15,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
 
     @Before
     public void setUp() {
+        Utils.TestMode();
         this.cashe=new CacheStub();
         super.setUp();
     }

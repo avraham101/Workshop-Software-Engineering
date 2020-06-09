@@ -2,6 +2,7 @@ package Persitent.Dao;
 
 import Domain.Category;
 import Persitent.DaoInterfaces.ICategoryDao;
+import Utils.Utils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -9,7 +10,7 @@ import javax.persistence.Persistence;
 
 public class CategoryDao extends Dao<Category> implements ICategoryDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("product");
+            .createEntityManagerFactory(Utils.DB);
 
     public boolean add(Category category) {
         // The EntityManager class allows operations such as create, read, update, delete

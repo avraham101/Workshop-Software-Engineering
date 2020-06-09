@@ -2,6 +2,7 @@ package Persitent.Dao;
 
 import Domain.ProductInCart;
 import Persitent.DaoInterfaces.IProductInCartDao;
+import Utils.Utils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -10,7 +11,7 @@ import javax.persistence.Persistence;
 
 public class ProductInCartDao extends Dao<ProductInCart> implements IProductInCartDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("product");
+            .createEntityManagerFactory(Utils.DB);
 
     public boolean add(ProductInCart value) {
         return super.add(ENTITY_MANAGER_FACTORY.createEntityManager(), value);

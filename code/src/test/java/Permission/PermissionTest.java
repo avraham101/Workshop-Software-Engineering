@@ -31,6 +31,7 @@ public class PermissionTest {
 
     @Before
     public void setUp(){
+        Utils.Utils.TestMode();
         data = new TestData();
         daoHolder = new DaoHolder();
         try {
