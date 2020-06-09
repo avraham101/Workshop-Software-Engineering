@@ -15,6 +15,7 @@ import Persitent.DaoInterfaces.ISubscribeDao;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import Utils.*;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -37,6 +38,7 @@ public class BasketTest {
 
     @Before
     public void setUp() {
+        Utils.TestMode();
         data = new TestData();
         daoHolder = new DaoHolder();
         try {

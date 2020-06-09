@@ -2,12 +2,13 @@ package Persitent.Dao;
 
 import Domain.Review;
 import Persitent.DaoInterfaces.IReviewDao;
+import Utils.Utils;
 
 import javax.persistence.*;
 
 public class ReviewDao extends Dao<Review> implements IReviewDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("product");
+            .createEntityManagerFactory(Utils.DB);
 
 
     public boolean addReview(Review review){

@@ -4,6 +4,7 @@ import Domain.Admin;
 
 import Domain.Subscribe;
 import Persitent.DaoInterfaces.ISubscribeDao;
+import Utils.Utils;
 
 import javax.persistence.*;
 import java.util.LinkedList;
@@ -11,8 +12,8 @@ import java.util.List;
 
 public class SubscribeDao extends Dao<Subscribe> implements ISubscribeDao {
 
-    private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("subscribe");
+    private static EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
+            .createEntityManagerFactory(Utils.DB);
 
 
     public boolean addSubscribe(Subscribe subscribe) {

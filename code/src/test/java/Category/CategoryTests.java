@@ -7,6 +7,7 @@ import Domain.Category;
 import Domain.Product;
 import org.junit.Before;
 import org.junit.Test;
+import Utils.*;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class CategoryTests {
 
     @Before
     public void setUp() {
+        Utils.TestMode();
         data = new TestData();
         String cat = data.getProductData(Data.VALID).getCategory();
         category = new Category(cat);

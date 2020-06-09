@@ -28,6 +28,7 @@ public class ComposePurchasePolicyTest {
 
     @Before
     public void setUp() {
+        Utils.Utils.TestMode();
         data = new TestData();
         List<PurchasePolicy> policies = setPolicies();
         orPolicy = new OrPolicy(policies);

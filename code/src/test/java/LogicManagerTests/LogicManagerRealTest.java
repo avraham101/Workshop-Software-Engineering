@@ -27,6 +27,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.*;
 
+import static Utils.Utils.*;
 import static org.junit.Assert.*;
 
 //no stubs full integration
@@ -36,6 +37,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
     @BeforeClass
     public static void beforeClass() throws Exception {
+        TestMode();
         daos=new DaoHolder();
     }
 
