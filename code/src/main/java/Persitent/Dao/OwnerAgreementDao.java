@@ -7,10 +7,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import Utils.*;
 
 public class OwnerAgreementDao extends Dao<OwnerAgreement> implements IOwnerAgreementDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("subscribe");
+            .createEntityManagerFactory(Utils.DB);
+
+
 
     public boolean add(OwnerAgreement value) {
         return super.add(ENTITY_MANAGER_FACTORY.createEntityManager(), value);

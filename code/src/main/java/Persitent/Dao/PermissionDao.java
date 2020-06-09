@@ -6,12 +6,13 @@ import Domain.Subscribe;
 import Persitent.DaoInterfaces.IPermissionDao;
 import Persitent.DaoInterfaces.ISubscribeDao;
 import Persitent.DaoProxy.SubscribeDaoProxy;
+import Utils.Utils;
 
 import javax.persistence.*;
 
 public class PermissionDao extends Dao<Permission> implements IPermissionDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("product");
+            .createEntityManagerFactory(Utils.DB);
 
     public boolean addPermission(Permission permission){
         boolean output = false;

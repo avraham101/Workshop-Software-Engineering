@@ -20,6 +20,7 @@ public class SystemPurchasePolicyTest {
 
     @Before
     public void setUp() {
+        Utils.Utils.TestMode();
         data = new TestData();
         policy = (SystemPurchasePolicy)data.getPurchasePolicy(Data.VALID_SYSTEM_PURCHASE_POLICY);
     }

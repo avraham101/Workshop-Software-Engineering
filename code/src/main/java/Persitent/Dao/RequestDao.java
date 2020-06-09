@@ -2,6 +2,7 @@ package Persitent.Dao;
 
 import Domain.Request;
 import Persitent.DaoInterfaces.IRequestDao;
+import Utils.Utils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -10,7 +11,7 @@ import javax.persistence.Persistence;
 
 public class RequestDao extends Dao<Request> implements IRequestDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("request");
+            .createEntityManagerFactory(Utils.DB);
 
     public boolean addRequest(Request request) {
         // The EntityManager class allows operations such as create, read, update, delete

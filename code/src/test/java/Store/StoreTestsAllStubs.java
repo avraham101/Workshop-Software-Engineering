@@ -24,6 +24,7 @@ public class StoreTestsAllStubs {
 
     @Before
     public void setUp(){
+        Utils.Utils.TestMode();
         data=new TestData();
         store=new StoreStub(data.getStore(Data.VALID).getName(),
                 new Permission(data.getSubscribe(Data.VALID)),"description");

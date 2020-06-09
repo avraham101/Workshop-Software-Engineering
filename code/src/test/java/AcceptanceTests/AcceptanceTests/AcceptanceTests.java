@@ -8,6 +8,7 @@ import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 import org.junit.After;
 import org.junit.Before;
+import Utils.*;
 
 import java.util.*;
 
@@ -33,6 +34,7 @@ public class AcceptanceTests {
 
     @Before
     public  void setUpAll(){
+        Utils.TestMode();
         bridge = AcceptanceTestsDriver.getBridge();
         users = new ArrayList<>();
         stores = new ArrayList<>();
