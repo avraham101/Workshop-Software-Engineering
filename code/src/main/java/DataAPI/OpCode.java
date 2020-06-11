@@ -45,6 +45,10 @@ public enum OpCode implements Serializable {
     Already_Owner,
     Approve_Owner,
     Add_Owner,
+    Basket_Policy_Failed,
+    Products_Policy_Failed,
+    Age_Policy_Failed,
+    Country_Policy_Failed,
     ;
 
 }

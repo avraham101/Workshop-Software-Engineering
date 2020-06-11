@@ -14,6 +14,8 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Entity
 @Table(name="store")
@@ -78,6 +80,9 @@ public class Store {
 
     @Transient
     private final StoreDaoHolder daos;
+
+    @Transient
+    private final ReadWriteLock lock=new ReentrantReadWriteLock();
 
     public Store(String name,Permission permission,String description) {
         this.name = name;
@@ -340,7 +345,7 @@ public class Store {
      * @param list - the products in the basket
      * @return true if succeed
      */
-    public boolean policyCheck(PaymentData paymentData, String country, Map<String, ProductInCart> list) {
+    public Response<Boolean> policyCheck(PaymentData paymentData, String country, Map<String, ProductInCart> list) {
         HashMap<Product, Integer> hashMap = getSpecificProducts(list);
         return getPurchasePolicy().standInPolicy(paymentData,country,hashMap);
     }
@@ -544,6 +549,12 @@ public class Store {
      * @return
      */
     public Response<Boolean> addOwner(String givenBy, String owner) {
+        lock.readLock().lock();
+        for(OwnerAgreement o:agreementMap.values()){
+            if(o.containsOwner(owner))
+                //TODO add translation in gui to that response when there is already a owner
+                return new Response<>(false,OpCode.Already_Exists);
+        }
         Set<String> owners=new HashSet<>();
         for(String name: permissions.keySet()){
             if(permissions.get(name).isOwner()) {
@@ -553,13 +564,13 @@ public class Store {
             }
         }
         OwnerAgreement agreement=new OwnerAgreement(owners,givenBy,owner,name);
-        // TODO: lock owner's list
         if(!agreement.approve(givenBy)){
             if(daos.getOwnerAgreementDao().add(agreement)) {
                 agreementMap.put(owner, agreement);
                 agreement.sendNotifications();
             }
         }
+        lock.readLock().unlock();
         return new Response<>(true,OpCode.Success);
     }
 
@@ -616,5 +627,12 @@ public class Store {
     }
 
 
+    public void lock() {
+        lock.writeLock().lock();
+    }
 
+
+    public void unlock() {
+        lock.writeLock().lock();
+    }
 }

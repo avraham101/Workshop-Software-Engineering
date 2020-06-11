@@ -80,7 +80,6 @@ class ApproveOwnerToStore extends Component {
     }
     
     sendApproved(name) {
-        alert(name);
         let id = this.props.location.state.id;
         let store = this.props.location.state.storeName;
         send('/managers/approve/owner?id='+id+'&store='+store+'&user='+name, 'POST', '', this.promiseApproved);

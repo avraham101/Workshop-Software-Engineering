@@ -1,7 +1,9 @@
 package Domain.PurchasePolicy;
 
+import DataAPI.OpCode;
 import DataAPI.PaymentData;
 import DataAPI.ProductMinMax;
+import DataAPI.Response;
 import Domain.Product;
 import org.hibernate.collection.internal.PersistentMap;
 
@@ -50,17 +52,17 @@ public class ProductPurchasePolicy extends PurchasePolicy {
     }
 
     @Override
-    public boolean standInPolicy(PaymentData paymentData, String country,
-                                 HashMap<Product, Integer> products) {
+    public Response<Boolean> standInPolicy(PaymentData paymentData, String country,
+                                           HashMap<Product, Integer> products) {
         for (Product product: products.keySet()) {
             if(amountPerProduct.containsKey(product.getName())) {
                 if (!(products.get(product) <= amountPerProduct.get(product.getName()).getMax()) ||
                         !(products.get(product) >= amountPerProduct.get(product.getName()).getMin())) {
-                    return false;
+                    return new Response<>(false, OpCode.Products_Policy_Failed);
                 }
             }
         }
-        return true;
+        return new Response<>(true, OpCode.Success);
     }
 
     public Map<String, ProductMinMax> getAmountPerProduct() {

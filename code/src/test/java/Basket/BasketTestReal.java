@@ -28,7 +28,7 @@ public class BasketTestReal extends BasketTest{
         List<ProductData> productDataList = new LinkedList<>();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
-        assertTrue(basket.buy(paymentData, deliveryData));
+        assertTrue(basket.buy(paymentData, deliveryData).getValue());
         for (ProductInCart product: basket.getProducts().values()) {
             price += product.getPrice();
             Product realProduct = basket.getStore().getProduct(product.getProductName());
@@ -50,7 +50,7 @@ public class BasketTestReal extends BasketTest{
         daoHolder.getStoreDao().update(store);
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
-        assertFalse(basket.buy(paymentData, deliveryData));
+        assertFalse(basket.buy(paymentData, deliveryData).getValue());
         assertTrue(deliveryData.getProducts().isEmpty());
         assertEquals(0,paymentData.getTotalPrice(),0.001);
     }

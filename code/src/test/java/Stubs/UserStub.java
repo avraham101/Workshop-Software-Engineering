@@ -144,8 +144,8 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public boolean buyCart(PaymentData paymentData, DeliveryData addresToDeliver) {
-        return true;
+    public Response<Boolean> buyCart(PaymentData paymentData, DeliveryData addresToDeliver) {
+        return new Response<>(true,OpCode.Success);
     }
 
     /**

@@ -1,6 +1,8 @@
 package Domain.PurchasePolicy;
 
+import DataAPI.OpCode;
 import DataAPI.PaymentData;
+import DataAPI.Response;
 import Domain.Product;
 
 import javax.persistence.Column;
@@ -35,8 +37,11 @@ public class SystemPurchasePolicy extends PurchasePolicy {
     }
 
     @Override
-    public boolean standInPolicy(PaymentData paymentData, String country,
-                                 HashMap<Product, Integer> products) {
-        return (paymentData.getAge() >= age);
+    public Response<Boolean> standInPolicy(PaymentData paymentData, String country,
+                          HashMap<Product, Integer> products) {
+        if (paymentData.getAge() >= age) {
+            return new Response<>(true, OpCode.Success);
+        }
+        return new Response<>(false, OpCode.Age_Policy_Failed);
     }
 }

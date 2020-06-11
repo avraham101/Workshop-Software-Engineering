@@ -1,6 +1,7 @@
 package Domain.PurchasePolicy;
 
 import DataAPI.PaymentData;
+import DataAPI.Response;
 import Domain.Product;
 
 import javax.persistence.*;
@@ -42,6 +43,6 @@ public abstract class PurchasePolicy implements Serializable {
      * @param products - the products of the basket
      * @return - true if stand, false if not
      */
-    public abstract boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products);
+    public abstract Response<Boolean> standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products);
 
 }
