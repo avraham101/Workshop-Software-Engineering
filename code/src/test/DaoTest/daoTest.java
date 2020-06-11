@@ -8,7 +8,7 @@ import Domain.Discount.RegularDiscount;
 import Domain.Notification.*;
 import Domain.PurchasePolicy.*;
 import Domain.PurchasePolicy.ComposePolicys.*;
-import Persitent.*;
+import Utils.*;
 import Persitent.Dao.*;
 import org.junit.After;
 import org.junit.Before;
@@ -25,6 +25,7 @@ public class daoTest {
     private TestData data;
     @Before
     public void setUp() throws Exception {
+        //Utils.TestMode();
         data=new TestData();
     }
 

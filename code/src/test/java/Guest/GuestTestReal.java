@@ -28,6 +28,7 @@ public class GuestTestReal extends GuestTest{
     @Override
     @Before
     public void setUp(){
+        Utils.Utils.TestMode();
         data = new TestData();
         cart = new Cart("Guest");
         guest = new Domain.Guest(cart);
@@ -205,7 +206,7 @@ public class GuestTestReal extends GuestTest{
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
         guest.getCart().getBaskets().get(data.getStore(Data.VALID).getName()).getStore().setPurchasePolicy(
                 new BasketPurchasePolicy(0));
-        assertTrue(guest.buyCart(paymentData,deliveryData));
+        assertTrue(guest.buyCart(paymentData,deliveryData).getValue());
         tearDownStore();
     }
 

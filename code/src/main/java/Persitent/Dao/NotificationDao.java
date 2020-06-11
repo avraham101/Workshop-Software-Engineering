@@ -2,6 +2,7 @@ package Persitent.Dao;
 
 import Domain.Notification.Notification;
 import Persitent.DaoInterfaces.INotificationDao;
+import Utils.Utils;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -9,7 +10,7 @@ import javax.transaction.Transactional;
 
 public class NotificationDao extends Dao<Notification<?>> implements INotificationDao{
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("request");
+            .createEntityManagerFactory(Utils.DB);
 
 
     @Transactional

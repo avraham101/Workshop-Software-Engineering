@@ -20,6 +20,7 @@ public class ProductPurchasePolicyTest {
 
     @Before
     public void setUp() {
+        Utils.Utils.TestMode();
         data = new TestData();
         policy = (ProductPurchasePolicy)data.getPurchasePolicy(Data.VALID_PRODUCT_PURCHASE_POLICY);
     }
@@ -33,7 +34,7 @@ public class ProductPurchasePolicyTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String country = data.getDeliveryData(Data.VALID).getCountry();
         HashMap<Product, Integer> products = data.getProductsAndAmount(Data.VALID);
-        assertTrue(policy.standInPolicy(paymentData, country, products));
+        assertTrue(policy.standInPolicy(paymentData, country, products).getValue());
     }
 
     /**
@@ -44,7 +45,7 @@ public class ProductPurchasePolicyTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String country = data.getDeliveryData(Data.VALID).getCountry();
         HashMap<Product, Integer> products = data.getProductsAndAmount(Data.LARGE_AMOUNT);
-        assertFalse(policy.standInPolicy(paymentData, country, products));
+        assertFalse(policy.standInPolicy(paymentData, country, products).getValue());
     }
 
     /**
@@ -55,7 +56,7 @@ public class ProductPurchasePolicyTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String country = data.getDeliveryData(Data.VALID).getCountry();
         HashMap<Product, Integer> products = data.getProductsAndAmount(Data.SMALL_AMOUNT);
-        assertFalse(policy.standInPolicy(paymentData, country, products));
+        assertFalse(policy.standInPolicy(paymentData, country, products).getValue());
     }
 
 

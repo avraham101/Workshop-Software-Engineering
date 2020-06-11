@@ -7,12 +7,13 @@ import Persitent.DaoInterfaces.ICategoryDao;
 import Persitent.DaoInterfaces.IProductDao;
 import Persitent.DaoInterfaces.IPurchaseTypeDao;
 import Persitent.DaoProxy.PurchaseTypeDaoProxy;
+import Utils.Utils;
 
 import javax.persistence.*;
 
 public class ProductDao implements IProductDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("product");
+            .createEntityManagerFactory(Utils.DB);
     private ICategoryDao categoryDao;
     private IPurchaseTypeDao purchaseTypeDao;
 

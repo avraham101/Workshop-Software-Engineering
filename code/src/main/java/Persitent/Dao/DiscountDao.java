@@ -2,6 +2,7 @@ package Persitent.Dao;
 
 import Domain.Discount.Discount;
 import Persitent.DaoInterfaces.IDiscountDao;
+import Utils.Utils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -10,10 +11,8 @@ import javax.persistence.Persistence;
 
 public class DiscountDao implements IDiscountDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("product");
+            .createEntityManagerFactory(Utils.DB);
 
-    public DiscountDao() {
-    }
 
     public boolean addDiscount(Discount discount) {
         // The EntityManager class allows operations such as create, read, update, delete

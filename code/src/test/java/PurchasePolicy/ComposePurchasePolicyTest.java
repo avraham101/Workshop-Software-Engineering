@@ -28,6 +28,7 @@ public class ComposePurchasePolicyTest {
 
     @Before
     public void setUp() {
+        Utils.Utils.TestMode();
         data = new TestData();
         List<PurchasePolicy> policies = setPolicies();
         orPolicy = new OrPolicy(policies);
@@ -171,7 +172,7 @@ public class ComposePurchasePolicyTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String country = data.getDeliveryData(Data.VALID).getCountry();
         HashMap<Product, Integer> products = data.getProductsAndAmount(Data.VALID);
-        assertTrue(orPolicy .standInPolicy(paymentData, country, products));
+        assertTrue(orPolicy .standInPolicy(paymentData, country, products).getValue());
     }
 
     /**
@@ -182,7 +183,7 @@ public class ComposePurchasePolicyTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String country = data.getDeliveryData(Data.INVALID_COUNTRY).getCountry();
         HashMap<Product, Integer> products = data.getProductsAndAmount(Data.VALID);
-        assertTrue(orPolicy.standInPolicy(paymentData, country, products));
+        assertTrue(orPolicy.standInPolicy(paymentData, country, products).getValue());
     }
 
     /**
@@ -193,7 +194,7 @@ public class ComposePurchasePolicyTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String country = data.getDeliveryData(Data.INVALID_COUNTRY).getCountry();
         HashMap<Product, Integer> products = data.getProductsAndAmount(Data.VALID);
-        assertTrue(orPolicy.standInPolicy(paymentData, country, products));
+        assertTrue(orPolicy.standInPolicy(paymentData, country, products).getValue());
     }
 
     /**
@@ -204,7 +205,7 @@ public class ComposePurchasePolicyTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String country = data.getDeliveryData(Data.VALID).getCountry();
         HashMap<Product, Integer> products = data.getProductsAndAmount(Data.VALID);
-        assertTrue(andPolicy.standInPolicy(paymentData, country, products));
+        assertTrue(andPolicy.standInPolicy(paymentData, country, products).getValue());
     }
 
     /**
@@ -215,7 +216,7 @@ public class ComposePurchasePolicyTest {
         PaymentData paymentData = data.getPaymentData(Data.UNDER_AGE);
         String country = data.getDeliveryData(Data.VALID).getCountry();
         HashMap<Product, Integer> products = data.getProductsAndAmount(Data.VALID);
-        assertFalse(andPolicy.standInPolicy(paymentData, country, products));
+        assertFalse(andPolicy.standInPolicy(paymentData, country, products).getValue());
     }
 
     /**
@@ -226,7 +227,7 @@ public class ComposePurchasePolicyTest {
         PaymentData paymentData = data.getPaymentData(Data.UNDER_AGE);
         String country = data.getDeliveryData(Data.INVALID_COUNTRY).getCountry();
         HashMap<Product, Integer> products = data.getProductsAndAmount(Data.LARGE_AMOUNT);
-        assertFalse(andPolicy.standInPolicy(paymentData, country, products));
+        assertFalse(andPolicy.standInPolicy(paymentData, country, products).getValue());
     }
 
     /**
@@ -237,7 +238,7 @@ public class ComposePurchasePolicyTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String country = data.getDeliveryData(Data.INVALID_COUNTRY).getCountry();
         HashMap<Product, Integer> products = data.getProductsAndAmount(Data.LARGE_AMOUNT);
-        assertTrue(xorPolicy.standInPolicy(paymentData, country, products));
+        assertTrue(xorPolicy.standInPolicy(paymentData, country, products).getValue());
     }
 
     /**
@@ -248,7 +249,7 @@ public class ComposePurchasePolicyTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String country = data.getDeliveryData(Data.VALID).getCountry();
         HashMap<Product, Integer> products = data.getProductsAndAmount(Data.VALID);
-        assertFalse(xorPolicy.standInPolicy(paymentData, country, products));
+        assertFalse(xorPolicy.standInPolicy(paymentData, country, products).getValue());
     }
 
     /**
@@ -259,7 +260,7 @@ public class ComposePurchasePolicyTest {
         PaymentData paymentData = data.getPaymentData(Data.UNDER_AGE);
         String country = data.getDeliveryData(Data.INVALID_COUNTRY).getCountry();
         HashMap<Product, Integer> products = data.getProductsAndAmount(Data.LARGE_AMOUNT);
-        assertFalse(xorPolicy.standInPolicy(paymentData, country, products));
+        assertFalse(xorPolicy.standInPolicy(paymentData, country, products).getValue());
     }
 
     /**
@@ -271,7 +272,7 @@ public class ComposePurchasePolicyTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String country = data.getDeliveryData(Data.VALID).getCountry();
         HashMap<Product, Integer> products = data.getProductsAndAmount(Data.VALID);
-        assertTrue(orPolicy.standInPolicy(paymentData, country, products));
+        assertTrue(orPolicy.standInPolicy(paymentData, country, products).getValue());
     }
 
     /**
@@ -283,7 +284,7 @@ public class ComposePurchasePolicyTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String country = data.getDeliveryData(Data.VALID).getCountry();
         HashMap<Product, Integer> products = data.getProductsAndAmount(Data.LARGE_AMOUNT);
-        assertTrue(orPolicy.standInPolicy(paymentData, country, products));
+        assertTrue(orPolicy.standInPolicy(paymentData, country, products).getValue());
     }
 
 

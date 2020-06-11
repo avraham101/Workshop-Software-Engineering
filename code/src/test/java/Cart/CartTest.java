@@ -13,6 +13,7 @@ import Persitent.DaoInterfaces.ISubscribeDao;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import Utils.*;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ public class CartTest {
 
     @Before
     public void setUp(){
+        Utils.TestMode();
         data = new TestData();
         daoHolder = new DaoHolder();
         try {
@@ -162,7 +164,7 @@ public class CartTest {
         }
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
-        assertTrue(cart.buy(paymentData, deliveryData));
+        assertTrue(cart.buy(paymentData, deliveryData).getValue());
         assertEquals(sum,paymentData.getTotalPrice(),0.001);
         assertEquals(size,deliveryData.getProducts().size());
     }
@@ -181,7 +183,7 @@ public class CartTest {
         storeDao.update(store);
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
-        assertFalse(cart.buy(paymentData,deliveryData));
+        assertFalse(cart.buy(paymentData,deliveryData).getValue());
         assertTrue(deliveryData.getProducts().isEmpty());
         assertEquals(paymentData.getTotalPrice(),0,0.001);
     }

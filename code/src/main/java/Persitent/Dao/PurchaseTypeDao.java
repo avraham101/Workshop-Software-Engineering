@@ -2,6 +2,7 @@ package Persitent.Dao;
 
 import Domain.PurchaseType;
 import Persitent.DaoInterfaces.IPurchaseTypeDao;
+import Utils.Utils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -10,7 +11,7 @@ import javax.persistence.Persistence;
 
 public class PurchaseTypeDao implements IPurchaseTypeDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("product");
+            .createEntityManagerFactory(Utils.DB);
 
     public PurchaseType find(PurchaseType type){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();

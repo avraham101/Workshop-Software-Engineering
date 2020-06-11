@@ -30,6 +30,7 @@ public class SubscribeAllStubsTest {
 
     @Before
     public void setUp(){
+        Utils.Utils.TestMode();
         data = new TestData();
         daoHolder = new DaoHolder();
         cache = new Cache();
@@ -228,7 +229,7 @@ public class SubscribeAllStubsTest {
         }
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
-        assertTrue(this.subscribe.buyCart(paymentData,deliveryData));
+        assertTrue(this.subscribe.buyCart(paymentData,deliveryData).getValue());
         assertEquals(sum,paymentData.getTotalPrice(),0.001);
         assertEquals(size,deliveryData.getProducts().size());
         tearDownStore();

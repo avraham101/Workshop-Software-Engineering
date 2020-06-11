@@ -29,6 +29,7 @@ public class UserAllStubsTest {
 
     @Before
     public void setUp() {
+        Utils.Utils.TestMode();
         data =new TestData();
     }
 

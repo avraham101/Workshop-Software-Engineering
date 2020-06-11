@@ -27,6 +27,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.*;
 
+import static Utils.Utils.*;
 import static org.junit.Assert.*;
 
 //no stubs full integration
@@ -36,6 +37,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
     @BeforeClass
     public static void beforeClass() throws Exception {
+        TestMode();
         daos=new DaoHolder();
     }
 
@@ -1364,7 +1366,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         super.testRemoveManagerSuccess();
         SinglePublisher.initPublisher(this.publisher);
         assertFalse(niv.getPermissions().containsKey(storeName));
-        //assertFalse(p.getOwner().getPermissions().containsKey(storeName));
         //check notifications
         HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
         for(List<Notification> n:notifications.values()){

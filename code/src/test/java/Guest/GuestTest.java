@@ -21,6 +21,7 @@ public class GuestTest {
 
     @Before
     public void setUp(){
+        Utils.Utils.TestMode();
         data=new TestData();
         cart = new CartStub("Guest");
         guest=new Guest(cart);

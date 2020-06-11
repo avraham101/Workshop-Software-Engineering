@@ -15,7 +15,7 @@ import Systems.PaymentSystem.PaymentSystem;
 import Systems.PaymentSystem.ProxyPayment;
 import Systems.SupplySystem.ProxySupply;
 import Systems.SupplySystem.SupplySystem;
-import Utils.InterfaceAdapter;
+import Utils.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.Before;
@@ -44,6 +44,7 @@ public class LogicManagerAllStubsTest {
 
     @BeforeClass
     public static void beforeClass() throws Exception {
+        Utils.TestMode();
         daos=new StubDaoHolder();
     }
 

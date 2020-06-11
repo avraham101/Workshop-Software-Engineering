@@ -2,6 +2,7 @@ package Persitent.Dao;
 
 import Domain.Revenue;
 import Persitent.DaoInterfaces.IRevenueDao;
+import Utils.Utils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 public class RevenueDao extends Dao<Revenue> implements IRevenueDao {
 
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("subscribe");
+            .createEntityManagerFactory(Utils.DB);
 
 
     public boolean add(Revenue value) {
