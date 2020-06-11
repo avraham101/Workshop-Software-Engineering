@@ -77,6 +77,15 @@ class WatchDailyUsage extends Component {
               </div>);
     }
 
+    renderRangeGraph() {
+      let lst = [test, test];
+      let output = [];
+      lst.forEach(element => {
+        output.push(this.renderGraph(element));
+      });
+      return output;
+    }
+
     renderSelectDate() {
       return (
         <div style={{float:'left', width:'98%', marginLeft:'1%', marginTop:'10px', marginBottom:'10px', backgroundColor:'#E6F0FA'}}>
@@ -98,6 +107,7 @@ class WatchDailyUsage extends Component {
             <div style={{float:'left', width:'100%', textAlign:'center', marginTop:'2px'}}>
               <Button text='Show'/>
             </div>
+            {this.renderRangeGraph()}
         </div>
       );
     }
