@@ -1,5 +1,6 @@
 package EncoderDecoderConfig;
 
+import DataAPI.PaymentData;
 import DataAPI.PermissionType;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
@@ -82,6 +83,15 @@ public class Decoder {
                 case "deleteProductFromCart":
                     executeDeleteProductFromCart(data);
                     break;
+                case "editProductInCart":
+                    executeEditProductInCart(data);
+                    break;
+                case "addProductToCart":
+                    executeAddProductToCart(data);
+                    break;
+                case "purchaseCart":
+                    executePurchaseCart(data);
+                    break;
                 case "logout":
                     executeLogout(data);
                     break;
@@ -135,6 +145,7 @@ public class Decoder {
                     break;
             }
         }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -171,7 +182,7 @@ public class Decoder {
      */
     private void executeLogin(Map<String, Object> data) {
         Map<String, Object> value = (Map<String, Object>)data.get("login");
-        String userName = (String) value.get("userName");
+        String userName = (String) value.get("username");
         String password = (String) value.get("password");
         int id = serviceAPI.connectToSystem();
         if(serviceAPI.login(id,userName,password).getValue())
@@ -191,11 +202,55 @@ public class Decoder {
     }
 
     /**
+     * use case 2.7.3 - edit product in cart
+     * @param data
+     */
+    private void executeEditProductInCart(Map<String, Object> data){
+        String name = (String) data.get("idName");
+        int id = connected.get(name);
+        Map<String, Object> value = (Map<String, Object>)data.get("editProductInCart");
+        String storeName = (String) value.get("storeName");
+        String productName = (String) value.get("productName");
+        int newAmount = ((Double)value.get("newAmount")).intValue();
+        serviceAPI.editProductInCart(id,productName,storeName,newAmount);
+    }
+
+    /**
+     * use case 2.7.4 - add product to cart
+     * @param data
+     */
+    private void executeAddProductToCart(Map<String,Object> data){
+        String name = (String) data.get("idName");
+        int id = connected.get(name);
+        Map<String, Object> value = (Map<String, Object>)data.get("addProductToCart");
+        String storeName = (String) value.get("storeName");
+        String productName = (String) value.get("productName");
+        int amount = ((Double)value.get("amount")).intValue();
+        serviceAPI.addProductToCart(id,productName,storeName,amount);
+    }
+
+    /**
+     * use case 2.8 - purchaseCart
+     * @param data
+     */
+    private void executePurchaseCart(Map<String,Object> data){
+        String name = (String) data.get("idName");
+        int id = connected.get(name);
+        Map<String, Object> value = (Map<String, Object>)data.get("purchaseCart");
+        String country = (String) value.get("country");
+        String address = (String) value.get("address");
+        PaymentData paymentData = gson.fromJson(gson.toJson(value.get("paymentData")),
+                PaymentData.class);
+        serviceAPI.purchaseCart(id,country,paymentData,address);
+    }
+
+
+    /**
      * use case 3.1 - Logout
      */
     private void executeLogout(Map<String, Object> data) {
-        Map<String, Object> value = (Map<String, Object>)data.get("logout");
-        String name = (String) value.get("idName");
+        //Map<String, Object> value = (Map<String, Object>)data.get("logout");
+        String name = (String) data.get("idName");
         int id = connected.get(name);
         if(serviceAPI.logout(id).getValue())
             connected.remove(name);
@@ -301,7 +356,7 @@ public class Decoder {
         String name = (String) data.get("idName");
         int id = connected.get(name);
         Map<String, Object> value = (Map<String, Object>)data.get("deleteDiscountFromStore");
-        int discountId= (int) value.get("discountId");
+        int discountId= ((Double) value.get("discountId")).intValue();
         String storeName = (String) value.get("storeName");
         serviceAPI.deleteDiscountFromStore(id,discountId,storeName);
     }
@@ -370,7 +425,7 @@ public class Decoder {
         List<PermissionType> permissions = gson.fromJson(gson.toJson(value.get("permissions")),type);
         String storeName = (String) value.get("storeName");
         String userName = (String) value.get("userName");
-            serviceAPI.addPermissions(id, permissions, storeName, userName);
+        serviceAPI.addPermissions(id, permissions, storeName, userName);
     }
     /**
      * use case 4.6.2 - remove permissions
@@ -410,7 +465,7 @@ public class Decoder {
         Map<String, Object> value = (Map<String, Object>)data.get("answerRequest");
         String storeName = (String) value.get("storeName");
         String content = (String) value.get("content");
-        int requestId = (int) value.get("requestId");
+        int requestId = ((Double) value.get("requestId")).intValue();
         serviceAPI.answerRequest(id,requestId,content,storeName);
     }
 }
