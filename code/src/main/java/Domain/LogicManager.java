@@ -33,7 +33,6 @@ public class LogicManager {
     private PaymentSystem paymentSystem;
     private SupplySystem supplySystem;
     private LoggerSystem loggerSystem;
-    private AtomicInteger requestIdGenerator;
     private final Object openStoreLocker=new Object();
     private Gson gson;
     private DaoHolder daos;
@@ -57,7 +56,6 @@ public class LogicManager {
         builderDiscount.registerTypeAdapter(Term.class,new InterfaceAdapter());
         gson = builderDiscount.create();
         usersIdCounter=new AtomicInteger(0);
-        requestIdGenerator = new AtomicInteger(0);
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -99,7 +97,6 @@ public class LogicManager {
         daos.getSubscribeDao().logoutAll();
         cache = new Cache();
         usersIdCounter=new AtomicInteger(0);
-        requestIdGenerator = new AtomicInteger(0);
         GsonBuilder builderDiscount = new GsonBuilder();
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         builderDiscount.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
@@ -154,7 +151,6 @@ public class LogicManager {
         daos.getSubscribeDao().logoutAll();
         cache = new Cache();
         usersIdCounter=new AtomicInteger(0);
-        requestIdGenerator = new AtomicInteger(0);
         GsonBuilder builderDiscount = new GsonBuilder();
         builderDiscount.registerTypeAdapter(Discount.class, new InterfaceAdapter());
         builderDiscount.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());

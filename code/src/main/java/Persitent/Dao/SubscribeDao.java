@@ -7,6 +7,7 @@ import Persitent.DaoInterfaces.ISubscribeDao;
 import Utils.Utils;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -99,15 +100,22 @@ public class SubscribeDao extends Dao<Subscribe> implements ISubscribeDao {
         return output;
     }
 
+    @Transactional
     public boolean logoutAll(){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-        EntityTransaction et = null;
         boolean output = false;
-
+        EntityTransaction t=em.getTransaction();
         try {
-            output = em.createNativeQuery("UPDATE subscribe SET sessionNumber = ?").setParameter(1,-1).executeUpdate() > 0;
+            t.begin();
+            Query query = em.createNativeQuery("UPDATE Subscribe SET sessionNumber = ?");
+            query.setParameter(1,-1);
+            output=query.executeUpdate() > 0;
+            t.commit();
         }
         catch (Exception e){
+            if(t!=null) {
+                t.rollback();
+            }
         }
         finally {
             em.close();
