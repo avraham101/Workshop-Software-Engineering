@@ -106,7 +106,7 @@ public class SubscribeRealTest extends SubscribeAllStubsTest {
         logicManagerDriver.updatePolicy(0, policyToAdd, storeData.getName());
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
-        assertFalse(this.subscribe.buyCart(paymentData,deliveryData));
+        assertFalse(this.subscribe.buyCart(paymentData,deliveryData).getValue());
         assertEquals(0,paymentData.getTotalPrice(),0.001);
         assertTrue(deliveryData.getProducts().isEmpty());
         tearDownStore();

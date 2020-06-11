@@ -123,7 +123,7 @@ export class Notifications extends Component {
       size_1= 0;
       size_2= 0;
       connect(''+id,this.handleNotification);
-      flag_connected=true; 
+      flag_connected=true;
     }
   }
 

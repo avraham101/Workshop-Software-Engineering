@@ -134,7 +134,7 @@ public class UserRealTest extends UserAllStubsTest{
         }
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
-        assertTrue(user.buyCart(paymentData,deliveryData));
+        assertTrue(user.buyCart(paymentData,deliveryData).getValue());
         assertEquals(sum,paymentData.getTotalPrice(),0.001);
         assertEquals(size,deliveryData.getProducts().size());
         tearDownProductAddedToCart();
@@ -160,7 +160,7 @@ public class UserRealTest extends UserAllStubsTest{
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
         user.updateStorePolicy(data.getStore(Data.VALID).getName(),new BasketPurchasePolicy(0));
-        assertFalse(user.buyCart(paymentData,deliveryData));
+        assertFalse(user.buyCart(paymentData,deliveryData).getValue());
         assertEquals(0,paymentData.getTotalPrice(),0.001);
         assertTrue(deliveryData.getProducts().isEmpty());
         tearDownProductAddedToCart();

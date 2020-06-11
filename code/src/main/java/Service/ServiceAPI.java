@@ -29,7 +29,7 @@ public class ServiceAPI {
     }
 
     public ServiceAPI(String userName, String password, PaymentSystem paymentSystem, SupplySystem supplySystem) throws Exception{
-        this.logicManager = new LogicManager(userName, password,paymentSystem,supplySystem);
+        logicManager = new LogicManager(userName, password,paymentSystem,supplySystem);
     }
 
     /**

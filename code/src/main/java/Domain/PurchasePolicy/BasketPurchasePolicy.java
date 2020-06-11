@@ -1,6 +1,8 @@
 package Domain.PurchasePolicy;
 
+import DataAPI.OpCode;
 import DataAPI.PaymentData;
+import DataAPI.Response;
 import Domain.Product;
 
 import javax.persistence.CollectionTable;
@@ -36,13 +38,16 @@ public class BasketPurchasePolicy extends PurchasePolicy {
     }
 
     @Override
-    public boolean standInPolicy(PaymentData paymentData, String country,
-                                 HashMap<Product, Integer> products) {
+    public Response<Boolean> standInPolicy(PaymentData paymentData, String country,
+                          HashMap<Product, Integer> products) {
         int counter = 0;
         for (int amount: products.values()) {
             counter += amount;
         }
-        return (counter <= maxAmount);
+        if (counter <= maxAmount) {
+            return new Response<>(true, OpCode.Success);
+        }
+        return new Response<>(false,OpCode.Basket_Policy_Failed);
     }
 
 }

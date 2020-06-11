@@ -1,9 +1,6 @@
 package Domain;
 
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
-import DataAPI.Purchase;
+import DataAPI.*;
 import Persitent.DaoInterfaces.IProductInCartDao;
 import Persitent.DaoInterfaces.IStoreDao;
 import Persitent.DaoProxy.ProductInCartDaoProxy;
@@ -177,10 +174,11 @@ public class Basket implements Serializable {
      * @param paymentData the payment data
      * @param deliveryData the delivery data
      */
-    public boolean buy(PaymentData paymentData, DeliveryData deliveryData) {
+    public Response<Boolean> buy(PaymentData paymentData, DeliveryData deliveryData) {
         store =storeDao.find(store.getName());
-        if(!store.policyCheck(paymentData,deliveryData.getCountry(),products))
-            return false;
+        Response<Boolean> policy = store.policyCheck(paymentData,deliveryData.getCountry(),products);
+        if(!policy.getValue())
+            return policy;
         List<ProductData> list = deliveryData.getProducts();
         //update delivery data
         for(ProductInCart productInCart: this.products.values()) {
@@ -194,7 +192,7 @@ public class Basket implements Serializable {
         this.price=store.calculatePrice(this.products);
         double paymentPrice = paymentData.getTotalPrice();
         paymentData.setTotalPrice(paymentPrice+this.price);
-        return true;
+        return new Response<>(true, OpCode.Success);
     }
 
     /**
