@@ -102,7 +102,7 @@ public class OwnerAgreement implements Serializable {
 
     public void sendNotifications() {
         for(String name:managers)
-            dao.find(name).sendNotification(new approve_notification(store,owner));
+            cache.findSubscribe(name).sendNotification(new approve_notification(store,owner));
     }
 
     public boolean containsOwner(String owner){
