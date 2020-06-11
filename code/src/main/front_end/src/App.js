@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, Router, Switch, withRouter} from 'react-router-dom';
+import {Route, Router, Switch, } from 'react-router-dom';
 import GuestIndex from './Screen/Guest/GuestIndex'
 import Register from './Screen/Guest/Register'
 import Login from './Screen/Guest/Login'
@@ -38,40 +38,40 @@ class App extends Component {
   render() {
     return (<Router history={history}>
             <Switch>
-              <Route path="/admin/watchRevenu" component={withRouter(WatchRevenu)}/>
-              <Route path="/admin/storehistory" component={withRouter(WatchUserAndStoreHistory)} exact/>
-              <Route path="/admin" component={withRouter(InitSystem)} exact/>
-              <Route path="/register" component={withRouter(Register)} />
-              <Route path="/searchAndFilter" component={withRouter(SearchAndFilterProducts)}/>
-              <Route path="/login" component={withRouter(Login)} />
-              <Route path="/storeOwnerWatchHistory" component={withRouter(StoreOwnerWatchHistory)} />
-              <Route path="/userWatchPurchasesHistory" component={withRouter(UserWatchPurchasesHistory)} />
-              <Route path="/viewStoresAndProducts" component={withRouter(ViewStoresAndProducts)}/>
-              <Route path="/viewMyCart" component={withRouter(ViewProductsInCart)}/>
-              <Route path="/register" component={withRouter(Register)} />
-              <Route path="/login" component={withRouter(Login)} />
-              <Route path="/addToCart" component={withRouter(AddProductToCart)} />
-              <Route path="/productsDelete" component={withRouter(ViewDeleteProductsInStore)} />
-              <Route path="/sendRequest" component={withRouter(sendRequestToStore)} />
-              <Route path="/buyCart" component={withRouter(BuyCart)} />
-              <Route path="/openStore" component={withRouter(OpenStore)} />
-              <Route path="/manageProducts" component={withRouter(ManageProductInStore)} />
-              <Route path="/manageDiscount" component={withRouter(ManageDiscount)}/>
-              <Route path="/viewDiscounts" component={withRouter(ViewDiscounts)}/>
-              <Route path="/storeManagement" component={withRouter(StoreManagement)} />
-              <Route path="/storeMenu" component={withRouter(StoreMenu)} />
-              <Route path="/removeManagerFromStore" component={withRouter(RemoveManagerFromStore)} />
-              <Route path="/addManagerToStore" component={withRouter(AddManagerToStore)} />
-              <Route path="/addOwnerToStore" component={withRouter(AddOwnerToStore)} />
-              <Route path="/approveOwnerToStore" component={withRouter(ApproveOwnerToStore)} />
-              <Route path="/editManagerPermissions" component={withRouter(EditManagerPermissions)} />
-              <Route path="/viewAndReplyRequests" component={withRouter(ViewAndReplyRequests)} />
-              <Route path="/watchUserAndStoreHistory" component={withRouter(WatchUserAndStoreHistory)} />
-              <Route path="/editProduct" component={withRouter(EditProductInStore)} />
-              <Route path="/policy" component={withRouter(ManagePolicy)}/>
-              <Route path="/viewPolicies" component={withRouter(ViewPolicy)}/>
-              <Route path="/subscribe" component={withRouter(SubscribeIndex)} />
-              <Route path="/" component={withRouter(GuestIndex)} exact />
+              <Route path="/admin/watchRevenu" component={WatchRevenu}/>
+              <Route path="/admin/storehistory" component={WatchUserAndStoreHistory} exact/>
+              <Route path="/admin" component={InitSystem} exact/>
+              <Route path="/register" component={Register} />
+              <Route path="/searchAndFilter" component={SearchAndFilterProducts}/>
+              <Route path="/login" component={Login} />
+              <Route path="/storeOwnerWatchHistory" component={StoreOwnerWatchHistory} />
+              <Route path="/userWatchPurchasesHistory" component={UserWatchPurchasesHistory} />
+              <Route path="/viewStoresAndProducts" component={ViewStoresAndProducts}/>
+              <Route path="/viewMyCart" component={ViewProductsInCart}/>
+              <Route path="/register" component={Register} />
+              <Route path="/login" component={Login} />
+              <Route path="/addToCart" component={AddProductToCart} />
+              <Route path="/productsDelete" component={ViewDeleteProductsInStore} />
+              <Route path="/sendRequest" component={sendRequestToStore} />
+              <Route path="/buyCart" component={BuyCart} />
+              <Route path="/openStore" component={OpenStore} />
+              <Route path="/manageProducts" component={ManageProductInStore} />
+              <Route path="/manageDiscount" component={ManageDiscount}/>
+              <Route path="/viewDiscounts" component={ViewDiscounts}/>
+              <Route path="/storeManagement" component={StoreManagement} />
+              <Route path="/storeMenu" component={StoreMenu} />
+              <Route path="/removeManagerFromStore" component={RemoveManagerFromStore} />
+              <Route path="/addManagerToStore" component={AddManagerToStore} />
+              <Route path="/addOwnerToStore" component={AddOwnerToStore} />
+              <Route path="/approveOwnerToStore" component={ApproveOwnerToStore} />
+              <Route path="/editManagerPermissions" component={EditManagerPermissions} />
+              <Route path="/viewAndReplyRequests" component={ViewAndReplyRequests} />
+              <Route path="/watchUserAndStoreHistory" component={WatchUserAndStoreHistory} />
+              <Route path="/editProduct" component={EditProductInStore} />
+              <Route path="/policy" component={ManagePolicy}/>
+              <Route path="/viewPolicies" component={ViewPolicy}/>
+              <Route path="/subscribe" component={SubscribeIndex} />
+              <Route path="/" component={GuestIndex} exact />
             </Switch>
           </Router>)
   }

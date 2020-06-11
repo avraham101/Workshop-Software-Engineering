@@ -26,11 +26,24 @@ public class UserController {
         json= new Gson();
     }
 
-    @GetMapping("/index")
-    public String get (){
-        return "index";
-    }
+//    @GetMapping(value = {"/index"})
+//    public String get (){
+//        return "index";
+//    }
 
+    @RequestMapping(value = {"/", "/admin/watchRevenu", "/admin/storehistory",
+            "/admin", "/register", "/searchAndFilter", "/login",
+            "/storeOwnerWatchHistory", "/userWatchPurchasesHistory",
+            "/viewStoresAndProducts","/viewMyCart","/register","/login",
+            "/addToCart", "/productsDelete", "/sendRequest", "/buyCart",
+            "/openStore", "/manageProducts", "/manageDiscount", "/viewDiscounts",
+            "/storeManagement", "/storeMenu", "/removeManagerFromStore",
+            "/addManagerToStore", "/addOwnerToStore", "/approveOwnerToStore",
+            "/editManagerPermissions", "/viewAndReplyRequests", "/watchUserAndStoreHistory",
+            "/editProduct", "/policy", "/viewPolicies", "/subscribe" })
+    public String index() {
+        return "index.html";
+    }
 
 
     @GetMapping("home/connect")
