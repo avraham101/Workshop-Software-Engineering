@@ -29,6 +29,7 @@ class WatchDailyUsage extends Component {
       this.changeSyear = this.changeSyear.bind(this);
       this.changeEyear = this.changeEyear.bind(this);
       this.submitDate = this.submitDate.bind(this);
+      this.saveCVS = this.saveCVS.bind(this);
     }
 
     ipos() {
@@ -100,6 +101,29 @@ class WatchDailyUsage extends Component {
               </div>);
     }
 
+    saveCVS() {
+      let output = [];
+      let rows = [['','date', 'guests', 'subscribes', 'managers', 'owners', 'admins']];
+      let data = this.state.lst_enteries;
+      data.forEach(element=> {
+        rows.push([element.date,element.guestNumber, element.subscribeNumber, element.managerNumber, element.ownerNumber,
+                      element.adminNumber]);
+      });
+      console.warn(rows);
+      rows.forEach(element=>{
+        output.push(element.join(','));
+        output.push("\n");
+      });
+      console.warn(output);
+      var a = document.createElement('a');
+      var csvData = new Blob([output], { type: 'text/csv' }); 
+      var csvUrl = URL.createObjectURL(csvData);
+      a.href = csvUrl;      
+      a.target = "_blank";
+      a.download = "usageReport.csv";
+      a.click();
+    }
+
     renderRangeGraph() {
       if( this.state.lst_enteries === undefined)
         return;
@@ -108,7 +132,12 @@ class WatchDailyUsage extends Component {
       lst.forEach(element => {
         output.push(this.renderGraph(element));
       });
-      return output;
+      return (  <div style={{float:'left', width:'90%', marginLeft:'5%', border:'1px solid black', paddingBottom:'10px'}}>
+                  <div style={{float:'left', width:'10%', marginLeft:'89%'}}>
+                    <Button text='Save to CVS' onClick={this.saveCVS}/>
+                  </div>
+                  {output}
+                </div>);
     }
 
     changeSday(event) {
@@ -231,8 +260,10 @@ class WatchDailyUsage extends Component {
             <BackGroud>
                 <Menu state={this.props.location.state}/>
                 <Title title="Daily Usage"/>
-                {this.renderGraph(test)}
-                {this.renderSelectDate()}
+                <body>
+                  {this.renderGraph(test)}
+                  {this.renderSelectDate()}
+                </body>
             </BackGroud>
         );
     }
