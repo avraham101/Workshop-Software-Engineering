@@ -164,9 +164,11 @@ public class Basket implements Serializable {
      * assumption:  can't call this function with out calling reserveCart first.
      */
     public void cancel() {
+        store.startTransaction();
         for(ProductInCart product: this.products.values()) {
             store.restoreAmount(product);
         }
+        store.closeTransaction();
     }
 
     /**

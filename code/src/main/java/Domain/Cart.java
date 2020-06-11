@@ -90,6 +90,7 @@ public class Cart implements Serializable {
      */
     public boolean reserveCart() {
         //check if cart is not empty
+        boolean toOpen=true;
         if(baskets.values().isEmpty()) {
             return false;
         }
@@ -99,6 +100,7 @@ public class Cart implements Serializable {
                 cancleReserve(reservesBaskets);
                 return false;
             }
+            toOpen=false;
             reservesBaskets.add(basket);
         }
         return true;

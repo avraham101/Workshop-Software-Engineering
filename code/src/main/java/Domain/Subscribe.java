@@ -529,7 +529,7 @@ public class Subscribe extends UserState{
             if (store.getName().equals(storeName) && p.getOwner().getName().equals(xManager.userName)) {
                 store.lock();
                 lock.writeLock().lock();
-                cache.findSubscribe(p.getOwner().getName()).removeManagerFromStore(storeName);
+                cache.findSubscribe(p.getOwner().getName()).removeManagerFromStore(storeName,true);
                 givenByMePermissions.remove(p);
                 xManager.getPermissions().remove(storeName);
                 lock.writeLock().unlock();
@@ -547,17 +547,22 @@ public class Subscribe extends UserState{
      * @param storeName the store to remove to be manager from and the mangers
      * managed by me
      */
-    private void removeManagerFromStore(String storeName) {
+    private void removeManagerFromStore(String storeName,boolean toClose) {
         Permission permission=null;
+        boolean toOpen=false;
         lock.writeLock().lock();
         for(Permission p: givenByMePermissions) {
             if (p.getStore().getName().equals(storeName)) {
-                cache.findSubscribe(p.getOwner().getName()).removeManagerFromStore(storeName);
+                cache.findSubscribe(p.getOwner().getName()).removeManagerFromStore(storeName,false);
                 permission=p;
             }
         }
-        if(permission!=null)
+        if(permission!=null) {
             givenByMePermissions.remove(permission);
+        }
+        else{
+            toOpen=true;
+        }
         lock.writeLock().unlock();
         Store store=daos.getStoreDao().find(storeName);
         //Store store=permissions.get(storeName).getStore();
@@ -566,7 +571,7 @@ public class Subscribe extends UserState{
         permissions.remove(storeName);
         //remove the permission from the store
         store.getPermissions().remove(userName);
-        removePermission(p);
+        removePermission(p,toClose,toOpen);
         store.removeAgreement(userName);
         store.approveAgreementsOfUser(userName);
         daos.getStoreDao().update(store);
@@ -634,8 +639,8 @@ public class Subscribe extends UserState{
         return true;
     }
 
-    private void removePermission(Permission p) {
-        daos.getPermissionDao().removePermissionFromSubscribe(p);
+    private void removePermission(Permission p, boolean toClose, boolean toOpen) {
+        daos.getPermissionDao().removePermissionFromSubscribe(p,toClose,toOpen);
     }
 
     /**

@@ -16,6 +16,7 @@ public class ProductDao implements IProductDao {
             .createEntityManagerFactory(Utils.DB);
     private ICategoryDao categoryDao;
     private IPurchaseTypeDao purchaseTypeDao;
+    private EntityManager entityManager;
 
     public ProductDao(ICategoryDao categoryDao) {
         this.categoryDao = categoryDao;
@@ -65,15 +66,18 @@ public class ProductDao implements IProductDao {
     }
 
     public boolean updateProduct(Product product){
-
-        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        boolean toClose=false;
+        if(entityManager==null) {
+            entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
+            toClose=true;
+        }
         EntityTransaction et = null;
         boolean output=false;
         try {
             // Get transaction and start
-            et = em.getTransaction();
+            et = entityManager.getTransaction();
             et.begin();
-            em.merge(product);
+            entityManager.merge(product);
             et.commit();
             output= true;
         } catch (Exception ex) {
@@ -81,10 +85,11 @@ public class ProductDao implements IProductDao {
             if (et != null) {
                 et.rollback();
             }
-//            ex.printStackTrace();
         } finally {
             // Close EntityManager
-            em.close();
+            if(toClose) {
+                entityManager.close();
+            }
         }
         return output;
     }
@@ -135,5 +140,16 @@ public class ProductDao implements IProductDao {
 
     public boolean removeProduct(String productName, String storeName) {
         return removeProduct(new Product(productName,storeName));
+    }
+
+    @Override
+    public void openTransaction() {
+        entityManager=ENTITY_MANAGER_FACTORY.createEntityManager();
+    }
+
+    @Override
+    public void closeTransaction() {
+        entityManager.close();
+        entityManager=null;
     }
 }
