@@ -112,7 +112,7 @@ public class User {
      * @param paymentData - the payment data
      * @param deliveryData - the delivery data
      */
-    public boolean buyCart(PaymentData paymentData, DeliveryData deliveryData) {
+    public Response<Boolean> buyCart(PaymentData paymentData, DeliveryData deliveryData) {
         return state.buyCart(paymentData, deliveryData);
     }
 

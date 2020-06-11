@@ -1,6 +1,8 @@
 package Domain.PurchasePolicy.ComposePolicys;
 
+import DataAPI.OpCode;
 import DataAPI.PaymentData;
+import DataAPI.Response;
 import Domain.Product;
 import Domain.PurchasePolicy.PurchasePolicy;
 import org.hibernate.annotations.LazyCollection;
@@ -51,13 +53,14 @@ public class AndPolicy extends PurchasePolicy {
     }
 
     @Override
-    public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
+    public Response<Boolean> standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
         for (PurchasePolicy policy: policyList) {
-            if(! policy.standInPolicy(paymentData, country, products)) {
-                return false;
+            Response<Boolean> response = policy.standInPolicy(paymentData, country, products);
+            if(!response.getValue()) {
+                return response;
             }
         }
-        return true;
+        return new Response<>(true, OpCode.Success);
     }
 
 }

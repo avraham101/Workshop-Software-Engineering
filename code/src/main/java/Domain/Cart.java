@@ -1,8 +1,6 @@
 package Domain;
 
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
-import DataAPI.Purchase;
+import DataAPI.*;
 import Persitent.DaoInterfaces.IPurchaseDao;
 import Persitent.DaoProxy.PurchaseDaoProxy;
 import org.hibernate.annotations.LazyCollection;
@@ -120,12 +118,13 @@ public class Cart implements Serializable {
      * @param paymentData the payment data
      * @param deliveryData the delivery data
      */
-    public boolean buy(PaymentData paymentData, DeliveryData deliveryData) {
+    public Response<Boolean> buy(PaymentData paymentData, DeliveryData deliveryData) {
         for(Basket b:baskets.values()){
-            if(!b.buy(paymentData,deliveryData))
-                return false;
+            Response<Boolean> buy = b.buy(paymentData,deliveryData);
+            if(!buy.getValue())
+                return buy;
         }
-        return true;
+        return new Response<>(true, OpCode.Success);
     }
 
     /**
