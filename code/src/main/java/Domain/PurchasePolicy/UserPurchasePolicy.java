@@ -45,6 +45,6 @@ public class UserPurchasePolicy extends PurchasePolicy {
         if (countries.contains(country)) {
             return new Response<>(true, OpCode.Success);
         }
-        return new Response<>(true, OpCode.Country_Policy_Failed);
+        return new Response<>(false , OpCode.Country_Policy_Failed);
     }
 }
