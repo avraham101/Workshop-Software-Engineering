@@ -444,12 +444,12 @@ public class TestData {
 
     public DateData getFromDate(){
         LocalDate today=LocalDate.now().minusDays(3);
-        return new DateData(today.getDayOfMonth(),today.getDayOfMonth(),today.getYear());
+        return new DateData(today.getDayOfMonth(),today.getMonthValue(),today.getYear());
     }
 
     public DateData getToDate(){
         LocalDate today=LocalDate.now();
-        return new DateData(today.getDayOfMonth(),today.getDayOfMonth(),today.getYear());
+        return new DateData(today.getDayOfMonth(),today.getMonthValue(),today.getYear());
     }
 
     public DateData getInvalidDate(){

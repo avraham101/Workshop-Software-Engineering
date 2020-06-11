@@ -1331,7 +1331,6 @@ public class LogicManager {
 
         LocalDate fromDate = makeDateFromDate(from);
         LocalDate toDate=makeDateFromDate(to);
-
         if(toDate.isBefore(fromDate))
             return new Response<>(null, OpCode.INVALID_DATE);
 
@@ -1343,8 +1342,14 @@ public class LogicManager {
                 visit=new DayVisit(fromDate);
             dayVisits.add(visit);
             fromDate=fromDate.plusDays(1);
-        }while (!fromDate.equals(toDate));
-
+        }while (!fromDate.isAfter(toDate));
+        //send today anyway
+        if(toDate.isBefore(LocalDate.now())) {
+            DayVisit visit = daos.getVisitsPerDayDao().find(LocalDate.now());
+            if (visit == null)
+                visit = new DayVisit(fromDate);
+            dayVisits.add(visit);
+        }
         return new Response<>(dayVisits,OpCode.Success);
     }
 
