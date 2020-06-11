@@ -524,17 +524,20 @@ public class Subscribe extends UserState{
     public Response<Boolean>  removeManager(Subscribe xManager, String storeName) {
         if(!permissions.containsKey(storeName))
             return new Response<>(false,OpCode.Dont_Have_Permission);
-
         for(Permission p: givenByMePermissions) {
-            if (p.getStore().getName().equals(storeName) && p.getOwner().getName().equals(xManager.userName)) {
+            Store store=p.getStore();
+            if (store.getName().equals(storeName) && p.getOwner().getName().equals(xManager.userName)) {
+                store.lock();
                 lock.writeLock().lock();
                 cache.findSubscribe(p.getOwner().getName()).removeManagerFromStore(storeName);
                 givenByMePermissions.remove(p);
                 xManager.getPermissions().remove(storeName);
                 lock.writeLock().unlock();
+                store.unlock();
                 return new Response<>(true,OpCode.Success);
             }
         }
+
         return new Response<>(false,OpCode.Not_Found);
     }
 
@@ -799,7 +802,7 @@ public class Subscribe extends UserState{
         }
     }
     @Override
-    public void deleteReceivedNotifications(List<Integer> notificationsId) {
+    public synchronized void deleteReceivedNotifications(List<Integer> notificationsId) {
         List<Notification> remove = new LinkedList<>();
         for(Notification not: this.notifications) {
             for(int d:notificationsId) {
@@ -810,7 +813,6 @@ public class Subscribe extends UserState{
             }
         }
         this.notifications.removeAll(remove);
-
     }
 
     @Override
