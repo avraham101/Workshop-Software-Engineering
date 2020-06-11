@@ -606,9 +606,10 @@ public class LogicManager {
      */
     private Response<Boolean> buyAndPay(int id, PaymentData paymentData, DeliveryData deliveryData) {
         User current = cache.findUser(id);
-        if(!current.buyCart(paymentData, deliveryData)){
+        Response<Boolean> response = current.buyCart(paymentData, deliveryData);
+        if(!response.getValue()){
             current.cancelCart();
-            return new Response<>(false, OpCode.Not_Stands_In_Policy);
+            return response;
         }
         //4) external systems
         Response<Boolean> payedAndDelivered = externalSystemsBuy(id,paymentData,deliveryData);

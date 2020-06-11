@@ -340,7 +340,7 @@ public class Store {
      * @param list - the products in the basket
      * @return true if succeed
      */
-    public boolean policyCheck(PaymentData paymentData, String country, Map<String, ProductInCart> list) {
+    public Response<Boolean> policyCheck(PaymentData paymentData, String country, Map<String, ProductInCart> list) {
         HashMap<Product, Integer> hashMap = getSpecificProducts(list);
         return getPurchasePolicy().standInPolicy(paymentData,country,hashMap);
     }

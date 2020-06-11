@@ -28,8 +28,8 @@ public class StoreStub extends Store {
      * @return
      */
     @Override
-    public boolean policyCheck(PaymentData paymentData, String country, Map<String, ProductInCart> list) {
-        return false;
+    public Response<Boolean> policyCheck(PaymentData paymentData, String country, Map<String, ProductInCart> list) {
+        return new Response<>(false, OpCode.Not_Stands_In_Policy);
     }
 
 

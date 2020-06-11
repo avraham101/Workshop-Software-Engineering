@@ -1,10 +1,8 @@
 package Stubs;
 
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
+import DataAPI.*;
 import Domain.Cart;
 import Domain.Product;
-import DataAPI.Purchase;
 import Domain.Store;
 
 import java.util.List;
@@ -35,8 +33,8 @@ public class CartStub extends Cart {
      * @return
      */
     @Override
-    public boolean buy(PaymentData paymentData, DeliveryData addresToDeliver) {
-        return true;
+    public Response<Boolean> buy(PaymentData paymentData, DeliveryData addresToDeliver) {
+        return new Response<>(true, OpCode.Success);
     }
 
     /**

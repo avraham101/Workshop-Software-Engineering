@@ -1,6 +1,8 @@
 package Domain.PurchasePolicy;
 
+import DataAPI.OpCode;
 import DataAPI.PaymentData;
+import DataAPI.Response;
 import Domain.Product;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -38,8 +40,11 @@ public class UserPurchasePolicy extends PurchasePolicy {
     }
 
     @Override
-    public boolean standInPolicy(PaymentData paymentData, String country,
-                                 HashMap<Product, Integer> products) {
-        return countries.contains(country);
+    public Response<Boolean> standInPolicy(PaymentData paymentData, String country,
+                          HashMap<Product, Integer> products) {
+        if (countries.contains(country)) {
+            return new Response<>(true, OpCode.Success);
+        }
+        return new Response<>(true, OpCode.Country_Policy_Failed);
     }
 }
