@@ -1975,6 +1975,36 @@ public class LogicManagerAllStubsTest {
         tearDownOpenStore();
     }
 
+
+    /**
+     * test for use case 6.5 - get visits from each day
+     */
+    @Test
+    public void testDayVisitsNotAdmin(){
+        setUpLogedInUser();
+        assertNull(logicManager.watchVisitsBetweenDates(data.getId(Data.VALID),data.getFromDate(),data.getToDate()));
+        tearDownLogin();
+    }
+
+    @Test
+    public void testDayVisitsInvalidFromDate(){
+        setUpLogedInUser();
+        assertNull(logicManager.watchVisitsBetweenDates(data.getId(Data.ADMIN),data.getInvalidDate(),data.getToDate()));
+        tearDownLogin();
+    }
+
+    @Test
+    public void testDayVisitsInvalidToDate(){
+        setUpLogedInUser();
+        assertNull(logicManager.watchVisitsBetweenDates(data.getId(Data.ADMIN),data.getFromDate(),data.getInvalidDate()));
+        tearDownLogin();
+    }
+
+    @Test
+    public void testDayVisitsSuccess(){
+
+    }
+
     /**
      * tests for getStoresManagedByUser
      */

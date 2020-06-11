@@ -8,6 +8,7 @@ import Domain.Discount.StoreDiscount;
 import Domain.Discount.Term.BaseTerm;
 import Domain.PurchasePolicy.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -440,6 +441,21 @@ public class TestData {
     }
 
     public HashMap<String, ProductInCart> getCart(Data data) { return this.carts.get(data); }
+
+    public DateData getFromDate(){
+        LocalDate today=LocalDate.now().minusDays(3);
+        return new DateData(today.getDayOfMonth(),today.getDayOfMonth(),today.getYear());
+    }
+
+    public DateData getToDate(){
+        LocalDate today=LocalDate.now();
+        return new DateData(today.getDayOfMonth(),today.getDayOfMonth(),today.getYear());
+    }
+
+    public DateData getInvalidDate(){
+        LocalDate today=LocalDate.now();
+        return new DateData(0,today.getDayOfMonth(),today.getYear());
+    }
 
     // ============================ getters ============================ //
 

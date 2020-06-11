@@ -435,6 +435,18 @@ public class ServiceAPI {
     }
 
     /**
+     * use case 6.5 - admin watch visitors in specific dates
+     * @param id of the user wants to watch
+     * @param from date to start showing visits from
+     * @param to date to start watching visits from
+     * @return list of visits from date from to date to
+     */
+
+    public Response<List<DayVisit>> WatchVisitsBetweenDates(int id,DateData from,DateData to ){
+        return logicManager.watchVisitsBetweenDates(id,from,to);
+    }
+
+    /**
      * acceptance test class : UserAdministrationInfo
      * returns all the stores managed by user
      * @param id user id

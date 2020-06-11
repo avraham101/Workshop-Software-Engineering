@@ -9,6 +9,7 @@ import Persitent.Cache;
 import Domain.Notification.Notification;
 import Persitent.DaoHolders.DaoHolder;
 import Persitent.DaoInterfaces.IRevenueDao;
+import Persitent.DaoInterfaces.IVisitsPerDayDao;
 import Systems.HashSystem;
 import Systems.LoggerSystem;
 import Systems.PaymentSystem.PaymentSystem;
@@ -199,6 +200,14 @@ public class LogicManager {
     public int connectToSystem() {
         int newId=usersIdCounter.getAndIncrement();
         cache.addConnectedUser(newId,new User());
+        LocalDate now=LocalDate.now();
+        DayVisit visit=daos.getVisitsPerDayDao().find(now);
+        if(visit==null) {
+            visit=new DayVisit(now);
+            daos.getVisitsPerDayDao().add(visit);
+        }
+        visit.increaseGuest();
+        daos.getVisitsPerDayDao().update(visit);
         return newId;
     }
 
@@ -257,6 +266,7 @@ public class LogicManager {
                     }
                     if(!this.daos.getSubscribeDao().update(subscribe))
                         return new Response<>(false, OpCode.DB_Down);
+                    increaseNumberOfVisitors(subscribe);
                     return new Response<>(true, OpCode.Success);
                 }
             } catch (NoSuchAlgorithmException e) {
@@ -265,6 +275,33 @@ public class LogicManager {
             }
         }
         return new Response<>(false,OpCode.User_Not_Found);
+    }
+
+    private synchronized void increaseNumberOfVisitors(Subscribe subscribe) {
+        LocalDate today=LocalDate.now();
+        DayVisit todayVisit=daos.getVisitsPerDayDao().find(today);
+        if(todayVisit==null)
+            return;
+        if(subscribe.canWatchUserHistory()){
+            todayVisit.increaseAdmin();
+        }
+        if(subscribe.getPermissions().isEmpty()){
+            todayVisit.increaseSubscribe();
+        }
+        else{
+            boolean owner=false;
+            for(Permission p:subscribe.getPermissions().values()){
+                if(p.isOwner()){
+                    todayVisit.increaseOwners();
+                    owner=true;
+                    break;
+                }
+            }
+            if(!owner){
+                todayVisit.increaseManagers();
+            }
+        }
+        daos.getVisitsPerDayDao().update(todayVisit);
     }
 
     /**
@@ -1272,6 +1309,54 @@ public class LogicManager {
     }
 
     /**
+     * use case 6.5 - admin watch visitors in specific dates
+     * @param id of the user wants to watch
+     * @param from date to start showing visits from
+     * @param to date to start watching visits from
+     * @return list of visits from date from to date to
+     */
+    public Response<List<DayVisit>> watchVisitsBetweenDates(int id,DateData from,DateData to ){
+        loggerSystem.writeEvent("LogicManager","watchVisitsBetweenDates",
+                "admin watch visits in certain dates", new Object[] {from,to});
+        User current=cache.findUser(id);
+
+        if(current==null)
+            return new Response<>(null, OpCode.User_Not_Found);
+
+        if(!current.canWatchUserHistory())
+            return new Response<>(null,OpCode.NOT_ADMIN);
+
+        if (!validDate(from)||!validDate(to))
+            return new Response<>(null, OpCode.INVALID_DATE);
+
+        LocalDate fromDate = makeDateFromDate(from);
+        LocalDate toDate=makeDateFromDate(to);
+
+        if(toDate.isBefore(fromDate))
+            return new Response<>(null, OpCode.INVALID_DATE);
+
+        List<DayVisit> dayVisits=new ArrayList<>();
+        //collect the visits from each date
+        do{
+            DayVisit visit=daos.getVisitsPerDayDao().find(fromDate);
+            if(visit==null)
+                visit=new DayVisit(fromDate);
+            dayVisits.add(visit);
+            fromDate=fromDate.plusDays(1);
+        }while (!fromDate.equals(toDate));
+
+        return new Response<>(dayVisits,OpCode.Success);
+    }
+
+    private LocalDate makeDateFromDate(DateData data){
+        int year = data.getYear();
+        int month = data.getMonth();
+        int day = data.getDay();
+        LocalDate date = LocalDate.of(year, month, day);
+        return date;
+    }
+
+    /**
      * get the stores a user manage
      * @param id user's id
      * @return list of stores managed by user,
@@ -1318,8 +1403,6 @@ public class LogicManager {
             response.setReason(OpCode.Success);
         }
         return response;
-
-
     }
 
 
@@ -1384,12 +1467,9 @@ public class LogicManager {
      * @return - the revenue on this date
      */
     public Response<Double> getRevenueByDate(int id, DateData data) {
-        int year = data.getYear();
-        int month = data.getMonth();
-        int day = data.getDay();
-        if (!validDate(year, month, day))
+        if (!validDate(data))
             return new Response<>(0.0, OpCode.INVALID_DATE);
-        LocalDate date = LocalDate.of(year, month, day);
+        LocalDate date = makeDateFromDate(data);
         User current = cache.findUser(id);
         if (current != null && current.canWatchUserHistory()) {
             Revenue revenue=daos.getRevenueDao().find(date);
@@ -1403,12 +1483,13 @@ public class LogicManager {
 
     /**
      * check if the date is valid
-     * @param year - the year
-     * @param month - the month
-     * @param day - the day
+     * @param date - date to find out if valid
      * @return - true if valid
      */
-    private boolean validDate(int year, int month, int day) {
+    private boolean validDate(DateData date) {
+        int year=date.getYear();
+        int month=date.getMonth();
+        int day=date.getDay();
         if(year > LocalDate.now().getYear() || month < 0 || month > 12 || day < 0 || day > 31 || year < 0)
             return false;
         return true;
