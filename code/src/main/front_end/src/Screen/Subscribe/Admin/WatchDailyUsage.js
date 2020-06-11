@@ -13,7 +13,30 @@ class WatchDailyUsage extends Component {
     constructor() {
       super();
       this.pathname = "/admin/watchDailyUsage";
-      this.state = { };
+      this.state = {
+        dStart:undefined,
+        mStart:undefined,
+        yStart:undefined,
+        dEnd:undefined,
+        mEnd:undefined,
+        yEnd:undefined,
+        lst_enteries:[test],
+      };
+      this.changeSday = this.changeSday.bind(this);
+      this.changeEday = this.changeEday.bind(this);
+      this.changeSmonth = this.changeSmonth.bind(this);
+      this.changeEmonth = this.changeEmonth.bind(this);
+      this.changeSyear = this.changeSyear.bind(this);
+      this.changeEyear = this.changeEyear.bind(this);
+      this.submitDate = this.submitDate.bind(this);
+    }
+
+    ipos() {
+      let date = new Date();
+      let day = date.getDate();
+      let month = date.getMonth() + 1;
+      let year = date.getFullYear();
+      this.setState({dEnd:day, mEnd:month, yEnd:year, dStart:day, mStart:month, yStart:year});
     }
 
     findMax(data) {
@@ -78,12 +101,103 @@ class WatchDailyUsage extends Component {
     }
 
     renderRangeGraph() {
-      let lst = [test, test];
+      if( this.state.lst_enteries === undefined)
+        return;
+      let lst = this.state.lst_enteries;
       let output = [];
       lst.forEach(element => {
         output.push(this.renderGraph(element));
       });
       return output;
+    }
+
+    changeSday(event) {
+      let value = event.target.value;
+      let t = parseInt(value);
+      if( t > 31 || t < 0) {
+        alert("Wrong value for Start day");
+        let date = new Date();
+        event.target.value = date.getDate();
+      }
+      this.setState({dStart:t});
+    }
+
+    changeEday(event) {
+      let value = event.target.value;
+      let t = parseInt(value);
+      if( t > 31 || t < 1) {
+        alert("Wrong value for End day");
+        let date = new Date();
+        event.target.value = date.getDate();
+      }
+      this.setState({dEnd:t});
+    }
+
+    changeSmonth(event) {
+      let value = event.target.value;
+      let t = parseInt(value);
+      if( t > 12 || t < 1) {
+        alert("Wrong value for Start month");
+        let date = new Date();
+        event.target.value = date.getMonth() + 1;
+      }
+      this.setState({mStart:t});
+    }
+
+    changeEmonth(event) {
+      let value = event.target.value;
+      let t = parseInt(value);
+      if( t > 12 || t < 1) {
+        alert("Wrong value for End month");
+        let date = new Date();
+        event.target.value = date.getMonth() + 1;
+      }
+      this.setState({mEnd:t});
+    }
+    
+    changeSyear(event) {
+      let value = event.target.value;
+      let t = parseInt(value);
+      let date = new Date();
+      if( t > date.getFullYear() || t < 0) {
+        alert("Wrong value for Start year");
+        event.target.value = date.getFullYear();
+      }
+      this.setState({yStart:t});
+    }
+
+    changeEyear(event) {
+      let value = event.target.value;
+      let t = parseInt(value);
+      let date = new Date();
+      if( t > date.getFullYear() || t < 0) {
+        alert("Wrong value for End year");
+        event.target.value = date.getFullYear();
+      }
+      this.setState({yEnd:t});
+    }
+
+    submitDate() {
+      if(this.state.dStart === undefined ||  this.state.mStart === undefined || this.state.yStart === undefined) {
+        alert("Didnt Select Start Date correctly");
+      }
+      else if(this.state.dEnd === undefined ||  this.state.mEnd === undefined || this.state.yEnd === undefined) {
+        alert("Didnt Select End Date correctly");
+      }
+      else if(this.state.yStart>this.state.yEnd) {
+        alert("Cant Select Start year greater then End year");
+      }
+      else if(this.state.yStart==this.state.yEnd && this.state.mStart>this.state.mEnd) {
+        alert("Cant Select Start month greater then End month");
+      }
+      else if(this.state.yStart==this.state.yEnd && this.state.mStart==this.state.mEnd && this.state.dStart>this.state.dEnd) {
+        alert("Cant Select Start day greater then End day");
+      }
+      else {
+        //TOOD: call send
+      }
+
+        
     }
 
     renderSelectDate() {
@@ -96,16 +210,16 @@ class WatchDailyUsage extends Component {
                 <p style={{textAlign:'center', fontSize:'20px'}}> Start Date: </p>
             </div>
             <div style={{float:'left', width:'39%'}}>
-              <Date/>
+              <Datey changeDay = {this.changeSday} changeMon = {this.changeSmonth} changeYear = {this.changeSyear}/>
             </div>
             <div style={{float:'left', width:'10%',}}>
                 <p style={{textAlign:'center', fontSize:'20px'}}> End Date: </p>
             </div>
             <div style={{float:'left', width:'39%'}}>
-              <Date/>
+              <Datey changeDay = {this.changeEday} changeMon = {this.changeEmonth} changeYear = {this.changeEyear}/>
             </div>
             <div style={{float:'left', width:'100%', textAlign:'center', marginTop:'2px'}}>
-              <Button text='Show'/>
+              <Button text='Show' onClick={this.submitDate}/>
             </div>
             {this.renderRangeGraph()}
         </div>
@@ -128,24 +242,25 @@ class WatchDailyUsage extends Component {
 export default WatchDailyUsage;
 
 
-class Date extends Component {
+class Datey extends Component {
 
   render() {
+    //this.props.
     return (<div style = {{float:'left', width:'100%'}}>
               <div style={{float:'left', width:'32%', border:'1px solid black', textAlign:'center', backgroundColor:'#FBFFF7'}}>
                 <p style={{marginTop:0, marginBottom:10, fontSize:21, width:'99.7%', backgroundColor:'#FFF9A8'}}> Day </p>
-                <input style={{textAlign:'center',marginBottom:10, width:'50%'}} type={'number'} min={1} max={31} 
-                    onChange={()=>{}} />
+                <input style={{textAlign:'center',marginBottom:10, width:'50%'}} type={'number'} min={1} max={31}
+                    onChange={this.props.changeDay} />
               </div>
               <div style={{float:'left', width:'32%', border:'1px solid black', textAlign:'center',backgroundColor:'#FBFFF7'}}>
                 <p style={{marginTop:0, marginBottom:10, fontSize:21, width:'99.7%', backgroundColor:'#FFF9A8'}}> Month </p>
                 <input style={{textAlign:'center',marginBottom:10, width:'50%'}} type={'number'} min={1} max={12} 
-                    onChange={()=>{}} />
+                    onChange={this.props.changeMon} />
               </div>
               <div style={{float:'left', width:'32%', border:'1px solid black', textAlign:'center', backgroundColor:'#FBFFF7'}}>
                 <p style={{marginTop:0, marginBottom:10, fontSize:21, width:'99.7%', backgroundColor:'#FFF9A8'}}> Year </p>
                 <input style={{textAlign:'center',marginBottom:10, width:'50%'}} type={'number'} min={0} max={2020} 
-                    onChange={()=>{}} />
+                    onChange={this.props.changeYear} />
               </div>
            </div>)
   }
