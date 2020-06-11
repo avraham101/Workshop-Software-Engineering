@@ -23,6 +23,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -1982,28 +1983,56 @@ public class LogicManagerAllStubsTest {
     @Test
     public void testDayVisitsNotAdmin(){
         setUpLogedInUser();
-        assertNull(logicManager.watchVisitsBetweenDates(data.getId(Data.VALID),data.getFromDate(),data.getToDate()));
+        assertNull(logicManager.watchVisitsBetweenDates(data.getId(Data.VALID),data.getFromDate(),data.getToDate()).getValue());
         tearDownLogin();
     }
 
     @Test
     public void testDayVisitsInvalidFromDate(){
         setUpLogedInUser();
-        assertNull(logicManager.watchVisitsBetweenDates(data.getId(Data.ADMIN),data.getInvalidDate(),data.getToDate()));
+        assertNull(logicManager.watchVisitsBetweenDates(data.getId(Data.ADMIN),data.getInvalidDate(),data.getToDate()).getValue());
         tearDownLogin();
     }
 
     @Test
     public void testDayVisitsInvalidToDate(){
         setUpLogedInUser();
-        assertNull(logicManager.watchVisitsBetweenDates(data.getId(Data.ADMIN),data.getFromDate(),data.getInvalidDate()));
+        assertNull(logicManager.watchVisitsBetweenDates(data.getId(Data.ADMIN),data.getFromDate(),data.getInvalidDate()).getValue());
+        tearDownLogin();
+    }
+
+    @Test
+    public void testDayVisitsInvalidToDateBeforeFromDate(){
+        setUpLogedInUser();
+        assertNull(logicManager.watchVisitsBetweenDates(data.getId(Data.ADMIN),data.getInvalidDate(),data.getFromDate()).getValue());
         tearDownLogin();
     }
 
     @Test
     public void testDayVisitsSuccess(){
-
+        setUpLogedInUser();
+        List<DayVisit> dayVisits=logicManager.watchVisitsBetweenDates(data.getId(Data.ADMIN),data.getFromDate(),data.getToDate()).getValue();
+        LocalDate now=LocalDate.now();
+        for(DayVisit visit :dayVisits){
+            if(visit.getDate().isEqual(now)){
+                assertEquals(visit.getAdminNumber(), 0);
+                assertEquals(visit.getGuestNumber(), 3);
+                assertEquals(visit.getManagerNumber(), 0);
+                assertEquals(visit.getSubscribeNumber(), 1);
+                assertEquals(visit.getOwnerNumber(), 0);
+            }
+            else {
+                assertEquals(visit.getAdminNumber(), 0);
+                assertEquals(visit.getGuestNumber(), 0);
+                assertEquals(visit.getManagerNumber(), 0);
+                assertEquals(visit.getSubscribeNumber(), 0);
+                assertEquals(visit.getOwnerNumber(), 0);
+            }
+        }
+        tearDownDeleteDayVisits();
     }
+
+
 
     /**
      * tests for getStoresManagedByUser
@@ -2129,5 +2158,13 @@ public class LogicManagerAllStubsTest {
         tearDownManagerAdded();
     }
 
-
+    protected void tearDownDeleteDayVisits() {
+        LocalDate now=LocalDate.now();
+        LocalDate before3Days=now.minusDays(3);
+        while(!before3Days.isAfter(now)){
+            daos.getVisitsPerDayDao().remove(before3Days);
+            before3Days=before3Days.plusDays(1);
+        }
+        tearDownLogin();
+    }
 }

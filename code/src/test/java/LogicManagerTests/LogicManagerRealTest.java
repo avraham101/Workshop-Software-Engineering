@@ -96,6 +96,19 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Subscribe admin=data.getSubscribe(Data.ADMIN);
         logicManager.manageOwner(data.getId(Data.VALID),storeName, admin.getName());
     }
+
+    private void setUpPrepareUsers(){
+        setUpOpenedStore();
+        Subscribe niv=data.getSubscribe(Data.VALID2);
+        logicManager.addManager(data.getId(Data.VALID),
+                niv.getName(),data.getStore(Data.VALID).getName());
+        logicManager.logout(data.getId(Data.VALID));
+        Subscribe s=data.getSubscribe(Data.VALID);
+        logicManager.login(data.getId(Data.VALID),s.getName(),s.getPassword());
+        logicManager.login(data.getId(Data.VALID2),niv.getName(),niv.getPassword());
+        logicManager.login(data.getId(Data.ADMIN),data.getSubscribe(Data.ADMIN).getName(),
+                data.getSubscribe(Data.ADMIN).getPassword());
+    }
     /**----------------------set-ups------------------------------------------*/
 
 
@@ -1488,6 +1501,33 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * use case 6.5 - watch day visits
+     */
+    @Test
+    public void testDayVisitsSuccess(){
+        setUpPrepareUsers();
+        List<DayVisit> dayVisits=logicManager.watchVisitsBetweenDates(data.getId(Data.ADMIN),data.getFromDate(),data.getToDate()).getValue();
+        LocalDate now=LocalDate.now();
+        for(DayVisit visit :dayVisits){
+            if(visit.getDate().isEqual(now)){
+                assertEquals(visit.getAdminNumber(), 1);
+                assertEquals(visit.getGuestNumber(), 3);
+                assertEquals(visit.getManagerNumber(), 1);
+                assertEquals(visit.getSubscribeNumber(), 2);
+                assertEquals(visit.getOwnerNumber(), 1);
+            }
+            else {
+                assertEquals(visit.getAdminNumber(), 0);
+                assertEquals(visit.getGuestNumber(), 0);
+                assertEquals(visit.getManagerNumber(), 0);
+                assertEquals(visit.getSubscribeNumber(), 0);
+                assertEquals(visit.getOwnerNumber(), 0);
+            }
+        }
+        tearDownDeleteDayVisits();
+    }
+
+    /**
      * check the purchase is with the details from buying the product
      * @param purchaseList the list with the products
      */
@@ -1740,9 +1780,22 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         tearDownOpenStore();
     }
 
+    @Override
+    protected void tearDownDeleteDayVisits() {
+        LocalDate now=LocalDate.now();
+        LocalDate before3Days=now.minusDays(3);
+        while(!before3Days.isAfter(now)){
+            daos.getVisitsPerDayDao().remove(before3Days);
+            before3Days=before3Days.plusDays(1);
+        }
+        super.tearDownDeleteDayVisits();
+    }
+
     @After
     public void tearDown() {
         daos.getRevenueDao().remove(LocalDate.now());
     }
+
+
 }
 
