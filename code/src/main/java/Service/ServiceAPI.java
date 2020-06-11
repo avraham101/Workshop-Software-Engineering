@@ -442,7 +442,7 @@ public class ServiceAPI {
      * @return list of visits from date from to date to
      */
 
-    public Response<List<DayVisit>> WatchVisitsBetweenDates(int id,DateData from,DateData to ){
+    public Response<List<DayVisit>> watchVisitsBetweenDates(int id,DateData from,DateData to ){
         return logicManager.watchVisitsBetweenDates(id,from,to);
     }
 

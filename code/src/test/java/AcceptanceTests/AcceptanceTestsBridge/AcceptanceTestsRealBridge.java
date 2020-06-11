@@ -9,6 +9,7 @@ import AcceptanceTests.SystemMocks.PublisherMock;
 import DataAPI.*;
 import DataAPI.PermissionType;
 import DataAPI.Purchase;
+import Domain.DayVisit;
 import Domain.ProductPeristentData;
 import Domain.Review;
 import Persitent.Dao.*;
@@ -339,6 +340,19 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return buildPurchasesTestData(purchases);
     }
     //---------------------------Use-Case-6.4---------------------------------//
+
+    //---------------------------Use-Case-6.5---------------------------------//
+
+    @Override
+    public List<DayVisitData> watchVisitsBetweenDates(int id, DateTestData from, DateTestData to) {
+        DateData fromDate = new DateData(from.getYear(),from.getMonth(),from.getDay());
+        DateData toDate = new DateData(to.getYear(),to.getMonth(),to.getDay());
+        List<DayVisit> visits = serviceAPI.watchVisitsBetweenDates(id,fromDate, toDate).getValue();
+        return buildDayVisitData(visits);
+    }
+
+
+    //---------------------------Use-Case-6.5---------------------------------//
 
     //----------------------Server-Client-Use-Cases---------------------------//
 
@@ -720,6 +734,20 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
             }
         }
         return output;
+    }
+
+    private List<DayVisitData> buildDayVisitData(List<DayVisit> dayVisit) {
+        List<DayVisitData> visits = new LinkedList<>();
+        for (DayVisit visit: dayVisit) {
+            DayVisitData visitData = new DayVisitData(visit.getDate(),
+                    visit.getGuestNumber(),
+                    visit.getSubscribeNumber(),
+                    visit.getManagerNumber(),
+                    visit.getOwnerNumber(),
+                    visit.getAdminNumber());
+            visits.add(visitData);
+        }
+        return visits;
     }
 
     //----------------------RealBridge aux functions--------------------------//
