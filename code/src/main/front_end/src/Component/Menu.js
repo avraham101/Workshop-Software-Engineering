@@ -9,47 +9,40 @@ class Menu extends Component {
   constructor(props){
     super(props)
     this.fromPath = this.props.fromPath
-    this.state = {
-      color_0: '',
-      color_1: '',
-      color_2: '',
-      color_3: '',
-      color_4: '',
-      color_5: '',
-    }
+    this.state = { }
   }
-
+  
   renderGuest() {
+    let onHover = (event) => {
+      event.currentTarget.style.backgroundColor = WHITE_BLUE;
+    }
+    let onLeave = (event) => {
+        event.currentTarget.style.backgroundColor = '';
+    }
     return (
         <header style={{backgroundColor: '#FFC242', borderBottom:'2px solid #B38118'}}>
           <title> Trading System </title>
           {/*<p>{(this.props.state!=undefined)?this.props.state.id:''}</p>*/}
           <table style={style_sheet}>
           <tr style={{width:'100%'}}>
-            <th onClick={() => pass(history,"/",this.fromPath,this.props.state)}
-                style={{background:this.state.color_0}}
-                onMouseOver={()=>this.setState({color_0: WHITE_BLUE})}
-                onMouseLeave={()=>this.setState({color_0: ''})}> Menu </th>
-            <th onClick={() => pass(history,"/viewStoresAndProducts",this.fromPath,this.props.state)}
-                style={{background:this.state.color_1}}
-                onMouseOver={()=>this.setState({color_1: WHITE_BLUE})}
-                onMouseLeave={()=>this.setState({color_1: ''})}> Watch Store and Products </th>
-            <th onClick={()=> pass(history,"/searchAndFilter",this.fromPath,this.props.state)}
-                style={{background:this.state.color_2}}
-                onMouseOver={()=>this.setState({color_2: WHITE_BLUE})}
-                onMouseLeave={()=>this.setState({color_2: ''})}> Search and Filter Products </th>
-            <th onClick={()=>pass(history,"/register",this.fromPath,this.props.state)} 
-                style={{background:this.state.color_3}} 
-                onMouseOver={()=>this.setState({color_3: WHITE_BLUE})}
-                onMouseLeave={()=>this.setState({color_3: ''})}> Register </th>
-            <th onClick={()=>pass(history,"/login",this.fromPath,this.props.state)}
-                style={{background:this.state.color_4}}
-                onMouseOver={()=>this.setState({color_4: WHITE_BLUE})}
-                onMouseLeave={()=>this.setState({color_4: ''})}> Login </th>
-            <th onClick={()=>pass(history,"/viewMyCart",this.fromPath,this.props.state)}
-                style={{background:this.state.color_5}} 
-                onMouseOver={()=>this.setState({color_5: WHITE_BLUE})}
-                onMouseLeave={()=>this.setState({color_5: ''})}> Watch My Cart </th>
+            <th style={{margin:0, borderRight:'1px solid white'}}
+                onClick={() => pass(history,"/",this.fromPath,this.props.state)}
+                onMouseOver={onHover} onMouseLeave={onLeave}> Menu </th>
+            <th style={{margin:0, borderRight:'1px solid white'}}
+                onClick={() => pass(history,"/viewStoresAndProducts",this.fromPath,this.props.state)}
+                onMouseOver={onHover} onMouseLeave={onLeave}> Watch Store and Products </th>
+            <th style={{margin:0, borderRight:'1px solid white'}}
+                onClick={()=> pass(history,"/searchAndFilter",this.fromPath,this.props.state)}
+                onMouseOver={onHover} onMouseLeave={onLeave}> Search and Filter Products </th>
+            <th style={{margin:0, borderRight:'1px solid white'}}
+                onClick={()=>pass(history,"/register",this.fromPath,this.props.state)} 
+                onMouseOver={onHover} onMouseLeave={onLeave}> Register </th>
+            <th style={{margin:0, borderRight:'1px solid white'}}
+                onClick={()=>pass(history,"/login",this.fromPath,this.props.state)}
+                onMouseOver={onHover} onMouseLeave={onLeave}> Login </th>
+            <th style={{margin:0, borderRight:'1px solid white'}}
+                onClick={()=>pass(history,"/viewMyCart",this.fromPath,this.props.state)}
+                onMouseOver={onHover} onMouseLeave={onLeave}> Watch My Cart </th>
           </tr>
         </table>
         </header>

@@ -2,17 +2,14 @@ package Guest;
 
 import Data.Data;
 import Data.TestData;
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
-import DataAPI.StoreData;
+import DataAPI.*;
 import Domain.*;
 import Stubs.CartStub;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -24,8 +21,9 @@ public class GuestTest {
 
     @Before
     public void setUp(){
+        Utils.Utils.TestMode();
         data=new TestData();
-        cart = new CartStub();
+        cart = new CartStub("Guest");
         guest=new Guest(cart);
     }
 
@@ -101,9 +99,9 @@ public class GuestTest {
         int size = 0;
         double sum =0;
         for(Basket b:cart.getBaskets().values()) {
-            HashMap<Product,Integer> products = b.getProducts();
-            for(Product p:products.keySet()) {
-                int amount = products.get(p);
+            Map<String,ProductInCart> products = b.getProducts();
+            for(ProductInCart p:products.values()) {
+                int amount = p.getAmount();
                 sum += amount * p.getPrice();
                 size++;
             }
@@ -147,7 +145,7 @@ public class GuestTest {
     @Test
     public void addRequest() {
         Request request = data.getRequest(Data.WRONG_STORE);
-        assertNull(guest.addRequest(request.getId(), request.getStoreName(), request.getContent()));
+        assertNull(guest.addRequest(request.getStoreName(), request.getContent()));
     }
 
     /**

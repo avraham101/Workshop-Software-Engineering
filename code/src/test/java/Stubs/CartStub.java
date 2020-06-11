@@ -4,12 +4,16 @@ import DataAPI.DeliveryData;
 import DataAPI.PaymentData;
 import Domain.Cart;
 import Domain.Product;
-import Domain.Purchase;
+import DataAPI.Purchase;
 import Domain.Store;
 
 import java.util.List;
 
 public class CartStub extends Cart {
+
+    public CartStub(String buyer) {
+        super(buyer);
+    }
 
     /**
      * use case 2.7 - add product

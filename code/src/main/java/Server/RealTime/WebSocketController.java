@@ -1,18 +1,15 @@
 package Server.RealTime;
 
 import java.security.Principal;
-import java.util.Map;
 
-import Publisher.Publisher;
+import Publisher.*;
 import Service.SingleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 
 
 @Controller
@@ -23,8 +20,8 @@ public class WebSocketController {
 
     public WebSocketController(SimpMessageSendingOperations messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
-        pub = new Publisher(messagingTemplate);
-        SingleService.setPublisher(pub);
+        pub = new Publisher(new SpringSender(messagingTemplate));
+        SinglePublisher.initPublisher(pub);
     }
 
     @MessageMapping("/hello")

@@ -6,32 +6,19 @@ import java.util.Objects;
 public class CartData {
 
     private double priceBeforeDiscount;
-    private double priceAfterDiscount;
     private List<ProductData> products;
 
-    public CartData(double priceBeforeDiscount, double priceAfterDiscount, List<ProductData> products) {
+    public CartData(double priceBeforeDiscount, List<ProductData> products) {
         this.priceBeforeDiscount = priceBeforeDiscount;
-        this.priceAfterDiscount = priceAfterDiscount;
         this.products = products;
     }
 
     // ============================ getters & setters ============================ //
 
-    public double getPriceBeforeDiscount() {
-        return priceBeforeDiscount;
-    }
-
-    public double getPriceAfterDiscount() {
-        return priceAfterDiscount;
-    }
-
     public List<ProductData> getProducts() {
         return products;
     }
 
-    public void setPriceBeforeDiscount(double priceBeforeDiscount) {
-        this.priceBeforeDiscount = priceBeforeDiscount;
-    }
 
     // ============================ getters & setters ============================ //
 
@@ -41,7 +28,6 @@ public class CartData {
         if (o == null || getClass() != o.getClass()) return false;
         CartData cartData = (CartData) o;
         return Double.compare(cartData.priceBeforeDiscount, priceBeforeDiscount) == 0 &&
-                Double.compare(cartData.priceAfterDiscount, priceAfterDiscount) == 0 &&
                 Objects.equals(products, cartData.products);
     }
 }

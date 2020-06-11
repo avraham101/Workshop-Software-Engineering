@@ -3,6 +3,7 @@ package DataAPI;
 import Domain.Product;
 import Domain.Review;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,7 +12,7 @@ public class ProductData {
     private String productName;
     private String storeName;
     private String category;
-    private List<Review> reviews;
+    private List<ReviewData> reviews;
     private int amount;
     private double price;
     private PurchaseTypeData purchaseType;
@@ -20,7 +21,11 @@ public class ProductData {
         this.productName = productName;
         this.storeName = storeName;
         this.category = category;
-        this.reviews = reviews;
+        this.reviews=new ArrayList<>();
+        if(reviews!=null) {
+            for (Review r : reviews)
+                this.reviews.add(new ReviewData(r));
+        }
         this.amount = amount;
         this.price = price;
         this.purchaseType = purchaseType;
@@ -30,7 +35,11 @@ public class ProductData {
         this.productName = product.getName();
         this.storeName = storeName;
         this.category = product.getCategory().getName();
-        this.reviews = product.getReviews();
+        this.reviews = new ArrayList<>();
+        if(product.getReviews()!=null) {
+            for (Review r : product.getReviews())
+                this.reviews.add(new ReviewData(r));
+        }
         this.price = product.getPrice();
         this.amount = product.getAmount();
         this.purchaseType = product.getPurchaseType().getPurchaseTypeData();
@@ -42,32 +51,16 @@ public class ProductData {
         return productName;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
     public String getStoreName() {
         return storeName;
-    }
-
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
     }
 
     public String getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public List<Review> getReviews() {
+    public List<ReviewData> getReviews() {
         return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
     }
 
     public int getAmount() {
@@ -82,16 +75,8 @@ public class ProductData {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
     public PurchaseTypeData getPurchaseType() {
         return purchaseType;
-    }
-
-    public void setPurchaseType(PurchaseTypeData purchaseType) {
-        this.purchaseType = purchaseType;
     }
 
 
@@ -104,11 +89,11 @@ public class ProductData {
         ProductData that = (ProductData) o;
         return amount == that.amount &&
                 Double.compare(that.price, price) == 0 &&
-                Objects.equals(productName, that.productName) &&
-                purchaseType == that.purchaseType &&
-                Objects.equals(storeName, that.storeName) &&
-                Objects.equals(category, that.category) &&
-                Objects.equals(reviews, that.reviews);
+                productName!=null&&productName.equals(that.productName) &&
+                purchaseType!=null&&purchaseType.equals(that.purchaseType) &&
+                storeName!=null&&storeName.equals(that.storeName) &&
+                category!=null&&category.equals(that.category); //&&
+                //Objects.equals(reviews, that.reviews);
     }
 
     @Override

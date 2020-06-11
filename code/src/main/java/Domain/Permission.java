@@ -1,19 +1,55 @@
 package Domain;
 
+import DataAPI.PermissionType;
+import Persitent.DaoInterfaces.IPermissionDao;
+import Persitent.DaoProxy.PermissionDaoProxy;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class Permission {
+@Entity
+@Table(name="permission")
+public class Permission implements Serializable {
 
+
+    @Id
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="owner",referencedColumnName = "username")
     private Subscribe owner;
+
+    @Id
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="store",referencedColumnName = "storename")
     private Store store;
-    private HashSet<PermissionType> permissionType;
-    private ReentrantReadWriteLock lock;
+
+    @Column(name="givenby")
+    private String givenBy;
+
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name="permission_type",joinColumns = {@JoinColumn(name="store"),@JoinColumn(name="owner")})
+    @Enumerated(EnumType.STRING)
+    @Column(name="type")
+    private Set<PermissionType> permissionType;
+
+    @Transient
+    private final ReentrantReadWriteLock lock;
+    @Transient
+    private final IPermissionDao dao;
 
     public Permission(Subscribe owner) {
         this.owner = owner;
         permissionType=new HashSet<>();
         lock=new ReentrantReadWriteLock();
+        dao = new PermissionDaoProxy();
+    }
+
+    public Permission() {
+        lock=new ReentrantReadWriteLock();
+        dao = new PermissionDaoProxy();
     }
 
     public Permission(Subscribe owner, Store store) {
@@ -21,22 +57,29 @@ public class Permission {
         this.store = store;
         permissionType=new HashSet<>();
         lock=new ReentrantReadWriteLock();
+        dao = new PermissionDaoProxy();
     }
 
     public Permission(Subscribe sub, HashSet<PermissionType> permissionTypes) {
-        this.owner = owner;
+        this.owner = sub;
         permissionType=permissionTypes;
         lock=new ReentrantReadWriteLock();
+        dao = new PermissionDaoProxy();
     }
 
     // ============================ getters & setters ============================ //
 
-    public Subscribe getOwner() {
-        return owner;
+
+    public String getGivenBy() {
+        return givenBy;
     }
 
-    public void setOwner(Subscribe owner) {
-        this.owner = owner;
+    public void setGivenBy(String givenBy) {
+        this.givenBy = givenBy;
+    }
+
+    public Subscribe getOwner() {
+        return owner;
     }
 
     public Store getStore() {
@@ -44,7 +87,8 @@ public class Permission {
     }
 
     public void setStore(Store store) {
-        this.store = store;
+        if(store!=null)
+            this.store = store;
     }
 
     public HashSet<PermissionType> getPermissionType() {
@@ -68,9 +112,15 @@ public class Permission {
             lock.writeLock().unlock();
             return false;
         }
-        if(type==PermissionType.OWNER)
+        if(type==PermissionType.OWNER) {
             permissionType.clear();
-        boolean result=this.permissionType.add(type);
+            for (PermissionType p: permissionType) {
+                dao.deletePermissionType(this.store.getName(),this.owner.getName(),p);
+            }
+
+        }
+        this.permissionType.add(type);
+        boolean result  = dao.addPermissionType(this.store.getName(),this.owner.getName(),type);
         lock.writeLock().unlock();
         return result;
     }
@@ -96,8 +146,9 @@ public class Permission {
      */
     public boolean removeType(PermissionType type){
         lock.writeLock().lock();
-        boolean result=permissionType.remove(type);
+        permissionType.remove(type);
         lock.writeLock().unlock();
+        boolean result = dao.deletePermissionType(this.store.getName(),this.owner.getName(),type);
         return result;
     }
 
@@ -127,6 +178,10 @@ public class Permission {
                 permissionType.contains(PermissionType.OWNER);
         lock.readLock().unlock();
         return result;
+    }
+
+    public boolean isOwner() {
+        return permissionType.contains(PermissionType.OWNER);
     }
 }
 

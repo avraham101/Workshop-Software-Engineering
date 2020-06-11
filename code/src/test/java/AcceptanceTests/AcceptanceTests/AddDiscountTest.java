@@ -1,6 +1,7 @@
 package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.DiscountTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -61,6 +62,11 @@ public class AddDiscountTest extends AcceptanceTests {
         assertFalse(bridge.addDiscount(superUser.getId(),discountTestData,store));
     }
 
+    @After
+    public void tearDown(){
+        removeProducts(products);
+        removeStores(stores);
+    }
 
 
 }

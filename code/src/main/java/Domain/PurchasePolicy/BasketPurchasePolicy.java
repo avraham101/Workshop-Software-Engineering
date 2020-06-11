@@ -3,17 +3,26 @@ package Domain.PurchasePolicy;
 import DataAPI.PaymentData;
 import Domain.Product;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+@Entity
+@Table(name="basket_policy")
+public class BasketPurchasePolicy extends PurchasePolicy {
 
-public class BasketPurchasePolicy implements PurchasePolicy {
-
+    @Column(name="max_amount")
     private int maxAmount; // the maximum amount pf products per basket
 
     public BasketPurchasePolicy(int maxAmount) {
         this.maxAmount = maxAmount;
+    }
+
+    public BasketPurchasePolicy() {
     }
 
     @Override
@@ -27,7 +36,8 @@ public class BasketPurchasePolicy implements PurchasePolicy {
     }
 
     @Override
-    public boolean standInPolicy(PaymentData paymentData, String country, HashMap<Product, Integer> products) {
+    public boolean standInPolicy(PaymentData paymentData, String country,
+                                 HashMap<Product, Integer> products) {
         int counter = 0;
         for (int amount: products.values()) {
             counter += amount;

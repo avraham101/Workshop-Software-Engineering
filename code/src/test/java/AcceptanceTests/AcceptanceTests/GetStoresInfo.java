@@ -2,6 +2,7 @@ package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.StoreTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,6 +47,12 @@ public class GetStoresInfo extends AcceptanceTests {
     public void getProductOfStoreFail(){
         List<ProductTestData> productsInStore = bridge.getStoreProducts(notExistingStore.getStoreName());
         assertNull(productsInStore);
+    }
+
+    @After
+    public void tearDown(){
+        removeProducts(products);
+        removeStores(stores);
     }
 
 }

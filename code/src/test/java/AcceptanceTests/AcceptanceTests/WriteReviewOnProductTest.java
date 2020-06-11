@@ -3,6 +3,7 @@ package AcceptanceTests.AcceptanceTests;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ReviewTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,7 +41,7 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
         ReviewTestData review0 = new ReviewTestData(user0.getUsername(),"review0test");
         ReviewTestData review4 = new ReviewTestData(user0.getUsername(),"review4test");
         ProductTestData product0 = products.get(0);
-        ProductTestData product4 = products.get(4);
+        ProductTestData product4 = products.get(1);
         productsAndReviews.put(product0,review0);
         productsAndReviews.put(product4,review4);
     }
@@ -71,7 +72,7 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
             assertFalse(isWritten);
 
             List<ReviewTestData> actualReviews = bridge.getProductsReviews(product);
-            assertFalse(actualReviews.contains(review));
+            assertTrue(actualReviews == null || !actualReviews.contains(review));
         }
     }
 
@@ -100,4 +101,9 @@ public class WriteReviewOnProductTest extends AcceptanceTests{
         assertFalse(actualReviews.contains(review));
     }
 
+    @After
+    public void tearDown(){
+        removeProducts(products);
+        removeStores(stores);
+    }
 }

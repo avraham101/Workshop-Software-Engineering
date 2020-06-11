@@ -1,10 +1,6 @@
 package Server.Controllers;
 
-import DataAPI.ManagerData;
-import DataAPI.Response;
-import DataAPI.ResponseData;
-import DataAPI.StoreData;
-import Domain.Purchase;
+import DataAPI.*;
 import Domain.Request;
 import Service.SingleService;
 import com.google.gson.Gson;
@@ -47,6 +43,31 @@ public class ManagerController {
                                                @RequestBody String managerDataStr ){
         ManagerData managerData = json.fromJson(managerDataStr,ManagerData.class);
         Response<Boolean> response = SingleService.getInstance().addManagerToStore(id,managerData.getStoreName(),managerData.getUserName());
+        return getResponseEntity(response);
+    }
+
+
+    /**
+     * use case 4.3.2
+     * @param id the id of the subscribe approving
+     * @param storeName the store name of the approval
+     * @param userName the user name of the approval
+     * @return
+     */
+    @PostMapping("approve/owner")
+    public ResponseEntity<?> approveOwnerToStore(@RequestParam(name="id" ) int id,
+                                                 @RequestParam(name="store" ) String storeName,
+                                                 @RequestParam(name="user" ) String userName) {
+        storeName = json.fromJson(storeName,String.class);
+        Response<Boolean> response = SingleService.getInstance().approveManageOwner(id,storeName,userName);
+        return getResponseEntity(response);
+    }
+
+    @PostMapping("approve/list")
+    public ResponseEntity<?> getApprovedOwnersFromStore(@RequestParam(name="id" ) int id,
+                                                        @RequestBody String storeName) {
+        storeName = json.fromJson(storeName,String.class);
+        Response<List<String>> response = SingleService.getInstance().getApprovedManagers(id,storeName);
         return getResponseEntity(response);
     }
 
@@ -97,7 +118,7 @@ public class ManagerController {
 
     @GetMapping("request/{store}")
     public ResponseEntity<?> getRequests(@PathVariable String store, @RequestParam (name="id" ) int id){
-        Response<List<Request>> response =SingleService.getInstance().watchRequestsOfStore(id,store);
+        Response<List<RequestData>> response =SingleService.getInstance().watchRequestsOfStore(id,store);
         return getResponseEntity(response);
 
     }
@@ -110,7 +131,7 @@ public class ManagerController {
     public  ResponseEntity<?> answerRequest(@PathVariable String store,@RequestParam (name="id" ) int id,
                                             @RequestBody String responseDataStr){
         ResponseData responseData = json.fromJson(responseDataStr,ResponseData.class);
-        Response<Request> response = SingleService.getInstance().answerRequest(id,responseData.getRequestId(),
+        Response<RequestData> response = SingleService.getInstance().answerRequest(id,responseData.getRequestId(),
                 responseData.getContent(),store);
         return getResponseEntity(response);
 
@@ -138,8 +159,6 @@ public class ManagerController {
         Response<List<Purchase>> response = SingleService.getInstance().watchStoreHistory(id,store);
         return getResponseEntity(response);
     }
-
-
 
     private ResponseEntity<?> getResponseEntity(Response<?> response) {
         HttpHeaders headers = new HttpHeaders();

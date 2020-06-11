@@ -1,15 +1,9 @@
 package Basket;
 
-import Data.Data;
-import Data.TestData;
-import DataAPI.DeliveryData;
-import DataAPI.PaymentData;
-import DataAPI.ProductData;
-import Domain.Basket;
-import Domain.Product;
+import Data.*;
+import DataAPI.*;
+import Domain.*;
 import Domain.PurchasePolicy.BasketPurchasePolicy;
-import Domain.Store;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.LinkedList;
@@ -22,38 +16,23 @@ import static org.junit.Assert.*;
  */
 public class BasketTestReal extends BasketTest{
 
-    @Before
-    public void setUp() {
-        data = new TestData();
-        Store store = data.getRealStore(Data.VALID);
-        basket = new Basket(store);
-    }
-
-    /**------------------------------set-ups------------*/
-    /**
-     * set up for checking buying product
-     */
-    private void setUpForBuy(){
-        setUpAddedToBasket();
-    }
-
-    /**------------------------------set-ups------------*/
-
+    //
 
     /**
      * use case 2.8 - reserveCart cart
      */
-    @Override @Test
+    @Test
     public void testBuySuccess() {
-        setUpForBuy();
+        setUpProductAddedToBasket();
         int price = 0;
         List<ProductData> productDataList = new LinkedList<>();
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
         assertTrue(basket.buy(paymentData, deliveryData));
-        for (Product product: basket.getProducts().keySet()) {
+        for (ProductInCart product: basket.getProducts().values()) {
             price += product.getPrice();
-            productDataList.add(new ProductData(product, basket.getStore().getName()));
+            Product realProduct = basket.getStore().getProduct(product.getProductName());
+            productDataList.add(new ProductData(realProduct , basket.getStore().getName()));
         }
         assertTrue(deliveryData.getProducts().containsAll(productDataList));
         assertEquals(price, paymentData.getTotalPrice(),0.01);
@@ -64,8 +43,11 @@ public class BasketTestReal extends BasketTest{
      */
     @Test
     public void testBuyNotStandsInPolicy(){
-        setUpForBuy();
-        basket.getStore().setPurchasePolicy(new BasketPurchasePolicy(0));
+        setUpProductAddedToBasket();
+        StoreData storeData = data.getStore(Data.VALID);
+        Store store = daoHolder.getStoreDao().find(storeData.getName());
+        store.setPurchasePolicy(new BasketPurchasePolicy(0));
+        daoHolder.getStoreDao().update(store);
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         DeliveryData deliveryData = data.getDeliveryData(Data.VALID2);
         assertFalse(basket.buy(paymentData, deliveryData));
@@ -73,6 +55,22 @@ public class BasketTestReal extends BasketTest{
         assertEquals(0,paymentData.getTotalPrice(),0.001);
     }
 
-
+    /**
+     * use case 2.8 - reserveCart cart
+     */
+    @Test
+    public void testBuyBasket() {
+        setUpProductAddedToBasket();
+        List<String> productNames = new LinkedList<>();
+        for(ProductInCart p: this.basket.getProducts().values()) {
+            productNames.add(p.getProductName());
+        }
+        Purchase result = this.basket.savePurchase(data.getSubscribe(Data.VALID).getName());
+        assertNotNull(result);
+        for(ProductPeristentData productPeristentData: result.getProduct()) {
+            String name = productPeristentData.getProductName();
+            assertTrue(productNames.contains(name));
+        }
+    }
 
 }

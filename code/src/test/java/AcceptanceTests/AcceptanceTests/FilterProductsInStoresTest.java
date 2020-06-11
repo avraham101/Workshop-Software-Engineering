@@ -5,6 +5,7 @@ import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.PriceRangeFilterTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.ProductNameFilterTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -61,4 +62,11 @@ public class FilterProductsInStoresTest extends AcceptanceTests {
         HashSet<ProductTestData> filteredProducts = bridge.filterProducts(filters);
         assertEquals(filteredProducts.size(),0);
     }
+
+    @After
+    public void tearDown(){
+        removeProducts(products);
+        removeStores(stores);
+    }
+
 }

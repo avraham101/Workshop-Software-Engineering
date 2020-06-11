@@ -2,17 +2,27 @@ package Domain.Discount;
 
 import Domain.Product;
 
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class StoreDiscount implements Discount {
+@Entity
+@Table(name="store_discount")
+public class StoreDiscount extends Discount {
+
+    @Column(name="min_amount")
     private int minAmount;
+
+    @Column(name="percantage")
     private double percentage;
 
     public StoreDiscount(int minAmount, double percentage) {
         this.minAmount = minAmount;
         this.percentage = percentage;
+    }
+
+    public StoreDiscount() {
     }
 
     @Override

@@ -10,6 +10,19 @@ import java.util.List;
 
 public class UserStub extends User {
 
+    public UserStub(User user) {
+        this.setState(user.getState());
+    }
+
+    public UserStub() {
+        super();
+    }
+
+    @Override
+    public UserState getState() {
+        return new Subscribe("test","test");
+    }
+
     /**
      * use case 2.3 - Login
      * @param subscribe - The new Subscribe State
@@ -20,12 +33,23 @@ public class UserStub extends User {
         return true;
     }
 
+
+    @Override
+    public boolean reservedCart() {
+        return true;
+    }
+
+    @Override
+    public void savePurchase(String buyer) {
+    }
+
     /**
      * use case 3.1 - Logout
      * @return true if the user state changed back to guest
      */
     @Override
     public boolean logout() {
+        this.state=new Subscribe("hu","mu");
         return true;
     }
 
@@ -176,7 +200,7 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public Response<Boolean> removeManager(String userName, String storeName) {
+    public Response<Boolean> removeManager(Subscribe userName, String storeName) {
         return new Response<>(true,OpCode.Success);
     }
 
@@ -206,8 +230,10 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public Request addRequest(int requestId,String storeName, String content) {
-        return new Request(getUserName(), storeName, "temp", 10);
+    public Request addRequest(String storeName, String content) {
+        Request r=new Request(getUserName(), storeName, "temp");
+        r.setId(-2);
+        return r;
     }
 
     /**
@@ -215,9 +241,9 @@ public class UserStub extends User {
      * @param storeName
      */
     @Override
-    public List<Request> viewRequest(String storeName) {
+    public List<Request> viewRequest(Store storeName) {
         List<Request> requests = new LinkedList<>();
-        requests.add(new Request(getUserName(), storeName, "temp", 10));
+        requests.add(new Request(getUserName(), storeName.getName(), "temp", 10));
         return requests;
     }
 
@@ -229,8 +255,10 @@ public class UserStub extends User {
      * @return
      */
     @Override
-    public Response<Request> replayToRequest(String storeName, int requestID, String content) {
-        return new Response<>(new Request(getUserName(), storeName, "temp", 10),OpCode.Success);
+    public Response<Request> replayToRequest(String storeName, Integer requestID, String content) {
+        Request r=new Request(getUserName(), storeName, "temp");
+        r.setId(-2);
+        return new Response<>(r,OpCode.Success);
     }
 
     /**

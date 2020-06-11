@@ -5,6 +5,7 @@ import Title from '../../Component/Title';
 import Button from '../../Component/Button';
 import Input from '../../Component/Input';
 import {send} from '../../Handler/ConnectionHandler';
+import DivBetter from '../../Component/DivBetter';
 
 
 class UserWatchPurchasesHistory extends Component {
@@ -27,10 +28,12 @@ handleChangeReview(event,product) {
 }
 
 handleSubmit(event,product) {
+  let writer = this.props.location.state.name;
   let rev={
-    storeName:product.storeName,
+    store:product.store,
     productName:product.productName,
     content:product.review,
+    writer:writer,
   }
   send('/home/product/review?id='+this.props.location.state.id, 'POST',rev, this.sendReview);
 }
@@ -40,16 +43,16 @@ if(received==null)
   alert("Server Failed");
   else {
     let opt = ''+ received.reason;
-    if(opt == 'Success') {
+    if(opt === 'Success') {
       alert("review was added successfully");
     }
-    else if(opt=='Invalid_Review'){
+    else if(opt==='Invalid_Review') {
       alert("Can't send empty review");
     }
-    else if(opt=='Store_Not_Found'){
+    else if(opt==='Store_Not_Found') {
       alert("Store not found");
     }
-    else if(opt=='Cant_Add_Review'){
+    else if(opt==='Cant_Add_Review') {
       alert("the product was removed from the store");
     }
     else {
@@ -61,7 +64,6 @@ if(received==null)
 create_Purchases(){
   if(this.flag){
   this.flag=false;
-  
   send('/home/history?id='+this.props.location.state.id, 'GET','', this.buildPurchases);
   }
 }
@@ -76,72 +78,91 @@ buildPurchases(received){
     }
     else {
       alert(opt+", Can't present your purchases");
+      }
     }
   }
-}
 
-renderPurchase(){
-let output=[];
-this.state.purchases.forEach(element => {
-  let index=element.date.indexOf('T'); 
-    output.push(
-    <table style={style_sheet}>
-        <tr>
-            {"purchase "+this.counter+++":"}
-            <th>{"buyer:"+element.buyer}</th>
-            <th>{"store:"+element.storeName}</th>
-            <th>{"total price:"+element.price}</th>
-            <th>{"date:"+element.date.substring(0,index)}</th>
-            <th>{"hour:"+element.date.substring(index+1)}</th>
-            
-        </tr>
-        {this.renderProduct(element.product)}
-    </table>
-    )
-});
-this.counter=1;
-return output
-}
+  renderPurchase(){
+  let output=[];
+  this.state.purchases.forEach(element => {
+      let index=element.date.indexOf('T');
+      let onHover = (event) => {
+          event.currentTarget.style.backgroundColor = '#92BAFF'
+      }
+      let onLeave = (event) => {
+          event.currentTarget.style.backgroundColor = ''
+      } 
+      output.push(
+        <div style={{float:'left', width:'100%', border:'1px solid black'}} 
+              onMouseOver={onHover} onMouseLeave={onLeave}>
+          <div style={{float:'left',width:'100%', backgroundColor:'#9BEBE5'}}>
+            <div style={{float:'left',width:'20%', textAlign:'center'}}> 
+              <p> Buyer: {element.buyer} </p>
+            </div>
+            <div style={{float:'left',width:'20%', textAlign:'center'}}> 
+              <p> Store: {element.storeName} </p>
+            </div>
+            <div style={{float:'left',width:'20%'}}> 
+              <p> Total Price: {element.price} </p>
+            </div>
+            <div style={{float:'left',width:'20%'}}> 
+              <p> Date: {element.date.substring(0,index)} </p>
+            </div>
+            <div style={{float:'left',width:'20%'}}> 
+              <p> Hour: {element.date.substring(index+1)} </p>
+            </div>
+          </div>
+          <div style={{float:'left',width:'100%'}}>
+            {this.renderProduct(element.product)}
+          </div>
+        </div>
+        )
+    });
+    this.counter=1;
+    return output
+  }
 
-renderProduct(products){
-let output=[];
-products.forEach(pro => {
-  output.push(
-      <tr>
-          <th>{"product name:"+pro.productName}</th>
-          <th>{"category:"+pro.category}</th>
-          <th>{"amount:"+pro.amount}</th>
-          <th>{"purchase type:"+pro.purchaseType}</th>
-      </tr> 
-  )
-  output.push(
-      <tr>
-      <th><Input title = 'Review:' type="text" value={pro.review} onChange={(t)=>this.handleChangeReview(t,pro)} />  </th> 
-      </tr>            
-  )
-  output.push(
-  <tr>
-      <Button text = {"add review"} onClick={(t)=>this.handleSubmit(t,pro)}/>
-  </tr>
-  )
-}); 
-return output;
-}
+  renderProduct(products){
+    let output=[];
+    products.forEach(pro => {
+      output.push(
+        <div style={{float:'left', width:'90%', marginLeft:'5%'}}>
+          <div style={{float:'left', width:'25%'}}>
+            <p> Product Name: {pro.productName} </p>
+          </div>
+          <div style={{float:'left', width:'25%'}}>
+            <p> Category: {pro.category} </p>
+          </div>
+          <div style={{float:'left', width:'25%'}}>
+            <p> Amount: {pro.amount} </p>
+          </div>
+          <div style={{float:'left', width:'25%'}}>
+            <p> Purchase Type: {pro.purchaseType} </p>
+          </div>
+          <div style={{float:'left', width:'50%'}}>
+            <Input title = 'Review:' type="text" value={pro.review} onChange={(t)=>this.handleChangeReview(t,pro)} />
+          </div>
+          <div style={{float:'left', width:'50%'}}>
+            <Button text = {"add review"} onClick={(t)=>this.handleSubmit(t,pro)}/>
+          </div>
+        </div>)
+    }); 
+  return output;
+  }
 
-render() {
-  this.create_Purchases();
-  return (
-    <BackGroud>
-      <Menu state={this.props.location.state} />
-      <Title title ={ this.state.purchases.length===0 ? "you did'nt make any purchases":'my purchases:'}/> 
-      <div>
-          {this.renderPurchase()} 
-      </div>
-    </BackGroud>
-  );
+  render() {
+    this.create_Purchases();
+    return (
+        <BackGroud>
+          <Menu state={this.props.location.state} />
+          <Title title ={ this.state.purchases.length===0 ? "you did'nt make any purchases":'my purchases:'}/> 
+          <div>
+              {this.renderPurchase()} 
+          </div>
+        </BackGroud>
+    );
+  }
 }
-}
-
 export default UserWatchPurchasesHistory;
 
 const style_sheet = {

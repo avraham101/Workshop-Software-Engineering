@@ -20,6 +20,7 @@ import SearchAndFilterProducts from "./Screen/Guest/SearchAndFilterProducts";
 import StoreMenu from "./Screen/Subscribe/StoreMenu";
 import AddManagerToStore from "./Screen/Subscribe/AddManagerToStore";
 import AddOwnerToStore from "./Screen/Subscribe/AddOwnerToStore";
+import ApproveOwnerToStore from './Screen/Subscribe/ApproveOwnerToStore';
 import BuyCart from './Screen/Guest/BuyCart';
 import EditManagerPermissions from "./Screen/Subscribe/EditManagerPermissions";
 import ViewAndReplyRequests from "./Screen/Subscribe/ViewAndReplyRequests";
@@ -30,11 +31,14 @@ import ViewDiscounts from './Screen/Subscribe/ViewDiscounts';
 import ManagePolicy from './Screen/Subscribe/ManagePolicy';
 import ViewPolicy from './Screen/Subscribe/ViewPolicy';
 import InitSystem from "./Screen/Subscribe/Admin/InitSystem";
+import WatchRevenu from './Screen/Subscribe/Admin/WatchRevenu';
+
 class App extends Component {
 
   render() {
     return (<Router history={history}>
             <Switch>
+              <Route path="/admin/watchRevenu" component={withRouter(WatchRevenu)}/>
               <Route path="/admin/storehistory" component={withRouter(WatchUserAndStoreHistory)} exact/>
               <Route path="/admin" component={withRouter(InitSystem)} exact/>
               <Route path="/register" component={withRouter(Register)} />
@@ -59,6 +63,7 @@ class App extends Component {
               <Route path="/removeManagerFromStore" component={withRouter(RemoveManagerFromStore)} />
               <Route path="/addManagerToStore" component={withRouter(AddManagerToStore)} />
               <Route path="/addOwnerToStore" component={withRouter(AddOwnerToStore)} />
+              <Route path="/approveOwnerToStore" component={withRouter(ApproveOwnerToStore)} />
               <Route path="/editManagerPermissions" component={withRouter(EditManagerPermissions)} />
               <Route path="/viewAndReplyRequests" component={withRouter(ViewAndReplyRequests)} />
               <Route path="/watchUserAndStoreHistory" component={withRouter(WatchUserAndStoreHistory)} />

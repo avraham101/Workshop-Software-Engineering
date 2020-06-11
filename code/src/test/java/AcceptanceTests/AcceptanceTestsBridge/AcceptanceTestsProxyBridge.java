@@ -2,6 +2,7 @@ package AcceptanceTests.AcceptanceTestsBridge;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
+import AcceptanceTests.SystemMocks.PublisherMock;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
@@ -46,6 +47,7 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
             return realBridge.register(username,password);
         return false;
     }
+
 
 
 
@@ -225,9 +227,23 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public boolean appointOwnerToStore(int id,String storeName, String username) {
+    public boolean appointOwnerToStoreDirectly(int id,String storeName, String username) {
+        if(realBridge!=null)
+            return realBridge.appointOwnerToStoreDirectly(id,storeName,username);
+        return false;
+    }
+
+    @Override
+    public boolean appointOwnerToStore(int id, String storeName, String username){
         if(realBridge!=null)
             return realBridge.appointOwnerToStore(id,storeName,username);
+        return false;
+    }
+
+    @Override
+    public boolean approveManageOwner(int id, String storeName, String username){
+        if(realBridge!=null)
+            return realBridge.approveManageOwner(id,storeName,username);
         return false;
     }
 
@@ -253,7 +269,7 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     }
 
     @Override
-    public HashSet<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName) {
+    public List<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName) {
         if(realBridge!=null)
             return realBridge.viewApplicationToStore(id, storeName);
         return null;
@@ -356,5 +372,50 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
         if (realBridge != null)
             return  realBridge.getAllUsers(id);
         return null;
+    }
+
+    @Override
+    public void setPublisher(PublisherMock publisherMock) {
+        if (realBridge != null)
+            realBridge.setPublisher(publisherMock);
+
+    }
+    //----------------------------------DB related------------------------//
+    @Override
+    public void removeUser(String username) {
+        if(realBridge!=null)
+            realBridge.removeUser(username);
+    }
+
+    @Override
+    public void removeProduct(ProductTestData product) {
+        if(realBridge != null)
+            realBridge.removeProduct(product);
+    }
+
+    @Override
+    public void removeStore(StoreTestData store) {
+        if(realBridge != null)
+            realBridge.removeStore(store);
+    }
+
+    @Override
+    public double getRevenueToday(int id) {
+        if (realBridge != null)
+            return realBridge.getRevenueToday(id);
+        return 0.0;
+    }
+
+    @Override
+    public double getRevenueByDay(int id, DateTestData date) {
+        if (realBridge != null)
+            return realBridge.getRevenueByDay(id, date);
+        return 0.0;
+    }
+
+    @Override
+    public void removeRevenues() {
+        if(realBridge!=null)
+            realBridge.removeRevenues();
     }
 }

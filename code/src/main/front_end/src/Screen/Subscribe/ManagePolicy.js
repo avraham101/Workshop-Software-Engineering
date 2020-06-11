@@ -27,11 +27,13 @@ class ManagePolicy extends Component {
     this.state = {
       age:1,
       maxAmount:0,
+      minAmount:0,
       country:'',
       selected_policy:undefined,
       products:[],
       selected_product:undefined,
-      selected_amount:0,
+      selected_amount_max:0,
+      selected_amount_min:0,
     };
     this.updateClick = this.updateClick.bind(this);
     this.renderProductPolicy = this.renderProductPolicy.bind(this);
@@ -188,15 +190,18 @@ class ManagePolicy extends Component {
           </div>
         )
       case CLASS_PRODUCT:
-        let map = data.maxAmountPerProduct;
+        let map = data.amountPerProduct;
         let output = [];
         let keys = Object.getOwnPropertyNames(map) 
         keys.forEach(key => {
-          let amount = map[key];
+          let obj = map[key];
+          let max = obj.max;
+          let min = obj.min;
           output.push(
             <div>
               <p style={{textAlign:'center'}}> Product: {key} </p>
-              <p style={{textAlign:'center'}}> Amount of product: {amount} </p>
+              <p style={{textAlign:'center'}}> Min Amount of product: {min} </p>
+              <p style={{textAlign:'center'}}> Max Amount of product: {max} </p>
             </div>
           )
         });
@@ -423,7 +428,7 @@ class ManagePolicy extends Component {
       return <p style={{textAlign:'center'}}> No proudtcs in Store</p>
     let output = [];
     let onClick = (element) => {
-      this.setState({selected_product:element})
+      this.setState({selected_product:element, selected_amount_max:element.amount})
     }
     this.state.products.forEach(element => {
       output.push(
@@ -439,24 +444,42 @@ class ManagePolicy extends Component {
   renderSelectedProduct() {
     if(this.state.selected_product===undefined)
       return
-    let onChange = (event) => {
-      let update_amount = event.target.value;
+    let onChangeMax= (event) => {
+      let update_amount = parseInt(event.target.value);
       if( update_amount < this.state.selected_product.amount)
-        this.setState({selected_amount:update_amount});
+        this.setState({selected_amount_max:update_amount});
+      else
+        alert("cant select amount to policy gratter the amount in store");
+    }
+    let onChangeMin= (event) => {
+      let update_amount = parseInt(event.target.value);
+      if(update_amount < this.state.selected_product.amount)
+        this.setState({selected_amount_min:update_amount});
       else
         alert("cant select amount to policy gratter the amount in store");
     }
     let addProduct = () => {
-      let key = this.state.selected_product.productName;
-      let value = this.state.selected_amount;
-      this.map_prodcts[key] = value;
-      this.setState({selected_amount:1, selected_product:undefined})
+      let min = parseInt(this.state.selected_amount_min);
+      let max = parseInt(this.state.selected_amount_max);
+      // alert('min ' + min +' max '+ max);
+      if(min > max) {
+        alert("Min cant be greatter then Max. Cant add product to the policy.");
+      }
+      else {
+        let key = this.state.selected_product.productName;
+        let value = {max:this.state.selected_amount_max, min:this.state.selected_amount_min,
+                      productName:this.state.selected_product.productName};
+        this.map_prodcts[key] = value;
+        this.setState({selected_amount_min:0,selected_amount_max:0, selected_product:undefined})
+      }
     }
     return (
       <div>
          <h3 style={titleStyle}> {this.state.selected_product.productName} </h3>
-         <SmallInput title="Max Amount of Product" type="number" min={1} value={this.state.selected_amount}
-                onChange={onChange}/>
+          <SmallInput title="Min Amount of Product" type="number" min={1} value={this.state.selected_amount_min}
+                onChange={onChangeMin}/>
+          <SmallInput title="Max Amount of Product" type="number" min={1} value={this.state.selected_amount_max}
+                onChange={onChangeMax}/>
           <Button text="Add to Selected Products" onClick={addProduct}/>
       </div>
     )
@@ -468,18 +491,21 @@ class ManagePolicy extends Component {
       return
     let output = [];
     keys.forEach(key => {
-      let amount = this.map_prodcts[key];
+      let obj = this.map_prodcts[key];
+      let max = obj.max; 
+      let min = obj.min;
       output.push(
         <div>
           <p style={{textAlign:'center'}}> Product: {key} </p>
-          <p style={{textAlign:'center'}}> Amount of product: {amount} </p>
+          <p style={{textAlign:'center'}}> Min Amount of product: {min} </p>
+          <p style={{textAlign:'center'}}> Max Amount of product: {max} </p>
         </div>
       )
     });
     let onClick = () => {
       let obj = {};
       obj['CLASSNAME'] = CLASS_PRODUCT;
-      obj['DATA'] = {maxAmountPerProduct:this.map_prodcts}
+      obj['DATA'] = {amountPerProduct:this.map_prodcts}
       this.map_prodcts={};
       this.list_selected.push(obj);
       this.setState({});

@@ -4,27 +4,17 @@ import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.PurchasePolicy.PurchasePolicy;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class UserState {
-    protected Cart cart;
+    //protected Cart cart;
 
     public UserState() {
-        this.cart = new Cart();
     }
 
     // ============================ getters & setters ============================ //
 
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
+    public abstract Cart getCart();
 
     public abstract String getName();
 
@@ -47,18 +37,19 @@ public abstract class UserState {
      */
     public CartData watchCartDetatils() {
         List<ProductData> products = new LinkedList<>();
-        double priceAfterDiscount = 0;
         double priceBeforeDiscount = 0;
-        for (Basket basket: cart.getBaskets().values()) {
-            HashMap<Product, Integer> map = basket.getProducts();
-            for (Product product: map.keySet()) {
-                priceBeforeDiscount += product.getPrice()* map.get(product);
-                ProductData productData = new ProductData(product, basket.getStore().getName());
-                productData.setAmount(map.get(product));
+        for (Basket basket: getCart().getBaskets().values()) {
+            Store store = basket.getStore();
+            Map<String, ProductInCart> map = basket.getProducts();
+            for (ProductInCart product: map.values()) {
+                priceBeforeDiscount += product.getPrice() * product.getAmount();
+                Product realProduct = store.getProduct(product.getProductName());
+                ProductData productData = new ProductData(realProduct, basket.getStore().getName());
+                productData.setAmount(product.getAmount());
                 products.add(productData);
             }
         }
-        return new CartData(priceBeforeDiscount,priceAfterDiscount,products);
+        return new CartData(priceBeforeDiscount,products);
     }
 
     /**
@@ -69,7 +60,7 @@ public abstract class UserState {
      */
     public boolean deleteFromCart(String productName,String storeName) {
         boolean result = false;
-        Basket basket = cart.getBasket(storeName);
+        Basket basket = getCart().getBasket(storeName);
         if (basket != null) {
             result = basket.deleteProduct(productName);
         }
@@ -85,7 +76,7 @@ public abstract class UserState {
      */
     public boolean editProductInCart(String productName, String storeName, int newAmount) {
         boolean result = false;
-        Basket basket = cart.getBasket(storeName);
+        Basket basket = getCart().getBasket(storeName);
         if (basket != null && newAmount > 0) {
             result = basket.editAmount(productName, newAmount);
         }
@@ -100,7 +91,7 @@ public abstract class UserState {
      * @return - true if add, false if not
      */
     public boolean addProductToCart(Store store, Product product, int amount) {
-        return cart.addProduct(store, product,amount);
+        return getCart().addProduct(store, product,amount);
     }
 
     /**
@@ -108,7 +99,7 @@ public abstract class UserState {
      * @return true if the cart bought, otherwise false
      */
     public boolean reserveCart() {
-        return cart.reserveCart();
+        return getCart().reserveCart();
     }
 
     /**
@@ -118,7 +109,7 @@ public abstract class UserState {
      * @param deliveryData the delivery data
      */
     public boolean buyCart(PaymentData paymentData, DeliveryData deliveryData) {
-        return cart.buy(paymentData,deliveryData);
+        return getCart().buy(paymentData,deliveryData);
     }
 
     /**
@@ -126,7 +117,7 @@ public abstract class UserState {
      * the function Cancel Cart
      */
     public void cancelCart() {
-        cart.cancel();
+        getCart().cancel();
     }
 
     /**
@@ -184,12 +175,11 @@ public abstract class UserState {
 
     /**
      * use case 3.5 - add request
-     * @param requestId
      * @param storeName - The id of the store
      * @param content - The content of the request
      * @return request if success, null else
      */
-    public abstract Request addRequest(int requestId, String storeName, String content);
+    public abstract Request addRequest(String storeName, String content);
 
     /**
      * use case 3.7 - watch purchase history
@@ -243,6 +233,24 @@ public abstract class UserState {
      */
     public abstract Response<Boolean> updateStorePolicy(String storeName, PurchasePolicy policy);
 
+
+    /**
+     * use case 4.3.1 - manage owner
+     * @param storeName the name of the store to be manager of
+     * @param userName the user to be manager of the store
+     * @return
+     */
+    public abstract Response<Boolean> addOwner(String storeName, String userName);
+
+    /**
+     * use case 4.3.2 - approve manage owner
+     * @param storeName the name of the store to be manager of
+     * @param userName the user to be manager of the store
+     * @return
+     */
+    public abstract Response<Boolean> approveManageOwner(String storeName, String userName);
+
+
     /**
      * use case 4.5 - add manager
      * @param subscribe
@@ -275,13 +283,13 @@ public abstract class UserState {
      * @param storeName
      * @return
      */
-    public abstract Response<Boolean> removeManager(String userName, String storeName);
+    public abstract Response<Boolean> removeManager(Subscribe userName, String storeName);
 
     /**
      * use case 4.9.1 - view request
-     * @param storeName
+     * @param store
      */
-    public abstract List<Request> viewRequest(String storeName);
+    public abstract List<Request> viewRequest(Store store);
 
     /**
      * use case 4.9.2 - replay to Request
@@ -290,7 +298,7 @@ public abstract class UserState {
      * @param content
      * @return Request if replay, null else
      */
-    public abstract Response<Request> replayToRequest(String storeName, int requestID, String content);
+    public abstract Response<Request> replayToRequest(String storeName, Integer requestID, String content);
 
 
     /**
@@ -319,4 +327,15 @@ public abstract class UserState {
     public abstract void deleteReceivedNotifications(List<Integer> notificationsId);
 
     public abstract Boolean sendMyNotifications();
+
+    /**
+     * use case 3.1 logout
+     * @param sessionNumber
+     * @return false, this cant be done from guset
+     */
+    public synchronized boolean setSessionNumber(Integer sessionNumber) {
+        return false;
+    }
+
+
 }

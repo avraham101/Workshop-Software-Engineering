@@ -8,6 +8,7 @@ import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 import org.junit.After;
 import org.junit.Before;
+import Utils.*;
 
 import java.util.*;
 
@@ -33,6 +34,7 @@ public class AcceptanceTests {
 
     @Before
     public  void setUpAll(){
+        Utils.TestMode();
         bridge = AcceptanceTestsDriver.getBridge();
         users = new ArrayList<>();
         stores = new ArrayList<>();
@@ -225,14 +227,11 @@ public class AcceptanceTests {
             UserTestData owner = store.getStoreOwner();
             registerAndLogin(owner);
             bridge.openStore(owner.getId(),store.getStoreName());
-            bridge.appointOwnerToStore(owner.getId(),store.getStoreName(),admin.getUsername());
+            bridge.appointOwnerToStoreDirectly(owner.getId(),store.getStoreName(),admin.getUsername());
+            bridge.logout(owner.getId());
         }
 
         bridge.logout(admin.getId());
-
-
-
-
     }
 
 
@@ -276,11 +275,6 @@ public class AcceptanceTests {
         addProducts(products);
         registerAndLogin(user);
     }
-    protected  void addUserAndStores(UserTestData user){
-        registerAndLogin(user);
-        addStores(stores);
-
-    }
 
 
     protected  void registerUsers(List<UserTestData> usersToRegister){
@@ -299,8 +293,57 @@ public class AcceptanceTests {
         this.supplySystem = supplySystem;
     }
 
+    protected void removeUser(String username){
+        UserTestData user = getUserByName(username);
+        if(user!=null)
+            this.bridge.logout(user.getId());
+        this.bridge.removeUser(username);
+    }
+
+    private UserTestData getUserByName(String username) {
+        for(UserTestData user : users)
+            if(user.getUsername().equals(username))
+                return user;
+        return null;
+    }
+
+    protected void removeUsers(List<String> users){
+        for(String user : users)
+            removeUser(user);
+    }
+
+
+    protected void removeProduct(ProductTestData product){
+        this.bridge.removeProduct(product);
+    }
+
+    protected void removeProducts(List<ProductTestData> products){
+        for(ProductTestData product : products)
+            removeProduct(product);
+    }
+
+    protected void removeStore(StoreTestData store){
+        this.bridge.removeStore(store);
+    }
+
+    protected void removeStores(List<StoreTestData> stores){
+        for(StoreTestData store : stores)
+            removeStore(store);
+    }
+
+    public void removeUserStoresAndProducts(UserTestData user){
+        removeProducts(products);
+        removeStores(stores);
+        removeUser(user.getUsername());
+    }
+
+    public boolean register(String username, String password){
+        return bridge.register(username,password);
+    }
+
     @After
     public  void tearDownAll(){
+        removeUsers(Arrays.asList(admin.getUsername(),users.get(0).getUsername(),users.get(1).getUsername(),users.get(3).getUsername()));
         bridge.resetSystem();
     }
 }

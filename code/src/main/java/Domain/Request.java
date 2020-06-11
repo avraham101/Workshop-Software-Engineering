@@ -1,21 +1,43 @@
 package Domain;
 
-import java.util.concurrent.atomic.AtomicReference;
+import java.io.Serializable;
+import javax.persistence.*;
 
-public class Request {
+@Entity
+@Table(name="request")
+public class Request implements Serializable {
 
+    public Request() {
+    }
+
+    @Column(name="sender",nullable = false)
     private String senderName;
+
+    @Column(name="store")
     private String storeName;
+
+    @Column(name="content",nullable = false)
     private String content;
-    private AtomicReference<String> comment;
-    private int id;
+
+    @Column(name="comment")
+    private String comment;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private Integer id;
 
     public Request(String senderName, String storeName, String content,int id) {
         this.senderName = senderName;
         this.storeName=storeName;
         this.content = content;
-        this.id=id;
-        comment=new AtomicReference<>(null);
+        //this.id=id;
+    }
+
+    public Request(String userName, String storeName, String content) {
+        this.senderName = userName;
+        this.storeName=storeName;
+        this.content = content;
     }
 
     // ============================ getters & setters ============================ //
@@ -24,42 +46,33 @@ public class Request {
         return senderName;
     }
 
-    public void setSenderName(String senderName) {
-        this.senderName = senderName;
-    }
 
     public String getStoreName() {
         return storeName;
-    }
-
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
     }
 
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getComment() {return comment.get();}
-
-    public AtomicReference<String> getCommentReference() {
+    public String getComment() {
         return comment;
-    }
-
-    public void setComment(AtomicReference<String> comment) {
-        this.comment = comment;
     }
 
     public int getId() {
         return id;
     }
 
+    public synchronized boolean setComment(String comment) {
+        if(this.comment==null) {
+            this.comment = comment;
+            return true;
+        }
+        return false;
+    }
+
     public void setId(int id) {
-        this.id = id;
+        this.id=id;
     }
 
     // ============================ getters & setters ============================ //

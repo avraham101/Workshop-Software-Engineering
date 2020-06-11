@@ -2,42 +2,114 @@ package Domain;
 
 import DataAPI.*;
 import Domain.Discount.Discount;
+import Domain.Notification.RemoveNotification;
 import Domain.PurchasePolicy.PurchasePolicy;
+import Domain.Notification.Notification;
+import Persitent.Cache;
+import Persitent.Dao.PermissionDao;
+import Persitent.DaoHolders.SubscribeDaoHolder;
+import Persitent.DaoInterfaces.IRequestDao;
 import Publisher.Publisher;
+import Publisher.SinglePublisher;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
+import javax.persistence.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name="Subscribe")
 public class Subscribe extends UserState{
 
+    @Id
+    @Column(name="username")
     private String userName; //unique
+
+    @Column(name="password")
     private String password;
-    private ConcurrentHashMap<String, Permission> permissions; //map of <storeName, Domain.Permission>
+
+    @OneToOne(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name="username",referencedColumnName = "username")
+    private Cart cart;
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade=CascadeType.ALL)
+    @MapKeyColumn(name = "store")
+    @JoinColumn(name="owner",referencedColumnName = "username",insertable = false,updatable = false)
+    private Map<String, Permission> permissions; //map of <storeName, Domain.Permission>
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="givenby",referencedColumnName = "username",insertable = false,updatable = false)
     private List<Permission> givenByMePermissions; //map of <storeName, Domain.Permission>
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade=CascadeType.DETACH)
+    @JoinColumn(name="buyer",referencedColumnName = "username",updatable = false)
     private List<Purchase> purchases;
+
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name="sender",referencedColumnName = "username",insertable = false,updatable = false)
     private List<Request> requests;
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="writer",referencedColumnName = "username",insertable = false,updatable = false)
     private List<Review> reviews;
-    private AtomicInteger sessionNumber;
-    private AtomicInteger notificationNumber;
-    private ReentrantReadWriteLock lock;
-    private Publisher publisher;
-    private ConcurrentLinkedQueue<Notification> notifications;
+
+    @Column(name="sessionNumber")
+    private Integer sessionNumber;
+
+    @Transient
+    private final ReentrantReadWriteLock lock;
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="subscribe",referencedColumnName = "username",insertable = false,updatable = false)
+    private List<Notification<?>> notifications;
+
+    @Transient
+    private final SubscribeDaoHolder daos;
+
+    @Transient
+    private static Cache cache;
+
 
     public Subscribe(String userName, String password) {
+        this.cart = new Cart(userName);
         initSubscribe(userName,password);
+        lock = new ReentrantReadWriteLock();
+        daos=new SubscribeDaoHolder();
+        cache = new Cache();
+    }
+
+    public Subscribe() {
+        lock=new ReentrantReadWriteLock();
+        daos=new SubscribeDaoHolder();
+        cache=new Cache();
+    }
+
+    @Override
+    public Cart getCart() {
+        if(this.cart!=null)
+            return this.cart;
+        return daos.getCartDao().find(userName);
     }
 
     public Subscribe(String userName, String password, Cart cart) {
         this.cart = cart;
         initSubscribe(userName,password);
+        lock = new ReentrantReadWriteLock();
+        daos=new SubscribeDaoHolder();
+        cache=new Cache();
     }
 
     private void initSubscribe(String userName, String password) {
-        notifications=new ConcurrentLinkedQueue();
-        lock=new ReentrantReadWriteLock();
+        notifications=new CopyOnWriteArrayList<>();
         this.userName = userName;
         this.password = password;
         permissions=new ConcurrentHashMap<>();
@@ -45,8 +117,7 @@ public class Subscribe extends UserState{
         purchases=new ArrayList<>();
         requests=new ArrayList<>();
         reviews = new LinkedList<>();
-        sessionNumber=new AtomicInteger(-1);
-         notificationNumber = new AtomicInteger(0);
+        sessionNumber=-1;
     }
 
     /**
@@ -63,13 +134,32 @@ public class Subscribe extends UserState{
 
 
     /**
+     * 2.7.4 add product to cart
+     * @param store - the store of the product
+     * @param product - the product to add
+     * @param amount - the amount of the product
+     * @return
+     */
+    @Override
+    public boolean addProductToCart(Store store, Product product, int amount) {
+        cart=daos.getCartDao().find(userName);
+        boolean output= super.addProductToCart(store, product, amount);
+        if(output){
+            return daos.getCartDao().replaceCart(cart);
+        }
+        return false;
+    }
+
+    /**
      * use case 2.8 - purchase cart and savePurchases
      * @param buyer - the name of the user
      */
     @Override
     public void savePurchase(String buyer) {
-        this.purchases.addAll(this.cart.savePurchases(buyer));
-        this.cart = new Cart();
+        this.purchases.addAll(this.cart.savePurchases(this.userName));
+        this.daos.getCartDao().remove(this.getCart()); //remove the old cart
+        this.cart = new Cart(this.userName);
+        this.daos.getCartDao().add(this.getCart()); //add the new cart
     }
 
     /**
@@ -79,8 +169,8 @@ public class Subscribe extends UserState{
      */
     @Override
     public boolean logout(User user) {
+        //setSessionNumber(-1);
         user.setState(new Guest());
-        sessionNumber.set(-1);
         return true;
     }
 
@@ -95,8 +185,11 @@ public class Subscribe extends UserState{
         Permission permission = new Permission(this);
         Store store = new Store(storeDetails.getName(), permission,storeDetails.getDescription());
         permission.setStore(store);
-        permission.addType(PermissionType.OWNER); //Always true, store just created.
+        // permission.addType(PermissionType.OWNER); //Always true, store just created.
         permissions.put(store.getName(),permission);
+        if(!daos.getStoreDao().addStore(store))
+            return null;
+        permission.addType(PermissionType.OWNER); //Always true, store just created.
         return store;
     }
 
@@ -107,8 +200,8 @@ public class Subscribe extends UserState{
      */
     @Override
     public boolean addReview(Review review) {
-        reviews.add(review);
-        return true;
+        return reviews.add(review);
+
     }
 
     /**
@@ -130,7 +223,7 @@ public class Subscribe extends UserState{
         lock.readLock().lock();
         for(Purchase p: purchases) {
             if(p.getStoreName().compareTo(storeName)==0) {
-                for(ProductData productData: p.getProduct()) {
+                for(ProductPeristentData productData: p.getProduct()) {
                     String productName = productData.getProductName();
                     if(productName.compareTo(other)==0) {
                         lock.readLock().unlock();
@@ -145,16 +238,18 @@ public class Subscribe extends UserState{
 
     /**
      * use case 3.5 - add request
-     * @param requestId
      * @param storeName - The id of the store
      * @param content - The content of the request
      * @return true if success, false else
      */
     @Override
-    public Request addRequest(int requestId, String storeName, String content){
-        Request request = new Request(userName, storeName, content,requestId);
+    public Request addRequest(String storeName, String content){
+        Request request = new Request(userName, storeName, content);
         requests.add(request);
-        return request;
+        IRequestDao requestDao = daos.getRequestDao();
+        if(requestDao.addRequest(request))
+            return request;
+        return null;
     }
 
     /**
@@ -176,12 +271,36 @@ public class Subscribe extends UserState{
 
     @Override
     public Response<Boolean> addProductToStore(ProductData productData) {
-        Permission permission=permissions.get(productData.getStoreName());
+        String storeName=productData.getStoreName();
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
         if(permission==null)
             return new Response<>(false, OpCode.Dont_Have_Permission);
         if(!permission.canAddProduct())
             return new Response<>(false, OpCode.Dont_Have_Permission);
-        return permission.getStore().addProduct(productData);
+
+        Store cashStore = daos.getStoreDao().find(productData.getStoreName());
+        if(cashStore != null) {
+//            Permission storePermission = cashStore.getPermissions().get(this.getName());
+//            if(storePermission==null)
+//                return new Response<>(false, OpCode.Dont_Have_Permission);
+//            if(!storePermission.canAddProduct())
+//                return new Response<>(false, OpCode.Dont_Have_Permission);
+            Response<Boolean> output = cashStore.addProduct(productData);
+            if(output.getValue()) {
+                daos.getStoreDao().update(cashStore);
+                permission.setStore(cashStore);
+            }
+            return output;
+        }
+        return new Response<>(false,OpCode.Store_Not_Found);
+//        Store store = storeDao.find(permission.getStore().getName());
+//        Response<Boolean> output = store.addProduct(productData);
+//        if(output.getValue()) {
+//            daos.getStoreDao().update(store);
+//            permission.setStore(store);
+//
+//        }
+//        return output;
     }
 
     /**
@@ -192,12 +311,12 @@ public class Subscribe extends UserState{
      */
     @Override
     public Response<Boolean> removeProductFromStore(String storeName, String productName) {
-        Permission permission=permissions.get(storeName);
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
         if(permission==null)
             return new Response<>(false,OpCode.Dont_Have_Permission);
         if(!permission.canAddProduct())
             return new Response<>(false,OpCode.Dont_Have_Permission);
-        return permissions.get(storeName).getStore().removeProduct(productName);
+        return permission.getStore().removeProduct(productName);
     }
 
     /**
@@ -207,7 +326,7 @@ public class Subscribe extends UserState{
      */
     @Override
     public Response<Boolean> editProductFromStore(ProductData productData) {
-        Permission permission=permissions.get(productData.getStoreName());
+        Permission permission=daos.getStoreDao().find((productData.getStoreName())).getPermissions().get(userName);
         if(permission==null)
             return new Response<>(false, OpCode.Dont_Have_Permission);
         if(!permission.canAddProduct())
@@ -223,12 +342,15 @@ public class Subscribe extends UserState{
      */
     @Override
     public Response<Boolean> addDiscountToStore(String storeName, Discount discount) {
-        Permission permission=permissions.get(storeName);
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
         if(permission==null)
             return new Response<>(false, OpCode.Dont_Have_Permission);
         if(!permission.canCRUDPolicyAndDiscount())
             return new Response<>(false, OpCode.Dont_Have_Permission);
-        return permission.getStore().addDiscount(discount);
+        Response<Boolean> output= permission.getStore().addDiscount(discount);
+        if(output.getValue())
+            daos.getStoreDao().update(permission.getStore());
+        return output;
     }
     /**
      * 4.2.1.2 - remove discount
@@ -237,22 +359,68 @@ public class Subscribe extends UserState{
      */
     @Override
     public Response<Boolean> deleteDiscountFromStore(int discountId, String storeName) {
-        Permission permission=permissions.get(storeName);
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
         if(permission==null)
             return new Response<>(false, OpCode.Dont_Have_Permission);
         if(!permission.canCRUDPolicyAndDiscount())
             return new Response<>(false, OpCode.Dont_Have_Permission);
-        return permission.getStore().deleteDiscount(discountId);
+        Response<Boolean> output= permission.getStore().deleteDiscount(discountId);
+        if(output.getValue())
+            daos.getStoreDao().update(permission.getStore());
+        return output;
     }
 
     @Override
     public Response<Boolean> updateStorePolicy(String storeName, PurchasePolicy policy) {
-        Permission permission=permissions.get(storeName);
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
         if(permission==null)
             return new Response<>(false, OpCode.Dont_Have_Permission);
         if(!permission.canCRUDPolicyAndDiscount())
             return new Response<>(false, OpCode.Dont_Have_Permission);
-        return permission.getStore().addPolicy(policy);
+        Response<Boolean> output= permission.getStore().addPolicy(policy);
+        if(output.getValue())
+            daos.getStoreDao().update(permission.getStore());
+        return output;
+    }
+
+    /**
+     * use case 4.3.1 - manage owner
+     * @param storeName the name of the store to be manager of
+     * @param newOwner the user to be manager of the store
+     * @return
+     */
+    @Override
+    public Response<Boolean> addOwner(String storeName, String newOwner) {
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
+        if(permission==null)
+            return new Response<>(false,OpCode.Dont_Have_Permission);
+        Store store=permission.getStore();
+        if(store==null||!permission.isOwner())
+            return new Response<>(false,OpCode.Dont_Have_Permission);
+        Response<Boolean> output= store.addOwner(this.userName,newOwner);
+        if(output.getValue())
+            daos.getStoreDao().update(store);
+        return output;
+    }
+
+    /**
+     * use case 4.3.2 - approve manage owner
+     * @param storeName the name of the store to be manager of
+     * @param newOwner the user to be manager of the store
+     * @return
+     */
+    @Override
+    public Response<Boolean> approveManageOwner(String storeName, String newOwner) {
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
+        if(permission==null)
+            return new Response<>(false,OpCode.Dont_Have_Permission);
+        Store store=permission.getStore();
+        if(store==null||!permission.isOwner())
+            return new Response<>(false,OpCode.Dont_Have_Permission);
+        Response<Boolean> output= store.approveAgreement(this.userName,newOwner);
+        if(output.getValue())
+            daos.getStoreDao().update(store);
+        return output;
     }
 
     /**
@@ -263,11 +431,11 @@ public class Subscribe extends UserState{
      */
     @Override
     public Response<Boolean> addManager(Subscribe youngOwner, String storeName) {
-        Permission permission=permissions.get(storeName);
+        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
         if(permission==null)
             return new Response<>(false,OpCode.Dont_Have_Permission);
         Store store=permission.getStore();
-        if(store==null||!permission.canAddOwner())
+        if(store==null||! permission.canAddManager())
             return new Response<>(false,OpCode.Dont_Have_Permission);
         //create new permission process
         Permission newPermission=new Permission(youngOwner,store);
@@ -275,6 +443,8 @@ public class Subscribe extends UserState{
             youngOwner.getPermissions().put(storeName, newPermission);
             lock.writeLock().lock();
             givenByMePermissions.add(newPermission);
+            newPermission.setGivenBy(userName);
+            daos.getPermissionDao().addPermission(newPermission);
             lock.writeLock().unlock();
             return new Response<>(true,OpCode.Success);
         }
@@ -298,8 +468,13 @@ public class Subscribe extends UserState{
                 for(PermissionType type: permissions)
                     added=added|p.addType(type);
                 lock.readLock().unlock();
-                if(added)
-                    return new Response<>(true,OpCode.Success);
+                if(added) {
+                    Cache cache = new Cache();
+                    Subscribe managerWithNewPermissions = cache.findSubscribe(userName);
+                    if(managerWithNewPermissions!=null)
+                        managerWithNewPermissions.permissions.put(storeName,p); //if he is logged in he will get permissions in real time
+                    return new Response<>(true, OpCode.Success);
+                }
                 return new Response<>(false,OpCode.Already_Exists);
             }
         }
@@ -323,8 +498,13 @@ public class Subscribe extends UserState{
                 for(PermissionType type: permissions)
                     removed=removed|p.removeType(type);
                 lock.readLock().unlock();
-                if(removed)
-                    return new Response<>(true,OpCode.Success);
+                if(removed) {
+                    Cache cache = new Cache();
+                    Subscribe managerWithNewPermissions = cache.findSubscribe(userName);
+                    if(managerWithNewPermissions!=null)
+                        managerWithNewPermissions.permissions.put(storeName,p); //if he is logged in he will get permissions in real time
+                    return new Response<>(true, OpCode.Success);
+                }
                 return new Response<>(false,OpCode.Invalid_Permissions);
             }
         }
@@ -334,20 +514,23 @@ public class Subscribe extends UserState{
 
     /**
      * use case 4.7 - remove manager
-     * @param userName
+     * @param xManager
      * @param storeName
      * @return
      */
     @Override
-    public Response<Boolean>  removeManager(String userName, String storeName) {
+    public Response<Boolean>  removeManager(Subscribe xManager, String storeName) {
         if(!permissions.containsKey(storeName))
             return new Response<>(false,OpCode.Dont_Have_Permission);
 
         for(Permission p: givenByMePermissions) {
-            if (p.getStore().getName().equals(storeName) && p.getOwner().getName().equals(userName)) {
+            if (p.getStore().getName().equals(storeName) && p.getOwner().getName().equals(xManager.userName)) {
                 lock.writeLock().lock();
-                p.getOwner().removeManagerFromStore(storeName);
+                //Permission perm = daos.getPermissionDao().findPermission(p);
+
+                cache.findSubscribe(p.getOwner().getName()).removeManagerFromStore(storeName);
                 givenByMePermissions.remove(p);
+                xManager.getPermissions().remove(storeName);
                 lock.writeLock().unlock();
                 return new Response<>(true,OpCode.Success);
             }
@@ -366,36 +549,40 @@ public class Subscribe extends UserState{
         lock.writeLock().lock();
         for(Permission p: givenByMePermissions) {
             if (p.getStore().getName().equals(storeName)) {
-                p.getOwner().removeManagerFromStore(storeName);
+                cache.findSubscribe(p.getOwner().getName()).removeManagerFromStore(storeName);
                 permission=p;
             }
         }
         if(permission!=null)
             givenByMePermissions.remove(permission);
         lock.writeLock().unlock();
-        Store store=permissions.get(storeName).getStore();
+        Store store=daos.getStoreDao().find(storeName);
+        //Store store=permissions.get(storeName).getStore();
         //remove the permission from the user
+        Permission p=daos.getPermissionDao().findPermission(permissions.get(storeName));
         permissions.remove(storeName);
         //remove the permission from the store
         store.getPermissions().remove(userName);
-        //TODO real time trough this
-        sendNotification( new Notification<>(storeName,OpCode.Removed_From_Management,notificationNumber.getAndIncrement()));
-
+        removePermission(p);
+        store.removeAgreement(userName);
+        store.approveAgreementsOfUser(userName);
+        daos.getStoreDao().update(store);
+        sendNotification( new RemoveNotification(storeName,OpCode.Removed_From_Management));
     }
+
     /**
      * use case 4.9.1 - view request
-     * @param storeName
+     * @param store
      * @return
      */
     @Override
-    public List<Request> viewRequest(String storeName) {
+    public List<Request> viewRequest(Store store) {
         List<Request> output = new LinkedList<>();
-        if(storeName==null || !permissions.containsKey(storeName))
+        if( !permissions.containsKey(store.getName()))
             return output;
-        Permission permission = permissions.get(storeName);
+        Permission permission = daos.getStoreDao().find(store.getName()).getPermissions().get(userName);
         if(permission != null){
-            Store store = permission.getStore();
-            output = new LinkedList<>(store.getRequests().values());
+            output = new LinkedList<>(permission.getStore().getRequests().values());
         }
         return output;
     }
@@ -408,16 +595,22 @@ public class Subscribe extends UserState{
      * @return
      */
     @Override
-    public Response<Request> replayToRequest(String storeName, int requestID, String content) {
-        if((storeName==null || content==null))
+    public Response<Request> replayToRequest(String storeName, Integer requestID, String content) {
+        if(requestID==null || storeName==null || content==null)
             return new Response<>(null, OpCode.InvalidRequest);
-        Permission permission = permissions.get(storeName);
+        Permission permission = daos.getStoreDao().find(storeName).getPermissions().get(userName);
         if(permission == null)
             return new Response<>(null, OpCode.Dont_Have_Permission);
         Store store = permission.getStore();
+        Request request = store.getRequests().get(requestID);
         if(store!=null &&
-                store.getRequests().containsKey(requestID) &&
-                store.getRequests().get(requestID).getCommentReference().compareAndSet(null, content)) {
+                request!=null &&
+                request.setComment(content)) {
+            daos.getRequestDao().update(request);
+
+            Store storeToUpdate = daos.getStoreDao().find(storeName);
+            if(storeToUpdate !=null)
+                storeToUpdate.getRequests().put(requestID,request);
             return new Response<>(store.getRequests().get(requestID),OpCode.Success);
         }
         return new Response<>(null, OpCode.Dont_Have_Permission);
@@ -430,7 +623,16 @@ public class Subscribe extends UserState{
      */
     @Override
     public boolean canWatchStoreHistory(String storeName) {
-        return permissions.containsKey(storeName);
+        Store store = daos.getStoreDao().find(storeName);
+        Permission permission = store.getPermissions().get(this.userName);
+        if(permission==null)
+            return false;
+        permissions.put(storeName,permission);
+        return true;
+    }
+
+    private void removePermission(Permission p) {
+        daos.getPermissionDao().removePermissionFromSubscribe(p,this);
     }
 
     /**
@@ -454,52 +656,20 @@ public class Subscribe extends UserState{
         return password;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public ConcurrentHashMap<String, Permission> getPermissions() {
+    public Map<String, Permission> getPermissions() {
         return permissions;
-    }
-
-    public void setPermissions(ConcurrentHashMap<String, Permission> permissions) {
-        this.permissions = permissions;
     }
 
     public List<Permission> getGivenByMePermissions() {
         return givenByMePermissions;
     }
 
-    public void setGivenByMePermissions(List<Permission> givenByMePermissions) {
-        this.givenByMePermissions = givenByMePermissions;
-    }
-
-    public List<Purchase> getPurchese() {
-        return purchases;
-    }
-
-    public void setPurchese(List<Purchase> purchases) {
-        this.purchases = purchases;
-    }
-
     public List<Request> getRequests() {
         return requests;
     }
 
-    public void setRequests(List<Request> requests) {
-        this.requests = requests;
-    }
-
     public List<Purchase> getPurchases() {
         return purchases;
-    }
-
-    public void setPurchases(List<Purchase> purchases) {
-        this.purchases = purchases;
     }
 
     @Override
@@ -507,14 +677,34 @@ public class Subscribe extends UserState{
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
-
-    public AtomicInteger getSessionNumber() {
+    public synchronized Integer getSessionNumber() {
         return sessionNumber;
     }
 
+    @Override
+    public synchronized boolean setSessionNumber(Integer sessionNumber) {
+        if(sessionNumber!=-1 && this.sessionNumber==-1) { //login
+            this.sessionNumber = sessionNumber;
+            return true;
+        }
+        if(sessionNumber==-1 && this.sessionNumber!=-1) { //logout
+            this.sessionNumber = sessionNumber;
+            return true;
+        }
+        return false;
+    }
+
+    //make permissions concurrent
+    public void initPermissions(){
+        this.notifications=new CopyOnWriteArrayList<>(this.notifications);
+        if(!(this.permissions instanceof ConcurrentHashMap)) {
+            this.permissions = new ConcurrentHashMap<>(this.permissions);
+            for (Permission p : this.permissions.values()){
+                p.getOwner().initPermissions();
+                p.getStore().initPermissions();
+            }
+        }
+    }
     /**
      * gets given user Status: admin/manager/regular
      * @return the user status
@@ -542,7 +732,6 @@ public class Subscribe extends UserState{
         List<Store> myStores = new ArrayList<>();
         for (Permission p: storesPermissions ) {
             myStores.add(p.getStore());
-
         }
         if(myStores.isEmpty())
             return null;
@@ -556,26 +745,26 @@ public class Subscribe extends UserState{
      */
     @Override
     public Set<StorePermissionType> getPermissionsForStore(String storeName) {
-     Permission permission = permissions.get(storeName);
-     if(permission==null)
-         return null;
-     Set<StorePermissionType> permissionsForStore = new HashSet<>();
-     HashSet<PermissionType> permissionTypes= permission.getPermissionType();
-     if(permissionTypes.contains(PermissionType.OWNER)){
-         permissionsForStore.add(StorePermissionType.OWNER);
-         return permissionsForStore;
-     }
-     if(permission.canAddProduct())
-         permissionsForStore.add(StorePermissionType.PRODUCTS_INVENTORY);
-     if(permission.canAddOwner())
-         permissionsForStore.add(StorePermissionType.ADD_OWNER);
-     if(permission.canAddManager())
-         permissionsForStore.add(StorePermissionType.ADD_MANAGER);
-     if(!givenByMePermissions.isEmpty())
-         permissionsForStore.add(StorePermissionType.DELETE_MANAGER);
-     if(permissionTypes.contains(PermissionType.CRUD_POLICY_DISCOUNT))
-         permissionsForStore.add(StorePermissionType.CRUD_POLICY_DISCOUNT);
-     return permissionsForStore;
+        Permission permission = daos.getStoreDao().find(storeName).getPermissions().get(userName);
+        if(permission==null)
+            return null;
+        Set<StorePermissionType> permissionsForStore = new HashSet<>();
+        HashSet<PermissionType> permissionTypes= permission.getPermissionType();
+        if(permissionTypes.contains(PermissionType.OWNER)){
+            permissionsForStore.add(StorePermissionType.OWNER);
+            return permissionsForStore;
+        }
+        if(permission.canAddProduct())
+            permissionsForStore.add(StorePermissionType.PRODUCTS_INVENTORY);
+        if(permission.canAddOwner())
+            permissionsForStore.add(StorePermissionType.ADD_OWNER);
+        if(permission.canAddManager())
+            permissionsForStore.add(StorePermissionType.ADD_MANAGER);
+        if(!givenByMePermissions.isEmpty())
+            permissionsForStore.add(StorePermissionType.DELETE_MANAGER);
+        if(permissionTypes.contains(PermissionType.CRUD_POLICY_DISCOUNT))
+            permissionsForStore.add(StorePermissionType.CRUD_POLICY_DISCOUNT);
+        return permissionsForStore;
 
     }
 
@@ -595,36 +784,32 @@ public class Subscribe extends UserState{
     }
 
 
-
-    public void setPublisher(Publisher publisher) {
-        this.publisher=publisher;
-    }
-
     public void sendNotification(Notification<?> notification) {
-        notification.setId(notificationNumber.getAndIncrement());
-        notifications.add(notification);
-        sendAllNotifications();
+        if(daos.getNotificationDao().add(notification, this.getName())) {
+            notifications.add(notification);
+            sendAllNotifications();
+        }
     }
 
     public void sendAllNotifications() {
-        int id=sessionNumber.get();
+        int id=getSessionNumber();
+        Publisher publisher= SinglePublisher.getInstance();
         if(!notifications.isEmpty()&&publisher!=null&&id!=-1) {
             publisher.update(String.valueOf(id), new ArrayList<Notification>(notifications));
         }
     }
     @Override
     public void deleteReceivedNotifications(List<Integer> notificationsId) {
-
         List<Notification> remove = new LinkedList<>();
         for(Notification not: this.notifications) {
             for(int d:notificationsId) {
                 if(not.getId()==d){
+                    if(daos.getNotificationDao().remove(d))
                     remove.add(not);
                 }
             }
         }
         this.notifications.removeAll(remove);
-        //notifications.removeIf(n ->notificationsId.contains(n.getId()));
 
     }
 
@@ -633,6 +818,4 @@ public class Subscribe extends UserState{
         sendAllNotifications();
         return true;
     }
-
-
 }

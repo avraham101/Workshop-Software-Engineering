@@ -1,5 +1,6 @@
 package AcceptanceTests.AcceptanceTests;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,18 +20,24 @@ public class RegisterTest extends AcceptanceTests {
     public void setUp(){
         username = users.get(2).getUsername();
         password = users.get(2).getPassword();
+        removeUser(username);
     }
 
     @Test
     public void testRegisterSuccess(){
-       boolean isRegistered = bridge.register(username, password);
+       boolean isRegistered = register(username, password);
        assertTrue(isRegistered);
     }
 
     @Test
     public void testRegisterFailAlreadyRegistered(){
         testRegisterSuccess();
-        boolean isRegistered = bridge.register(username, password);
+        boolean isRegistered = register(username, password);
         assertFalse(isRegistered);
+    }
+
+    @After
+    public void tearDown(){
+        removeUser(username);
     }
 }

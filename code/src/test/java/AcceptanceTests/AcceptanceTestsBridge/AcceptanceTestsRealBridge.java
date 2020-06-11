@@ -5,15 +5,23 @@ import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.CategoryFilterTe
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.PriceRangeFilterTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.ProductNameFilterTestData;
+import AcceptanceTests.SystemMocks.PublisherMock;
 import DataAPI.*;
-import Domain.PermissionType;
-import Domain.Purchase;
-import Domain.Request;
+import DataAPI.PermissionType;
+import DataAPI.Purchase;
+import Domain.ProductPeristentData;
 import Domain.Review;
+import Persitent.Dao.*;
+import Persitent.DaoInterfaces.IProductDao;
+import Persitent.DaoInterfaces.IStoreDao;
+import Persitent.DaoInterfaces.ISubscribeDao;
+import Persitent.DaoProxy.*;
+import Publisher.SinglePublisher;
 import Service.ServiceAPI;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
@@ -228,9 +236,23 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-4.3---------------------------------//
     @Override
-    public boolean appointOwnerToStore(int id,String storeName, String username) {
+    public boolean appointOwnerToStoreDirectly(int id,String storeName, String username) {
+        boolean addManager = serviceAPI.addManagerToStore(id,storeName,username).getValue();
+        List<PermissionType> ownerPermission = new ArrayList<>(Collections.singletonList(PermissionType.OWNER));
+        boolean addPermission = serviceAPI.addPermissions(id, ownerPermission, storeName, username).getValue();
+        return addManager & addPermission;
+    }
+
+    @Override
+    public boolean appointOwnerToStore(int id, String storeName, String username) {
         return serviceAPI.manageOwner(id,storeName,username).getValue();
     }
+
+    @Override
+    public boolean approveManageOwner(int id, String storeName, String username){
+        return serviceAPI.approveManageOwner(id,storeName,username).getValue();
+    }
+
     //---------------------------Use-Case-4.3---------------------------------//
 
     //---------------------------Use-Case-4.5---------------------------------//
@@ -264,18 +286,18 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //---------------------------Use-Case-4.9---------------------------------//
     @Override
-    public HashSet<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName) {
-        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
+    public List<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName) {
+        List<RequestData> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
         List<ApplicationToStoreTestData> applications = buildApplicationsToStore(requests);
-        return new HashSet<>(applications);
+        return applications;
     }
 
     @Override
     public HashMap<ApplicationToStoreTestData, String> getUserApplicationsAndReplies(int id, String username, String storeName) {
-        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
+        List<RequestData> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
         HashMap<ApplicationToStoreTestData,String> appsAndReplies = new HashMap<>();
 
-        for(Request request : requests){
+        for(RequestData request : requests){
             if(request.getSenderName().equals(username)){
                 String reply = request.getComment();
                 ApplicationToStoreTestData application = buildApplicationToStore(request);
@@ -288,7 +310,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public List<ApplicationToStoreTestData> getUserApplications(int id,String username, String storeName) {
-        List<Request> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
+        List<RequestData> requests = serviceAPI.watchRequestsOfStore(id,storeName).getValue();
         return buildApplicationsToStore(requests);
     }
 
@@ -355,6 +377,51 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     public List<String> getAllUsers(int id) {
         return serviceAPI.getAllUsers(id).getValue();
     }
+
+    @Override
+    public void setPublisher(PublisherMock publisherMock) {
+        SinglePublisher.initPublisher(publisherMock);
+    }
+    //---------------------------------DB related----------------------------------//
+    @Override
+    public void removeUser(String username) {
+        ISubscribeDao subscribeDao = new SubscribeDaoProxy();
+        subscribeDao.remove(username);
+    }
+
+    @Override
+    public void removeProduct(ProductTestData productTestData) {
+        IProductDao productDao = new ProductDaoProxy(new CategoryDaoProxy());
+        productDao.removeProduct(productTestData.getProductName(), productTestData.getStoreName());
+    }
+
+    @Override
+    public void removeStore(StoreTestData store) {
+        IStoreDao storeDao = new StoreDaoProxy();
+        storeDao.removeStore(store.getStoreName());
+    }
+
+    /**
+     * use cse 6.6.1
+     * get the revenue today
+     * @param id - the id of the  user
+     * @return - the total amount of today revenue
+     */
+    @Override
+    public double getRevenueToday(int id) {
+        return serviceAPI.getRevenueToday(id).getValue();
+    }
+
+    @Override
+    public double getRevenueByDay(int id, DateTestData date) {
+        DateData day = new DateData(date.getDay(),date.getMonth(),date.getYear());
+        return serviceAPI.getRevenueByDay(id,day).getValue();
+    }
+
+    @Override
+    public void removeRevenues() {
+        new RevenueDaoProxy().remove(LocalDate.now());
+    }
     //--------------------------get managers of store---------------------------------//
 
 
@@ -368,7 +435,8 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public void resetSystem() {
         try {
-            this.serviceAPI = new ServiceAPI("admin", "admin");
+//            this.serviceAPI = new ServiceAPI("admin", "admin");
+            this.serviceAPI = null;
         }catch (Exception e)
         {
             e.printStackTrace();
@@ -380,8 +448,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     public void addProducts(int id,List<ProductTestData> products) {
         for(ProductTestData productTestData : products){
             ProductData productData = buildProductData(productTestData);
-            boolean test=serviceAPI.addProductToStore(id,productData).getValue();
-            int t =3;
+            serviceAPI.addProductToStore(id,productData);
         }
     }
 
@@ -497,8 +564,8 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
             Date date = new Date();
             for (Purchase purchase : history) {
                 HashMap<ProductTestData, Integer> productsAndAmountInPurchase = new HashMap<>();
-                List<ProductData> products = purchase.getProduct();
-                for (ProductData product : products) {
+                List<ProductPeristentData> products = purchase.getProduct();
+                for (ProductPeristentData product : products) {
                     productsAndAmountInPurchase.put(buildProductTestData(product)
                             , product.getAmount());
                     totalCost += product.getPrice() * product.getAmount();
@@ -513,6 +580,15 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
             return purchasesTestData;
         }
         return null;
+    }
+
+    private ProductTestData buildProductTestData(ProductPeristentData productData) {
+        String storeName = productData.getStore();
+        String productName = productData.getProductName();
+        int amountInStore = productData.getAmount();
+        double price = productData.getPrice();
+        String category = productData.getCategory();
+        return new ProductTestData(productName,storeName,amountInStore,price,category,null);
     }
 
     private ProductData buildProductData(ProductTestData product) {
@@ -537,7 +613,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     private DiscountTestData buildDiscountTestData(int id,String s) {
         String[] mid= s.split("\"");
         String product=mid[9];
-        int i=mid[12].indexOf('}');
+        int i=mid[12].indexOf(',');
         double percantage=Double.valueOf(mid[12].substring(1,i));
         return new DiscountTestData(percantage,product,id);
     }
@@ -572,14 +648,14 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return null;
     }
 
-    private List<ReviewTestData> buildReviewsTestData(List<Review> reviews) {
+    private List<ReviewTestData> buildReviewsTestData(List<ReviewData> reviews) {
         List<ReviewTestData> reviewsTestData  = new ArrayList<>();
-        for(Review review : reviews)
+        for(ReviewData review : reviews)
             reviewsTestData.add(buildReviewTestData(review));
         return reviewsTestData;
     }
 
-    private ReviewTestData buildReviewTestData(Review review) {
+    private ReviewTestData buildReviewTestData(ReviewData review) {
         return new ReviewTestData(review.getWriter(),review.getContent());
     }
 
@@ -609,15 +685,15 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
         return serviceAPI.answerRequest(id,requestId, reply, storeName).getValue() != null;
     }
 
-    private List<ApplicationToStoreTestData> buildApplicationsToStore(List<Request> requests) {
+    private List<ApplicationToStoreTestData> buildApplicationsToStore(List<RequestData> requests) {
         List<ApplicationToStoreTestData> applications = new ArrayList<>();
-        for(Request request : requests)
+        for(RequestData request : requests)
             applications.add(buildApplicationToStore(request));
         return applications;
     }
 
-    private ApplicationToStoreTestData buildApplicationToStore(Request request) {
-        return new ApplicationToStoreTestData(request.getStoreName(),request.getSenderName(),request.getContent());
+    private ApplicationToStoreTestData buildApplicationToStore(RequestData request) {
+        return new ApplicationToStoreTestData(request.getId(),request.getStoreName(),request.getSenderName(),request.getContent());
     }
 
     private Set<StorePermissionsTypeTestData> buildStorePermissionType(Set<StorePermissionType> permissionsTypeTestData) {
@@ -648,60 +724,4 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     //----------------------RealBridge aux functions--------------------------//
 
-//    public PurchaseTestData getPurchaseTestDataFromHistory(){
-//        List<Purchase>  history =  serviceAPI.watchMyPurchaseHistory();
-//        if(history==null)
-//            return null;
-//        HashMap<ProductTestData,Integer> productsAndAmountInPurchase = new HashMap<>();
-//        double totalCost=0;
-//        Date date = new Date();
-//        for (Purchase purchase: history) {
-//            List<ProductData> products = purchase.getProducts();
-//            for (ProductData product: products) {
-//                productsAndAmountInPurchase.put(buildProductTestData(product)
-//                        ,product.getAmount());
-//                totalCost+=product.getPriceAfterDiscount()*product.getAmount();
-//
-//            }
-//        }
-//        PurchaseTestData purchaseTestData = new PurchaseTestData
-//                (productsAndAmountInPurchase, date,totalCost);
-//        return  purchaseTestData;
-//    }
-
-
-//    public PurchaseTestData getPurchaseTestDataFromHistory(){
-//        List<Purchase>  history =  serviceAPI.watchMyPurchaseHistory();
-//        HashMap<ProductTestData,Integer> productsAndAmountInPurchase = new HashMap<>();
-//        double totalCost=0;
-//        Date date = new Date();
-//        for (Purchase purchase: history) {
-//            List<ProductData> products = purchase.getProducts();
-//            for (ProductData product: products) {
-//                productsAndAmountInPurchase.put(buildProductTestData(product)
-//                        ,product.getAmount());
-//                totalCost+=product.getPriceAfterDiscount()*product.getAmount();
-//
-//        for (Purchase purchase: purchaseHistory) {
-//            List<ProductData> products = purchase.getProducts();
-//            for (ProductData product: products) {
-//                productsAndAmountInPurchase.put(buildProductTestData(product)
-//                        ,product.getAmount());
-//            }
-//        }
-//
-//        PurchaseTestData purchaseTestData = new PurchaseTestData(productsAndAmountInPurchase,
-//                                                                date,
-//                                                                0.0);
-//        double totalAmount = purchaseTestData.calculateTotalAmount();
-//        purchaseTestData.setTotalAmount(totalAmount);
-//
-//        return purchaseTestData;
-//
-//
-//        }
-//        PurchaseTestData purchaseTestData = new PurchaseTestData
-//                (productsAndAmountInPurchase, date,totalCost);
-//        return  purchaseTestData;
-//    }
 }

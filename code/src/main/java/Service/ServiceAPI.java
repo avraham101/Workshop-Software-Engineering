@@ -2,7 +2,7 @@ package Service;
 
 import DataAPI.*;
 import Domain.*;
-import Publisher.Publisher;
+import EncoderDecoderConfig.Encoder;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.Set;
 public class ServiceAPI {
 
     private LogicManager logicManager;
-
+//    private Encoder encoder = new Encoder(); //TODO remove THIS
     /**
      * use case 1.1 - Init Trading System
      * acceptance test class : initialStartTest
@@ -24,6 +24,7 @@ public class ServiceAPI {
      * @throws Exception - system crashed exception
      */
     public ServiceAPI(String userName, String password) throws Exception{
+//        encoder.encodeAdmin(userName, password);
         logicManager = new LogicManager(userName, password);
     }
 
@@ -47,6 +48,7 @@ public class ServiceAPI {
      * @return Response with true value if the register complete, otherwise false
      */
     public Response<Boolean> register(String userName, String password) {
+//        encoder.encodeRegister(userName, password);
         return logicManager.register(userName,password);
     }
 
@@ -164,6 +166,7 @@ public class ServiceAPI {
      * @return true if store is created
      */
     public Response<Boolean> openStore(int id,StoreData storeDetails){
+//        encoder.encodeOpenStore(id, storeDetails);
         return logicManager.openStore(id,storeDetails);
     }
 
@@ -210,6 +213,7 @@ public class ServiceAPI {
      * @return if product was added
      */
     public Response<Boolean> addProductToStore(int id,ProductData productData){
+//        encoder.endodeAddProductToStore(id,productData);
         return logicManager.addProductToStore(id,productData);
     }
 
@@ -291,7 +295,7 @@ public class ServiceAPI {
     }
 
     /**
-     * use case 4.3
+     * use case 4.3.1
      * acceptance test class : AppointAnotherOwnerToStoreTest
      * @param id - user id
      * @param storeName - name of store
@@ -303,6 +307,27 @@ public class ServiceAPI {
     }
 
     /**
+     * //TODO acceptance test
+     * use case 4.3.2 - approve manage owner
+     * @param storeName the name of the store to be manager of
+     * @param userName the user to be manager of the store
+     * @return
+     */
+    public Response<Boolean> approveManageOwner(int id,String storeName, String userName){
+        return logicManager.approveManageOwner(id,storeName,userName);
+    }
+
+    /**
+     * get list of all the managers user with id need to approve in storeName
+     * @param id - user id
+     * @param storeName - store to approve
+     * @return
+     */
+    public Response<List<String>> getApprovedManagers(int id,String storeName){
+        return logicManager.getApprovedManagers(id,storeName);
+    }
+
+    /**
      * use case 4.5- add manager to store
      * acceptance test class : AppointManagerTest
      * @param id - of user
@@ -311,6 +336,7 @@ public class ServiceAPI {
      * @return if the manger was added
      */
     public Response<Boolean> addManagerToStore(int id,String storeName,String userName){
+//        encoder.encodeAddManagerToStore(id,storeName, userName);
         return logicManager.addManager(id,userName,storeName);
     }
 
@@ -324,6 +350,8 @@ public class ServiceAPI {
      * @return
      */
     public Response<Boolean> addPermissions(int id,List<PermissionType> permissions, String storeName, String userName){
+//        encoder.encodeAddPermissions(id,permissions,storeName,userName);
+//        encoder.saveFile();
         return logicManager.addPermissions(id,permissions,storeName,userName);
     }
 
@@ -359,7 +387,7 @@ public class ServiceAPI {
      * @param storeName
      * @return the request of the store to watch
      */
-    public Response<List<Request>> watchRequestsOfStore(int id,String storeName){
+    public Response<List<RequestData>> watchRequestsOfStore(int id,String storeName){
         return logicManager.viewStoreRequest(id,storeName);
     }
 
@@ -372,7 +400,7 @@ public class ServiceAPI {
      * @param storeName
      * @return the request with the apply
      */
-    public Response<Request> answerRequest(int id,int requestId,String content, String storeName){
+    public Response<RequestData> answerRequest(int id,int requestId,String content, String storeName){
         return logicManager.replayRequest(id,storeName,requestId,content);
     }
 
@@ -448,10 +476,6 @@ public class ServiceAPI {
         return logicManager.getManagersOfStoreUserManaged(id,storeName);
     }
 
-    public void setPublisher(Publisher pub) {
-        logicManager.setPublisher(pub);
-    }
-
     public void deleteRecivedNotifications(int id,List<Integer> notificationsId){
         logicManager.deleteReceivedNotifications(id,notificationsId);
     }
@@ -468,5 +492,24 @@ public class ServiceAPI {
 
     public Response<Boolean> getMyNotification(int id) {
        return logicManager.getMyNotification(id);
+    }
+
+    /**
+     * get the revenue of the trading system today
+     * @param id - the id of the user
+     * @return - the revenue today
+     */
+    public Response<Double> getRevenueToday(int id) {
+        return logicManager.getRevenueToday(id);
+    }
+
+    /**
+     * return the revenue of the trading system bu given day
+     * @param id - the id of the user
+     * @param day - the day we want
+     * @return - the total revenue
+     */
+    public Response<Double> getRevenueByDay(int id, DateData day) {
+        return logicManager.getRevenueByDate(id, day);
     }
 }

@@ -29,7 +29,7 @@ public class TestData {
     private HashMap<Data, PurchasePolicy> purchasePolicy;
     private HashMap<Data, HashMap<Product, Integer>> productsAndAmount;
     private HashMap<Data, BaseTerm> terms;
-
+    private HashMap<Data, HashMap<String, ProductInCart>> carts;
     /**
      * create data for tests
      */
@@ -49,6 +49,7 @@ public class TestData {
         setUpProductsAndAmountsData();
         setUpTerms();
         setUpDiscounts();
+        setUpCarts();
     }
 
     /**
@@ -76,10 +77,10 @@ public class TestData {
     private void setUpUsers() {
         users = new HashMap<>();
         users.put(Data.NULL, new Subscribe(null, null));
-        users.put(Data.ADMIN,new Subscribe("Admin","Admin"));
+        users.put(Data.ADMIN,new Subscribe("src/test/Admin", "src/test/Admin"));
         users.put(Data.VALID,new Subscribe("Yuval","Sabag"));
-        users.put(Data.NULL_NAME, new Subscribe(null, "Admin"));
-        users.put(Data.NULL_PASSWORD, new Subscribe("Admin", null));
+        users.put(Data.NULL_NAME, new Subscribe(null, "src/test/Admin"));
+        users.put(Data.NULL_PASSWORD, new Subscribe("src/test/Admin", null));
         users.put(Data.WRONG_NAME, new Subscribe("","Changed_Password"));
         users.put(Data.WRONG_PASSWORD, new Subscribe("Yossi",""));
         users.put(Data.VALID2,new Subscribe("Niv","Shirazi"));
@@ -139,7 +140,7 @@ public class TestData {
                 ,null,12,101, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.NULL_PRODUCT,new ProductData(null,null,null
                 ,null,1,10, null));
-        productsData.put(Data.EDIT,new ProductData("peanuts","Store","categoryYuval"
+        productsData.put(Data.EDIT,new ProductData("peanuts","Store","category"
                 ,null,3,11, PurchaseTypeData.IMMEDDIATE));
         productsData.put(Data.WRONG_NAME,new ProductData("peanuts1","Store","category"
                 ,null,1,10, PurchaseTypeData.IMMEDDIATE));
@@ -167,7 +168,8 @@ public class TestData {
     private void setUpBasketData() {
         basket = new HashMap<Data, HashMap<ProductData, Integer>>();
         HashMap <ProductData, Integer> productsInBasket = new HashMap<>();
-        productsInBasket.put(productsData.get(Data.VALID), 100);
+        ProductData productData =  productsData.get(Data.VALID);
+        productsInBasket.put( productData, productData.getAmount());
         basket.put(Data.VALID, productsInBasket);
     }
 
@@ -183,11 +185,14 @@ public class TestData {
         productsAndAmount = new HashMap<Data, HashMap<Product, Integer>>();
         HashMap <Product, Integer> productsAmount = new HashMap<>();
         HashMap <Product, Integer> productsAmount2 = new HashMap<>();
+        HashMap <Product, Integer> productsAmount3 = new HashMap<>();
         productsAmount.put(getRealProduct(Data.VALID), 100);
         productsAmount.put(getRealProduct(Data.VALID2), 100);
         productsAndAmount.put(Data.VALID, productsAmount);
         productsAmount2.put(getRealProduct(Data.VALID), 300);
         productsAndAmount.put(Data.LARGE_AMOUNT, productsAmount2);
+        productsAmount3.put(getRealProduct(Data.VALID),5);
+        productsAndAmount.put(Data.SMALL_AMOUNT,productsAmount3);
 
     }
 
@@ -318,6 +323,7 @@ public class TestData {
         requests.put(Data.NULL_NAME, new Request(users.get(Data.VALID).getName(), stores.get(Data.NULL_NAME).getName(), "where is the milk in this store?", 1));
         requests.put(Data.NULL_CONTENT, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), null, 1));
         requests.put(Data.WRONG_ID, new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), "where is the milk in this store?", -1));
+        requests.put(Data.WRONG_ID2,new Request(users.get(Data.VALID).getName(), stores.get(Data.VALID).getName(), "where is the milk in this store?", -2));
     }
 
     /**
@@ -325,11 +331,16 @@ public class TestData {
      */
     private void setUpPurchasePolicy() {
         purchasePolicy = new HashMap<>();
-        HashMap<String, Integer> amountPerProduct = new HashMap<>();
+        HashMap<String, ProductMinMax> amountPerProduct = new HashMap<>();
+        HashMap<String, ProductMinMax> amountPerProductInvalid = new HashMap<>();
         List<String> countries = new LinkedList<>();
         countries.add("Israel");
-        amountPerProduct.put(this.getProductData(Data.VALID).getProductName(),101);
-        amountPerProduct.put(this.getProductData(Data.VALID2).getProductName(),101);
+        ProductMinMax minMax = new ProductMinMax(100,10);
+        ProductMinMax minMaxInvalid = new ProductMinMax(10,11);
+        amountPerProduct.put(this.getProductData(Data.VALID).getProductName(), minMax);
+        amountPerProduct.put(this.getProductData(Data.VALID2).getProductName(), minMax);
+        amountPerProductInvalid.put(this.getProductData(Data.VALID).getProductName(), minMaxInvalid);
+
         // valid policies
         purchasePolicy.put(Data.VALID_BASKET_PURCHASE_POLICY, new BasketPurchasePolicy(210));
         purchasePolicy.put(Data.VALID_PRODUCT_PURCHASE_POLICY, new ProductPurchasePolicy(amountPerProduct));
@@ -338,10 +349,32 @@ public class TestData {
         // invalid policies
         purchasePolicy.put(Data.INVALID_BASKET_PURCHASE_POLICY, new BasketPurchasePolicy(-3));
         purchasePolicy.put(Data.NULL_PRODUCT_PURCHASE_POLICY, new ProductPurchasePolicy(null));
+        purchasePolicy.put(Data.MIN_GREATER_THAN_MAX, new ProductPurchasePolicy(amountPerProductInvalid));
         purchasePolicy.put(Data.EMPTY_PRODUCT_PURCHASE_POLICY, new ProductPurchasePolicy(new HashMap<>()));
         purchasePolicy.put(Data.INVALID_SYSTEM_PURCHASE_POLICY, new SystemPurchasePolicy(-3));
         purchasePolicy.put(Data.NULL_USER_PURCHASE_POLICY, new UserPurchasePolicy(null));
         purchasePolicy.put(Data.EMPTY_USER_PURCHASE_POLICY, new UserPurchasePolicy(new LinkedList<>()));
+
+    }
+
+    private void setUpCarts(){
+        carts = new HashMap<>();
+        ProductData productData = getProductData(Data.VALID);
+        Subscribe subscribe = getSubscribe(Data.VALID);
+        HashMap<String, ProductInCart> valid = new HashMap<>();
+        valid.put(productData.getProductName(), new ProductInCart(subscribe.getName(), productData.getStoreName(), productData.getProductName(),
+                        productData.getAmount(),productData.getPrice()));
+        carts.put(Data.VALID, valid);
+        valid = new HashMap<>();
+        valid.put(productData.getProductName(), new ProductInCart(subscribe.getName(), productData.getStoreName(), productData.getProductName(),
+                productData.getAmount() * 2,productData.getPrice()));
+        carts.put(Data.LARGE_AMOUNT, valid);
+        valid = new HashMap<>();
+        productData = getProductData(Data.WRONG_NAME);
+        valid.put(productData.getProductName(), new ProductInCart(subscribe.getName(), productData.getStoreName(), productData.getProductName(),
+                productData.getAmount(),productData.getPrice()));
+        carts.put(Data.WRONG_PRODUCT, valid);
+
     }
 
     // ============================ getters ============================ //
@@ -405,6 +438,8 @@ public class TestData {
     public PurchasePolicy getPurchasePolicy(Data data) {
         return purchasePolicy.get(data);
     }
+
+    public HashMap<String, ProductInCart> getCart(Data data) { return this.carts.get(data); }
 
     // ============================ getters ============================ //
 

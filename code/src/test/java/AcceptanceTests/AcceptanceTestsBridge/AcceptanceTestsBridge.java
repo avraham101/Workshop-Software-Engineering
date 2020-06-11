@@ -2,6 +2,7 @@ package AcceptanceTests.AcceptanceTestsBridge;
 
 import AcceptanceTests.AcceptanceTestDataObjects.*;
 import AcceptanceTests.AcceptanceTestDataObjects.FilterTestData.FilterTestData;
+import AcceptanceTests.SystemMocks.PublisherMock;
 import Systems.PaymentSystem.PaymentSystem;
 import Systems.SupplySystem.SupplySystem;
 
@@ -41,11 +42,13 @@ public interface AcceptanceTestsBridge {
     List<PurchaseTestData> getStorePurchasesHistory(int id,String storeName);
     List<PurchaseTestData> getUserPurchaseHistory(int id,String username);
     List<PurchaseTestData> getCurrentUserPurchaseHistory(int id);
+    boolean appointOwnerToStoreDirectly(int id,String storeName, String username);
     boolean appointOwnerToStore(int id,String storeName, String username);
+    boolean approveManageOwner(int id, String storeName, String username);
     boolean addPermissionToManager(int id,String storeName, String username, PermissionsTypeTestData productsInventory);
     boolean deletePermission(int id, String storeName, String username, PermissionsTypeTestData productsInventory);
     boolean writeReplyToApplication(int id, int requestId,String storeName, ApplicationToStoreTestData key, String value);
-    HashSet<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName);
+    List<ApplicationToStoreTestData> viewApplicationToStore(int id, String storeName);
     HashMap<ApplicationToStoreTestData,String> getUserApplicationsAndReplies(int id, String username,String storeName);
     List<ApplicationToStoreTestData> getUserApplications(int id,String username, String storeName);
     List<PurchaseTestData> userGetStorePurchasesHistory(int id,String storeName);
@@ -60,4 +63,11 @@ public interface AcceptanceTestsBridge {
     List<String> getAllManagersOfStore(String store);
     List<String> getManagersOfStoreIManaged(int id,String storeName);
     List<String> getAllUsers(int id);
+    void setPublisher(PublisherMock publisherMock);
+    void removeUser(String username);
+    void removeProduct(ProductTestData product);
+    void removeStore(StoreTestData store);
+    double getRevenueToday(int id);
+    double getRevenueByDay(int id, DateTestData date);
+    void removeRevenues();
 }

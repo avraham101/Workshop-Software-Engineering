@@ -21,6 +21,7 @@ public class AdminTest  {
         data=new TestData();
         Subscribe s=data.getSubscribe(Data.ADMIN);
         admin=new Admin(s.getName(),s.getPassword());
+
     }
 
     /**
@@ -40,7 +41,7 @@ public class AdminTest  {
     }
 
     @Test
-    public void  testGetStatusRegularSuccess(){
+    public void testGetStatusRegularSuccess(){
         assertEquals(StatusTypeData.ADMIN,admin.getStatus());
     }
 

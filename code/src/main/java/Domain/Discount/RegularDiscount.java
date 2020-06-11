@@ -2,17 +2,28 @@ package Domain.Discount;
 
 import Domain.Product;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class RegularDiscount implements Discount{
+@Entity
+@Table(name="regular_discount")
+public class RegularDiscount extends Discount {
+
+    @Column(name="product")
     private String product;
+
+    @Column(name="percantage")
     private double percantage;
 
     public RegularDiscount(String product, double percantage) {
         this.product = product;
         this.percantage = percantage;
+    }
+
+    public RegularDiscount() {
     }
 
     @Override

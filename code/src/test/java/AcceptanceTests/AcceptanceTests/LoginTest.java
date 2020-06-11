@@ -1,5 +1,6 @@
 package AcceptanceTests.AcceptanceTests;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,7 +25,7 @@ public class LoginTest extends AcceptanceTests {
         id = users.get(2).getId();
         username = users.get(2).getUsername();
         password = users.get(2).getPassword();
-        bridge.register(username,password);
+        register(username,password);
         notExistId = id*id;
         notExistUserName = username + username;
         notExistPassword = password + password;
@@ -61,6 +62,11 @@ public class LoginTest extends AcceptanceTests {
         testLoginSuccess();
         boolean isLoggedIn = bridge.login(id,username,password);
         assertFalse(isLoggedIn);
+    }
+
+    @After
+    public void tearDown(){
+        removeUser(username);
     }
 
 }

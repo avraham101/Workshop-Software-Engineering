@@ -4,6 +4,7 @@ import AcceptanceTests.AcceptanceTestDataObjects.BasketTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.CartTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -159,5 +160,12 @@ public class EditCartTest extends AcceptanceTests {
 
         assertFalse(isChanged1);
         assertEquals(expectedAmount,actualAmount1);
+    }
+
+    @After
+    public void tearDown(){
+        removeUser(user0.getUsername());
+        removeProducts(products);
+        removeStores(stores);
     }
 }

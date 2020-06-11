@@ -36,6 +36,7 @@ class ViewDeleteProductsInStore extends Component {
       else {
         let opt = ''+ received.reason;
         if(opt === 'Success') {
+          console.log(received.value);
           this.setState({products:received.value, updated_products:true})
         }
         else if(opt === 'Store_Not_Found‏') {
@@ -55,6 +56,8 @@ class ViewDeleteProductsInStore extends Component {
   /* the function print the product table */
   render_product_table() {
     let onClick = (element) => {
+      console.log("Reviews");
+      console.log(element.reviews);
       this.setState({
         productName: element.productName,
         category: element.category,
@@ -193,7 +196,7 @@ class ViewDeleteProductsInStore extends Component {
     return (
       <BackGroud>
         <Menu state={this.props.location.state} />
-        <Title title="Veiw Products In Store"/>
+        <Title title="View Products In Store"/>
         <h2 style={{textAlign:'center'}}>{this.props.location.state.storeName}</h2>
         {this.render_product()}
         {this.render_selected_product()}

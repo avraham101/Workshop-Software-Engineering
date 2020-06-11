@@ -4,10 +4,12 @@ import AcceptanceTests.AcceptanceTestDataObjects.PermissionsTypeTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ProductTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.ReviewTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -103,6 +105,15 @@ public class ManagerPermissionsTest extends AcceptanceTests {
     @Test
     public void getManagersOfStoreIManagedNotExistStore(){
         assertNull(bridge.getManagersOfStoreIManaged(superUser.getId(),newProduct.getProductName()));
+    }
+
+    @After
+    public void tearDown(){
+        removeProducts(products);
+        removeStores(stores);
+        removeUsers(new ArrayList<>(Arrays.asList(superUser.getUsername(),
+                                                manager.getUsername(),
+                                                newManager.getUsername())));
     }
 
 }

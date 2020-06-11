@@ -2,12 +2,18 @@ package AcceptanceTests.AcceptanceTests;
 
 import AcceptanceTests.AcceptanceTestDataObjects.ApplicationToStoreTestData;
 import AcceptanceTests.AcceptanceTestDataObjects.UserTestData;
+import AcceptanceTests.SystemMocks.PublisherMock;
 import javafx.util.Pair;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.springframework.test.context.event.annotation.AfterTestClass;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -38,11 +44,12 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
     }
 
     private void setUpApplicationsAndReplies() {
-        this.applications = new HashSet<>();
-        this.applicationsAndReplies = new HashMap<>();
+        applications = new HashSet<>();
+        applicationsAndReplies = new HashMap<>();
 
-        applications.add(new ApplicationToStoreTestData(storeName,asker.getUsername(),"app0"));
-        applications.add(new ApplicationToStoreTestData(storeName,asker.getUsername(),"app1"));
+        int TEST_ID = -1;
+        applications.add(new ApplicationToStoreTestData(TEST_ID,storeName,asker.getUsername(),"app0"));
+        applications.add(new ApplicationToStoreTestData(TEST_ID,storeName,asker.getUsername(),"app1"));
 
         int i = 0;
         for(ApplicationToStoreTestData app : applications) {
@@ -51,7 +58,7 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
             i++;
         }
 
-        ApplicationToStoreTestData wrongApp = new ApplicationToStoreTestData(storeName, asker.getUsername() + asker.getUsername(), "wrongApp");
+        ApplicationToStoreTestData wrongApp = new ApplicationToStoreTestData(TEST_ID,storeName, asker.getUsername() + asker.getUsername(), "wrongApp");
         wrongApplication = new Pair<>(wrongApp,"wrongRep");
     }
 
@@ -61,20 +68,21 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
 
     @Test
     public void viewApplicationToStoreTestSuccess(){
-        HashSet<ApplicationToStoreTestData> actualApplications = bridge.viewApplicationToStore(responder.getId(),storeName);
-        assertEquals(applications,actualApplications);
+        List<ApplicationToStoreTestData> actualApplications = bridge.viewApplicationToStore(responder.getId(),storeName);
+
+        assertEquals(applications,new HashSet<>(actualApplications));
     }
 
     @Test
     public void viewApplicationToStoreTestFailNotLoggedIn(){
         bridge.logout(responder.getId());
-        HashSet<ApplicationToStoreTestData> actualApplications = bridge.viewApplicationToStore(responder.getId(), storeName);
+        List<ApplicationToStoreTestData> actualApplications = bridge.viewApplicationToStore(responder.getId(), storeName);
         assertFalse(actualApplications.size() != 0);
     }
 
     @Test
     public void viewApplicationToStoreTestFailWrongStore(){
-        HashSet<ApplicationToStoreTestData> actualApplications = bridge.viewApplicationToStore(responder.getId(),storeName + storeName);
+        List<ApplicationToStoreTestData> actualApplications = bridge.viewApplicationToStore(responder.getId(),storeName + storeName);
         assertFalse(actualApplications.size() != 0);
     }
 
@@ -84,18 +92,33 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
 
     @Test
     public void replyApplicationToStoreTestSuccess(){
+        PublisherMock publisherMock=new PublisherMock();
+        bridge.setPublisher(publisherMock);
+     //   HashSet<ApplicationToStoreTestData> applications= bridge.viewApplicationToStore(responder.getId(),storeName);
         HashMap<ApplicationToStoreTestData,String> emptyAppAndRep = bridge.getUserApplicationsAndReplies(responder.getId(),asker.getUsername(),storeName);
         for(ApplicationToStoreTestData app : applications)
             assertFalse(emptyAppAndRep.containsKey(app));
 
-        int requestId = 1;
         for(Map.Entry<ApplicationToStoreTestData,String> appAndRep : applicationsAndReplies.entrySet()) {
+            int requestId = getRequestId(appAndRep.getKey());
             boolean isWritten = bridge.writeReplyToApplication(responder.getId(),requestId,storeName,appAndRep.getKey(),appAndRep.getValue());
             assertTrue(isWritten);
-            requestId++;
         }
         HashMap<ApplicationToStoreTestData,String> actualAppAndRep = bridge.getUserApplicationsAndReplies(responder.getId(), asker.getUsername(),storeName);
         assertEquals(applicationsAndReplies,actualAppAndRep);
+        //check notification
+        assertFalse(publisherMock.getNotificationList().isEmpty());
+
+    }
+
+    private int getRequestId(ApplicationToStoreTestData app) {
+        List<ApplicationToStoreTestData> actualApplications = bridge.viewApplicationToStore(responder.getId(),storeName);
+
+        for(ApplicationToStoreTestData actual : actualApplications){
+            if(actual.equals(app))
+                return actual.getId();
+        }
+        return -1;
     }
 
     @Test
@@ -103,7 +126,7 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
         bridge.logout(responder.getId());
 
         HashMap<ApplicationToStoreTestData,String> emptyAppAndRep = bridge.getUserApplicationsAndReplies(responder.getId(), asker.getUsername(),storeName);
-        assertTrue(emptyAppAndRep.size()==0);
+        assertEquals(0, emptyAppAndRep.size());
 
         int requestId = 1;
         for(Map.Entry<ApplicationToStoreTestData,String> appAndRep : applicationsAndReplies.entrySet()) {
@@ -136,4 +159,16 @@ public class ViewAndReplyApplicationToStore extends AcceptanceTests {
         assertFalse(emptyAppAndRep.containsKey(wrongApplication.getKey()));
     }
 
+    @After
+    public void tearDown() {
+        tearDownApplicationsAndReplies();
+        removeUser(asker.getUsername());
+        removeUser(responder.getUsername());
+        removeStores(stores);
+    }
+
+    private void tearDownApplicationsAndReplies() {
+        applications=new HashSet<>();
+        applicationsAndReplies=new HashMap<>();
+    }
 }

@@ -55,7 +55,7 @@ public class ProductController {
     @PostMapping("review")
     public ResponseEntity<?> postReview (@RequestParam(name="id") int id, @RequestBody String reviewDataStr){
         ReviewData reviewData = json.fromJson(reviewDataStr,ReviewData.class);
-        Response<Boolean> response =  SingleService.getInstance().writeReview(id,reviewData.getStoreName(),reviewData.getProductName(),reviewData.getContent());
+        Response<Boolean> response =  SingleService.getInstance().writeReview(id,reviewData.getStore(),reviewData.getProductName(),reviewData.getContent());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);

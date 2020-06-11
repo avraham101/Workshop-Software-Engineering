@@ -4,6 +4,8 @@ import Data.Data;
 import DataAPI.ProductData;
 import DataAPI.StoreData;
 import Domain.Store;
+import Stubs.CacheStub;
+import Utils.Utils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,6 +15,8 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
 
     @Before
     public void setUp() {
+        Utils.TestMode();
+        this.cashe=new CacheStub();
         super.setUp();
     }
 
@@ -31,9 +35,10 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
     /**
      *  use case 2.7.4 - add product to cart
      */
+
     @Override
-    public void testAddProductToCart() {
-        super.testAddProductToCart();
+    protected void testAddProductToCartInvalidStore(){
+        super.testAddProductToCartInvalidStore();
         testAddProductToCartNullProduct();
         testAddProductToCartNegativeAmount();
         testAddProductToCartZeroAmount();
@@ -77,30 +82,6 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
     }
 
     /**
-     * test use case 3.2 - Open Store
-     */
-    @Override
-    public void testOpenStore() {
-        super.testOpenStore();
-        StoreData storeData = data.getStore(Data.VALID);
-        Store store = stores.get(storeData.getName());
-        //This test check if store added
-        assertNotNull(store);
-        assertEquals(storeData.getName(),store.getName());
-        //This test check if can add store twiced
-        assertFalse(logicManager.openStore(data.getId(Data.VALID), data.getStore(Data.VALID)).getValue());
-    }
-
-    /**
-     * part of test use case 3.2 - Open Store
-     */
-    @Override
-    protected void testOpenStoreSucces(){
-        StoreData storeData = data.getStore(Data.VALID);
-        assertTrue(logicManager.openStore(data.getId(Data.VALID), storeData).getValue());
-    }
-
-    /**
      * part of use case 3.3 - write review
      * empty for overriding in extended class
      */
@@ -117,6 +98,7 @@ public class LogicManagerUserStubTest extends LogicManagerUserAndStoresStubs {
         setUpManagerAddedSubManagerAdded();
         assertNull(logicManager.getManagersOfStoreUserManaged(data.getId(Data.VALID),
                 data.getSubscribe(Data.VALID).getName()).getValue());
+        tearDownOpenStore();
     }
 
 
