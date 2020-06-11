@@ -19,19 +19,7 @@ class MenuSubscribe extends Component {
     this.getManageStoresHtml = this.getManageStoresHtml.bind(this);
     this.admin = false;
     this.manager = false;
-    this.state = {
-      color_0: '',
-      color_1: '',
-      color_2: '',
-      color_3: '',
-      color_4: '',
-      color_5: '',
-      color_6: '',
-      color_7: '',
-      color_8: '',
-      color_9: '',
-      color_10: '',
-    }
+    this.state = { }
     this.checkIfAdmin();
     this.checkIfManager();
   }
@@ -51,15 +39,19 @@ class MenuSubscribe extends Component {
   }
 
   getAdminWatchPurchaseHistoryHtml(){
+    let onHover = (event) => {
+      event.currentTarget.style.backgroundColor = WHITE_BLUE;
+    }
+    let onLeave = (event) => {
+        event.currentTarget.style.backgroundColor = '';
+    }
     return(
-        [<th onClick={()=> pass(history,"/admin/storehistory",this.fromPath,this.props.state)}
-            style={{background:this.state.color_9}}
-            onMouseOver={()=>this.setState({color_9: WHITE_BLUE})}
-            onMouseLeave={()=>this.setState({color_9: ''})}> Admin Watch Purchases </th>,
-        <th onClick={()=> pass(history,"/admin/watchRevenu",this.fromPath,this.props.state)}
-            style={{background:this.state.color_10}}
-            onMouseOver={()=>this.setState({color_10: WHITE_BLUE})}
-            onMouseLeave={()=>this.setState({color_10: ''})}> Admin Watch Revenu </th>]);
+        <th style={{margin:0, borderRight:'1px solid white'}}
+            onClick={()=> pass(history,"/admin/storehistory",this.fromPath,this.props.state)}
+            onMouseOver={onHover} onMouseLeave={onLeave}> Admin Watch Purchases </th>,
+        <th style={{margin:0, borderRight:'1px solid white'}}
+            onClick={()=> pass(history,"/admin/watchRevenu",this.fromPath,this.props.state)}
+            onMouseOver={onHover} onMouseLeave={onLeave}> Admin Watch Revenu </th>);
   }
 
   checkIfManager(){
@@ -77,11 +69,16 @@ class MenuSubscribe extends Component {
   }
 
   getManageStoresHtml(){
+    let onHover = (event) => {
+      event.currentTarget.style.backgroundColor = WHITE_BLUE;
+    }
+    let onLeave = (event) => {
+        event.currentTarget.style.backgroundColor = '';
+    }
     return(
-        <th onClick={()=> pass(history,"/storeManagement",this.fromPath,this.props.state)}
-            style={{background:this.state.color_6}}
-            onMouseOver={()=>this.setState({color_6: WHITE_BLUE})}
-            onMouseLeave={()=>this.setState({color_6: ''})}> Manage Stores </th>)
+        <th style={{margin:0, borderRight:'1px solid white'}}
+            onClick={()=> pass(history,"/storeManagement",this.fromPath,this.props.state)}
+            onMouseOver={onHover} onMouseLeave={onLeave}> Manage Stores </th>)
   }
 
   logout() {
@@ -97,45 +94,45 @@ class MenuSubscribe extends Component {
   }
 
   render() {
+    let onHover = (event) => {
+      event.currentTarget.style.backgroundColor = WHITE_BLUE;
+    }
+    let onLeave = (event) => {
+        event.currentTarget.style.backgroundColor = '';
+    }
+    let onLeaveMenu = (event) => {
+      event.currentTarget.style.backgroundColor = '#FFEB57';
+    }
     return (
         <header style={{backgroundColor: '#FFC242', borderBottom:'2px solid #B38118',marginBottom:0}}>
-          {/*<p> {(this.props.state!=undefined)?this.props.state.id:''} </p>*/}
           <table style={style_sheet}>
-          <tr>
-            <th onClick={() => pass(history,"/subscribe",this.fromPath,this.props.state)}
-                style={{background:this.state.color_0}}
-                onMouseOver={()=>this.setState({color_0: WHITE_BLUE})}
-                onMouseLeave={()=>this.setState({color_0: ''})}> Menu </th>
-            <th onClick={() => pass(history,"/viewStoresAndProducts",this.fromPath,this.props.state)}
-                style={{background:this.state.color_1}}
-                onMouseOver={()=>this.setState({color_1: WHITE_BLUE})}
-                onMouseLeave={()=>this.setState({color_1: ''})}> Watch Store and Products </th>
-            <th onClick={()=> pass(history,"/searchAndFilter",this.fromPath,this.props.state)}
-                style={{background:this.state.color_2}}
-                onMouseOver={()=>this.setState({color_2: WHITE_BLUE})}
-                onMouseLeave={()=>this.setState({color_2: ''})}> Search and Filter Products </th>
-            <th onClick={()=> pass(history,"/openStore",this.fromPath,this.props.state)}
-                style={{background:this.state.color_3}}
-                onMouseOver={()=>this.setState({color_3: WHITE_BLUE})}
-                onMouseLeave={()=>this.setState({color_3: ''})}> Open Store </th>
-            <th onClick={()=> pass(history,"/sendRequest",this.fromPath,this.props.state)}
-                style={{background:this.state.color_4}}
-                onMouseOver={()=>this.setState({color_4: WHITE_BLUE})}
-                onMouseLeave={()=>this.setState({color_4: ''})}> Send Request </th>
-            <th onClick={()=> pass(history,"/userWatchPurchasesHistory",this.fromPath,this.props.state)}
-                  style={{background:this.state.color_5}}
-                  onMouseOver={()=>this.setState({color_5: WHITE_BLUE})}
-                  onMouseLeave={()=>this.setState({color_5: ''})}> Purchases </th>
+          <tr style={{width:'100%'}}>
+            <th style={{margin:0, borderRight:'1px solid white', backgroundColor:'#FFEB57'}}
+                onClick={() => pass(history,"/subscribe",this.fromPath,this.props.state)}
+                onMouseOver={onHover} onMouseLeave={onLeaveMenu}> Menu </th>
+            <th style={{margin:0, borderRight:'1px solid white'}}
+                onClick={() => pass(history,"/viewStoresAndProducts",this.fromPath,this.props.state)}
+                onMouseOver={onHover} onMouseLeave={onLeave}> Watch Store and Products </th>
+            <th style={{margin:0, borderRight:'1px solid white'}}
+                onClick={()=> pass(history,"/searchAndFilter",this.fromPath,this.props.state)}
+                onMouseOver={onHover} onMouseLeave={onLeave}> Search and Filter Products </th>
+            <th style={{margin:0, borderRight:'1px solid white'}}
+                onClick={()=> pass(history,"/sendRequest",this.fromPath,this.props.state)}
+                onMouseOver={onHover} onMouseLeave={onLeave}> Send Request </th>
+            
+            <th style={{margin:0, borderRight:'1px solid white'}}
+                onClick={()=> pass(history,"/openStore",this.fromPath,this.props.state)}
+                onMouseOver={onHover} onMouseLeave={onLeave}> Open Store </th>
             { this.state.manager ? this.getManageStoresHtml() : ""}
-            <th onClick={()=>this.logout()}
-                style={{background:this.state.color_7}} 
-                onMouseOver={()=>this.setState({color_7: WHITE_BLUE})}
-                onMouseLeave={()=>this.setState({color_7: ''})}> Logout </th>
-            <th onClick={()=>pass(history,"/viewMyCart",this.fromPath,this.props.state)}
-                style={{background:this.state.color_8}} 
-                onMouseOver={()=>this.setState({color_8: WHITE_BLUE})}
-                onMouseLeave={()=>this.setState({color_8: ''})}> Watch My Cart </th>
             { this.state.admin ? this.getAdminWatchPurchaseHistoryHtml() : ""}
+            <th style={{margin:0, borderRight:'1px solid white'}}
+                onClick={()=> pass(history,"/userWatchPurchasesHistory",this.fromPath,this.props.state)}
+                onMouseOver={onHover} onMouseLeave={onLeave}> Purchases </th>
+            <th style={{margin:0, borderRight:'1px solid white'}}
+                onClick={()=>pass(history,"/viewMyCart",this.fromPath,this.props.state)}
+                onMouseOver={onHover} onMouseLeave={onLeave}> Watch My Cart </th>
+            <th onClick={()=>this.logout()}
+                onMouseOver={onHover} onMouseLeave={onLeave}> Logout </th>
           </tr>
         </table>
         <Notifications id={this.props.state.id}/>
@@ -151,6 +148,7 @@ const style_sheet = {
   backgroundColor: '#FFC242',
   fontFamily: "Arial",
   fontSize: "14px",
-  width:"99%",
+  width:"100%",
   height:'50px',
+  padding:0,
 }
