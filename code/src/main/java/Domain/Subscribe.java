@@ -15,6 +15,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -519,6 +520,7 @@ public class Subscribe extends UserState{
      * @return
      */
     @Override
+    @Transactional
     public Response<Boolean>  removeManager(Subscribe xManager, String storeName) {
         if(!permissions.containsKey(storeName))
             return new Response<>(false,OpCode.Dont_Have_Permission);
@@ -526,8 +528,6 @@ public class Subscribe extends UserState{
         for(Permission p: givenByMePermissions) {
             if (p.getStore().getName().equals(storeName) && p.getOwner().getName().equals(xManager.userName)) {
                 lock.writeLock().lock();
-                //Permission perm = daos.getPermissionDao().findPermission(p);
-
                 cache.findSubscribe(p.getOwner().getName()).removeManagerFromStore(storeName);
                 givenByMePermissions.remove(p);
                 xManager.getPermissions().remove(storeName);
@@ -632,7 +632,7 @@ public class Subscribe extends UserState{
     }
 
     private void removePermission(Permission p) {
-        daos.getPermissionDao().removePermissionFromSubscribe(p,this);
+        daos.getPermissionDao().removePermissionFromSubscribe(p);
     }
 
     /**
