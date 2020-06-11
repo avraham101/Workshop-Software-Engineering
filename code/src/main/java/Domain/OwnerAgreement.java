@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -74,12 +75,24 @@ public class OwnerAgreement implements Serializable {
                 return false;
             Subscribe mainOwner=cache.findSubscribe(givenBy);
             Subscribe subOwner=cache.findSubscribe(owner);
-            if(mainOwner!=null){
-                mainOwner.addManager(subOwner,store);
+            Subscribe originalOwner;
+            if(mainOwner!=null){ //check if db fell
+                if(mainOwner.addManager(subOwner,store).getValue()){
+                    originalOwner=mainOwner;
+                }
+                else{
+                    Map<String, Permission> originalPermissions = subOwner.getPermissions();
+                    Permission originalPermissionForStore = originalPermissions.get(store);
+                    String originalOwnerName =  originalPermissionForStore.getGivenBy();
+                     originalOwner=cache.findSubscribe(originalOwnerName);
+
+                }
+
                 List<PermissionType> permissionList=new ArrayList<>();
                 permissionList.add(PermissionType.OWNER);
-                mainOwner.addPermissions(permissionList,store,owner);
-                dao.update(mainOwner);
+                originalOwner.addPermissions(permissionList,store,owner);
+                //dao.update(mainOwner);
+                dao.update(originalOwner);
                 subOwner.sendNotification(new AddOwnerNotification(store));
                 dao.update(subOwner);
                 return true;
