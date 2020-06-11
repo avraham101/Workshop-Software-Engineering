@@ -573,7 +573,6 @@ public class LogicManager {
      * @param addresToDeliver - the address do Deliver the purchase
      * @return true is the purchase succeeded, otherwise false
      */
-    @Transactional
     public Response<Boolean> purchaseCart(int id, String country, PaymentData paymentData, String addresToDeliver) {
         loggerSystem.writeEvent("LogicManager","purchaseCart",
                 "reserveCart the products in the cart", new Object[] {paymentData, addresToDeliver});

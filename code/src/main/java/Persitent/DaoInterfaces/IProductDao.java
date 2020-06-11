@@ -8,4 +8,8 @@ public interface IProductDao {
     boolean removeProduct(Product product);
     Product find(Product keys);
     boolean removeProduct(String productName, String storeName);
+
+    void openTransaction();
+
+    void closeTransaction();
 }
