@@ -99,8 +99,20 @@ class BuyCart extends Component {
           else if(opt == 'Supply_Reject') {
             alert('supply regected: please check with doar israel. Sorry.')
           }
+          else if(opt == 'Basket_Policy_Failed') {
+              alert('The amount of products you try to buy is greater than the store policy allowed.')
+          }
+          else if(opt == 'Products_Policy_Failed') {
+              alert('The amount of one the products you try to buy is greater than the store policy allowed.')
+          }
+          else if(opt == 'Age_Policy_Failed') {
+              alert('Your age is too low.')
+          }
+          else if(opt == 'Country_Policy_Failed') {
+              alert('You cant buy from this country.')
+          }
           else {
-            alert(opt+", Cant Add Product to Store");
+            alert(opt+", Unexpected error. Can't buy.");
           }
         }
       };
