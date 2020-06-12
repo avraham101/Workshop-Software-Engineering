@@ -6,7 +6,13 @@ import Button from "../../../Component/Button";
 import {send} from '../../../Handler/ConnectionHandler';
 import {pass} from "../../../Utils/Utils";
 import DivBetter from "../../../Component/DivBetter";
+import {todayVisits,setTodayVisits} from "../../../Component/Notifications";
 
+var flag=true;
+
+export function reset_flag(){
+  flag=false;
+}
 
 class WatchDailyUsage extends Component {
 
@@ -93,7 +99,7 @@ class WatchDailyUsage extends Component {
       output.push(this.renderBar('admins',data.adminNumber, pre.adminNumber, '#D27CF7'));
       return (<div style={{float:'left', width:'100%'}}>
                 <div style={{float:'left', width:'99%'}}>
-                  <h3 style={{textAlign:'center'}}> {data.date} </h3>
+                  <h3 style={{textAlign:'center'}} onMouseOver= {()=>this.setState({})}> {data.date} </h3>
                 </div>
                 <div style={{float:'left', width:'90%', marginLeft:'5%', border:'1px solid black'}}>
                 {output}
@@ -229,17 +235,31 @@ class WatchDailyUsage extends Component {
         let to = { day:this.state.dEnd, month:this.state.mEnd, year:this.state.yEnd}; 
         let datesData = {
           fromDate: from,
-          toDate: to
+          toDate: to,
         }
+        //alert(id+' '+from.day+' '+from.month+' '+from.year+' '+to.day+' '+to.month+' '+to.year)
         send('/admin/visits?id='+id,'POST',datesData,(received)=>{
           if(received) {
             let opt = ''+received.reason;
+            alert(opt)
+            alert(received.value)
             if (opt === "Success") {
+              let list = received.value.slice(0,received.value.length-1);
+              let last=received.value[received.value.length-1];
+              setTodayVisits({
+                date: last.date,
+                guestNumber: last.guestNumber,
+                subscribeNumber: last.subscribeNumber,
+                managerNumber: last.managerNumber,
+                ownerNumber: last.ownerNumber,
+                adminNumber: last.adminNumber,
+              });
               this.setState(
                 {
-                  lst_enteries:received.value
+                  lst_enteries:list,
                 }
               );
+              this.forceUpdate();
             }
             else if(opt === "User_Not_Found") {
                 alert("Error - the user is not in the system");
@@ -290,13 +310,22 @@ class WatchDailyUsage extends Component {
       );
     }
 
+    refreshGraph(){
+      if(!flag){
+        flag=true;
+        this.setState({});
+        this.forceUpdate();
+      }
+      return this.renderGraph(todayVisits());
+    }
+
     render() {
         return (
             <BackGroud>
                 <Menu state={this.props.location.state}/>
                 <Title title="Daily Usage"/>
                 <body>
-                  {this.renderGraph(test)}
+                  {todayVisits() ? this.refreshGraph(): 'no dates entered' }
                   {this.renderSelectDate()}
                 </body>
             </BackGroud>
@@ -344,13 +373,4 @@ const select_style={
   display: "flex",
   justifyContent: "center",
   alignItems: "center"
-}
-
-const test = {
-  date: '02/12/1994',
-  guestNumber: 10,
-  subscribeNumber: 20,
-  managerNumber: 5,
-  ownerNumber: 30,
-  adminNumber: 2,
 }

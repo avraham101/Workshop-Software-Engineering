@@ -79,16 +79,15 @@ public class AdminController {
      * use case 6.5
      * get the daily visits from a period of time
      * @param id - the id of the admin
-     * @param fromDate - the date from in string
-     * @param toDate - the date to in string
+     * @param datesData - the dates from and to in string
      * @return - list of DayVisit
      */
     @PostMapping("visits")
     public ResponseEntity<?> getVisits(@RequestParam(name="id") int id,
-                                       @RequestParam String fromDate,
-                                       @RequestParam String toDate) {
-        DateData from = json.fromJson(fromDate, DateData.class);
-        DateData to = json.fromJson(toDate, DateData.class);
+                                       @RequestBody String datesData) {
+        Dates datesToAndFrom=json.fromJson(datesData, Dates.class);
+        DateData from = datesToAndFrom.getFromDate();
+        DateData to = datesToAndFrom.getToDate();
         Response<List<DayVisit>> response = SingleService.getInstance().watchVisitsBetweenDates(id, from, to);
         return getResponseEntity(response);
     }
