@@ -20,7 +20,7 @@ class WatchDailyUsage extends Component {
         dEnd:undefined,
         mEnd:undefined,
         yEnd:undefined,
-        lst_enteries:[test],
+        lst_enteries:[],
       };
       this.changeSday = this.changeSday.bind(this);
       this.changeEday = this.changeEday.bind(this);
@@ -224,6 +224,41 @@ class WatchDailyUsage extends Component {
       }
       else {
         //TOOD: call send
+        let id = this.props.location.state.id;
+        let from = { day:this.state.dStart, month:this.state.mStart, year:this.state.yStart}; 
+        let to = { day:this.state.dEnd, month:this.state.mEnd, year:this.state.yEnd}; 
+        let datesData = {
+          fromDate: from,
+          toDate: to
+        }
+        send('/admin/visits?id='+id,'POST',datesData,(received)=>{
+          if(received) {
+            let opt = ''+received.reason;
+            if (opt === "Success") {
+              this.setState(
+                {
+                  lst_enteries:received.value
+                }
+              );
+            }
+            else if(opt === "User_Not_Found") {
+                alert("Error - the user is not in the system");
+            }
+            else if(opt === "NOT_ADMIN") {
+              alert("The user is not an admin, rty again with other user");
+            }
+            else if(opt === "INVALID_DATE") {
+              alert("The day youe enter is invalid, try again");
+            }
+            else {
+              alert("visits could not recived data from the server")
+            }
+          }
+          else {
+            alert('Problem in vitis per day')
+          }
+        });
+
       }
 
         

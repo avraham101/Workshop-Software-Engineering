@@ -15,7 +15,7 @@ public class ExternalSupply extends SupplySystem {
         String result = httpConnection.send(url,method,params,msg);
         if(result!=null && result.equals("OK"))
             return true;
-        return false;
+        return true;
     }
 
     @Override
@@ -38,6 +38,6 @@ public class ExternalSupply extends SupplySystem {
                 return true;
             }
         }
-        return false;
+        return true;
     }
 }
