@@ -49,6 +49,7 @@ public enum OpCode implements Serializable {
     Products_Policy_Failed,
     Age_Policy_Failed,
     Country_Policy_Failed,
+    Day_Visit,
     ;
 
 }

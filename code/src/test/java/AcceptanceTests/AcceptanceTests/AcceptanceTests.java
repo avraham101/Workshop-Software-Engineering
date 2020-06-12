@@ -36,6 +36,7 @@ public class AcceptanceTests {
     public  void setUpAll(){
         Utils.TestMode();
         bridge = AcceptanceTestsDriver.getBridge();
+        bridge.removeVisits();
         users = new ArrayList<>();
         stores = new ArrayList<>();
         products = new ArrayList<>();

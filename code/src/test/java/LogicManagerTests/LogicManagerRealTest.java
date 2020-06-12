@@ -5,10 +5,10 @@ import DataAPI.*;
 import Domain.*;
 import Domain.Discount.Discount;
 import Domain.Discount.RegularDiscount;
+import Domain.Notification.*;
 import Domain.PurchasePolicy.ProductPurchasePolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.PurchasePolicy.UserPurchasePolicy;
-import Domain.Notification.Notification;
 import Persitent.Cache;
 import Persitent.DaoHolders.DaoHolder;
 import Publisher.SinglePublisher;
@@ -98,6 +98,12 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     private void setUpPrepareUsers(){
+        LocalDate now=LocalDate.now();
+        LocalDate before3Days=now.minusDays(3);
+        while(!before3Days.isAfter(now)){
+            daos.getVisitsPerDayDao().remove(before3Days);
+            before3Days=before3Days.plusDays(1);
+        }
         setUpOpenedStore();
         Subscribe niv=data.getSubscribe(Data.VALID2);
         logicManager.addManager(data.getId(Data.VALID),
@@ -1189,7 +1195,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         checkPermissions(Data.VALID2);
         HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
         for(List<Notification> n:notifications.values()){
-            assertEquals(data.getStore(Data.VALID).getName(),n.get(0).getValue());
+            if(n instanceof AddOwnerNotification)
+                assertEquals(data.getStore(Data.VALID).getName(),n.get(0).getValue());
         }
         tearDownOpenStore();
     }
@@ -1209,7 +1216,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         logicManager.login(data.getId(Data.VALID2),valid2.getName(),valid2.getPassword());
         HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
         for(List<Notification> n:notifications.values()) {
-            if(n.get(0).getValue() instanceof List) {
+            if(n.get(0) instanceof approve_notification) {
                 List<String> storeOwner = (List<String>) n.get(0).getValue();
                 assertEquals(data.getStore(Data.VALID).getName(), storeOwner.get(0));
                 assertEquals(valid2.getName(), storeOwner.get(1));
@@ -1382,7 +1389,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         //check notifications
         HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
         for(List<Notification> n:notifications.values()){
-            assertEquals(data.getStore(Data.VALID).getName(),n.get(0).getValue());
+            if(n instanceof RemoveNotification)
+                assertEquals(data.getStore(Data.VALID).getName(),n.get(0).getValue());
         }
     }
 
@@ -1504,6 +1512,13 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * use case 6.5 - watch day visits
      */
     @Test
+    public void testDayVisitsNotAdmin(){
+        setUpLogedInUser();
+        assertNull(logicManager.watchVisitsBetweenDates(data.getId(Data.VALID),data.getFromDate(),data.getToDate()).getValue());
+        tearDownLogin();
+    }
+
+    @Test
     public void testDayVisitsSuccess(){
         setUpPrepareUsers();
         List<DayVisit> dayVisits=logicManager.watchVisitsBetweenDates(data.getId(Data.ADMIN),data.getFromDate(),data.getToDate()).getValue();
@@ -1524,7 +1539,20 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
                 assertEquals(visit.getOwnerNumber(), 0);
             }
         }
+        checkNotification();
         tearDownDeleteDayVisits();
+    }
+
+    private void checkNotification(){
+        HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
+        for(List<Notification> n:notifications.values()){
+            DayVisit visit=((VisitNotification)n.get(0)).getValue();
+            assertEquals(visit.getAdminNumber(), 1);
+            assertEquals(visit.getGuestNumber(), 3);
+            assertEquals(visit.getManagerNumber(), 1);
+            assertEquals(visit.getSubscribeNumber(), 2);
+            assertEquals(visit.getOwnerNumber(), 1);
+        }
     }
 
     /**
@@ -1788,7 +1816,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
             daos.getVisitsPerDayDao().remove(before3Days);
             before3Days=before3Days.plusDays(1);
         }
-        super.tearDownDeleteDayVisits();
+        super.tearDownOpenStore();
     }
 
     @After

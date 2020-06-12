@@ -4,12 +4,13 @@ import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.Discount.Term.Term;
 import Domain.Notification.RequestNotification;
+import Domain.Notification.VisitNotification;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Persitent.Cache;
 import Domain.Notification.Notification;
 import Persitent.DaoHolders.DaoHolder;
 import Persitent.DaoInterfaces.IRevenueDao;
-import Persitent.DaoInterfaces.IVisitsPerDayDao;
+import Publisher.*;
 import Systems.HashSystem;
 import Systems.LoggerSystem;
 import Systems.PaymentSystem.PaymentSystem;
@@ -200,6 +201,12 @@ public class LogicManager {
     public int connectToSystem() {
         int newId=usersIdCounter.getAndIncrement();
         cache.addConnectedUser(newId,new User());
+        DayVisit todayVisit=increaseDayVisitAndNotification();
+        sendVisitNotification(todayVisit);
+        return newId;
+    }
+
+    private DayVisit increaseDayVisitAndNotification() {
         LocalDate now=LocalDate.now();
         DayVisit visit=daos.getVisitsPerDayDao().find(now);
         if(visit==null) {
@@ -208,7 +215,7 @@ public class LogicManager {
         }
         visit.increaseGuest();
         daos.getVisitsPerDayDao().update(visit);
-        return newId;
+        return visit;
     }
 
     /**
@@ -266,7 +273,9 @@ public class LogicManager {
                     }
                     if(!this.daos.getSubscribeDao().update(subscribe))
                         return new Response<>(false, OpCode.DB_Down);
-                    increaseNumberOfVisitors(subscribe);
+                    //send notification
+                    DayVisit todayVisit=increaseNumberOfVisitors(subscribe);
+                    sendVisitNotification(todayVisit);
                     return new Response<>(true, OpCode.Success);
                 }
             } catch (NoSuchAlgorithmException e) {
@@ -277,11 +286,24 @@ public class LogicManager {
         return new Response<>(false,OpCode.User_Not_Found);
     }
 
-    private synchronized void increaseNumberOfVisitors(Subscribe subscribe) {
+    private void sendVisitNotification(DayVisit todayVisit) {
+        Publisher publisher= SinglePublisher.getInstance();
+        List<Admin> admins=daos.getSubscribeDao().getAllAdmins();
+        if(publisher!=null&&todayVisit!=null&&admins!=null) {
+            int adminId=admins.get(0).getSessionNumber();
+            if(adminId!=-1) {
+                ArrayList<Notification> notifications = new ArrayList<>();
+                notifications.add(new VisitNotification(todayVisit));
+                publisher.update(String.valueOf(adminId), notifications);
+            }
+        }
+    }
+
+    private synchronized DayVisit increaseNumberOfVisitors(Subscribe subscribe) {
         LocalDate today=LocalDate.now();
         DayVisit todayVisit=daos.getVisitsPerDayDao().find(today);
         if(todayVisit==null)
-            return;
+            return null;
         if(subscribe.canWatchUserHistory()){
             todayVisit.increaseAdmin();
         }
@@ -302,6 +324,7 @@ public class LogicManager {
             }
         }
         daos.getVisitsPerDayDao().update(todayVisit);
+        return todayVisit;
     }
 
     /**
@@ -1495,7 +1518,7 @@ public class LogicManager {
         int year=date.getYear();
         int month=date.getMonth();
         int day=date.getDay();
-        if(year > LocalDate.now().getYear() || month < 0 || month > 12 || day < 0 || day > 31 || year < 0)
+        if(year > LocalDate.now().getYear() || month <= 0 || month > 12 || day <= 0 || day > 31 || year <= 0)
             return false;
         return true;
     }
