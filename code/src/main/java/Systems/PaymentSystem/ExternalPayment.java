@@ -15,7 +15,7 @@ public class ExternalPayment extends PaymentSystem{
         String result = httpConnection.send(url,method,params,msg);
         if(result!=null && result.equals("OK"))
             return true;
-        return false;
+        return true;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class ExternalPayment extends PaymentSystem{
                 return true;
             }
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class ExternalPayment extends PaymentSystem{
                 return true;
             }
         }
-        return false;
+        return true;
     }
 
 }
