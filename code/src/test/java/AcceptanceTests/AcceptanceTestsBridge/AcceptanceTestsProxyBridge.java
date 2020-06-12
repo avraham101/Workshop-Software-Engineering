@@ -422,7 +422,13 @@ public class AcceptanceTestsProxyBridge implements AcceptanceTestsBridge {
     @Override
     public List<DayVisitData> watchVisitsBetweenDates(int id, DateTestData from, DateTestData to) {
         if (realBridge != null)
-            realBridge.watchVisitsBetweenDates(id,from,to);
+            return realBridge.watchVisitsBetweenDates(id,from,to);
         return null;
+    }
+
+    @Override
+    public void removeVisits() {
+        if(realBridge!=null)
+            realBridge.removeVisits();
     }
 }

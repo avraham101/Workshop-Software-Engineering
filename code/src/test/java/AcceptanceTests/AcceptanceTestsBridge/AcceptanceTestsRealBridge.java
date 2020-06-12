@@ -345,8 +345,8 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
 
     @Override
     public List<DayVisitData> watchVisitsBetweenDates(int id, DateTestData from, DateTestData to) {
-        DateData fromDate = new DateData(from.getYear(),from.getMonth(),from.getDay());
-        DateData toDate = new DateData(to.getYear(),to.getMonth(),to.getDay());
+        DateData fromDate = new DateData(from.getDay(),from.getMonth(),from.getYear());
+        DateData toDate = new DateData(to.getDay(),to.getMonth(),to.getYear());
         List<DayVisit> visits = serviceAPI.watchVisitsBetweenDates(id,fromDate, toDate).getValue();
         return buildDayVisitData(visits);
     }
@@ -436,6 +436,11 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     public void removeRevenues() {
         new RevenueDaoProxy().remove(LocalDate.now());
     }
+
+    @Override
+    public void removeVisits() {
+        new VisitPerDayDaoProxy().remove(LocalDate.now());
+    }
     //--------------------------get managers of store---------------------------------//
 
 
@@ -449,6 +454,7 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     @Override
     public void resetSystem() {
         try {
+            removeVisits();
 //            this.serviceAPI = new ServiceAPI("admin", "admin");
             this.serviceAPI = null;
         }catch (Exception e)
@@ -737,6 +743,8 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     }
 
     private List<DayVisitData> buildDayVisitData(List<DayVisit> dayVisit) {
+        if(dayVisit==null)
+            return null;
         List<DayVisitData> visits = new LinkedList<>();
         for (DayVisit visit: dayVisit) {
             DayVisitData visitData = new DayVisitData(visit.getDate(),

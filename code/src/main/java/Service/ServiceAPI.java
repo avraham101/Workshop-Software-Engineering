@@ -436,6 +436,7 @@ public class ServiceAPI {
 
     /**
      * use case 6.5 - admin watch visitors in specific dates
+     * Acceptancet test: AdminWatchVisists
      * @param id of the user wants to watch
      * @param from date to start showing visits from
      * @param to date to start watching visits from
