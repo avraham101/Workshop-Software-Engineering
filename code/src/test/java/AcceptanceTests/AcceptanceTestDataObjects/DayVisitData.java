@@ -71,10 +71,6 @@ public class DayVisitData {
     }
 
     public int getTotal() {
-        return getAdminVisit() +
-                getGuestVisit() +
-                getManagerVisit() +
-                getManagerVisit() +
-                getOwnerVisit();
+        return adminVisit+subVisit+managerVisit+ownerVisit+guestVisit;
     }
 }

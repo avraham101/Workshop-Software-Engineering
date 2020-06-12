@@ -8,6 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -20,8 +21,10 @@ public class AdminWatchVisits extends AcceptanceTests {
     @Before
     public void setUpBefore(){
         bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
-        from = new DateTestData(11,6,2020);
-        to = new DateTestData(15,6,2020);
+        LocalDate now=LocalDate.now();
+        LocalDate prev=now.minusDays(3);
+        from = new DateTestData(prev.getDayOfMonth(),prev.getMonthValue(),prev.getYear());
+        to = new DateTestData(now.getDayOfMonth(),now.getMonthValue(),now.getYear());
     }
 
     @After
@@ -72,26 +75,26 @@ public class AdminWatchVisits extends AcceptanceTests {
     }
 
     @Test
-    public void testOneSubVisit() {
+    public void testOneMoreSubVisit() {
         registerAndLogin(users.get(1));
         List<DayVisitData> visits = bridge.watchVisitsBetweenDates(admin.getId(), from, to);
         int subVisits = 0;
         for (DayVisitData dayVisit: visits) {
             subVisits += dayVisit.getSubVisit();
         }
-        assertEquals(1, subVisits);
+        assertEquals(2, subVisits);
         bridge.logout(users.get(1).getId());
     }
 
     @Test
-    public void testOneGuestSubVisit() {
+    public void testOneMoreGuestSubVisit() {
         bridge.connect();
         List<DayVisitData> visits = bridge.watchVisitsBetweenDates(admin.getId(), from, to);
         int guestVisits = 0;
         for (DayVisitData dayVisit: visits) {
             guestVisits += dayVisit.getGuestVisit();
         }
-        assertEquals(1, guestVisits);
+        assertEquals(6, guestVisits);
         bridge.logout(users.get(1).getId());
     }
 
@@ -105,7 +108,7 @@ public class AdminWatchVisits extends AcceptanceTests {
         for (DayVisitData dayVisit: visits) {
             guestVisits += dayVisit.getGuestVisit();
         }
-        assertEquals(connects, guestVisits);
+        assertEquals(connects+5, guestVisits);
         bridge.logout(users.get(1).getId());
     }
 
@@ -119,7 +122,7 @@ public class AdminWatchVisits extends AcceptanceTests {
         for (DayVisitData dayVisit: visits) {
             subVisits += dayVisit.getSubVisit();
         }
-        assertEquals(2, subVisits);
+        assertEquals(3, subVisits);
         bridge.logout(users.get(1).getId());
     }
 
@@ -133,7 +136,7 @@ public class AdminWatchVisits extends AcceptanceTests {
         for (DayVisitData dayVisit: visits) {
             subVisits += dayVisit.getSubVisit();
         }
-        assertEquals(subs, subVisits);
+        assertEquals(subs+1, subVisits);
         bridge.logout(users.get(1).getId());
     }
 
@@ -150,7 +153,7 @@ public class AdminWatchVisits extends AcceptanceTests {
         for (DayVisitData dayVisit: visits) {
             subVisits += dayVisit.getTotal();
         }
-        assertEquals(3, subVisits);
+        assertEquals(10, subVisits);
         bridge.logout(users.get(1).getId());
     }
 
@@ -168,7 +171,7 @@ public class AdminWatchVisits extends AcceptanceTests {
         for (DayVisitData dayVisit: visits) {
             totalVisits += dayVisit.getTotal();
         }
-        assertEquals(4, totalVisits);
+        assertEquals(11, totalVisits);
         bridge.logout(users.get(1).getId());
     }
 
@@ -196,7 +199,8 @@ public class AdminWatchVisits extends AcceptanceTests {
         for (DayVisitData dayVisit: visits) {
             totalVisits += dayVisit.getTotal();
         }
-        assertEquals(connects + subs + 2, totalVisits); // 2 is for owner and manager
+        assertEquals(connects + subs + 2+7, totalVisits); // 2 is for owner and manager
+        // 7 is for the system init (5 guests, 1 admin, 1 subscribe)
     }
 
 

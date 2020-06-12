@@ -71,4 +71,5 @@ public interface AcceptanceTestsBridge {
     double getRevenueByDay(int id, DateTestData date);
     void removeRevenues();
     List<DayVisitData> watchVisitsBetweenDates(int id, DateTestData from, DateTestData to);
+    void removeVisits();
 }
