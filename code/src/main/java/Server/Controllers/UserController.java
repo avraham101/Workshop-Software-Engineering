@@ -49,6 +49,7 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<?> register(@RequestBody String userStr){
         UserData user = json.fromJson(userStr,UserData.class);
+        System.out.println(userStr);
         Response<Boolean> response= SingleService.getInstance().register(user.getName(),user.getPassword());
         return getResponseEntity(response);
     }
@@ -61,6 +62,7 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<?> logIn (@RequestParam(name="id") int id ,@RequestBody String userStr){
         UserData user = json.fromJson(userStr,UserData.class);
+        System.out.println(userStr);
         Response<Boolean> response =SingleService.getInstance().login(id,user.getName(),user.getPassword());
         return getResponseEntity(response);
 
