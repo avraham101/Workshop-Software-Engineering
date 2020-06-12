@@ -1,6 +1,7 @@
 package Server.Controllers;
 
 import DataAPI.*;
+import Domain.DayVisit;
 import Service.SingleService;
 import com.google.gson.Gson;
 import org.springframework.http.HttpHeaders;
@@ -73,12 +74,31 @@ public class AdminController {
         return getResponseEntity(response);
     }
 
+
     /**
-     * use case 6.6.1
-     * get the revenue today
+     * use case 6.5
+     * get the daily visits from a period of time
      * @param id - the id of the admin
-     * @return - the revenue today
+     * @param fromDate - the date from in string
+     * @param toDate - the date to in string
+     * @return - list of DayVisit
      */
+    @PostMapping("visits")
+    public ResponseEntity<?> getVisits(@RequestParam(name="id") int id,
+                                       @RequestParam String fromDate,
+                                       @RequestParam String toDate) {
+        DateData from = json.fromJson(fromDate, DateData.class);
+        DateData to = json.fromJson(toDate, DateData.class);
+        Response<List<DayVisit>> response = SingleService.getInstance().watchVisitsBetweenDates(id, from, to);
+        return getResponseEntity(response);
+    }
+
+        /**
+         * use case 6.6.1
+         * get the revenue today
+         * @param id - the id of the admin
+         * @return - the revenue today
+         */
     @GetMapping("todayRevenue")
     public ResponseEntity<?> getTodayRevenue(@RequestParam(name="id") int id ) {
         Response<Double> response = SingleService.getInstance().getRevenueToday(id);
