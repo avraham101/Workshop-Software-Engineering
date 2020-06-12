@@ -24,9 +24,9 @@ public class PermissionDaoProxy implements IPermissionDao {
     }
 
     @Override
-    public boolean removePermissionFromSubscribe(Permission perToDelete) {
+    public boolean removePermissionFromSubscribe(Permission perToDelete, boolean toClose, boolean toOpen) {
         try{
-            return dao.removePermissionFromSubscribe(perToDelete);
+            return dao.removePermissionFromSubscribe(perToDelete, toClose, toOpen);
         }catch (Exception e) {
             return false;
         }
@@ -59,6 +59,15 @@ public class PermissionDaoProxy implements IPermissionDao {
     public boolean deletePermissionType(String storeName, String owner, PermissionType type) {
         try{
             return dao.deletePermissionType(storeName,owner,type);
+        }catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean removePermissionFromSubscribe(Permission permission) {
+        try{
+            return dao.removePermissionFromSubscribe(permission);
         }catch (Exception e) {
             return false;
         }

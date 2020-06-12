@@ -9,10 +9,12 @@ import Persitent.DaoProxy.SubscribeDaoProxy;
 import Utils.Utils;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 
 public class PermissionDao extends Dao<Permission> implements IPermissionDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory(Utils.DB);
+    private EntityManager entityManager;
 
     public boolean addPermission(Permission permission){
         boolean output = false;
@@ -21,16 +23,20 @@ public class PermissionDao extends Dao<Permission> implements IPermissionDao {
         return super.add(em,permission);
     }
 
-    public boolean removePermissionFromSubscribe(Permission perToDelete){
-        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+    @Transactional
+    public boolean removePermissionFromSubscribe(Permission perToDelete, boolean toClose, boolean toOpen){
+        if(toOpen) {
+            entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        }
         EntityTransaction et = null;
         boolean output=false;
 
         try {
-            et = em.getTransaction();
-            et.begin();
-
-            int x =  em.createNativeQuery("DELETE FROM permission WHERE store=? AND owner=?")
+            et = entityManager.getTransaction();
+            if(toOpen) {
+                et.begin();
+            }
+            int x =  entityManager.createNativeQuery("DELETE FROM permission WHERE store=? AND owner=?")
                     .setParameter(1, perToDelete.getStore())
                     .setParameter(2, perToDelete.getOwner())
                     .executeUpdate();
@@ -41,11 +47,14 @@ public class PermissionDao extends Dao<Permission> implements IPermissionDao {
         catch(Exception ex) {
             if (et != null) {
                 et.rollback();
+                entityManager.close();
             }
             output= false;
         }
         finally {
-            em.close();
+            if(toClose) {
+                entityManager.close();
+            }
         }
         return output;
     }
@@ -104,4 +113,33 @@ public class PermissionDao extends Dao<Permission> implements IPermissionDao {
 
     }
 
+    @Override
+    public boolean removePermissionFromSubscribe(Permission perToDelete) {
+        entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction et = null;
+        boolean output=false;
+
+        try {
+            et = entityManager.getTransaction();
+            et.begin();
+            int x =  entityManager.createNativeQuery("DELETE FROM permission WHERE store=? AND owner=?")
+                    .setParameter(1, perToDelete.getStore())
+                    .setParameter(2, perToDelete.getOwner())
+                    .executeUpdate();
+
+            et.commit();
+            output=x>0;
+        }
+        catch(Exception ex) {
+            if (et != null) {
+                et.rollback();
+                entityManager.close();
+            }
+            output= false;
+        }
+        finally {
+            entityManager.close();
+        }
+        return output;
+    }
 }
