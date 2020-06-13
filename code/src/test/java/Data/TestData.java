@@ -311,6 +311,9 @@ public class TestData {
         deliveryData.put(Data.INVALID_COUNTRY, new DeliveryData("Tapoz 3, Nevatim", "Italy", product,"Yuval","Bat Hefer",999));
         deliveryData.put(Data.LARGE_AMOUNT, new DeliveryData("Tapoz 3, Nevatim", "Israel", tooMuchProduct,"Yuval","Bat Hefer",999));
         deliveryData.put(Data.FAIL_POLICY, new DeliveryData("Tapoz 3, Nevatim", "Italy", tooMuchProduct,"Yuval","Bat Hefer",999));
+        deliveryData.put(Data.NULL_CITY, new DeliveryData("Tapoz 3, Nevatim", "Israel", product,"Yuval",null,999));
+        deliveryData.put(Data.EMPTY_CITY, new DeliveryData("Tapoz 3, Nevatim", "Israel", product,"Yuval",null,999));
+        deliveryData.put(Data.WRONG_ZIP, new DeliveryData("Tapoz 3, Nevatim", "Israel", product,"Yuval","Bat Hefer",-999));
 
     }
 

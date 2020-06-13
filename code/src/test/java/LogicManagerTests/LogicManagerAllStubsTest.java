@@ -978,7 +978,7 @@ public class LogicManagerAllStubsTest {
      */
     @Test
     public void testBuyCartPaymentEmptyName(){
-
+        testBuyCartPaymentEmptyNameTest();
         tearDownOpenStore();
     }
 
@@ -1073,7 +1073,65 @@ public class LogicManagerAllStubsTest {
         assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip).getValue());
     }
 
-    //TODO add test for null city and invalid zip
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartNullCity() {
+        testBuyCartNullCityTest();
+        tearDownOpenStore();
+    }
+
+    protected void testBuyCartNullCityTest(){
+        setUpProductAddedToCart();
+        // null city
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        String country = data.getDeliveryData(Data.VALID).getCountry();
+        String city=data.getDeliveryData(Data.NULL_CITY).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip).getValue());
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartWrongZip() {
+        testBuyCartWrongZipTest();
+        tearDownOpenStore();
+    }
+
+    protected void testBuyCartWrongZipTest(){
+        setUpProductAddedToCart();
+        // wrong zip
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        String country = data.getDeliveryData(Data.VALID).getCountry();
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip = data.getDeliveryData(Data.WRONG_ZIP).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip).getValue());
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartEmptyCity() {
+        testBuyCartEmptyCityTest();
+        tearDownOpenStore();
+    }
+
+    protected void testBuyCartEmptyCityTest(){
+        setUpProductAddedToCart();
+        // empty city
+        PaymentData paymentData = data.getPaymentData(Data.VALID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        String country = data.getDeliveryData(Data.VALID).getCountry();
+        String city=data.getDeliveryData(Data.EMPTY_CITY).getCity();
+        int zip = data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip).getValue());
+    }
 
     /**
      * test: use case 3.1 - Logout
