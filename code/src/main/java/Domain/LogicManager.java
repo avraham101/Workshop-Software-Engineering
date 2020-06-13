@@ -633,7 +633,7 @@ public class LogicManager {
      * @param addresToDeliver - the address do Deliver the purchase
      * @return true is the purchase succeeded, otherwise false
      */
-    public Response<Boolean> purchaseCart(int id, String country, PaymentData paymentData, String addresToDeliver) {
+    public Response<Boolean> purchaseCart(int id, String country, PaymentData paymentData, String addresToDeliver,String city,int zip) {
         loggerSystem.writeEvent("LogicManager","purchaseCart",
                 "reserveCart the products in the cart", new Object[] {paymentData, addresToDeliver});
         //1) user get
@@ -648,7 +648,7 @@ public class LogicManager {
         if(!reserved) {
             return new Response<>(false, OpCode.Fail_Buy_Cart);
         }
-        DeliveryData deliveryData = new DeliveryData(addresToDeliver, country, new LinkedList<>());
+        DeliveryData deliveryData = new DeliveryData(addresToDeliver, country, new LinkedList<>(),current.getUserName(),city,zip);
         return buyAndPay(id, paymentData, deliveryData);
     }
 
@@ -702,7 +702,10 @@ public class LogicManager {
         String name = paymentData.getName();
         String address = paymentData.getAddress();
         String card = paymentData.getCreditCard();
-        return name!=null && !name.isEmpty() && address!=null && !address.isEmpty() && card!=null && !card.isEmpty();
+        int id=paymentData.getId();
+        int cvv=paymentData.getCvv();
+        return name!=null && !name.isEmpty() && address!=null && !address.isEmpty() && card!=null && !card.isEmpty() &&
+                id>0&&cvv>0&&cvv<1000;
     }
 
     /**

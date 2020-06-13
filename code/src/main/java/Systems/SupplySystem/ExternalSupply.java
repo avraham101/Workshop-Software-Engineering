@@ -13,9 +13,7 @@ public class ExternalSupply extends SupplySystem {
         String msg = "";
         HttpConnection httpConnection = new HttpConnection();
         String result = httpConnection.send(url,method,params,msg);
-        if(result!=null && result.equals("OK"))
-            return true;
-        return true;
+        return result != null && result.equals("OK");
     }
 
     @Override
@@ -23,20 +21,23 @@ public class ExternalSupply extends SupplySystem {
         String url = "https://cs-bgu-wsep.herokuapp.com/";
         String method = "POST";
         String params = "action_type=supply";
-        params += "&name=";
+        params += "&name="+deliveryData.getName();
         params += "&address="+deliveryData.getAddress();
-        params += "&city=";
+        params += "&city="+deliveryData.getCity();
         params += "&country="+deliveryData.getCountry();
-        params += "&zip=";
+        params += "&zip="+deliveryData.getZip();
         String msg = "";
         HttpConnection httpConnection = new HttpConnection();
         String result = httpConnection.send(url,method,params,msg);
         System.out.println(result);
-        if(result!=null) {
-            int tmp = Integer.valueOf(result);
-            if(tmp >= 10000 && tmp <= 100000) {
-                return true;
-            }
+        try{
+            int transactionId=Integer.parseInt(result);
+            if(transactionId==-1)
+                return false;
+            deliveryData.setTransactionId(transactionId);
+        }
+        catch (Exception e){
+            return false;
         }
         return true;
     }

@@ -2,6 +2,9 @@ package Systems.PaymentSystem;
 
 import DataAPI.PaymentData;
 import Systems.HttpConnection;
+import org.apache.tomcat.jni.Local;
+
+import java.time.LocalDate;
 
 public class ExternalPayment extends PaymentSystem{
 
@@ -13,9 +16,7 @@ public class ExternalPayment extends PaymentSystem{
         String msg = "";
         HttpConnection httpConnection = new HttpConnection();
         String result = httpConnection.send(url,method,params,msg);
-        if(result!=null && result.equals("OK"))
-            return true;
-        return true;
+        return result != null && result.equals("OK");
     }
 
     @Override
@@ -23,21 +24,24 @@ public class ExternalPayment extends PaymentSystem{
         String url = "https://cs-bgu-wsep.herokuapp.com/";
         String method = "POST";
         String params = "action_type=pay";
+        LocalDate now= LocalDate.now();
         params += "&card_number="+paymentData.getCreditCard();
-        params += "&month=";
-        params += "&year=";
-        params += "&holder=";
-        params += "&ccv=";
-        params += "&id=";
+        params += "&month="+now.getMonthValue();
+        params += "&year="+now.getYear();
+        params += "&holder="+paymentData.getName();
+        params += "&ccv="+paymentData.getCvv();
+        params += "&id="+paymentData.getId();
         String msg = "";
         HttpConnection httpConnection = new HttpConnection();
         String result = httpConnection.send(url,method,params,msg);
-        System.out.println(result);
-        if(result!=null) {
-            int tmp = Integer.valueOf(result);
-            if(tmp >= 10000 && tmp <= 100000) {
-                return true;
-            }
+        try{
+            int transactionId=Integer.parseInt(result);
+            if(transactionId==-1)
+                return false;
+            paymentData.setTransactionId(transactionId);
+        }
+        catch (Exception e){
+            return false;
         }
         return true;
     }
@@ -47,18 +51,18 @@ public class ExternalPayment extends PaymentSystem{
         String url = "https://cs-bgu-wsep.herokuapp.com/";
         String method = "POST";
         String params = "action_type=cancel_pay";
-        params += "&transaction_id=";
+        params += "&transaction_id="+paymentData.getTransactionId();
         String msg = "";
         HttpConnection httpConnection = new HttpConnection();
         String result = httpConnection.send(url,method,params,msg);
         System.out.println(result);
-        if(result!=null) {
-            int tmp = Integer.valueOf(result);
-            if(tmp == 1) {
-                return true;
-            }
+        try{
+            int transactionId=Integer.parseInt(result);
+            return transactionId!=-1;
         }
-        return true;
+        catch (Exception e){
+            return false;
+        }
     }
 
 }

@@ -279,16 +279,16 @@ public class TestData {
     private void setUpPaymentData() {
         paymentData = new HashMap<Data, PaymentData>();
         String userName = users.get(Data.VALID).getName();
-        paymentData.put(Data.VALID, new PaymentData(userName, "Tapoz 3, Nevatim", 30, "4580"));
+        paymentData.put(Data.VALID, new PaymentData(userName, "Tapoz 3, Nevatim", 30, "4580",1,333));
         paymentData.put(Data.NULL , null);
-        paymentData.put(Data.NULL_ADDRESS ,new PaymentData(userName,null, 22, "4580"));
-        paymentData.put(Data.EMPTY_ADDRESS ,new PaymentData(userName,"", 23, "4580"));
-        paymentData.put(Data.NULL_PAYMENT ,new PaymentData(userName,"Tapoz 3, Nevatim", 24, null));
-        paymentData.put(Data.EMPTY_PAYMENT ,new PaymentData(userName,"Tapoz 3, Nevatim", 25, ""));
-        paymentData.put(Data.NULL_NAME ,new PaymentData(null,"Tapoz 3, Nevatim", 26, "4580"));
-        paymentData.put(Data.EMPTY_NAME,new PaymentData("","Tapoz 3, Nevatim", 27, "4580"));
-        paymentData.put(Data.UNDER_AGE,new PaymentData(userName,"Tapoz 3, Nevatim", 3, "4580"));
-
+        paymentData.put(Data.NULL_ADDRESS ,new PaymentData(userName,null, 22, "4580",1,333));
+        paymentData.put(Data.EMPTY_ADDRESS ,new PaymentData(userName,"", 23, "4580",1,333));
+        paymentData.put(Data.NULL_PAYMENT ,new PaymentData(userName,"Tapoz 3, Nevatim", 24, null,1,333));
+        paymentData.put(Data.EMPTY_PAYMENT ,new PaymentData(userName,"Tapoz 3, Nevatim", 25, "",1,333));
+        paymentData.put(Data.NULL_NAME ,new PaymentData(null,"Tapoz 3, Nevatim", 26, "4580",1,333));
+        paymentData.put(Data.EMPTY_NAME,new PaymentData("","Tapoz 3, Nevatim", 27, "4580",1,333));
+        paymentData.put(Data.UNDER_AGE,new PaymentData(userName,"Tapoz 3, Nevatim", 3, "4580",1,333));
+        paymentData.put(Data.VALID, new PaymentData(userName, "Tapoz 3, Nevatim", 30, "4580",1,333));
 
     }
 
