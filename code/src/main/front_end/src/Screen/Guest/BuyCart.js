@@ -77,10 +77,10 @@ class BuyCart extends Component {
     }
 
     handlebuy() {
-        if (this.state.creditCard.length !== 4) {
-          alert("wrong credit card, must be length 4") 
-        }
-        else if (this.state.cvv.length !== 3) {
+        // if (this.state.creditCard.length !== 4) {
+        //   alert("wrong credit card, must be length 4") 
+        // }
+        if (this.state.cvv.length !== 3) {
           alert("wrong cvv, must be length 3") 
         }
         else if (this.state.cvv < 100 | this.state.cvv > 999) {
@@ -117,6 +117,24 @@ class BuyCart extends Component {
               pass(this.props.history,'/',this.pathname,this.props.location.state)
             else
               pass(this.props.history,'/subscribe',this.pathname,this.props.location.state)
+          }
+          else if(opt == 'Wrong_Address') {
+            alert('error: please fill your adress properly. Sorry.')
+          }
+          else if(opt == 'Wrong_Card') {
+            alert('error: please fill your credit cart number properly. Sorry.')
+          }
+          else if(opt == 'Wrong_Id') {
+            alert('error: please fill your id properly. Sorry.')
+          }
+          else if(opt == 'Wrong_CVV') {
+            alert('error: please fill your credit cart CVV properly. Sorry.')
+          }
+          else if(opt == 'Wrong_City') {
+            alert('error: please fill your city name properly. Sorry.')
+          }
+          else if(opt == 'Wrong_Zip') {
+            alert('error: please fill your zip number properly. Sorry.')
           }
           else if(opt == 'Invalid_Payment_Data') {
             alert('error: please fill your name and adress properly. Sorry.')
