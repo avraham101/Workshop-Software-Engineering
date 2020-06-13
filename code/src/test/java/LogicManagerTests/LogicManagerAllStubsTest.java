@@ -978,7 +978,7 @@ public class LogicManagerAllStubsTest {
      */
     @Test
     public void testBuyCartPaymentEmptyName(){
-
+        testBuyCartPaymentEmptyNameTest();
         tearDownOpenStore();
     }
 

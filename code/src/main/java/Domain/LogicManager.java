@@ -21,6 +21,7 @@ import Utils.Utils;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import jdk.internal.org.objectweb.asm.Opcodes;
 
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
@@ -639,8 +640,9 @@ public class LogicManager {
         //1) user get
         User current = cache.findUser(id);
         //2) validation check
-        if (!validPaymentData(paymentData))
-            return new Response<>(false, OpCode.Invalid_Payment_Data);
+        Response<Boolean> paymentDataCheck=validPaymentData(paymentData);
+        if (!paymentDataCheck.getValue())
+            return paymentDataCheck;
         if (addresToDeliver == null || addresToDeliver.isEmpty() || country == null || country.isEmpty()||city==null||zip<0)
             return new Response<>(false, OpCode.Invalid_Delivery_Data);
         //3) sumUp cart - updated PaymentData, DeliveryData and check policy of store
@@ -696,16 +698,38 @@ public class LogicManager {
      * @param paymentData - the payment data
      * @return true if the payment is valid, otherwise false
      */
-    private boolean validPaymentData(PaymentData paymentData) {
+    private Response<Boolean> validPaymentData(PaymentData paymentData) {
         if(paymentData==null)
-            return false;
+            return new Response<>(false,OpCode.Invalid_Payment_Data);
         String name = paymentData.getName();
         String address = paymentData.getAddress();
         String card = paymentData.getCreditCard();
         int id=paymentData.getId();
         int cvv=paymentData.getCvv();
-        return name!=null && !name.isEmpty() && address!=null && !address.isEmpty() && card!=null && !card.isEmpty() &&
-                id>0&&cvv>=100&&cvv<1000;
+        String city=paymentData.getCity();
+        int zip=paymentData.getZip();
+        if(name==null || name.isEmpty()){
+            return new Response<>(false,OpCode.Invalid_Payment_Data);
+        }
+        if(address==null || address.isEmpty()){
+            return new Response<>(false,OpCode.Wrong_Address);
+        }
+        if(card==null || card.isEmpty()){
+            return new Response<>(false,OpCode.Wrong_Card);
+        }
+        if(id<0){
+            return new Response<>(false,OpCode.Wrong_Id);
+        }
+        if(cvv<100||cvv>=1000){
+            return new Response<>(false,OpCode.Wrong_CVV);
+        }
+        if(city==null || city.isEmpty()){
+            return new Response<>(false, OpCode.Wrong_City);
+        }
+        if(zip<0){
+            return new Response<>(false, OpCode.Wrong_Zip);
+        }
+        return  new Response<>(false,OpCode.Success);
     }
 
     /**
