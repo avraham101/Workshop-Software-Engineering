@@ -21,7 +21,6 @@ import Utils.Utils;
 import Utils.InterfaceAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import jdk.internal.org.objectweb.asm.Opcodes;
 
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
@@ -640,10 +639,10 @@ public class LogicManager {
         //1) user get
         User current = cache.findUser(id);
         //2) validation check
-        Response<Boolean> paymentDataCheck=validPaymentData(paymentData);
+        Response<Boolean> paymentDataCheck=validPaymentData(paymentData,city,zip);
         if (!paymentDataCheck.getValue())
             return paymentDataCheck;
-        if (addresToDeliver == null || addresToDeliver.isEmpty() || country == null || country.isEmpty()||city==null||zip<0)
+        if (addresToDeliver == null || addresToDeliver.isEmpty() || country == null || country.isEmpty())
             return new Response<>(false, OpCode.Invalid_Delivery_Data);
         //3) sumUp cart - updated PaymentData, DeliveryData and check policy of store
         boolean reserved = current.reservedCart();
@@ -696,9 +695,11 @@ public class LogicManager {
      * use case 2.8 - purchase cart
      * the function check if payment data is valid
      * @param paymentData - the payment data
+     * @param city
+     * @param zip
      * @return true if the payment is valid, otherwise false
      */
-    private Response<Boolean> validPaymentData(PaymentData paymentData) {
+    private Response<Boolean> validPaymentData(PaymentData paymentData, String city, int zip) {
         if(paymentData==null)
             return new Response<>(false,OpCode.Invalid_Payment_Data);
         String name = paymentData.getName();
@@ -706,15 +707,20 @@ public class LogicManager {
         String card = paymentData.getCreditCard();
         int id=paymentData.getId();
         int cvv=paymentData.getCvv();
-        String city=paymentData.getCity();
-        int zip=paymentData.getZip();
         if(name==null || name.isEmpty()){
             return new Response<>(false,OpCode.Invalid_Payment_Data);
         }
         if(address==null || address.isEmpty()){
             return new Response<>(false,OpCode.Wrong_Address);
         }
-        if(card==null || card.isEmpty()){
+        int cardNumber;
+        try{
+            cardNumber=Integer.parseInt(card);
+        }
+        catch (Exception e){
+            return new Response<>(false,OpCode.Wrong_Card);
+        }
+        if(cardNumber<0){
             return new Response<>(false,OpCode.Wrong_Card);
         }
         if(id<0){
@@ -729,7 +735,7 @@ public class LogicManager {
         if(zip<0){
             return new Response<>(false, OpCode.Wrong_Zip);
         }
-        return  new Response<>(false,OpCode.Success);
+        return  new Response<>(true,OpCode.Success);
     }
 
     /**

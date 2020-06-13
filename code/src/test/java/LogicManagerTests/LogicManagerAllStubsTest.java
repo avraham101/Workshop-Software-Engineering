@@ -1134,6 +1134,46 @@ public class LogicManagerAllStubsTest {
     }
 
     /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartNot3DigitsCVV() {
+        testBuyCartNot3DigitsCVVTest();
+        tearDownOpenStore();
+    }
+
+    protected void testBuyCartNot3DigitsCVVTest(){
+        setUpProductAddedToCart();
+        // cvv=1
+        PaymentData paymentData = data.getPaymentData(Data.WRONG_CVV);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        String country = data.getDeliveryData(Data.VALID).getCountry();
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip = data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip).getValue());
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    public void testBuyCartWrongId() {
+        testBuyCartWrongIdTest();
+        tearDownOpenStore();
+    }
+
+    protected void testBuyCartWrongIdTest(){
+        setUpProductAddedToCart();
+        // id < 0
+        PaymentData paymentData = data.getPaymentData(Data.WRONG_ID);
+        String address = data.getDeliveryData(Data.VALID).getAddress();
+        String country = data.getDeliveryData(Data.VALID).getCountry();
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip = data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip).getValue());
+    }
+
+    /**
      * test: use case 3.1 - Logout
      */
     @Test

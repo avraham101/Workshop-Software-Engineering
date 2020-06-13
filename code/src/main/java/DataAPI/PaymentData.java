@@ -83,5 +83,13 @@ public class PaymentData {
         return zip;
     }
 
+    public void setCity(String city) {
+        this.city=city;
+    }
+
+    public void setZip(int zip) {
+        this.zip=zip;
+    }
+
     // ============================ getters & setters ============================ //
 }

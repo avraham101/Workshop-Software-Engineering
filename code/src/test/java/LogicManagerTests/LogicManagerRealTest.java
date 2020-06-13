@@ -693,6 +693,62 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    @Transactional
+    public void testBuyCartNullCity() {
+        super.testBuyCartNullCityTest();
+        checkBuyDidntWork();
+        tearDownProductAddedToCart();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    @Transactional
+    public void testBuyCartEmptyCity() {
+        super.testBuyCartEmptyCityTest();
+        checkBuyDidntWork();
+        tearDownProductAddedToCart();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    @Transactional
+    public void testBuyCartWrongZip() {
+        super.testBuyCartWrongZipTest();
+        checkBuyDidntWork();
+        tearDownProductAddedToCart();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    @Transactional
+    public void testBuyCartNot3DigitsCVV() {
+        super.testBuyCartNot3DigitsCVVTest();
+        checkBuyDidntWork();
+        tearDownProductAddedToCart();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    @Transactional
+    public void testBuyCartWrongId() {
+        super.testBuyCartWrongIdTest();
+        checkBuyDidntWork();
+        tearDownProductAddedToCart();
+    }
+
+
+    /**
      * check cart didnt change
      * check products in store didnt change
      * check there are no notifications
