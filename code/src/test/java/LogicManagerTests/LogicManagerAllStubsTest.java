@@ -216,7 +216,9 @@ public class LogicManagerAllStubsTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address);
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip);
     }
 
     /**
@@ -800,7 +802,9 @@ public class LogicManagerAllStubsTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address,city,zip).getValue());
         tearDownOpenStore();
     }
 
@@ -820,7 +824,9 @@ public class LogicManagerAllStubsTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address,city,zip).getValue());
     }
 
 
@@ -840,7 +846,9 @@ public class LogicManagerAllStubsTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip).getValue());
     }
 
     /**
@@ -861,7 +869,9 @@ public class LogicManagerAllStubsTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip).getValue());
     }
 
     /**
@@ -878,7 +888,9 @@ public class LogicManagerAllStubsTest {
         // null data payment
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID),country, null, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID),country, null, address,city,zip).getValue());
     }
 
     /**
@@ -896,7 +908,9 @@ public class LogicManagerAllStubsTest {
         PaymentData paymentData = data.getPaymentData(Data.NULL_ADDRESS);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address,city,zip).getValue());
     }
 
     /**
@@ -914,7 +928,9 @@ public class LogicManagerAllStubsTest {
         PaymentData paymentData = data.getPaymentData(Data.EMPTY_ADDRESS);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address,city,zip).getValue());
     }
 
     /**
@@ -932,7 +948,9 @@ public class LogicManagerAllStubsTest {
         PaymentData paymentData = data.getPaymentData(Data.EMPTY_PAYMENT);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address,city,zip).getValue());
     }
 
     /**
@@ -950,7 +968,9 @@ public class LogicManagerAllStubsTest {
         PaymentData paymentData = data.getPaymentData(Data.NULL_NAME);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip).getValue());
     }
 
     /**
@@ -968,7 +988,9 @@ public class LogicManagerAllStubsTest {
         PaymentData paymentData = data.getPaymentData(Data.EMPTY_NAME);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip).getValue());
     }
 
     /**
@@ -986,7 +1008,9 @@ public class LogicManagerAllStubsTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.NULL_ADDRESS).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country,paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country,paymentData, address,city,zip).getValue());
     }
 
     /**
@@ -1004,7 +1028,9 @@ public class LogicManagerAllStubsTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.EMPTY_ADDRESS).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip).getValue());
     }
 
     /**
@@ -1022,7 +1048,9 @@ public class LogicManagerAllStubsTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.EMPTY_COUNTRY).getCountry();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip).getValue());
     }
 
     /**
@@ -1040,8 +1068,12 @@ public class LogicManagerAllStubsTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.NULL_COUNTRY).getCountry();
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip).getValue());
     }
+
+    //TODO add test for null city and invalid zip
 
     /**
      * test: use case 3.1 - Logout

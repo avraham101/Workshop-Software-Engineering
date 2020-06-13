@@ -641,7 +641,7 @@ public class LogicManager {
         //2) validation check
         if (!validPaymentData(paymentData))
             return new Response<>(false, OpCode.Invalid_Payment_Data);
-        if (addresToDeliver == null || addresToDeliver.isEmpty() || country == null || country.isEmpty())
+        if (addresToDeliver == null || addresToDeliver.isEmpty() || country == null || country.isEmpty()||city==null||zip<0)
             return new Response<>(false, OpCode.Invalid_Delivery_Data);
         //3) sumUp cart - updated PaymentData, DeliveryData and check policy of store
         boolean reserved = current.reservedCart();
@@ -705,7 +705,7 @@ public class LogicManager {
         int id=paymentData.getId();
         int cvv=paymentData.getCvv();
         return name!=null && !name.isEmpty() && address!=null && !address.isEmpty() && card!=null && !card.isEmpty() &&
-                id>0&&cvv>0&&cvv<1000;
+                id>0&&cvv>=100&&cvv<1000;
     }
 
     /**

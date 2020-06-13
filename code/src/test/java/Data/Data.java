@@ -16,6 +16,7 @@ public enum Data{
     NULL_STORE,
     NULL_ADDRESS,
     NULL_PAYMENT,
+    WRONG_CVV,
     WRONG_NAME,
     WRONG_PASSWORD,
     WRONG_STORE,
