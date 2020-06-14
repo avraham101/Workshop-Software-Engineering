@@ -118,6 +118,10 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
     public boolean buyCart(int id,PaymentTestData paymentMethod, DeliveryDetailsTestData deliveryDetails) {
         PaymentData paymentData;
         String delivery;
+        String city="Bat Hefer";
+        int zip=12345;
+        int person_id=1;
+        int cvv=333;
         if(deliveryDetails!=null){
             delivery= deliveryDetails.toString();
         }
@@ -125,13 +129,13 @@ public class AcceptanceTestsRealBridge implements AcceptanceTestsBridge {
             delivery=null;
         }
         if(paymentMethod!=null){
-            paymentData = new PaymentData(paymentMethod.getCreditCardOwner(),"addr", 30, paymentMethod.getCreditCardNumber());
+            paymentData = new PaymentData(paymentMethod.getCreditCardOwner(),"addr", 30, paymentMethod.getCreditCardNumber(),cvv,person_id);
         }
         else{
             paymentData=null;
         }
 
-        boolean approval = serviceAPI.purchaseCart(id,"Israel",paymentData,delivery).getValue();
+        boolean approval = serviceAPI.purchaseCart(id,"Israel",paymentData,delivery,city,zip).getValue();
         return approval;
     }
     //---------------------------Use-Case-2.8---------------------------------//

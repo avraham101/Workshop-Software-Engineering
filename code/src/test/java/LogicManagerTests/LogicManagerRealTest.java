@@ -506,7 +506,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip).getValue());
         //check notification
         HashMap<Integer, List<Notification>> notifications=publisher.getNotificationList();
         List<ProductPeristentData> productDataList=
@@ -540,7 +542,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Gson policyGson = builderPolicy.create();
         String policyToAdd = policyGson.toJson(policy, PurchasePolicy.class);
         logicManager.updatePolicy(data.getId(Data.VALID),policyToAdd,data.getStore(Data.VALID).getName());
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip).getValue());
         checkBuyDidntWork();
         tearDownProductAddedToCart();
     }
@@ -689,6 +693,62 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    @Transactional
+    public void testBuyCartNullCity() {
+        super.testBuyCartNullCityTest();
+        checkBuyDidntWork();
+        tearDownProductAddedToCart();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    @Transactional
+    public void testBuyCartEmptyCity() {
+        super.testBuyCartEmptyCityTest();
+        checkBuyDidntWork();
+        tearDownProductAddedToCart();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    @Transactional
+    public void testBuyCartWrongZip() {
+        super.testBuyCartWrongZipTest();
+        checkBuyDidntWork();
+        tearDownProductAddedToCart();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    @Transactional
+    public void testBuyCartNot3DigitsCVV() {
+        super.testBuyCartNot3DigitsCVVTest();
+        checkBuyDidntWork();
+        tearDownProductAddedToCart();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    @Transactional
+    public void testBuyCartWrongId() {
+        super.testBuyCartWrongIdTest();
+        checkBuyDidntWork();
+        tearDownProductAddedToCart();
+    }
+
+
+    /**
      * check cart didnt change
      * check products in store didnt change
      * check there are no notifications
@@ -715,7 +775,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address,city,zip).getValue());
         List<Purchase> purchaseList = daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName()).watchMyPurchaseHistory().getValue();
         for (Purchase purchase: purchaseList) {
             String storeName = purchase.getStoreName();

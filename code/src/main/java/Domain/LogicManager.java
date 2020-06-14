@@ -633,14 +633,15 @@ public class LogicManager {
      * @param addresToDeliver - the address do Deliver the purchase
      * @return true is the purchase succeeded, otherwise false
      */
-    public Response<Boolean> purchaseCart(int id, String country, PaymentData paymentData, String addresToDeliver) {
+    public Response<Boolean> purchaseCart(int id, String country, PaymentData paymentData, String addresToDeliver,String city,int zip) {
         loggerSystem.writeEvent("LogicManager","purchaseCart",
                 "reserveCart the products in the cart", new Object[] {paymentData, addresToDeliver});
         //1) user get
         User current = cache.findUser(id);
         //2) validation check
-        if (!validPaymentData(paymentData))
-            return new Response<>(false, OpCode.Invalid_Payment_Data);
+        Response<Boolean> paymentDataCheck=validPaymentData(paymentData,city,zip);
+        if (!paymentDataCheck.getValue())
+            return paymentDataCheck;
         if (addresToDeliver == null || addresToDeliver.isEmpty() || country == null || country.isEmpty())
             return new Response<>(false, OpCode.Invalid_Delivery_Data);
         //3) sumUp cart - updated PaymentData, DeliveryData and check policy of store
@@ -648,7 +649,7 @@ public class LogicManager {
         if(!reserved) {
             return new Response<>(false, OpCode.Fail_Buy_Cart);
         }
-        DeliveryData deliveryData = new DeliveryData(addresToDeliver, country, new LinkedList<>());
+        DeliveryData deliveryData = new DeliveryData(addresToDeliver, country, new LinkedList<>(),current.getUserName(),city,zip);
         return buyAndPay(id, paymentData, deliveryData);
     }
 
@@ -694,15 +695,47 @@ public class LogicManager {
      * use case 2.8 - purchase cart
      * the function check if payment data is valid
      * @param paymentData - the payment data
+     * @param city
+     * @param zip
      * @return true if the payment is valid, otherwise false
      */
-    private boolean validPaymentData(PaymentData paymentData) {
+    private Response<Boolean> validPaymentData(PaymentData paymentData, String city, int zip) {
         if(paymentData==null)
-            return false;
+            return new Response<>(false,OpCode.Invalid_Payment_Data);
         String name = paymentData.getName();
         String address = paymentData.getAddress();
         String card = paymentData.getCreditCard();
-        return name!=null && !name.isEmpty() && address!=null && !address.isEmpty() && card!=null && !card.isEmpty();
+        int id=paymentData.getId();
+        int cvv=paymentData.getCvv();
+        if(name==null || name.isEmpty()){
+            return new Response<>(false,OpCode.Invalid_Payment_Data);
+        }
+        if(address==null || address.isEmpty()){
+            return new Response<>(false,OpCode.Wrong_Address);
+        }
+        int cardNumber;
+        try{
+            cardNumber=Integer.parseInt(card);
+        }
+        catch (Exception e){
+            return new Response<>(false,OpCode.Wrong_Card);
+        }
+        if(cardNumber<0){
+            return new Response<>(false,OpCode.Wrong_Card);
+        }
+        if(id<0){
+            return new Response<>(false,OpCode.Wrong_Id);
+        }
+        if(cvv<100||cvv>=1000){
+            return new Response<>(false,OpCode.Wrong_CVV);
+        }
+        if(city==null || city.isEmpty()){
+            return new Response<>(false, OpCode.Wrong_City);
+        }
+        if(zip<0){
+            return new Response<>(false, OpCode.Wrong_Zip);
+        }
+        return  new Response<>(true,OpCode.Success);
     }
 
     /**

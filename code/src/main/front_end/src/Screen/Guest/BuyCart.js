@@ -17,6 +17,11 @@ class BuyCart extends Component {
         this.handleChangeAddress = this.handleChangeAddress.bind(this);
         this.handleChangeCountry = this.handleChangeCountry.bind(this);
         this.handleChangeCreditCard = this.handleChangeCreditCard.bind(this);
+
+        this.handleChangeCvv = this.handleChangeCvv.bind(this);
+        this.handleChangeID = this.handleChangeID.bind(this);
+        this.handleChangeZip = this.handleChangeZip.bind(this);
+        this.handleChangeCity = this.handleChangeCity.bind(this);
         this.handlebuy = this.handlebuy.bind(this);
         this.buildbuy=this.buildbuy.bind(this);
         this.render_name = this.render_name.bind(this);
@@ -28,6 +33,10 @@ class BuyCart extends Component {
             country: "",
             creditCard: "",
             age: "",
+            cvv: "",
+            id: "",
+            zip: "",
+            city: "",
         }
     }
 
@@ -51,21 +60,49 @@ class BuyCart extends Component {
         this.setState({creditCard: event.target.value});
     }
 
+    handleChangeCvv(event) {
+      this.setState({cvv: event.target.value});
+    }
+
+    handleChangeID(event) {
+      this.setState({id: event.target.value});
+    }
+
+    handleChangeZip(event) {
+      this.setState({zip: event.target.value});
+    }
+
+    handleChangeCity(event) {
+      this.setState({city: event.target.value});
+    }
+
     handlebuy() {
-         if (this.state.creditCard.length !== 4) {
-             alert("wrong credit card, must be length 4") 
-         }
-         else {
-            let payment_data={
-                name:this.state.name,
-                address: this.state.address,
-                age: this.state.age,
-                creditCard: this.state.creditCard,
-                totalPrice: 0,
-                country: this.state.country,
-            };
-            
-            send('/home/buy?id='+this.props.location.state.id, 'POST',payment_data, this.buildbuy)
+        // if (this.state.creditCard.length !== 4) {
+        //   alert("wrong credit card, must be length 4") 
+        // }
+        if (this.state.cvv.length !== 3) {
+          alert("wrong cvv, must be length 3") 
+        }
+        else if (this.state.cvv < 100 | this.state.cvv > 999) {
+          alert("wrong cvv, must be bewtween 100-999") 
+        }
+        else if (this.state.id > 999999999) {
+          alert("wrong id, must be smaller") 
+        }
+        else {
+          let payment_data={
+              name:this.state.name,
+              address: this.state.address,
+              age: this.state.age,
+              creditCard: this.state.creditCard,
+              totalPrice: 0,
+              country: this.state.country,
+              city: this.state.city,
+              id:this.state.id,
+              zip:this.state.zip,
+              cvv:this.state.cvv,
+          };
+          send('/home/buy?id='+this.props.location.state.id, 'POST',payment_data, this.buildbuy)
         }
     }
 
@@ -80,6 +117,24 @@ class BuyCart extends Component {
               pass(this.props.history,'/',this.pathname,this.props.location.state)
             else
               pass(this.props.history,'/subscribe',this.pathname,this.props.location.state)
+          }
+          else if(opt == 'Wrong_Address') {
+            alert('error: please fill your adress properly. Sorry.')
+          }
+          else if(opt == 'Wrong_Card') {
+            alert('error: please fill your credit cart number properly. Sorry.')
+          }
+          else if(opt == 'Wrong_Id') {
+            alert('error: please fill your id properly. Sorry.')
+          }
+          else if(opt == 'Wrong_CVV') {
+            alert('error: please fill your credit cart CVV properly. Sorry.')
+          }
+          else if(opt == 'Wrong_City') {
+            alert('error: please fill your city name properly. Sorry.')
+          }
+          else if(opt == 'Wrong_Zip') {
+            alert('error: please fill your zip number properly. Sorry.')
           }
           else if(opt == 'Invalid_Payment_Data') {
             alert('error: please fill your name and adress properly. Sorry.')
@@ -142,8 +197,12 @@ class BuyCart extends Component {
                     {this.render_name()}
                     <Input title="age" type="number" min={1} value={this.state.age} onChange={this.handleChangeAge} />
                     <Input title="address" type="text" value={this.state.address} onChange={this.handleChangeAddress} />
+                    <Input title="city" type="text"  value={this.state.city} onChange={this.handleChangeCity} />
+                    <Input title="zip" type="number" min={1} value={this.state.zip} onChange={this.handleChangeZip} />
                     <Input title="country" type="text" value={this.state.country} onChange={this.handleChangeCountry} />
                     <Input title="creditCard" type="text" value={this.state.creditCard} onChange={this.handleChangeCreditCard} />
+                    <Input title="cvv" type="number" value={this.state.cvv} onChange={this.handleChangeCvv} />
+                    <Input title="id" type="number" min={1} value={this.state.id} onChange={this.handleChangeID} />
                     <Button text="buy" onClick={this.handlebuy}/>
                     <Button text="cancel" onClick={onClick} />
                 </body>
