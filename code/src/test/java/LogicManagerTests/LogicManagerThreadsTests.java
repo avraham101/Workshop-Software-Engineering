@@ -188,6 +188,76 @@ public class LogicManagerThreadsTests {
         tearDownConnect();
     }
 
+    @Test
+    public void testPurchaseCartSuccess(){
+        StoreData storeToOpen = stores.get(0);
+        ProductData productToBuy = productsPerStore.get(storeToOpen.getName()).get(0);
+        registerLoginAndOpenStore(admin,users,storeToOpen);
+        logicManager.addProductToStore(ids.get(admin.getName()),productToBuy);
+        //TODO: storeName, product, amount
+        setUpCartForAllUsers(users,storeToOpen.getName(),productToBuy,5);
+
+        String country = "israel";
+        PaymentData paymentData = new PaymentData("name","address",3,"333",333,31313131);
+        String addressToDeliver = "addr";
+        String city = "city";
+        int zip = 121;
+        int expectedSuccess = 2;
+
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
+
+        for(Subscribe user : users){
+            Callable<Response<?>> callable = ()->
+                    logicManager.purchaseCart(ids.get(user.getName()),country,paymentData,addressToDeliver,city,zip);
+            futures.add(submitTask(callable));
+        }
+
+        for(Future<Response<?>> future : futures){
+            try {
+                results.add(future.get(TIMEOUT,TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                fail();
+            }
+        }
+
+        assertTrue(checkAmountSuccess(results,expectedSuccess));
+
+        Store actualStore = daos.getStoreDao().find(storeToOpen.getName());
+
+        // checks amount of product in store is non negative
+        int amount = actualStore.getProduct(productToBuy.getProductName()).getAmount();
+        assertTrue(amount>=0);
+
+        // checks amount of purchases
+        List<Purchase> history =
+                logicManager.watchStorePurchasesHistory(ids.get(admin.getName()),storeToOpen.getName()).getValue();
+        assertEquals(history.size(),expectedSuccess);
+
+        // checks amount of carts left
+        int leftCarts = users.size() - expectedSuccess ;
+        int currLeft = 0;
+        for(Subscribe user: users){
+            CartData currCart =
+                    logicManager.watchCartDetails(ids.get(user.getName())).getValue();
+
+            if(currCart.getProducts().size() > 0)
+                currLeft++;
+        }
+
+        assertEquals(currLeft,leftCarts);
+
+        //tearDownPurchases();
+        tearDownOpenStore();
+    }
+
+    private void setUpCartForAllUsers(List<Subscribe> users, String storeName, ProductData productToBuy, int amountOfProduct) {
+        for(Subscribe user : users){
+            logicManager.addProductToCart(ids.get(user.getName()),productToBuy.getProductName(),storeName,amountOfProduct);
+        }
+    }
+
+
     /**
      * use case 3.1 - Logout
      * checks that all logged in users logged out successfully
@@ -329,6 +399,10 @@ public class LogicManagerThreadsTests {
         tearDownOpenStore();
     }
 
+    /**
+     * use case 4.9.2 - answerRequest
+     * checks exactly one user managed to answer a request to store
+     */
     @Test
     public void testAnswerRequestSuccessOnce(){
         StoreData storeToOpen = stores.get(0);
@@ -531,8 +605,6 @@ public class LogicManagerThreadsTests {
     }
 
 
-
-
     //------------------------------------------------setUp Methods----------------------------------------------------//
     @BeforeClass
     public static void beforeClass() {
@@ -677,6 +749,21 @@ public class LogicManagerThreadsTests {
                 return false;
         }
         return true;
+    }
+
+    /**
+     * checks exactly amountOfSuccess of the results is with Success OpCode in results
+     * @param results - the results to examine
+     * @param amountOfSuccess - amount to examine
+     * @return - true if exactly amountOfSuccess of the results is with Success OpCode in results
+     */
+    private boolean checkAmountSuccess(List<Response<?>> results, int amountOfSuccess) {
+        int currAmount = 0;
+        for(Response<?> response : results) {
+            if (response.getReason() == OpCode.Success)
+                currAmount++;
+        }
+        return currAmount == amountOfSuccess;
     }
 
     /**
