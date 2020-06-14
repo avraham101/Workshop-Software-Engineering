@@ -402,16 +402,16 @@ public class LogicManagerThreadsTests {
         setUpAddManagerAndPremissions(opener,users,permissionTypes,storeToOpen);
         ProductData productData=threadsData.getProductsPerStore().get(storeToOpen.getName()).get(0);
 
-        List<Future<Response<Boolean>>> futures = new CopyOnWriteArrayList<>();
-        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
 
         for(Subscribe sub:users){
-            Callable<Response<Boolean>> callable = ()->
+            Callable<Response<?>> callable = ()->
                     logicManager.addProductToStore(ids.get(sub.getName()),productData);
             futures.add(submitTask(callable));
         }
 
-        for(Future<Response<Boolean>> future : futures) {
+        for(Future<Response<?>> future : futures) {
             try {
                 results.add(future.get(TIMEOUT, TIME_UNIT));
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
@@ -437,19 +437,19 @@ public class LogicManagerThreadsTests {
         Subscribe opener = cache.findSubscribe(admin.getName());
         setUpAddManagerAndPremissions(opener,users,permissionTypes,storeToOpen);
 
-        List<Future<Response<Boolean>>> futures = new CopyOnWriteArrayList<>();
-        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
         List<ProductData> products=productsPerStore.get(storeToOpen.getName());
         int i=0;
         for(Subscribe sub:users){
             ProductData product=products.get(i);
-            Callable<Response<Boolean>> callable = ()->
+            Callable<Response<?>> callable = ()->
                     logicManager.addProductToStore(ids.get(sub.getName()),product);
             futures.add(submitTask(callable));
             i++;
         }
 
-        for(Future<Response<Boolean>> future : futures) {
+        for(Future<Response<?>> future : futures) {
             try {
                 results.add(future.get(TIMEOUT, TIME_UNIT));
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
