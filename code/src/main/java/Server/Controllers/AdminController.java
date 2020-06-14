@@ -24,6 +24,7 @@ public class AdminController {
 
     @RequestMapping
     public String getAdminPage(){
+        System.out.println("NIVVV");
         return "admin";
     }
 

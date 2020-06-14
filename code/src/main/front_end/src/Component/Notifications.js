@@ -21,7 +21,13 @@ var size_2= 0;
 var size_3= 0;
 var size_4= 0;
 var show = undefined;// PRODUCTS, REPLAYS , MANAGMENT
-var test =undefined;
+var test = undefined;
+
+var refresh = undefined; 
+
+export function setRefresh(func) {
+  refresh = func;
+}
 
 export function todayVisits(){
   return test;
@@ -58,6 +64,7 @@ export class Notifications extends Component {
       color_2: '#92BAFF',
       color_3: '#92BAFF',
       color_4: '#92BAFF',
+      refresh: undefined,
     }
     this.handleNotification = this.handleNotification.bind(this);
     this.parseNotification = this.parseNotification.bind(this);
@@ -107,10 +114,15 @@ export class Notifications extends Component {
       approvels_notification.push(element.id);
     }
     else if(opcode===NOTIFICATION_VISIT){
-      alert("got noti");
-      console.log(element.value);
       test=element.value;
+      if(refresh!=undefined) {
+        refresh(test);
+      }
       reset_flag();
+    }
+    else
+    {
+      alert('recived op code notifiaction');
     }
   }
 
@@ -335,8 +347,7 @@ export class Notifications extends Component {
         </div>
       </div> 
       )
-    }
-        
+    } 
     return
   }
 
@@ -389,6 +400,7 @@ export class Notifications extends Component {
           </h4>
         </div>
         {this.renderPopUp()}
+        {/* {this.renderUsageGraph()} */}
       </div>
     );
   }
