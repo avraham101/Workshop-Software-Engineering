@@ -62,16 +62,23 @@ public class LogicManagerThreadsTests {
     public void testRegisterSuccessOnce(){
 
         Subscribe subscribe = newUsers.get(0);
-        Callable<Response<Boolean>> callable = ()-> logicManager.register(subscribe.getName(),subscribe.getPassword());
-        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+        Callable<Response<?>> callable = ()-> logicManager.register(subscribe.getName(),subscribe.getPassword());
 
-        for(int i=0;i<NUM_THREADS;i++) {
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
+
+        for(int i=0;i<NUM_THREADS;i++)
+            futures.add(submitTask(callable));
+
+        for(Future<Response<?>> future : futures) {
             try {
-                results.add(submitTask(callable).get(TIMEOUT,TIME_UNIT));
+                results.add(future.get(TIMEOUT, TIME_UNIT));
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                e.printStackTrace();
                 fail();
             }
         }
+
         assertTrue(checkOnlyOneSuccess(results));
 
         Subscribe actual = cache.findSubscribe(subscribe.getName());
@@ -86,12 +93,17 @@ public class LogicManagerThreadsTests {
      */
     @Test
     public void testRegisterSuccess() {
-        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
 
-        for(Subscribe user : newUsers){
-            Callable<Response<Boolean>> callable = ()-> logicManager.register(user.getName(),user.getPassword());
+        for(Subscribe user : newUsers) {
+            Callable<Response<?>> callable = () -> logicManager.register(user.getName(), user.getPassword());
+            futures.add(submitTask(callable));
+        }
+
+        for(Future<Response<?>> future : futures){
             try {
-                results.add(submitTask(callable).get(TIMEOUT,TIME_UNIT));
+                results.add(future.get(TIMEOUT,TIME_UNIT));
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 fail();
             }
@@ -114,17 +126,22 @@ public class LogicManagerThreadsTests {
         registerUsers(newUsers);
         setUpConnect();
 
-        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
         for(Subscribe user : newUsers){
-            Callable<Response<Boolean>> callable = ()->
+            Callable<Response<?>> callable = ()->
                     logicManager.login(ids.get(user.getName()),newUser.getName(),newUser.getPassword());
+                futures.add(submitTask(callable));
+        }
+
+        for(Future<Response<?>> future : futures){
             try {
-                results.add(submitTask(callable).get(TIMEOUT,TIME_UNIT));
+                results.add(future.get(TIMEOUT,TIME_UNIT));
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 fail();
             }
         }
-        assertTrue(checkOnlyOneSuccess(results));
+
 
         for(Subscribe user : newUsers){
             int sessionNumber = cache.findSubscribe(user.getName()).getSessionNumber();
@@ -133,6 +150,8 @@ public class LogicManagerThreadsTests {
             else
                 assertEquals(sessionNumber, -1);
         }
+
+        assertTrue(checkOnlyOneSuccess(results));
 
         tearDownRegister();
         tearDownConnect();
@@ -147,16 +166,23 @@ public class LogicManagerThreadsTests {
         registerUsers(newUsers);
         setUpConnect();
 
-        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
+
         for(Subscribe user : newUsers){
-            Callable<Response<Boolean>> callable = ()->
+            Callable<Response<?>> callable = ()->
                     logicManager.login(ids.get(user.getName()),user.getName(),user.getPassword());
+            futures.add(submitTask(callable));
+        }
+
+        for(Future<Response<?>> future : futures){
             try {
-                results.add(submitTask(callable).get(TIMEOUT,TIME_UNIT));
+                results.add(future.get(TIMEOUT,TIME_UNIT));
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 fail();
             }
         }
+
         assertTrue(checkAllSuccess(results));
 
         for(Subscribe user : newUsers){
@@ -175,16 +201,22 @@ public class LogicManagerThreadsTests {
     public void testLogoutSuccess(){
         registerAndLoginUsers(users);
 
-        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
+
         for(Subscribe user : users){
-            Callable<Response<Boolean>> callable = ()->
-                    logicManager.logout(ids.get(user.getName()));
+            Callable<Response<?>> callable = ()-> logicManager.logout(ids.get(user.getName()));
+            futures.add(submitTask(callable));
+        }
+
+        for(Future<Response<?>> future : futures){
             try {
-                results.add(submitTask(callable).get(TIMEOUT,TIME_UNIT));
+                results.add(future.get(TIMEOUT,TIME_UNIT));
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 fail();
             }
         }
+
         assertTrue(checkAllSuccess(results));
 
         for(Subscribe user : newUsers){
@@ -204,12 +236,18 @@ public class LogicManagerThreadsTests {
         registerAndLoginUsers(users);
         StoreData storeToOpen = stores.get(0);
 
-        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
+
         for(Subscribe user : newUsers){
-            Callable<Response<Boolean>> callable = ()->
+            Callable<Response<?>> callable = ()->
                     logicManager.openStore(ids.get(user.getName()),storeToOpen);
+            futures.add(submitTask(callable));
+        }
+
+        for(Future<Response<?>> future : futures){
             try {
-                results.add(submitTask(callable).get(TIMEOUT,TIME_UNIT));
+                results.add(future.get(TIMEOUT,TIME_UNIT));
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 fail();
             }
@@ -231,15 +269,21 @@ public class LogicManagerThreadsTests {
     public void testOpenStoreSuccess(){
         registerAndLoginUsers(users);
 
-        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
+
         for(int i=0;i<newUsers.size();i++){
             Subscribe user = newUsers.get(i);
             StoreData storeToOpen = stores.get(i);
 
-            Callable<Response<Boolean>> callable = ()->
+            Callable<Response<?>> callable = ()->
                     logicManager.openStore(ids.get(user.getName()),storeToOpen);
+            futures.add(submitTask(callable));
+        }
+
+        for(Future<Response<?>> future : futures){
             try {
-                results.add(submitTask(callable).get(TIMEOUT,TIME_UNIT));
+                results.add(future.get(TIMEOUT,TIME_UNIT));
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 fail();
             }
@@ -265,17 +309,17 @@ public class LogicManagerThreadsTests {
         StoreData storeToOpen = stores.get(0);
         openStore(admin,storeToOpen);
 
-        List<Future<Response<Boolean>>> futures = new CopyOnWriteArrayList<>();
-        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
         for(RequestData request : requests){
             if(request.getStoreName().equals(storeToOpen.getName())){
-                Callable<Response<Boolean>> callable = ()->
+                Callable<Response<?>> callable = ()->
                         logicManager.addRequest(ids.get(request.getSenderName()),storeToOpen.getName(),request.getContent());
                 futures.add(submitTask(callable));
 
             }
         }
-        for(Future<Response<Boolean>> future : futures) {
+        for(Future<Response<?>> future : futures) {
             try {
                 results.add(future.get(TIMEOUT, TIME_UNIT));
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
@@ -287,10 +331,7 @@ public class LogicManagerThreadsTests {
 
         checkRequestsEqual(storeToOpen.getName(),requests);
 
-        //TODO: add tearDown
         tearDownOpenStore();
-
-
     }
 
     @Test
@@ -300,20 +341,20 @@ public class LogicManagerThreadsTests {
         Subscribe opener = cache.findSubscribe(admin.getName());
         sendRequestsToStore(opener,storeToOpen);
 
-        List<Future<Response<RequestData>>> futures = new CopyOnWriteArrayList<>();
-        List<Response<RequestData>> results = new CopyOnWriteArrayList<>();
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
 
         Store actualStore = daos.getStoreDao().find(storeToOpen.getName());
         Map<Integer,Request> requests = actualStore.getRequests();
 
         for(Map.Entry<Integer,Request> request : requests.entrySet()){
             String comment = "c"+request.getKey();
-            Callable<Response<RequestData>> callable = ()->
+            Callable<Response<?>> callable = ()->
                     logicManager.replayRequest(ids.get(request.getValue().getSenderName()),storeToOpen.getName(),request.getKey(),comment);
             futures.add(submitTask(callable));
         }
 
-        for(Future<Response<RequestData>> future : futures) {
+        for(Future<Response<?>> future : futures) {
             try {
                 results.add(future.get(TIMEOUT, TIME_UNIT));
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
@@ -321,6 +362,8 @@ public class LogicManagerThreadsTests {
                 fail();
             }
         }
+
+        assertTrue(checkAllSuccess(results));
 
         actualStore = daos.getStoreDao().find(storeToOpen.getName());
         requests = actualStore.getRequests();
@@ -452,8 +495,8 @@ public class LogicManagerThreadsTests {
      * @param results - the results to examine
      * @return - true if all the results are with Success OpCode, false otherwise
      */
-    private boolean checkAllSuccess(List<Response<Boolean>> results) {
-        for(Response<Boolean> response : results) {
+    private boolean checkAllSuccess(List<Response<?>> results) {
+        for(Response<?> response : results) {
             if (response.getReason() != OpCode.Success)
                 return false;
         }
@@ -465,10 +508,10 @@ public class LogicManagerThreadsTests {
      * @param results - the results to examine
      * @return - true if exactly one result is with Success OpCode in results, false otherwise
      */
-    private boolean checkOnlyOneSuccess(List<Response<Boolean>> results) {
+    private boolean checkOnlyOneSuccess(List<Response<?>> results) {
         boolean onlyOne = false;
 
-        for(Response<Boolean> response : results){
+        for(Response<?> response : results){
             if(response.getReason() == OpCode.Success)
                 if(onlyOne)
                     return false;
