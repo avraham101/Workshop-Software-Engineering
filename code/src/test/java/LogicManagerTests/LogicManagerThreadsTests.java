@@ -375,18 +375,48 @@ public class LogicManagerThreadsTests {
 
     }
 
-    private void sendRequestsToStore(Subscribe manager, StoreData storeToOpen) {
-        for(RequestData request : requests)
-            if(request.getStoreName().equals(storeToOpen.getName())) {
-                logicManager.addManager(manager.getSessionNumber(),request.getSenderName(),storeToOpen.getName());
-                logicManager.addRequest(ids.get(request.getSenderName()), storeToOpen.getName(), request.getContent());
+    @Test
+    public void testManageOwnerSuccessOnce(){
+        List<Subscribe> owners = users.subList(0,users.size()-2);
+        StoreData storeToOpen = stores.get(0);
+        registerLoginAndOpenStore(admin,users,storeToOpen);
+        Subscribe newOwner = newUsers.get(users.size()-1);
+
+        //TODO: add owners
+
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
+
+        for(Subscribe owner : owners){
+            Callable<Response<?>> callable = ()-> {
+                Response<?> response = logicManager.manageOwner(ids.get(owner.getName()), storeToOpen.getName(), newOwner.getName());
+                logicManager.approveManageOwner(ids.get(admin.getName()),storeToOpen.getName(),newOwner.getName());
+                return response;
+            };
+
+            futures.add(submitTask(callable));
+        }
+
+        for(Future<Response<?>> future : futures) {
+            try {
+                results.add(future.get(TIMEOUT, TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                e.printStackTrace();
+                fail();
             }
+        }
+        assertTrue(checkOnlyOneSuccess(results));
+
+        Store actualStore = daos.getStoreDao().find(storeToOpen.getName());
+        boolean isOwner = actualStore.getPermissions().get(newOwner.getName()).isOwner();
+        assertTrue(isOwner);
+
+        tearDownOpenStore();
     }
 
-    private void registerLoginAndOpenStore(Subscribe opener, List<Subscribe> users, StoreData storeToOpen) {
-        registerAndLoginUsers(users);
-        openStore(opener,storeToOpen);
-    }
+
+
+
 
 
     //------------------------------------------------setUp Methods----------------------------------------------------//
@@ -436,6 +466,11 @@ public class LogicManagerThreadsTests {
     private void setUpConnect(){
         for(int i=0;i<ids.size();i++)
             connect();
+    }
+
+    private void registerLoginAndOpenStore(Subscribe opener, List<Subscribe> users, StoreData storeToOpen) {
+        registerAndLoginUsers(users);
+        openStore(opener,storeToOpen);
     }
     //-----------------------------------------------------------------------------------------------------------------//
 
@@ -612,6 +647,14 @@ public class LogicManagerThreadsTests {
                 return true;
             }
         return false;
+    }
+
+    private void sendRequestsToStore(Subscribe manager, StoreData storeToOpen) {
+        for(RequestData request : requests)
+            if(request.getStoreName().equals(storeToOpen.getName())) {
+                logicManager.addManager(manager.getSessionNumber(),request.getSenderName(),storeToOpen.getName());
+                logicManager.addRequest(ids.get(request.getSenderName()), storeToOpen.getName(), request.getContent());
+            }
     }
     //-----------------------------------------------------------------------------------------------------------------//
 }
