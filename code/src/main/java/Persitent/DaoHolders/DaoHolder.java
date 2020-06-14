@@ -19,6 +19,7 @@ public class DaoHolder {
     private IReviewDao reviewDao;
     private IRevenueDao revenueDao;
     private IOwnerAgreementDao ownerAgreementDao;
+    private IVisitsPerDayDao visitsPerDayDao;
 
     public DaoHolder() {
         cartDao =new CartDaoProxy();
@@ -35,6 +36,7 @@ public class DaoHolder {
         reviewDao = new ReviewDaoProxy();
         revenueDao=new RevenueDaoProxy();
         ownerAgreementDao=new OwnerAgreementDaoProxy();
+        visitsPerDayDao=new VisitPerDayDaoProxy();
     }
 
     public ICartDao getCartDao() {
@@ -91,5 +93,9 @@ public class DaoHolder {
 
     public IOwnerAgreementDao getOwnerAgreementDao() {
         return ownerAgreementDao;
+    }
+
+    public IVisitsPerDayDao getVisitsPerDayDao() {
+        return visitsPerDayDao;
     }
 }

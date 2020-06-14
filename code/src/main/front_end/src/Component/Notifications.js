@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {connect, sendMessage} from '../Handler/WebSocketHandler'
 import {send} from '../Handler/ConnectionHandler';
 import Button from './Button';
+import {reset_flag} from '../Screen/Subscribe/Admin/WatchDailyUsage'
+
 var flag_connected = false;
 var products = [];
 var products_notification = [];
@@ -19,6 +21,21 @@ var size_2= 0;
 var size_3= 0;
 var size_4= 0;
 var show = undefined;// PRODUCTS, REPLAYS , MANAGMENT
+var test = undefined;
+
+var refresh = undefined; 
+
+export function setRefresh(func) {
+  refresh = func;
+}
+
+export function todayVisits(){
+  return test;
+}
+
+export function setTodayVisits(today){
+  test=today;
+}
 
 export function turnOf(){
   flag_connected = false;
@@ -30,6 +47,7 @@ var NOTIFICATION_REPLAY = 'Reply_Request';
 var NOTIFICATION_REMOVE_MANAGER = 'Removed_From_Management';
 var NOTIFICATION_WAITING_APPROVED = 'Approve_Owner';
 var NOTIFICATION_APPROVED = 'Add_Owner';
+var NOTIFICATION_VISIT='Day_Visit';
 var SHOW_PRODUCTS = 'PRODUCTS';
 var SHOW_REPLAYS = 'REPLAYS';
 var SHOW_MANAGMENT = 'MANAGMENT';
@@ -46,6 +64,7 @@ export class Notifications extends Component {
       color_2: '#92BAFF',
       color_3: '#92BAFF',
       color_4: '#92BAFF',
+      refresh: undefined,
     }
     this.handleNotification = this.handleNotification.bind(this);
     this.parseNotification = this.parseNotification.bind(this);
@@ -94,6 +113,17 @@ export class Notifications extends Component {
       approvels.push(obj);
       approvels_notification.push(element.id);
     }
+    else if(opcode===NOTIFICATION_VISIT){
+      test=element.value;
+      if(refresh!=undefined) {
+        refresh(test);
+      }
+      reset_flag();
+    }
+    else
+    {
+      alert('recived op code notifiaction');
+    }
   }
 
   parseList(list) {
@@ -123,7 +153,7 @@ export class Notifications extends Component {
       size_1= 0;
       size_2= 0;
       connect(''+id,this.handleNotification);
-      flag_connected=true; 
+      flag_connected=true;
     }
   }
 
@@ -317,8 +347,7 @@ export class Notifications extends Component {
         </div>
       </div> 
       )
-    }
-        
+    } 
     return
   }
 
@@ -371,6 +400,7 @@ export class Notifications extends Component {
           </h4>
         </div>
         {this.renderPopUp()}
+        {/* {this.renderUsageGraph()} */}
       </div>
     );
   }

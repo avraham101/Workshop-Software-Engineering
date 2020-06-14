@@ -87,7 +87,8 @@ public class UserController {
     //TODO discus the delivery
     public ResponseEntity<?> buyCart(@RequestParam(name="id") int id, @RequestBody String  paymentDataStr){
         PaymentData paymentData = json.fromJson(paymentDataStr,PaymentData.class);
-        Response<Boolean> response= SingleService.getInstance().purchaseCart(id,paymentData.getCountry(),paymentData,paymentData.getAddress());
+        Response<Boolean> response= SingleService.getInstance().purchaseCart(id,paymentData.getCountry(),paymentData,
+                paymentData.getAddress(),paymentData.getCity(),paymentData.getZip());
         return getResponseEntity(response);
 
     }
