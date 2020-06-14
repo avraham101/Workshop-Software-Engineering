@@ -1,7 +1,6 @@
 package Persitent.DaoProxy;
 
 import Domain.Product;
-import Persitent.Dao.CategoryDao;
 import Persitent.Dao.ProductDao;
 import Persitent.DaoInterfaces.ICategoryDao;
 import Persitent.DaoInterfaces.IProductDao;
@@ -57,6 +56,24 @@ public class ProductDaoProxy implements IProductDao {
             return dao.removeProduct(productName, storeName);
         }catch (Exception e) {
             return false;
+        }
+    }
+
+    @Override
+    public void openTransaction() {
+        try {
+            dao.openTransaction();
+        }
+        catch (Exception ignored){
+        }
+    }
+
+    @Override
+    public void closeTransaction() {
+        try {
+            dao.closeTransaction();
+        }
+        catch (Exception ignored){
         }
     }
 }

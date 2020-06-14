@@ -36,6 +36,7 @@ public class AcceptanceTests {
     public  void setUpAll(){
         Utils.TestMode();
         bridge = AcceptanceTestsDriver.getBridge();
+        bridge.removeVisits();
         users = new ArrayList<>();
         stores = new ArrayList<>();
         products = new ArrayList<>();
@@ -222,7 +223,6 @@ public class AcceptanceTests {
     protected  void addStores(List<StoreTestData> stores){
         bridge.register(admin.getUsername(),admin.getPassword());
         bridge.login(admin.getId(),admin.getUsername(),admin.getPassword());
-
         for(StoreTestData store : stores) {
             UserTestData owner = store.getStoreOwner();
             registerAndLogin(owner);
