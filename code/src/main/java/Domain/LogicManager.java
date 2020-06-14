@@ -25,6 +25,8 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class LogicManager {
 
@@ -37,6 +39,7 @@ public class LogicManager {
     private Gson gson;
     private DaoHolder daos;
     private Cache cache;
+    private Lock lock;
 
 
     /**
@@ -56,6 +59,7 @@ public class LogicManager {
         builderDiscount.registerTypeAdapter(Term.class,new InterfaceAdapter());
         gson = builderDiscount.create();
         usersIdCounter=new AtomicInteger(0);
+        lock = new ReentrantLock();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -102,6 +106,7 @@ public class LogicManager {
         builderDiscount.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
         builderDiscount.registerTypeAdapter(Term.class,new InterfaceAdapter());
         gson = builderDiscount.create();
+        lock = new ReentrantLock();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -156,6 +161,7 @@ public class LogicManager {
         builderDiscount.registerTypeAdapter(PurchasePolicy.class,new InterfaceAdapter());
         builderDiscount.registerTypeAdapter(Term.class,new InterfaceAdapter());
         gson = builderDiscount.create();
+        lock = new ReentrantLock();
         try {
             hashSystem = new HashSystem();
             loggerSystem = new LoggerSystem();
@@ -244,15 +250,16 @@ public class LogicManager {
         if(!validName(userName) || !validPassword(password)) {
             return new Response<>(false, OpCode.Invalid_Login_Details);
         }
-
-        Subscribe subscribe = this.daos.getSubscribeDao().find(userName);
+        //Subscribe subscribe = this.daos.getSubscribeDao().find(userName);
+        lock.lock();
+        Subscribe subscribe = cache.findSubscribe(userName);
         User user = cache.findUser(id);
         if(user!=null && subscribe!=null && subscribe.setSessionNumber(id)){
             try {
                 password = hashSystem.encrypt(password);
                 if (subscribe.getPassword().compareTo(password) == 0) {
                     boolean output = user.login(subscribe);
-
+                    lock.unlock();
                     if(!output) {
                         subscribe.setSessionNumber(-1);
                         return new Response<>(false, OpCode.User_Not_Found);
@@ -266,6 +273,7 @@ public class LogicManager {
                         "Fail to login the user",new Object[]{userName, password});
             }
         }
+        lock.unlock();
         return new Response<>(false,OpCode.User_Not_Found);
     }
 
