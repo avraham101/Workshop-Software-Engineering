@@ -6,7 +6,7 @@ import Button from "../../../Component/Button";
 import {send} from '../../../Handler/ConnectionHandler';
 import {pass} from "../../../Utils/Utils";
 import DivBetter from "../../../Component/DivBetter";
-import {todayVisits,setTodayVisits} from "../../../Component/Notifications";
+import {todayVisits, setTodayVisits, setRefresh} from "../../../Component/Notifications";
 
 var flag=true;
 
@@ -36,6 +36,8 @@ class WatchDailyUsage extends Component {
       this.changeEyear = this.changeEyear.bind(this);
       this.submitDate = this.submitDate.bind(this);
       this.saveCVS = this.saveCVS.bind(this);
+      this.getResults = this.getResults.bind(this);
+      this.getToday = this.getToday.bind(this);
     }
 
     ipos() {
@@ -212,6 +214,60 @@ class WatchDailyUsage extends Component {
       this.setState({yEnd:t});
     }
 
+    getResults(received) {
+       if(received) {
+          let opt = ''+received.reason;
+          if (opt === "Success") {
+            let list = received.value.slice(0,received.value.length-1);
+            let last= received.value[received.value.length-1];
+            this.setState({ lst_enteries:list});
+            this.forceUpdate();
+          }
+          else if(opt === "User_Not_Found") {
+              alert("Error - the user is not in the system");
+          }
+          else if(opt === "NOT_ADMIN") {
+            alert("The user is not an admin, rty again with other user");
+          }
+          else if(opt === "INVALID_DATE") {
+            alert("The day youe enter is invalid, try again");
+          }
+          else {
+            alert("visits could not recived data from the server")
+          }
+        }
+        else {
+          alert('Problem in vitis per day')
+        }
+    }
+
+    getToday(received) {
+      if(received) {
+        let opt = ''+received.reason;
+        if (opt === "Success") {
+          // alert('today list' + received.value);
+          // console.log(received.value[0]);
+          let today = received.value[0];
+          this.setState({ today:today});
+        }
+        else if(opt === "User_Not_Found") {
+            alert("Error - the user is not in the system");
+        }
+        else if(opt === "NOT_ADMIN") {
+          alert("The user is not an admin, rty again with other user");
+        }
+        else if(opt === "INVALID_DATE") {
+          alert("The day youe enter is invalid, try again");
+        }
+        else {
+          alert("visits could not recived data from the server");
+        }
+      }
+      else {
+        alert('Cant get today');
+      }
+    }
+
     submitDate() {
       if(this.state.dStart === undefined ||  this.state.mStart === undefined || this.state.yStart === undefined) {
         alert("Didnt Select Start Date correctly");
@@ -230,58 +286,17 @@ class WatchDailyUsage extends Component {
       }
       else {
         //TOOD: call send
-        let id = this.props.location.state.id;
-        let from = { day:this.state.dStart, month:this.state.mStart, year:this.state.yStart}; 
-        let to = { day:this.state.dEnd, month:this.state.mEnd, year:this.state.yEnd}; 
-        let datesData = {
-          fromDate: from,
-          toDate: to,
-        }
-        //alert(id+' '+from.day+' '+from.month+' '+from.year+' '+to.day+' '+to.month+' '+to.year)
-        send('/admin/visits?id='+id,'POST',datesData,(received)=>{
-          if(received) {
-            let opt = ''+received.reason;
-            alert(opt)
-            alert(received.value)
-            if (opt === "Success") {
-              let list = received.value.slice(0,received.value.length-1);
-              let last=received.value[received.value.length-1];
-              setTodayVisits({
-                date: last.date,
-                guestNumber: last.guestNumber,
-                subscribeNumber: last.subscribeNumber,
-                managerNumber: last.managerNumber,
-                ownerNumber: last.ownerNumber,
-                adminNumber: last.adminNumber,
-              });
-              this.setState(
-                {
-                  lst_enteries:list,
-                }
-              );
-              this.forceUpdate();
-            }
-            else if(opt === "User_Not_Found") {
-                alert("Error - the user is not in the system");
-            }
-            else if(opt === "NOT_ADMIN") {
-              alert("The user is not an admin, rty again with other user");
-            }
-            else if(opt === "INVALID_DATE") {
-              alert("The day youe enter is invalid, try again");
-            }
-            else {
-              alert("visits could not recived data from the server")
-            }
-          }
-          else {
-            alert('Problem in vitis per day')
-          }
-        });
-
+       let id = this.props.location.state.id;
+       
+       let from = { day:this.state.dStart, month:this.state.mStart, year:this.state.yStart}; 
+       let to = { day:this.state.dEnd, month:this.state.mEnd, year:this.state.yEnd}; 
+       let datesData = {
+         fromDate: from,
+         toDate: to,
+       }
+       //alert(id+' '+from.day+' '+from.month+' '+from.year+' '+to.day+' '+to.month+' '+to.year)
+       send('/admin/visits?id='+id,'POST',datesData,this.getResults);
       }
-
-        
     }
 
     renderSelectDate() {
@@ -306,26 +321,37 @@ class WatchDailyUsage extends Component {
               <Button text='Show' onClick={this.submitDate}/>
             </div>
             {this.renderRangeGraph()}
-        </div>
+        </div>  
       );
     }
 
-    refreshGraph(){
-      if(!flag){
-        flag=true;
-        this.setState({});
-        this.forceUpdate();
+    renderToday() {
+      let refresh = (today) => {this.setState({today:today})};
+      setRefresh(refresh);
+      if (this.state.today===undefined) {
+        let id = this.props.location.state.id;
+        let date = new Date();
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+        let send_date = { day:day, month:month, year:year}; 
+        let datesData = {
+          fromDate: send_date,
+          toDate: send_date,
+        }
+        send('/admin/visits?id='+id,'POST',datesData,this.getToday);
+        return
       }
-      return this.renderGraph(todayVisits());
+      return this.renderGraph(this.state.today);
     }
 
     render() {
         return (
             <BackGroud>
-                <Menu state={this.props.location.state}/>
+                <Menu state={this.props.location.state} refresh={()=>{this.setState({})}}/>
                 <Title title="Daily Usage"/>
                 <body>
-                  {todayVisits() ? this.refreshGraph(): 'no dates entered' }
+                  {this.renderToday()}
                   {this.renderSelectDate()}
                 </body>
             </BackGroud>
