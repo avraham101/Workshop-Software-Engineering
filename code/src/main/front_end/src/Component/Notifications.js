@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {connect, sendMessage} from '../Handler/WebSocketHandler'
 import {send} from '../Handler/ConnectionHandler';
 import Button from './Button';
+import {reset_flag} from '../Screen/Subscribe/Admin/WatchDailyUsage'
+
 var flag_connected = false;
 var products = [];
 var products_notification = [];
@@ -19,6 +21,15 @@ var size_2= 0;
 var size_3= 0;
 var size_4= 0;
 var show = undefined;// PRODUCTS, REPLAYS , MANAGMENT
+var test =undefined;
+
+export function todayVisits(){
+  return test;
+}
+
+export function setTodayVisits(today){
+  test=today;
+}
 
 export function turnOf(){
   flag_connected = false;
@@ -30,6 +41,7 @@ var NOTIFICATION_REPLAY = 'Reply_Request';
 var NOTIFICATION_REMOVE_MANAGER = 'Removed_From_Management';
 var NOTIFICATION_WAITING_APPROVED = 'Approve_Owner';
 var NOTIFICATION_APPROVED = 'Add_Owner';
+var NOTIFICATION_VISIT='Day_Visit';
 var SHOW_PRODUCTS = 'PRODUCTS';
 var SHOW_REPLAYS = 'REPLAYS';
 var SHOW_MANAGMENT = 'MANAGMENT';
@@ -93,6 +105,12 @@ export class Notifications extends Component {
       let obj = {store: store};
       approvels.push(obj);
       approvels_notification.push(element.id);
+    }
+    else if(opcode===NOTIFICATION_VISIT){
+      alert("got noti");
+      console.log(element.value);
+      test=element.value;
+      reset_flag();
     }
   }
 

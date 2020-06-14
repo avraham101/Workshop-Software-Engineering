@@ -146,8 +146,8 @@ public class ServiceAPI {
      * @return true is the purchase succeeded, otherwise false
      */
 
-    public Response<Boolean> purchaseCart(int id, String country, PaymentData paymentData, String addressToDeliver){
-        return logicManager.purchaseCart(id, country, paymentData,addressToDeliver);
+    public Response<Boolean> purchaseCart(int id, String country, PaymentData paymentData, String addressToDeliver,String city,int zip){
+        return logicManager.purchaseCart(id, country, paymentData,addressToDeliver,city,zip);
     }
 
     /**
@@ -432,6 +432,19 @@ public class ServiceAPI {
      */
     public Response<List<Purchase>> AdminWatchStoreHistory(int id,String storeName){
         return logicManager.watchStorePurchasesHistory(id, storeName);
+    }
+
+    /**
+     * use case 6.5 - admin watch visitors in specific dates
+     * Acceptancet test: AdminWatchVisists
+     * @param id of the user wants to watch
+     * @param from date to start showing visits from
+     * @param to date to start watching visits from
+     * @return list of visits from date from to date to
+     */
+
+    public Response<List<DayVisit>> watchVisitsBetweenDates(int id,DateData from,DateData to ){
+        return logicManager.watchVisitsBetweenDates(id,from,to);
     }
 
     /**

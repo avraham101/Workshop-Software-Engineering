@@ -6,6 +6,7 @@ public enum Data{
     NULL,
     NULL_PRODUCT,
     NULL_NAME,
+    NULL_CITY,
     NULL_PASSWORD,
     NULL_CATEGORY,
     NULL_DISCOUNT,
@@ -16,6 +17,7 @@ public enum Data{
     NULL_STORE,
     NULL_ADDRESS,
     NULL_PAYMENT,
+    WRONG_CVV,
     WRONG_NAME,
     WRONG_PASSWORD,
     WRONG_STORE,
@@ -62,6 +64,8 @@ public enum Data{
     SMALL_AMOUNT,
     MIN_GREATER_THAN_MAX,
     WRONG_ID2,
+    WRONG_ZIP,
+    EMPTY_CITY,
     ;
 
 }

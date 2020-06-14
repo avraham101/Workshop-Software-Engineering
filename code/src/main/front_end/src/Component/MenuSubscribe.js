@@ -45,13 +45,16 @@ class MenuSubscribe extends Component {
     let onLeave = (event) => {
         event.currentTarget.style.backgroundColor = '';
     }
-    return(
+    return [
         <th style={{margin:0, borderRight:'1px solid white'}}
             onClick={()=> pass(history,"/admin/storehistory",this.fromPath,this.props.state)}
-            onMouseOver={onHover} onMouseLeave={onLeave}> Admin Watch Purchases </th>,
+            onMouseOver={onHover} onMouseLeave={onLeave}> Purchases </th>,
         <th style={{margin:0, borderRight:'1px solid white'}}
             onClick={()=> pass(history,"/admin/watchRevenu",this.fromPath,this.props.state)}
-            onMouseOver={onHover} onMouseLeave={onLeave}> Admin Watch Revenu </th>);
+            onMouseOver={onHover} onMouseLeave={onLeave}> Revenues </th>,
+        <th style={{margin:0, borderRight:'1px solid white'}}
+            onClick={()=> pass(history,"/admin/watchDailyUsage",this.fromPath,this.props.state)}
+        onMouseOver={onHover} onMouseLeave={onLeave}> Daily Usage </th>];
   }
 
   checkIfManager(){
@@ -112,10 +115,10 @@ class MenuSubscribe extends Component {
                 onMouseOver={onHover} onMouseLeave={onLeaveMenu}> Menu </th>
             <th style={{margin:0, borderRight:'1px solid white'}}
                 onClick={() => pass(history,"/viewStoresAndProducts",this.fromPath,this.props.state)}
-                onMouseOver={onHover} onMouseLeave={onLeave}> Watch Store and Products </th>
+                onMouseOver={onHover} onMouseLeave={onLeave}> View Stores & Products </th>
             <th style={{margin:0, borderRight:'1px solid white'}}
                 onClick={()=> pass(history,"/searchAndFilter",this.fromPath,this.props.state)}
-                onMouseOver={onHover} onMouseLeave={onLeave}> Search and Filter Products </th>
+                onMouseOver={onHover} onMouseLeave={onLeave}> Search Products </th>
             <th style={{margin:0, borderRight:'1px solid white'}}
                 onClick={()=> pass(history,"/sendRequest",this.fromPath,this.props.state)}
                 onMouseOver={onHover} onMouseLeave={onLeave}> Send Request </th>
@@ -127,10 +130,10 @@ class MenuSubscribe extends Component {
             { this.state.admin ? this.getAdminWatchPurchaseHistoryHtml() : ""}
             <th style={{margin:0, borderRight:'1px solid white'}}
                 onClick={()=> pass(history,"/userWatchPurchasesHistory",this.fromPath,this.props.state)}
-                onMouseOver={onHover} onMouseLeave={onLeave}> Purchases </th>
+                onMouseOver={onHover} onMouseLeave={onLeave}> My Purchases </th>
             <th style={{margin:0, borderRight:'1px solid white'}}
                 onClick={()=>pass(history,"/viewMyCart",this.fromPath,this.props.state)}
-                onMouseOver={onHover} onMouseLeave={onLeave}> Watch My Cart </th>
+                onMouseOver={onHover} onMouseLeave={onLeave}> My Cart </th>
             <th onClick={()=>this.logout()}
                 onMouseOver={onHover} onMouseLeave={onLeave}> Logout </th>
           </tr>
