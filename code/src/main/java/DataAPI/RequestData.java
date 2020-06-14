@@ -22,7 +22,7 @@ public class RequestData {
         this.content = r.getContent();
         this.senderName=r.getSenderName();
         this.comment=r.getComment();
-        this.id=r.getId();
+        //this.id=r.getId();
     }
 
     public String getStoreName() {

@@ -29,6 +29,7 @@ public class StoreDao extends Dao<Store> implements IStoreDao {
             }
         }
         catch(Exception ex) {
+            ex.printStackTrace();
         }
         finally {
             em.close();

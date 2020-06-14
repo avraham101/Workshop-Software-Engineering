@@ -33,7 +33,7 @@ import static org.junit.Assert.*;
 //no stubs full integration
 public class LogicManagerRealTest extends LogicManagerUserStubTest {
 
-    private StubPublisher publisher;
+    protected StubPublisher publisher;
 
     @BeforeClass
     public static void beforeClass() throws Exception {

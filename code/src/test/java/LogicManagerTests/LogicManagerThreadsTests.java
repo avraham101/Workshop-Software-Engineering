@@ -1,0 +1,574 @@
+package LogicManagerTests;
+
+import Data.TestDataThreads;
+import DataAPI.*;
+import Domain.LogicManager;
+import Domain.Request;
+import Domain.Store;
+import Domain.Subscribe;
+import Persitent.Cache;
+import Persitent.DaoHolders.DaoHolder;
+import Publisher.SinglePublisher;
+import Stubs.StubPublisher;
+import Systems.PaymentSystem.PaymentSystem;
+import Systems.PaymentSystem.ProxyPayment;
+import Systems.SupplySystem.ProxySupply;
+import Systems.SupplySystem.SupplySystem;
+import org.junit.*;
+
+import javax.transaction.Transactional;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.*;
+
+import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
+
+/**
+ * checks that functionally on the system is capable of handling multiple users
+ */
+public class LogicManagerThreadsTests {
+    private final int NUM_THREADS = 5;
+    private final int NUM_STORES = 5;
+    private final int NUM_PRODUCTS = 4;
+    private final int TIMEOUT = 50;
+    private final TimeUnit TIME_UNIT = TimeUnit.MINUTES;
+
+    private TestDataThreads threadsData;
+    private ExecutorService threadPool;
+    private List<Subscribe> users;
+    private List<Subscribe> newUsers;
+    private List<StoreData> stores;
+    private Map<String, ProductData> productsPerStore;
+    private List<RequestData> requests;
+    private Subscribe admin;
+    private Map<String, Integer> ids;
+    private static DaoHolder daos;
+    private SupplySystem supplySystem;
+    private PaymentSystem paymentSystem;
+    private Cache cache;
+    private StubPublisher publisher;
+    private LogicManager logicManager;
+
+
+    /**
+     * use case 2.2 - Register
+     * checks exactly one thread registered successfully
+     */
+    @Test
+    public void testRegisterSuccessOnce(){
+
+        Subscribe subscribe = newUsers.get(0);
+        Callable<Response<Boolean>> callable = ()-> logicManager.register(subscribe.getName(),subscribe.getPassword());
+        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+
+        for(int i=0;i<NUM_THREADS;i++) {
+            try {
+                results.add(submitTask(callable).get(TIMEOUT,TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                fail();
+            }
+        }
+        assertTrue(checkOnlyOneSuccess(results));
+
+        Subscribe actual = cache.findSubscribe(subscribe.getName());
+        assertNotNull(actual);
+
+        tearDownRegister();
+    }
+
+    /**
+     * use case 2.2 - Register
+     * tests all threads registered successfully
+     */
+    @Test
+    public void testRegisterSuccess() {
+        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+
+        for(Subscribe user : newUsers){
+            Callable<Response<Boolean>> callable = ()-> logicManager.register(user.getName(),user.getPassword());
+            try {
+                results.add(submitTask(callable).get(TIMEOUT,TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                fail();
+            }
+        }
+        assertTrue(checkAllSuccess(results));
+
+        for(Subscribe user : newUsers)
+            assertNotNull(cache.findSubscribe(user.getName()));
+
+        tearDownRegister();
+    }
+
+    /**
+     * use case 2.3 - Login
+     * checks exactly one thread is Logged In successfully
+     */
+    @Test
+    public void testLoginSuccessOnce(){
+        Subscribe newUser = newUsers.get(0);
+        registerUsers(newUsers);
+        setUpConnect();
+
+        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+        for(Subscribe user : newUsers){
+            Callable<Response<Boolean>> callable = ()->
+                    logicManager.login(ids.get(user.getName()),newUser.getName(),newUser.getPassword());
+            try {
+                results.add(submitTask(callable).get(TIMEOUT,TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                fail();
+            }
+        }
+        assertTrue(checkOnlyOneSuccess(results));
+
+        for(Subscribe user : newUsers){
+            int sessionNumber = cache.findSubscribe(user.getName()).getSessionNumber();
+            if (user.getName().equals(newUser.getName()))
+                assertNotEquals(sessionNumber, -1);
+            else
+                assertEquals(sessionNumber, -1);
+        }
+
+        tearDownRegister();
+        tearDownConnect();
+    }
+
+    /**
+     * use case 2.3 - Login
+     * checks all threads Logged In successfully
+     */
+    @Test
+    public void testLoginSuccess(){
+        registerUsers(newUsers);
+        setUpConnect();
+
+        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+        for(Subscribe user : newUsers){
+            Callable<Response<Boolean>> callable = ()->
+                    logicManager.login(ids.get(user.getName()),user.getName(),user.getPassword());
+            try {
+                results.add(submitTask(callable).get(TIMEOUT,TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                fail();
+            }
+        }
+        assertTrue(checkAllSuccess(results));
+
+        for(Subscribe user : newUsers){
+            int sessionNumber = cache.findSubscribe(user.getName()).getSessionNumber();
+            assertNotEquals(sessionNumber,-1);
+        }
+        tearDownRegister();
+        tearDownConnect();
+    }
+
+    /**
+     * use case 3.1 - Logout
+     * checks that all logged in users logged out successfully
+     */
+    @Test
+    public void testLogoutSuccess(){
+        registerAndLoginUsers(users);
+
+        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+        for(Subscribe user : users){
+            Callable<Response<Boolean>> callable = ()->
+                    logicManager.logout(ids.get(user.getName()));
+            try {
+                results.add(submitTask(callable).get(TIMEOUT,TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                fail();
+            }
+        }
+        assertTrue(checkAllSuccess(results));
+
+        for(Subscribe user : newUsers){
+            int sessionNumber = cache.findSubscribe(user.getName()).getSessionNumber();
+            assertEquals(sessionNumber,-1);
+        }
+        tearDownRegister();
+        tearDownConnect();
+    }
+
+    /**
+     * use case 3.2 - OpenStore
+     * checks only one user opens a store successfully
+     */
+    @Test
+    public void testOpenStoreSuccessOnce(){
+        registerAndLoginUsers(users);
+        StoreData storeToOpen = stores.get(0);
+
+        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+        for(Subscribe user : newUsers){
+            Callable<Response<Boolean>> callable = ()->
+                    logicManager.openStore(ids.get(user.getName()),storeToOpen);
+            try {
+                results.add(submitTask(callable).get(TIMEOUT,TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                fail();
+            }
+        }
+
+        assertTrue(checkOnlyOneSuccess(results));
+        Store actualStore = daos.getStoreDao().find(storeToOpen.getName());
+        assertNotNull(actualStore);
+
+        tearDownOpenStore();
+    }
+
+    /**
+     * use case 3.2 - OpenStore
+     * checks only one user opens a store successfully
+     * Assumes NUM_THREADS == NUM_STORES
+     */
+    @Test
+    public void testOpenStoreSuccess(){
+        registerAndLoginUsers(users);
+
+        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+        for(int i=0;i<newUsers.size();i++){
+            Subscribe user = newUsers.get(i);
+            StoreData storeToOpen = stores.get(i);
+
+            Callable<Response<Boolean>> callable = ()->
+                    logicManager.openStore(ids.get(user.getName()),storeToOpen);
+            try {
+                results.add(submitTask(callable).get(TIMEOUT,TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                fail();
+            }
+        }
+
+        assertTrue(checkAllSuccess(results));
+        for(int i=0;i<newUsers.size();i++) {
+            StoreData storeToOpen = stores.get(i);
+            Store actualStore = daos.getStoreDao().find(storeToOpen.getName());
+            assertNotNull(actualStore);
+        }
+
+        tearDownOpenStore();
+    }
+
+    /**
+     * use case 3.5 - sendRequestToStore
+     * checks that all users sends requests to store
+     */
+    @Test
+    public void testSendRequestToStoreSuccess(){
+        registerAndLoginUsers(users);
+        StoreData storeToOpen = stores.get(0);
+        openStore(admin,storeToOpen);
+
+        List<Future<Response<Boolean>>> futures = new CopyOnWriteArrayList<>();
+        List<Response<Boolean>> results = new CopyOnWriteArrayList<>();
+        for(RequestData request : requests){
+            if(request.getStoreName().equals(storeToOpen.getName())){
+                Callable<Response<Boolean>> callable = ()->
+                        logicManager.addRequest(ids.get(request.getSenderName()),storeToOpen.getName(),request.getContent());
+                futures.add(submitTask(callable));
+
+            }
+        }
+        for(Future<Response<Boolean>> future : futures) {
+            try {
+                results.add(future.get(TIMEOUT, TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                e.printStackTrace();
+                fail();
+            }
+        }
+        assertTrue(checkAllSuccess(results));
+
+        checkRequestsEqual(storeToOpen.getName(),requests);
+
+        //TODO: add tearDown
+        tearDownOpenStore();
+
+
+    }
+
+    @Test
+    public void testAnswerRequestSuccessOnce(){
+        StoreData storeToOpen = stores.get(0);
+        registerLoginAndOpenStore(admin,users,storeToOpen);
+        Subscribe opener = cache.findSubscribe(admin.getName());
+        sendRequestsToStore(opener,storeToOpen);
+
+        List<Future<Response<RequestData>>> futures = new CopyOnWriteArrayList<>();
+        List<Response<RequestData>> results = new CopyOnWriteArrayList<>();
+
+        Store actualStore = daos.getStoreDao().find(storeToOpen.getName());
+        Map<Integer,Request> requests = actualStore.getRequests();
+
+        for(Map.Entry<Integer,Request> request : requests.entrySet()){
+            String comment = "c"+request.getKey();
+            Callable<Response<RequestData>> callable = ()->
+                    logicManager.replayRequest(ids.get(request.getValue().getSenderName()),storeToOpen.getName(),request.getKey(),comment);
+            futures.add(submitTask(callable));
+        }
+
+        for(Future<Response<RequestData>> future : futures) {
+            try {
+                results.add(future.get(TIMEOUT, TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                e.printStackTrace();
+                fail();
+            }
+        }
+
+        actualStore = daos.getStoreDao().find(storeToOpen.getName());
+        requests = actualStore.getRequests();
+
+        for(Map.Entry<Integer,Request> request : requests.entrySet()){
+            String comment = "c"+request.getKey();
+            assertEquals(comment,request.getValue().getComment());
+        }
+
+    }
+
+    private void sendRequestsToStore(Subscribe manager, StoreData storeToOpen) {
+        for(RequestData request : requests)
+            if(request.getStoreName().equals(storeToOpen.getName())) {
+                logicManager.addManager(manager.getSessionNumber(),request.getSenderName(),storeToOpen.getName());
+                logicManager.addRequest(ids.get(request.getSenderName()), storeToOpen.getName(), request.getContent());
+            }
+    }
+
+    private void registerLoginAndOpenStore(Subscribe opener, List<Subscribe> users, StoreData storeToOpen) {
+        registerAndLoginUsers(users);
+        openStore(opener,storeToOpen);
+    }
+
+
+    //------------------------------------------------setUp Methods----------------------------------------------------//
+    @BeforeClass
+    public static void beforeClass() {
+        //TestMode();
+        daos=new DaoHolder();
+    }
+    /**
+     * inits the data and the logicManager
+     */
+    private void init(){
+        threadsData = new TestDataThreads(NUM_THREADS,NUM_STORES,NUM_PRODUCTS);
+        users = threadsData.getUsers();
+        newUsers = users.subList(1,users.size());
+        admin = users.get(0);
+        ids = threadsData.getIds();
+        stores = threadsData.getStores();
+        productsPerStore = threadsData.getProductsPerStore();
+        requests = threadsData.getRequests();
+
+        threadPool = Executors.newFixedThreadPool(NUM_THREADS);
+        try {
+            logicManager = new LogicManager(admin.getName(), admin.getPassword(),
+                    paymentSystem,supplySystem,daos, cache);
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Before
+    @Transactional
+    public void setUp() {
+        daos = new DaoHolder();
+        supplySystem = new ProxySupply();
+        paymentSystem = new ProxyPayment();
+        cache = new Cache();
+        cache.resetList();
+        init();
+        publisher = new StubPublisher();
+        SinglePublisher.initPublisher(publisher);
+    }
+
+    private void connect(){
+        logicManager.connectToSystem();
+    }
+    private void setUpConnect(){
+        for(int i=0;i<ids.size();i++)
+            connect();
+    }
+    //-----------------------------------------------------------------------------------------------------------------//
+
+    //---------------------------------------------tearDown Methods----------------------------------------------------//
+    private void tearDownConnect(){
+        cache.resetList();
+        ids = new HashMap<>();
+    }
+
+    private void tearDownRegister(){
+        removeSubscribes(users);
+        tearDownConnect();
+    }
+
+    private void tearDownLogin(){
+        logoutUsers(users);
+        tearDownRegister();
+    }
+
+    private void tearDownOpenStore(){
+        removeStores(stores);
+        tearDownLogin();
+    }
+
+    @After
+    public void tearDown(){
+        threadPool.shutdown();
+    }
+    //-----------------------------------------------------------------------------------------------------------------//
+
+    //-----------------------------------------------Helper Methods----------------------------------------------------//
+    /**
+     * submits a task to the thread pool
+     * @param task - the task to submit to the thread pool
+     * @param <T> - the return type given from executing the task
+     * @return - Future<T> where T is the return type given from executing the task
+     */
+    private <T> Future<T> submitTask(Callable<T> task){
+        return threadPool.submit(task);
+    }
+
+    /**
+     * submits tasks to the thread pool
+     * @param tasks - the tasks to submit to the thread pool
+     * @param <T> - the return type given from executing a task
+     * @return - Future<T> List where T is the return type given from executing a task
+     */
+    private <T> List<Future<T>> submitTasks (List<Callable<T>> tasks){
+        List<Future<T>> results = new ArrayList<>();
+        for(Callable<T> task : tasks)
+            results.add(submitTask(task));
+        return results;
+    }
+
+    /**
+     * checks all the results returned with Success OpCode
+     * @param results - the results to examine
+     * @return - true if all the results are with Success OpCode, false otherwise
+     */
+    private boolean checkAllSuccess(List<Response<Boolean>> results) {
+        for(Response<Boolean> response : results) {
+            if (response.getReason() != OpCode.Success)
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * checks exactly one result is with Success OpCode in results
+     * @param results - the results to examine
+     * @return - true if exactly one result is with Success OpCode in results, false otherwise
+     */
+    private boolean checkOnlyOneSuccess(List<Response<Boolean>> results) {
+        boolean onlyOne = false;
+
+        for(Response<Boolean> response : results){
+            if(response.getReason() == OpCode.Success)
+                if(onlyOne)
+                    return false;
+                else
+                    onlyOne = true;
+        }
+        return onlyOne;
+    }
+
+    private void registerUser(Subscribe user){
+        logicManager.register(user.getName(),user.getPassword());
+    }
+
+    private void registerUsers(List<Subscribe> users){
+        for (Subscribe user : users)
+            registerUser(user);
+    }
+
+    private void loginUser(Subscribe user){
+        logicManager.login(ids.get(user.getName()),user.getName(),user.getPassword());
+    }
+
+    private void loginUsers(List<Subscribe> users){
+        for(Subscribe user : users)
+            loginUser(user);
+    }
+
+    private void registerAndLogin(Subscribe user){
+        registerUser(user);
+        connect();
+        loginUser(user);
+    }
+
+    private void registerAndLoginUsers(List<Subscribe> users){
+        for(Subscribe user : users)
+            registerAndLogin(user);
+    }
+
+    private void logoutUser(Subscribe user){
+        logicManager.logout(ids.get(user.getName()));
+    }
+
+    private void logoutUsers(List<Subscribe> users) {
+        for (Subscribe user : users)
+            logoutUser(user);
+    }
+
+    private void removeSubscribe(Subscribe subscribe){
+        daos.getSubscribeDao().remove(subscribe.getName());
+    }
+
+    private void removeSubscribes(List<Subscribe> subscribes){
+        for (Subscribe s: subscribes) {
+            removeSubscribe(s);
+        }
+    }
+
+    private void removeStore(StoreData store){
+        daos.getStoreDao().removeStore(store.getName());
+    }
+
+    private void removeStores(List<StoreData> stores){
+        for (StoreData store: stores)
+            removeStore(store);
+    }
+
+    private void openStore(Subscribe user, StoreData storeToOpen) {
+        logicManager.openStore(ids.get(user.getName()),storeToOpen);
+    }
+
+    private void checkRequestsEqual(String storeName, List<RequestData> requests) {
+        Store store = daos.getStoreDao().find(storeName);
+        assertNotNull(store);
+
+        for(Request request : store.getRequests().values()) {
+            assertTrue(findRequest(request, requests));
+            Subscribe s = cache.findSubscribe(request.getSenderName());
+            assertNotNull(s);
+            assertTrue(findRequestSubscribe(request,s.getRequests()));
+        }
+    }
+
+    private boolean findRequestSubscribe(Request request, List<Request> requests) {
+        for(Request requestData : requests)
+            if(requestData.getStoreName().equals(request.getStoreName()) &&
+                    requestData.getSenderName().equals(request.getSenderName())&&
+                    requestData.getContent().equals(request.getContent())) {
+                return true;
+            }
+        return false;
+    }
+
+    private boolean findRequest(Request request, List<RequestData> requests) {
+        for(RequestData requestData : requests)
+            if(requestData.getStoreName().equals(request.getStoreName()) &&
+                    requestData.getSenderName().equals(request.getSenderName())&&
+                    requestData.getContent().equals(request.getContent())) {
+                return true;
+            }
+        return false;
+    }
+    //-----------------------------------------------------------------------------------------------------------------//
+}
