@@ -244,6 +244,7 @@ public class LogicManager {
         if(!validName(userName) || !validPassword(password)) {
             return new Response<>(false, OpCode.Invalid_Login_Details);
         }
+
         Subscribe subscribe = this.daos.getSubscribeDao().find(userName);
         User user = cache.findUser(id);
         if(user!=null && subscribe!=null && subscribe.setSessionNumber(id)){
@@ -251,6 +252,7 @@ public class LogicManager {
                 password = hashSystem.encrypt(password);
                 if (subscribe.getPassword().compareTo(password) == 0) {
                     boolean output = user.login(subscribe);
+
                     if(!output) {
                         subscribe.setSessionNumber(-1);
                         return new Response<>(false, OpCode.User_Not_Found);
