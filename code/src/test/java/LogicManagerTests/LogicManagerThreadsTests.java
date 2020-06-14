@@ -2,10 +2,7 @@ package LogicManagerTests;
 
 import Data.TestDataThreads;
 import DataAPI.*;
-import Domain.LogicManager;
-import Domain.Request;
-import Domain.Store;
-import Domain.Subscribe;
+import Domain.*;
 import Persitent.Cache;
 import Persitent.DaoHolders.DaoHolder;
 import Publisher.SinglePublisher;
@@ -373,16 +370,18 @@ public class LogicManagerThreadsTests {
 
     }
 
+    /**
+     * use case 4.3.1 - manageOwner
+     * checks exactly one owner managed to add a new owner
+     */
     @Test
     public void testManageOwnerSuccessOnce(){
         List<Subscribe> owners = users.subList(0,users.size()-1);
         StoreData storeToOpen = stores.get(0);
-        //registerLoginAndOpenStore(admin,users,storeToOpen);
         Subscribe newOwner = users.get(users.size()-1);
 
-        //TODO: add owners
         List<PermissionType> permissions = Collections.singletonList(PermissionType.ADD_OWNER);
-        setUpAddManagerAndPermissions(admin,users,permissions,storeToOpen);
+        setUpAddManagerAndPermissions(admin,users,users,permissions,storeToOpen);
 
         List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
         List<Response<?>> results = new CopyOnWriteArrayList<>();
@@ -414,8 +413,45 @@ public class LogicManagerThreadsTests {
         tearDownOpenStore();
     }
 
+    /**
+     * use case 4.5 - addManager
+     * checks exactly one manger managed to add a new manger
+     */
+    @Test
+    public void testAddManagerSuccessOnce(){
+        List<Subscribe> owners = users.subList(0,users.size()-1);
+        StoreData storeToOpen = stores.get(0);
+        Subscribe newManager = users.get(users.size()-1);
 
+        List<PermissionType> permissions = Collections.singletonList(PermissionType.ADD_MANAGER);
+        setUpAddManagerAndPermissions(admin,users,users.subList(0,users.size()-1),permissions,storeToOpen);
 
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
+
+        for(Subscribe owner : owners){
+            Callable<Response<?>> callable = ()->
+                    logicManager.addManager(ids.get(owner.getName()),newManager.getName(), storeToOpen.getName());
+
+            futures.add(submitTask(callable));
+        }
+
+        for(Future<Response<?>> future : futures) {
+            try {
+                results.add(future.get(TIMEOUT, TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                e.printStackTrace();
+                fail();
+            }
+        }
+        assertTrue(checkOnlyOneSuccess(results));
+
+        Store actualStore = daos.getStoreDao().find(storeToOpen.getName());
+        Permission permission = actualStore.getPermissions().get(newManager.getName());
+        assertNotNull(permission);
+
+        tearDownOpenStore();
+    }
 
 
     /**
@@ -428,7 +464,7 @@ public class LogicManagerThreadsTests {
         List<PermissionType> permissionTypes=new ArrayList<>();
         permissionTypes.add(PermissionType.PRODUCTS_INVENTORY);
         Subscribe opener = cache.findSubscribe(admin.getName());
-        setUpAddManagerAndPermissions(opener,users,permissionTypes,storeToOpen);
+        setUpAddManagerAndPermissions(opener,users,users,permissionTypes,storeToOpen);
         ProductData productData=threadsData.getProductsPerStore().get(storeToOpen.getName()).get(0);
 
         List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
@@ -464,7 +500,7 @@ public class LogicManagerThreadsTests {
         List<PermissionType> permissionTypes=new ArrayList<>();
         permissionTypes.add(PermissionType.PRODUCTS_INVENTORY);
         Subscribe opener = cache.findSubscribe(admin.getName());
-        setUpAddManagerAndPermissions(opener,users,permissionTypes,storeToOpen);
+        setUpAddManagerAndPermissions(opener,users,users,permissionTypes,storeToOpen);
 
         List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
         List<Response<?>> results = new CopyOnWriteArrayList<>();
@@ -546,11 +582,18 @@ public class LogicManagerThreadsTests {
             connect();
     }
 
-    //open store and add manager
-    private void setUpAddManagerAndPermissions(Subscribe opener, List<Subscribe> users, List<PermissionType> premissions, StoreData storeToOpen){
+    /**
+     * opens a store, register and login users and add permissions to certain users
+     * @param opener - the user who opens the store
+     * @param users - the users to register and login
+     * @param usersToAddPermissions - user to add permissions to them
+     * @param premissions - the permissions to add to the users
+     * @param storeToOpen - the store to open
+     */
+    private void setUpAddManagerAndPermissions(Subscribe opener, List<Subscribe> users,List<Subscribe> usersToAddPermissions, List<PermissionType> premissions, StoreData storeToOpen){
         registerLoginAndOpenStore(opener,users,storeToOpen);
         int id=ids.get(opener.getName());
-        for(Subscribe sub :users){
+        for(Subscribe sub : usersToAddPermissions){
             if(!sub.getName().equals(opener.getName())){
                 logicManager.addManager(id,sub.getName(),storeToOpen.getName());
                 logicManager.addPermissions(id,premissions,storeToOpen.getName(),sub.getName());
@@ -558,6 +601,12 @@ public class LogicManagerThreadsTests {
         }
     }
 
+    /**
+     * register and logins users, opens a store
+     * @param opener - the user who opens the store
+     * @param users - users to register and login
+     * @param storeToOpen - the store to open
+     */
     private void registerLoginAndOpenStore(Subscribe opener, List<Subscribe> users, StoreData storeToOpen) {
         registerAndLoginUsers(users);
         openStore(opener,storeToOpen);
