@@ -73,6 +73,7 @@ class ViewDiscounts extends Component {
         alert("Server Failed");
       else {
         let opt = received.reason;
+        console.log(received.value);
         if(opt == 'Store_Not_Found') {
             alert("Store Not Exites");
           }

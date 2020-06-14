@@ -238,10 +238,12 @@ public class Decoder {
         int id = connected.get(name);
         Map<String, Object> value = (Map<String, Object>)data.get("purchaseCart");
         String country = (String) value.get("country");
-        String address = (String) value.get("address");
+        String addressToDeliver = (String) value.get("addressToDeliver");
+        String city = (String) value.get("city");
+        int zip = (int) value.get("zip");
         PaymentData paymentData = gson.fromJson(gson.toJson(value.get("paymentData")),
                 PaymentData.class);
-        serviceAPI.purchaseCart(id,country,paymentData,address);
+        serviceAPI.purchaseCart(id,country,paymentData,addressToDeliver,city,zip);
     }
 
 
