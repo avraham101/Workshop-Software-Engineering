@@ -14,7 +14,7 @@ import java.util.List;
 public class SubscribeDao extends Dao<Subscribe> implements ISubscribeDao {
 
     private static EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory(Utils.DB);
+            .createEntityManagerFactory(/*Utils.DB)*/"subscribe");
 
 
     public boolean addSubscribe(Subscribe subscribe) {

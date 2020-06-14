@@ -11,7 +11,7 @@ import java.util.List;
 
 public class StoreDao extends Dao<Store> implements IStoreDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory(Utils.DB);
+            .createEntityManagerFactory(/*Utils.DB*/"store");
 
     public boolean addStore(Store store) {
         // The EntityManager class allows operations such as create, read, update, delete

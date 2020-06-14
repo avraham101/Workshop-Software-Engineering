@@ -13,7 +13,8 @@ import javax.persistence.*;
 
 public class ProductDao implements IProductDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory(Utils.DB);
+            .createEntityManagerFactory(/*Utils.DB*/"product");
+
     private ICategoryDao categoryDao;
     private IPurchaseTypeDao purchaseTypeDao;
     private EntityManager entityManager;

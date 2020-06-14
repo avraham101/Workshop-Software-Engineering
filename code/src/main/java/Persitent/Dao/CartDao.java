@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 
 public class CartDao extends Dao<Cart> implements ICartDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory(Utils.DB);
+            .createEntityManagerFactory(/*Utils.DB*/"cart");
 
     public boolean add(Cart cart){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();

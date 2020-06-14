@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 
 public class PermissionDao extends Dao<Permission> implements IPermissionDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory(Utils.DB);
+            .createEntityManagerFactory(/*Utils.DB*/"permission");
     private EntityManager entityManager;
 
     public boolean addPermission(Permission permission){
