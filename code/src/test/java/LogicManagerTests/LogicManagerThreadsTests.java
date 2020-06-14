@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
+import static Utils.Utils.TestMode;
 import static org.junit.Assert.*;
 import static org.junit.Assert.fail;
 
@@ -33,7 +34,7 @@ import static org.junit.Assert.fail;
 public class LogicManagerThreadsTests {
     private final int NUM_THREADS = 5;
     private final int NUM_STORES = 5;
-    private final int NUM_PRODUCTS = 4;
+    private final int NUM_PRODUCTS = 6;
     private final int TIMEOUT = 50;
     private final TimeUnit TIME_UNIT = TimeUnit.MINUTES;
 
@@ -42,7 +43,7 @@ public class LogicManagerThreadsTests {
     private List<Subscribe> users;
     private List<Subscribe> newUsers;
     private List<StoreData> stores;
-    private Map<String, ProductData> productsPerStore;
+    private Map<String, List<ProductData>> productsPerStore;
     private List<RequestData> requests;
     private Subscribe admin;
     private Map<String, Integer> ids;
@@ -418,11 +419,89 @@ public class LogicManagerThreadsTests {
 
 
 
+    /**
+     * use case 4.1.1 -- add product to store
+     * check that only one product is added when trying a lot of products with the same name
+     */
+    @Test
+    public void addProductToStoreTestOneProduct(){
+        StoreData storeToOpen = stores.get(0);
+        List<PermissionType> permissionTypes=new ArrayList<>();
+        permissionTypes.add(PermissionType.PRODUCTS_INVENTORY);
+        Subscribe opener = cache.findSubscribe(admin.getName());
+        setUpAddManagerAndPremissions(opener,users,permissionTypes,storeToOpen);
+        ProductData productData=threadsData.getProductsPerStore().get(storeToOpen.getName()).get(0);
+
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
+
+        for(Subscribe sub:users){
+            Callable<Response<?>> callable = ()->
+                    logicManager.addProductToStore(ids.get(sub.getName()),productData);
+            futures.add(submitTask(callable));
+        }
+
+        for(Future<Response<?>> future : futures) {
+            try {
+                results.add(future.get(TIMEOUT, TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                e.printStackTrace();
+                fail();
+            }
+        }
+        assertTrue(checkOnlyOneSuccess(results));
+        Store store=daos.getStoreDao().find(storeToOpen.getName());
+        assertTrue(store.getProducts().containsKey(productData.getProductName()));
+        tearDownOpenStore();
+    }
+
+    /**
+     * use case 4.1.1 -- add product to store
+     * check that all products were added when trying a lot of products with the different names
+     */
+    @Test
+    public void addProductToStoreTestManyProducts(){
+        StoreData storeToOpen = stores.get(0);
+        List<PermissionType> permissionTypes=new ArrayList<>();
+        permissionTypes.add(PermissionType.PRODUCTS_INVENTORY);
+        Subscribe opener = cache.findSubscribe(admin.getName());
+        setUpAddManagerAndPremissions(opener,users,permissionTypes,storeToOpen);
+
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
+        List<ProductData> products=productsPerStore.get(storeToOpen.getName());
+        int i=0;
+        for(Subscribe sub:users){
+            ProductData product=products.get(i);
+            Callable<Response<?>> callable = ()->
+                    logicManager.addProductToStore(ids.get(sub.getName()),product);
+            futures.add(submitTask(callable));
+            i++;
+        }
+
+        for(Future<Response<?>> future : futures) {
+            try {
+                results.add(future.get(TIMEOUT, TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                e.printStackTrace();
+                fail();
+            }
+        }
+        assertTrue(checkAllSuccess(results));
+        Store store=daos.getStoreDao().find(storeToOpen.getName());
+        for(ProductData productData: productsPerStore.get(storeToOpen.getName())) {
+            assertTrue(store.getProducts().containsKey(productData.getProductName()));
+        }
+        tearDownOpenStore();
+    }
+
+
+
 
     //------------------------------------------------setUp Methods----------------------------------------------------//
     @BeforeClass
     public static void beforeClass() {
-        //TestMode();
+        TestMode();
         daos=new DaoHolder();
     }
     /**
@@ -468,6 +547,18 @@ public class LogicManagerThreadsTests {
             connect();
     }
 
+    //open store and add manager
+    private void setUpAddManagerAndPremissions(Subscribe opener,List<Subscribe> users,List<PermissionType> premissions,StoreData storeToOpen){
+        registerLoginAndOpenStore(opener,users,storeToOpen);
+        int id=ids.get(opener.getName());
+        for(Subscribe sub :users){
+            if(!sub.getName().equals(opener.getName())){
+                logicManager.addManager(id,sub.getName(),storeToOpen.getName());
+                logicManager.addPermissions(id,premissions,storeToOpen.getName(),sub.getName());
+            }
+        }
+    }
+
     private void registerLoginAndOpenStore(Subscribe opener, List<Subscribe> users, StoreData storeToOpen) {
         registerAndLoginUsers(users);
         openStore(opener,storeToOpen);
@@ -490,7 +581,9 @@ public class LogicManagerThreadsTests {
         tearDownRegister();
     }
 
-    private void tearDownOpenStore(){
+    //TODO change
+    @Test
+    public void tearDownOpenStore(){
         removeStores(stores);
         tearDownLogin();
     }

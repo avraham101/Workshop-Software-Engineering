@@ -7,6 +7,7 @@ import DataAPI.StoreData;
 import Domain.Request;
 import Domain.Subscribe;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ public class TestDataThreads extends TestData {
     private Map<String,Integer> ids;
     private List<Subscribe> users;
     private List<StoreData> stores;
-    private Map<String,ProductData> productsPerStore;
+    private Map<String, List<ProductData>> productsPerStore;
     private List<RequestData> requests;
 
     public TestDataThreads(int numThreads){
@@ -54,7 +55,7 @@ public class TestDataThreads extends TestData {
         this.ids = new ConcurrentHashMap<>();
         this.users = new CopyOnWriteArrayList<>();
         this.stores = new CopyOnWriteArrayList<>();
-        this.productsPerStore = new ConcurrentHashMap<>();
+        this.productsPerStore = new ConcurrentHashMap<String, List<ProductData>>();
         this.requests = new CopyOnWriteArrayList<>();
     }
 
@@ -83,9 +84,10 @@ public class TestDataThreads extends TestData {
     private void setUpProducts(){
         for(int i=0;i<stores.size();i++) {
             String storeName = stores.get(i).getName();
+            productsPerStore.put(storeName,new ArrayList<ProductData>());
             for (int j = 1; j <= numProductsForStore; j++) {
                 String productName = "p"+i+""+j;
-                productsPerStore.put(storeName,new ProductData(productName,storeName,"c"+i,null,10,10, PurchaseTypeData.IMMEDDIATE));
+                productsPerStore.get(storeName).add(new ProductData(productName,storeName,"c"+i,null,10,10, PurchaseTypeData.IMMEDDIATE));
             }
         }
     }
@@ -116,7 +118,7 @@ public class TestDataThreads extends TestData {
         return stores;
     }
 
-    public Map<String, ProductData> getProductsPerStore() {
+    public Map<String, List<ProductData>> getProductsPerStore() {
         return productsPerStore;
     }
 
