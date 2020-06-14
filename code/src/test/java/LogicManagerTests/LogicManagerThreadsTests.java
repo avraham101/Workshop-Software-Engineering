@@ -194,7 +194,6 @@ public class LogicManagerThreadsTests {
         ProductData productToBuy = productsPerStore.get(storeToOpen.getName()).get(0);
         registerLoginAndOpenStore(admin,users,storeToOpen);
         logicManager.addProductToStore(ids.get(admin.getName()),productToBuy);
-        //TODO: storeName, product, amount
         setUpCartForAllUsers(users,storeToOpen.getName(),productToBuy,5);
 
         String country = "israel";
