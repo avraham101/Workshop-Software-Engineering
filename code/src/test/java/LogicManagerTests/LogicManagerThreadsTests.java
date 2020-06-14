@@ -18,10 +18,7 @@ import org.junit.*;
 
 import javax.transaction.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.*;
 
 import static Utils.Utils.TestMode;
@@ -378,12 +375,14 @@ public class LogicManagerThreadsTests {
 
     @Test
     public void testManageOwnerSuccessOnce(){
-        List<Subscribe> owners = users.subList(0,users.size()-2);
+        List<Subscribe> owners = users.subList(0,users.size()-1);
         StoreData storeToOpen = stores.get(0);
-        registerLoginAndOpenStore(admin,users,storeToOpen);
-        Subscribe newOwner = newUsers.get(users.size()-1);
+        //registerLoginAndOpenStore(admin,users,storeToOpen);
+        Subscribe newOwner = users.get(users.size()-1);
 
         //TODO: add owners
+        List<PermissionType> permissions = Collections.singletonList(PermissionType.ADD_OWNER);
+        setUpAddManagerAndPermissions(admin,users,permissions,storeToOpen);
 
         List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
         List<Response<?>> results = new CopyOnWriteArrayList<>();
@@ -429,7 +428,7 @@ public class LogicManagerThreadsTests {
         List<PermissionType> permissionTypes=new ArrayList<>();
         permissionTypes.add(PermissionType.PRODUCTS_INVENTORY);
         Subscribe opener = cache.findSubscribe(admin.getName());
-        setUpAddManagerAndPremissions(opener,users,permissionTypes,storeToOpen);
+        setUpAddManagerAndPermissions(opener,users,permissionTypes,storeToOpen);
         ProductData productData=threadsData.getProductsPerStore().get(storeToOpen.getName()).get(0);
 
         List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
@@ -465,7 +464,7 @@ public class LogicManagerThreadsTests {
         List<PermissionType> permissionTypes=new ArrayList<>();
         permissionTypes.add(PermissionType.PRODUCTS_INVENTORY);
         Subscribe opener = cache.findSubscribe(admin.getName());
-        setUpAddManagerAndPremissions(opener,users,permissionTypes,storeToOpen);
+        setUpAddManagerAndPermissions(opener,users,permissionTypes,storeToOpen);
 
         List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
         List<Response<?>> results = new CopyOnWriteArrayList<>();
@@ -501,7 +500,7 @@ public class LogicManagerThreadsTests {
     //------------------------------------------------setUp Methods----------------------------------------------------//
     @BeforeClass
     public static void beforeClass() {
-        TestMode();
+        //TestMode();
         daos=new DaoHolder();
     }
     /**
@@ -548,7 +547,7 @@ public class LogicManagerThreadsTests {
     }
 
     //open store and add manager
-    private void setUpAddManagerAndPremissions(Subscribe opener,List<Subscribe> users,List<PermissionType> premissions,StoreData storeToOpen){
+    private void setUpAddManagerAndPermissions(Subscribe opener, List<Subscribe> users, List<PermissionType> premissions, StoreData storeToOpen){
         registerLoginAndOpenStore(opener,users,storeToOpen);
         int id=ids.get(opener.getName());
         for(Subscribe sub :users){

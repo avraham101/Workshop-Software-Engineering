@@ -7,6 +7,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.transaction.Transactional;
+
 import Utils.*;
 
 public class OwnerAgreementDao extends Dao<OwnerAgreement> implements IOwnerAgreementDao {
@@ -14,7 +16,7 @@ public class OwnerAgreementDao extends Dao<OwnerAgreement> implements IOwnerAgre
             .createEntityManagerFactory(Utils.DB);
 
 
-
+    @Transactional
     public boolean add(OwnerAgreement value) {
         return super.add(ENTITY_MANAGER_FACTORY.createEntityManager(), value);
     }

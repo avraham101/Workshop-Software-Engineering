@@ -395,7 +395,7 @@ public class Subscribe extends UserState{
         if(permission==null)
             return new Response<>(false,OpCode.Dont_Have_Permission);
         Store store=permission.getStore();
-        if(store==null||!permission.isOwner())
+        if(store==null||!permission.canAddOwner())
             return new Response<>(false,OpCode.Dont_Have_Permission);
         Response<Boolean> output= store.addOwner(this.userName,newOwner);
         if(output.getValue())

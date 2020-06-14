@@ -12,6 +12,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -548,8 +549,9 @@ public class Store {
      * @param givenBy the user that managed owner
      * @return
      */
+    @Transactional
     public Response<Boolean> addOwner(String givenBy, String owner) {
-        lock.readLock().lock();
+        lock.writeLock().lock();
         for(OwnerAgreement o:agreementMap.values()){
             if(o.containsOwner(owner))
                 //TODO add translation in gui to that response when there is already a owner
@@ -570,7 +572,11 @@ public class Store {
                 agreement.sendNotifications();
             }
         }
-        lock.readLock().unlock();
+        else{
+            lock.writeLock().unlock();
+            return new Response<>(false,OpCode.Already_Exists);
+        }
+        lock.writeLock().unlock();
         return new Response<>(true,OpCode.Success);
     }
 
