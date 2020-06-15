@@ -51,6 +51,16 @@ public class ProductDaoProxy implements IProductDao {
     }
 
     @Override
+    public Product findForBuy(Product keys) {
+        try{
+            return dao.findForBuy(keys);
+        }catch (Exception e) {
+            return null;
+        }
+    }
+
+
+    @Override
     public boolean removeProduct(String productName, String storeName) {
         try{
             return dao.removeProduct(productName, storeName);

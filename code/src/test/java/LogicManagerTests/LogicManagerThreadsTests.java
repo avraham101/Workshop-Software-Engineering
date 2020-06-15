@@ -257,7 +257,8 @@ public class LogicManagerThreadsTests {
         //tearDownOpenStore();
     }
 
-    private void tearDownPurchases() {
+    @Test
+    public void tearDownPurchases() {
         tearDownRegister();
         removeStores(stores);
         tearDownRegister();
@@ -692,7 +693,7 @@ public class LogicManagerThreadsTests {
     //------------------------------------------------setUp Methods----------------------------------------------------//
     @BeforeClass
     public static void beforeClass() {
-        //TestMode();
+        TestMode();
         daos=new DaoHolder();
     }
     /**

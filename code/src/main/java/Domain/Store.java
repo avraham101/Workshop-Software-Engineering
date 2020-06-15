@@ -85,15 +85,11 @@ public class Store {
     private final StoreDaoHolder daos;
 
     @Transient
-    private static ConcurrentHashMap<String, ReentrantLock> locks=new ConcurrentHashMap<String, ReentrantLock>();
+    private static ConcurrentHashMap<String, ReentrantLock> locks=new ConcurrentHashMap<>();
 
+    //first key is store second key is product
     @Transient
-    private static final Lock locki=new ReentrantLock();
-
-
-
-    @Transient
-    private final ReadWriteLock buyLock=new ReentrantReadWriteLock();
+    private static ConcurrentHashMap<String,ConcurrentHashMap<String,ReentrantLock>> buyLocks=new ConcurrentHashMap<>();
 
     public Store(String name,Permission permission,String description) {
         this.name = name;
@@ -279,30 +275,36 @@ public class Store {
         List<ProductInCart> productsReserved = new LinkedList<>();
         daos.getProductDao().openTransaction();
         for(ProductInCart productInCart: otherProducts) {
-            Product real = daos.getProductDao().find(new Product(productInCart.getProductName(),name));//this.products.get(productInCart.getProductName());
+            Product key=new Product(productInCart.getProductName(),name);
+            lockProduct(key);
+            Product real = daos.getProductDao().findForBuy(key);//this.products.get(productInCart.getProductName());
             if(real!=null) {
+                //real.getWriteLock().lock();
                 int amount = productInCart.getAmount();
-                real.getWriteLock().lock();
                 if(amount<=real.getAmount()) {
                     productsReserved.add(productInCart);
                     real.setAmount(real.getAmount() - amount);
                     if(daos.getProductDao().updateProduct(real)) {
                         products.put(real.getName(), real);
-                        real.getWriteLock().unlock();
+                        unlockProduct(key);
+                        //real.getWriteLock().unlock();
                     }
                     else{
                         output = false;
-                        real.getWriteLock().unlock();
+                        unlockProduct(key);
+                        //real.getWriteLock().unlock();
                         break;
                     }
                 }
                 else {
                     output = false;
-                    real.getWriteLock().unlock();
+                    unlockProduct(key);
+                    //real.getWriteLock().unlock();
                     break;
                 }
             }
             else {
+                unlockProduct(key);
                 output = false;
             }
         }
@@ -313,17 +315,16 @@ public class Store {
         return output;
     }
 
+
     /**
      * use case 2.8 -reserveCart cart
      * @param restores - the list of reserved
      */
     @Transactional
-    private void restoreReservedProducts(List<ProductInCart> restores) {
-        daos.getProductDao().openTransaction();
+    public void restoreReservedProducts(List<ProductInCart> restores) {
         for (ProductInCart product: restores) {
             restoreAmount(product);
         }
-        daos.getProductDao().closeTransaction();
     }
 
     /**
@@ -663,12 +664,25 @@ public class Store {
     }
 
     public void startTransaction(){
-        buyLock.writeLock().lock();
+        //buyLock.writeLock().lock();
         daos.getProductDao().openTransaction();
     }
 
     public void closeTransaction(){
         daos.getProductDao().closeTransaction();
-        buyLock.writeLock().unlock();
+        //buyLock.writeLock().unlock();
+    }
+
+    private void lockProduct(Product key) {
+        String product=key.getName();
+        buyLocks.putIfAbsent(name,new ConcurrentHashMap<>());
+        ConcurrentHashMap<String,ReentrantLock> productLocks=buyLocks.get(name);
+        productLocks.putIfAbsent(product,new ReentrantLock());
+        productLocks.get(product).lock();
+    }
+
+    private void unlockProduct(Product key) {
+        String product=key.getName();
+        buyLocks.get(name).get(product).unlock();
     }
 }
