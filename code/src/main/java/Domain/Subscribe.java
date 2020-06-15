@@ -392,15 +392,17 @@ public class Subscribe extends UserState{
      */
     @Override
     public Response<Boolean> addOwner(String storeName, String newOwner) {
-        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
-        if(permission==null)
+        Store store=daos.getStoreDao().find(storeName);
+        //store.lock();
+        Permission permission=store.getPermissions().get(userName);
+        if(permission==null||!permission.canAddOwner())
             return new Response<>(false,OpCode.Dont_Have_Permission);
-        Store store=permission.getStore();
-        if(store==null||!permission.isOwner())
-            return new Response<>(false,OpCode.Dont_Have_Permission);
+        store.lock();
+        store=daos.getStoreDao().find(storeName);
         Response<Boolean> output= store.addOwner(this.userName,newOwner);
         if(output.getValue())
             daos.getStoreDao().update(store);
+        store.unlock();
         return output;
     }
 
@@ -436,16 +438,22 @@ public class Subscribe extends UserState{
         if(permission==null)
             return new Response<>(false,OpCode.Dont_Have_Permission);
         Store store=permission.getStore();
-        if(store==null||! permission.canAddManager())
+        if(store==null||!(permission.canAddManager() || permission.canAddOwner()))
             return new Response<>(false,OpCode.Dont_Have_Permission);
         //create new permission process
         Permission newPermission=new Permission(youngOwner,store);
         if(store.getPermissions().putIfAbsent(youngOwner.getName(),newPermission)==null) {
             youngOwner.getPermissions().put(storeName, newPermission);
             lock.writeLock().lock();
+            store.lock();
             givenByMePermissions.add(newPermission);
             newPermission.setGivenBy(userName);
-            daos.getPermissionDao().addPermission(newPermission);
+            if(!daos.getPermissionDao().addPermission(newPermission)){
+                store.unlock();
+                lock.writeLock().unlock();
+                return new Response<>(false,OpCode.Already_Exists);
+            }
+            store.unlock();
             lock.writeLock().unlock();
             return new Response<>(true,OpCode.Success);
         }
@@ -565,6 +573,8 @@ public class Subscribe extends UserState{
         }
         lock.writeLock().unlock();
         Store store=daos.getStoreDao().find(storeName);
+        store.lock();
+        store = daos.getStoreDao().find(storeName);
         //Store store=permissions.get(storeName).getStore();
         //remove the permission from the user
         Permission p=daos.getPermissionDao().findPermission(permissions.get(storeName));
@@ -575,6 +585,7 @@ public class Subscribe extends UserState{
         store.removeAgreement(userName);
         store.approveAgreementsOfUser(userName);
         daos.getStoreDao().update(store);
+        store.unlock();
         sendNotification( new RemoveNotification(storeName,OpCode.Removed_From_Management));
     }
 

@@ -15,7 +15,9 @@ import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Entity
@@ -83,10 +85,11 @@ public class Store {
     private final StoreDaoHolder daos;
 
     @Transient
-    private final ReadWriteLock lock=new ReentrantReadWriteLock();
+    private static ConcurrentHashMap<String, ReentrantLock> locks=new ConcurrentHashMap<>();
 
+    //first key is store second key is product
     @Transient
-    private final ReadWriteLock buyLock=new ReentrantReadWriteLock();
+    private static ConcurrentHashMap<String,ConcurrentHashMap<String,ReentrantLock>> buyLocks=new ConcurrentHashMap<>();
 
     public Store(String name,Permission permission,String description) {
         this.name = name;
@@ -272,30 +275,36 @@ public class Store {
         List<ProductInCart> productsReserved = new LinkedList<>();
         daos.getProductDao().openTransaction();
         for(ProductInCart productInCart: otherProducts) {
-            Product real = daos.getProductDao().find(new Product(productInCart.getProductName(),name));//this.products.get(productInCart.getProductName());
+            Product key=new Product(productInCart.getProductName(),name);
+            lockProduct(key);
+            Product real = daos.getProductDao().findForBuy(key);//this.products.get(productInCart.getProductName());
             if(real!=null) {
+                //real.getWriteLock().lock();
                 int amount = productInCart.getAmount();
-                real.getWriteLock().lock();
                 if(amount<=real.getAmount()) {
                     productsReserved.add(productInCart);
                     real.setAmount(real.getAmount() - amount);
                     if(daos.getProductDao().updateProduct(real)) {
                         products.put(real.getName(), real);
-                        real.getWriteLock().unlock();
+                        unlockProduct(key);
+                        //real.getWriteLock().unlock();
                     }
                     else{
                         output = false;
-                        real.getWriteLock().unlock();
+                        unlockProduct(key);
+                        //real.getWriteLock().unlock();
                         break;
                     }
                 }
                 else {
                     output = false;
-                    real.getWriteLock().unlock();
+                    unlockProduct(key);
+                    //real.getWriteLock().unlock();
                     break;
                 }
             }
             else {
+                unlockProduct(key);
                 output = false;
             }
         }
@@ -306,17 +315,16 @@ public class Store {
         return output;
     }
 
+
     /**
      * use case 2.8 -reserveCart cart
      * @param restores - the list of reserved
      */
     @Transactional
-    private void restoreReservedProducts(List<ProductInCart> restores) {
-        daos.getProductDao().openTransaction();
+    public void restoreReservedProducts(List<ProductInCart> restores) {
         for (ProductInCart product: restores) {
             restoreAmount(product);
         }
-        daos.getProductDao().closeTransaction();
     }
 
     /**
@@ -410,11 +418,15 @@ public class Store {
         }
         Product product=new Product(productData,categoryList.get(categoryName));
         boolean result=products.putIfAbsent(productData.getProductName(),product)==null;
+
         if(result) {
-            if(daos.getProductDao().addProduct(product))
-                return new Response<>(true, OpCode.Success);
-            else
-                return new Response<>(false, OpCode.DB_Down);
+            lockProduct(product);
+            if(daos.getProductDao().addProduct(product)){
+                unlockProduct(product);
+                return new Response<>(true, OpCode.Success);}
+            else{
+                unlockProduct(product);
+                return new Response<>(false, OpCode.Already_Exists);}
 
         }
         return new Response<>(false,OpCode.Already_Exists);
@@ -546,7 +558,6 @@ public class Store {
             Cache cache = new Cache();
             Subscribe realOwner = cache.findSubscribe(tmpOwner.getName());
             realOwner.sendNotification(notification);
-            //permissions.get(manager).getOwner().sendNotification(notification);
         }
     }
 
@@ -557,29 +568,37 @@ public class Store {
      * @param givenBy the user that managed owner
      * @return
      */
+    @Transactional
     public Response<Boolean> addOwner(String givenBy, String owner) {
-        lock.readLock().lock();
         for(OwnerAgreement o:agreementMap.values()){
-            if(o.containsOwner(owner))
+            if(o.containsOwner(owner)) {
                 //TODO add translation in gui to that response when there is already a owner
-                return new Response<>(false,OpCode.Already_Exists);
+                return new Response<>(false, OpCode.Already_Exists);
+            }
         }
         Set<String> owners=new HashSet<>();
         for(String name: permissions.keySet()){
             if(permissions.get(name).isOwner()) {
-                if(name.equals(owner))
-                    return new Response<>(false,OpCode.Already_Owner);
+                if(name.equals(owner)) {
+                    return new Response<>(false, OpCode.Already_Owner);
+                }
                 owners.add(name);
             }
         }
         OwnerAgreement agreement=new OwnerAgreement(owners,givenBy,owner,name);
-        if(!agreement.approve(givenBy)){
-            if(daos.getOwnerAgreementDao().add(agreement)) {
+        if(daos.getOwnerAgreementDao().add(agreement)){
+            if(!agreement.approve(givenBy)){
                 agreementMap.put(owner, agreement);
                 agreement.sendNotifications();
+                daos.getOwnerAgreementDao().update(agreement);
+            }
+            else{
+                daos.getOwnerAgreementDao().remove(agreement.getId());
             }
         }
-        lock.readLock().unlock();
+        else{
+            return new Response<>(false,OpCode.Already_Exists);
+        }
         return new Response<>(true,OpCode.Success);
     }
 
@@ -604,6 +623,7 @@ public class Store {
                 daos.getOwnerAgreementDao().remove(ownerAgreement.getId());
                 agreementMap.remove(userName);
             }
+            daos.getOwnerAgreementDao().update(ownerAgreement);
 
         }
     }
@@ -613,6 +633,9 @@ public class Store {
         if(ownerAgreement!=null&&ownerAgreement.approve(approver)) {
             daos.getOwnerAgreementDao().remove(ownerAgreement.getId());
             agreementMap.remove(newOwner);
+        }
+        else if(ownerAgreement!=null){
+            daos.getOwnerAgreementDao().update(ownerAgreement);
         }
         return new Response<>(true,OpCode.Success);
     }
@@ -635,23 +658,36 @@ public class Store {
         return output;
     }
 
-
     public void lock() {
-        lock.writeLock().lock();
+        locks.putIfAbsent(name,new ReentrantLock());
+        locks.get(name).lock();
     }
 
 
     public void unlock() {
-        lock.writeLock().lock();
+        locks.get(name).unlock();
     }
 
     public void startTransaction(){
-        buyLock.writeLock().lock();
+        //buyLock.writeLock().lock();
         daos.getProductDao().openTransaction();
     }
 
     public void closeTransaction(){
         daos.getProductDao().closeTransaction();
-        buyLock.writeLock().unlock();
+        //buyLock.writeLock().unlock();
+    }
+
+    private void lockProduct(Product key) {
+        String product=key.getName();
+        buyLocks.putIfAbsent(name,new ConcurrentHashMap<>());
+        ConcurrentHashMap<String,ReentrantLock> productLocks=buyLocks.get(name);
+        productLocks.putIfAbsent(product,new ReentrantLock());
+        productLocks.get(product).lock();
+    }
+
+    private void unlockProduct(Product key) {
+        String product=key.getName();
+        buyLocks.get(name).get(product).unlock();
     }
 }

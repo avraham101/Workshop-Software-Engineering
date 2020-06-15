@@ -18,6 +18,7 @@ public class RequestDao extends Dao<Request> implements IRequestDao {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         // Used to issue transactions on the EntityManager
         EntityTransaction et = null;
+        boolean output = false;
 
         try {
             // Get transaction and start
@@ -27,18 +28,19 @@ public class RequestDao extends Dao<Request> implements IRequestDao {
             // Save the customer object
             em.persist(request);
             et.commit();
+            output = true;
         } catch (Exception ex) {
             // If there is an exception rollback changes
             if (et != null) {
                 et.rollback();
             }
             ex.printStackTrace();
-            return false;
+            output =  false;
         } finally {
             // Close EntityManager
             em.close();
         }
-        return true;
+        return output;
 
     }
 

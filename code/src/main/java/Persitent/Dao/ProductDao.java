@@ -89,6 +89,7 @@ public class ProductDao implements IProductDao {
             // Close EntityManager
             if(toClose) {
                 entityManager.close();
+                entityManager=null;
             }
         }
         return output;
@@ -126,10 +127,11 @@ public class ProductDao implements IProductDao {
     public Product find(Product keys){
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         Product product = null;
+
         try {
             product=em.find(Product.class,keys);
         }
-        catch(NoResultException ex) {
+        catch(NoResultException ignored) {
         }
         finally {
             em.close();
@@ -137,6 +139,27 @@ public class ProductDao implements IProductDao {
         return product;
     }
 
+    @Override
+    public Product findForBuy(Product keys) {
+        boolean toClose=false;
+        if(entityManager==null) {
+            entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
+            toClose=true;
+        }
+        Product product = null;
+        try {
+            product=entityManager.find(Product.class,keys);
+        }
+        catch(NoResultException ex) {
+        }
+        finally {
+            if(toClose) {
+                entityManager.close();
+                entityManager=null;
+            }
+        }
+        return product;
+    }
 
     public boolean removeProduct(String productName, String storeName) {
         return removeProduct(new Product(productName,storeName));

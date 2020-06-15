@@ -12,4 +12,6 @@ public interface IProductDao {
     void openTransaction();
 
     void closeTransaction();
+
+    Product findForBuy(Product product);
 }

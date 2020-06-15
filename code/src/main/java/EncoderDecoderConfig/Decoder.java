@@ -403,7 +403,7 @@ public class Decoder {
     }
 
     /**
-     * use case 4.5- add manager to store
+     * use case 4.5 - add manager to store
      * @param data
      */
     private void executeAddManagerToStore(Map<String, Object> data) {
