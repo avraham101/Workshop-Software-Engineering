@@ -20,6 +20,8 @@ public class CacheStub extends Cache {
     public Subscribe findSubscribe(String userName) {
         if(userName==null||userName.equals("Store"))
             return null;
+        if(userName.equals("Yuval"))
+            return super.findSubscribe(userName);
         return new Subscribe("yuv","al");
     }
 }
