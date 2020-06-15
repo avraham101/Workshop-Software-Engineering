@@ -99,6 +99,7 @@ public class TestDataThreads extends TestData {
                 for (int j = 1; j <= numRequestPerStore; j++) {
                     String content = "r" + i + "" + j;
                     Request request = new Request(user.getName(),storeName,content,-1);
+                    request.setId(-1);
                     requests.add(new RequestData(request));
                 }
             }
