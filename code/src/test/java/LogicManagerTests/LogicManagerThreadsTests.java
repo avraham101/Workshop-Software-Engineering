@@ -500,7 +500,7 @@ public class LogicManagerThreadsTests {
     //------------------------------------------------setUp Methods----------------------------------------------------//
     @BeforeClass
     public static void beforeClass() {
-        //TestMode();
+        TestMode();
         daos=new DaoHolder();
     }
     /**
