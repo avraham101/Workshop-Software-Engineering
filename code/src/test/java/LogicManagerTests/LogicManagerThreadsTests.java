@@ -383,7 +383,6 @@ public class LogicManagerThreadsTests {
         StoreData storeToOpen = stores.get(0);
         Subscribe newOwner = users.get(users.size()-1);
 
-        //TODO: add owners
         List<PermissionType> permissions = Collections.singletonList(PermissionType.ADD_OWNER);
         setUpAddManagerAndPermissions(admin,users,permissions,storeToOpen);
 
@@ -411,7 +410,7 @@ public class LogicManagerThreadsTests {
 //        if(checkOnlyOneSuccess(results)){
 //            System.out.println("successsssssssss");
 //        }
-        boolean harta=logicManager.approveManageOwner(ids.get(admin.getName()),storeToOpen.getName(),newOwner.getName()).getValue();
+        logicManager.approveManageOwner(ids.get(admin.getName()),storeToOpen.getName(),newOwner.getName()).getValue();
         Store actualStore = daos.getStoreDao().find(storeToOpen.getName());
         boolean isOwner = actualStore.getPermissions().get(newOwner.getName()).isOwner();
         assertTrue(isOwner);

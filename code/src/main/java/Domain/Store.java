@@ -16,7 +16,9 @@ import javax.transaction.Transactional;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Entity
 @Table(name="store")
@@ -564,11 +566,9 @@ public class Store {
      */
     @Transactional
     public Response<Boolean> addOwner(String givenBy, String owner) {
-        //lock();
         for(OwnerAgreement o:agreementMap.values()){
             if(o.containsOwner(owner)) {
                 //TODO add translation in gui to that response when there is already a owner
-                //unlock();
                 return new Response<>(false, OpCode.Already_Exists);
             }
         }
@@ -576,7 +576,6 @@ public class Store {
         for(String name: permissions.keySet()){
             if(permissions.get(name).isOwner()) {
                 if(name.equals(owner)) {
-                    //unlock();
                     return new Response<>(false, OpCode.Already_Owner);
                 }
                 owners.add(name);
@@ -593,20 +592,8 @@ public class Store {
             }
         }
         else{
-            //unlock();
             return new Response<>(false,OpCode.Already_Exists);
         }
-
-//        if(!agreement.approve(givenBy)){
-//            if(daos.getOwnerAgreementDao().add(agreement)) {
-//                agreementMap.put(owner, agreement);
-//                agreement.sendNotifications();
-//            }
-//            else{
-//                return new Response<>(false,OpCode.Already_Exists);
-//            }
-//        }
-        //unlock();
         return new Response<>(true,OpCode.Success);
     }
 
