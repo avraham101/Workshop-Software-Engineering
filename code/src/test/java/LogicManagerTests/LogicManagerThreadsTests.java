@@ -4,6 +4,7 @@ import Data.TestDataThreads;
 import DataAPI.*;
 import Domain.*;
 import Persitent.Cache;
+import Persitent.Dao.SubscribeDao;
 import Persitent.DaoHolders.DaoHolder;
 import Publisher.SinglePublisher;
 import Stubs.StubPublisher;
@@ -694,7 +695,7 @@ public class LogicManagerThreadsTests {
     //------------------------------------------------setUp Methods----------------------------------------------------//
     @BeforeClass
     public static void beforeClass() {
-        //TestMode();
+        TestMode();
         daos=new DaoHolder();
     }
     /**
@@ -971,4 +972,11 @@ public class LogicManagerThreadsTests {
             }
     }
     //-----------------------------------------------------------------------------------------------------------------//
+
+
+    @AfterClass
+    public static void afterClass() throws Exception {
+        SubscribeDao subdao=new SubscribeDao();
+        subdao.remove("admin");
+    }
 }
