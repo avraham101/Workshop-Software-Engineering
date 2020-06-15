@@ -6,6 +6,8 @@ import Domain.PurchasePolicy.PurchasePolicy;
 
 import java.util.*;
 
+//
+
 public abstract class UserState {
     //protected Cart cart;
 

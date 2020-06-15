@@ -127,6 +127,7 @@ class ViewPolicy extends Component {
       else {
         let opt = ''+ received.reason;
         if(opt === 'Success') {
+          console.log(received.value);
           let obj = JSON.parse(received.value);
           this.setState({selected_policy:obj});
         }

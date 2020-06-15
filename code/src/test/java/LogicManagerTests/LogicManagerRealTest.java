@@ -5,10 +5,10 @@ import DataAPI.*;
 import Domain.*;
 import Domain.Discount.Discount;
 import Domain.Discount.RegularDiscount;
+import Domain.Notification.*;
 import Domain.PurchasePolicy.ProductPurchasePolicy;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.PurchasePolicy.UserPurchasePolicy;
-import Domain.Notification.Notification;
 import Persitent.Cache;
 import Persitent.DaoHolders.DaoHolder;
 import Publisher.SinglePublisher;
@@ -95,6 +95,25 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         String storeName=data.getStore(Data.VALID).getName();
         Subscribe admin=data.getSubscribe(Data.ADMIN);
         logicManager.manageOwner(data.getId(Data.VALID),storeName, admin.getName());
+    }
+
+    private void setUpPrepareUsers(){
+        LocalDate now=LocalDate.now();
+        LocalDate before3Days=now.minusDays(3);
+        while(!before3Days.isAfter(now)){
+            daos.getVisitsPerDayDao().remove(before3Days);
+            before3Days=before3Days.plusDays(1);
+        }
+        setUpOpenedStore();
+        Subscribe niv=data.getSubscribe(Data.VALID2);
+        logicManager.addManager(data.getId(Data.VALID),
+                niv.getName(),data.getStore(Data.VALID).getName());
+        logicManager.logout(data.getId(Data.VALID));
+        Subscribe s=data.getSubscribe(Data.VALID);
+        logicManager.login(data.getId(Data.VALID),s.getName(),s.getPassword());
+        logicManager.login(data.getId(Data.VALID2),niv.getName(),niv.getPassword());
+        logicManager.login(data.getId(Data.ADMIN),data.getSubscribe(Data.ADMIN).getName(),
+                data.getSubscribe(Data.ADMIN).getPassword());
     }
     /**----------------------set-ups------------------------------------------*/
 
@@ -487,7 +506,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip).getValue());
         //check notification
         HashMap<Integer, List<Notification>> notifications=publisher.getNotificationList();
         List<ProductPeristentData> productDataList=
@@ -521,7 +542,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         Gson policyGson = builderPolicy.create();
         String policyToAdd = policyGson.toJson(policy, PurchasePolicy.class);
         logicManager.updatePolicy(data.getId(Data.VALID),policyToAdd,data.getStore(Data.VALID).getName());
-        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertFalse(logicManager.purchaseCart(data.getId(Data.VALID), country, paymentData, address,city,zip).getValue());
         checkBuyDidntWork();
         tearDownProductAddedToCart();
     }
@@ -670,6 +693,62 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
     }
 
     /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    @Transactional
+    public void testBuyCartNullCity() {
+        super.testBuyCartNullCityTest();
+        checkBuyDidntWork();
+        tearDownProductAddedToCart();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    @Transactional
+    public void testBuyCartEmptyCity() {
+        super.testBuyCartEmptyCityTest();
+        checkBuyDidntWork();
+        tearDownProductAddedToCart();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    @Transactional
+    public void testBuyCartWrongZip() {
+        super.testBuyCartWrongZipTest();
+        checkBuyDidntWork();
+        tearDownProductAddedToCart();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    @Transactional
+    public void testBuyCartNot3DigitsCVV() {
+        super.testBuyCartNot3DigitsCVVTest();
+        checkBuyDidntWork();
+        tearDownProductAddedToCart();
+    }
+
+    /**
+     * use case 2.8 - test buy Cart
+     */
+    @Test
+    @Transactional
+    public void testBuyCartWrongId() {
+        super.testBuyCartWrongIdTest();
+        checkBuyDidntWork();
+        tearDownProductAddedToCart();
+    }
+
+
+    /**
      * check cart didnt change
      * check products in store didnt change
      * check there are no notifications
@@ -696,7 +775,9 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         PaymentData paymentData = data.getPaymentData(Data.VALID);
         String address = data.getDeliveryData(Data.VALID).getAddress();
         String country = data.getDeliveryData(Data.VALID).getCountry();
-        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address).getValue());
+        String city=data.getDeliveryData(Data.VALID).getCity();
+        int zip=data.getDeliveryData(Data.VALID).getZip();
+        assertTrue(logicManager.purchaseCart(data.getId(Data.VALID),country, paymentData, address,city,zip).getValue());
         List<Purchase> purchaseList = daos.getSubscribeDao().find(data.getSubscribe(Data.VALID).getName()).watchMyPurchaseHistory().getValue();
         for (Purchase purchase: purchaseList) {
             String storeName = purchase.getStoreName();
@@ -1176,7 +1257,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         checkPermissions(Data.VALID2);
         HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
         for(List<Notification> n:notifications.values()){
-            assertEquals(data.getStore(Data.VALID).getName(),n.get(0).getValue());
+            if(n instanceof AddOwnerNotification)
+                assertEquals(data.getStore(Data.VALID).getName(),n.get(0).getValue());
         }
         tearDownOpenStore();
     }
@@ -1196,7 +1278,7 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         logicManager.login(data.getId(Data.VALID2),valid2.getName(),valid2.getPassword());
         HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
         for(List<Notification> n:notifications.values()) {
-            if(n.get(0).getValue() instanceof List) {
+            if(n.get(0) instanceof approve_notification) {
                 List<String> storeOwner = (List<String>) n.get(0).getValue();
                 assertEquals(data.getStore(Data.VALID).getName(), storeOwner.get(0));
                 assertEquals(valid2.getName(), storeOwner.get(1));
@@ -1369,7 +1451,8 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         //check notifications
         HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
         for(List<Notification> n:notifications.values()){
-            assertEquals(data.getStore(Data.VALID).getName(),n.get(0).getValue());
+            if(n instanceof RemoveNotification)
+                assertEquals(data.getStore(Data.VALID).getName(),n.get(0).getValue());
         }
     }
 
@@ -1485,6 +1568,53 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      */
     protected void testWatchStoreHistorySuccessWhenAdmin() {
         checkValidPurchase(logicManager.watchStorePurchasesHistory(data.getId(Data.ADMIN), data.getStore(Data.VALID).getName()).getValue());
+    }
+
+    /**
+     * use case 6.5 - watch day visits
+     */
+    @Test
+    public void testDayVisitsNotAdmin(){
+        setUpLogedInUser();
+        assertNull(logicManager.watchVisitsBetweenDates(data.getId(Data.VALID),data.getFromDate(),data.getToDate()).getValue());
+        tearDownLogin();
+    }
+
+    @Test
+    public void testDayVisitsSuccess(){
+        setUpPrepareUsers();
+        List<DayVisit> dayVisits=logicManager.watchVisitsBetweenDates(data.getId(Data.ADMIN),data.getFromDate(),data.getToDate()).getValue();
+        LocalDate now=LocalDate.now();
+        for(DayVisit visit :dayVisits){
+            if(visit.getDate().isEqual(now)){
+                assertEquals(visit.getAdminNumber(), 1);
+                assertEquals(visit.getGuestNumber(), 3);
+                assertEquals(visit.getManagerNumber(), 1);
+                assertEquals(visit.getSubscribeNumber(), 2);
+                assertEquals(visit.getOwnerNumber(), 1);
+            }
+            else {
+                assertEquals(visit.getAdminNumber(), 0);
+                assertEquals(visit.getGuestNumber(), 0);
+                assertEquals(visit.getManagerNumber(), 0);
+                assertEquals(visit.getSubscribeNumber(), 0);
+                assertEquals(visit.getOwnerNumber(), 0);
+            }
+        }
+        checkNotification();
+        tearDownDeleteDayVisits();
+    }
+
+    private void checkNotification(){
+        HashMap<Integer, List<Notification>> notifications=((StubPublisher)SinglePublisher.getInstance()).getNotificationList();
+        for(List<Notification> n:notifications.values()){
+            DayVisit visit=((VisitNotification)n.get(0)).getValue();
+            assertEquals(visit.getAdminNumber(), 1);
+            assertEquals(visit.getGuestNumber(), 3);
+            assertEquals(visit.getManagerNumber(), 1);
+            assertEquals(visit.getSubscribeNumber(), 2);
+            assertEquals(visit.getOwnerNumber(), 1);
+        }
     }
 
     /**
@@ -1740,9 +1870,22 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
         tearDownOpenStore();
     }
 
+    @Override
+    protected void tearDownDeleteDayVisits() {
+        LocalDate now=LocalDate.now();
+        LocalDate before3Days=now.minusDays(3);
+        while(!before3Days.isAfter(now)){
+            daos.getVisitsPerDayDao().remove(before3Days);
+            before3Days=before3Days.plusDays(1);
+        }
+        super.tearDownOpenStore();
+    }
+
     @After
     public void tearDown() {
         daos.getRevenueDao().remove(LocalDate.now());
     }
+
+
 }
 

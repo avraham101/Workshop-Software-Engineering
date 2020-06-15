@@ -90,6 +90,9 @@ public class Store {
 
 
 
+    @Transient
+    private final ReadWriteLock buyLock=new ReentrantReadWriteLock();
+
     public Store(String name,Permission permission,String description) {
         this.name = name;
         this.description=description;
@@ -268,11 +271,12 @@ public class Store {
      * @param otherProducts - the products to remove from store
      * @return true if succeeded, otherwise false.
      */
+    @Transactional
     public boolean reserveProducts(Collection<ProductInCart> otherProducts) {
         boolean output = true;
         List<ProductInCart> productsReserved = new LinkedList<>();
+        daos.getProductDao().openTransaction();
         for(ProductInCart productInCart: otherProducts) {
-
             Product real = daos.getProductDao().find(new Product(productInCart.getProductName(),name));//this.products.get(productInCart.getProductName());
             if(real!=null) {
                 int amount = productInCart.getAmount();
@@ -303,6 +307,7 @@ public class Store {
         if(!output) {
             restoreReservedProducts(productsReserved);
         }
+        daos.getProductDao().closeTransaction();
         return output;
     }
 
@@ -310,10 +315,13 @@ public class Store {
      * use case 2.8 -reserveCart cart
      * @param restores - the list of reserved
      */
+    @Transactional
     private void restoreReservedProducts(List<ProductInCart> restores) {
+        daos.getProductDao().openTransaction();
         for (ProductInCart product: restores) {
             restoreAmount(product);
         }
+        daos.getProductDao().closeTransaction();
     }
 
     /**
@@ -662,5 +670,15 @@ public class Store {
 
     public void unlock() {
         locks.get(name).unlock();
+    }
+
+    public void startTransaction(){
+        buyLock.writeLock().lock();
+        daos.getProductDao().openTransaction();
+    }
+
+    public void closeTransaction(){
+        daos.getProductDao().closeTransaction();
+        buyLock.writeLock().unlock();
     }
 }

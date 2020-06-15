@@ -49,6 +49,12 @@ public enum OpCode implements Serializable {
     Products_Policy_Failed,
     Age_Policy_Failed,
     Country_Policy_Failed,
-    ;
+    Day_Visit,
+    Wrong_Address,
+    Wrong_Card,
+    Wrong_Id,
+    Wrong_CVV,
+    Wrong_City,
+    Wrong_Zip,
 
 }
