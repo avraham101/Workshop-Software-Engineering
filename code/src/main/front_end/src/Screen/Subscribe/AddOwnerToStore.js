@@ -52,6 +52,12 @@ class AddOwnerToStore extends Component {
                 msg += "User Not Found";
                 alert(msg);
             }
+            else if(opcode==='Already_Exists'){
+                alert("user has alredy owner agreement");
+            }
+            else if(opcode==='Already_Owner'){
+                alert("user already owner");
+            }
             else {
                 console.log(received);
                 alert(`Cant Appoint ${this.getPermission()}!\n Please try again.`)

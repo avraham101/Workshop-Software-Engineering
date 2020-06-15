@@ -29,7 +29,7 @@ public class daoTest {
     private TestData data;
     @Before
     public void setUp() throws Exception {
-        Utils.TestMode();
+        //Utils.TestMode();
         data=new TestData();
     }
 

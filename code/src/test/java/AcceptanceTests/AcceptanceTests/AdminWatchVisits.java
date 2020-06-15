@@ -193,7 +193,6 @@ public class AdminWatchVisits extends AcceptanceTests {
         int subs = 3;
         int connects = 10;
         setUpTestAll(subs,connects);
-        // subs todo move to setup
 
         List<DayVisitData> visits = bridge.watchVisitsBetweenDates(admin.getId(), from, to);
         int totalVisits = 0;

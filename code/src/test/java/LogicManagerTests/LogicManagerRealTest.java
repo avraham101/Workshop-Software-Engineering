@@ -970,7 +970,6 @@ public class LogicManagerRealTest extends LogicManagerUserStubTest {
      * use case 4.1.1
      * test adding product with name that is not unique
      */
-    //TODO fix it
     @Test
     public void testAddProductWithSameName() {
         assertFalse(logicManager.addProductToStore(data.getId(Data.VALID),data.getProductData(Data.SAME_NAME)).getValue());

@@ -572,7 +572,6 @@ public class Store {
     public Response<Boolean> addOwner(String givenBy, String owner) {
         for(OwnerAgreement o:agreementMap.values()){
             if(o.containsOwner(owner)) {
-                //TODO add translation in gui to that response when there is already a owner
                 return new Response<>(false, OpCode.Already_Exists);
             }
         }
