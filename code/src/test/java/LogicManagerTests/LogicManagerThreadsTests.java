@@ -2,10 +2,7 @@ package LogicManagerTests;
 
 import Data.TestDataThreads;
 import DataAPI.*;
-import Domain.LogicManager;
-import Domain.Request;
-import Domain.Store;
-import Domain.Subscribe;
+import Domain.*;
 import Persitent.Cache;
 import Persitent.DaoHolders.DaoHolder;
 import Publisher.SinglePublisher;
@@ -20,6 +17,7 @@ import javax.transaction.Transactional;
 
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 import static Utils.Utils.TestMode;
 import static org.junit.Assert.*;
@@ -192,6 +190,87 @@ public class LogicManagerThreadsTests {
     }
 
     /**
+     * use case 2.8 - purchaseCart
+     * checks exactly two users managed to purchase cart
+     */
+    @Test
+    public void testPurchaseCartSuccess(){
+        StoreData storeToOpen = stores.get(0);
+        ProductData productToBuy = productsPerStore.get(storeToOpen.getName()).get(0);
+        registerLoginAndOpenStore(admin,users,storeToOpen);
+        logicManager.addProductToStore(ids.get(admin.getName()),productToBuy);
+        setUpCartForAllUsers(users,storeToOpen.getName(),productToBuy,5);
+
+        String country = "israel";
+        PaymentData paymentData = new PaymentData("name","address",3,"333",333,31313131);
+        String addressToDeliver = "addr";
+        String city = "city";
+        int zip = 121;
+        int expectedSuccess = 2;
+
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
+
+        for(Subscribe user : users){
+            Callable<Response<?>> callable = ()->
+                    logicManager.purchaseCart(ids.get(user.getName()),country,paymentData,addressToDeliver,city,zip);
+            futures.add(submitTask(callable));
+        }
+
+        for(Future<Response<?>> future : futures){
+            try {
+                results.add(future.get(TIMEOUT,TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                fail();
+            }
+        }
+
+        assertTrue(checkAmountSuccess(results,expectedSuccess));
+
+        Store actualStore = daos.getStoreDao().find(storeToOpen.getName());
+
+        // checks amount of product in store is non negative
+        int amount = actualStore.getProduct(productToBuy.getProductName()).getAmount();
+        assertTrue(amount>=0);
+
+        // checks amount of purchases
+        List<Purchase> history =
+                logicManager.watchStorePurchasesHistory(ids.get(admin.getName()),storeToOpen.getName()).getValue();
+
+        history = history.stream().filter(t -> t.getStoreName().equals(storeToOpen.getName())).collect(Collectors.toList());
+        assertEquals(history.size(),expectedSuccess);
+
+        // checks amount of carts left
+        int leftCarts = users.size() - expectedSuccess ;
+        int currLeft = 0;
+        for(Subscribe user: users){
+            CartData currCart =
+                    logicManager.watchCartDetails(ids.get(user.getName())).getValue();
+
+            if(currCart.getProducts().size() > 0 )
+                currLeft++;
+        }
+
+        assertEquals(currLeft,leftCarts);
+
+        tearDownPurchases();
+        //tearDownOpenStore();
+    }
+
+    private void tearDownPurchases() {
+        tearDownRegister();
+        removeStores(stores);
+        tearDownRegister();
+    }
+
+    private void setUpCartForAllUsers(List<Subscribe> users, String storeName, ProductData productToBuy, int amountOfProduct) {
+        for(Subscribe user : users){
+            logicManager.addProductToCart(ids.get(user.getName()),productToBuy.getProductName(),storeName,amountOfProduct);
+        }
+    }
+
+
+    /**
      * use case 3.1 - Logout
      * checks that all logged in users logged out successfully
      */
@@ -332,6 +411,10 @@ public class LogicManagerThreadsTests {
         tearDownOpenStore();
     }
 
+    /**
+     * use case 4.9.2 - answerRequest
+     * checks exactly one user managed to answer a request to store
+     */
     @Test
     public void testAnswerRequestSuccessOnce(){
         StoreData storeToOpen = stores.get(0);
@@ -373,16 +456,18 @@ public class LogicManagerThreadsTests {
 
     }
 
+    /**
+     * use case 4.3.1 - manageOwner
+     * checks exactly one owner managed to add a new owner
+     */
     @Test
     public void testManageOwnerSuccessOnce(){
         List<Subscribe> owners = users.subList(0,users.size()-1);
         StoreData storeToOpen = stores.get(0);
-        //registerLoginAndOpenStore(admin,users,storeToOpen);
         Subscribe newOwner = users.get(users.size()-1);
 
-        //TODO: add owners
         List<PermissionType> permissions = Collections.singletonList(PermissionType.ADD_OWNER);
-        setUpAddManagerAndPermissions(admin,users,permissions,storeToOpen);
+        setUpAddManagerAndPermissions(admin,users,users,permissions,storeToOpen);
 
         List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
         List<Response<?>> results = new CopyOnWriteArrayList<>();
@@ -390,7 +475,6 @@ public class LogicManagerThreadsTests {
         for(Subscribe owner : owners){
             Callable<Response<?>> callable = ()-> {
                 Response<?> response = logicManager.manageOwner(ids.get(owner.getName()), storeToOpen.getName(), newOwner.getName());
-                logicManager.approveManageOwner(ids.get(admin.getName()),storeToOpen.getName(),newOwner.getName());
                 return response;
             };
 
@@ -407,6 +491,7 @@ public class LogicManagerThreadsTests {
         }
         assertTrue(checkOnlyOneSuccess(results));
 
+        logicManager.approveManageOwner(ids.get(admin.getName()),storeToOpen.getName(),newOwner.getName()).getValue();
         Store actualStore = daos.getStoreDao().find(storeToOpen.getName());
         boolean isOwner = actualStore.getPermissions().get(newOwner.getName()).isOwner();
         assertTrue(isOwner);
@@ -414,8 +499,45 @@ public class LogicManagerThreadsTests {
         tearDownOpenStore();
     }
 
+    /**
+     * use case 4.5 - addManager
+     * checks exactly one manger managed to add a new manger
+     */
+    @Test
+    public void testAddManagerSuccessOnce(){
+        List<Subscribe> owners = users.subList(0,users.size()-1);
+        StoreData storeToOpen = stores.get(0);
+        Subscribe newManager = users.get(users.size()-1);
 
+        List<PermissionType> permissions = Collections.singletonList(PermissionType.ADD_MANAGER);
+        setUpAddManagerAndPermissions(admin,users,users.subList(0,users.size()-1),permissions,storeToOpen);
 
+        List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
+
+        for(Subscribe owner : owners){
+            Callable<Response<?>> callable = ()->
+                    logicManager.addManager(ids.get(owner.getName()),newManager.getName(), storeToOpen.getName());
+
+            futures.add(submitTask(callable));
+        }
+
+        for(Future<Response<?>> future : futures) {
+            try {
+                results.add(future.get(TIMEOUT, TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                e.printStackTrace();
+                fail();
+            }
+        }
+        assertTrue(checkOnlyOneSuccess(results));
+
+        Store actualStore = daos.getStoreDao().find(storeToOpen.getName());
+        Permission permission = actualStore.getPermissions().get(newManager.getName());
+        assertNotNull(permission);
+
+        tearDownOpenStore();
+    }
 
 
     /**
@@ -428,7 +550,7 @@ public class LogicManagerThreadsTests {
         List<PermissionType> permissionTypes=new ArrayList<>();
         permissionTypes.add(PermissionType.PRODUCTS_INVENTORY);
         Subscribe opener = cache.findSubscribe(admin.getName());
-        setUpAddManagerAndPermissions(opener,users,permissionTypes,storeToOpen);
+        setUpAddManagerAndPermissions(opener,users,users,permissionTypes,storeToOpen);
         ProductData productData=threadsData.getProductsPerStore().get(storeToOpen.getName()).get(0);
 
         List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
@@ -464,7 +586,7 @@ public class LogicManagerThreadsTests {
         List<PermissionType> permissionTypes=new ArrayList<>();
         permissionTypes.add(PermissionType.PRODUCTS_INVENTORY);
         Subscribe opener = cache.findSubscribe(admin.getName());
-        setUpAddManagerAndPermissions(opener,users,permissionTypes,storeToOpen);
+        setUpAddManagerAndPermissions(opener,users,users,permissionTypes,storeToOpen);
 
         List<Future<Response<?>>> futures = new CopyOnWriteArrayList<>();
         List<Response<?>> results = new CopyOnWriteArrayList<>();
@@ -494,7 +616,67 @@ public class LogicManagerThreadsTests {
         tearDownOpenStore();
     }
 
+    /**
+     * use case 4.3 - manageOwner
+     * checks that adding a new owner while removing other owners works
+     */
+    //@Test
+    public void testRemoveAndApproveOwnerSuccess(){
+        StoreData storeToOpen = stores.get(0);
+        registerLoginAndOpenStore(admin,users,storeToOpen);
 
+        List<Subscribe> managers = Arrays.asList(newUsers.get(0),newUsers.get(2));
+        List<Subscribe> newOwners = Arrays.asList(newUsers.get(1),newUsers.get(3));
+        List<PermissionType> permissions = Collections.singletonList(PermissionType.ADD_OWNER);
+        Subscribe newOwner = newUsers.get(4);
+
+        setUpAddManagerAndPermissions(admin,users,managers,permissions,storeToOpen);
+        setUpOwnersByManagers(managers,newOwners,storeToOpen.getName());
+        List<Callable<Response<?>>> callables = new CopyOnWriteArrayList<>();
+
+        callables.add(()->
+                logicManager.manageOwner(ids.get(admin.getName()),storeToOpen.getName(),newOwner.getName()));
+
+        for(int i=0;i<managers.size();i++){
+            Subscribe manager = managers.get(i);
+            Subscribe ownerToRemove = newOwners.get(i);
+            Callable<Response<?>>callable = () ->
+                    logicManager.removeManager(ids.get(manager.getName()),
+                            ownerToRemove.getName(),storeToOpen.getName());
+            callables.add(callable);
+        }
+
+        List<Future<Response<?>>> futures = submitTasks(callables);
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
+
+        for(Future<Response<?>> future : futures) {
+            try {
+                results.add(future.get(TIMEOUT, TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                e.printStackTrace();
+                fail();
+            }
+        }
+        assertTrue(checkAllSuccess(results));
+
+        boolean approvedOwner = logicManager.
+                approveManageOwner(ids.get(admin.getName()),storeToOpen.getName(),newOwner.getName()).getValue();
+        assertTrue(approvedOwner);
+
+        Store actualStore = daos.getStoreDao().find(storeToOpen.getName());
+        boolean isOwner = actualStore.getPermissions().get(newOwner.getName()).isOwner();
+        assertTrue(isOwner);
+
+        tearDownOpenStore();
+    }
+
+    private void setUpOwnersByManagers(List<Subscribe> managers, List<Subscribe> newOwners,String storeName) {
+        for(int i=0;i<managers.size();i++){
+            Subscribe manager = managers.get(i);
+            Subscribe newOwner = newOwners.get(i);
+            logicManager.manageOwner(ids.get(manager.getName()),storeName,newOwner.getName());
+        }
+    }
 
 
     //------------------------------------------------setUp Methods----------------------------------------------------//
@@ -546,11 +728,18 @@ public class LogicManagerThreadsTests {
             connect();
     }
 
-    //open store and add manager
-    private void setUpAddManagerAndPermissions(Subscribe opener, List<Subscribe> users, List<PermissionType> premissions, StoreData storeToOpen){
+    /**
+     * opens a store, register and login users and add permissions to certain users
+     * @param opener - the user who opens the store
+     * @param users - the users to register and login
+     * @param usersToAddPermissions - user to add permissions to them
+     * @param premissions - the permissions to add to the users
+     * @param storeToOpen - the store to open
+     */
+    private void setUpAddManagerAndPermissions(Subscribe opener, List<Subscribe> users,List<Subscribe> usersToAddPermissions, List<PermissionType> premissions, StoreData storeToOpen){
         registerLoginAndOpenStore(opener,users,storeToOpen);
         int id=ids.get(opener.getName());
-        for(Subscribe sub :users){
+        for(Subscribe sub : usersToAddPermissions){
             if(!sub.getName().equals(opener.getName())){
                 logicManager.addManager(id,sub.getName(),storeToOpen.getName());
                 logicManager.addPermissions(id,premissions,storeToOpen.getName(),sub.getName());
@@ -558,6 +747,12 @@ public class LogicManagerThreadsTests {
         }
     }
 
+    /**
+     * register and logins users, opens a store
+     * @param opener - the user who opens the store
+     * @param users - users to register and login
+     * @param storeToOpen - the store to open
+     */
     private void registerLoginAndOpenStore(Subscribe opener, List<Subscribe> users, StoreData storeToOpen) {
         registerAndLoginUsers(users);
         openStore(opener,storeToOpen);
@@ -593,7 +788,7 @@ public class LogicManagerThreadsTests {
     }
     //-----------------------------------------------------------------------------------------------------------------//
 
-    //-----------------------------------------------Helper Methods----------------------------------------------------//
+    //-----------------------------------------------Helper Methods---------work-------------------------------------------//
     /**
      * submits a task to the thread pool
      * @param task - the task to submit to the thread pool
@@ -628,6 +823,21 @@ public class LogicManagerThreadsTests {
                 return false;
         }
         return true;
+    }
+
+    /**
+     * checks exactly amountOfSuccess of the results is with Success OpCode in results
+     * @param results - the results to examine
+     * @param amountOfSuccess - amount to examine
+     * @return - true if exactly amountOfSuccess of the results is with Success OpCode in results
+     */
+    private boolean checkAmountSuccess(List<Response<?>> results, int amountOfSuccess) {
+        int currAmount = 0;
+        for(Response<?> response : results) {
+            if (response.getReason() == OpCode.Success)
+                currAmount++;
+        }
+        return currAmount == amountOfSuccess;
     }
 
     /**

@@ -8,6 +8,7 @@ import Domain.Discount.StoreDiscount;
 import Domain.Discount.Term.BaseTerm;
 import Domain.PurchasePolicy.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -278,16 +279,17 @@ public class TestData {
     private void setUpPaymentData() {
         paymentData = new HashMap<Data, PaymentData>();
         String userName = users.get(Data.VALID).getName();
-        paymentData.put(Data.VALID, new PaymentData(userName, "Tapoz 3, Nevatim", 30, "4580"));
+        paymentData.put(Data.VALID, new PaymentData(userName, "Tapoz 3, Nevatim", 30, "4580",133,333));
         paymentData.put(Data.NULL , null);
-        paymentData.put(Data.NULL_ADDRESS ,new PaymentData(userName,null, 22, "4580"));
-        paymentData.put(Data.EMPTY_ADDRESS ,new PaymentData(userName,"", 23, "4580"));
-        paymentData.put(Data.NULL_PAYMENT ,new PaymentData(userName,"Tapoz 3, Nevatim", 24, null));
-        paymentData.put(Data.EMPTY_PAYMENT ,new PaymentData(userName,"Tapoz 3, Nevatim", 25, ""));
-        paymentData.put(Data.NULL_NAME ,new PaymentData(null,"Tapoz 3, Nevatim", 26, "4580"));
-        paymentData.put(Data.EMPTY_NAME,new PaymentData("","Tapoz 3, Nevatim", 27, "4580"));
-        paymentData.put(Data.UNDER_AGE,new PaymentData(userName,"Tapoz 3, Nevatim", 3, "4580"));
-
+        paymentData.put(Data.NULL_ADDRESS ,new PaymentData(userName,null, 22, "4580",111,333));
+        paymentData.put(Data.EMPTY_ADDRESS ,new PaymentData(userName,"", 23, "4580",111,333));
+        paymentData.put(Data.NULL_PAYMENT ,new PaymentData(userName,"Tapoz 3, Nevatim", 24, null,133,333));
+        paymentData.put(Data.EMPTY_PAYMENT ,new PaymentData(userName,"Tapoz 3, Nevatim", 25, "",133,333));
+        paymentData.put(Data.NULL_NAME ,new PaymentData(null,"Tapoz 3, Nevatim", 26, "4580",133,333));
+        paymentData.put(Data.EMPTY_NAME,new PaymentData("","Tapoz 3, Nevatim", 27, "4580",133,333));
+        paymentData.put(Data.UNDER_AGE,new PaymentData(userName,"Tapoz 3, Nevatim", 3, "4580",133,333));
+        paymentData.put(Data.WRONG_CVV, new PaymentData(userName, "Tapoz 3, Nevatim", 30, "4580",1,333));
+        paymentData.put(Data.WRONG_ID, new PaymentData(userName, "Tapoz 3, Nevatim", 30, "4580",199,-1));
 
     }
 
@@ -300,15 +302,18 @@ public class TestData {
         List<ProductData> tooMuchProduct = new LinkedList<>();
         product.add(this.productsData.get(Data.VALID));
         tooMuchProduct.add((this.productsData.get(Data.LARGE_AMOUNT)));
-        deliveryData.put(Data.VALID, new DeliveryData("Tapoz 3, Nevatim", "Israel", product));
-        deliveryData.put(Data.VALID2,new DeliveryData("Tapoz 3, Nevatim", "Israel", new ArrayList<>()));
-        deliveryData.put(Data.EMPTY_ADDRESS, new DeliveryData("", "Israel", product));
-        deliveryData.put(Data.NULL_ADDRESS, new DeliveryData(null, "Israel", product));
-        deliveryData.put(Data.EMPTY_COUNTRY, new DeliveryData("Tapoz 3, Nevatim", "", product));
-        deliveryData.put(Data.NULL_COUNTRY, new DeliveryData("Tapoz 3, Nevatim", null, product));
-        deliveryData.put(Data.INVALID_COUNTRY, new DeliveryData("Tapoz 3, Nevatim", "Italy", product));
-        deliveryData.put(Data.LARGE_AMOUNT, new DeliveryData("Tapoz 3, Nevatim", "Israel", tooMuchProduct));
-        deliveryData.put(Data.FAIL_POLICY, new DeliveryData("Tapoz 3, Nevatim", "Italy", tooMuchProduct));
+        deliveryData.put(Data.VALID, new DeliveryData("Tapoz 3, Nevatim", "Israel", product,"Yuval","Bat Hefer",999));
+        deliveryData.put(Data.VALID2,new DeliveryData("Tapoz 3, Nevatim", "Israel", new ArrayList<>(),"Yuval","Bat Hefer",999));
+        deliveryData.put(Data.EMPTY_ADDRESS, new DeliveryData("", "Israel", product,"Yuval","Bat Hefer",999));
+        deliveryData.put(Data.NULL_ADDRESS, new DeliveryData(null, "Israel", product,"Yuval","Bat Hefer",999));
+        deliveryData.put(Data.EMPTY_COUNTRY, new DeliveryData("Tapoz 3, Nevatim", "", product,"Yuval","Bat Hefer",999));
+        deliveryData.put(Data.NULL_COUNTRY, new DeliveryData("Tapoz 3, Nevatim", null, product,"Yuval","Bat Hefer",999));
+        deliveryData.put(Data.INVALID_COUNTRY, new DeliveryData("Tapoz 3, Nevatim", "Italy", product,"Yuval","Bat Hefer",999));
+        deliveryData.put(Data.LARGE_AMOUNT, new DeliveryData("Tapoz 3, Nevatim", "Israel", tooMuchProduct,"Yuval","Bat Hefer",999));
+        deliveryData.put(Data.FAIL_POLICY, new DeliveryData("Tapoz 3, Nevatim", "Italy", tooMuchProduct,"Yuval","Bat Hefer",999));
+        deliveryData.put(Data.NULL_CITY, new DeliveryData("Tapoz 3, Nevatim", "Israel", product,"Yuval",null,999));
+        deliveryData.put(Data.EMPTY_CITY, new DeliveryData("Tapoz 3, Nevatim", "Israel", product,"Yuval",null,999));
+        deliveryData.put(Data.WRONG_ZIP, new DeliveryData("Tapoz 3, Nevatim", "Israel", product,"Yuval","Bat Hefer",-999));
 
     }
 
@@ -440,6 +445,21 @@ public class TestData {
     }
 
     public HashMap<String, ProductInCart> getCart(Data data) { return this.carts.get(data); }
+
+    public DateData getFromDate(){
+        LocalDate today=LocalDate.now().minusDays(3);
+        return new DateData(today.getDayOfMonth(),today.getMonthValue(),today.getYear());
+    }
+
+    public DateData getToDate(){
+        LocalDate today=LocalDate.now();
+        return new DateData(today.getDayOfMonth(),today.getMonthValue(),today.getYear());
+    }
+
+    public DateData getInvalidDate(){
+        LocalDate today=LocalDate.now();
+        return new DateData(0,today.getDayOfMonth(),today.getYear());
+    }
 
     // ============================ getters ============================ //
 

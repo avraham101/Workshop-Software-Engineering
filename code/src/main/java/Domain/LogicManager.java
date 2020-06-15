@@ -4,11 +4,13 @@ import DataAPI.*;
 import Domain.Discount.Discount;
 import Domain.Discount.Term.Term;
 import Domain.Notification.RequestNotification;
+import Domain.Notification.VisitNotification;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Persitent.Cache;
 import Domain.Notification.Notification;
 import Persitent.DaoHolders.DaoHolder;
 import Persitent.DaoInterfaces.IRevenueDao;
+import Publisher.*;
 import Systems.HashSystem;
 import Systems.LoggerSystem;
 import Systems.PaymentSystem.PaymentSystem;
@@ -205,7 +207,21 @@ public class LogicManager {
     public int connectToSystem() {
         int newId=usersIdCounter.getAndIncrement();
         cache.addConnectedUser(newId,new User());
+        DayVisit todayVisit=increaseDayVisitAndNotification();
+        sendVisitNotification(todayVisit);
         return newId;
+    }
+
+    private DayVisit increaseDayVisitAndNotification() {
+        LocalDate now=LocalDate.now();
+        DayVisit visit=daos.getVisitsPerDayDao().find(now);
+        if(visit==null) {
+            visit=new DayVisit(now);
+            daos.getVisitsPerDayDao().add(visit);
+        }
+        visit.increaseGuest();
+        daos.getVisitsPerDayDao().update(visit);
+        return visit;
     }
 
     /**
@@ -266,6 +282,9 @@ public class LogicManager {
                     }
                     if(!this.daos.getSubscribeDao().update(subscribe))
                         return new Response<>(false, OpCode.DB_Down);
+                    //send notification
+                    DayVisit todayVisit=increaseNumberOfVisitors(subscribe);
+                    sendVisitNotification(todayVisit);
                     return new Response<>(true, OpCode.Success);
                 }
             } catch (NoSuchAlgorithmException e) {
@@ -275,6 +294,47 @@ public class LogicManager {
         }
         lock.unlock();
         return new Response<>(false,OpCode.User_Not_Found);
+    }
+
+    private void sendVisitNotification(DayVisit todayVisit) {
+        Publisher publisher= SinglePublisher.getInstance();
+        List<Admin> admins=daos.getSubscribeDao().getAllAdmins();
+        if(publisher!=null&&todayVisit!=null&&admins!=null) {
+            int adminId=admins.get(0).getSessionNumber();
+            if(adminId!=-1) {
+                ArrayList<Notification> notifications = new ArrayList<>();
+                notifications.add(new VisitNotification(todayVisit));
+                publisher.update(String.valueOf(adminId), notifications);
+            }
+        }
+    }
+
+    private synchronized DayVisit increaseNumberOfVisitors(Subscribe subscribe) {
+        LocalDate today=LocalDate.now();
+        DayVisit todayVisit=daos.getVisitsPerDayDao().find(today);
+        if(todayVisit==null)
+            return null;
+        if(subscribe.canWatchUserHistory()){
+            todayVisit.increaseAdmin();
+        }
+        if(subscribe.getPermissions().isEmpty()){
+            todayVisit.increaseSubscribe();
+        }
+        else{
+            boolean owner=false;
+            for(Permission p:subscribe.getPermissions().values()){
+                if(p.isOwner()){
+                    todayVisit.increaseOwners();
+                    owner=true;
+                    break;
+                }
+            }
+            if(!owner){
+                todayVisit.increaseManagers();
+            }
+        }
+        daos.getVisitsPerDayDao().update(todayVisit);
+        return todayVisit;
     }
 
     /**
@@ -583,15 +643,15 @@ public class LogicManager {
      * @param addresToDeliver - the address do Deliver the purchase
      * @return true is the purchase succeeded, otherwise false
      */
-    @Transactional
-    public Response<Boolean> purchaseCart(int id, String country, PaymentData paymentData, String addresToDeliver) {
+    public Response<Boolean> purchaseCart(int id, String country, PaymentData paymentData, String addresToDeliver,String city,int zip) {
         loggerSystem.writeEvent("LogicManager","purchaseCart",
                 "reserveCart the products in the cart", new Object[] {paymentData, addresToDeliver});
         //1) user get
         User current = cache.findUser(id);
         //2) validation check
-        if (!validPaymentData(paymentData))
-            return new Response<>(false, OpCode.Invalid_Payment_Data);
+        Response<Boolean> paymentDataCheck=validPaymentData(paymentData,city,zip);
+        if (!paymentDataCheck.getValue())
+            return paymentDataCheck;
         if (addresToDeliver == null || addresToDeliver.isEmpty() || country == null || country.isEmpty())
             return new Response<>(false, OpCode.Invalid_Delivery_Data);
         //3) sumUp cart - updated PaymentData, DeliveryData and check policy of store
@@ -599,7 +659,7 @@ public class LogicManager {
         if(!reserved) {
             return new Response<>(false, OpCode.Fail_Buy_Cart);
         }
-        DeliveryData deliveryData = new DeliveryData(addresToDeliver, country, new LinkedList<>());
+        DeliveryData deliveryData = new DeliveryData(addresToDeliver, country, new LinkedList<>(),current.getUserName(),city,zip);
         return buyAndPay(id, paymentData, deliveryData);
     }
 
@@ -645,15 +705,47 @@ public class LogicManager {
      * use case 2.8 - purchase cart
      * the function check if payment data is valid
      * @param paymentData - the payment data
+     * @param city
+     * @param zip
      * @return true if the payment is valid, otherwise false
      */
-    private boolean validPaymentData(PaymentData paymentData) {
+    private Response<Boolean> validPaymentData(PaymentData paymentData, String city, int zip) {
         if(paymentData==null)
-            return false;
+            return new Response<>(false,OpCode.Invalid_Payment_Data);
         String name = paymentData.getName();
         String address = paymentData.getAddress();
         String card = paymentData.getCreditCard();
-        return name!=null && !name.isEmpty() && address!=null && !address.isEmpty() && card!=null && !card.isEmpty();
+        int id=paymentData.getId();
+        int cvv=paymentData.getCvv();
+        if(name==null || name.isEmpty()){
+            return new Response<>(false,OpCode.Invalid_Payment_Data);
+        }
+        if(address==null || address.isEmpty()){
+            return new Response<>(false,OpCode.Wrong_Address);
+        }
+        int cardNumber;
+        try{
+            cardNumber=Integer.parseInt(card);
+        }
+        catch (Exception e){
+            return new Response<>(false,OpCode.Wrong_Card);
+        }
+        if(cardNumber<0){
+            return new Response<>(false,OpCode.Wrong_Card);
+        }
+        if(id<0){
+            return new Response<>(false,OpCode.Wrong_Id);
+        }
+        if(cvv<100||cvv>=1000){
+            return new Response<>(false,OpCode.Wrong_CVV);
+        }
+        if(city==null || city.isEmpty()){
+            return new Response<>(false, OpCode.Wrong_City);
+        }
+        if(zip<0){
+            return new Response<>(false, OpCode.Wrong_Zip);
+        }
+        return  new Response<>(true,OpCode.Success);
     }
 
     /**
@@ -1283,6 +1375,59 @@ public class LogicManager {
     }
 
     /**
+     * use case 6.5 - admin watch visitors in specific dates
+     * @param id of the user wants to watch
+     * @param from date to start showing visits from
+     * @param to date to start watching visits from
+     * @return list of visits from date from to date to
+     */
+    public Response<List<DayVisit>> watchVisitsBetweenDates(int id,DateData from,DateData to ){
+        loggerSystem.writeEvent("LogicManager","watchVisitsBetweenDates",
+                "admin watch visits in certain dates", new Object[] {from,to});
+        User current=cache.findUser(id);
+
+        if(current==null)
+            return new Response<>(null, OpCode.User_Not_Found);
+
+        if(!current.canWatchUserHistory())
+            return new Response<>(null,OpCode.NOT_ADMIN);
+
+        if (!validDate(from)||!validDate(to))
+            return new Response<>(null, OpCode.INVALID_DATE);
+
+        LocalDate fromDate = makeDateFromDate(from);
+        LocalDate toDate=makeDateFromDate(to);
+        if(toDate.isBefore(fromDate))
+            return new Response<>(null, OpCode.INVALID_DATE);
+
+        List<DayVisit> dayVisits=new ArrayList<>();
+        //collect the visits from each date
+        do{
+            DayVisit visit=daos.getVisitsPerDayDao().find(fromDate);
+            if(visit==null)
+                visit=new DayVisit(fromDate);
+            dayVisits.add(visit);
+            fromDate=fromDate.plusDays(1);
+        }while (!fromDate.isAfter(toDate));
+        //send today anyway
+        if(toDate.isBefore(LocalDate.now())) {
+            DayVisit visit = daos.getVisitsPerDayDao().find(LocalDate.now());
+            if (visit == null)
+                visit = new DayVisit(fromDate);
+            dayVisits.add(visit);
+        }
+        return new Response<>(dayVisits,OpCode.Success);
+    }
+
+    private LocalDate makeDateFromDate(DateData data){
+        int year = data.getYear();
+        int month = data.getMonth();
+        int day = data.getDay();
+        LocalDate date = LocalDate.of(year, month, day);
+        return date;
+    }
+
+    /**
      * get the stores a user manage
      * @param id user's id
      * @return list of stores managed by user,
@@ -1329,8 +1474,6 @@ public class LogicManager {
             response.setReason(OpCode.Success);
         }
         return response;
-
-
     }
 
 
@@ -1395,12 +1538,9 @@ public class LogicManager {
      * @return - the revenue on this date
      */
     public Response<Double> getRevenueByDate(int id, DateData data) {
-        int year = data.getYear();
-        int month = data.getMonth();
-        int day = data.getDay();
-        if (!validDate(year, month, day))
+        if (!validDate(data))
             return new Response<>(0.0, OpCode.INVALID_DATE);
-        LocalDate date = LocalDate.of(year, month, day);
+        LocalDate date = makeDateFromDate(data);
         User current = cache.findUser(id);
         if (current != null && current.canWatchUserHistory()) {
             Revenue revenue=daos.getRevenueDao().find(date);
@@ -1414,13 +1554,14 @@ public class LogicManager {
 
     /**
      * check if the date is valid
-     * @param year - the year
-     * @param month - the month
-     * @param day - the day
+     * @param date - date to find out if valid
      * @return - true if valid
      */
-    private boolean validDate(int year, int month, int day) {
-        if(year > LocalDate.now().getYear() || month < 0 || month > 12 || day < 0 || day > 31 || year < 0)
+    private boolean validDate(DateData date) {
+        int year=date.getYear();
+        int month=date.getMonth();
+        int day=date.getDay();
+        if(year > LocalDate.now().getYear() || month <= 0 || month > 12 || day <= 0 || day > 31 || year <= 0)
             return false;
         return true;
     }

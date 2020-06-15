@@ -15,7 +15,9 @@ import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Entity
@@ -83,7 +85,15 @@ public class Store {
     private final StoreDaoHolder daos;
 
     @Transient
-    private final ReadWriteLock lock=new ReentrantReadWriteLock();
+    private static ConcurrentHashMap<String, ReentrantLock> locks=new ConcurrentHashMap<String, ReentrantLock>();
+
+    @Transient
+    private static final Lock locki=new ReentrantLock();
+
+
+
+    @Transient
+    private final ReadWriteLock buyLock=new ReentrantReadWriteLock();
 
     public Store(String name,Permission permission,String description) {
         this.name = name;
@@ -263,11 +273,12 @@ public class Store {
      * @param otherProducts - the products to remove from store
      * @return true if succeeded, otherwise false.
      */
+    @Transactional
     public boolean reserveProducts(Collection<ProductInCart> otherProducts) {
         boolean output = true;
         List<ProductInCart> productsReserved = new LinkedList<>();
+        daos.getProductDao().openTransaction();
         for(ProductInCart productInCart: otherProducts) {
-
             Product real = daos.getProductDao().find(new Product(productInCart.getProductName(),name));//this.products.get(productInCart.getProductName());
             if(real!=null) {
                 int amount = productInCart.getAmount();
@@ -298,6 +309,7 @@ public class Store {
         if(!output) {
             restoreReservedProducts(productsReserved);
         }
+        daos.getProductDao().closeTransaction();
         return output;
     }
 
@@ -305,10 +317,13 @@ public class Store {
      * use case 2.8 -reserveCart cart
      * @param restores - the list of reserved
      */
+    @Transactional
     private void restoreReservedProducts(List<ProductInCart> restores) {
+        daos.getProductDao().openTransaction();
         for (ProductInCart product: restores) {
             restoreAmount(product);
         }
+        daos.getProductDao().closeTransaction();
     }
 
     /**
@@ -538,7 +553,6 @@ public class Store {
             Cache cache = new Cache();
             Subscribe realOwner = cache.findSubscribe(tmpOwner.getName());
             realOwner.sendNotification(notification);
-            //permissions.get(manager).getOwner().sendNotification(notification);
         }
     }
 
@@ -551,32 +565,34 @@ public class Store {
      */
     @Transactional
     public Response<Boolean> addOwner(String givenBy, String owner) {
-        lock.writeLock().lock();
         for(OwnerAgreement o:agreementMap.values()){
-            if(o.containsOwner(owner))
+            if(o.containsOwner(owner)) {
                 //TODO add translation in gui to that response when there is already a owner
-                return new Response<>(false,OpCode.Already_Exists);
+                return new Response<>(false, OpCode.Already_Exists);
+            }
         }
         Set<String> owners=new HashSet<>();
         for(String name: permissions.keySet()){
             if(permissions.get(name).isOwner()) {
-                if(name.equals(owner))
-                    return new Response<>(false,OpCode.Already_Owner);
+                if(name.equals(owner)) {
+                    return new Response<>(false, OpCode.Already_Owner);
+                }
                 owners.add(name);
             }
         }
         OwnerAgreement agreement=new OwnerAgreement(owners,givenBy,owner,name);
-        if(!agreement.approve(givenBy)){
-            if(daos.getOwnerAgreementDao().add(agreement)) {
+        if(daos.getOwnerAgreementDao().add(agreement)){
+            if(!agreement.approve(givenBy)){
                 agreementMap.put(owner, agreement);
                 agreement.sendNotifications();
             }
+            else{
+                daos.getOwnerAgreementDao().remove(agreement.getId());
+            }
         }
         else{
-            lock.writeLock().unlock();
             return new Response<>(false,OpCode.Already_Exists);
         }
-        lock.writeLock().unlock();
         return new Response<>(true,OpCode.Success);
     }
 
@@ -632,13 +648,23 @@ public class Store {
         return output;
     }
 
-
     public void lock() {
-        lock.writeLock().lock();
+        locks.putIfAbsent(name,new ReentrantLock());
+        locks.get(name).lock();
     }
 
 
     public void unlock() {
-        lock.writeLock().lock();
+        locks.get(name).unlock();
+    }
+
+    public void startTransaction(){
+        buyLock.writeLock().lock();
+        daos.getProductDao().openTransaction();
+    }
+
+    public void closeTransaction(){
+        daos.getProductDao().closeTransaction();
+        buyLock.writeLock().unlock();
     }
 }

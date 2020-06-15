@@ -15,6 +15,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -391,15 +392,17 @@ public class Subscribe extends UserState{
      */
     @Override
     public Response<Boolean> addOwner(String storeName, String newOwner) {
-        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
-        if(permission==null)
+        Store store=daos.getStoreDao().find(storeName);
+        //store.lock();
+        Permission permission=store.getPermissions().get(userName);
+        if(permission==null||!permission.canAddOwner())
             return new Response<>(false,OpCode.Dont_Have_Permission);
-        Store store=permission.getStore();
-        if(store==null||!permission.canAddOwner())
-            return new Response<>(false,OpCode.Dont_Have_Permission);
+        store.lock();
+        store=daos.getStoreDao().find(storeName);
         Response<Boolean> output= store.addOwner(this.userName,newOwner);
         if(output.getValue())
             daos.getStoreDao().update(store);
+        store.unlock();
         return output;
     }
 
@@ -519,6 +522,7 @@ public class Subscribe extends UserState{
      * @return
      */
     @Override
+    @Transactional
     public Response<Boolean>  removeManager(Subscribe xManager, String storeName) {
         if(!permissions.containsKey(storeName))
             return new Response<>(false,OpCode.Dont_Have_Permission);
@@ -527,9 +531,7 @@ public class Subscribe extends UserState{
             if (store.getName().equals(storeName) && p.getOwner().getName().equals(xManager.userName)) {
                 store.lock();
                 lock.writeLock().lock();
-                //Permission perm = daos.getPermissionDao().findPermission(p);
-
-                cache.findSubscribe(p.getOwner().getName()).removeManagerFromStore(storeName);
+                cache.findSubscribe(p.getOwner().getName()).removeManagerFromStore(storeName,true);
                 givenByMePermissions.remove(p);
                 xManager.getPermissions().remove(storeName);
                 lock.writeLock().unlock();
@@ -547,17 +549,22 @@ public class Subscribe extends UserState{
      * @param storeName the store to remove to be manager from and the mangers
      * managed by me
      */
-    private void removeManagerFromStore(String storeName) {
+    private void removeManagerFromStore(String storeName,boolean toClose) {
         Permission permission=null;
+        boolean toOpen=false;
         lock.writeLock().lock();
         for(Permission p: givenByMePermissions) {
             if (p.getStore().getName().equals(storeName)) {
-                cache.findSubscribe(p.getOwner().getName()).removeManagerFromStore(storeName);
+                cache.findSubscribe(p.getOwner().getName()).removeManagerFromStore(storeName,false);
                 permission=p;
             }
         }
-        if(permission!=null)
+        if(permission!=null) {
             givenByMePermissions.remove(permission);
+        }
+        else{
+            toOpen=true;
+        }
         lock.writeLock().unlock();
         Store store=daos.getStoreDao().find(storeName);
         //Store store=permissions.get(storeName).getStore();
@@ -566,7 +573,7 @@ public class Subscribe extends UserState{
         permissions.remove(storeName);
         //remove the permission from the store
         store.getPermissions().remove(userName);
-        removePermission(p);
+        removePermission(p,toClose,toOpen);
         store.removeAgreement(userName);
         store.approveAgreementsOfUser(userName);
         daos.getStoreDao().update(store);
@@ -634,8 +641,8 @@ public class Subscribe extends UserState{
         return true;
     }
 
-    private void removePermission(Permission p) {
-        daos.getPermissionDao().removePermissionFromSubscribe(p,this);
+    private void removePermission(Permission p, boolean toClose, boolean toOpen) {
+        daos.getPermissionDao().removePermissionFromSubscribe(p,toClose,toOpen);
     }
 
     /**

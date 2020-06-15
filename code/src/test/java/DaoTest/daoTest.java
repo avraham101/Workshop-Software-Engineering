@@ -1,5 +1,6 @@
 package DaoTest;
 
+import AcceptanceTests.AcceptanceTestDataObjects.DayVisitData;
 import Data.*;
 import DataAPI.*;
 import Domain.*;
@@ -8,12 +9,15 @@ import Domain.Discount.RegularDiscount;
 import Domain.Notification.*;
 import Domain.PurchasePolicy.*;
 import Domain.PurchasePolicy.ComposePolicys.*;
+import Persitent.DaoInterfaces.IVisitsPerDayDao;
+import Persitent.DaoProxy.VisitPerDayDaoProxy;
 import Utils.*;
 import Persitent.Dao.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +29,7 @@ public class daoTest {
     private TestData data;
     @Before
     public void setUp() throws Exception {
-        //Utils.TestMode();
+        Utils.TestMode();
         data=new TestData();
     }
 
@@ -194,6 +198,7 @@ public class daoTest {
     public void reset(){
         SubscribeDao subdao=new SubscribeDao();
         subdao.remove("Admin");
+        subdao.remove("admin");
         subdao.remove("Yuval");
         subdao.remove("Admin");
         subdao.remove("Niv");
@@ -202,11 +207,19 @@ public class daoTest {
         subdao.remove("shhu");
         subdao.remove("testUser0");
         subdao.remove("testUser1");
+        subdao.remove("testUser2");
         StoreDao storeDao=new StoreDao();
         storeDao.removeStore("Store");
         storeDao.removeStore("store0Test");
         storeDao.removeStore("store1Test");
         storeDao.removeStore("store2Test");
+        LocalDate now=LocalDate.now();
+        LocalDate before3Days=now.minusDays(3);
+        IVisitsPerDayDao visitsPerDayDao=new VisitPerDayDaoProxy();
+        while(!before3Days.isAfter(now)){
+            visitsPerDayDao.remove(before3Days);
+            before3Days=before3Days.plusDays(1);
+        }
     }
 
     @Test
