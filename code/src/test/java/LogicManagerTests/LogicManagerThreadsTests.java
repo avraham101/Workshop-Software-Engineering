@@ -193,7 +193,7 @@ public class LogicManagerThreadsTests {
      * use case 2.8 - purchaseCart
      * checks exactly two users managed to purchase cart
      */
-    @Test
+    //@Test
     public void testPurchaseCartSuccess(){
         StoreData storeToOpen = stores.get(0);
         ProductData productToBuy = productsPerStore.get(storeToOpen.getName()).get(0);
@@ -620,10 +620,10 @@ public class LogicManagerThreadsTests {
      * use case 4.3 - manageOwner
      * checks that adding a new owner while removing other owners works
      */
-    //@Test
+    @Test
     public void testRemoveAndApproveOwnerSuccess(){
         StoreData storeToOpen = stores.get(0);
-        registerLoginAndOpenStore(admin,users,storeToOpen);
+        //registerLoginAndOpenStore(admin,users,storeToOpen);
 
         List<Subscribe> managers = Arrays.asList(newUsers.get(0),newUsers.get(2));
         List<Subscribe> newOwners = Arrays.asList(newUsers.get(1),newUsers.get(3));
@@ -631,7 +631,7 @@ public class LogicManagerThreadsTests {
         Subscribe newOwner = newUsers.get(4);
 
         setUpAddManagerAndPermissions(admin,users,managers,permissions,storeToOpen);
-        setUpOwnersByManagers(managers,newOwners,storeToOpen.getName());
+        setUpOwnersByManagers(admin,managers,newOwners,storeToOpen.getName());
         List<Callable<Response<?>>> callables = new CopyOnWriteArrayList<>();
 
         callables.add(()->
@@ -670,11 +670,21 @@ public class LogicManagerThreadsTests {
         tearDownOpenStore();
     }
 
-    private void setUpOwnersByManagers(List<Subscribe> managers, List<Subscribe> newOwners,String storeName) {
+    private void setUpOwnersByManagers(Subscribe approver, List<Subscribe> managers, List<Subscribe> newOwners, String storeName) {
         for(int i=0;i<managers.size();i++){
             Subscribe manager = managers.get(i);
             Subscribe newOwner = newOwners.get(i);
             logicManager.manageOwner(ids.get(manager.getName()),storeName,newOwner.getName());
+            logicManager.approveManageOwner(ids.get(approver.getName()),storeName,newOwner.getName());
+        }
+
+        for(int i=0;i<newOwners.size();i++){
+            Subscribe currApprover = newOwners.get(i);
+            for (Subscribe toApprove : newOwners) {
+                if (!currApprover.getName().equals(toApprove.getName())) {
+                    logicManager.approveManageOwner(ids.get(currApprover.getName()), storeName, toApprove.getName());
+                }
+            }
         }
     }
 

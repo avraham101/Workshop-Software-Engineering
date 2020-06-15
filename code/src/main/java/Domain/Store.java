@@ -617,6 +617,7 @@ public class Store {
                 daos.getOwnerAgreementDao().remove(ownerAgreement.getId());
                 agreementMap.remove(userName);
             }
+            daos.getOwnerAgreementDao().update(ownerAgreement);
 
         }
     }
@@ -626,6 +627,9 @@ public class Store {
         if(ownerAgreement!=null&&ownerAgreement.approve(approver)) {
             daos.getOwnerAgreementDao().remove(ownerAgreement.getId());
             agreementMap.remove(newOwner);
+        }
+        else if(ownerAgreement!=null){
+            daos.getOwnerAgreementDao().update(ownerAgreement);
         }
         return new Response<>(true,OpCode.Success);
     }
