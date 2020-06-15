@@ -418,6 +418,7 @@ public class Store {
         }
         Product product=new Product(productData,categoryList.get(categoryName));
         boolean result=products.putIfAbsent(productData.getProductName(),product)==null;
+
         if(result) {
             if(daos.getProductDao().addProduct(product))
                 return new Response<>(true, OpCode.Success);
