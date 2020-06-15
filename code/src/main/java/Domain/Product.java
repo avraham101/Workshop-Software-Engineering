@@ -18,7 +18,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class Product implements Serializable {
 
     public Product() {
-        this.lock=new ReentrantReadWriteLock();
         daos = new ProductDaoHolder();
     }
 
@@ -56,7 +55,7 @@ public class Product implements Serializable {
     private List<Review> reviews;
 
     @Transient
-    private final ReentrantReadWriteLock lock;
+    private static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     @Transient
     private final ProductDaoHolder daos;
@@ -70,14 +69,12 @@ public class Product implements Serializable {
         this.price=productData.getPrice();
         this.reviews=new ArrayList<>();
         this.store=productData.getStoreName();
-        lock=new ReentrantReadWriteLock();
         daos = new ProductDaoHolder();
     }
 
     public Product(String name, String store){
         this.name=name;
         this.store=store;
-        this.lock = new ReentrantReadWriteLock();
         daos = new ProductDaoHolder();
     }
 
@@ -92,7 +89,6 @@ public class Product implements Serializable {
         this.purchaseType = new PurchaseType();
         this.category = new Category(other.category.getName());
         this.reviews = new LinkedList<>();
-        this.lock = new ReentrantReadWriteLock();
         this.store=other.getStore();
         daos = new ProductDaoHolder();
     }
@@ -229,9 +225,7 @@ public class Product implements Serializable {
                 Objects.equals(name, product.name) &&
                 Objects.equals(purchaseType, product.purchaseType) &&
                 Objects.equals(category, product.category) &&
-                Objects.equals(reviews, product.reviews) &&
-                Objects.equals(lock, product.lock) &&
-                Objects.equals(daos, product.daos);
+                Objects.equals(reviews, product.reviews);
     }
 
 }

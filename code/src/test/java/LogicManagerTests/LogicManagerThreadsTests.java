@@ -257,7 +257,8 @@ public class LogicManagerThreadsTests {
         //tearDownOpenStore();
     }
 
-    private void tearDownPurchases() {
+    @Test
+    public void tearDownPurchases() {
         tearDownRegister();
         removeStores(stores);
         tearDownRegister();
