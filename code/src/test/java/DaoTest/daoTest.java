@@ -198,6 +198,7 @@ public class daoTest {
     public void reset(){
         SubscribeDao subdao=new SubscribeDao();
         subdao.remove("Admin");
+        subdao.remove("admin");
         subdao.remove("Yuval");
         subdao.remove("Admin");
         subdao.remove("Niv");

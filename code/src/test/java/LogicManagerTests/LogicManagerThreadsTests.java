@@ -13,7 +13,6 @@ import Systems.SupplySystem.ProxySupply;
 import Systems.SupplySystem.SupplySystem;
 import org.junit.*;
 
-import javax.security.auth.callback.Callback;
 import javax.transaction.Transactional;
 
 import java.util.*;
@@ -476,7 +475,6 @@ public class LogicManagerThreadsTests {
         for(Subscribe owner : owners){
             Callable<Response<?>> callable = ()-> {
                 Response<?> response = logicManager.manageOwner(ids.get(owner.getName()), storeToOpen.getName(), newOwner.getName());
-                logicManager.approveManageOwner(ids.get(admin.getName()),storeToOpen.getName(),newOwner.getName());
                 return response;
             };
 
@@ -493,6 +491,7 @@ public class LogicManagerThreadsTests {
         }
         assertTrue(checkOnlyOneSuccess(results));
 
+        logicManager.approveManageOwner(ids.get(admin.getName()),storeToOpen.getName(),newOwner.getName()).getValue();
         Store actualStore = daos.getStoreDao().find(storeToOpen.getName());
         boolean isOwner = actualStore.getPermissions().get(newOwner.getName()).isOwner();
         assertTrue(isOwner);
@@ -683,7 +682,7 @@ public class LogicManagerThreadsTests {
     //------------------------------------------------setUp Methods----------------------------------------------------//
     @BeforeClass
     public static void beforeClass() {
-        //TestMode();
+        TestMode();
         daos=new DaoHolder();
     }
     /**
@@ -789,7 +788,7 @@ public class LogicManagerThreadsTests {
     }
     //-----------------------------------------------------------------------------------------------------------------//
 
-    //-----------------------------------------------Helper Methods----------------------------------------------------//
+    //-----------------------------------------------Helper Methods---------work-------------------------------------------//
     /**
      * submits a task to the thread pool
      * @param task - the task to submit to the thread pool
