@@ -420,10 +420,13 @@ public class Store {
         boolean result=products.putIfAbsent(productData.getProductName(),product)==null;
 
         if(result) {
-            if(daos.getProductDao().addProduct(product))
-                return new Response<>(true, OpCode.Success);
-            else
-                return new Response<>(false, OpCode.DB_Down);
+            lockProduct(product);
+            if(daos.getProductDao().addProduct(product)){
+                unlockProduct(product);
+                return new Response<>(true, OpCode.Success);}
+            else{
+                unlockProduct(product);
+                return new Response<>(false, OpCode.Already_Exists);}
 
         }
         return new Response<>(false,OpCode.Already_Exists);
@@ -619,6 +622,7 @@ public class Store {
                 daos.getOwnerAgreementDao().remove(ownerAgreement.getId());
                 agreementMap.remove(userName);
             }
+            daos.getOwnerAgreementDao().update(ownerAgreement);
 
         }
     }
@@ -628,6 +632,9 @@ public class Store {
         if(ownerAgreement!=null&&ownerAgreement.approve(approver)) {
             daos.getOwnerAgreementDao().remove(ownerAgreement.getId());
             agreementMap.remove(newOwner);
+        }
+        else if(ownerAgreement!=null){
+            daos.getOwnerAgreementDao().update(ownerAgreement);
         }
         return new Response<>(true,OpCode.Success);
     }
