@@ -617,6 +617,10 @@ public class LogicManagerThreadsTests {
         tearDownOpenStore();
     }
 
+    /**
+     * use case 4.3 - manageOwner
+     * checks that adding a new owner while removing other owners works
+     */
     @Test
     public void testRemoveAndApproveOwnerSuccess(){
         StoreData storeToOpen = stores.get(0);
@@ -659,7 +663,7 @@ public class LogicManagerThreadsTests {
         boolean approvedOwner = logicManager.
                 approveManageOwner(ids.get(admin.getName()),storeToOpen.getName(),newOwner.getName()).getValue();
         assertTrue(approvedOwner);
-        
+
         Store actualStore = daos.getStoreDao().find(storeToOpen.getName());
         boolean isOwner = actualStore.getPermissions().get(newOwner.getName()).isOwner();
         assertTrue(isOwner);
