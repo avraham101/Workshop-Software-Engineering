@@ -193,7 +193,7 @@ public class LogicManagerThreadsTests {
      * use case 2.8 - purchaseCart
      * checks exactly two users managed to purchase cart
      */
-    //@Test
+    @Test
     public void testPurchaseCartSuccess(){
         StoreData storeToOpen = stores.get(0);
         ProductData productToBuy = productsPerStore.get(storeToOpen.getName()).get(0);
@@ -257,7 +257,7 @@ public class LogicManagerThreadsTests {
         //tearDownOpenStore();
     }
 
-    @Test
+    //@Test
     public void tearDownPurchases() {
         tearDownRegister();
         removeStores(stores);
@@ -454,6 +454,7 @@ public class LogicManagerThreadsTests {
             String comment = "c"+request.getKey();
             assertEquals(comment,request.getValue().getComment());
         }
+        tearDownOpenStore();
 
     }
 
@@ -693,7 +694,7 @@ public class LogicManagerThreadsTests {
     //------------------------------------------------setUp Methods----------------------------------------------------//
     @BeforeClass
     public static void beforeClass() {
-        TestMode();
+        //TestMode();
         daos=new DaoHolder();
     }
     /**
@@ -787,7 +788,7 @@ public class LogicManagerThreadsTests {
     }
 
     //TODO change
-    @Test
+    //@Test
     public void tearDownOpenStore(){
         removeStores(stores);
         tearDownLogin();

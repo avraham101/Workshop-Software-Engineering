@@ -419,10 +419,13 @@ public class Store {
         Product product=new Product(productData,categoryList.get(categoryName));
         boolean result=products.putIfAbsent(productData.getProductName(),product)==null;
         if(result) {
-            if(daos.getProductDao().addProduct(product))
-                return new Response<>(true, OpCode.Success);
-            else
-                return new Response<>(false, OpCode.DB_Down);
+            lockProduct(product);
+            if(daos.getProductDao().addProduct(product)){
+                unlockProduct(product);
+                return new Response<>(true, OpCode.Success);}
+            else{
+                unlockProduct(product);
+                return new Response<>(false, OpCode.Already_Exists);}
 
         }
         return new Response<>(false,OpCode.Already_Exists);
