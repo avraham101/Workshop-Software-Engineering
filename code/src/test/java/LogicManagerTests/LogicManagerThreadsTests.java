@@ -373,11 +373,14 @@ public class LogicManagerThreadsTests {
 
     }
 
+    /**
+     * test use case 4.3 -add owner
+     *
+     */
     @Test
     public void testManageOwnerSuccessOnce(){
         List<Subscribe> owners = users.subList(0,users.size()-1);
         StoreData storeToOpen = stores.get(0);
-        //registerLoginAndOpenStore(admin,users,storeToOpen);
         Subscribe newOwner = users.get(users.size()-1);
 
         //TODO: add owners
@@ -390,7 +393,6 @@ public class LogicManagerThreadsTests {
         for(Subscribe owner : owners){
             Callable<Response<?>> callable = ()-> {
                 Response<?> response = logicManager.manageOwner(ids.get(owner.getName()), storeToOpen.getName(), newOwner.getName());
-                logicManager.approveManageOwner(ids.get(admin.getName()),storeToOpen.getName(),newOwner.getName());
                 return response;
             };
 
@@ -406,7 +408,10 @@ public class LogicManagerThreadsTests {
             }
         }
         assertTrue(checkOnlyOneSuccess(results));
-
+//        if(checkOnlyOneSuccess(results)){
+//            System.out.println("successsssssssss");
+//        }
+        boolean harta=logicManager.approveManageOwner(ids.get(admin.getName()),storeToOpen.getName(),newOwner.getName()).getValue();
         Store actualStore = daos.getStoreDao().find(storeToOpen.getName());
         boolean isOwner = actualStore.getPermissions().get(newOwner.getName()).isOwner();
         assertTrue(isOwner);
@@ -500,7 +505,7 @@ public class LogicManagerThreadsTests {
     //------------------------------------------------setUp Methods----------------------------------------------------//
     @BeforeClass
     public static void beforeClass() {
-        //TestMode();
+        TestMode();
         daos=new DaoHolder();
     }
     /**
@@ -593,7 +598,7 @@ public class LogicManagerThreadsTests {
     }
     //-----------------------------------------------------------------------------------------------------------------//
 
-    //-----------------------------------------------Helper Methods----------------------------------------------------//
+    //-----------------------------------------------Helper Methods---------work-------------------------------------------//
     /**
      * submits a task to the thread pool
      * @param task - the task to submit to the thread pool

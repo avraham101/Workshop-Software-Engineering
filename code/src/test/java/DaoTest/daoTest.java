@@ -25,7 +25,7 @@ public class daoTest {
     private TestData data;
     @Before
     public void setUp() throws Exception {
-        //Utils.TestMode();
+        Utils.TestMode();
         data=new TestData();
     }
 
@@ -194,6 +194,7 @@ public class daoTest {
     public void reset(){
         SubscribeDao subdao=new SubscribeDao();
         subdao.remove("Admin");
+        subdao.remove("admin");
         subdao.remove("Yuval");
         subdao.remove("Admin");
         subdao.remove("Niv");

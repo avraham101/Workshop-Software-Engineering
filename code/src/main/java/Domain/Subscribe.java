@@ -391,15 +391,16 @@ public class Subscribe extends UserState{
      */
     @Override
     public Response<Boolean> addOwner(String storeName, String newOwner) {
-        Permission permission=daos.getStoreDao().find(storeName).getPermissions().get(userName);
-        if(permission==null)
+        Store store=daos.getStoreDao().find(storeName);
+        //store.lock();
+        Permission permission=store.getPermissions().get(userName);
+        if(permission==null||!permission.canAddOwner())
             return new Response<>(false,OpCode.Dont_Have_Permission);
-        Store store=permission.getStore();
-        if(store==null||!permission.canAddOwner())
-            return new Response<>(false,OpCode.Dont_Have_Permission);
+        store=daos.getStoreDao().find(storeName);
         Response<Boolean> output= store.addOwner(this.userName,newOwner);
         if(output.getValue())
             daos.getStoreDao().update(store);
+        //store.unlock();
         return output;
     }
 
