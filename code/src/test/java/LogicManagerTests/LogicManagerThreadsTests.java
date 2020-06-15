@@ -460,7 +460,7 @@ public class LogicManagerThreadsTests {
      * use case 4.3.1 - manageOwner
      * checks exactly one owner managed to add a new owner
      */
-    //@Test
+    @Test
     public void testManageOwnerSuccessOnce(){
         List<Subscribe> owners = users.subList(0,users.size()-1);
         StoreData storeToOpen = stores.get(0);
@@ -620,7 +620,7 @@ public class LogicManagerThreadsTests {
      * use case 4.3 - manageOwner
      * checks that adding a new owner while removing other owners works
      */
-    @Test
+    //@Test
     public void testRemoveAndApproveOwnerSuccess(){
         StoreData storeToOpen = stores.get(0);
         registerLoginAndOpenStore(admin,users,storeToOpen);
@@ -682,7 +682,7 @@ public class LogicManagerThreadsTests {
     //------------------------------------------------setUp Methods----------------------------------------------------//
     @BeforeClass
     public static void beforeClass() {
-        TestMode();
+        //TestMode();
         daos=new DaoHolder();
     }
     /**

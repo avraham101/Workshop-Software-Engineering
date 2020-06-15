@@ -553,7 +553,6 @@ public class Store {
             Cache cache = new Cache();
             Subscribe realOwner = cache.findSubscribe(tmpOwner.getName());
             realOwner.sendNotification(notification);
-            //permissions.get(manager).getOwner().sendNotification(notification);
         }
     }
 
