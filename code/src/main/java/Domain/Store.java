@@ -590,6 +590,7 @@ public class Store {
             if(!agreement.approve(givenBy)){
                 agreementMap.put(owner, agreement);
                 agreement.sendNotifications();
+                daos.getOwnerAgreementDao().update(agreement);
             }
             else{
                 daos.getOwnerAgreementDao().remove(agreement.getId());
