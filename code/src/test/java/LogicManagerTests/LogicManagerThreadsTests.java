@@ -13,10 +13,12 @@ import Systems.SupplySystem.ProxySupply;
 import Systems.SupplySystem.SupplySystem;
 import org.junit.*;
 
+import javax.security.auth.callback.Callback;
 import javax.transaction.Transactional;
 
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 import static Utils.Utils.TestMode;
 import static org.junit.Assert.*;
@@ -188,6 +190,10 @@ public class LogicManagerThreadsTests {
         tearDownConnect();
     }
 
+    /**
+     * use case 2.8 - purchaseCart
+     * checks exactly two users managed to purchase cart
+     */
     @Test
     public void testPurchaseCartSuccess(){
         StoreData storeToOpen = stores.get(0);
@@ -231,6 +237,8 @@ public class LogicManagerThreadsTests {
         // checks amount of purchases
         List<Purchase> history =
                 logicManager.watchStorePurchasesHistory(ids.get(admin.getName()),storeToOpen.getName()).getValue();
+
+        history = history.stream().filter(t -> t.getStoreName().equals(storeToOpen.getName())).collect(Collectors.toList());
         assertEquals(history.size(),expectedSuccess);
 
         // checks amount of carts left
@@ -240,14 +248,20 @@ public class LogicManagerThreadsTests {
             CartData currCart =
                     logicManager.watchCartDetails(ids.get(user.getName())).getValue();
 
-            if(currCart.getProducts().size() > 0)
+            if(currCart.getProducts().size() > 0 )
                 currLeft++;
         }
 
         assertEquals(currLeft,leftCarts);
 
-        //tearDownPurchases();
-        tearDownOpenStore();
+        tearDownPurchases();
+        //tearDownOpenStore();
+    }
+
+    private void tearDownPurchases() {
+        tearDownRegister();
+        removeStores(stores);
+        tearDownRegister();
     }
 
     private void setUpCartForAllUsers(List<Subscribe> users, String storeName, ProductData productToBuy, int amountOfProduct) {
@@ -447,7 +461,7 @@ public class LogicManagerThreadsTests {
      * use case 4.3.1 - manageOwner
      * checks exactly one owner managed to add a new owner
      */
-    @Test
+    //@Test
     public void testManageOwnerSuccessOnce(){
         List<Subscribe> owners = users.subList(0,users.size()-1);
         StoreData storeToOpen = stores.get(0);
@@ -601,6 +615,64 @@ public class LogicManagerThreadsTests {
             assertTrue(store.getProducts().containsKey(productData.getProductName()));
         }
         tearDownOpenStore();
+    }
+
+    @Test
+    public void testRemoveAndApproveOwnerSuccess(){
+        StoreData storeToOpen = stores.get(0);
+        registerLoginAndOpenStore(admin,users,storeToOpen);
+
+        List<Subscribe> managers = Arrays.asList(newUsers.get(0),newUsers.get(2));
+        List<Subscribe> newOwners = Arrays.asList(newUsers.get(1),newUsers.get(3));
+        List<PermissionType> permissions = Collections.singletonList(PermissionType.ADD_OWNER);
+        Subscribe newOwner = newUsers.get(4);
+
+        setUpAddManagerAndPermissions(admin,users,managers,permissions,storeToOpen);
+        setUpOwnersByManagers(managers,newOwners,storeToOpen.getName());
+        List<Callable<Response<?>>> callables = new CopyOnWriteArrayList<>();
+
+        callables.add(()->
+                logicManager.manageOwner(ids.get(admin.getName()),storeToOpen.getName(),newOwner.getName()));
+
+        for(int i=0;i<managers.size();i++){
+            Subscribe manager = managers.get(i);
+            Subscribe ownerToRemove = newOwners.get(i);
+            Callable<Response<?>>callable = () ->
+                    logicManager.removeManager(ids.get(manager.getName()),
+                            ownerToRemove.getName(),storeToOpen.getName());
+            callables.add(callable);
+        }
+
+        List<Future<Response<?>>> futures = submitTasks(callables);
+        List<Response<?>> results = new CopyOnWriteArrayList<>();
+
+        for(Future<Response<?>> future : futures) {
+            try {
+                results.add(future.get(TIMEOUT, TIME_UNIT));
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                e.printStackTrace();
+                fail();
+            }
+        }
+        assertTrue(checkAllSuccess(results));
+
+        boolean approvedOwner = logicManager.
+                approveManageOwner(ids.get(admin.getName()),storeToOpen.getName(),newOwner.getName()).getValue();
+        assertTrue(approvedOwner);
+        
+        Store actualStore = daos.getStoreDao().find(storeToOpen.getName());
+        boolean isOwner = actualStore.getPermissions().get(newOwner.getName()).isOwner();
+        assertTrue(isOwner);
+
+        tearDownOpenStore();
+    }
+
+    private void setUpOwnersByManagers(List<Subscribe> managers, List<Subscribe> newOwners,String storeName) {
+        for(int i=0;i<managers.size();i++){
+            Subscribe manager = managers.get(i);
+            Subscribe newOwner = newOwners.get(i);
+            logicManager.manageOwner(ids.get(manager.getName()),storeName,newOwner.getName());
+        }
     }
 
 

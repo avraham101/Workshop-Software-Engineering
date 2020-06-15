@@ -580,10 +580,10 @@ public class Store {
                 agreement.sendNotifications();
             }
         }
-        else{
-            lock.writeLock().unlock();
-            return new Response<>(false,OpCode.Already_Exists);
-        }
+//        else{
+//            lock.writeLock().unlock();
+//            return new Response<>(false,OpCode.Already_Exists);
+//        }
         lock.writeLock().unlock();
         return new Response<>(true,OpCode.Success);
     }
