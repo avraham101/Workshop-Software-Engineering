@@ -100,7 +100,6 @@ public class StoreTestReal extends StoreTestsAllStubs {
         }
     }
 
-//TODO
 
     /**
      * part of 2.8 - buy cart

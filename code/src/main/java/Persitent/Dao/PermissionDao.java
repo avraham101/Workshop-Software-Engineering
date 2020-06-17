@@ -14,7 +14,7 @@ import javax.transaction.Transactional;
 public class PermissionDao extends Dao<Permission> implements IPermissionDao {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory(Utils.DB);
-    private EntityManager entityManager;
+    private static EntityManager entityManager;
 
     public boolean addPermission(Permission permission){
         boolean output = false;
@@ -29,7 +29,7 @@ public class PermissionDao extends Dao<Permission> implements IPermissionDao {
             entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
         }
         EntityTransaction et = null;
-        boolean output=false;
+        boolean output=true;
 
         try {
             et = entityManager.getTransaction();
@@ -40,9 +40,10 @@ public class PermissionDao extends Dao<Permission> implements IPermissionDao {
                     .setParameter(1, perToDelete.getStore())
                     .setParameter(2, perToDelete.getOwner())
                     .executeUpdate();
-
-            et.commit();
-            output=x>0;
+            if(toClose) {
+                et.commit();
+                output = x > 0;
+            }
         }
         catch(Exception ex) {
             if (et != null) {

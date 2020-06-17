@@ -15,7 +15,6 @@ import java.util.Set;
 public class ServiceAPI {
 
     private LogicManager logicManager;
-//    private Encoder encoder = new Encoder(); //TODO remove THIS
     /**
      * use case 1.1 - Init Trading System
      * acceptance test class : initialStartTest
@@ -24,7 +23,6 @@ public class ServiceAPI {
      * @throws Exception - system crashed exception
      */
     public ServiceAPI(String userName, String password) throws Exception{
-//        encoder.encodeAdmin(userName, password);
         logicManager = new LogicManager(userName, password);
     }
 
@@ -307,7 +305,7 @@ public class ServiceAPI {
     }
 
     /**
-     * //TODO acceptance test
+     * acceptance test class : AppointAnotherOwnerToStoreTest
      * use case 4.3.2 - approve manage owner
      * @param storeName the name of the store to be manager of
      * @param userName the user to be manager of the store

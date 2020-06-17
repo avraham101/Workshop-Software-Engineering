@@ -788,9 +788,8 @@ public class LogicManagerThreadsTests {
         tearDownRegister();
     }
 
-    //TODO change
-    //@Test
-    public void tearDownOpenStore(){
+
+    private void tearDownOpenStore(){
         removeStores(stores);
         tearDownLogin();
     }

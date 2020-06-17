@@ -393,7 +393,6 @@ public class Subscribe extends UserState{
     @Override
     public Response<Boolean> addOwner(String storeName, String newOwner) {
         Store store=daos.getStoreDao().find(storeName);
-        //store.lock();
         Permission permission=store.getPermissions().get(userName);
         if(permission==null||!permission.canAddOwner())
             return new Response<>(false,OpCode.Dont_Have_Permission);
@@ -537,8 +536,10 @@ public class Subscribe extends UserState{
             if (store.getName().equals(storeName) && p.getOwner().getName().equals(xManager.userName)) {
                 store.lock();
                 lock.writeLock().lock();
-                cache.findSubscribe(p.getOwner().getName()).removeManagerFromStore(storeName,true);
+                xManager=cache.findSubscribe(p.getOwner().getName());
+                xManager.removeManagerFromStore(storeName,true);
                 givenByMePermissions.remove(p);
+                //daos.getPermissionDao().removePermissionFromSubscribe(p);
                 xManager.getPermissions().remove(storeName);
                 lock.writeLock().unlock();
                 store.unlock();
@@ -555,7 +556,8 @@ public class Subscribe extends UserState{
      * @param storeName the store to remove to be manager from and the mangers
      * managed by me
      */
-    private void removeManagerFromStore(String storeName,boolean toClose) {
+    @Transactional
+    public void removeManagerFromStore(String storeName,boolean toClose) {
         Permission permission=null;
         boolean toOpen=false;
         lock.writeLock().lock();
@@ -650,6 +652,7 @@ public class Subscribe extends UserState{
         return true;
     }
 
+    @Transactional
     private void removePermission(Permission p, boolean toClose, boolean toOpen) {
         daos.getPermissionDao().removePermissionFromSubscribe(p,toClose,toOpen);
     }

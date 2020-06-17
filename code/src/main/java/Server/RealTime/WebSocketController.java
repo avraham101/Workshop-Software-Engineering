@@ -34,7 +34,6 @@ public class WebSocketController {
     @MessageExceptionHandler
     @SendToUser("/error")
     public String handleException(Throwable exception) {
-        System.out.println(exception.getMessage());
         return exception.getMessage();
     }
 
