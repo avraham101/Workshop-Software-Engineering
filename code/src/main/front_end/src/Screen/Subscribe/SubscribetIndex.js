@@ -4,6 +4,7 @@ import Title from '../../Component/Title';
 import Row from '../../Component/Row';
 import {send} from '../../Handler/ConnectionHandler';
 import MenuSubscribe from '../../Component/MenuSubscribe';
+import logo_store from '../../Assests/store.jpg';
 class SubscribeIndex extends Component {
 
   constructor(props) {
@@ -13,6 +14,7 @@ class SubscribeIndex extends Component {
       id: -1,
       error:'',
       stores:[],
+      flag:false
     };
     this.buildStores = this.buildStores.bind(this);
   }
@@ -23,7 +25,7 @@ class SubscribeIndex extends Component {
     else {
       let opt = ''+ received.reason;
       if(opt == 'Success') {
-        this.setState({stores:received.value})
+        this.setState({stores:received.value, flag:true})
       }
       else {
         alert(opt+", Cant Add Product to Store");
@@ -31,32 +33,51 @@ class SubscribeIndex extends Component {
     }
   };
 
+
   create_stores() {
-    send('/store', 'GET', '', this.buildStores)  
+    if(this.state.flag===false) {
+      send('/store', 'GET', '', this.buildStores)  
+    }
+  }
+
+  renderStore(element) {
+    let m = (90  / 3);
+    return ( <div style={{float:'left', width:m+'%', border:'1px solid black', textAlign:'center', margin:'1%'}}>
+                <div style={{float:'left', width:'100%', background:'#3086DB'}}>
+                  <p> {element.name} </p>
+                </div>
+                <div style={{float:'left', width:'100%'}}>
+                  <p> {element.description} </p>
+                </div>
+                <div style={{float:'left', width:'100%'}}>
+                  <img src={logo_store}/>
+                </div>
+             </div>
+    )
   }
 
   render_stores_table() {
       let output = [];
       this.state.stores.forEach( element =>
-        output.push(
-          <Row>
-            <th> {element.name} </th>
-            <th> {element.description} </th>
-          </Row>
+        output.push( this.renderStore(element)
+        //   <Row>
+        //     <th> {element.name} </th>
+        //     <th> {element.description} </th>
+        //   </Row>
         )
       )
       return output;
   }
 
   render_stores() {
-    return (
-    <table style={style_table}>
-      <tr>
-        <th style = {under_line}> Store Name </th>
-        <th style = {under_line}> Description </th>
-      </tr>
-      {this.render_stores_table()}
-    </table>);
+    return this.render_stores_table();
+    // <table style={style_table}>
+    //   <tr>
+    //     <th style = {under_line}> Store Name </th>
+    //     <th style = {under_line}> Description </th>
+    //   </tr>
+    //   {this.render_stores_table()}
+    // </table>);
   }
 
   render() {

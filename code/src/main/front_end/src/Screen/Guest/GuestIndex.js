@@ -5,7 +5,7 @@ import Title from '../../Component/Title';
 import Row from '../../Component/Row';
 import {send} from '../../Handler/ConnectionHandler';
 import Logo_404 from '../../Assests/404_logo.jpg'
-
+import logo_store from '../../Assests/store.jpg';
 class GuestIndex extends Component {
 
   constructor(props) {
@@ -38,8 +38,9 @@ class GuestIndex extends Component {
   };
 
   create_stores() {
-    if(this.state.flag===false)
+    if(this.state.flag===false) {
       send('/store', 'GET', '', this.buildStores)  
+    }
   }
 
   renderStore(element) {
@@ -52,13 +53,14 @@ class GuestIndex extends Component {
                   <p> {element.description} </p>
                 </div>
                 <div style={{float:'left', width:'100%'}}>
-                  <img src={require('../../Assests/store.jpg')} width="100" height="100" />
+                  <img src={logo_store}/>
                 </div>
              </div>
     )
   }
 
   render_stores_table() {
+      this.create_stores();
       let output = [];
       this.state.stores.forEach( element => {
           output.push(
@@ -93,7 +95,6 @@ class GuestIndex extends Component {
       this.handleConnect();
     if(this.props.location.state === undefined || this.props.location.state.id==-1)
       return <img src={Logo_404}/>
-    this.create_stores();
     return(
       <BackGrond>
           <Menu state={this.props.location.state}/>

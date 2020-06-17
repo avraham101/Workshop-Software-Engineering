@@ -12,10 +12,10 @@ import org.springframework.context.annotation.ComponentScan;
 public class WorkshopApplication {
 
     public static void main(String[] args) {
-//		if(args.length>0 && args[0]!=null) {
-//			Decoder decoder = new Decoder(args[0]);
-//			decoder.excecute();
-//		}
+		if(args.length>0 && args[0]!=null) {
+			Decoder decoder = new Decoder(args[0]);
+			decoder.excecute();
+		}
     	SpringApplication.run(WorkshopApplication.class, args);
 	}
 

@@ -182,11 +182,16 @@ public class Decoder {
      */
     private void executeLogin(Map<String, Object> data) {
         Map<String, Object> value = (Map<String, Object>)data.get("login");
-        String userName = (String) value.get("username");
+        String userName = (String) value.get("userName");
         String password = (String) value.get("password");
         int id = serviceAPI.connectToSystem();
-        if(serviceAPI.login(id,userName,password).getValue())
-            connected.put(userName,id);
+//        System.out.println(id +"name: "+userName+"password "+password);
+        if(serviceAPI.login(id,userName,password).getValue()) {
+            connected.put(userName, id);
+//            System.out.println("logged");
+        }
+//        else
+//            System.out.println("not logged");
     }
 
     /**
