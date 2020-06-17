@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Image} from 'react';
 import BackGrond from '../../Component/BackGrond';
 import Menu from '../../Component/Menu';
 import Title from '../../Component/Title';
@@ -42,28 +42,31 @@ class GuestIndex extends Component {
       send('/store', 'GET', '', this.buildStores)  
   }
 
-  render_stores_table() {
-      let output = [];
-      this.state.stores.forEach( element =>
-        output.push(
-          <Row>
-            <th> {element.name} </th>
-            <th> {element.description} </th>
-          </Row>
-        )
-      )
-      return output;
+  renderStore(element) {
+    let m = (90  / 3);
+    return ( <div style={{float:'left', width:m+'%', border:'1px solid black', textAlign:'center', margin:'1%'}}>
+                <div style={{float:'left', width:'100%', background:'#3086DB'}}>
+                  <p> {element.name} </p>
+                </div>
+                <div style={{float:'left', width:'100%'}}>
+                  <p> {element.description} </p>
+                </div>
+                <div style={{float:'left', width:'100%'}}>
+                  <img src={require('../../Assests/store.jpg')} width="100" height="100" />
+                </div>
+             </div>
+    )
   }
 
-  render_stores() {
-    return (
-    <table style={style_table}>
-      <tr>
-        <th style = {under_line}> Store Name </th>
-        <th style = {under_line}> Description </th>
-      </tr>
-      {this.render_stores_table()}
-    </table>);
+  render_stores_table() {
+      let output = [];
+      this.state.stores.forEach( element => {
+          output.push(
+            this.renderStore(element)
+          )
+        }
+      )
+      return output;
   }
 
   handleConnect(){
@@ -96,9 +99,9 @@ class GuestIndex extends Component {
           <Menu state={this.props.location.state}/>
           <body>
             <Title title="Welcome Guest"/>
-            <div >
+            <div style={{float:'left', width:'100%'}}>
               <h3 style={{textAlign:'center'}}> Stores </h3>
-              {this.render_stores()}
+              {this.render_stores_table()}
             </div>
           </body>
       </BackGrond>

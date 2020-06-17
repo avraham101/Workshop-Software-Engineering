@@ -68,7 +68,7 @@ public class DeleteManagerTest extends AcceptanceTests{
 
         List<PurchaseTestData> isManager = bridge.getStorePurchasesHistory(firstManager.getId(),
                 stores.get(0).getStoreName());
-        assertTrue(isManager.isEmpty());
+        assertNull(isManager);
 
         isManager = bridge.getStorePurchasesHistory(thirdManager.getId(),
                 stores.get(0).getStoreName());

@@ -81,16 +81,43 @@ class ViewStoresAndProducts extends Component {
     this.create_products(store);
   }
 
+  renderStore(element) {
+    this.create_stores();
+    if(this.state.stores.length===0)
+      return <p style={{textAlign:'center'}}> No products in store </p>
+    let onHover = (event) => {
+        event.currentTarget.style.backgroundColor = '#92BAFF'
+    }
+    let onLeave = (event) => {
+        event.currentTarget.style.backgroundColor = ''
+    } 
+    
+    let m = (90  / 3);
+    return ( <div style={{float:'left', width:m+'%', border:'1px solid black', textAlign:'center', margin:'1%'}}
+                    onMouseOver = {onHover} onMouseLeave = {onLeave}
+                    onClick={(e) => this.handleStores(e, element.name)}>
+                <div style={{float:'left', width:'100%', background:'#3086DB'}}>
+                  <p> {element.name} </p>
+                </div>
+                <div style={{float:'left', width:'100%'}}>
+                  <p> {element.description} </p>
+                </div>
+                <div style={{float:'left', width:'100%'}}>
+                  <img src={require('../../Assests/store.jpg')} width="100" height="100" />
+                </div>
+             </div>
+    )
+  }
+
   render_stores_table() {
     let stores = this.state.stores;
     let output = [];
     stores.forEach(
-      (element) =>
-        output.push(
-          <Row onClick={(e) => this.handleStores(e, element.name)}>
-            <th>{element.name}</th>
-            <th> {element.description} </th>
-          </Row>
+      (element) => output.push( this.renderStore(element)
+          // <Row onClick={(e) => this.handleStores(e, element.name)}>
+          //   <th>{element.name}</th>
+          //   <th> {element.description} </th>
+          // </Row>
         )
     );
     return output;
@@ -100,15 +127,7 @@ class ViewStoresAndProducts extends Component {
     this.create_stores();
     if(this.state.stores.length===0)
       return <p style={{textAlign:'center'}}> No products in store </p>
-    return (
-      <table style={style_table}>
-        <tr>
-          <th style={under_line}> Store Name </th>
-          <th style={under_line}> Description </th>
-        </tr>
-        {this.render_stores_table()}
-      </table>
-    );
+    return this.render_stores_table();
   }
 
   render_product_table() {
@@ -163,7 +182,7 @@ class ViewStoresAndProducts extends Component {
 
   render_product() {
     return (
-      <div>
+      <div style={{float:'left', width:'100%'}}>
         <h3 style={{textAlign: "center"}}> Store: {this.state.store}</h3>
         {this.renderDiscountAndPolicyButtons()}
         <table style={style_table}>
