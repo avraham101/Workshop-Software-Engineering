@@ -7,7 +7,8 @@ const https = require('https');
 /* id - connection number of user - optional */
 export const send = async (path, method, msg, update) => {
   let options = {
-    hostname: 'localhost',
+    // hostname: 'localhost',
+    hostname: '89.138.169.55',
     port: 8443,
     path: path,
     method: method,

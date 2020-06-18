@@ -1,5 +1,6 @@
 package Persitent.DaoProxy;
 
+import DataAPI.StoreData;
 import Domain.Store;
 import Persitent.Dao.StoreDao;
 import Persitent.DaoInterfaces.IStoreDao;
@@ -56,4 +57,5 @@ public class StoreDaoProxy implements IStoreDao {
             dao.update(store);
         }catch (Exception e){}
     }
+
 }

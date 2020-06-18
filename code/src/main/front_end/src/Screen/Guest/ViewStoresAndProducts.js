@@ -103,7 +103,7 @@ class ViewStoresAndProducts extends Component {
                   <p> {element.description} </p>
                 </div>
                 <div style={{float:'left', width:'100%'}}>
-                  <img src={require('../../Assests/store.jpg')} width="100" height="100" />
+                  <img src={require('../../Assests/store.jpg')}/>
                 </div>
              </div>
     )

@@ -26,12 +26,15 @@ public class UserController {
         json= new Gson();
     }
 
-    @GetMapping("/index")
-    public String get (){
-        return "index";
+//    @GetMapping("/index")
+//    public String get (){
+//        return "index";
+//    }
+
+    @RequestMapping(value = {"/"})
+    public String index() {
+        return "index.html";
     }
-
-
 
     @GetMapping("home/connect")
     @ResponseBody
@@ -84,6 +87,7 @@ public class UserController {
     @PostMapping("home/buy")
     @ResponseBody
     public ResponseEntity<?> buyCart(@RequestParam(name="id") int id, @RequestBody String  paymentDataStr){
+//        System.out.println(paymentDataStr);
         PaymentData paymentData = json.fromJson(paymentDataStr,PaymentData.class);
         Response<Boolean> response= SingleService.getInstance().purchaseCart(id,paymentData.getCountry(),paymentData,
                 paymentData.getAddress(),paymentData.getCity(),paymentData.getZip());

@@ -1,5 +1,6 @@
 package Persitent.DaoInterfaces;
 
+import DataAPI.StoreData;
 import Domain.Store;
 
 import java.util.List;

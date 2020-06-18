@@ -38,6 +38,7 @@ class App extends Component {
   render() {
     return (<Router history={history}>
             <Switch>
+              <Route path="/" component={GuestIndex} exact/>
               <Route path="/admin/watchDailyUsage" component={withRouter(WatchDailyUsage)}/>
               <Route path="/admin/watchRevenu" component={withRouter(WatchRevenu)}/>
               <Route path="/admin/storehistory" component={withRouter(WatchUserAndStoreHistory)} exact/>
@@ -72,7 +73,6 @@ class App extends Component {
               <Route path="/policy" component={withRouter(ManagePolicy)}/>
               <Route path="/viewPolicies" component={withRouter(ViewPolicy)}/>
               <Route path="/subscribe" component={withRouter(SubscribeIndex)} />
-              <Route path="/" component={withRouter(GuestIndex)} exact />
             </Switch>
           </Router>)
   }

@@ -1,6 +1,7 @@
 package Persitent.Dao;
 
 
+import DataAPI.StoreData;
 import Domain.Store;
 import Persitent.DaoInterfaces.IStoreDao;
 import Utils.Utils;
