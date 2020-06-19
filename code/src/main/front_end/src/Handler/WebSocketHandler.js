@@ -5,6 +5,7 @@ var Stomp = require('webstomp-client');
 var stompClient = null;
 
 export function connect(id,update) {
+  // var socket = new SockJS('https://89.138.169.55:8443/gs-guide-websocket');
   var socket = new SockJS('https://localhost:8443/gs-guide-websocket');
   stompClient = Stomp.over(socket);
   stompClient.connect({'id':id}, function (frame) {
