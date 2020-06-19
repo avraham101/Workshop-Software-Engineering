@@ -1,0 +1,146 @@
+[
+{
+	"ServiceAPI":
+	{
+		"userName":
+		"u1"
+		,"password":
+		"u1"
+	}
+}
+,{
+	"register":
+	{
+		"userName":
+		"u2"
+		,"password":
+		"u2"
+	}
+}
+,{
+	"register":
+	{
+		"userName":
+		"u3"
+		,"password":
+		"u3"
+	}
+}
+,{
+	"register":
+	{
+		"userName":
+		"u4"
+		,"password":
+		"u4"
+	}
+}
+,{
+	"register":
+	{
+		"userName":
+		"u5"
+		,"password":
+		"u5"
+	}
+}
+,{
+	"register":
+	{
+		"userName":
+		"u6"
+		,"password":
+		"u6"
+	}
+}
+,{
+	"idName":
+	"u2"
+	,"openStore":
+	{
+		"storeDetails":
+		{"name":"s1","description":"des"}
+	}
+}
+,{
+	"idName":
+	"u2"
+	,"addProductToStore":
+	{
+		"productData":
+		{"productName":"diapers","storeName":"s1","category":"Baby","amount":20,"price":30.0,"purchaseType":"IMMEDDIATE"}
+	}
+}
+,{
+	"idName":
+	"u2"
+	,"addManagerToStore":
+	{
+		"storeName":
+		"s1"
+		,"userName":
+		"u3"
+	}
+}
+,{
+	"idName":
+	"u2"
+	,"addPermissions":
+	{
+		"permissions":
+		["ADD_MANAGER","PRODUCTS_INVENTORY"]
+		,"storeName":
+		"s1"
+		,"userName": 
+		"u3"
+	}
+}
+,{
+	"idName":
+	"u3"
+	,"addManagerToStore":
+	{
+		"storeName":
+		"s1"
+		,"userName":
+		"u5"
+	}
+}
+,{
+	"idName":
+	"u3"
+	,"addPermissions":
+	{
+		"permissions":
+		["ADD_MANAGER","PRODUCTS_INVENTORY"]
+		,"storeName":
+		"s1"
+		,"userName": 
+		"u5"
+	}
+}
+,{
+	"idName":
+	"u5"
+	,"addManagerToStore":
+	{
+		"storeName":
+		"s1"
+		,"userName":
+		"u6"
+	}
+}
+,{
+	"idName":
+	"u5"
+	,"addPermissions":
+	{
+		"permissions":
+		["ADD_MANAGER","PRODUCTS_INVENTORY"]
+		,"storeName":
+		"s1"
+		,"userName": 
+		"u6"
+	}
+}
+]
