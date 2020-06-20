@@ -58,6 +58,7 @@ public class ManagerController {
     public ResponseEntity<?> approveOwnerToStore(@RequestParam(name="id" ) int id,
                                                  @RequestParam(name="store" ) String storeName,
                                                  @RequestParam(name="user" ) String userName) {
+        System.out.println("in approve owner "+storeName);
         storeName = json.fromJson(storeName,String.class);
         Response<Boolean> response = SingleService.getInstance().approveManageOwner(id,storeName,userName);
         return getResponseEntity(response);
