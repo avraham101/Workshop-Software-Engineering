@@ -29,7 +29,6 @@ public class ExternalSupply extends SupplySystem {
         String msg = "";
         HttpConnection httpConnection = new HttpConnection();
         String result = httpConnection.send(url,method,params,msg);
-        System.out.println(result);
         try{
             int transactionId=Integer.parseInt(result);
             if(transactionId==-1)

@@ -7,7 +7,7 @@ public class ProxySupply extends SupplySystem{
     private ExternalSupply real;
 
     public ProxySupply() {
-
+        real=new ExternalSupply();
     }
 
     public void setReal(ExternalSupply real) {
