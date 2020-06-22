@@ -32,8 +32,11 @@ public class Decoder {
         listMap = new HashMap<>();
         connected = new HashMap<>();
         String json = readFile(path);
-        Type type = new TypeToken<Map<String,List<Map<String, Object>>>>(){}.getType();
-        listMap = gson.fromJson(json,type);
+        if(json!=null) {
+            Type type = new TypeToken<Map<String, List<Map<String, Object>>>>() {
+            }.getType();
+            listMap = gson.fromJson(json, type);
+        }
     }
 
     private String readFile(String path) {
@@ -45,8 +48,10 @@ public class Decoder {
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return null;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
         return output;
     }
@@ -182,7 +187,7 @@ public class Decoder {
      */
     private void executeLogin(Map<String, Object> data) {
         Map<String, Object> value = (Map<String, Object>)data.get("login");
-        String userName = (String) value.get("username");
+        String userName = (String) value.get("userName");
         String password = (String) value.get("password");
         int id = serviceAPI.connectToSystem();
         if(serviceAPI.login(id,userName,password).getValue())

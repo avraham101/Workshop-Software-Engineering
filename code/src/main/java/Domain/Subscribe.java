@@ -2,6 +2,7 @@ package Domain;
 
 import DataAPI.*;
 import Domain.Discount.Discount;
+import Domain.Notification.AddOwnerNotification;
 import Domain.Notification.RemoveNotification;
 import Domain.PurchasePolicy.PurchasePolicy;
 import Domain.Notification.Notification;
@@ -454,6 +455,8 @@ public class Subscribe extends UserState{
             }
             store.unlock();
             lock.writeLock().unlock();
+            //if we want to support notification for add manager
+            //youngOwner.sendNotification(new AddOwnerNotification(storeName));
             return new Response<>(true,OpCode.Success);
         }
         return new Response<>(false,OpCode.Already_Exists);
@@ -653,7 +656,7 @@ public class Subscribe extends UserState{
     }
 
     @Transactional
-    private void removePermission(Permission p, boolean toClose, boolean toOpen) {
+    public void removePermission(Permission p, boolean toClose, boolean toOpen) {
         daos.getPermissionDao().removePermissionFromSubscribe(p,toClose,toOpen);
     }
 
